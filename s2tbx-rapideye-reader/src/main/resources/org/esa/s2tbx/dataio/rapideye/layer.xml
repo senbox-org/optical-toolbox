@@ -1,0 +1,74 @@
+<!--
+  ~ /*
+  ~  * Copyright (C) 2015 CS SI
+  ~  *
+  ~  * This program is free software; you can redistribute it and/or modify it
+  ~  * under the terms of the GNU General Public License as published by the Free
+  ~  * Software Foundation; either version 3 of the License, or (at your option)
+  ~  * any later version.
+  ~  * This program is distributed in the hope that it will be useful, but WITHOUT
+  ~  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~  * more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License along
+  ~  * with this program; if not, see http://www.gnu.org/licenses/
+  ~  */
+  -->
+
+<filesystem>
+
+    <folder name="Actions">
+        <folder name="Readers">
+            <file name="org-esa-s2tbx-dataio-rapideye-ImportRapidEyeL1Product.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
+                <attr name="displayName" stringvalue="RapidEye L1"/>
+                <attr name="formatName" stringvalue="RapidEyeNITF"/>
+                <attr name="useAllFileFilter" boolvalue="true"/>
+            </file>
+            <file name="org-esa-s2tbx-dataio-rapideye-ImportRapidEyeL3Product.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
+                <attr name="displayName" stringvalue="RapidEye L3"/>
+                <attr name="formatName" stringvalue="RapidEyeGeoTIFF"/>
+                <attr name="useAllFileFilter" boolvalue="true"/>
+            </file>
+            <!-- Leaving out for now the NITF action
+            <file name="org-esa-s2tbx-dataio-nitf-ImportNITFProduct.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
+                <attr name="displayName" stringvalue="NITF Image"/>
+                <attr name="formatName" stringvalue="GenericNITF"/>
+                <attr name="useAllFileFilter" boolvalue="true"/>
+            </file>-->
+        </folder>
+    </folder>
+
+    <folder name="Menu">
+        <folder name="File">
+            <folder name="Import">
+                <folder name="Optical Sensors">
+                    <folder name="RapidEye">
+                        <file name="org-esa-s2tbx-dataio-rapideye-ImportRapidEyeL1Product.shadow">
+                            <attr name="originalFile"
+                              stringvalue="Actions/Readers/org-esa-s2tbx-dataio-rapideye-ImportRapidEyeL1Product.instance"/>
+                        </file>
+                        <file name="org-esa-s2tbx-dataio-rapideye-ImportRapidEyeL3Product.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/org-esa-s2tbx-dataio-rapideye-ImportRapidEyeL3Product.instance"/>
+                        </file>
+                    </folder>
+                </folder>
+                <!-- Leaving out for now the NITF action
+                <folder name="Generic Formats">
+                    <file name="org-esa-s2tbx-dataio-nitf-ImportNITFProduct.shadow">
+                        <attr name="originalFile"
+                              stringvalue="Actions/Readers/org-esa-s2tbx-dataio-nitf-ImportNITFProduct.instance"/>
+                    </file>
+                </folder>-->
+            </folder>
+        </folder>
+    </folder>
+
+</filesystem>

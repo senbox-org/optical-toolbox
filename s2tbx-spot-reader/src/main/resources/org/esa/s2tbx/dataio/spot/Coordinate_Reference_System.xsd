@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2014-2015 CS SI
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~  with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<!-- oct. 19, 2004 -->
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" version="1.1.2" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:documentation source="schema">
+		</xsd:documentation>
+		<xsd:appinfo source="schema"/>
+	</xsd:annotation>
+	<xsd:include schemaLocation="Horizontal_CS.xsd"/>
+	<xsd:element id="Coordinate_Reference_System" name="Coordinate_Reference_System" type="t_Coordinate_Reference_System">
+		<xsd:annotation>
+			<xsd:documentation source="Coordinate_Reference_System">
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType id="t_Coordinate_Reference_System" name="t_Coordinate_Reference_System">
+		<xsd:all>
+			<xsd:element ref="GEO_TABLES"/>
+			<xsd:element ref="Horizontal_CS"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:element id="GEO_TABLES" name="GEO_TABLES" type="t_GEO_TABLES">
+		<xsd:annotation>
+			<xsd:documentation source="GEO_TABLES">
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType id="t_GEO_TABLES" name="t_GEO_TABLES">
+		<!-- PFC -->
+		<xsd:simpleContent>
+			<xsd:restriction base="String_Version">
+				<xsd:enumeration value="EPSG"/>
+			</xsd:restriction>
+		</xsd:simpleContent>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2014-2015 CS SI
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~  with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<!-- oct. 19, 2004 -->
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" version="1.1.2" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:documentation source="schema"/>
+		<xsd:appinfo source="schema"/>
+	</xsd:annotation>
+	<xsd:include schemaLocation="Scene_Common.xsd"/>
+	<xsd:element id="Special_Value_Color" name="Special_Value_Color" type="t_Special_Value_Color">
+		<xsd:annotation>
+			<xsd:documentation source="Special_Value_Color"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType id="t_Special_Value_Color" name="t_Special_Value_Color">
+		<xsd:all>
+			<xsd:element ref="RED_LEVEL"/>
+			<xsd:element ref="GREEN_LEVEL"/>
+			<xsd:element ref="BLUE_LEVEL"/>
+			<xsd:element minOccurs="0" ref="ALPHA_LEVEL"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:element id="RED_LEVEL" name="RED_LEVEL" type="t_RED_LEVEL">
+		<xsd:annotation>
+			<xsd:documentation source="RED_LEVEL"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_RED_LEVEL" name="t_RED_LEVEL">
+			<xsd:restriction base="ZeroOne"/>
+	</xsd:simpleType>
+	<xsd:element id="GREEN_LEVEL" name="GREEN_LEVEL" type="t_GREEN_LEVEL">
+		<xsd:annotation>
+			<xsd:documentation source="GREEN_LEVEL"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_GREEN_LEVEL" name="t_GREEN_LEVEL">
+			<xsd:restriction base="ZeroOne"/>
+	</xsd:simpleType>
+	<xsd:element id="BLUE_LEVEL" name="BLUE_LEVEL" type="t_BLUE_LEVEL">
+		<xsd:annotation>
+			<xsd:documentation source="BLUE_LEVEL"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_BLUE_LEVEL" name="t_BLUE_LEVEL">
+			<xsd:restriction base="ZeroOne"/>
+	</xsd:simpleType>
+	<xsd:element id="ALPHA_LEVEL" name="ALPHA_LEVEL" type="t_ALPHA_LEVEL">
+		<xsd:annotation>
+			<xsd:documentation source="ALPHA_LEVEL"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_ALPHA_LEVEL" name="t_ALPHA_LEVEL">
+			<xsd:restriction base="ZeroOne"/>
+	</xsd:simpleType>
+</xsd:schema>

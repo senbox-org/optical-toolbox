@@ -1,0 +1,204 @@
+<!--
+  ~ Copyright (C) 2010 Brockmann Consult GmbH (info@brockmann-consult.de)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<html>
+<head>
+    <title>Biophysical Processor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<table class="header">
+    <tr class="header">
+        <td class="header">Biophysical Processor Algorithm Specifications</td>
+        <td class="header" align="right"><img src="images/snap_header.jpg" border=0></td>
+    </tr>
+</table>
+
+<p>
+    The proposed algorithm is based on methods that have already been proven to be efficient.
+</p>
+<p>
+    They have been implemented to generate biophysical products from VEGETATION, MERIS, SPOT, and LANDSAT sensors.
+    It mainly consists in generating a comprehensive database of vegetation characteristics
+    and the associated SENTINEL2 or LANDSAT8 top of canopy (TOC) reflectances.
+    Neural networks are then trained to estimate the canopy characteristics from the
+    TOC reflectances along with set corresponding angles defining the observational configuration.
+</p>
+
+<p>
+    For the Sentinel 2 Products 2 different neural network architecture have been implemeneted, the <i>NNET 20m</i> and the <i>NNET 10m</i>. 
+    The two use a different combination of input bands as shown in the table below as input for the neural network in addtition to the auxiliary bands
+    <i>cos(viewing_zenith)</i>, <i>cos(sun_zenith)</i>, <i>cos(relative_azimuth_angle)</i>.
+</p>
+
+<p>
+    <table>
+        <tr>
+            <th>Band</th>
+            <th>Central Wavelength (nm)</th>
+            <th>Resolution (m)</th>
+            <th>NNET 20m</th>
+            <th>NNET 10m</th>
+        </tr>
+        <tr>
+            <td>B1</td>
+            <td>443</td>
+            <td>60</td>
+            <td></td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td>B2</td>
+            <td>490</td>
+            <td>10</td>
+            <td></td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td>B3</td>
+            <td>560</td>
+            <td>10</td>
+            <td>x</td>
+            <td>x</td>
+        </tr>
+        
+        <tr>
+            <td>B4</td>
+            <td>665</td>
+            <td>10</td>
+            <td>x</td>
+            <td>x</td>
+        </tr>
+        <tr>
+            <td>B5</td>
+            <td>665</td>
+            <td>10</td>
+            <td>x</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>B6</td>
+            <td>740</td>
+            <td>20</td>
+            <td>x</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>B7</td>
+            <td>783</td>
+            <td>20</td>
+            <td>x</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>B8</td>
+            <td>842</td>
+            <td>10</td>
+            <td></td>
+            <td>x</td>
+        </tr>
+        
+        <tr>
+            <td>B8a</td>
+            <td>865</td>
+            <td>20</td>
+            <td>x</td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td>B9</td>
+            <td>945</td>
+            <td>60</td>
+            <td></td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td>B10</td>
+            <td>1375</td>
+            <td>60</td>
+            <td></td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td>B11</td>
+            <td>1610</td>
+            <td>20</td>
+            <td>x</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>B12</td>
+            <td>2190</td>
+            <td>20</td>
+            <td>x</td>
+            <td></td>
+        </tr>
+    </table>
+</p>
+
+<p>
+    The <i>NNET 10m</i> uses only 10m bands and so it produce a 10m resolution output product, however it is capable of computing only the <i>LAI</i>, <i>FAPAR</i> and <i>FVC</i> indexes.
+</p>
+
+<p>
+    For the LANDSAT8 the same approach is used, but in this case the bands used as inputs are the <i>green</i>, <i>red</i>, <i>near_infrared</i>, <i>swir_1</i> and <i>swir_2</i> in addition to the auxiliary bands (zenith and azimuth both for sun and view).<br>
+    In this case, as for the <i>NNET 10m</i> the algorithm is capable of computing only the  <i>LAI</i>, <i>FAPAR</i> and <i>FVC</i> indexes.<br>
+</p>  
+
+<p>    
+    Both <i>NNET 10m</i>, <i>NNET 20m</i> and <i>LANDSAT8</i> neural networks are composed by three layers:
+    <ul>
+        <li>
+            one input layer: made of 11 normalized input data for the <i>NNET 20m</i>, 6 for the <i>NNET 10m</i> and 7 for the <i>LANDSAT8</i> one.
+        </li>
+        <li>
+            one hidden layer with 5 neurons with tangent sigmoid transfer functions
+        </li>
+        <li>
+            one output layer with a linear transfer function
+        </li>
+    </ul>
+    
+    In the final implementation there are two <i>NNET 20m</i>, one trained with S2A data and one with S2B data, and two <i>NNET 10m</i>, again trained for S2A and S2B respectively. 
+    This results in output more relaible and with better accuracy and take in accound the small differences in the reflectance response of the different sensors.
+      
+</p>
+
+<p>
+    The actual algorithm running in SNAP runs the prediction step of the neural network, from the set
+    of precomputed coefficients computed during the training phase.
+</p>
+
+<p>
+ <p>For more details, please refer to the algorithm theoretical based document:<br>
+    <object classid="java:org.netbeans.modules.javahelp.BrowserDisplayer">
+        <param name="content" value="http://step.esa.int/docs/extra/ATBD_S2ToolBox_V2.1.pdf">
+        <param name="text"
+               value="Biophysical Processor - Algorithm Theoretical Basis Document V2.1">
+        <param name="textFontSize" value="bigger">
+    </object>
+</p>
+
+<hr>
+</body>
+</html>

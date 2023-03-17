@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2014-2015 CS SI
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~  with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<!-- oct. 19, 2004 -->
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" version="1.1.2" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:documentation source="schema"/>
+		<xsd:appinfo source="schema"/>
+	</xsd:annotation>
+	<xsd:include schemaLocation="Vertex.xsd"/>
+	<xsd:element id="Source_Frame" name="Source_Frame" type="t_Source_Frame">
+		<xsd:annotation>
+			<xsd:documentation source="Source_Frame"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType id="t_Source_Frame" name="t_Source_Frame">
+		<xsd:sequence>
+			<xsd:element maxOccurs="4" minOccurs="4" ref="Vertex"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

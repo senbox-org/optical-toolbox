@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2014-2015 CS SI
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~  with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<!-- oct. 19, 2004 -->
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" version="1.1.2" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:documentation source="schema"/>
+	</xsd:annotation>
+	<xsd:include schemaLocation="Scene_Common.xsd"/>
+	<xsd:element id="Imaging_Parameters" name="Imaging_Parameters" type="t_Imaging_Parameters">
+		<xsd:annotation>
+			<xsd:documentation source="Imaging_Parameters"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType id="t_Imaging_Parameters" name="t_Imaging_Parameters">
+		<xsd:all>
+			<xsd:element ref="REVOLUTION_NUMBER"/>
+			<xsd:element ref="COMPRESSION_MODE"/>
+			<xsd:element ref="DIRECT_PLAYBACK_INDICATOR"/>
+			<xsd:element minOccurs="0" ref="REFOCUSING_STEP_NUM"/>
+			<xsd:element minOccurs="0" ref="COUPLED_MODE_FLAG"/>
+			<xsd:element ref="SWATH_MODE"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:element id="REVOLUTION_NUMBER" name="REVOLUTION_NUMBER" type="t_REVOLUTION_NUMBER">
+		<xsd:annotation>
+			<xsd:documentation source="REVOLUTION_NUMBER"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_REVOLUTION_NUMBER" name="t_REVOLUTION_NUMBER">
+		<xsd:restriction base="Revolution_Numbers"/>
+	</xsd:simpleType>
+	<xsd:element id="COMPRESSION_MODE" name="COMPRESSION_MODE" type="t_COMPRESSION_MODE">
+		<xsd:annotation>
+			<xsd:documentation source="COMPRESSION_MODE"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_COMPRESSION_MODE" name="t_COMPRESSION_MODE">
+		<xsd:restriction base="Compression_Modes"/>
+	</xsd:simpleType>
+	<xsd:element id="DIRECT_PLAYBACK_INDICATOR" name="DIRECT_PLAYBACK_INDICATOR" type="t_DIRECT_PLAYBACK_INDICATOR">
+		<xsd:annotation>
+			<xsd:documentation source="DIRECT_PLAYBACK_INDICATOR"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_DIRECT_PLAYBACK_INDICATOR" name="t_DIRECT_PLAYBACK_INDICATOR">
+		<xsd:restriction base="Direct_Playback_Indicators"/>
+	</xsd:simpleType>
+	<xsd:element id="REFOCUSING_STEP_NUM" name="REFOCUSING_STEP_NUM" type="t_REFOCUSING_STEP_NUM">
+		<xsd:annotation>
+			<xsd:documentation source="REFOCUSING_STEP_NUM"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_REFOCUSING_STEP_NUM" name="t_REFOCUSING_STEP_NUM">
+		<xsd:restriction base="Integer"/>
+	</xsd:simpleType>
+	<xsd:element id="COUPLED_MODE_FLAG" name="COUPLED_MODE_FLAG" type="t_COUPLED_MODE_FLAG">
+		<xsd:annotation>
+			<xsd:documentation source="COUPLED_MODE_FLAG"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_COUPLED_MODE_FLAG" name="t_COUPLED_MODE_FLAG">
+		<xsd:restriction base="YesNo"/>
+	</xsd:simpleType>
+	<xsd:element id="SWATH_MODE" name="SWATH_MODE" type="t_SWATH_MODE">
+		<xsd:annotation>
+			<xsd:documentation source="SWATH_MODE"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_SWATH_MODE" name="t_SWATH_MODE">
+		<xsd:restriction base="Swath_Modes"/>
+	</xsd:simpleType>
+</xsd:schema>

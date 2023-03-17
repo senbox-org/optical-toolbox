@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!DOCTYPE toc
+        PUBLIC
+        "-//Sun Microsystems Inc.//DTD
+     JavaHelp TOC Version 2.0//EN"
+        "http://java.sun.com/products/javahelp/toc_2_0.dtd">
+
+<toc version="2.0" categoryclosedimage="folder" categoryopenimage="folder" topicimage="doc">
+
+    <tocitem text="Sentinel Toolbox Application">
+        <tocitem text="Optical">
+            <tocitem text="Thematic Land Processing">
+                <tocitem text="Biophysical Variables Processor" target="biophysicalOpOverview">
+                    <tocitem text="Overview" target="biophysicalOpOverview"/>
+                    <tocitem text="Sentinel-2 Processor Description" target="biophysicalOpProcessorDescription"/>
+                    <tocitem text="Sentinel-2 10m Processor Description" target="biophysicalOpProcessorDescription10m"/>
+                    <tocitem text="LANDSAT8 Processor Description" target="biophysicalOpProcessorDescriptionLandsat"/>
+                    <tocitem text="Algorithm Specification" target="biophysicalOpAlgorithmSpecification"/>
+                </tocitem>
+            </tocitem>
+        </tocitem>
+    </tocitem>
+
+</toc>

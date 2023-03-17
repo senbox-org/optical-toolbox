@@ -1,0 +1,2200 @@
+{
+    "id": "S2L3-60m-Darmstadt",
+    "decodeQualification": "INTENDED",
+    "expectedContent": {
+        "sceneWidth": 1830,
+        "sceneHeight": 1830,
+        "startTime": "30-JUL-2015 10:39:14.021000",
+        "endTime": "30-JUL-2015 10:39:14.021000",
+        "geoCoding": {
+            "coordinates": [
+                {
+                    "x": 30.5,
+                    "y": 46.5,
+                    "lat": 50.518958816030015,
+                    "lon": 7.614640615767693
+                },
+                {
+                    "x": 558.5,
+                    "y": 875.5,
+                    "lat": 50.076136769036566,
+                    "lon": 8.070203366440772
+                },
+                {
+                    "x": 75.5,
+                    "y": 1771.5,
+                    "lat": 49.58878253786967,
+                    "lon": 7.67852837282545
+                },
+                {
+                    "x": 1696.5,
+                    "y": 1744.5,
+                    "lat": 49.61089525968964,
+                    "lon": 9.024223524666386
+                },
+                {
+                    "x": 997.5,
+                    "y": 1348.5,
+                    "lat": 49.82326024201886,
+                    "lon": 8.44125667875991
+                },
+                {
+                    "x": 1665.5,
+                    "y": 138.5,
+                    "lat": 50.47755817263017,
+                    "lon": 8.998449714301174
+                }
+            ],
+            "reverseAccuracy": 1.2514647096395493E-9
+        },
+        "indexCodings": [
+            {
+                "name": "quality_mosaic_info_60m",
+                "samples": [
+                    {
+                        "name": "0",
+                        "value": 0,
+                        "description": "0"
+                    },
+                    {
+                        "name": "1",
+                        "value": 1,
+                        "description": "1"
+                    },
+                    {
+                        "name": "2",
+                        "value": 2,
+                        "description": "2"
+                    },
+                    {
+                        "name": "3",
+                        "value": 3,
+                        "description": "3"
+                    },
+                    {
+                        "name": "4",
+                        "value": 4,
+                        "description": "4"
+                    },
+                    {
+                        "name": "5",
+                        "value": 5,
+                        "description": "5"
+                    },
+                    {
+                        "name": "6",
+                        "value": 6,
+                        "description": "6"
+                    },
+                    {
+                        "name": "7",
+                        "value": 7,
+                        "description": "7"
+                    },
+                    {
+                        "name": "8",
+                        "value": 8,
+                        "description": "8"
+                    }
+                ]
+            },
+            {
+                "name": "quality_scene_classification_60m",
+                "samples": [
+                    {
+                        "name": "NODATA",
+                        "value": 0,
+                        "description": "No data"
+                    },
+                    {
+                        "name": "SATURATED_DEFECTIVE",
+                        "value": 1,
+                        "description": "Saturated or defective"
+                    },
+                    {
+                        "name": "DARK_FEATURE_SHADOW",
+                        "value": 2,
+                        "description": "Dark feature shadow"
+                    },
+                    {
+                        "name": "CLOUD_SHADOW",
+                        "value": 3,
+                        "description": "Cloud shadow"
+                    },
+                    {
+                        "name": "VEGETATION",
+                        "value": 4,
+                        "description": "Vegetation"
+                    },
+                    {
+                        "name": "NOT_VEGETATED",
+                        "value": 5,
+                        "description": "Not vegetated"
+                    },
+                    {
+                        "name": "WATER",
+                        "value": 6,
+                        "description": "Water"
+                    },
+                    {
+                        "name": "UNCLASSIFIED",
+                        "value": 7,
+                        "description": "Unclassified"
+                    },
+                    {
+                        "name": "CLOUD_MEDIUM_PROBA",
+                        "value": 8,
+                        "description": "Cloud (medium probability)"
+                    },
+                    {
+                        "name": "CLOUD_HIGH_PROBA",
+                        "value": 9,
+                        "description": "Cloud (high probability)"
+                    },
+                    {
+                        "name": "THIN_CIRRUS",
+                        "value": 10,
+                        "description": "Thin cirrus"
+                    },
+                    {
+                        "name": "SNOW_ICE",
+                        "value": 11,
+                        "description": "Snow or Ice"
+                    },
+                    {
+                        "name": "URBAN_AREAS",
+                        "value": 12,
+                        "description": "Urban areas"
+                    }
+                ]
+            }
+        ],
+        "bands": [
+            {
+                "name": "B1",
+                "description": "Reflectance in band B1",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "443.0",
+                "spectralBandwidth": "58.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.034
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.013
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.078
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.009
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.121
+                    }
+                ]
+            },
+            {
+                "name": "B2",
+                "description": "Reflectance in band B2",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "490.0",
+                "spectralBandwidth": "130.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.035
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.017
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.075
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.002
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.018
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.14
+                    }
+                ]
+            },
+            {
+                "name": "B3",
+                "description": "Reflectance in band B3",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "560.0",
+                "spectralBandwidth": "100.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.046
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.031
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.095
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.01
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.044
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.189
+                    }
+                ]
+            },
+            {
+                "name": "B4",
+                "description": "Reflectance in band B4",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "665.0",
+                "spectralBandwidth": "90.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.047
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.022
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.088
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.004
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.023
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.147
+                    }
+                ]
+            },
+            {
+                "name": "B5",
+                "description": "Reflectance in band B5",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "705.0",
+                "spectralBandwidth": "97.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.083
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.053
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.148
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.027
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.072
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.224
+                    }
+                ]
+            },
+            {
+                "name": "B6",
+                "description": "Reflectance in band B6",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "740.0",
+                "spectralBandwidth": "40.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.156
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.169
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.265
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.101
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.277
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.337
+                    }
+                ]
+            },
+            {
+                "name": "B7",
+                "description": "Reflectance in band B7",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "783.0",
+                "spectralBandwidth": "71.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.181
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.209
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.3
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.125
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.344
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.356
+                    }
+                ]
+            },
+            {
+                "name": "B8A",
+                "description": "Reflectance in band B8A",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "865.0",
+                "spectralBandwidth": "79.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.21
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.233
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.324
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.141
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.376
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.371
+                    }
+                ]
+            },
+            {
+                "name": "B9",
+                "description": "Reflectance in band B9",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "945.0",
+                "spectralBandwidth": "79.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.212
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.235
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.326
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.144
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.376
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.288
+                    }
+                ]
+            },
+            {
+                "name": "B11",
+                "description": "Reflectance in band B11",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "1610.0",
+                "spectralBandwidth": "172.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.155
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.105
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.256
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.056
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.135
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.212
+                    }
+                ]
+            },
+            {
+                "name": "B12",
+                "description": "Reflectance in band B12",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "dl",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "2190.0",
+                "spectralBandwidth": "276.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 0.094
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 0.054
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 0.161
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 0.026
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 0.059
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 0.141
+                    }
+                ]
+            },
+            {
+                "name": "quality_mosaic_info_60m",
+                "description": "Pixel count",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 3.0
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 3.0
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 3.0
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 3.0
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 3.0
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 1.0
+                    }
+                ]
+            },
+            {
+                "name": "quality_scene_classification_60m",
+                "description": "Scene classification",
+                "bandWidth": 1830,
+                "bandHeight": 1830,
+                "geophysicalUnit": "",
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 30,
+                        "y": 46,
+                        "value": 4.0
+                    },
+                    {
+                        "x": 558,
+                        "y": 875,
+                        "value": 4.0
+                    },
+                    {
+                        "x": 75,
+                        "y": 1771,
+                        "value": 4.0
+                    },
+                    {
+                        "x": 1696,
+                        "y": 1744,
+                        "value": 4.0
+                    },
+                    {
+                        "x": 997,
+                        "y": 1348,
+                        "value": 4.0
+                    },
+                    {
+                        "x": 1665,
+                        "y": 138,
+                        "value": 10.0
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_mean",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.8897834
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.6280165
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.543584
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.4751005
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.3046201
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.6671599
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_mean",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 116.70263
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 129.05577
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 90.86873
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 304.70898
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 50.868427
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 224.28238
+                    }
+                ]
+            },
+            {
+                "name": "sun_zenith",
+                "description": "Solar zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 34.1168
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 33.5892
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 33.2415
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 32.9174
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 33.2471
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 33.7331
+                    }
+                ]
+            },
+            {
+                "name": "sun_azimuth",
+                "description": "Solar azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 154.429
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 154.892
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 153.961
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 156.268
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 155.328
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 156.577
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B1",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.99927
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.84365
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.67896
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.64895
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.73684
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 2.12632
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B1",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 120.884
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 136.347
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 84.6476
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 312.604
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 38.7198
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 216.452
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B2",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.76738
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.37711
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.39997
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.29009
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 0.762785
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.04892
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B2",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 110.584
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 117.796
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 100.154
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 292.674
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 78.6486
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 240.944
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B3",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.80026
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.4483
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.43361
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.33361
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 0.925928
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.26367
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B3",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 112.961
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 122.376
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 96.5066
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 297.501
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 62.9017
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 231.921
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B4",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.8404
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.53216
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.48047
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.39442
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.12027
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.48066
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B4",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 115.113
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 126.394
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 93.1888
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 301.834
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 53.0368
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 226.062
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B5",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.86652
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.58533
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.51185
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.43504
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.23552
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.6052
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B5",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 116.286
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 128.516
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 91.4303
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 304.101
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 49.0598
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 223.531
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B6",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.895
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.64241
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.54806
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.48161
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.35726
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.73006
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B6",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 117.431
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 130.545
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 89.668
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 306.344
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 45.7382
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 221.403
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B7",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.92648
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.70433
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.58809
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.53306
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.48229
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.85903
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B7",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 118.577
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 132.522
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 87.951
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 308.512
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 42.9811
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 219.536
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B8",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.78236
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.40996
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.41454
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.30887
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 0.83623
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.15276
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B8",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 111.774
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 120.108
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 98.3259
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 295.098
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 70.033
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 236.012
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B8A",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.9603
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.76976
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.63256
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.59004
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.61107
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.98736
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B8A",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 119.699
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 134.412
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 86.2499
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 310.637
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 40.6431
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 217.941
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B9",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 7.03932
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.91885
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.73246
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.71652
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.87344
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 2.26039
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B9",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 122.006
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 138.143
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 82.9743
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 314.635
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 36.9556
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 215.196
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B10",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.82815
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.50731
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.4631
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.37119
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.05073
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.41893
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B10",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 114.509
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 125.302
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 94.2909
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 300.354
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 55.9703
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 227.523
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B11",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.89172
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.63612
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.54119
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.47209
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.33297
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 1.71665
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B11",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 117.305
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 130.332
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 89.985
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 305.91
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 46.3437
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 221.615
+                    }
+                ]
+            },
+            {
+                "name": "view_zenith_B12",
+                "description": "Viewing incidence zenith angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 6.97003
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 3.78893
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 4.64173
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 3.60082
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 1.63473
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 2.02313
+                    }
+                ]
+            },
+            {
+                "name": "view_azimuth_B12",
+                "description": "Viewing incidence azimuth angle",
+                "bandWidth": 22,
+                "bandHeight": 22,
+                "geophysicalUnit": "deg",
+                "noDataValue": "NaN",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "value": 120.005
+                    },
+                    {
+                        "x": 6,
+                        "y": 10,
+                        "value": 134.932
+                    },
+                    {
+                        "x": 0,
+                        "y": 21,
+                        "value": 85.9211
+                    },
+                    {
+                        "x": 20,
+                        "y": 20,
+                        "value": 311.013
+                    },
+                    {
+                        "x": 11,
+                        "y": 16,
+                        "value": 40.2579
+                    },
+                    {
+                        "x": 19,
+                        "y": 1,
+                        "value": 217.535
+                    }
+                ]
+            }
+        ],
+        "masks": [
+            {
+                "name": "msc_60m_0",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,0,0",
+                "description": "0"
+            },
+            {
+                "name": "msc_60m_1",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "74,0,119",
+                "description": "1"
+            },
+            {
+                "name": "msc_60m_2",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "21,0,225",
+                "description": "2"
+            },
+            {
+                "name": "msc_60m_3",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,159,255",
+                "description": "3"
+            },
+            {
+                "name": "msc_60m_4",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,255,127",
+                "description": "4"
+            },
+            {
+                "name": "msc_60m_5",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "95,255,0",
+                "description": "5"
+            },
+            {
+                "name": "msc_60m_6",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,226,0",
+                "description": "6"
+            },
+            {
+                "name": "msc_60m_7",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,122,0",
+                "description": "7"
+            },
+            {
+                "name": "msc_60m_8",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,0,0",
+                "description": "8"
+            },
+            {
+                "name": "scl_60m_nodata",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,0,0",
+                "description": "No data"
+            },
+            {
+                "name": "scl_60m_saturated_defective",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,0,0",
+                "description": "Saturated or defective"
+            },
+            {
+                "name": "scl_60m_dark_feature_shadow",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "46,46,46",
+                "description": "Dark feature shadow"
+            },
+            {
+                "name": "scl_60m_cloud_shadow",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "100,50,0",
+                "description": "Cloud shadow"
+            },
+            {
+                "name": "scl_60m_vegetation",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,128,0",
+                "description": "Vegetation"
+            },
+            {
+                "name": "scl_60m_not_vegetated",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,230,90",
+                "description": "Not vegetated"
+            },
+            {
+                "name": "scl_60m_water",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,0,255",
+                "description": "Water"
+            },
+            {
+                "name": "scl_60m_unclassified",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "129,129,129",
+                "description": "Unclassified"
+            },
+            {
+                "name": "scl_60m_cloud_medium_proba",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "193,193,193",
+                "description": "Cloud (medium probability)"
+            },
+            {
+                "name": "scl_60m_cloud_high_proba",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,255,255",
+                "description": "Cloud (high probability)"
+            },
+            {
+                "name": "scl_60m_thin_cirrus",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "100,200,255",
+                "description": "Thin cirrus"
+            },
+            {
+                "name": "scl_60m_snow_ice",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,150,255",
+                "description": "Snow or Ice"
+            },
+            {
+                "name": "scl_60m_urban_areas",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,127,39",
+                "description": "Urban areas"
+            }
+        ],
+        "metadata": [
+            {
+                "path": "Level-3_DataStrip_ID/Satellite_Ancillary_Data_Info/Thermal_Data/IMU_Sensorplate_List/IMU_Sensorplate[4]/T",
+                "value": "7704"
+            },
+            {
+                "path": "Granules/Level-03_Tile_32UMA/General_Info/Archiving_Info/ARCHIVING_CENTRE",
+                "value": "MTI_"
+            },
+            {
+                "path": "Level-3_DataStrip_ID/Satellite_Ancillary_Data_Info/Thermal_Data/IMU_Sensorplate_List/IMU_Sensorplate[58]/T",
+                "value": "7735"
+            },
+            {
+                "path": "Level-3_DataStrip_ID/Satellite_Ancillary_Data_Info/Lost_Source_Packet_List/Lost_Source_Packet[25]/STRUCTURIDENTIFIER",
+                "value": "105"
+            },
+            {
+                "path": "Granules/Level-03_Tile_32UMA/Geometric_Info/Tile_Angles/Mean_Sun_Angle/ZENITH_ANGLE",
+                "value": "33.4574161093398"
+            },
+            {
+                "path": "Level-3_User_Product/General_Info/L3_Product_Info/Datatake/SENSING_ORBIT_DIRECTION",
+                "value": "DESCENDING"
+            },
+            {
+                "path": "Level-3_DataStrip_ID/Satellite_Ancillary_Data_Info/Thermal_Data/ThSensor_List/ThSensor[3]/Value[20]/GPS_TIME",
+                "value": "1980-01-06T00:00:00"
+            },
+            {
+                "path": "Level-3_DataStrip_ID/Satellite_Ancillary_Data_Info/Attitudes/Corrected_Attitudes/Values[3518]/QUATERNION_VALUES",
+                "value": "-0.611117103339364 -0.731368259464043 0.117505658764831 -0.278978090919133"
+            },
+            {
+                "path": "Level-3_DataStrip_ID/General_Info/Archiving_Info/ARCHIVING_CENTRE",
+                "value": "MTI_"
+            },
+            {
+                "path": "Granules/Level-03_Tile_32UMA/General_Info/Archiving_Info/ARCHIVING_CENTRE",
+                "value": "MTI_"
+            }
+        ]
+    }
+}

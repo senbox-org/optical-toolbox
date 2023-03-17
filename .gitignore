@@ -1,11 +1,26 @@
+.idea/
+modules/
 target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
+generated-sources/
+*.iml
+*.ipr
+*.iws
+*.class
+*~
+*.pyc
+*.java.orig
+#generated sources
+s2tbx-reader-cs/src/main/generated-sources/
+#maven temp output
+dependencies.txt
+
+# vscode
+.project
+.settings
+.classpath
+.factorypath
+.vscode
+launch.sh
+snap-desktop.sh
+gpt.sh
+*~

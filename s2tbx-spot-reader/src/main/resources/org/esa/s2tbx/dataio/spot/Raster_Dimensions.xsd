@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2014-2015 CS SI
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~  with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<!-- oct. 19, 2004 -->
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" version="1.1.2" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:documentation source="schema"/>
+	</xsd:annotation>
+	<xsd:include schemaLocation="Scene_Common.xsd"/>
+	<xsd:element id="Raster_Dimensions" name="Raster_Dimensions" type="t_Raster_Dimensions">
+		<xsd:annotation>
+			<xsd:documentation source="Raster_Dimensions"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType id="t_Raster_Dimensions" name="t_Raster_Dimensions">
+		<xsd:all>
+			<xsd:element ref="NCOLS"/>
+			<xsd:element ref="NROWS"/>
+			<xsd:element ref="NBANDS"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:element id="NCOLS" name="NCOLS" type="t_NCOLS">
+		<xsd:annotation>
+			<xsd:documentation source="NCOLS"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_NCOLS" name="t_NCOLS">
+		<xsd:restriction base="xsd:nonNegativeInteger"/>
+	</xsd:simpleType>
+	<xsd:element id="NROWS" name="NROWS" type="t_NROWS">
+		<xsd:annotation>
+			<xsd:documentation source="NROWS"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_NROWS" name="t_NROWS">
+		<xsd:restriction base="xsd:nonNegativeInteger"/>
+	</xsd:simpleType>
+	<xsd:element id="NBANDS" name="NBANDS" type="t_NBANDS">
+		<xsd:annotation>
+			<xsd:documentation source="NBANDS"/>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType id="t_NBANDS" name="t_NBANDS">
+		<xsd:restriction base="xsd:nonNegativeInteger"/>
+	</xsd:simpleType>
+</xsd:schema>

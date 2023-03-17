@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright (C) 2010 Brockmann Consult GmbH (info@brockmann-consult.de)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<html>
+<head>
+    <title>Biophysical Processor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<table class="header">
+    <tr class="header">
+        <td class="header">Biophysical Processor Overview</td>
+        <td class="header" align="right"><img src="images/snap_header.jpg" border=0></td>
+    </tr>
+</table>
+
+
+<p>
+    The Biophysical Processor computes Level-2B Biophysical products from Sentinel-2 or LANDSAT 8 reflectances.
+    From top-of-canopy normalized reflectance data, it derives a set of biophysical variables, namely :
+    <ul>
+        <li>LAI : Leaf Area Index</li>
+        <li>FAPAR : Fraction of Absorbed Photosynthetically Active Radiation</li>
+        <li>FCOVER : Fraction of vegetation cover</li>
+        <li>Cab : Chlorophyll content in the leaf</li>
+        <li>CW : Canopy Water Content</li>
+    </ul>
+
+</p>
+<p>
+    The S2 SNAP Toolbox  biophysical variable retrieval algorithm is based on specific radiative transfer models
+    associated with strong assumptions, particularly regarding canopy architecture (turbid medium model).
+    All the variables derived from such algorithms should be seen as effective, i.e. the variables that would correspond
+    to the measured satellite signal reflected by a canopy verifying all the assumptions made through the radiative transfer models.
+    Depending on the variable, this may lead to differences with ground values that may be accessed from field measurements.
+
+</p>
+
+<p>
+    Furthermore, the algorithm is "generic", i.e. it should apply to any type of vegetation with reasonable performances.
+    However, to better match the specificities of given canopies, either simple correction could be calibrated, or more
+    specific algorithm could be developed.
+
+</p>
+<p>
+    One strong assumption embedded in any single pixel retrieval algorithm as this one,
+    is that the pixel targeted belongs to a landscape patch presenting enough homogeneity
+    (at the pixel scale) preventing unexpected loss or gain of radiation fluxes.
+    For forests with large crowns, or any pixel showing strong heterogeneity such as pixels
+    at the intersection between two different vegetation patches, results may be uncertain.
+    This applied also to pixels where the neighbouring ones are very different.
+    Specific algorithms should be developed to detect such situations and possibly propose
+    alternative retrieval methods.
+</p>
+
+<p><a href="BiophysicalOpProcessorDescription.html">Sentinel-2 Processor Documentation</a></p>
+<p><a href="BiophysicalOpProcessorDescription10m.html">Sentinel-2 10m Processor Documentation</a></p>
+<p><a href="BiophysicalOpProcessorDescriptionLandsat.html">LANDSAT 8 Processor Documentation</a></p>
+
+<p><a href="BiophysicalOpAlgorithmSpecification.html">Algorithm Specification</a></p>
+
+<br>
+<hr>
+</body>
+</html>
