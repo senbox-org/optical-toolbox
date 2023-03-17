@@ -1,0 +1,79 @@
+<html>
+<head>
+    <title>Sentinel Toolbox Help - Import L2 Products</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+
+<table class="header">
+    <tr class="header">
+        <td class="header" align="left" width="50%">
+            <a href="index.html">
+                <img src="../images/seadas_header.png" border="0">
+            </a>
+        </td>
+        <td class="header" align="right" width="50%">
+            <a href="index.html">
+                <img src="../images/snap_header.jpg" border="0">
+            </a>
+        </td>
+    </tr>
+</table>
+
+<h2 class="center">NASA Level-2 Product Reader</h2>
+
+
+
+
+<h3>Ocean Level-2 Data Products</h3>
+<p>The L2 data product reader supports data from a number of missions, processed via the NASA l2gen processing code.</p>
+<ul>
+    <li>CZCS</li>
+    <li>GOCI</li>
+    <li>HawkEye</li>
+    <li>HICO</li>
+    <li>MERIS</li>
+    <li>MODIS</li>
+    <li>MOS</li>
+    <li>OCM</li>
+    <li>OCTS</li>
+    <li>OSMI</li>
+    <li>PACE</li>
+    <li>SeaWiFS</li>
+    <li>VIIRS</li>
+</ul>
+
+
+<p>
+    Each Level-2 product is generated from a corresponding Level-1A product.The main data contents of the product are
+    the geophysical values for each pixel,derived from the Level-1A raw radiance counts by applying the sensor
+    calibration, atmospheric corrections, and bio-optical algorithms. Each Level-2 product corresponds exactly in
+    geographical coverage (scan-line and pixel extent) to that of its parent Level-1A product and is stored in one
+    physical HDFfile.
+
+    The standard Ocean Color product contains 12 geophysical values derived for each pixel: six water-leaving radiances
+    for bands 1 to 6, the chlorophyll a concentration, the diffuse attenuation coefficient at band 3, the epsilon value
+    for the aerosol correction of bands 7 and 8, the angstrom coefficient for bands 4 and 8, and the aerosol optical
+    thickness at band 8. The standard SST product contains 11-micron and 4-micron (nighttime only) SST for each pixel.
+    In addition, 32 flags are associated with each pixel indicating if any algorithm failures or warning conditions
+    occurred for that pixel.
+</p>
+
+<p>
+    This reader adds masks for each of the level2 flags.  Additionally this reader orients the data such that north is at
+    the top of the screen display and west is at the left of the screen display.
+</p>
+
+Format Specifications
+<ul>
+    <li>Ocean Level-2 Data Product Document
+        <ul>https://oceancolor.gsfc.nasa.gov/DOCS/Ocean_Level-2_Data_Products.pdf</ul>
+    </li>
+</ul>
+
+
+</body>
+</html>

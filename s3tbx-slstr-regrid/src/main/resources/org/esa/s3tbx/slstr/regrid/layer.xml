@@ -1,0 +1,38 @@
+<filesystem>
+
+    <folder name="Actions">
+        <folder name="Operators">
+            <file name="org-esa-s3tbx-slstr-regrid-AatsrUngriddingOpAction.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
+                <attr name="displayName" stringvalue="AATSR Ungridding"/>
+                <attr name="operatorName" stringvalue="AATSR.Ungrid"/>
+                <attr name="dialogTitle" stringvalue="AATSR Ungridding"/>
+                <attr name="helpId" stringvalue="aatsrRegridding"/>
+                <attr name="targetProductNameSuffix" stringvalue="_ungridded"/>
+                <attr name="ShortDescription" stringvalue="Ungrids (A)ATSR L1B products"/>
+            </file>
+        </folder>
+    </folder>
+
+    <folder name="Menu">
+        <folder name="Optical">
+            <folder name="Geometric">
+                <file name="org-esa-s3tbx-slstr-regrid-AatsrUngriddingOpAction.shadow">
+                    <attr name="originalFile"
+                          stringvalue="Actions/Operators/org-esa-s3tbx-slstr-regrid-AatsrUngriddingOpAction.instance"/>
+                    <attr name="position" intvalue="5"/>
+                </file>
+            </folder>
+        </folder>
+    </folder>
+
+    <folder name="Services">
+        <folder name="javahelp">
+            <file name="org-esa-s3tbx-slstr-regrid-AatsrUngriddingOp-helpset.xml" url="helpset.xml">
+                <attr name="position" intvalue="4601"/>
+            </file>
+        </folder>
+    </folder>
+
+</filesystem>

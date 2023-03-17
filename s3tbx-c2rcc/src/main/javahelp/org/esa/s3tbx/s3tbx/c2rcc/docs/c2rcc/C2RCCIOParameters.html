@@ -1,0 +1,84 @@
+<!--
+  ~ Copyright (C) 2010 Brockmann Consult GmbH (info@brockmann-consult.de)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<html>
+<head>
+    <title>SNAP Data Processors - C2RCC I/O Parameters</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+<table class="header">
+    <tr class="header">
+        <td class="header">C2RCC I/O Parameters</td>
+        <td class="header" align="right"><a
+                href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html"><img
+                src="../images/snap_header.jpg"
+                border=0></a>
+        </td>
+    </tr>
+</table>
+
+<h3>I/O Parameters</h3>
+
+<p>The I/O parameters define which sources data is loaded and where the result is written to. These parameters are
+    common to all C2RCC operators,
+    independent of the specific sensors</p>
+
+<p align="center"><img src="images/C2RCC_IO_Params.png"/><br>
+    I/O Parameters of the C2RCC processor for MODIS</p>
+
+<h4>Source Products</h4>
+
+<b>Sensor specific source product</b>
+<p>The first parameter is the sensor specific source product. A validation is performed if the specified product is
+    compatible with the current
+    processor.</p>
+<p>The required MODIS L1C data is not a standard format. It can be generated with l2gen of SeaDAS. See <a
+        href="Create_MODIS_L1C.html">Create MODIS L1C</a></p>
+
+<b>Ancillary data products</b>
+<p>The four ancillary products, two for ozone and two for air pressure are optional. Here either all or none of the
+    products must be given. They can
+    be downloaded from the following web page.
+    <object classid="java:org.netbeans.modules.javahelp.BrowserDisplayer">
+        <param name="content" value="https://oceandata.sci.gsfc.nasa.gov/Ancillary/Meteorological">
+        <param name="text" value="https://oceandata.sci.gsfc.nasa.gov/Ancillary/Meteorological">
+        <param name="textFontSize" value="bigger">
+    </object>
+</p>
+<p>
+    More information about the auxiliary data and its handling is provided on the <a href="AuxDataDirectory.html">Auxiliary
+    Data Directory</a> page.
+</p>
+<h4>Target Product</h4>
+
+<b>Name</b>
+<p>Used to specify the name of the target product.</p>
+
+<b>Save as</b>
+<p>Used to specify whether the target product should be saved to the file system. The combo-box presents a list of
+    available file formats.
+    The text field or the button next to it allow to specify a target directory.</p>
+
+<b>Open in SNAP</b>
+<p>Used to specify whether the target product should be opened in SNAP. When the
+    target product is not saved, it is opened in SNAP automatically.</p>
+
+<hr>
+</body>
+</html>

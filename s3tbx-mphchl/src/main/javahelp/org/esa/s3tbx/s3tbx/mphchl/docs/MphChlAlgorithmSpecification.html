@@ -1,0 +1,131 @@
+<<!--
+  ~ Copyright (C) 2014 Brockmann Consult GmbH (info@brockmann-consult.de)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<html>
+<head>
+    <title>SNAP Data Processors - OLCI MPH/CHL Processor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<table class="header">
+    <tr class="header">
+        <td class="header">OLCI MPH/CHL Processor - Algorithm Specification</td>
+        <td class="header" align="right"><img src="images/snap_header.jpg" border=0></td>
+    </tr>
+</table>
+
+<p>
+    The Maximum Peak Height (MPH) algorithm exploits bottom-of-Rayleigh reflectance peaks in the red and near-infrared bands
+    above a baseline, which is drawn between the bands at 664nm, and 885nm (Matthews et al., 2012). This baseline technique is
+    basically the same used in the Fluorescence Line Height (FLH) and Maximum Chlorophyll Index (MCI) algorithms (Gower
+    et al., 1999).
+</p>
+
+<p>
+    Different reflectance peak positions occur mostly as a consequence of pigment concentration levels, and these peaks'
+    heights depend on specific optical drivers.
+</p>
+
+<p align="center"><img src="images/reflectance_peaks.png"></p>
+
+<p>
+    For the most common water types, MPH selects a suitable baseline
+    using a sequence of predefined conditions and thresholds.
+</p>
+
+<p align="center"><img src="images/algorithm_workflow.png"></p>
+
+<br>
+
+Note that this diagram shows the
+MERIS BRR bands with their original names (brr_*). They were changed to 'rBRR_*' in the SNAP Rayleigh Correction
+processor, and the mapping from the required MERIS to OLCI bands is as follows:
+
+<br>
+
+<table>
+    <br>
+    <tr class="header">
+        <td>Wavelength (nm)</td>
+        <td>MERIS BRR band</td>
+        <td>OLCI BRR band</td>
+    </tr>
+    <tr>
+        <td>619</td>
+        <td>brr_6 (rBRR_06)</td>
+        <td>rBRR_07</td>
+    </tr>
+    <tr>
+        <td>664</td>
+        <td>brr_7 (rBRR_07)</td>
+        <td>rBRR_08</td>
+    </tr>
+    <tr>
+        <td>681</td>
+        <td>brr_8 (rBRR_08)</td>
+        <td>rBRR_10</td>
+    </tr>
+    <tr>
+        <td>709</td>
+        <td>brr_9 (rBRR_09)</td>
+        <td>rBRR_11</td>
+    </tr>
+    <tr>
+        <td>753</td>
+        <td>brr_10 (rBRR_10)</td>
+        <td>rBRR_12</td>
+    </tr>
+    <tr>
+        <td>885</td>
+        <td>brr_14 (rBRR_14)</td>
+        <td>rBRR_18</td>
+    </tr>
+</table>
+
+<br>
+
+<h2>References</h2>
+
+<ul>
+    <li><b>Matthews, M. W., S. Bernard and L. Robertson:</b><br>
+        <p>
+            <object classid="java:org.netbeans.modules.javahelp.BrowserDisplayer">
+                <param name="content" value="https://doi.org/10.1016/j.rse.2012.05.032">
+                <param name="text" value="<html>An Algorithm for Detecting Trophic Status (chlorophyll-A),
+    Cyanobacterial-Dominance, Surface Scums and Floating Vegetation in Inland and Coastal Waters</html>">
+            </object>
+        </p>
+    </li>
+
+    <li><b>Matthews, M. W. and D. Odermatt:</b><br>
+        <p>Improved algorithm for routine monitoring of cyanobacteria and eutrophication in inland and near-coastal waters <br>
+            (https://doi.org/10.1016/j.rse.2014.10.010)
+        </p>
+    </li>
+
+    <li><b>Gower, J.F.R., R. Doerffer, and G.A. Borstad:</b><br>
+        <p>
+            <object classid="java:org.netbeans.modules.javahelp.BrowserDisplayer">
+                <param name="content" value="http://dx.doi.org/10.1080/014311699212470">
+                <param name="text"
+                       value="<html>Interpretation of the 685nm peak in water-leaving radiance spectra in terms of fluorescence, absorption and scattering, and its observation by MERIS</html>">
+            </object>
+        </p>
+    </li>
+
+</ul>
+</body>

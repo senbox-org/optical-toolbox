@@ -1,0 +1,117 @@
+{
+  "id": "LT82270322013068LGN01",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 7381,
+    "sceneHeight": 7711,
+    "startTime": "09-MAR-2013 13:39:28.793000",
+    "endTime": "09-MAR-2013 13:39:28.793000",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 3183.0,
+          "y": 4145.0,
+          "lat": 40.25495765471336,
+          "lon": -44.86036212856048
+        },
+        {
+          "x": 5479.0,
+          "y": 5003.0,
+          "lat": 40.019271230509325,
+          "lon": -44.05368611416177
+        }
+      ],
+      "reverseAccuracy": 3.019522409886122E-10
+    },
+    "bands": [
+      {
+        "name": "thermal_infrared_(tirs)_1",
+        "description": "Thermal Infrared Sensor (TIRS) 1",
+        "bandWidth": 7381,
+        "bandHeight": 7711,
+        "geophysicalUnit": "W/(m^2*sr*µm)",
+        "noDataValue": "0.1",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "10895.0",
+        "spectralBandwidth": "590.0",
+        "expectedPixels": [
+          {
+            "x": 385,
+            "y": 1373,
+            "value": "NaN"
+          },
+          {
+            "x": 5056,
+            "y": 6558,
+            "value": 5.6122947
+          }
+        ]
+      },
+      {
+        "name": "thermal_infrared_(tirs)_2",
+        "description": "TIRS 2",
+        "bandWidth": 7381,
+        "bandHeight": 7711,
+        "geophysicalUnit": "W/(m^2*sr*µm)",
+        "noDataValue": "0.1",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "12005.0",
+        "spectralBandwidth": "1010.0",
+        "expectedPixels": [
+          {
+            "x": 2147,
+            "y": 1980,
+            "value": 4.7330146
+          },
+          {
+            "x": 4506,
+            "y": 2816,
+            "value": 4.3236194
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "L1_METADATA_FILE/RADIOMETRIC_RESCALING/RADIANCE_ADD_BAND_10",
+        "value": "0.1"
+      },
+      {
+        "path": "L1_METADATA_FILE/PRODUCT_METADATA/CORNER_LL_PROJECTION_X_PRODUCT",
+        "value": "416400.0"
+      },
+      {
+        "path": "L1_METADATA_FILE/PROJECTION_PARAMETERS/ORIENTATION",
+        "value": "NORTH_UP"
+      },
+      {
+        "path": "L1_METADATA_FILE/METADATA_FILE_INFO/LANDSAT_SCENE_ID",
+        "value": "LT82270322013068LGN01"
+      },
+      {
+        "path": "L1_METADATA_FILE/MIN_MAX_PIXEL_VALUE/QUANTIZE_CAL_MAX_BAND_11",
+        "value": "65535"
+      },
+      {
+        "path": "L1_METADATA_FILE/PRODUCT_METADATA/CORNER_LR_LAT_PRODUCT",
+        "value": "39.28031"
+      },
+      {
+        "path": "L1_METADATA_FILE/METADATA_FILE_INFO/FILE_DATE",
+        "value": "2013-06-24T18:04:20Z"
+      },
+      {
+        "path": "L1_METADATA_FILE/METADATA_FILE_INFO/LANDSAT_SCENE_ID",
+        "value": "LT82270322013068LGN01"
+      },
+      {
+        "path": "L1_METADATA_FILE/MIN_MAX_PIXEL_VALUE/QUANTIZE_CAL_MAX_BAND_11",
+        "value": "65535"
+      },
+      {
+        "path": "L1_METADATA_FILE/MIN_MAX_RADIANCE/RADIANCE_MAXIMUM_BAND_11",
+        "value": "22.0018"
+      }
+    ]
+  }
+}
