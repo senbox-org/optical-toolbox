@@ -1,0 +1,3 @@
+eu.esa.opt.dataio.avhrr.AvhrrReaderPlugIn
+eu.esa.opt.dataio.avhrr.noaa.pod.PodAvhrrReaderPlugIn
+eu.esa.opt.dataio.avhrr.metop.MetopReaderPlugIn

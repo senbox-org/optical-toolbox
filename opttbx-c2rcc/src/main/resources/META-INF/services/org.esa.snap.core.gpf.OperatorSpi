@@ -1,0 +1,10 @@
+eu.esa.opt.c2rcc.C2rccOperator$Spi
+eu.esa.opt.c2rcc.meris.C2rccMerisOperator$Spi
+eu.esa.opt.c2rcc.meris4.C2rccMeris4Operator$Spi
+eu.esa.opt.c2rcc.modis.C2rccModisOperator$Spi
+eu.esa.opt.c2rcc.seawifs.C2rccSeaWiFSOperator$Spi
+eu.esa.opt.c2rcc.olci.C2rccOlciOperator$Spi
+eu.esa.opt.c2rcc.msi.C2rccMsiOperator$Spi
+eu.esa.opt.c2rcc.landsat.C2rccLandsat7Operator$Spi
+eu.esa.opt.c2rcc.landsat.C2rccLandsat8Operator$Spi
+eu.esa.opt.c2rcc.viirs.C2rccViirsOperator$Spi

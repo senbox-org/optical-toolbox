@@ -1,0 +1,6 @@
+eu.esa.opt.dataio.landsat.geotiff.LandsatGeotiffReaderPlugin
+eu.esa.opt.dataio.landsat.geotiff.LandsatGeotiffColl2L2ReaderPlugin
+eu.esa.opt.dataio.landsat.geotiff.Landsat8Geotiff15mReaderPlugin
+eu.esa.opt.dataio.landsat.geotiff.Landsat8Geotiff30mReaderPlugin
+eu.esa.opt.dataio.landsat.LandsatTMReaderPlugIn
+eu.esa.opt.dataio.landsat.geotiff.level2.LandsatL2GeotiffReaderPlugin

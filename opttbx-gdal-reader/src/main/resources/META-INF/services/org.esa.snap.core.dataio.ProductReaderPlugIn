@@ -1,0 +1,17 @@
+eu.esa.opt.dataio.gdal.reader.plugins.BTDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.ERMapperDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.GS7BGDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.GSBGDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.GTXDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.HFADriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.ILWISDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.KRODriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.MFFDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.NITFDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.PCIDSKDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.RMFDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.RSTDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.SAGADriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.SGIDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.GTiffDriverProductReaderPlugIn
+eu.esa.opt.dataio.gdal.reader.plugins.JP2OpenJPEGDriverProductReaderPlugIn

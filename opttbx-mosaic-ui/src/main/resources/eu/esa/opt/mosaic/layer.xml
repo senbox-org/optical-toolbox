@@ -1,0 +1,10 @@
+<filesystem>
+
+    <folder name="OperatorUIs">
+        <file name="eu.esa.opt.mosaic">
+            <attr name="operatorUIClass" stringvalue="eu.esa.opt.mosaic.S2tbxMosaicUI"/>
+            <attr name="operatorName" stringvalue="Multi-size Mosaic"/>
+        </file>
+    </folder>
+
+</filesystem>

@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>optical-toolbox</artifactId>
+        <groupId>eu.esa.opt</groupId>
+        <version>10.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>opttbx-kit</artifactId>
+    <packaging>nbm</packaging>
+
+    <name>Optical Toolbox Kit Module</name>
+    <description>
+        The Optical Toolbox is a SNAP extension dedicated to the exploitation of optical high and medium resolution sensors
+        as they are on board on Sentinel-2 and Sentinel-3.
+    </description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.netbeans.utilities</groupId>
+                <artifactId>nbm-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>nbm</goal>
+                            <goal>cluster</goal>
+                            <goal>autoupdate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <!--
+             Make sure the list of dependencies reflects the wanted contents of the S2TBX.
+             Use same order as in the <modules> tag of the parent POM.
+        -->
+
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-api-annotations-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-util</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-ui</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-binding</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-gpf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-modules</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-javahelp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-gpf-ui</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-jai</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-glayer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-rcp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-engine-utilities</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-cache</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-cache-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-s2msi-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-s2msi-reader-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-preferences-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-jp2-writer</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-commons</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-spot-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-spot6-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-s2msi-mci</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-s2msi-mci-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-rapideye-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-deimos-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-sta-adapters-help</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-radiometric-indices</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-radiometric-indices-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-biophysical</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-reflectance-to-radiance</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-reflectance-to-radiance-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-gdal-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-gdal-writer</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-gdal-writer-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-grm</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-grm-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-forest-cover-change</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-forest-cover-change-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-mosaic-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-mosaic</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-land-cover</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-muscate-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-pleiades-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-s2msi-resampler</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-kompsat2-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-worldview2-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-spectral-angle-mapper</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-spectral-angle-mapper-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-coregistration</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-coregistration-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-ikonos-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-alosAV2-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-alosPRI-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-worldview2esa-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-aatsr-sst</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-aatsr-sst-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-alos-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-arc</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-arc-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-atsr-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-avhrr-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-c2rcc</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-dos</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-fub-wew</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-fub-wew-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-flhmci</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-flhmci-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-fu-operator</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-landsat-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-meris-cloud</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-meris-brr</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-meris-sdr</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-meris-l2auxdata</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-meris-radiometry</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-meris-ops</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-meris-radiometry-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-meris-smac</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-merisl3-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-modis-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-mphchl</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-rad2refl</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-rad2refl-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-owt-classification</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-olci-anomaly-flagging</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-olci-o2aharmonisation</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-olci-harmonisation</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-olci-radiometry</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-probav-reader</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-ppe-operator</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-sentinel3-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-sentinel3-reader-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-slstr-pdu-stitching</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-slstr-pdu-stitching-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-slstr-regrid</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-spot-vgt-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap.seadas</groupId>
+            <artifactId>opttbx-seadas-reader</artifactId>
+            <version>${seadas.reader.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap.seadas</groupId>
+            <artifactId>opttbx-seadas-reader-ui</artifactId>
+            <version>${seadas.reader.ui.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

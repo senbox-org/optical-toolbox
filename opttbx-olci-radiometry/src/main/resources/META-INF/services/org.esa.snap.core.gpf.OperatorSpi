@@ -1,0 +1,3 @@
+eu.esa.opt.olci.radiometry.smilecorr.SmileCorrectionOp$Spi
+eu.esa.opt.olci.radiometry.gasabsorption.GaseousAbsorptionOp$Spi
+eu.esa.opt.olci.radiometry.rayleigh.RayleighCorrectionOp$Spi

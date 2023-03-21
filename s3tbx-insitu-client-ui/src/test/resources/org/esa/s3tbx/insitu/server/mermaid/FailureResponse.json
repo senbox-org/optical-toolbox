@@ -1,7 +1,0 @@
-{
-  "response": "NOK",
-  "nb_obs": 0,
-  "reasons": [
-    "Non-existent vars in URL for: lon_min & stop_date"
-  ]
-}

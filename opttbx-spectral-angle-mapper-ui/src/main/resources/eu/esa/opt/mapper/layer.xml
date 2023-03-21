@@ -1,0 +1,38 @@
+<filesystem>
+
+    <folder name="Actions">
+        <folder name="Operators">
+            <file name="eu-esa-opt-mapper-Action.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="eu.esa.opt.mapper.SpectralAngleMapperAction.create"/>
+                <attr name="displayName" stringvalue="Spectral Angle Mapper Processor"/>
+                <attr name="dialogTitle" stringvalue="Spectral Angle Mapper Processor"/>
+                <attr name="operatorName" stringvalue="SpectralAngleMapperOp"/>
+                <attr name="targetProductNameSuffix" stringvalue="_sam"/>
+                <attr name="helpId" stringvalue="SAMProcessor"/>
+            </file>
+        </folder>
+    </folder>
+
+    <folder name="Menu">
+        <folder name="Raster">
+            <folder name="Classification">
+                <attr name="position" intvalue="450"/>
+                <folder name="Supervised Classification">
+                    <attr name="position" intvalue="800"/>
+                    <file name="eu-esa-opt-mapper-Action.shadow">
+                        <attr name="originalFile"
+                              stringvalue="Actions/Operators/eu-esa-opt-mapper-Action.instance"/>
+                        <attr name="position" intvalue="10003"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+    <folder name="OperatorUIs">
+        <file name="eu.esa.opt.mapper.SpectralAngleMapperOp">
+            <attr name="operatorUIClass" stringvalue="eu.esa.opt.mapper.SpectralAngleMapperUI"/>
+            <attr name="operatorName" stringvalue="SpectralAngleMapperOp"/>
+        </file>
+    </folder>
+</filesystem>

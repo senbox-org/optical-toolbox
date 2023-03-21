@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+AutoUpdate-Show-In-Client: true
+AutoUpdate-Essential-Module: false
+OpenIDE-Module-Display-Category: SNAP Toolboxes
+OpenIDE-Module-Specification-Version: ${project.nbmSpecVersion}
+OpenIDE-Module-Implementation-Version: ${project.nbmImplVersion}
+OpenIDE-Module-Layer: eu/esa/opt/layer.xml
+OpenIDE-Module-Long-Description: The Optical Toolbox is a SNAP extension dedicated to the exploitation of optical high and medium resolution sensors
+ as they are on board on Sentinel-2 and Sentinel-3.
+ <p>The changes for this version can be viewed in our
+ <a href="https://senbox.atlassian.net/issues/?filter=-4&jql=project%20%3D%20SIITBX%20AND%20fixVersion%20%3D%20${opttbx.majorVersion}.${opttbx.minorVersion}.${opttbx.incrementalVersion}">issue tracker</a></p>
+ <p><b>Publication date:</b> ${project.buildDate}<br/>
+ <b>Vendor:</b> CS-Romania and Brockmann-Consult <br/>
+ <b>Copyright:</b> (C) 2019-2023 by CS-Romania, Brockmann Consult GmbH<br/>
+ <b>License:</b> http://www.gnu.org/licenses/gpl.html</p>
