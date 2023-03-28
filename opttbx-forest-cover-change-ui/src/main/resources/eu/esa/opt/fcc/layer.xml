@@ -33,9 +33,6 @@
                 </file>
             </folder>
         </folder>
-    </folder>
-
-    <folder name="Menu">
         <folder name="Raster">
             <file name="eu-esa-opt-extractor-Action.shadow">
                 <attr name="originalFile" stringvalue="Actions/Operators/eu-esa-opt-extractor-Action.instance"/>
@@ -43,5 +40,6 @@
             </file>
         </folder>
     </folder>
+
 
 </filesystem>
