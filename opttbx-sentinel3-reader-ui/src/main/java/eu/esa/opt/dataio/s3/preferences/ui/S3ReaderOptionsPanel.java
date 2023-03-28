@@ -53,35 +53,35 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
         slstrL1BPixelGeocodingsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL1BPixelGeocodingsCheckBox,
                                    NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3TBXReaderOptionsPanel.slstrL1BPixelGeocodingsCheckBox.text")); // NOI18N
+                                                       "S3ReaderOptionsPanel.slstrL1BPixelGeocodingsCheckBox.text")); // NOI18N
         slstrL1BOrphanPixelsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL1BOrphanPixelsCheckBox,
                                    NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3TBXReaderOptionsPanel.slstrL1BOrphanPixelsCheckBox.text")); // NOI18N
+                                                       "S3ReaderOptionsPanel.slstrL1BOrphanPixelsCheckBox.text")); // NOI18N
         slstrL1BCalibrationCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL1BCalibrationCheckBox,
                                    NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3TBXReaderOptionsPanel.slstrL1BCalibrationFactorCheckBox.text")); // NOI18N
+                                                       "S3ReaderOptionsPanel.slstrL1BCalibrationFactorCheckBox.text")); // NOI18N
         slstrL1BS3MPCRecommendationCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL1BS3MPCRecommendationCheckBox,
                                    NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3TBXReaderOptionsPanel.slstrL1BS3MPCRecommendationCheckBox.text")); // NOI18N
+                                                       "S3ReaderOptionsPanel.slstrL1BS3MPCRecommendationCheckBox.text")); // NOI18N
         slstrL2SSTPixelGeocodingsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL2SSTPixelGeocodingsCheckBox,
                                    NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3TBXReaderOptionsPanel.slstrL2SSTPixelGeocodingsCheckBox.text")); // NOI18N
+                                                       "S3ReaderOptionsPanel.slstrL2SSTPixelGeocodingsCheckBox.text")); // NOI18N
         olciPixelGeocodingsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(olciPixelGeocodingsCheckBox,
                                    NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3TBXReaderOptionsPanel.olciPixelGeocodingsCheckBox.text")); // NOI18N
+                                                       "S3ReaderOptionsPanel.olciPixelGeocodingsCheckBox.text")); // NOI18N
         olciL1CalibrationCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(olciL1CalibrationCheckBox,
                                    NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3TBXReaderOptionsPanel.olciL1CalibrationCheckBox.text")); // NOI18N
+                                                       "S3ReaderOptionsPanel.olciL1CalibrationCheckBox.text")); // NOI18N
         merisPixelGeocodingsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(merisPixelGeocodingsCheckBox,
                                    NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3TBXReaderOptionsPanel.merisPixelGeocodingsCheckBox.text")); // NOI18N
+                                                       "S3ReaderOptionsPanel.merisPixelGeocodingsCheckBox.text")); // NOI18N
 
         JPanel slstrLabel = PreferenceUtils.createTitleLabel("SLSTR");
         JPanel olciLabel = PreferenceUtils.createTitleLabel("OLCI");
