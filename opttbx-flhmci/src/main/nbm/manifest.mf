@@ -5,7 +5,7 @@ OpenIDE-Module-Java-Dependencies: Java > 1.8
 OpenIDE-Module-Display-Category: SNAP Toolboxes
 OpenIDE-Module-Specification-Version: ${project.nbmSpecVersion}
 OpenIDE-Module-Implementation-Version: ${project.nbmImplVersion}
-OpenIDE-Module-Layer: eu/esa/optprocessor/flh_mci/layer.xml
+OpenIDE-Module-Layer: eu/esa/opt/processor/flh_mci/layer.xml
 OpenIDE-Module-Long-Description: <p>The MERIS FLH/MCI Processor calcul
  ates the Fluorescence Line Height and the Maximum Chlorophyll Index b
  y exploiting the height of a measurement over a specific baseline.</p

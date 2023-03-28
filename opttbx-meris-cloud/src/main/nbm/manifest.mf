@@ -5,7 +5,7 @@ OpenIDE-Module-Java-Dependencies: Java > 1.8
 OpenIDE-Module-Display-Category: SNAP Toolboxes
 OpenIDE-Module-Specification-Version: ${project.nbmSpecVersion}
 OpenIDE-Module-Implementation-Version: ${project.nbmImplVersion}
-OpenIDE-Module-Layer: eu/esa/optoperator/cloud/layer.xml
+OpenIDE-Module-Layer: eu/esa/opt/operator/cloud/layer.xml
 OpenIDE-Module-Long-Description: <p>The MERIS Cloud Probability Proces
  sor calculates a cloud probability for MERIS L1b pixels.</p><p><b>Ven
  dor:</b> Brockmann Consult GmbH</p><p><b>Contact address:</b> Max-Pla
