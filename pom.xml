@@ -37,7 +37,7 @@
         <!-- First opttbx-kit to be able to detect missing dependencies-->
         <module>opttbx-kit</module>
 
-        <!-- Former S3TBX modules-->
+        <!-- Former S2TBX modules-->
 
         <module>opttbx-preferences-ui</module>
         <module>opttbx-cache</module>
