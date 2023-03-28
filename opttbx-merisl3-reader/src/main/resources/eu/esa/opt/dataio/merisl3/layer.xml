@@ -36,7 +36,7 @@
 
     <folder name="Services">
         <folder name="JavaHelp">
-            <file name="eu-esa-opt-s3tbx-merisl3-reader-helpset.xml" url="helpset.xml">
+            <file name="eu-esa-opt-opttbx/-merisl3-reader-helpset.xml" url="helpset.xml">
                 <attr name="position" intvalue="4600"/>
             </file>
         </folder>

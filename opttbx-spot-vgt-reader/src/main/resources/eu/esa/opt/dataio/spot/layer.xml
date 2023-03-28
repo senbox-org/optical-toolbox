@@ -28,7 +28,7 @@
 
     <folder name="Services">
         <folder name="JavaHelp">
-            <file name="eu-esa-opt-s3tbx-spot-vgt-reader-helpset.xml" url="helpset.xml">
+            <file name="eu-esa-opt-opttbx/-spot-vgt-reader-helpset.xml" url="helpset.xml">
                 <attr name="position" intvalue="4600"/>
             </file>
         </folder>

@@ -63,7 +63,7 @@
 
     <folder name="Services">
         <folder name="JavaHelp">
-            <file name="eu-esa-opt-s3tbx-alos-reader-helpset.xml" url="helpset.xml">
+            <file name="eu-esa-opt-opttbx/-alos-reader-helpset.xml" url="helpset.xml">
                 <attr name="position" intvalue="4600"/>
             </file>
         </folder>
