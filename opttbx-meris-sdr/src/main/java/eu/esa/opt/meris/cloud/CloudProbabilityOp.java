@@ -20,7 +20,12 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.SubProgressMonitor;
 import eu.esa.opt.meris.AlbedoUtils;
 import eu.esa.opt.meris.MerisBasisOp;
-import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.FlagCoding;
+import org.esa.snap.core.datamodel.Mask;
+import org.esa.snap.core.datamodel.MetadataAttribute;
+import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
@@ -35,11 +40,12 @@ import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.math.MathUtils;
 import org.esa.snap.dataio.envisat.EnvisatConstants;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,11 +57,6 @@ import java.util.Properties;
  */
 @OperatorMetadata(alias = "Meris.CloudProbability", internal = true)
 public class CloudProbabilityOp extends MerisBasisOp {
-
-    public static final String CLOUD_AUXDATA_DIR_PROPERTY = "cloud.auxdata.dir";
-
-    public static final String CONFIG_FILE_NAME = "config_file_name";
-    public static final String INVALID_EXPRESSION = "invalid_expression";
 
     public static final String CLOUD_PROP_BAND = "cloud_prob";
     public static final String CLOUD_FLAG_BAND = "cloud_flag";
@@ -182,23 +183,14 @@ public class CloudProbabilityOp extends MerisBasisOp {
 	}
 
     private void loadAuxdata(ProgressMonitor pm) throws IOException {
-//        String auxdataSrcPath = "auxdata/cloudprob";
-//        final String auxdataDestPath = ".beam/" + AlbedomapConstants.SYMBOLIC_NAME +
-//                "/" + auxdataSrcPath;
-//        auxdataTargetDir = new File(SystemUtils.getUserHomeDir(), auxdataDestPath);
-//        URL sourceUrl = ResourceInstaller.getSourceUrl(this.getClass());
-//
-//        ResourceInstaller resourceInstaller = new ResourceInstaller(sourceUrl, auxdataSrcPath, auxdataTargetDir);
-//        resourceInstaller.install(".*", new NullProgressMonitor());
 
-        // todo: clarify if this is the right way in Snap/S3tbx:
         final Path auxdataDirPath = SystemUtils.getAuxDataPath().resolve("cloudprob").toAbsolutePath();
         File auxdataTargetDir = auxdataDirPath.toFile();
         final Path sourcePath = ResourceInstaller.findModuleCodeBasePath(getClass()).resolve("auxdata");
         new ResourceInstaller(sourcePath, auxdataDirPath).install(".*", new SubProgressMonitor(pm, 100));
 
         final File configPropFile = new File(auxdataTargetDir, configFile);
-        final InputStream propertiesStream = new FileInputStream(configPropFile);
+        final InputStream propertiesStream = Files.newInputStream(configPropFile.toPath());
         Properties configProperties = new Properties();
         configProperties.load(propertiesStream);
 
@@ -307,8 +299,8 @@ public class CloudProbabilityOp extends MerisBasisOp {
 			//targets
             Tile cloudTile = targetTiles.get(cloudBand);
             Tile flagTile = targetTiles.get(cloudFlagBand);
-            CloudAlgorithm cloneLandAlgo = null;
-            CloudAlgorithm cloneOceanAlgo = null;
+            CloudAlgorithm cloneLandAlgo;
+            CloudAlgorithm cloneOceanAlgo;
             try {
                 cloneLandAlgo = landAlgo.clone();
                 cloneOceanAlgo = oceanAlgo.clone();

@@ -102,11 +102,11 @@ public class SdrOp extends MerisBasisOp {
         reflectanceBands = new Band[sdrBandNo.length];
         sdrBands = new Band[sdrBandNo.length];
         for (int i = 0; i < sdrBandNo.length; i++) {
-        	reflectanceBands[i] = brrProduct.getBand("brr_" + Integer.toString(sdrBandNo[i]));
+        	reflectanceBands[i] = brrProduct.getBand(String.format("brr_%d", sdrBandNo[i]));
         	
-            final Band band = l1bProduct.getBand("radiance_" + Integer.toString(sdrBandNo[i]));
+            final Band band = l1bProduct.getBand(String.format("radiance_%d", sdrBandNo[i]));
 
-            final Band sdrOutputBand = targetProduct.addBand(SDR_BAND_NAME_PREFIX + Integer.toString(sdrBandNo[i]),
+            final Band sdrOutputBand = targetProduct.addBand(String.format("%s%d", SDR_BAND_NAME_PREFIX, sdrBandNo[i]),
                                                 ProductData.TYPE_INT16);
             sdrOutputBand.setDescription(
                     "Surface directional reflectance at " + band.getSpectralWavelength() + " nm");
@@ -226,17 +226,6 @@ public class SdrOp extends MerisBasisOp {
     }
 
     private void loadNeuralNet(ProgressMonitor pm) throws IOException, JnnException {
-        // OLD Beam:
-//        String auxdataSrcPath = "auxdata/sdr";
-//        final String auxdataDestPath = ".beam/" +
-//                AlbedomapConstants.SYMBOLIC_NAME + "/" + auxdataSrcPath;
-//        File auxdataTargetDir = new File(SystemUtils.getUserHomeDir(), auxdataDestPath);
-//        URL sourceUrl = ResourceInstaller.getSourceUrl(this.getClass());
-//
-//        ResourceInstaller resourceInstaller = new ResourceInstaller(sourceUrl, auxdataSrcPath, auxdataTargetDir);
-//        resourceInstaller.install(".*", new NullProgressMonitor());
-
-        // todo: clarify if this is the right way in Snap/S3tbx:
         final Path auxdataDirPath = SystemUtils.getAuxDataPath().resolve("ctp").toAbsolutePath();
         File auxdataTargetDir = auxdataDirPath.toFile();
         Path sourcePath = ResourceInstaller.findModuleCodeBasePath(getClass()).resolve("auxdata");
