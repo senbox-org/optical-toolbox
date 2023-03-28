@@ -10,7 +10,7 @@ There you can find tutorials, developer guides, a user forum and other interesti
 Building the OptTbx from the source
 -----------------------------------
 
-The following gives a brief introduction how to build the S3TBX.
+The following gives a brief introduction how to build the optical Toolbox.
 More information can be found in the [Developer Guide](https://senbox.atlassian.net/wiki/display/SNAP/Developer+Guide).
 
 
@@ -26,7 +26,7 @@ Several distributions are available, for example
 
 Add $JAVA_HOME/bin, $MAVEN_HOME/bin to your PATH.
 
-Clone the S3TBX source code and related repositories into a directory referred to a ${snap} from here on
+Clone the Optical Toolbox source code and related repositories into a directory referred to a ${snap} from here on
 
     cd ${snap}
     git clone https://github.com/senbox-org/snap-engine.git
