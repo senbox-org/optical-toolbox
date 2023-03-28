@@ -15,15 +15,11 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 @OptionsPanelController.SubRegistration(
-        location = "S3TBX",
-        displayName = "#LBL_Sentinel3ToolboxReaderOption_DisplayName",
-        keywords = "#LBL_Sentinel3ToolboxReaderOption_Keywords",
-        keywordsCategory = "S3TBX"
+        location = "OPTTBX",
+        displayName = "Sentinel-3 Reader",
+        keywords = "OptTbx, S3, Sentinel-3, Reader",
+        keywordsCategory = "OptTbx, S3, Sentinel-3, Reader"
 )
-@org.openide.util.NbBundle.Messages({
-        "LBL_Sentinel3ToolboxReaderOption_DisplayName=Sentinel-3 Readers",
-        "LBL_Sentinel3ToolboxReaderOption_Keywords=S3TBX"
-})
 public final class S3ReaderOptionsPanelController extends OptionsPanelController {
 
     private S3ReaderOptionsPanel panel;

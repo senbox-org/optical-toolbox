@@ -15,10 +15,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 @OptionsPanelController.SubRegistration(
-        location = "S2TBX",
+        location = "OPTTBX",
         displayName = "Sentinel-2 Cache",
-        keywords = "S2TBX,cache",
-        keywordsCategory = "S2TBX"
+        keywords = "OptTbx, Sentinel-2, S2, Reader, Cache",
+        keywordsCategory = "OptTbx, Sentinel-2, S2, Reader, Cache"
 )
 
 public final class S2CacheOptionsPanelController extends OptionsPanelController {

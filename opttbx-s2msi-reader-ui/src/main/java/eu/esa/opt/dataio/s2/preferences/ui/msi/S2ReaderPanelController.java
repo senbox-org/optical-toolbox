@@ -8,16 +8,18 @@ import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+
+
 /**
  * Created by obarrile on 27/06/2016.
  * Updated by Florian Douziech on 20 10 2021
  */
 
 @OptionsPanelController.SubRegistration(
-        location = "S2TBX",
+        location = "OPTTBX",
         displayName = "Sentinel-2 Reader",
-        keywords = "S2TBX,reader",
-        keywordsCategory = "S2TBX"
+        keywords = "OptTbx, Sentinel-2, S2, Reader, Cache",
+        keywordsCategory = "OptTbx, Sentinel-2, S2, Reader, Cache"
 )
 
 public class S2ReaderPanelController extends OptionsPanelController {
