@@ -3,15 +3,15 @@ package eu.esa.opt.commons;
 import org.esa.snap.engine_utilities.util.AllFilesVisitor;
 import org.esa.snap.engine_utilities.util.ZipFileSystemBuilder;
 
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -32,7 +32,7 @@ public class VirtualZipPath extends AbstractVirtualPath {
     public Path buildPath(String first, String... more) {
         try (FileSystem fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath)) {
             return fileSystem.getPath(first, more);
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException | IOException e) {
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -41,7 +41,7 @@ public class VirtualZipPath extends AbstractVirtualPath {
     public String getFileSystemSeparator() {
         try (FileSystem fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath)) {
             return fileSystem.getSeparator();
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException | IOException e) {
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -62,9 +62,7 @@ public class VirtualZipPath extends AbstractVirtualPath {
         FileSystem fileSystem = null;
         try {
             fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath);
-            Iterator<Path> it = fileSystem.getRootDirectories().iterator();
-            while (it.hasNext()) {
-                Path zipArchiveRoot = it.next();
+            for (Path zipArchiveRoot : fileSystem.getRootDirectories()) {
                 Path entryPath = ZipFileSystemBuilder.buildZipEntryPath(zipArchiveRoot, zipEntryPath);
                 if (Files.exists(entryPath)) {
                     // the entry exists into the zip archive
@@ -74,8 +72,6 @@ public class VirtualZipPath extends AbstractVirtualPath {
                 }
             }
             throw new FileNotFoundException(getMissingZipEntryExceptionMessage(zipEntryPath));
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new IllegalStateException(e);
         } finally {
             if (fileSystem != null && !success) {
                 fileSystem.close();
@@ -89,9 +85,7 @@ public class VirtualZipPath extends AbstractVirtualPath {
         FileSystem fileSystem = null;
         try {
             fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath);
-            Iterator<Path> it = fileSystem.getRootDirectories().iterator();
-            while (it.hasNext()) {
-                Path zipArchiveRoot = it.next();
+            for (Path zipArchiveRoot : fileSystem.getRootDirectories()) {
                 Path entryPathToFind = ZipFileSystemBuilder.buildZipEntryPath(zipArchiveRoot, zipEntryPath);
                 FindChildItemVisitor findChildFileVisitor = new FindChildItemVisitor(entryPathToFind);
                 Files.walkFileTree(zipArchiveRoot, findChildFileVisitor);
@@ -102,8 +96,6 @@ public class VirtualZipPath extends AbstractVirtualPath {
             }
             success = false;
             return null;
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new IllegalStateException(e);
         } finally {
             if (fileSystem != null && !success) {
                 fileSystem.close();
@@ -114,19 +106,15 @@ public class VirtualZipPath extends AbstractVirtualPath {
     @Override
     public File getFile(String zipEntryPath) throws IOException {
         try (FileSystem fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath)) {
-            Iterator<Path> it = fileSystem.getRootDirectories().iterator();
-            while (it.hasNext()) {
-                Path zipArchiveRoot = it.next();
+            for (Path zipArchiveRoot : fileSystem.getRootDirectories()) {
                 Path entryPath = ZipFileSystemBuilder.buildZipEntryPath(zipArchiveRoot, zipEntryPath);
                 if (Files.exists(entryPath)) {
                     // the entry exists into the zip archive
                     Path fileToReturn = copyFileOnLocalDiskIfNeeded(entryPath, zipEntryPath);
                     return fileToReturn.toFile();
                 }
-            } // end 'while (it.hasNext())'
+            }
             throw new FileNotFoundException(getMissingZipEntryExceptionMessage(zipEntryPath));
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new IllegalStateException(e);
         }
     }
 
@@ -136,9 +124,7 @@ public class VirtualZipPath extends AbstractVirtualPath {
         FileSystem fileSystem = null;
         try {
             fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath);
-            Iterator<Path> it = fileSystem.getRootDirectories().iterator();
-            while (it.hasNext()) {
-                Path zipArchiveRoot = it.next();
+            for (Path zipArchiveRoot : fileSystem.getRootDirectories()) {
                 Path entryPath = ZipFileSystemBuilder.buildZipEntryPath(zipArchiveRoot, zipEntryPath);
                 if (Files.exists(entryPath)) {
                     // the entry exists into the zip archive
@@ -147,8 +133,6 @@ public class VirtualZipPath extends AbstractVirtualPath {
                 }
             }
             throw new FileNotFoundException(getMissingZipEntryExceptionMessage(zipEntryPath));
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new IllegalStateException(e);
         } finally {
             if (fileSystem != null && !success) {
                 fileSystem.close();
@@ -159,9 +143,7 @@ public class VirtualZipPath extends AbstractVirtualPath {
     @Override
     public String[] list(String zipEntryPath) throws IOException {
         try (FileSystem fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath)) {
-            Iterator<Path> it = fileSystem.getRootDirectories().iterator();
-            while (it.hasNext()) {
-                Path zipArchiveRoot = it.next();
+            for (Path zipArchiveRoot : fileSystem.getRootDirectories()) {
                 Path entryPath = zipArchiveRoot;
                 if (zipEntryPath != null) {
                     entryPath = ZipFileSystemBuilder.buildZipEntryPath(zipArchiveRoot, zipEntryPath);
@@ -169,7 +151,7 @@ public class VirtualZipPath extends AbstractVirtualPath {
                 if (Files.exists(entryPath)) {
                     // the zip entry exists
                     if (Files.isDirectory(entryPath)) {
-                        List<String> files = new ArrayList<String>();
+                        List<String> files = new ArrayList<>();
                         String zipFileSystemSeparator = fileSystem.getSeparator();
                         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(entryPath)) {
                             for (Path currentPath : directoryStream) {
@@ -180,25 +162,21 @@ public class VirtualZipPath extends AbstractVirtualPath {
                                 }
                                 files.add(fileName);
                             }
-                            return files.toArray(new String[files.size()]);
+                            return files.toArray(new String[0]);
                         }
                     } else {
                         throw new NotDirectoryException(entryPath.toString());
                     }
                 }
-            } // end 'while (it.hasNext())'
+            }
             throw new FileNotFoundException(getMissingZipEntryExceptionMessage(zipEntryPath));
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new IllegalStateException(e);
         }
     }
 
     @Override
     public boolean exists(String zipEntryPath) {
         try (FileSystem fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath)) {
-            Iterator<Path> it = fileSystem.getRootDirectories().iterator();
-            while (it.hasNext()) {
-                Path zipArchiveRoot = it.next();
+            for (Path zipArchiveRoot : fileSystem.getRootDirectories()) {
                 Path entryPath = zipArchiveRoot;
                 if (zipEntryPath != null) {
                     entryPath = ZipFileSystemBuilder.buildZipEntryPath(zipArchiveRoot, zipEntryPath);
@@ -206,9 +184,9 @@ public class VirtualZipPath extends AbstractVirtualPath {
                 if (Files.exists(entryPath)) {
                     return true;
                 }
-            } // end 'while (it.hasNext())'
+            }
             return false;
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException | IOException e) {
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -216,9 +194,7 @@ public class VirtualZipPath extends AbstractVirtualPath {
     @Override
     public Path getFileIgnoreCaseIfExists(String zipEntryPath) throws IOException {
         try (FileSystem fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath)) {
-            Iterator<Path> it = fileSystem.getRootDirectories().iterator();
-            while (it.hasNext()) {
-                Path zipArchiveRoot = it.next();
+            for (Path zipArchiveRoot : fileSystem.getRootDirectories()) {
                 Path entryPathToFind = ZipFileSystemBuilder.buildZipEntryPath(zipArchiveRoot, zipEntryPath);
                 FindChildItemVisitor findChildFileVisitor = new FindChildItemVisitor(entryPathToFind);
                 Files.walkFileTree(zipArchiveRoot, findChildFileVisitor);
@@ -226,10 +202,8 @@ public class VirtualZipPath extends AbstractVirtualPath {
                     // the entry exists into the zip archive
                     return copyFileOnLocalDiskIfNeeded(findChildFileVisitor.getExistingChildPath(), zipEntryPath);
                 }
-            } // end 'while (it.hasNext())'
+            }
             return null;
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new IllegalStateException(e);
         }
     }
 
@@ -237,15 +211,11 @@ public class VirtualZipPath extends AbstractVirtualPath {
     public String[] listAllFiles() throws IOException {
         try (FileSystem fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath)) {
             AllFilesVisitor filesVisitor = new AllFilesVisitor();
-            Iterator<Path> it = fileSystem.getRootDirectories().iterator();
-            while (it.hasNext()) {
-                Path zipArchiveRoot = it.next();
+            for (Path zipArchiveRoot : fileSystem.getRootDirectories()) {
                 Files.walkFileTree(zipArchiveRoot, filesVisitor);
-            } // end 'while (it.hasNext())'
+            }
             TreeSet<String> filePaths = filesVisitor.getFilePaths();
-            return filePaths.toArray(new String [filePaths.size()]);
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new IllegalStateException(e);
+            return filePaths.toArray(new String[0]);
         }
     }
 
@@ -260,6 +230,6 @@ public class VirtualZipPath extends AbstractVirtualPath {
     }
 
     private String getMissingZipEntryExceptionMessage(String zipEntryPath) {
-        return "The zip entry path '"+zipEntryPath+"' does not exist in the zip archive '"+this.zipPath.toString()+"'.";
+        return "The zip entry path '" + zipEntryPath + "' does not exist in the zip archive '" + this.zipPath.toString() + "'.";
     }
 }
