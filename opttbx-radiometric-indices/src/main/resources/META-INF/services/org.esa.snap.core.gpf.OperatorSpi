@@ -27,3 +27,4 @@ eu.esa.opt.radiometry.Bi2Op$Spi
 eu.esa.opt.radiometry.RiOp$Spi
 eu.esa.opt.radiometry.ReipOp$Spi
 eu.esa.opt.radiometry.ArviOp$Spi
+eu.esa.opt.radiometry.NdviOp$Spi

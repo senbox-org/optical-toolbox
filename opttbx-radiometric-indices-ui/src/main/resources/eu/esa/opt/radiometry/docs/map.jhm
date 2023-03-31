@@ -71,6 +71,9 @@
     <mapID target="NDPIOperator" url="ndpi/NdpiTool.html"/>
     <mapID target="NDPIAlgorithm" url="ndpi/NdpiAlgorithmSpecification.html"/>
 
+    <mapID target="NDVIOperator" url="ndvi/NdviTool.html"/>
+    <mapID target="NDVIAlgorithm" url="ndvi/NdviAlgorithmSpecification.html"/>
+
     <mapID target="NDTIOperator" url="ndti/NdtiTool.html"/>
     <mapID target="NDTIAlgorithm" url="ndti/NdtiAlgorithmSpecification.html"/>
 
