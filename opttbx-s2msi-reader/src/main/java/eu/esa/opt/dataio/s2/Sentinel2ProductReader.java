@@ -17,12 +17,12 @@
 
 package eu.esa.opt.dataio.s2;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import eu.esa.opt.dataio.s2.filepatterns.INamingConvention;
 import eu.esa.opt.dataio.s2.filepatterns.S2NamingConventionUtils;
 import eu.esa.opt.dataio.s2.metadata.AbstractS2MetadataReader;
 import eu.esa.opt.dataio.s2.tiles.MosaicMatrixCellCallback;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;
@@ -32,7 +32,7 @@ import org.esa.snap.core.datamodel.quicklooks.Quicklook;
 import org.esa.snap.core.image.BandMatrixCell;
 import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.image.MosaicMatrix;
-import org.esa.snap.core.util.ResourceInstaller;
+import org.esa.snap.core.util.ModuleMetadata;
 import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.dataio.gdal.drivers.Dataset;
 import org.esa.snap.dataio.gdal.drivers.GDAL;
@@ -45,15 +45,20 @@ import org.esa.snap.jp2.reader.internal.JP2MosaicBandMatrixCell;
 import org.esa.snap.lib.openjpeg.dataio.Utils;
 import org.esa.snap.lib.openjpeg.jp2.TileLayout;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -94,15 +99,12 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
     }
 
     protected void initCacheDir(VirtualPath productPath) throws IOException {
-        Path versionFile = ResourceInstaller.findModuleCodeBasePath(getClass()).resolve("version/version.properties");
-        Properties versionProp = new Properties();
-        try (InputStream inputStream = Files.newInputStream(versionFile)) {
-            versionProp.load(inputStream);
+        ModuleMetadata moduleMetadata = SystemUtils.loadModuleMetadata(this.getClass());
+        if (moduleMetadata == null) {
+            throw new IOException("Unable to load version from module metadata");
         }
-        String version = versionProp.getProperty("project.version");
-        if (version == null) {
-            throw new IOException("Unable to get project.version property from " + versionFile);
-        }
+        String version = moduleMetadata.getVersion();
+
         String fullPathString = productPath.getFullPathString();
         String md5sum = Utils.getMD5sum(fullPathString);
         if (md5sum == null) {
@@ -126,7 +128,7 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
 
         if (logger.isLoggable(Level.FINEST)) {
             logger.log(Level.FINEST,
-                       "Successfully set up cache dir for product " + productName + " to " + this.cacheDir.toString());
+                    "Successfully set up cache dir for product " + productName + " to " + this.cacheDir.toString());
         }
     }
 
@@ -174,15 +176,15 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
                 if (logger.isLoggable(Level.FINE)) {
                     double elapsedTimeInSeconds = (System.currentTimeMillis() - startTime) / 1000.d;
                     logger.log(Level.FINE,
-                               "Finish reading the tile layouts using the metadata file '"
-                                       + inputVirtualPath.getFullPathString() + "', elapsed time: " + elapsedTimeInSeconds
-                                       + " seconds.");
+                            "Finish reading the tile layouts using the metadata file '"
+                                    + inputVirtualPath.getFullPathString() + "', elapsed time: " + elapsedTimeInSeconds
+                                    + " seconds.");
                 }
 
                 if (config == null) {
                     throw new NullPointerException(
                             String.format("Unable to retrieve the image tile layout associated to product [%s]",
-                                          inputVirtualPath.getFileName().toString()));
+                                    inputVirtualPath.getFileName().toString()));
                 }
 
                 startTime = System.currentTimeMillis();
@@ -192,12 +194,12 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
                 if (logger.isLoggable(Level.FINE)) {
                     double elapsedTimeInSeconds = (System.currentTimeMillis() - startTime) / 1000.d;
                     logger.log(Level.FINE,
-                               "Finish reading the header using the metadata file '" + inputVirtualPath.getFullPathString()
-                                       + "', elapsed time: " + elapsedTimeInSeconds + " seconds.");
+                            "Finish reading the header using the metadata file '" + inputVirtualPath.getFullPathString()
+                                    + "', elapsed time: " + elapsedTimeInSeconds + " seconds.");
                 }
                 String defaultProductName = metadataReader.getNamingConvention().getProductName();
                 product = readProduct(defaultProductName, metadataReader.isGranule(), metadataHeader,
-                                      metadataReader.getNamingConvention(), subsetDef);
+                        metadataReader.getNamingConvention(), subsetDef);
 
                 File productFileLocation;
                 if (inputVirtualPath.getVirtualDir().isArchive()) {
@@ -210,7 +212,7 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
                 Path qlFile = getQuickLookFile(inputVirtualPath);
                 if (qlFile != null) {
                     product.getQuicklookGroup()
-                           .add(new Quicklook(product, Quicklook.DEFAULT_QUICKLOOK_NAME, qlFile.toFile()));
+                            .add(new Quicklook(product, Quicklook.DEFAULT_QUICKLOOK_NAME, qlFile.toFile()));
                 }
             } else {
                 throw new FileNotFoundException(inputVirtualPath.getFullPathString());
@@ -262,15 +264,15 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
                     BandMatrixCell matrixCell = (BandMatrixCell) mosaicMatrix.getCellAt(rowIndex, columnIndex);
                     if (firstMatrixCell.getDataBufferType() != matrixCell.getDataBufferType()) {
                         throw new IllegalStateException("Different data buffer types: cell at " + rowIndex + ", "
-                                                                + columnIndex + " has data type " + matrixCell.getDataBufferType() + " and cell at " + 0
-                                                                + ", " + 0 + " has data type " + firstMatrixCell.getDataBufferType() + ".");
+                                + columnIndex + " has data type " + matrixCell.getDataBufferType() + " and cell at " + 0
+                                + ", " + 0 + " has data type " + firstMatrixCell.getDataBufferType() + ".");
                     }
                 }
             }
             return firstMatrixCell.getDataBufferType();
         } else {
             throw new IllegalArgumentException("The matrix is empty: rowCount=" + mosaicMatrix.getRowCount()
-                                                       + ", columnCount=" + mosaicMatrix.getColumnCount() + ".");
+                    + ", columnCount=" + mosaicMatrix.getColumnCount() + ".");
         }
     }
 
@@ -286,7 +288,7 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
                 return computeJP2MatrixCellsResolutionCount(mosaicMatrix);
         } else {
             throw new IllegalArgumentException("The matrix is empty: rowCount=" + mosaicMatrix.getRowCount()
-                                                       + ", columnCount=" + mosaicMatrix.getColumnCount() + ".");
+                    + ", columnCount=" + mosaicMatrix.getColumnCount() + ".");
         }
     }
 
@@ -304,11 +306,11 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
             for (int rowIndex = 0; rowIndex < mosaicMatrix.getRowCount(); rowIndex++) {
                 for (int columnIndex = 0; columnIndex < mosaicMatrix.getColumnCount(); columnIndex++) {
                     JP2MosaicBandMatrixCell matrixCell = (JP2MosaicBandMatrixCell) mosaicMatrix.getCellAt(rowIndex,
-                                                                                                          columnIndex);
+                            columnIndex);
                     if (firstMatrixCell.getResolutionCount() != matrixCell.getResolutionCount()) {
                         throw new IllegalStateException("Different resolution count: cell at " + rowIndex + ", "
-                                                                + columnIndex + " has data type " + matrixCell.getResolutionCount() + " and cell at " + 0
-                                                                + ", " + 0 + " has resolution count " + firstMatrixCell.getResolutionCount() + ".");
+                                + columnIndex + " has data type " + matrixCell.getResolutionCount() + " and cell at " + 0
+                                + ", " + 0 + " has resolution count " + firstMatrixCell.getResolutionCount() + ".");
                     }
                 }
             }
@@ -323,12 +325,12 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
                 GeoTiffMatrixCell matrixCell = (GeoTiffMatrixCell) mosaicMatrix.getCellAt(rowIndex, columnIndex);
                 if (firstMatrixCell.getResolutionCount() != matrixCell.getResolutionCount()) {
                     throw new IllegalStateException("Different resolution count: cell at " + rowIndex + ", "
-                                                            + columnIndex + " has data type " + matrixCell.getResolutionCount() + " and cell at " + 0
-                                                            + ", " + 0 + " has resolution count " + firstMatrixCell.getResolutionCount() + ".");
+                            + columnIndex + " has data type " + matrixCell.getResolutionCount() + " and cell at " + 0
+                            + ", " + 0 + " has resolution count " + firstMatrixCell.getResolutionCount() + ".");
                 }
             }
         }
-        int nbResolution=firstMatrixCell.getResolutionCount();
+        int nbResolution = firstMatrixCell.getResolutionCount();
         return Math.max(nbResolution, 5);
     }
 
@@ -346,7 +348,7 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
                 throw e;
             } catch (Exception e) {
                 throw new RuntimeException("Failed to read the tile layout for image file '"
-                                                   + imageFilePath.getFullPathString() + "'.", e);
+                        + imageFilePath.getFullPathString() + "'.", e);
             }
             if (imageFilePath.getFileName().toString().endsWith(".TIF")) {
                 Path tiffImagePath = null;
@@ -367,13 +369,13 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
                     e.printStackTrace();
                 }
                 return new GeoTiffMatrixCell(cellWidth, cellHeight, dataBufferType, tiffImagePath, null,
-                                             Sentinel2ProductReader.this.cacheDir, 1);
+                        Sentinel2ProductReader.this.cacheDir, 1);
             } else {
                 JP2ImageFile jp2ImageFile = new JP2ImageFile(imageFilePath);
                 int cellWidth = Math.min(sceneCellWidth, tileLayout.width);
                 int cellHeight = Math.min(sceneCellHeight, tileLayout.height);
                 return new JP2MosaicBandMatrixCell(jp2ImageFile, Sentinel2ProductReader.this.cacheDir, tileLayout,
-                                                   cellWidth, cellHeight);
+                        cellWidth, cellHeight);
             }
         };
         return buildBandMatrix(bandMatrixTileIds, sceneDescription, tileBandInfo, mosaicMatrixCellCallback);
@@ -452,8 +454,8 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
             columns[index++] = value;
         }
         Pair<String, Rectangle>[][] bandRectangleCoordinates = new Pair[rows.length][columns.length];
-        for (int rowIndex=0; rowIndex < rowCount; rowIndex++) {
-            for (int columnIndex=0; columnIndex < columnCount; columnIndex++) {
+        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
                 for (int i = 0; i < rectanglePairs.size(); i++) {
                     Pair<String, Rectangle> pair = rectanglePairs.get(i);
                     if (pair != null) {
