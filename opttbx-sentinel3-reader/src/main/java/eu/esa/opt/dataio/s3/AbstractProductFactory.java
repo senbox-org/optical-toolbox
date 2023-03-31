@@ -468,7 +468,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
     /**
      * Defines the transformation keys for forward and inverse pixel-geocoding transformations
      * @param inverseCodingProperty the property defining the preferences key storing the desired inverse geocoding
-     *                              algorithm. Uses the s3tbx part of the preferences.
+     *                              algorithm. Uses the OptTbx part of the preferences.
      * @return and array of keys. Index 0: forward coding, index 1: inverse coding
      */
     protected static String[] getForwardAndInverseKeys_pixelCoding(String inverseCodingProperty) {

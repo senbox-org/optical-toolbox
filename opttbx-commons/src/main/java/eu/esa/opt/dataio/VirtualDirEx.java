@@ -40,7 +40,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,7 +80,7 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
     }
 
     public static VirtualDirEx build(Path path, boolean copyFilesFromDirectoryOnLocalDisk, boolean copyFilesFromArchiveOnLocalDisk) throws IOException {
-        AbstractVirtualPath virtualDir = null;
+        AbstractVirtualPath virtualDir;
         if (Files.isRegularFile(path)) {
             // the path represents a file
             if (VirtualDirEx.isPackedFile(path)) {
@@ -100,26 +99,26 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
                     if (zipFile) {
                         virtualDir = new VirtualZipPath(path, copyFilesFromArchiveOnLocalDisk);
                     } else {
-                        throw new IllegalArgumentException("The path '"+path.toString()+"' does not represent a zip archive. " + getPathClassNameExceptionMessage(path));
+                        throw new IllegalArgumentException("The path '"+ path +"' does not represent a zip archive. " + getPathClassNameExceptionMessage(path));
                     }
                 }
             } else {
                 Path parentPath = path.getParent();
                 if (parentPath == null) {
-                    throw new IllegalArgumentException("Unable to retrieve the parent of the file '" + path.toString()+"'. " + getPathClassNameExceptionMessage(path));
+                    throw new IllegalArgumentException("Unable to retrieve the parent of the file '" + path +"'. " + getPathClassNameExceptionMessage(path));
                 } else if (Files.isDirectory(parentPath)){
                     virtualDir = new VirtualDirPath(parentPath, copyFilesFromDirectoryOnLocalDisk);
                 } else {
-                    throw new IllegalArgumentException("Unable to check if the parent of the file '" + path.toString()+"' represents a directory. " + getPathClassNameExceptionMessage(path));
+                    throw new IllegalArgumentException("Unable to check if the parent of the file '" + path +"' represents a directory. " + getPathClassNameExceptionMessage(path));
                 }
             }
         } else if (Files.isDirectory(path)) {
             // the path represents a directory
             virtualDir = new VirtualDirPath(path, copyFilesFromDirectoryOnLocalDisk);
         } else {
-            throw new IllegalArgumentException("Unable to check if the path '"+path.toString()+"' represents a file or a directory. " + getPathClassNameExceptionMessage(path));
+            throw new IllegalArgumentException("Unable to check if the path '"+ path +"' represents a file or a directory. " + getPathClassNameExceptionMessage(path));
         }
-        return (virtualDir == null) ? null : new VirtualDirWrapper(virtualDir);
+        return new VirtualDirWrapper(virtualDir);
     }
 
     private static String getPathClassNameExceptionMessage(Path path) {
@@ -169,7 +168,7 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
      * Finds the first occurrence of the pattern in the list of files of this instance.
      * @param pattern   The pattern to be found.
      * @return  The first found entry matching the pattern, or <code>null</code> if none found.
-     * @throws IOException
+     * @throws IOException in case of an IO error
      */
     public String findFirst(String pattern) throws IOException {
         String found = null;
@@ -189,16 +188,15 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
      * Finds all the files that contain the given string.
      *
      * @param pattern A string to be found in the file name (if any).
-     * @return The array of file names that matched the pattern, or <code>NULL</code> if no file was found.
-     * @throws IOException
+     * @return The array of file names that matched the pattern, or {@code NULL} if no file was found.
      */
-    public String[] findAll(String pattern) throws IOException {
+    public String[] findAll(String pattern) {
         List<String> found = null;
         String[] entries = listAll();
         if (entries != null) {
             found = Arrays.stream(entries).filter(e -> e.toLowerCase().contains(pattern)).collect(Collectors.toList());
         }
-        return found != null ? found.toArray(new String[found.size()]) : null;
+        return found != null ? found.toArray(new String[0]) : null;
     }
 
     public String[] listAllFilesWithPath() {
@@ -230,19 +228,17 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
                 logger.log(Level.SEVERE, e.getMessage(), e); // cannot open zip file/folder, list will be empty
                 filesAndFolders = new ArrayList<>();
             }
-            return filesAndFolders.toArray(new String[filesAndFolders.size()]);
+            return filesAndFolders.toArray(new String[0]);
         }
     }
 
     private List<String> listFilesFromZipArchive(File baseFile, Pattern...patterns) throws IOException {
         List<String> filesAndFolders = new ArrayList<>();
         try (FileSystem fileSystem = ZipFileSystemBuilder.newZipFileSystem(baseFile.toPath())) {
-            Iterator<Path> it = fileSystem.getRootDirectories().iterator();
-            while (it.hasNext()) {
-                Path root = it.next();
+            for (Path root : fileSystem.getRootDirectories()) {
                 FileVisitor<Path> visitor = new ListFilesAndFolderVisitor() {
                     @Override
-                    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
                         if (root.equals(dir)) {
                             return FileVisitResult.CONTINUE;
                         } else {
@@ -276,9 +272,9 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
                                 };
                                 innerTar.ensureUnpacked(getTempDir());
                                 String[] innerFiles = innerTar.listAll();
-                                for (int i = 0; i < innerFiles.length; i++) {
-                                    if (matchFilters(innerFiles[i], patterns)) {
-                                        filesAndFolders.add(innerFiles[i]);
+                                for (String innerFile : innerFiles) {
+                                    if (matchFilters(innerFile, patterns)) {
+                                        filesAndFolders.add(innerFile);
                                     }
                                 }
                             } finally {
@@ -294,8 +290,6 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
                 };
                 Files.walkFileTree(root, visitor);
             }
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new IllegalStateException(e);
         }
         return filesAndFolders;
     }
@@ -305,7 +299,7 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
         Path parentPath = parent.toPath();
         FileVisitor<Path> visitor = new ListFilesAndFolderVisitor() {
             @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
                 if (parentPath.equals(dir)) {
                     return FileVisitResult.CONTINUE;
                 } else {
@@ -319,7 +313,7 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
             }
 
             @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                 String relativePath = parentPath.relativize(file).toString();
                 if (matchFilters(relativePath, filters)) {
                     filesAndFolders.add(relativePath);
@@ -332,9 +326,6 @@ public abstract class VirtualDirEx extends VirtualDir implements Closeable {
     }
 
     public static boolean matchFilters(String fileNameToCheck, Pattern...filters) {
-        if (filters.length == 0 || Arrays.stream(filters).anyMatch(p -> p.matcher(fileNameToCheck).matches())) {
-            return true;
-        }
-        return false;
+        return filters.length == 0 || Arrays.stream(filters).anyMatch(p -> p.matcher(fileNameToCheck).matches());
     }
 }

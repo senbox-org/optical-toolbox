@@ -37,7 +37,9 @@ import org.opengis.referencing.operation.TransformException;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -46,7 +48,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
-import java.util.logging.Logger;
 
 /**
  * Generic reader for products using the GDAL library.
@@ -54,8 +55,6 @@ import java.util.logging.Logger;
  * @author Jean Coravu
  */
 public class GDALProductReader extends AbstractProductReader {
-
-    private static final Logger logger = Logger.getLogger(GDALProductReader.class.getName());
 
     private static final Map<Integer, BufferTypeDescriptor> BUFFER_TYPES;
 
@@ -84,7 +83,7 @@ public class GDALProductReader extends AbstractProductReader {
         Dataset gdalDataset = GDAL.open(localProductPath.toString(), GDALConst.gaReadonly());
         if (gdalDataset == null) {
             // unknown file format
-            throw new NullPointerException("Failed opening a dataset from the file '" + localProductPath.toString() + "' to load the product.");
+            throw new NullPointerException("Failed opening a dataset from the file '" + localProductPath + "' to load the product.");
         }
         return gdalDataset;
     }
@@ -158,7 +157,7 @@ public class GDALProductReader extends AbstractProductReader {
             } else if (gcpCount >= GcpGeoCoding.Method.POLYNOMIAL1.getTermCountP()) {
                 method = GcpGeoCoding.Method.POLYNOMIAL1;
             } else {
-                return null; // not able to apply GCP geo coding; not enough tie points
+                return null; // not able to apply GCP geocoding; not enough tie points
             }
             int i = 0;
             if (gcpCount > 0) {
@@ -250,7 +249,7 @@ public class GDALProductReader extends AbstractProductReader {
         try {
             Path productPath = BaseProductReaderPlugIn.convertInputToPath(super.getInput());
             this.virtualFile = new VirtualFile(productPath);
-            Product product = readProduct(this.virtualFile.getLocalFile(), null);
+            Product product = readProduct(this.virtualFile.getLocalFile());
             product.setFileLocation(productPath.toFile());
 
             success = true;
@@ -273,27 +272,28 @@ public class GDALProductReader extends AbstractProductReader {
         // do nothing
     }
 
-    public Product readProduct(Path localFile, Rectangle inputProductBounds) throws FactoryException, TransformException {
+    private Product readProduct(Path localFile) throws IOException {
         if (localFile == null) {
             throw new NullPointerException("The local file is null.");
         }
         if (!AbstractFile.isLocalPath(localFile)) {
-            throw new IllegalArgumentException("The file '" + localFile.toString() + "' is not a local file.");
+            throw new IllegalArgumentException("The file '" + localFile + "' is not a local file.");
         }
 
-        Dataset gdalDataset = openGDALDataset(localFile);
-        try {
+        try (Dataset gdalDataset = openGDALDataset(localFile)) {
             int defaultProductWidth = gdalDataset.getRasterXSize();
             int defaultProductHeight = gdalDataset.getRasterYSize();
 
             ProductSubsetDef subsetDef = getSubsetDef();
-            Rectangle productBounds = inputProductBounds;
-            if (productBounds == null) {
-                if (subsetDef == null || subsetDef.getSubsetRegion() == null) {
-                    productBounds = new Rectangle(0, 0, defaultProductWidth, defaultProductHeight);
-                } else {
+            Rectangle productBounds;
+            if (subsetDef == null || subsetDef.getSubsetRegion() == null) {
+                productBounds = new Rectangle(0, 0, defaultProductWidth, defaultProductHeight);
+            } else {
+                try {
                     GeoCoding productDefaultGeoCoding = buildGeoCoding(gdalDataset, null, null);
                     productBounds = subsetDef.getSubsetRegion().computeProductPixelRegion(productDefaultGeoCoding, defaultProductWidth, defaultProductHeight, false);
+                } catch (FactoryException | TransformException e) {
+                    throw new IOException(e);
                 }
             }
             if (productBounds.isEmpty()) {
@@ -318,7 +318,12 @@ public class GDALProductReader extends AbstractProductReader {
                 product.getMetadataRoot().addElement(metadataElement);
             }
 
-            GeoCoding geoCoding = buildGeoCoding(gdalDataset, productBounds, product);
+            GeoCoding geoCoding;
+            try {
+                geoCoding = buildGeoCoding(gdalDataset, productBounds, product);
+            } catch (FactoryException | TransformException e) {
+                throw new IOException("Not able to create geo-coding information", e);
+            }
             if (geoCoding != null) {
                 product.setSceneGeoCoding(geoCoding);
             }
@@ -365,8 +370,8 @@ public class GDALProductReader extends AbstractProductReader {
                             }
                             org.esa.snap.dataio.gdal.drivers.Band hOverview = gdalBand.getOverview(iOverview);
                             str.append(hOverview.getXSize())
-                                    .append("x")
-                                    .append(hOverview.getYSize());
+                               .append("x")
+                               .append(hOverview.getYSize());
                         }
                         bandMetadataElement.setAttributeInt("overview count", levelCount - 1);
                         if (str.length() > 0) {
@@ -405,7 +410,7 @@ public class GDALProductReader extends AbstractProductReader {
                     }
 
                     GDALMultiLevelSource multiLevelSource = new GDALMultiLevelSource(localFile, dataBufferType.dataBufferType, productBounds, tileSize, bandIndex,
-                            levelCount, geoCoding, noDataValue, defaultJAIReadTileSize);
+                                                                                     levelCount, geoCoding, noDataValue, defaultJAIReadTileSize);
                     // compute the tile size of the image layout object based on the tile size from the tileOpImage used to read the data
                     ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
                     productBand.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
@@ -426,8 +431,6 @@ public class GDALProductReader extends AbstractProductReader {
             }
             product.setNumResolutionsMax(maximumResolutionCount);
             return product;
-        } finally {
-            gdalDataset.delete();
         }
     }
 

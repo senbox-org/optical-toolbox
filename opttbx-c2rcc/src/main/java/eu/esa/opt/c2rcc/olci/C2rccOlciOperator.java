@@ -84,13 +84,10 @@ import static eu.esa.opt.c2rcc.olci.C2rccOlciAlgorithm.IDX_rw_rwnorm;
 import static eu.esa.opt.c2rcc.olci.C2rccOlciAlgorithm.olciband16_ix;
 import static eu.esa.opt.c2rcc.olci.C2rccOlciAlgorithm.olciband21_ix;
 
-// todo (nf) - Add min/max values of NN inputs and outputs to metadata (https://github.com/bcdev/s3tbx-c2rcc/issues/3)
-
 /**
  * The Case 2 Regional / CoastColour Operator for OLCI.
  * <p/>
- * Computes AC-reflectances and IOPs from OLCI L1b data products using
- * an neural-network approach.
+ * Computes AC-reflectances and IOPs from OLCI L1b data products using a neural-network approach.
  *
  * @author Norman Fomferra
  */
@@ -481,16 +478,16 @@ public class C2rccOlciOperator extends PixelOperator implements C2rccConfigurabl
         }
 
         Result result = algorithm.processPixel(x, y, lat, lon,
-                                               radiances,
-                                               solflux,
-                                               sourceSamples[SUN_ZEN_IX].getDouble(),
-                                               sourceSamples[SUN_AZI_IX].getDouble(),
-                                               sourceSamples[VIEW_ZEN_IX].getDouble(),
-                                               sourceSamples[VIEW_AZI_IX].getDouble(),
-                                               altitude,
-                                               sourceSamples[VALID_PIXEL_IX].getBoolean(),
-                                               atmPress,
-                                               ozone);
+                radiances,
+                solflux,
+                sourceSamples[SUN_ZEN_IX].getDouble(),
+                sourceSamples[SUN_AZI_IX].getDouble(),
+                sourceSamples[VIEW_ZEN_IX].getDouble(),
+                sourceSamples[VIEW_AZI_IX].getDouble(),
+                altitude,
+                sourceSamples[VALID_PIXEL_IX].getBoolean(),
+                atmPress,
+                ozone);
 
         if (outputRtoa) {
             for (int i = 0; i < result.r_toa.length; i++) {
@@ -700,9 +697,9 @@ public class C2rccOlciOperator extends PixelOperator implements C2rccConfigurabl
                 Integer.parseInt(System.getProperty("snap.dataio.reader.tileWidth", "1217")),
                 Integer.parseInt(System.getProperty("snap.dataio.reader.tileHeight", "1023")));
         getLogger().info("c2rcc initial tile : "
-                                 + initialTileSize
-                                 + ", configured tile: "
-                                 + targetProduct.getPreferredTileSize());
+                + initialTileSize
+                + ", configured tile: "
+                + targetProduct.getPreferredTileSize());
 
         ProductUtils.copyFlagBands(sourceProduct, targetProduct, true);
 

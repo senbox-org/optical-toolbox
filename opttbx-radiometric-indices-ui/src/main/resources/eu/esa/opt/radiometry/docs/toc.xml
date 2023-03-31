@@ -32,7 +32,9 @@
                 <tocitem text="Radiometric Indices Complete List" target="OperatorsIndexList"/>
 
                 <tocitem text="Vegetation Radiometric Indices">
-
+                    <tocitem text="NDVI Operator" target="NDVIOperator">
+                        <tocitem text="NDVI Algorithm Specification" target="NDVIAlgorithm"/>
+                    </tocitem>
                     <tocitem text="SAVI Operator" target="SAVIOperator">
                         <tocitem text="SAVI Algorithm Specification" target="SAVIAlgorithm"/>
                     </tocitem>

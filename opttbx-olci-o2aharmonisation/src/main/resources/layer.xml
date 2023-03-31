@@ -31,7 +31,7 @@
 
     <folder name="Services">
         <folder name="JavaHelp">
-            <file name="eu-esa-opt-s3tbx-olci-o2aharmonisation-helpset.xml" url="helpset.xml">
+            <file name="eu-esa-opt-opttbx/-olci-o2aharmonisation-helpset.xml" url="helpset.xml">
                 <attr name="position" intvalue="4600"/>
             </file>
         </folder>
