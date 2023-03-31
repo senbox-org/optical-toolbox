@@ -72,7 +72,7 @@ public class NdviOp extends BaseIndexOp {
             Tile ndvi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + NDVI_BAND_NAME));
             Tile ndviFlags = targetTiles.get(targetProduct.getBand(FLAGS_BAND_NAME));
 
-            boolean nodataValueUsed = targetProduct.getBand(NDVI_BAND_NAME).isNoDataValueUsed();
+            boolean nodataValueUsed = getBandWithSuffix(targetProduct, "_" + NDVI_BAND_NAME).isNoDataValueUsed();
             Float redNoDataValue = (float) getSourceProduct().getBand(redSourceBand).getGeophysicalNoDataValue();
             Float nirNoDataValue = (float) getSourceProduct().getBand(nirSourceBand).getGeophysicalNoDataValue();
 
