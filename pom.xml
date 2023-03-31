@@ -40,8 +40,6 @@
         <!-- Former S2TBX modules-->
 
         <module>opttbx-preferences-ui</module>
-        <module>opttbx-cache</module>
-        <module>opttbx-cache-ui</module>
         <module>opttbx-s2msi-reader</module>
         <module>opttbx-s2msi-reader-ui</module>
         <module>opttbx-jp2-writer</module>

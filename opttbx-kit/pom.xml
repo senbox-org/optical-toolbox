@@ -133,19 +133,6 @@
 
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-cache</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-cache-ui</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-s2msi-reader</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
