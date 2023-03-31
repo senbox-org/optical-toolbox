@@ -21,10 +21,6 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.glevel.MultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
-
-import org.esa.snap.dataio.gdal.drivers.Dataset;
-import org.esa.snap.dataio.gdal.drivers.GDAL;
-import org.esa.snap.dataio.gdal.drivers.GDALConst;
 import eu.esa.opt.dataio.gdal.reader.GDALMultiLevelSource;
 import eu.esa.opt.dataio.s2.CAMSReader;
 import eu.esa.opt.dataio.s2.ColorIterator;
@@ -68,6 +64,9 @@ import org.esa.snap.core.image.MosaicMatrix;
 import org.esa.snap.core.image.SourceImageScaler;
 import org.esa.snap.core.util.ImageUtils;
 import org.esa.snap.core.util.ProductUtils;
+import org.esa.snap.dataio.gdal.drivers.Dataset;
+import org.esa.snap.dataio.gdal.drivers.GDAL;
+import org.esa.snap.dataio.gdal.drivers.GDALConst;
 import org.esa.snap.dataio.geotiff.GeoTiffMatrixMultiLevelSource;
 import org.esa.snap.lib.openjpeg.utils.StackTraceUtils;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -121,8 +120,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import static java.awt.image.DataBuffer.TYPE_FLOAT;
 import static eu.esa.opt.dataio.s2.ortho.metadata.S2OrthoMetadataProc.makeTileInformation;
+import static java.awt.image.DataBuffer.TYPE_FLOAT;
 import static org.esa.snap.utils.DateHelper.parseDate;
 
 /**
@@ -327,13 +326,8 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
     private void addGRIBBand(Product product, S2Metadata.Tile tile, INamingConvention namingConvention)
             throws IOException {
         VirtualPath tileFolder = namingConvention.findGranuleFolderFromTileId(tile.getId());
-        S2Metadata.ProductCharacteristics characteristicsAUXDATA = new S2Metadata.ProductCharacteristics();
         VirtualPath folderAUXDATA = tileFolder.resolve("AUX_DATA");
-        characteristicsAUXDATA.setDatatakeSensingStartTime("Unknown");
         if (folderAUXDATA.existsAndHasChildren()) {
-            characteristicsAUXDATA.setSpacecraft("Sentinel-2");
-            characteristicsAUXDATA.setProcessingLevel("Level-1C");
-            characteristicsAUXDATA.setMetaDataLevel("Standard");
             VirtualPath[] gribFiles = folderAUXDATA.listPaths();
             String tileId = "";//if there is one tile, the tileId are not used
             if(orthoMetadataHeader.getTileList().size()>1)
