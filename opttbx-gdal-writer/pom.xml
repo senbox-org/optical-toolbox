@@ -53,7 +53,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>opttbx-commons</artifactId>
-            <version>${opttbx.version}</version>
         </dependency>
 
         <!-- JUnit -->
