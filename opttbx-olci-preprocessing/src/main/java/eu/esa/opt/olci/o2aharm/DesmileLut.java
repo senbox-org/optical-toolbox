@@ -1,4 +1,4 @@
-package eu.esa.opt.olci.o2a.harmonisation;
+package eu.esa.opt.olci.o2aharm;
 
 /**
  * Holder for contents of 'desmile' lookup table (e.g. O2_desmile_lut_13.json)

@@ -1,13 +1,11 @@
-package eu.esa.opt.olci.o2a.harmonisation;
+package eu.esa.opt.olci.o2aharm;
 
 import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.OperatorSpiRegistry;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class OlciO2aHarmonisationOpTest {
 

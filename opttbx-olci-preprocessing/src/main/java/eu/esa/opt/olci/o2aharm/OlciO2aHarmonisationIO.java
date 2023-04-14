@@ -1,4 +1,4 @@
-package eu.esa.opt.olci.o2a.harmonisation;
+package eu.esa.opt.olci.o2aharm;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.google.common.primitives.Doubles;

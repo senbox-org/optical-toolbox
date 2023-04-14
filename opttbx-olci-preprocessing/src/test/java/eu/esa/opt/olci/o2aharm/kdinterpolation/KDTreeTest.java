@@ -1,5 +1,6 @@
-package eu.esa.opt.olci.o2a.harmonisation.kdinterpolation;
+package eu.esa.opt.olci.o2aharm.kdinterpolation;
 
+import org.junit.Assert;
 import org.junit.Test;
 import smile.neighbor.KDTree;
 import smile.neighbor.Neighbor;
@@ -105,21 +106,21 @@ public class KDTreeTest {
         assertEquals(8, nearest_1.length);
 
         // NOTE: neighbour indices are provided in opposite order compared to Python TREE.query used by RP!
-        assertEquals(7, nearest_1[0].index);
-        assertEquals(0.583306266932, nearest_1[0].distance, 1.E-6);
-        assertEquals(6, nearest_1[1].index);
-        assertEquals(0.499964895546, nearest_1[1].distance, 1.E-6);
-        assertEquals(5, nearest_1[2].index);
-        assertEquals(0.416623524424, nearest_1[2].distance, 1.E-6);
-        assertEquals(4, nearest_1[3].index);
-        assertEquals(0.333282153766, nearest_1[3].distance, 1.E-6);
-        assertEquals(3, nearest_1[4].index);
-        assertEquals(0.249940784035, nearest_1[4].distance, 1.E-6);
-        assertEquals(2, nearest_1[5].index);
-        assertEquals(0.166599416621, nearest_1[5].distance, 1.E-6);
-        assertEquals(1, nearest_1[6].index);
-        assertEquals(0.083258058484, nearest_1[6].distance, 1.E-6);
-        assertEquals(0, nearest_1[7].index);
-        assertEquals(0.000107593248, nearest_1[7].distance, 1.E-6);
+        Assert.assertEquals(7, nearest_1[0].index);
+        Assert.assertEquals(0.583306266932, nearest_1[0].distance, 1.E-6);
+        Assert.assertEquals(6, nearest_1[1].index);
+        Assert.assertEquals(0.499964895546, nearest_1[1].distance, 1.E-6);
+        Assert.assertEquals(5, nearest_1[2].index);
+        Assert.assertEquals(0.416623524424, nearest_1[2].distance, 1.E-6);
+        Assert.assertEquals(4, nearest_1[3].index);
+        Assert.assertEquals(0.333282153766, nearest_1[3].distance, 1.E-6);
+        Assert.assertEquals(3, nearest_1[4].index);
+        Assert.assertEquals(0.249940784035, nearest_1[4].distance, 1.E-6);
+        Assert.assertEquals(2, nearest_1[5].index);
+        Assert.assertEquals(0.166599416621, nearest_1[5].distance, 1.E-6);
+        Assert.assertEquals(1, nearest_1[6].index);
+        Assert.assertEquals(0.083258058484, nearest_1[6].distance, 1.E-6);
+        Assert.assertEquals(0, nearest_1[7].index);
+        Assert.assertEquals(0.000107593248, nearest_1[7].distance, 1.E-6);
     }
 }

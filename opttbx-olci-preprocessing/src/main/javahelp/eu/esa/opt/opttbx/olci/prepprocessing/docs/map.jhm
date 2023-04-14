@@ -33,4 +33,12 @@
     <mapID target="rayleighCorrection" url="radiometry/RayleighCorrectionOverview.html"/>
     <mapID target="rayleighCorrectionProcessorDesc" url="radiometry/RayleighCorrectionProcessorDescription.html"/>
     <mapID target="rayleighCorrectionAlgorithmSpec" url="radiometry/RayleighCorrectionAlgorithmSpecification.html"/>
+
+    <mapID target="olciO2aHarmonisationTool" url="o2aharm/OlciO2aHarmonisationTool.html"/>
+    <mapID target="olciO2aHarmonisationAlgorithmSpecification"
+           url="o2aharm/OlciO2aHarmonisationAlgorithmSpecification.html"/>
+    <mapID target="olciO2aHarmonisationProcessorDescription"
+           url="o2aharm/OlciO2aHarmonisationProcessorDescription.html"/>
+    <mapID target="olciO2aHarmonisationCommandLine" url="o2aharm/OlciO2aHarmonisationCommandLine.html"/>
+
 </map>

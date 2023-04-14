@@ -1,4 +1,4 @@
-package eu.esa.opt.olci.o2a.harmonisation;
+package eu.esa.opt.olci.o2aharm;
 
 /**
  * Constants for OLCI O2A Harmonisation

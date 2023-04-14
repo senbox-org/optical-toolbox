@@ -1,7 +1,8 @@
-package eu.esa.opt.olci.o2a.harmonisation;
+package eu.esa.opt.olci.o2aharm;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -194,29 +195,29 @@ public class OlciO2aHarmonisationIOTest {
     public void testGetDateTimeFromS3SynFilename() throws IOException {
         final String synFileNameA =
                 "S3A_SY_1_SYN____20210613T095432_20210613T095732_20220113T121245_0179_073_022_2160_LN2_O_NT____.SEN3.nc";
-        assertEquals("20210613 095432", OlciO2aHarmonisationIO.getDateTimeStringFromS3SynFilename(synFileNameA));
+        Assert.assertEquals("20210613 095432", OlciO2aHarmonisationIO.getDateTimeStringFromS3SynFilename(synFileNameA));
 
         final String synFileNameB =
                 "subset_of_S3B_SY_1_SYN____20210613T095432_20210613T095732_20220113T121245_0179_246_345_2160_LN2_O_NT____.SEN3.nc";
-        assertEquals("20210613 095432", OlciO2aHarmonisationIO.getDateTimeStringFromS3SynFilename(synFileNameB));
+        Assert.assertEquals("20210613 095432", OlciO2aHarmonisationIO.getDateTimeStringFromS3SynFilename(synFileNameB));
     }
 
     @Test
     public void testGetCycleAndRelOrbitFromS3SynFilename() throws IOException {
         final String synFileNameA =
                 "S3A_SY_1_SYN____20210613T095432_20210613T095732_20220113T121245_0179_073_022_2160_LN2_O_NT____.SEN3.nc";
-        assertEquals(73, OlciO2aHarmonisationIO.getCycleFromS3SynFilename(synFileNameA));
-        assertEquals(22, OlciO2aHarmonisationIO.getRelOrbitFromS3SynFilename(synFileNameA));
+        Assert.assertEquals(73, OlciO2aHarmonisationIO.getCycleFromS3SynFilename(synFileNameA));
+        Assert.assertEquals(22, OlciO2aHarmonisationIO.getRelOrbitFromS3SynFilename(synFileNameA));
 
         final String synFileNameB =
                 "S3B_SY_1_SYN____20210613T095432_20210613T095732_20220113T121245_0179_246_345_2160_LN2_O_NT____.SEN3.nc";
-        assertEquals(246, OlciO2aHarmonisationIO.getCycleFromS3SynFilename(synFileNameB));
-        assertEquals(345, OlciO2aHarmonisationIO.getRelOrbitFromS3SynFilename(synFileNameB));
+        Assert.assertEquals(246, OlciO2aHarmonisationIO.getCycleFromS3SynFilename(synFileNameB));
+        Assert.assertEquals(345, OlciO2aHarmonisationIO.getRelOrbitFromS3SynFilename(synFileNameB));
 
         final String synFileNameB2 =
                 "S3B_SY_1_SYN____20210613T095432_20210613T095732_20220113T121245_0179_001_007_2160_LN2_O_NT____.SEN3.nc";
-        assertEquals(1, OlciO2aHarmonisationIO.getCycleFromS3SynFilename(synFileNameB2));
-        assertEquals(7, OlciO2aHarmonisationIO.getRelOrbitFromS3SynFilename(synFileNameB2));
+        Assert.assertEquals(1, OlciO2aHarmonisationIO.getCycleFromS3SynFilename(synFileNameB2));
+        Assert.assertEquals(7, OlciO2aHarmonisationIO.getRelOrbitFromS3SynFilename(synFileNameB2));
     }
 
     @Test
@@ -224,13 +225,13 @@ public class OlciO2aHarmonisationIOTest {
         // make sure orbit numbers retrieved from cycle/relOrbit or  product datetime are the same (+- 1)
         String synFileNameA =
                 "S3A_SY_1_SYN____20180116T090334_20180116T094726_20180117T132354_2632_026_378______MAR_O_NT_002.nc";
-        assertEquals(9976, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromCycleAndRelativeOrbit(synFileNameA));
-        assertEquals(9976, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), 1);
+        Assert.assertEquals(9976, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromCycleAndRelativeOrbit(synFileNameA));
+        Assert.assertEquals(9976, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), 1);
 
         String synFileNameB =
                 "S3B_SY_1_SYN____20210116T095018_20210116T103411_20210117T151304_2633_048_079______MAR_O_NT_002.nc";
-        assertEquals(14211, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromCycleAndRelativeOrbit(synFileNameB));
-        assertEquals(14211, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), 1);
+        Assert.assertEquals(14211, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromCycleAndRelativeOrbit(synFileNameB));
+        Assert.assertEquals(14211, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), 1);
     }
 
     @Test
@@ -239,47 +240,47 @@ public class OlciO2aHarmonisationIOTest {
         // test results verified with ESOV NG v2.5.3
         String synFileNameA =
                 "S3A_SY_1_SYN____20160216T191843_bla.nc";
-        assertEquals(1, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(1, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20160224T191459_bla.nc";
-        assertEquals(114, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(114, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20160304T015301_bla.nc";
-        assertEquals(233, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(233, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20170101T005656_bla.nc";
-        assertEquals(4553, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(4553, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20170103T215727_bla.nc";
-        assertEquals(4594, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(4594, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20170116T101314_bla.nc";
-        assertEquals(4772, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(4772, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20180116T091119_bla.nc";
-        assertEquals(9976, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(9976, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20190116T094703_bla.nc";
-        assertEquals(15181, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(15181, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20200116T084452_bla.nc";
-        assertEquals(20385, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(20385, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20210116T085559_bla.nc";
-        assertEquals(25604, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(25604, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
 
         synFileNameA =
                 "S3A_SY_1_SYN____20220116T093315_bla.nc";
-        assertEquals(30809, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
+        Assert.assertEquals(30809, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameA), orbit_delta);
     }
 
     @Test
@@ -288,67 +289,67 @@ public class OlciO2aHarmonisationIOTest {
         // test results verified with ESOV NG v2.5.3
         String synFileNameB =
                 "S3B_SY_1_SYN____20180425T191855_bla.nc";
-        assertEquals(1, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(1, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20180502T112446_bla.nc";
-        assertEquals(96, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(96, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20180524T130130_bla.nc";
-        assertEquals(410, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(410, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20180529T041632_bla.nc";
-        assertEquals(476, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(476, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20180530T135732_bla.nc";
-        assertEquals(496, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(496, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20180606T023007_bla.nc";
-        assertEquals(589, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(589, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20181016T103237_bla.nc";
-        assertEquals(2476, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(2476, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20181024T102233_bla.nc";
-        assertEquals(2590, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(2590, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20181109T213240_bla.nc";
-        assertEquals(2825, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(2825, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20181120T144927_bla.nc";
-        assertEquals(2978, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(2978, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20181123T104511_bla.nc";
-        assertEquals(3018, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(3018, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20181211T093534_bla.nc";
-        assertEquals(3274, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(3274, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20190116T090130_bla.nc";
-        assertEquals(3787, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(3787, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20200116T093856_bla.nc";
-        assertEquals(8992, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(8992, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20210116T095018_bla.nc";
-        assertEquals(14211, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(14211, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
 
         synFileNameB =
                 "S3B_SY_1_SYN____20220116T084649_bla.nc";
-        assertEquals(19415, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
+        Assert.assertEquals(19415, OlciO2aHarmonisationIO.getSynAbsoluteOrbitNumberFromDateTime(synFileNameB), orbit_delta);
     }
 
 }

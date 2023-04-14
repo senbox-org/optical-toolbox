@@ -1,4 +1,4 @@
-package eu.esa.opt.olci.o2a.harmonisation;
+package eu.esa.opt.olci.o2aharm;
 
 import smile.neighbor.KDTree;
 import smile.neighbor.Neighbor;
