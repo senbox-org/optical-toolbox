@@ -8,12 +8,12 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -25,20 +25,20 @@ public class ImageSizeHandlerTest {
     @Test
     public void testExtractImageSizes() throws IOException, URISyntaxException {
         final ImageSize[] imageSizes1 =
-                ImageSizeHandler.extractImageSizes(createXmlDocument(new FileInputStream(getFirstSlstrFile())));
+                ImageSizeHandler.extractImageSizes(createXmlDocument(Files.newInputStream(getFirstSlstrFile().toPath())));
         assertEquals(2, imageSizes1.length);
         assertEquals(new ImageSize("tn", 21687, 64, 2000, 130), imageSizes1[0]);
         assertEquals(new ImageSize("to", 21687, 64, 2000, 130), imageSizes1[1]);
 
         final ImageSize[] imageSizes2 =
-                ImageSizeHandler.extractImageSizes(createXmlDocument(new FileInputStream(getSecondSlstrFile())));
+                ImageSizeHandler.extractImageSizes(createXmlDocument(Files.newInputStream(getSecondSlstrFile().toPath())));
         assertEquals(3, imageSizes2.length);
         assertEquals(new ImageSize("tn", 23687, 64, 2000, 130), imageSizes2[0]);
         assertEquals(new ImageSize("io", 23687, 450, 2000, 900), imageSizes2[1]);
         assertEquals(new ImageSize("to", 23687, 64, 2000, 130), imageSizes2[2]);
 
         final ImageSize[] imageSizes3 =
-                ImageSizeHandler.extractImageSizes(createXmlDocument(new FileInputStream(getThirdSlstrFile())));
+                ImageSizeHandler.extractImageSizes(createXmlDocument(Files.newInputStream(getThirdSlstrFile().toPath())));
         assertEquals(2, imageSizes3.length);
         assertEquals(new ImageSize("tn", 25687, 64, 2000, 130), imageSizes3[0]);
         assertEquals(new ImageSize("to", 25687, 64, 2000, 130), imageSizes3[1]);

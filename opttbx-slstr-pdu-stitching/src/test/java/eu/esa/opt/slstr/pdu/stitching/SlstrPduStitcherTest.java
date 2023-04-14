@@ -1,17 +1,15 @@
 package eu.esa.opt.slstr.pdu.stitching;
 
 import com.bc.ceres.core.ProgressMonitor;
-import org.esa.snap.core.util.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -23,33 +21,20 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * @author Tonio Fincke
  */
 public class SlstrPduStitcherTest {
 
-    private File targetDirectory;
-
-    @Before
-    public void setUp() throws IOException {
-        targetDirectory = Files.createTempDirectory("test_out_").toFile();
-    }
-
-    @After
-    public void tearDown() {
-        if (targetDirectory.isDirectory()) {
-            if (!FileUtils.deleteTree(targetDirectory)) {
-                fail("Unable to delete test directory");
-            }
-        }
-    }
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Test
-    public void testStitchPDUs_NotEmpty() {
+    public void testStitchPDUs_NotEmpty() throws IOException {
+        File targetDirectory = tempFolder.newFolder("StitchPDUs_NotEmpty");
+
         try {
             SlstrPduStitcher.createStitchedSlstrL1BFile(targetDirectory, new File[0], null, ProgressMonitor.NULL);
             fail("Exception expected");
@@ -60,6 +45,8 @@ public class SlstrPduStitcherTest {
 
     @Test
     public void testStitchPDUs_OnlyOneSlstrL1BProductFile() throws Exception {
+        File targetDirectory = tempFolder.newFolder("StitchPDUs_OnlyOneSlstrL1BProductFile");
+
         final File firstSlstrFile = TestUtils.getFirstSlstrFile();
 
         final File stitchedProductFile = SlstrPduStitcher.createStitchedSlstrL1BFile(targetDirectory,
@@ -117,7 +104,7 @@ public class SlstrPduStitcherTest {
         List<String> ncFiles = new ArrayList<>();
         final File[] slstrFiles = TestUtils.getSlstrFiles();
         for (File slstrFile : slstrFiles) {
-            SlstrPduStitcher.collectFiles(ncFiles, createXmlDocument(new FileInputStream(slstrFile)));
+            SlstrPduStitcher.collectFiles(ncFiles, createXmlDocument(Files.newInputStream(slstrFile.toPath())));
         }
 
         assertEquals(3, ncFiles.size());
