@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s2.l1b;
 
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Mask;
@@ -7,7 +8,6 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.subset.PixelSubsetRegion;
 import org.esa.snap.runtime.Engine;
 import org.esa.snap.runtime.LogUtils4Tests;
-import org.esa.snap.utils.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,10 +21,7 @@ import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
 /**

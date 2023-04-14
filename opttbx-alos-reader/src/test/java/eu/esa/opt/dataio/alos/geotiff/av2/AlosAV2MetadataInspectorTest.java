@@ -1,16 +1,14 @@
 package eu.esa.opt.dataio.alos.geotiff.av2;
 
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.metadata.MetadataInspector;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
 /**

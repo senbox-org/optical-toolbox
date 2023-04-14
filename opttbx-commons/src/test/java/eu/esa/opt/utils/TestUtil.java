@@ -15,15 +15,14 @@
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-package org.esa.snap.utils;
+package eu.esa.opt.utils;
 
 import org.apache.commons.lang.SystemUtils;
+import org.junit.Assert;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import static org.junit.Assert.assertTrue;
 
 public class TestUtil {
 
@@ -36,13 +35,13 @@ public class TestUtil {
 
     public static File getTestFile(String file) {
         final File testTgz = getTestFileOrDirectory(file);
-        assertTrue(String.format("Looking for file: [%s]", testTgz.getAbsolutePath()), testTgz.isFile());
+        Assert.assertTrue(String.format("Looking for file: [%s]", testTgz.getAbsolutePath()), testTgz.isFile());
         return testTgz;
     }
 
     public static File getTestDirectory(String file) {
         final File testTgz = getTestFileOrDirectory(file);
-        assertTrue(String.format("Is directory: [%s]", testTgz.getAbsolutePath()), testTgz.isDirectory());
+        Assert.assertTrue(String.format("Is directory: [%s]", testTgz.getAbsolutePath()), testTgz.isDirectory());
         return testTgz;
     }
 

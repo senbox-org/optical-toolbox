@@ -1,8 +1,8 @@
 package eu.esa.opt.dataio.spot;
 
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.metadata.MetadataInspector;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Test;
 
 import java.io.File;

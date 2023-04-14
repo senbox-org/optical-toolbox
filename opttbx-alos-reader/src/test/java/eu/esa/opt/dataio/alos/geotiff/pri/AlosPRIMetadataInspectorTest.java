@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.alos.geotiff.pri;
 
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.metadata.MetadataInspector;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Test;
 
 import java.io.File;

@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.s2.l1b;
 
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.metadata.MetadataInspector;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;

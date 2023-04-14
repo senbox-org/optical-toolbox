@@ -1,6 +1,7 @@
 package eu.esa.opt.coregistration;
 
 import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
@@ -9,7 +10,6 @@ import org.esa.snap.core.datamodel.VirtualBand;
 import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.dataio.geotiff.GeoTiffProductReaderPlugIn;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -133,7 +133,7 @@ public class CoregistrationOpTest {
         assertEquals(4, op.getParameter("rank"));
         assertEquals(6, op.getParameter("levels"));
         assertEquals(2, op.getParameter("iterations"));
-        assertEquals("32, 28, 24, 20, 16, 12, 8",op.getParameter("radius"));
+        assertEquals("32, 28, 24, 20, 16, 12, 8", op.getParameter("radius"));
         assertEquals("CoregistrationOp", op.getSpi().getOperatorAlias());
 
     }
@@ -171,7 +171,7 @@ public class CoregistrationOpTest {
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("slaveSourceBand", slaveSourceProduct.getBand("gray").getName());
-        parameters.put("masterSourceBand",masterSourceProduct.getBand("gray").getName());
+        parameters.put("masterSourceBand", masterSourceProduct.getBand("gray").getName());
         parameters.put("levels", 6);
         parameters.put("rank", 4);
         parameters.put("iterations", 2);
