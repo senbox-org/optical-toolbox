@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!--
-  ~ Copyright (C) 2011 Brockmann Consult GmbH (info@brockmann-consult.de)
+  ~ Copyright (c) 2021.  Brockmann Consult GmbH (info@brockmann-consult.de)
   ~
   ~ This program is free software; you can redistribute it and/or modify it
   ~ under the terms of the GNU General Public License as published by the Free
@@ -14,24 +14,28 @@
   ~ You should have received a copy of the GNU General Public License along
   ~ with this program; if not, see http://www.gnu.org/licenses/
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
+    
+	<parent>
         <groupId>eu.esa.opt</groupId>
         <artifactId>optical-toolbox</artifactId>
         <version>10.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>opttbx-mphchl</artifactId>
-    <packaging>nbm</packaging>
+    <artifactId>opttbx-olci-preprocessing</artifactId>
 
-    <name>MPH/CHL Processor</name>
-    <description>The MPH/CHL Processor calculates maximum peak height of chlorophyll.</description>
+    <name>Sentinel-3 OLCI Preprocessing Operators</name>
+    <packaging>nbm</packaging>
+    <description>Adds OLCI preprocessing operations to the Optical Toolbox</description>
 
     <dependencies>
+
         <dependency>
             <groupId>org.esa.snap</groupId>
-            <artifactId>ceres-ui</artifactId>
+            <artifactId>ceres-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
@@ -43,37 +47,48 @@
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
-            <artifactId>ceres-binding</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.esa.snap</groupId>
             <artifactId>snap-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.esa.snap</groupId>
-            <artifactId>snap-ui</artifactId>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-gpf</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-envisat-reader</artifactId>
             <version>${snap.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-dem</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
 
         <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-olci-preprocessing</artifactId>
-            <version>${opttbx.version}</version>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-awt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-util</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -81,19 +96,24 @@
             <plugin>
                 <groupId>org.apache.netbeans.utilities</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
+                <configuration>
+                    <publicPackages>
+                        <publicPackage>eu.esa.opt.olci.radiometry.*</publicPackage>
+                    </publicPackages>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <useDefaultManifestFile>true</useDefaultManifestFile>
                 </configuration>
             </plugin>
+            
         </plugins>
     </build>
-</project>
 
+</project>

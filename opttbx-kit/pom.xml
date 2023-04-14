@@ -518,7 +518,7 @@
         </dependency>
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-olci-anomaly-flagging</artifactId>
+            <artifactId>opttbx-olci-preprocessing</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
         <dependency>
@@ -529,11 +529,6 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-olci-harmonisation</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-olci-radiometry</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
         <dependency>

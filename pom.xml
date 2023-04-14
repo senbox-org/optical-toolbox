@@ -110,10 +110,9 @@
         <module>opttbx-mphchl</module>
         <module>opttbx-rad2refl</module>
         <module>opttbx-rad2refl-ui</module>
-        <module>opttbx-olci-anomaly-flagging</module>
+        <module>opttbx-olci-preprocessing</module>
         <module>opttbx-olci-o2aharmonisation</module>
         <module>opttbx-olci-harmonisation</module>
-        <module>opttbx-olci-radiometry</module>
         <module>opttbx-owt-classification</module>
         <module>opttbx-probav-reader</module>
         <module>opttbx-ppe-operator</module>
