@@ -158,7 +158,6 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-commons</artifactId>
-            <version>${opttbx.version}</version>
         </dependency>
 
         <dependency>
