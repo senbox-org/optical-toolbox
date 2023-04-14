@@ -17,16 +17,13 @@ import ucar.nc2.Variable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * @author Tonio Fincke
@@ -38,8 +35,8 @@ public class NcFileStitcherLongTest {
     private NetcdfFile netcdfFile;
 
     @Before
-    public void setUp() {
-        targetDirectory = new File("test_out");
+    public void setUp() throws IOException {
+        targetDirectory = Files.createTempDirectory("test_out_").toFile();
         if (!targetDirectory.mkdirs()) {
             fail("Unable to create test target directory");
         }

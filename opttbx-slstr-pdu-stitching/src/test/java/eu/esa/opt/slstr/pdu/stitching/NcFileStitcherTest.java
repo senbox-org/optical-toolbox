@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,8 +55,8 @@ public class NcFileStitcherTest {
     private NetcdfFile netcdfFile;
 
     @Before
-    public void setUp() {
-        targetDirectory = new File("test_out");
+    public void setUp() throws IOException {
+        targetDirectory = Files.createTempDirectory("test_out_").toFile();
         if (targetDirectory.exists()) {
             // Delete leftovers
             FileUtils.deleteTree(targetDirectory);

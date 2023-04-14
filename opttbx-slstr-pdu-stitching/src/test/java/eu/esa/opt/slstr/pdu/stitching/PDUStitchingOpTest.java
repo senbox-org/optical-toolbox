@@ -14,17 +14,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * @author Tonio Fincke
@@ -38,8 +37,8 @@ public class PDUStitchingOpTest {
     private File targetDirectory;
 
     @Before
-    public void setUp() {
-        targetDirectory = new File("test_out");
+    public void setUp() throws IOException {
+        targetDirectory = Files.createTempDirectory("test_out_").toFile();
         if (!targetDirectory.mkdirs()) {
             fail("Unable to create test target directory");
         }

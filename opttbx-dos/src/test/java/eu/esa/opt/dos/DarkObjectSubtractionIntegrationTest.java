@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static org.junit.Assert.fail;
 
@@ -14,8 +16,8 @@ public class DarkObjectSubtractionIntegrationTest {
     private File targetDirectory;
 
     @Before
-    public void setUp() {
-        targetDirectory = new File("dos_test_out");
+    public void setUp() throws IOException {
+        targetDirectory = Files.createTempDirectory("dos_test_out_").toFile();
         if (!targetDirectory.mkdirs()) {
             fail("Unable to create test target directory");
         }

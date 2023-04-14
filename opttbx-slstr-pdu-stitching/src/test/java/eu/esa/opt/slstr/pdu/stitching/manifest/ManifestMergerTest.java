@@ -14,6 +14,7 @@ import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,8 +31,8 @@ public class ManifestMergerTest {
     private ManifestMerger manifestMerger;
 
     @Before
-    public void setUp() {
-        targetDirectory = new File("test_out");
+    public void setUp() throws IOException {
+        targetDirectory = Files.createTempDirectory("test_out_").toFile();
         if (targetDirectory.exists()) {
             // Delete leftovers
             FileUtils.deleteTree(targetDirectory);

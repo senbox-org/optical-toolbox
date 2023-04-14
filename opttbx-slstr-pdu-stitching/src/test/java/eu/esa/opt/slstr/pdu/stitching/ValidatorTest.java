@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.fail;
@@ -22,7 +23,7 @@ import static org.junit.Assert.fail;
 public class ValidatorTest {
 
     @Test
-    public void testValidate() throws ParserConfigurationException, SAXException, URISyntaxException {
+    public void testValidate() throws URISyntaxException {
         final File[] slstrFiles = TestUtils.getSlstrFiles();
         try {
             Validator.validate(slstrFiles);
@@ -50,7 +51,7 @@ public class ValidatorTest {
                         "          </sentinel-safe:orbitReference>";
         final DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         manifests[manifests.length - 1] =
-                documentBuilder.parse(new InputSource(new ByteArrayInputStream(orbitRef.getBytes("utf-8"))));
+                documentBuilder.parse(new InputSource(new ByteArrayInputStream(orbitRef.getBytes(StandardCharsets.UTF_8))));
         try {
             Validator.validateOrbitReference(manifests);
             fail("Exception expected");
@@ -109,8 +110,8 @@ public class ValidatorTest {
                         "          </sentinel-safe:orbitReference>";
         Document[] manifests = new Document[2];
         final DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        manifests[0] = documentBuilder.parse(new InputSource(new ByteArrayInputStream(orbitRef.getBytes("utf-8"))));
-        manifests[1] = documentBuilder.parse(new InputSource(new ByteArrayInputStream(orbitRef.getBytes("utf-8"))));
+        manifests[0] = documentBuilder.parse(new InputSource(new ByteArrayInputStream(orbitRef.getBytes(StandardCharsets.UTF_8))));
+        manifests[1] = documentBuilder.parse(new InputSource(new ByteArrayInputStream(orbitRef.getBytes(StandardCharsets.UTF_8))));
         try {
             Validator.validateOrbitReference(manifests);
         } catch (PDUStitchingException e) {
