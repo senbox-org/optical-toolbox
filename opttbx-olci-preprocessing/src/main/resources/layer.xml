@@ -84,6 +84,16 @@
             <attr name="targetProductNameSuffix" stringvalue="_harm"/>
             <attr name="helpId" stringvalue="olciSensorHarmonisationTool"/>
         </file>
+
+        <file name="eu-esa-opt-PpeFilteringAction.instance">
+            <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+            <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
+            <attr name="displayName" stringvalue="OLCI PPE Filtering"/>
+            <attr name="dialogTitle" stringvalue="OLCI PPE Filtering"/>
+            <attr name="operatorName" stringvalue="PpeFiltering"/>
+            <attr name="helpId" stringvalue="PpeTool"/>
+            <attr name="targetProductNameSuffix" stringvalue="_ppe"/>
+        </file>
     </folder>
 
     <folder name="Menu">
@@ -100,6 +110,10 @@
                           stringvalue="Actions/Operators/eu-esa-opt-olci-harmonisation-OlciSensorHarmonisationOpAction.instance"/>
                     <attr name="position" intvalue="4"/>
                     <attr name="displayName" stringvalue="OLCI Sensor Harmonisation"/>
+                </file>
+                <file name="eu-esa-opt-PpeOpAction.shadow">
+                    <attr name="originalFile" stringvalue="Actions/Operators/eu-esa-opt-PpeFilteringAction.instance"/>
+                    <attr name="position" intvalue="10010"/>
                 </file>
                 <file name="eu-esa-opt-olci-radiometry-rayleigh-RayleighCorrectionOpAction.shadow">
                     <attr name="originalFile"
@@ -140,6 +154,13 @@
                 <attr name="position" intvalue="4900"/>
             </file>
         </folder>
+    </folder>
+
+    <folder name="OperatorUIs">
+        <file name="eu.esa.opt.ppeOp">
+            <attr name="operatorName" stringvalue="PpeFiltering"/>
+            <attr name="disableFromGraphBuilder" stringvalue="true"/>
+        </file>
     </folder>
 
 </filesystem>

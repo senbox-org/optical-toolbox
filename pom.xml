@@ -113,7 +113,6 @@
         <module>opttbx-olci-preprocessing</module>
         <module>opttbx-owt-classification</module>
         <module>opttbx-probav-reader</module>
-        <module>opttbx-ppe-operator</module>
         <module>opttbx-sentinel3-reader</module>
         <module>opttbx-sentinel3-reader-ui</module>
         <module>opttbx-slstr-pdu-stitching</module>

@@ -1,4 +1,4 @@
-package eu.esa.opt.ppe;
+package eu.esa.opt.olci.ppe;
 
 import com.bc.ceres.glevel.MultiLevelImage;
 import org.esa.snap.core.dataio.ProductIO;
@@ -12,15 +12,12 @@ import org.junit.Test;
 
 import java.awt.Rectangle;
 import java.awt.image.Raster;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 public class PpeOpTest {

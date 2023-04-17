@@ -51,4 +51,8 @@
     <mapID target="olciSensorHarmonisationProcessorDescription"
            url="harmonisation/OlciSensorHarmonisationProcessorDescription.html"/>
     <mapID target="olciSensorHarmonisationCommandLine" url="harmonisation/OlciSensorHarmonisationCommandLine.html"/>
+
+    <mapID target="PpeTool" url="ppe/PpeTool.html"/>
+    <mapID target="PpeAlgo" url="ppe/PpeAlgo.html"/>
+    <mapID target="PpeOp" url="ppe/PpeOp.html"/>
 </map>

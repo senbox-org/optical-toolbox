@@ -49,6 +49,11 @@
                     <tocitem text="Processor Description" target="olciSensorHarmonisationProcessorDescription"/>
                     <tocitem text="Command Line Processing" target="olciSensorHarmonisationCommandLine"/>
                 </tocitem>
+
+                <tocitem text="PPE Filtering" target="PpeTool">
+                    <tocitem text="PPE Filtering - Algorithm Specification" target="PpeAlgo"/>
+                    <tocitem text="PPE Filtering - Processor Description" target="PpeOp"/>
+                </tocitem>
             </tocitem>
         </tocitem>
     </tocitem>

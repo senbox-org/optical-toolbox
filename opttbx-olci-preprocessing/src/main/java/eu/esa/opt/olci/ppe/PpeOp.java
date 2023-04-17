@@ -15,7 +15,7 @@
  */
 
 
-package eu.esa.opt.ppe;
+package eu.esa.opt.olci.ppe;
 
 
 import com.bc.ceres.core.ProgressMonitor;
