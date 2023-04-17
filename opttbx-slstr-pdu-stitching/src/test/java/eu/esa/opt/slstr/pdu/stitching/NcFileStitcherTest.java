@@ -1,7 +1,6 @@
 package eu.esa.opt.slstr.pdu.stitching;
 
 import com.bc.ceres.binding.converters.DateFormatConverter;
-import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.dataio.netcdf.NetCdfActivator;
 import org.esa.snap.dataio.netcdf.nc.NFileWriteable;
 import org.esa.snap.dataio.netcdf.nc.NVariable;
@@ -11,7 +10,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import ucar.ma2.Array;
 import ucar.ma2.ArrayByte;
 import ucar.ma2.ArrayLong;
@@ -28,7 +29,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,7 +40,9 @@ import java.util.Map;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author Tonio Fincke
@@ -51,19 +53,12 @@ public class NcFileStitcherTest {
         NetCdfActivator.activate();
     }
 
-    private File targetDirectory;
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
     private NetcdfFile netcdfFile;
 
     @Before
-    public void setUp() throws IOException {
-        targetDirectory = Files.createTempDirectory("test_out_").toFile();
-        if (targetDirectory.exists()) {
-            // Delete leftovers
-            FileUtils.deleteTree(targetDirectory);
-        }
-        if (!targetDirectory.mkdirs()) {
-            fail("Unable to create test target directory");
-        }
+    public void setUp() {
         netcdfFile = null;
     }
 
@@ -72,11 +67,7 @@ public class NcFileStitcherTest {
         if (netcdfFile != null) {
             netcdfFile.close();
         }
-        if (targetDirectory.isDirectory()) {
-            if (!FileUtils.deleteTree(targetDirectory)) {
-                fail("Unable to delete test directory");
-            }
-        }
+
     }
 
     @Test
@@ -90,8 +81,9 @@ public class NcFileStitcherTest {
         final Date now = Calendar.getInstance().getTime();
         final File[] ncFiles = getNcFiles(ncFileName);
 
+        File targetDirectory = tempFolder.newFolder("StitchViscal");
         final File stitchedFile = NcFileStitcher.stitchNcFiles(ncFileName, targetDirectory, now, ncFiles,
-                                                               targetImageSize, imageSizes);
+                targetImageSize, imageSizes);
 
         Assert.assertNotNull(stitchedFile);
         assertTrue(stitchedFile.exists());
@@ -118,8 +110,9 @@ public class NcFileStitcherTest {
         final Date now = Calendar.getInstance().getTime();
         final File[] ncFiles = getNcFiles(ncFileName);
 
+        File targetDirectory = tempFolder.newFolder("StitchMet_tx");
         final File stitchedFile = NcFileStitcher.stitchNcFiles(ncFileName, targetDirectory, now, ncFiles,
-                                                               targetImageSize, imageSizes);
+                targetImageSize, imageSizes);
 
         assert (stitchedFile != null);
         assert (stitchedFile.exists());
@@ -200,8 +193,9 @@ public class NcFileStitcherTest {
         final Date now = Calendar.getInstance().getTime();
         final File[] ncFiles = new File[]{getSecondNcFile(ncFileName)};
 
+        File targetDirectory = tempFolder.newFolder("StitchF1_BT_io");
         final File stitchedFile = NcFileStitcher.stitchNcFiles(ncFileName, targetDirectory, now, ncFiles,
-                                                               targetImageSize, imageSizes);
+                targetImageSize, imageSizes);
 
         assert (stitchedFile != null);
         assert (stitchedFile.exists());
@@ -224,7 +218,7 @@ public class NcFileStitcherTest {
         assertEquals("toa_brightness_temperature", F1_BT_io_attributes.get(1).getStringValue());
         assertEquals("long_name", F1_BT_io_attributes.get(2).getFullName());
         assertEquals("Gridded pixel brightness temperature for channel F1 (1km TIR grid, oblique view)",
-                     F1_BT_io_attributes.get(2).getStringValue());
+                F1_BT_io_attributes.get(2).getStringValue());
         assertEquals("units", F1_BT_io_attributes.get(3).getFullName());
         assertEquals("K", F1_BT_io_attributes.get(3).getStringValue());
         assertEquals("_FillValue", F1_BT_io_attributes.get(4).getFullName());
@@ -239,7 +233,7 @@ public class NcFileStitcherTest {
 
         assertEquals("F1_exception_orphan_io", variables.get(3).getFullName());
         assertEquals(DataType.UBYTE, variables.get(3).getDataType());
-        assertEquals(true, variables.get(3).getDataType().isUnsigned());
+        assertTrue(variables.get(3).getDataType().isUnsigned());
         assertEquals("rows orphan_pixels", variables.get(3).getDimensionsString());
         final List<Attribute> F1_exception_orphan_io_attributes = variables.get(3).getAttributes();
         assertEquals("_ChunkSize", F1_exception_orphan_io_attributes.get(0).getFullName());
@@ -251,7 +245,7 @@ public class NcFileStitcherTest {
         assertEquals("standard_name", F1_exception_orphan_io_attributes.get(1).getFullName());
         assertEquals("toa_brightness_temperature_status_flag", F1_exception_orphan_io_attributes.get(1).getStringValue());
         assertEquals("flag_masks", F1_exception_orphan_io_attributes.get(2).getFullName());
-        assertEquals(true, F1_exception_orphan_io_attributes.get(2).isArray());
+        assertTrue(F1_exception_orphan_io_attributes.get(2).isArray());
         final Array F1_exception_orphan_io_values = F1_exception_orphan_io_attributes.get(2).getValues();
         assertEquals(8, F1_exception_orphan_io_values.getSize());
         assertEquals(DataType.UBYTE, F1_exception_orphan_io_values.getDataType());
@@ -266,7 +260,7 @@ public class NcFileStitcherTest {
         assertEquals((byte) 128, F1_exception_orphan_io_values.getByte(7));
         assertEquals("flag_meanings", F1_exception_orphan_io_attributes.get(3).getFullName());
         assertEquals("ISP_absent pixel_absent not_decompressed no_signal saturation invalid_radiance no_parameters unfilled_pixel",
-                     F1_exception_orphan_io_attributes.get(3).getStringValue());
+                F1_exception_orphan_io_attributes.get(3).getStringValue());
         assertEquals("_FillValue", F1_exception_orphan_io_attributes.get(4).getFullName());
         assertEquals((byte) -128, F1_exception_orphan_io_attributes.get(4).getNumericValue());
 
@@ -296,6 +290,7 @@ public class NcFileStitcherTest {
 
     @Test
     public void testSetGlobalAttributes() throws IOException {
+        File targetDirectory = tempFolder.newFolder("SetGlobalAttributes");
         final File file = new File(targetDirectory, "something.nc");
         SlstrNFileWritable netcdfWriteable = new SlstrNFileWritable(file.getAbsolutePath());
         List<Attribute>[] attributeLists = new List[2];
@@ -344,6 +339,7 @@ public class NcFileStitcherTest {
         List<Dimension>[] dimensionLists = new ArrayList[2];
         List<Variable>[] variableLists = new ArrayList[2];
 
+        File targetDirectory = tempFolder.newFolder("SetDimensions");
         final File inputFile1 = new File(targetDirectory, "input_1.nc");
         SlstrNFileWritable inputWriteable1 = new SlstrNFileWritable(inputFile1.getAbsolutePath());
         inputWriteable1.addDimension("rows", 5);
@@ -404,6 +400,7 @@ public class NcFileStitcherTest {
         List<Dimension>[] dimensionLists = new ArrayList[2];
         List<Variable>[] variableLists = new ArrayList[2];
 
+        File targetDirectory = tempFolder.newFolder("SetDimensions_VaryingDimensionLengths");
         final File inputFile1 = new File(targetDirectory, "input_1.nc");
         final NFileWriteable inputWriteable1 = NWritableFactory.create(inputFile1.getAbsolutePath(), "netcdf4");
         inputWriteable1.addDimension("rows", 5);
@@ -457,6 +454,7 @@ public class NcFileStitcherTest {
         List<Dimension>[] dimensionLists = new ArrayList[2];
         List<Variable>[] variableLists = new ArrayList[2];
 
+        File targetDirectory = tempFolder.newFolder("SetDimensions_VaryingValues");
         final File inputFile1 = new File(targetDirectory, "input_1.nc");
         final NFileWriteable inputWriteable1 = NWritableFactory.create(inputFile1.getAbsolutePath(), "netcdf4");
         inputWriteable1.addDimension("rows", 5);
@@ -593,7 +591,7 @@ public class NcFileStitcherTest {
         final Variable u_wind_tx_variable = met_tx_netcdfFile.getVariables().get(11);
 
         assertArrayEquals(new int[]{0, 260000, 520000, 780000, 1040000},
-                          NcFileStitcher.determineSourceOffsets(260000, u_wind_tx_variable));
+                NcFileStitcher.determineSourceOffsets(260000, u_wind_tx_variable));
     }
 
     @Test
