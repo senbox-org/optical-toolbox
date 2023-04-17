@@ -74,32 +74,45 @@
             <attr name="targetProductNameSuffix" stringvalue="_harmonised"/>
             <attr name="helpId" stringvalue="olciO2aHarmonisationTool"/>
         </file>
+
+        <file name="eu-esa-opt-olci-harmonisation-OlciSensorHarmonisationOpAction.instance">
+            <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+            <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
+            <attr name="displayName" stringvalue="OLCI Sensor Harmonisation"/>
+            <attr name="operatorName" stringvalue="OlciSensorHarmonisation"/>
+            <attr name="dialogTitle" stringvalue="OLCI Sensor Harmonisation - v1.0"/>
+            <attr name="targetProductNameSuffix" stringvalue="_harm"/>
+            <attr name="helpId" stringvalue="olciSensorHarmonisationTool"/>
+        </file>
     </folder>
 
     <folder name="Menu">
         <folder name="Optical">
             <folder name="Preprocessing">
-                <folder name="Masking">
-                    <file name="eu-esa-opt-olci-anomaly-flagging-OlciAnomalyFlaggingOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-olci-anomaly-flagging-OlciAnomalyFlaggingOpAction.instance"/>
-                        <attr name="position" intvalue="4"/>
-                    </file>
-                </folder>
-
+                <file name="eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.shadow">
+                    <attr name="originalFile"
+                          stringvalue="Actions/Operators/eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.instance"/>
+                    <attr name="position" intvalue="1"/>
+                    <attr name="displayName" stringvalue="OLCI O2A Harmonisation"/>
+                </file>
+                <file name="eu-esa-opt-olci-harmonisation-OlciSensorHarmonisationOpAction.shadow">
+                    <attr name="originalFile"
+                          stringvalue="Actions/Operators/eu-esa-opt-olci-harmonisation-OlciSensorHarmonisationOpAction.instance"/>
+                    <attr name="position" intvalue="4"/>
+                    <attr name="displayName" stringvalue="OLCI Sensor Harmonisation"/>
+                </file>
                 <file name="eu-esa-opt-olci-radiometry-rayleigh-RayleighCorrectionOpAction.shadow">
                     <attr name="originalFile"
                           stringvalue="Actions/Operators/eu-esa-opt-olci-radiometry-rayleigh-RayleighCorrectionOpAction.instance"/>
                     <attr name="position" intvalue="12000"/>
                 </file>
-
                 <!--
-                <file name="eu-esa-opt-olci-radiometry-smilecorr-SmileCorrectionOpAction.shadow">
-                    <attr name="originalFile"
-                          stringvalue="Actions/Operators/eu-esa-opt-olci-radiometry-smilecorr-SmileCorrectionOpAction.instance"/>
-                    <attr name="position" intvalue="10000"/>
-                </file>
-                -->
+<file name="eu-esa-opt-olci-radiometry-smilecorr-SmileCorrectionOpAction.shadow">
+    <attr name="originalFile"
+          stringvalue="Actions/Operators/eu-esa-opt-olci-radiometry-smilecorr-SmileCorrectionOpAction.instance"/>
+    <attr name="position" intvalue="10000"/>
+</file>
+-->
 
                 <!--
                                 <file name="eu-esa-opt-olci-radiometry-gasabsorption-GaseousAbsorptionOpAction.shadow">
@@ -109,12 +122,14 @@
                                 </file>
                 -->
 
-                <file name="eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.shadow">
-                    <attr name="originalFile"
-                          stringvalue="Actions/Operators/eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.instance"/>
-                    <attr name="position" intvalue="1"/>
-                    <attr name="displayName" stringvalue="OLCI O2A Harmonisation"/>
-                </file>
+
+                <folder name="Masking">
+                    <file name="eu-esa-opt-olci-anomaly-flagging-OlciAnomalyFlaggingOpAction.shadow">
+                        <attr name="originalFile"
+                              stringvalue="Actions/Operators/eu-esa-opt-olci-anomaly-flagging-OlciAnomalyFlaggingOpAction.instance"/>
+                        <attr name="position" intvalue="4"/>
+                    </file>
+                </folder>
             </folder>
         </folder>
     </folder>

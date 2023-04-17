@@ -14,7 +14,7 @@
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-package eu.esa.opt.olci.sensor.harmonisation;
+package eu.esa.opt.olci.harmonisation;
 
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
@@ -23,6 +23,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.gpf.OperatorException;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -31,11 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class OlciSensorHarmonisationOpTest {
 
@@ -164,35 +161,35 @@ public class OlciSensorHarmonisationOpTest {
 
     @Test
     public void testGetCameraIndex() {
-        assertEquals(0, OlciSensorHarmonisationOp.getCameraIndex(0));
-        assertEquals(0, OlciSensorHarmonisationOp.getCameraIndex(2));
-        assertEquals(0, OlciSensorHarmonisationOp.getCameraIndex(739));
+        Assert.assertEquals(0, OlciSensorHarmonisationOp.getCameraIndex(0));
+        Assert.assertEquals(0, OlciSensorHarmonisationOp.getCameraIndex(2));
+        Assert.assertEquals(0, OlciSensorHarmonisationOp.getCameraIndex(739));
 
-        assertEquals(1, OlciSensorHarmonisationOp.getCameraIndex(740));
-        assertEquals(1, OlciSensorHarmonisationOp.getCameraIndex(1479));
+        Assert.assertEquals(1, OlciSensorHarmonisationOp.getCameraIndex(740));
+        Assert.assertEquals(1, OlciSensorHarmonisationOp.getCameraIndex(1479));
 
-        assertEquals(2, OlciSensorHarmonisationOp.getCameraIndex(1480));
-        assertEquals(2, OlciSensorHarmonisationOp.getCameraIndex(2219));
+        Assert.assertEquals(2, OlciSensorHarmonisationOp.getCameraIndex(1480));
+        Assert.assertEquals(2, OlciSensorHarmonisationOp.getCameraIndex(2219));
 
-        assertEquals(3, OlciSensorHarmonisationOp.getCameraIndex(2220));
-        assertEquals(3, OlciSensorHarmonisationOp.getCameraIndex(2959));
+        Assert.assertEquals(3, OlciSensorHarmonisationOp.getCameraIndex(2220));
+        Assert.assertEquals(3, OlciSensorHarmonisationOp.getCameraIndex(2959));
 
-        assertEquals(4, OlciSensorHarmonisationOp.getCameraIndex(2960));
-        assertEquals(4, OlciSensorHarmonisationOp.getCameraIndex(3699));
+        Assert.assertEquals(4, OlciSensorHarmonisationOp.getCameraIndex(2960));
+        Assert.assertEquals(4, OlciSensorHarmonisationOp.getCameraIndex(3699));
     }
 
     @Test
     public void testGetCameraIndex_invalidDetectors() {
-        assertEquals(-1, OlciSensorHarmonisationOp.getCameraIndex(-1));
-        assertEquals(-1, OlciSensorHarmonisationOp.getCameraIndex(3700));
+        Assert.assertEquals(-1, OlciSensorHarmonisationOp.getCameraIndex(-1));
+        Assert.assertEquals(-1, OlciSensorHarmonisationOp.getCameraIndex(3700));
     }
 
     @Test
     public void testGetSensorIndex() {
-        assertEquals(0, OlciSensorHarmonisationOp.getSensorIndex("S3A_OL_1_EFR____20130621T100921_20130621T101417_20140613T170503_0295_001_002______LN2_D_NR____.SEN3"));
-        assertEquals(1, OlciSensorHarmonisationOp.getSensorIndex("S3B_OL_1_EFR____20190420T120914_20190420T121214_20190421T151110_0179_024_237_3420_LN1_O_NT_002.SEN3"));
-        assertEquals(2, OlciSensorHarmonisationOp.getSensorIndex("S3C_OL_1_EFR____20190420T120914_20190420T121214_20190421T151110_0179_024_237_3420_LN1_O_NT_002.SEN3"));
-        assertEquals(3, OlciSensorHarmonisationOp.getSensorIndex("S3D_OL_1_EFR____20190420T120914_20190420T121214_20190421T151110_0179_024_237_3420_LN1_O_NT_002.SEN3"));
+        Assert.assertEquals(0, OlciSensorHarmonisationOp.getSensorIndex("S3A_OL_1_EFR____20130621T100921_20130621T101417_20140613T170503_0295_001_002______LN2_D_NR____.SEN3"));
+        Assert.assertEquals(1, OlciSensorHarmonisationOp.getSensorIndex("S3B_OL_1_EFR____20190420T120914_20190420T121214_20190421T151110_0179_024_237_3420_LN1_O_NT_002.SEN3"));
+        Assert.assertEquals(2, OlciSensorHarmonisationOp.getSensorIndex("S3C_OL_1_EFR____20190420T120914_20190420T121214_20190421T151110_0179_024_237_3420_LN1_O_NT_002.SEN3"));
+        Assert.assertEquals(3, OlciSensorHarmonisationOp.getSensorIndex("S3D_OL_1_EFR____20190420T120914_20190420T121214_20190421T151110_0179_024_237_3420_LN1_O_NT_002.SEN3"));
     }
 
     @Test
@@ -206,8 +203,8 @@ public class OlciSensorHarmonisationOpTest {
 
     @Test
     public void testGetSourceBandName() {
-        assertEquals("Oa07_radiance", OlciSensorHarmonisationOp.getSourceBandName("Oa07_radiance_HARM"));
-        assertEquals("Oa18_radiance", OlciSensorHarmonisationOp.getSourceBandName("Oa18_radiance_HARM"));
+        Assert.assertEquals("Oa07_radiance", OlciSensorHarmonisationOp.getSourceBandName("Oa07_radiance_HARM"));
+        Assert.assertEquals("Oa18_radiance", OlciSensorHarmonisationOp.getSourceBandName("Oa18_radiance_HARM"));
     }
 
     @Test
@@ -242,9 +239,9 @@ public class OlciSensorHarmonisationOpTest {
 
     @Test
     public void testGetBandIndex() {
-        assertEquals(0, OlciSensorHarmonisationOp.getBandIndex("Oa01_radiance"));
-        assertEquals(6, OlciSensorHarmonisationOp.getBandIndex("Oa07_radiance"));
-        assertEquals(20, OlciSensorHarmonisationOp.getBandIndex("Oa21_radiance"));
+        Assert.assertEquals(0, OlciSensorHarmonisationOp.getBandIndex("Oa01_radiance"));
+        Assert.assertEquals(6, OlciSensorHarmonisationOp.getBandIndex("Oa07_radiance"));
+        Assert.assertEquals(20, OlciSensorHarmonisationOp.getBandIndex("Oa21_radiance"));
     }
 
     private Product createTestProduct() {

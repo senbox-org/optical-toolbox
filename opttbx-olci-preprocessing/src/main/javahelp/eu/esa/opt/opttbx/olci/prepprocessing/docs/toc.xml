@@ -44,6 +44,11 @@
                     <tocitem text="Command Line Processing" target="olciO2aHarmonisationCommandLine"/>
                 </tocitem>
 
+                <tocitem text="OLCI Sensor Harmonisation" target="olciSensorHarmonisationTool">
+                    <tocitem text="Algorithm Specification" target="olciSensorHarmonisationAlgorithmSpecification"/>
+                    <tocitem text="Processor Description" target="olciSensorHarmonisationProcessorDescription"/>
+                    <tocitem text="Command Line Processing" target="olciSensorHarmonisationCommandLine"/>
+                </tocitem>
             </tocitem>
         </tocitem>
     </tocitem>

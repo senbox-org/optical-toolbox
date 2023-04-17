@@ -14,7 +14,7 @@
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-package eu.esa.opt.olci.sensor.harmonisation;
+package eu.esa.opt.olci.harmonisation;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.datamodel.Band;
@@ -259,7 +259,7 @@ public class OlciSensorHarmonisationOp extends Operator {
     }
 
     private void loadCameraGains() throws OperatorException {
-        final InputStream inputStream = OlciSensorHarmonisationOp.class.getResourceAsStream("camera_gains.csv");
+        final InputStream inputStream = OlciSensorHarmonisationOp.class.getResourceAsStream("/auxdata/harmonisation/camera_gains.csv");
         if (inputStream == null) {
             throw new IllegalArgumentException("resource I/O error: resource not found: camera_gains.csv");
         }

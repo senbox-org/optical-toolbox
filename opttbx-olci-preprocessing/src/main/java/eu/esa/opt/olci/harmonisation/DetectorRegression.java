@@ -14,7 +14,7 @@
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-package eu.esa.opt.olci.sensor.harmonisation;
+package eu.esa.opt.olci.harmonisation;
 
 import org.esa.snap.core.gpf.OperatorException;
 

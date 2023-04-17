@@ -523,11 +523,6 @@
         </dependency>
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-olci-harmonisation</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-probav-reader</artifactId>
             <version>${project.version}</version>
         </dependency>

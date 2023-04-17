@@ -27,12 +27,15 @@
     <mapID target="olciAnomalyFlaggingProcessorDescription" url="anomaly/OlciAnomalyFlaggingProcessorDescription.html"/>
     <mapID target="olciAnomalyFlaggingCommandLine" url="anomaly/OlciAnomalyFlaggingCommandLine.html"/>
 
+
     <!--    <mapID target="SmileCorrection.Olci" url="radiometry/SmileCorrection.html"/>-->
     <!--<mapID target="GaseousAbsorption" url="radiometry/SmileCorrection.html"/>-->
+
 
     <mapID target="rayleighCorrection" url="radiometry/RayleighCorrectionOverview.html"/>
     <mapID target="rayleighCorrectionProcessorDesc" url="radiometry/RayleighCorrectionProcessorDescription.html"/>
     <mapID target="rayleighCorrectionAlgorithmSpec" url="radiometry/RayleighCorrectionAlgorithmSpecification.html"/>
+
 
     <mapID target="olciO2aHarmonisationTool" url="o2aharm/OlciO2aHarmonisationTool.html"/>
     <mapID target="olciO2aHarmonisationAlgorithmSpecification"
@@ -41,4 +44,11 @@
            url="o2aharm/OlciO2aHarmonisationProcessorDescription.html"/>
     <mapID target="olciO2aHarmonisationCommandLine" url="o2aharm/OlciO2aHarmonisationCommandLine.html"/>
 
+
+    <mapID target="olciSensorHarmonisationTool" url="harmonisation/OlciSensorHarmonisationTool.html"/>
+    <mapID target="olciSensorHarmonisationAlgorithmSpecification"
+           url="harmonisation/OlciSensorHarmonisationAlgorithmSpecification.html"/>
+    <mapID target="olciSensorHarmonisationProcessorDescription"
+           url="harmonisation/OlciSensorHarmonisationProcessorDescription.html"/>
+    <mapID target="olciSensorHarmonisationCommandLine" url="harmonisation/OlciSensorHarmonisationCommandLine.html"/>
 </map>

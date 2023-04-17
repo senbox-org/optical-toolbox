@@ -3,3 +3,4 @@ eu.esa.opt.olci.radiometry.smilecorr.SmileCorrectionOp$Spi
 eu.esa.opt.olci.radiometry.gasabsorption.GaseousAbsorptionOp$Spi
 eu.esa.opt.olci.radiometry.rayleigh.RayleighCorrectionOp$Spi
 eu.esa.opt.olci.o2aharm.OlciO2aHarmonisationOp$Spi
+eu.esa.opt.olci.harmonisation.OlciSensorHarmonisationOp$Spi
