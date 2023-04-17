@@ -5,10 +5,9 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.OperatorException;
-import org.esa.snap.core.util.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,24 +16,10 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 
 public class MphChlOlciOpAcceptanceTest {
-    private File testOutDirectory;
 
-    @Before
-    public void setUp() {
-        testOutDirectory = new File("output");
-        if (!testOutDirectory.mkdirs()) {
-            fail("unable to create test directory: " + testOutDirectory);
-        }
-    }
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
-    @After
-    public void tearDown() {
-        if (testOutDirectory != null) {
-            if (!FileUtils.deleteTree(testOutDirectory)) {
-                fail("Unable to delete test directory: " + testOutDirectory);
-            }
-        }
-    }
 
     @Test
     public void testComputeMphChlProduct() throws IOException {
@@ -49,6 +34,8 @@ public class MphChlOlciOpAcceptanceTest {
 
         Product savedProduct = null;
         try {
+            File testOutDirectory = tempFolder.newFolder("ComputeMphChlProduct");
+
             final String targetProductPath = testOutDirectory.getAbsolutePath() + File.separator + "OLCI_MPHCHL.dim";
             ProductIO.writeProduct(mphChlProduct, targetProductPath, "BEAM-DIMAP");
 
@@ -117,8 +104,10 @@ public class MphChlOlciOpAcceptanceTest {
         mphChlOp.setParameter("validPixelExpression", Sensor.OLCI.getValidPixelExpression());
         final Product mphChlProduct = mphChlOp.getTargetProduct();
 
-                Product savedProduct = null;
+        Product savedProduct = null;
         try {
+            File testOutDirectory = tempFolder.newFolder("ComputeMphChlProduct_withMph");
+
             final String targetProductPath = testOutDirectory.getAbsolutePath() + File.separator + "OLCI_MPHCHL.dim";
             ProductIO.writeProduct(mphChlProduct, targetProductPath, "BEAM-DIMAP");
 
