@@ -4,7 +4,7 @@
 
     <folder name="Menu">
         <folder name="Optical">
-            <attr name="position" intvalue="20"/>
+            <attr name="position" intvalue="500"/>
             <folder name="Preprocessing">
                 <attr name="position" intvalue="200"/>
                 <folder name="Masking">
