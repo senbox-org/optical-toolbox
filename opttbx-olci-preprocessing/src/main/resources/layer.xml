@@ -25,75 +25,75 @@
                 <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
                 <attr name="displayName" stringvalue="OLCI Anomaly Flagging"/>
                 <attr name="operatorName" stringvalue="OlciAnomalyFlagging"/>
-                <attr name="dialogTitle" stringvalue="OLCI Anomaly Flagging - v1.0"/>
+                <attr name="dialogTitle" stringvalue="OLCI Anomaly Flagging"/>
                 <attr name="targetProductNameSuffix" stringvalue="_ANOM_FLAG"/>
                 <attr name="helpId" stringvalue="olciAnomalyFlaggingTool"/>
             </file>
-        </folder>
 
-        <file name="eu-esa-opt-olci-radiometry-rayleigh-RayleighCorrectionOpAction.instance">
-            <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
-            <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
-            <attr name="displayName" stringvalue="Rayleigh Correction"/>
-            <attr name="dialogTitle" stringvalue="Rayleigh Correction"/>
-            <attr name="operatorName" stringvalue="RayleighCorrection"/>
-            <attr name="helpId" stringvalue="rayleighCorrection"/>
-            <attr name="targetProductNameSuffix" stringvalue="_rayleigh"/>
-        </file>
-
-        <!--
-            <file name="eu-esa-opt-olci-radiometry-smilecorr-SmileCorrectionOpAction.instance">
+            <file name="eu-esa-opt-olci-radiometry-rayleigh-RayleighCorrectionOpAction.instance">
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
                 <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
-                <attr name="displayName" stringvalue="Smile Correction"/>
-                <attr name="dialogTitle" stringvalue="Smile Correction"/>
-                <attr name="operatorName" stringvalue="SmileCorrection.Olci"/>
-                <attr name="helpId" stringvalue="SmileCorrection.Olci"/>
-                <attr name="targetProductNameSuffix" stringvalue="_smile"/>
+                <attr name="displayName" stringvalue="Rayleigh Correction"/>
+                <attr name="dialogTitle" stringvalue="Rayleigh Correction"/>
+                <attr name="operatorName" stringvalue="RayleighCorrection"/>
+                <attr name="helpId" stringvalue="rayleighCorrection"/>
+                <attr name="targetProductNameSuffix" stringvalue="_rayleigh"/>
             </file>
-        -->
 
-        <!--
-                    <file name="eu-esa-opt-olci-radiometry-gasabsorption-GaseousAbsorptionOpAction.instance">
-                        <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
-                        <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
-                        <attr name="displayName" stringvalue="Gaseous Absorption"/>
-                        <attr name="dialogTitle" stringvalue="Gaseous Absorption"/>
-                        <attr name="operatorName" stringvalue="GaseousAbsorption"/>
-                        <attr name="helpId" stringvalue="GaseousAbsorption"/>
-                        <attr name="targetProductNameSuffix" stringvalue="_gaseous"/>
-                    </file>
-        -->
+            <!--
+                <file name="eu-esa-opt-olci-radiometry-smilecorr-SmileCorrectionOpAction.instance">
+                    <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                    <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
+                    <attr name="displayName" stringvalue="Smile Correction"/>
+                    <attr name="dialogTitle" stringvalue="Smile Correction"/>
+                    <attr name="operatorName" stringvalue="SmileCorrection.Olci"/>
+                    <attr name="helpId" stringvalue="SmileCorrection.Olci"/>
+                    <attr name="targetProductNameSuffix" stringvalue="_smile"/>
+                </file>
+            -->
 
-        <file name="eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.instance">
-            <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
-            <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
-            <attr name="displayName" stringvalue="OLCI O2A Harmonisation"/>
-            <attr name="operatorName" stringvalue="OlciO2aHarmonisation"/>
-            <attr name="dialogTitle" stringvalue="OLCI O2A Harmonisation - v1.2"/>
-            <attr name="targetProductNameSuffix" stringvalue="_harmonised"/>
-            <attr name="helpId" stringvalue="olciO2aHarmonisationTool"/>
-        </file>
+            <!--
+                        <file name="eu-esa-opt-olci-radiometry-gasabsorption-GaseousAbsorptionOpAction.instance">
+                            <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                            <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
+                            <attr name="displayName" stringvalue="Gaseous Absorption"/>
+                            <attr name="dialogTitle" stringvalue="Gaseous Absorption"/>
+                            <attr name="operatorName" stringvalue="GaseousAbsorption"/>
+                            <attr name="helpId" stringvalue="GaseousAbsorption"/>
+                            <attr name="targetProductNameSuffix" stringvalue="_gaseous"/>
+                        </file>
+            -->
 
-        <file name="eu-esa-opt-olci-harmonisation-OlciSensorHarmonisationOpAction.instance">
-            <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
-            <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
-            <attr name="displayName" stringvalue="OLCI Sensor Harmonisation"/>
-            <attr name="operatorName" stringvalue="OlciSensorHarmonisation"/>
-            <attr name="dialogTitle" stringvalue="OLCI Sensor Harmonisation - v1.0"/>
-            <attr name="targetProductNameSuffix" stringvalue="_harm"/>
-            <attr name="helpId" stringvalue="olciSensorHarmonisationTool"/>
-        </file>
+            <file name="eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
+                <attr name="displayName" stringvalue="OLCI O2A Harmonisation"/>
+                <attr name="operatorName" stringvalue="OlciO2aHarmonisation"/>
+                <attr name="dialogTitle" stringvalue="OLCI O2A Harmonisation"/>
+                <attr name="targetProductNameSuffix" stringvalue="_harmonised"/>
+                <attr name="helpId" stringvalue="olciO2aHarmonisationTool"/>
+            </file>
 
-        <file name="eu-esa-opt-PpeFilteringAction.instance">
-            <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
-            <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
-            <attr name="displayName" stringvalue="OLCI PPE Filtering"/>
-            <attr name="dialogTitle" stringvalue="OLCI PPE Filtering"/>
-            <attr name="operatorName" stringvalue="PpeFiltering"/>
-            <attr name="helpId" stringvalue="PpeTool"/>
-            <attr name="targetProductNameSuffix" stringvalue="_ppe"/>
-        </file>
+            <file name="eu-esa-opt-olci-harmonisation-OlciSensorHarmonisationOpAction.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
+                <attr name="displayName" stringvalue="OLCI Sensor Harmonisation"/>
+                <attr name="operatorName" stringvalue="OlciSensorHarmonisation"/>
+                <attr name="dialogTitle" stringvalue="OLCI Sensor Harmonisation"/>
+                <attr name="targetProductNameSuffix" stringvalue="_harm"/>
+                <attr name="helpId" stringvalue="olciSensorHarmonisationTool"/>
+            </file>
+
+            <file name="eu-esa-opt-PpeFilteringAction.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.core.gpf.ui.DefaultOperatorAction.create"/>
+                <attr name="displayName" stringvalue="OLCI PPE Filtering"/>
+                <attr name="dialogTitle" stringvalue="OLCI PPE Filtering"/>
+                <attr name="operatorName" stringvalue="PpeFiltering"/>
+                <attr name="helpId" stringvalue="PpeTool"/>
+                <attr name="targetProductNameSuffix" stringvalue="_ppe"/>
+            </file>
+        </folder>
     </folder>
 
     <folder name="Menu">
