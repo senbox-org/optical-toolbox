@@ -99,26 +99,26 @@
     <folder name="Menu">
         <folder name="Optical">
             <folder name="Preprocessing">
-                <file name="eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.shadow">
-                    <attr name="originalFile"
-                          stringvalue="Actions/Operators/eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.instance"/>
-                    <attr name="position" intvalue="1"/>
-                    <attr name="displayName" stringvalue="OLCI O2A Harmonisation"/>
-                </file>
                 <file name="eu-esa-opt-olci-harmonisation-OlciSensorHarmonisationOpAction.shadow">
                     <attr name="originalFile"
                           stringvalue="Actions/Operators/eu-esa-opt-olci-harmonisation-OlciSensorHarmonisationOpAction.instance"/>
-                    <attr name="position" intvalue="4"/>
+                    <attr name="position" intvalue="1"/>
                     <attr name="displayName" stringvalue="OLCI Sensor Harmonisation"/>
+                </file>
+                <file name="eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.shadow">
+                    <attr name="originalFile"
+                          stringvalue="Actions/Operators/eu-esa-opt-olci-o2aharmonisation-OlciO2aHarmonisationOpAction.instance"/>
+                    <attr name="position" intvalue="2"/>
+                    <attr name="displayName" stringvalue="OLCI O2A Harmonisation"/>
                 </file>
                 <file name="eu-esa-opt-PpeOpAction.shadow">
                     <attr name="originalFile" stringvalue="Actions/Operators/eu-esa-opt-PpeFilteringAction.instance"/>
-                    <attr name="position" intvalue="10010"/>
+                    <attr name="position" intvalue="3"/>
                 </file>
                 <file name="eu-esa-opt-olci-radiometry-rayleigh-RayleighCorrectionOpAction.shadow">
                     <attr name="originalFile"
                           stringvalue="Actions/Operators/eu-esa-opt-olci-radiometry-rayleigh-RayleighCorrectionOpAction.instance"/>
-                    <attr name="position" intvalue="12000"/>
+                    <attr name="position" intvalue="4"/>
                 </file>
                 <!--
 <file name="eu-esa-opt-olci-radiometry-smilecorr-SmileCorrectionOpAction.shadow">
@@ -141,7 +141,7 @@
                     <file name="eu-esa-opt-olci-anomaly-flagging-OlciAnomalyFlaggingOpAction.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Operators/eu-esa-opt-olci-anomaly-flagging-OlciAnomalyFlaggingOpAction.instance"/>
-                        <attr name="position" intvalue="4"/>
+                        <attr name="position" intvalue="1"/>
                     </file>
                 </folder>
             </folder>
