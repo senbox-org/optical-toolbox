@@ -116,10 +116,11 @@
         <folder name="Optical">
             <folder name="Preprocessing">
                 <folder name="MERIS Reprocessing Adaptation">
+                    <attr name="position" intvalue="50"/>
                     <file name="eu-esa-opt-dataio-s3-meris-reprocessing-Meris4thTo3rdReprocessingOpAction.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Operators/eu-esa-opt-dataio-s3-meris-reprocessing-Meris4thTo3rdReprocessingOpAction.instance"/>
-                        <attr name="position" intvalue="16"/>
+                        <attr name="position" intvalue="100"/>
                         <attr name="displayName" stringvalue="4th-->3rd Reprocessing"/>
                     </file>
                 </folder>

@@ -22,7 +22,7 @@
                 <folder name="Masking">
                     <file name="eu-esa-opt-operator-cloud-MerisCloudOpAction.shadow">
                         <attr name="originalFile" stringvalue="Actions/Operators/eu-esa-opt-operator-cloud-MerisCloudOpAction.instance"/>
-                        <attr name="position" intvalue="200"/>
+                        <attr name="position" intvalue="10"/>
                     </file>
                 </folder>
             </folder>

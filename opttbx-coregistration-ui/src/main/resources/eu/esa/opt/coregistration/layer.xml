@@ -27,7 +27,7 @@
                 <file name="eu-esa-opt-coregistration-Action.shadow">
                     <attr name="originalFile"
                           stringvalue="Actions/Operators/eu-esa-opt-coregistration-Action.instance"/>
-                    <attr name="position" intvalue="226"/>
+                    <attr name="position" intvalue="60"/>
                 </file>
             </folder>
         </folder>
