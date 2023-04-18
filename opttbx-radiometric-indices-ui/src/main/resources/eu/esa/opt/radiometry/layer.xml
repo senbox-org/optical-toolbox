@@ -462,6 +462,7 @@
         <folder name="Optical">
             <folder name="Thematic Land Processing">
                 <folder name="Vegetation Radiometric Indices">
+                    <attr name="position" intvalue="3"/>
                     <file name="eu-esa-opt-radiometry-NdviOpAction.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdviOpAction.instance"/>
@@ -570,6 +571,7 @@
                 </folder>
 
                 <folder name="Water Radiometric Indices">
+                    <attr name="position" intvalue="4"/>
                     <file name="eu-esa-opt-radiometry-NdwiOpAction.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdwiOpAction.instance"/>
@@ -598,6 +600,7 @@
                 </folder>
 
                 <folder name="Soil Radiometric Indices">
+                    <attr name="position" intvalue="2"/>
                     <file name="eu-esa-opt-radiometry-BiOpAction.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Operators/eu-esa-opt-radiometry-BiOpAction.instance"/>

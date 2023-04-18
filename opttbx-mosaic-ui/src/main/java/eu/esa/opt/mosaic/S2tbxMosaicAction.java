@@ -34,7 +34,7 @@ import java.awt.event.ActionEvent;
  */
 @ActionID(category = "Operators", id = "eu.esa.opt.mosaic.multiSizeMosaicAction")
 @ActionRegistration(displayName = "#CTL_S2MosaicAction_Name")
-@ActionReference(path = "Menu/Raster/Geometric", position = 351)
+@ActionReference(path = "Menu/Raster/Geometric", position = 31)
 @NbBundle.Messages({"CTL_S2MosaicAction_Name=Multi-size Mosaic"})
 public class S2tbxMosaicAction extends AbstractSnapAction {
 

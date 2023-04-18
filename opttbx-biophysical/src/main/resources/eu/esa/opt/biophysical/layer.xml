@@ -57,23 +57,21 @@
         <folder name="Optical">
             <folder name="Thematic Land Processing">
                 <folder name="Biophysical Processor (LAI, fAPAR...)">
+                    <attr name="position" intvalue="1"/>
                 <file name="eu-esa-opt-biophysical-Action.shadow">
                     <attr name="originalFile"
                           stringvalue="Actions/Operators/eu-esa-opt-biophysical-Action.instance"/>
-                    <attr name="position"
-                          intvalue="1"/>
+                    <attr name="position" intvalue="1"/>
                 </file>
                     <file name="eu-esa-opt-biophysical-Op10mAction.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Operators/eu-esa-opt-biophysical-Op10mAction.instance"/>
-                        <attr name="position"
-                              intvalue="2"/>
+                        <attr name="position" intvalue="2"/>
                     </file>
                     <file name="eu-esa-opt-biophysical-OpLandsat8Action.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Operators/eu-esa-opt-biophysical-OpLandsat8Action.instance"/>
-                        <attr name="position"
-                              intvalue="3"/>
+                        <attr name="position" intvalue="3"/>
                     </file>
                 </folder>
             </folder>
