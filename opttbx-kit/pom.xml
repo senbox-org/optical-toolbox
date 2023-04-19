@@ -458,22 +458,12 @@
         </dependency>
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-meris-sdr</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-meris-l2auxdata</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-meris-radiometry</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-meris-ops</artifactId>
+            <artifactId>opttbx-meris-operators</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
         <dependency>
