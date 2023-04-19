@@ -34,7 +34,7 @@ import org.esa.snap.core.gpf.common.BandMathsOp;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.dataio.envisat.EnvisatConstants;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.Map;
 
 @OperatorMetadata(alias = "Meris.SmileCorrection", internal = true)

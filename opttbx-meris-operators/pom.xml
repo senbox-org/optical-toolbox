@@ -88,6 +88,7 @@
                     <publicPackages>
                         <publicPackage>eu.esa.opt.meris.*</publicPackage>
                         <publicPackage>eu.esa.opt.util.math</publicPackage>
+                        <publicPackage>eu.esa.opt.meris.brr.*</publicPackage>
                         <publicPackage>eu.esa.opt.meris.sdr.cloud.*</publicPackage>
                         <publicPackage>eu.esa.opt.meris.sdr.brr.*</publicPackage>
                     </publicPackages>

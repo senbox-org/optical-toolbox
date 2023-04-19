@@ -38,7 +38,7 @@ import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.math.MathUtils;
 import org.esa.snap.dataio.envisat.EnvisatConstants;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.image.Raster;
 
 

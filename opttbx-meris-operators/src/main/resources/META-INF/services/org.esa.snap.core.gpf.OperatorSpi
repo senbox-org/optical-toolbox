@@ -13,3 +13,8 @@ eu.esa.opt.meris.sdr.SdrOp$Spi
 eu.esa.opt.meris.sdr.utils.FillAerosolOp$Spi
 eu.esa.opt.meris.sdr.utils.FillBandOp$Spi
 eu.esa.opt.meris.sdr.utils.GapLessSdrOp$Spi
+eu.esa.opt.meris.brr.CloudClassificationOp$Spi
+eu.esa.opt.meris.brr.GaseousCorrectionOp$Spi
+eu.esa.opt.meris.brr.LandClassificationOp$Spi
+eu.esa.opt.meris.brr.RayleighCorrectionOp$Spi
+eu.esa.opt.meris.brr.SmileCorrectionOp$Spi

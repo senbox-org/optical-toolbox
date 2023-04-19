@@ -36,7 +36,7 @@ import org.esa.snap.core.util.BitSetter;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.dataio.envisat.EnvisatConstants;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.Map;
 
 
