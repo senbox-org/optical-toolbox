@@ -14,20 +14,19 @@
   ~ You should have received a copy of the GNU General Public License along
   ~ with this program; if not, see http://www.gnu.org/licenses/
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>optical-toolbox</artifactId>
         <groupId>eu.esa.opt</groupId>
+        <artifactId>optical-toolbox</artifactId>
         <version>10.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>opttbx-meris-operators</artifactId>
+    <artifactId>opttbx-meris-operators-ui</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Common MERIS Operators</name>
-    <description>This module provides operators for common usage with MERIS data.</description>
+    <name>Common MERIS Operators GUI</name>
+    <description>The GUI module for the MERIS operators.</description>
 
     <dependencies>
         <dependency>
@@ -36,11 +35,23 @@
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-jai</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
             <artifactId>ceres-glayer</artifactId>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-binding</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
             <artifactId>snap-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-ui</artifactId>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
@@ -48,36 +59,44 @@
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
+            <artifactId>snap-gpf-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
             <artifactId>snap-envisat-reader</artifactId>
             <version>${snap.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>com.bc.jnn</groupId>
-            <artifactId>jnn</artifactId>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-ui</artifactId>
         </dependency>
         <dependency>
-            <groupId>ncsa.hdf</groupId>
-            <artifactId>lib-hdf</artifactId>
-            <version>2.7.1</version>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-rcp</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-awt</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.jimfs</groupId>
-            <artifactId>jimfs</artifactId>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.esa.snap</groupId>
-            <artifactId>snap-core</artifactId>
-            <type>test-jar</type>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-api-annotations-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.esa.snap</groupId>
-            <artifactId>snap-test-utils</artifactId>
-            <type>test-jar</type>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-javahelp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-meris-operators</artifactId>
+            <version>${opttbx.version}</version>
         </dependency>
 
     </dependencies>
@@ -87,16 +106,6 @@
             <plugin>
                 <groupId>org.apache.netbeans.utilities</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
-                <configuration>
-                    <publicPackages>
-                        <publicPackage>eu.esa.opt.meris.*</publicPackage>
-                        <publicPackage>eu.esa.opt.util.math</publicPackage>
-                        <publicPackage>eu.esa.opt.meris.brr.*</publicPackage>
-                        <publicPackage>eu.esa.opt.meris.sdr.cloud.*</publicPackage>
-                        <publicPackage>eu.esa.opt.meris.sdr.brr.*</publicPackage>
-                        <publicPackage>eu.esa.opt.meris.radiometry.*</publicPackage>
-                    </publicPackages>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

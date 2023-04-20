@@ -453,7 +453,7 @@
         </dependency>
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-meris-radiometry-ui</artifactId>
+            <artifactId>opttbx-meris-operators-ui</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
         <dependency>
