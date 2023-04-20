@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 
 /**
@@ -45,6 +47,9 @@ public class CloudAlgorithm implements Cloneable {
     private double[] minInputValuesNN = new double[15];
     private double[] maxInputValuesNN = new double[15];
 
+    /**
+     * @deprecated since OPTTBX 10.0; use {@link #CloudAlgorithm(Path, String)}  CloudAlgorithm() } instead
+     */
     public CloudAlgorithm(File auxDataDir, String configName) throws IOException {
         final File propertiesFile = new File(auxDataDir, configName);
         final InputStream propertiesStream = new FileInputStream(propertiesFile);
@@ -66,16 +71,31 @@ public class CloudAlgorithm implements Cloneable {
         }
     }
 
+    public CloudAlgorithm(Path auxDataDir, String configName) throws IOException {
+        Properties properties = new Properties();
+        try (InputStream propertiesStream = Files.newInputStream(auxDataDir.resolve(configName))) {
+            properties.load(propertiesStream);
+        }
+        validExpression = properties.getProperty(VALID_KEY, "");
+        param1 = Double.parseDouble(properties.getProperty(PARAM_1_KEY));
+        param2 = Double.parseDouble(properties.getProperty(PARAM_2_KEY));
+        for (int i = 0; i < 15; i++) {
+            minInputValuesNN[i] = Double.parseDouble(properties.getProperty("min_" + (i + 1)));
+            maxInputValuesNN[i] = Double.parseDouble(properties.getProperty("max_" + (i + 1)));
+        }
+        final String neuralNetName = properties.getProperty("neural_net");
+        final Path neuralNetFile = auxDataDir.resolve(neuralNetName);
+        try {
+            loadNeuralNet(neuralNetFile.toFile());
+        } catch (Exception e) {
+            throw new IOException("Failed to load neural net " + neuralNetName + ":\n" + e.getMessage());
+        }
+
+    }
+
     private void loadNeuralNet(File neuralNetFile) throws IOException, JnnException {
         Jnn.setOptimizing(true);
         neuralNet = Jnn.readNna(neuralNetFile);
-
-        // OLD Beam:
-//        final Logger logger = BeamLogManager.getSystemLogger();
-//        logger.info("Using JNN Neural Net Library, version " + Jnn.VERSION_STRING);
-//        logger.info(neuralNetFile + " loaded");
-        // Snap: todo
-
     }
 
     /**

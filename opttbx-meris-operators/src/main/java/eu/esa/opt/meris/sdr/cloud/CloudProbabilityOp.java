@@ -17,8 +17,8 @@
 package eu.esa.opt.meris.sdr.cloud;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.core.SubProgressMonitor;
 import eu.esa.opt.meris.MerisBasisOp;
+import eu.esa.opt.meris.ModuleActivator;
 import eu.esa.opt.meris.sdr.utils.AlbedoUtils;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
@@ -35,14 +35,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 import org.esa.snap.core.gpf.common.BandMathsOp;
-import org.esa.snap.core.util.ResourceInstaller;
-import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.math.MathUtils;
 import org.esa.snap.dataio.envisat.EnvisatConstants;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -184,13 +181,9 @@ public class CloudProbabilityOp extends MerisBasisOp {
 
     private void loadAuxdata(ProgressMonitor pm) throws IOException {
 
-        final Path auxdataDirPath = SystemUtils.getAuxDataPath().resolve("cloudprob").toAbsolutePath();
-        File auxdataTargetDir = auxdataDirPath.toFile();
-        final Path sourcePath = ResourceInstaller.findModuleCodeBasePath(getClass()).resolve("auxdata");
-        new ResourceInstaller(sourcePath, auxdataDirPath).install(".*", new SubProgressMonitor(pm, 100));
-
-        final File configPropFile = new File(auxdataTargetDir, configFile);
-        final InputStream propertiesStream = Files.newInputStream(configPropFile.toPath());
+        final Path auxdataDirPath = ModuleActivator.AUXDATA_DIR.resolve("cloudprob").toAbsolutePath();
+        final Path configPropFile = auxdataDirPath.resolve(configFile);
+        final InputStream propertiesStream = Files.newInputStream(configPropFile);
         Properties configProperties = new Properties();
         configProperties.load(propertiesStream);
 
@@ -198,12 +191,12 @@ public class CloudProbabilityOp extends MerisBasisOp {
                 .getProperty(PRESS_SCALE_HEIGHT_KEY));
 
         centralWavelengthProvider = new CentralWavelengthProvider();
-        centralWavelengthProvider.readAuxData(auxdataTargetDir);
+        centralWavelengthProvider.readAuxData(auxdataDirPath);
         pm.worked(50);
         try {
-            landAlgo = new CloudAlgorithm(auxdataTargetDir, configProperties.getProperty("land"));
+            landAlgo = new CloudAlgorithm(auxdataDirPath, configProperties.getProperty("land"));
             pm.worked(25);
-            oceanAlgo = new CloudAlgorithm(auxdataTargetDir, configProperties.getProperty("ocean"));
+            oceanAlgo = new CloudAlgorithm(auxdataDirPath, configProperties.getProperty("ocean"));
             pm.worked(25);
         } catch (IOException e) {
             throw new OperatorException("Could not load auxdata", e);

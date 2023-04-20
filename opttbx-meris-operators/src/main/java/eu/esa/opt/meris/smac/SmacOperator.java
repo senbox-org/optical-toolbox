@@ -17,7 +17,7 @@ package eu.esa.opt.meris.smac;
 
 import com.bc.ceres.core.Assert;
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.core.SubProgressMonitor;
+import eu.esa.opt.meris.ModuleActivator;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Mask;
 import org.esa.snap.core.datamodel.Product;
@@ -32,8 +32,6 @@ import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 import org.esa.snap.core.util.ObjectUtils;
 import org.esa.snap.core.util.ProductUtils;
-import org.esa.snap.core.util.ResourceInstaller;
-import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.converters.BooleanExpressionConverter;
 import org.esa.snap.core.util.math.RsMathUtils;
 import org.esa.snap.dataio.envisat.EnvisatConstants;
@@ -93,7 +91,6 @@ public class SmacOperator extends Operator {
     private final Logger logger;
     private String sensorType;
 
-    private Path auxdataInstallDir;
     private Map<String, String> bandNameMapping;
     private HashMap<String, SmacSensorCoefficients> coefficients;
 
@@ -239,32 +236,10 @@ public class SmacOperator extends Operator {
     }
 
     // package private for testing reasons only
-    void installAuxdata(ProgressMonitor pm) {
-        pm.beginTask("Preparing SMAC processing", 100);
-        try {
-            auxdataInstallDir = initAuxdataInstallDir();
-            try {
-                Path sourceDirPath = ResourceInstaller.findModuleCodeBasePath(getClass()).resolve("auxdata");
-                new ResourceInstaller(sourceDirPath, auxdataInstallDir).install(".*", new SubProgressMonitor(pm, 100));
-            } catch (IOException e) {
-                throw new OperatorException("Failed to install auxdata into " + auxdataInstallDir.toString(), e);
-            }
-        } finally {
-            pm.done();
-        }
-
-    }
-
-    // package private for testing reasons only
     Path getAuxdataInstallDir() {
-        return auxdataInstallDir;
+        return ModuleActivator.AUXDATA_DIR.resolve("smac").toAbsolutePath();
     }
 
-
-    @Override
-    public void doExecute(ProgressMonitor pm) throws OperatorException {
-        installAuxdata(pm);
-    }
 
     private void loadInputProduct() {
         // check what product type the input is and load the appropriate tie point ADS
@@ -477,10 +452,6 @@ public class SmacOperator extends Operator {
 
         forwardMask.setOwner(getSourceProduct());
         return forwardMask;
-    }
-
-    private Path initAuxdataInstallDir() {
-        return SystemUtils.getAuxDataPath().resolve("smac").toAbsolutePath();
     }
 
     private void createOutputProduct() throws IOException {
@@ -696,6 +667,7 @@ public class SmacOperator extends Operator {
 
     private SensorCoefficientManager getSensorCoefficientManager() {
         SensorCoefficientManager coeffMgr = null;
+        Path auxdataInstallDir = getAuxdataInstallDir();
         try {
             coeffMgr = new SensorCoefficientManager(auxdataInstallDir.toUri().toURL());
             logger.fine("Using auxiliary data path: " + auxdataInstallDir.toString());

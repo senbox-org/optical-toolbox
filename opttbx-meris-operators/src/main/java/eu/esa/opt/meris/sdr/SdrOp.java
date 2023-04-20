@@ -1,11 +1,11 @@
 package eu.esa.opt.meris.sdr;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.core.SubProgressMonitor;
 import com.bc.jnn.Jnn;
 import com.bc.jnn.JnnException;
 import com.bc.jnn.JnnNet;
 import eu.esa.opt.meris.MerisBasisOp;
+import eu.esa.opt.meris.ModuleActivator;
 import eu.esa.opt.meris.sdr.utils.AlbedoUtils;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
@@ -21,18 +21,15 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 import org.esa.snap.core.util.ProductUtils;
-import org.esa.snap.core.util.ResourceInstaller;
 import org.esa.snap.core.util.StringUtils;
-import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.math.MathUtils;
 import org.esa.snap.dataio.envisat.EnvisatConstants;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.io.File;
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -91,9 +88,9 @@ public class SdrOp extends MerisBasisOp {
 
     @Override
     public void doExecute(ProgressMonitor pm) throws OperatorException {
-        pm.beginTask("Loading in Neural Net", 200);
+        pm.beginTask("Loading in Neural Net", 100);
         try {
-            loadNeuralNet(pm);
+            loadNeuralNet();
             pm.worked(100);
         } catch (Exception e) {
             throw new OperatorException("Failed to load neural net " + neuralNetFile + ":\n" + e.getMessage());
@@ -231,15 +228,11 @@ public class SdrOp extends MerisBasisOp {
         }
     }
 
-    private void loadNeuralNet(ProgressMonitor pm) throws IOException, JnnException {
-        final Path auxdataDirPath = SystemUtils.getAuxDataPath().resolve("ctp").toAbsolutePath();
-        File auxdataTargetDir = auxdataDirPath.toFile();
-        Path sourcePath = ResourceInstaller.findModuleCodeBasePath(getClass()).resolve("auxdata");
-        new ResourceInstaller(sourcePath, auxdataDirPath).install(".*", new SubProgressMonitor(pm, 100));
-
-        File nnFile = new File(auxdataTargetDir, neuralNetFile);
+    private void loadNeuralNet() throws IOException, JnnException {
+        final Path auxdataDirPath = ModuleActivator.AUXDATA_DIR.resolve("ctp").toAbsolutePath();
+        Path nnFile = auxdataDirPath.resolve(neuralNetFile);
         final JnnNet neuralNet;
-        try (InputStreamReader reader = new FileReader(nnFile)) {
+        try (BufferedReader reader = Files.newBufferedReader(nnFile)) {
             Jnn.setOptimizing(true);
             neuralNet = Jnn.readNna(reader);
         }

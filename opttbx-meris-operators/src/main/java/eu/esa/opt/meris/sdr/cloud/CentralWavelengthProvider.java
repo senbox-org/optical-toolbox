@@ -18,10 +18,11 @@ package eu.esa.opt.meris.sdr.cloud;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Provides central wavelengths for meris channel 11.
@@ -32,37 +33,38 @@ public class CentralWavelengthProvider {
     private static final int DETECTOR_LENGTH_RR = 925;
     private static final int DETECTOR_LENGTH_FR = 3700;
 
-    private float[] centralWavelenthRr;
-
-    public CentralWavelengthProvider() {
-        centralWavelenthRr = new float[DETECTOR_LENGTH_RR];
-    }
+    private final float[] centralWavelengthRr = new float[DETECTOR_LENGTH_RR];
 
     /**
-     * Read the RR central- wavelength from a file in the given dirrectory.
+     * Read the RR central-wavelength from a file in the given directory.
      *
      * @param auxDataDir the auxdata directory from which the cw are read.
-     * @throws IOException
+     * @throws IOException in case of an IO error
      */
-    public void readAuxData(File auxDataDir) throws IOException {
-        File cwvlFile = new File(auxDataDir, CENTRAL_WAVELENGTH_FILE_NAME);
-        InputStream inputStream = new FileInputStream(cwvlFile);
-        readCW(inputStream);
-        inputStream.close();
+    public void readAuxData(Path auxDataDir) throws IOException {
+        try (InputStream inputStream = Files.newInputStream(auxDataDir.resolve(CENTRAL_WAVELENGTH_FILE_NAME))) {
+            readCW(inputStream);
+        }
     }
 
     /**
-     * Read the RR central- wavelength from the given Inputstream.
+     * Read the RR central-wavelength from a file in the given directory.
      *
-     * @param inputStream
-     * @throws IOException
+     * @param auxDataDir the auxdata directory from which the cw are read.
+     * @throws IOException in case of an IO error
+     * @deprecated since OPTTBX 10.0; use {@link #readAuxData(Path)} instead
      */
-    public void readCW(InputStream inputStream) throws IOException {
+    @Deprecated
+    public void readAuxData(File auxDataDir) throws IOException {
+        readAuxData(auxDataDir.toPath());
+    }
+
+    void readCW(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        for (int i = 0; i < centralWavelenthRr.length; i++) {
+        for (int i = 0; i < centralWavelengthRr.length; i++) {
             String line = bufferedReader.readLine();
             line = line.trim();
-            centralWavelenthRr[i] = Float.parseFloat(line);
+            centralWavelengthRr[i] = Float.parseFloat(line);
         }
     }
 
@@ -70,12 +72,12 @@ public class CentralWavelengthProvider {
      * Returns an float array with central wavelength. Depending on the
      * product type this is either RR or FR.
      *
-     * @param productType A textual representation of the producttype.
+     * @param productType A textual representation of the product type.
      * @return float array with central wavelengths.
      */
     public float[] getCentralWavelength(final String productType) {
         if (productType.startsWith("MER_RR")) {
-            return centralWavelenthRr;
+            return centralWavelengthRr;
         } else if (productType.startsWith("MER_F")) {
             return generateCentralWavelengthFr();
         } else {
@@ -107,8 +109,8 @@ public class CentralWavelengthProvider {
                     rrIndex = 184;
                     weight += 1;
                 }
-                final float x1 = centralWavelenthRr[rrCameraOffset + rrIndex - 1];
-                final float x2 = centralWavelenthRr[rrCameraOffset + rrIndex];
+                final float x1 = centralWavelengthRr[rrCameraOffset + rrIndex - 1];
+                final float x2 = centralWavelengthRr[rrCameraOffset + rrIndex];
                 cwFr[frIdx + frCameraOffset] = x1 + (x2 - x1) * weight;
             }
         }

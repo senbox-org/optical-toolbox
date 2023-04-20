@@ -16,7 +16,7 @@
 
 package eu.esa.opt.meris.smac;
 
-import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.opt.meris.ModuleActivator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +35,7 @@ public class SensorCoefficientFileTest {
     @Before
     public void setUp() throws Exception {
         SmacOperator op = new SmacOperator();
-        op.installAuxdata(ProgressMonitor.NULL); // just to extract auxdata
+        ModuleActivator.activate();
         smacAuxDir = op.getAuxdataInstallDir();
     }
 
