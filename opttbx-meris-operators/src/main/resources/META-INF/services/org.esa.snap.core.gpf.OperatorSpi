@@ -20,3 +20,4 @@ eu.esa.opt.meris.brr.RayleighCorrectionOp$Spi
 eu.esa.opt.meris.brr.SmileCorrectionOp$Spi
 eu.esa.opt.meris.smac.SmacOperator$Spi
 eu.esa.opt.meris.cloud.CloudOperator$Spi
+eu.esa.opt.meris.radiometry.MerisRadiometryCorrectionOp$Spi

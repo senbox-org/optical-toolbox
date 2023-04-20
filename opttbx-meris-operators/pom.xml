@@ -37,6 +37,10 @@
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-glayer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
             <artifactId>snap-core</artifactId>
         </dependency>
         <dependency>
@@ -91,6 +95,7 @@
                         <publicPackage>eu.esa.opt.meris.brr.*</publicPackage>
                         <publicPackage>eu.esa.opt.meris.sdr.cloud.*</publicPackage>
                         <publicPackage>eu.esa.opt.meris.sdr.brr.*</publicPackage>
+                        <publicPackage>eu.esa.opt.meris.radiometry.*</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>

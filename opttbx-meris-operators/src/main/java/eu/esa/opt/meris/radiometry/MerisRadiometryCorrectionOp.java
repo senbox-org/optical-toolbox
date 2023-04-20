@@ -48,25 +48,7 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_DETECTOR_INDEX_DS_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_FLAGS_DS_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_10_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_11_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_12_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_13_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_14_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_15_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_1_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_2_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_3_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_4_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_5_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_6_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_7_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_8_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1B_RADIANCE_9_BAND_NAME;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1_TYPE_PATTERN;
-import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_SUN_ZENITH_DS_NAME;
+import static org.esa.snap.dataio.envisat.EnvisatConstants.*;
 
 
 /**

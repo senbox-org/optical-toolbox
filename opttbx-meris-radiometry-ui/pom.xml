@@ -95,7 +95,7 @@
 
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-meris-radiometry</artifactId>
+            <artifactId>opttbx-meris-operators</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
 
