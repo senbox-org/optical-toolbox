@@ -14,13 +14,13 @@
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-package eu.esa.opt.smac;
+package eu.esa.opt.meris.smac;
 
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class SmacAlgorithmTest {
 

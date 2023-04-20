@@ -14,7 +14,7 @@
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-package eu.esa.opt.smac;
+package eu.esa.opt.meris.smac;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.junit.Before;
@@ -24,7 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class SensorCoefficientManagerTest {
 

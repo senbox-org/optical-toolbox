@@ -468,11 +468,6 @@
         </dependency>
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-meris-smac</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-merisl3-reader</artifactId>
             <version>${opttbx.version}</version>
         </dependency>

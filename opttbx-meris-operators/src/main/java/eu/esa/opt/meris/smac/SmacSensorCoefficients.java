@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, see http://www.gnu.org/licenses/
  */
-package eu.esa.opt.smac;
+package eu.esa.opt.meris.smac;
 
 /**
  * Interface for classes implementing a sensor coefficient set for the <code>SmacAlgorithm</code>.

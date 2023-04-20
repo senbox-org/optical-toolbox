@@ -14,7 +14,7 @@
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-package eu.esa.opt.smac;
+package eu.esa.opt.meris.smac;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.junit.Before;
@@ -25,7 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SensorCoefficientFileTest {
 

@@ -18,3 +18,4 @@ eu.esa.opt.meris.brr.GaseousCorrectionOp$Spi
 eu.esa.opt.meris.brr.LandClassificationOp$Spi
 eu.esa.opt.meris.brr.RayleighCorrectionOp$Spi
 eu.esa.opt.meris.brr.SmileCorrectionOp$Spi
+eu.esa.opt.meris.smac.SmacOperator$Spi

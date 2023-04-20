@@ -1,4 +1,4 @@
-package eu.esa.opt.smac;
+package eu.esa.opt.meris.smac;
 
 /**
  * The aerosol type used in during SMAC processing.
