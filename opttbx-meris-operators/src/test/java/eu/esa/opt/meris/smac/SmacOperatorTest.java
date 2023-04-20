@@ -33,6 +33,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
 /**
@@ -113,14 +114,15 @@ public class SmacOperatorTest {
         }
 
     }
+
     @Test
     public void testOutputSignature_AATSR() throws IOException, URISyntaxException {
         final Product product = ProductIO.readProduct(getProductPathAatsr());
 
         try {
             HashMap<String, Object> params = new HashMap<>();
-        params.put("bandNames", new String[]{"btemp_nadir_1200", "btemp_nadir_1100", "reflec_nadir_1600",
-                "reflec_nadir_0870", "btemp_fward_0370", "reflec_nadir_0550"});
+            params.put("bandNames", new String[]{"btemp_nadir_1200", "btemp_nadir_1100", "reflec_nadir_1600",
+                    "reflec_nadir_0870", "btemp_fward_0370", "reflec_nadir_0550"});
             final SmacOperator smacOperator = createOp(params, product);
             Product smacResult = smacOperator.getTargetProduct();
 

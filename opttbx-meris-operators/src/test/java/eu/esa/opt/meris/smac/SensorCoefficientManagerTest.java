@@ -16,7 +16,8 @@
 
 package eu.esa.opt.meris.smac;
 
-import org.junit.Before;
+import eu.esa.opt.meris.ModuleActivator;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -28,14 +29,14 @@ import static org.junit.Assert.assertNull;
 
 public class SensorCoefficientManagerTest {
 
-    private Path auxdataDir;
+    private static Path auxdataDir;
 
-
-    @Before
-    public void setUp() throws Exception {
-        SmacOperator op = new SmacOperator();
-        auxdataDir = op.getAuxdataInstallDir();
+    @BeforeClass
+    public static void beforeClass() {
+        ModuleActivator.activate();
+        auxdataDir = SmacOperator.getAuxdataInstallDir();
     }
+
 
     @Test
     public void testSensorCoefficientManagerWithNoArgs() throws IOException {

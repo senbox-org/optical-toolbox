@@ -19,6 +19,8 @@ package eu.esa.opt.meris.sdr.cloud;
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.meris.MerisBasisOp;
 import eu.esa.opt.meris.ModuleActivator;
+import eu.esa.opt.meris.cloud.common.CentralWavelengthProvider;
+import eu.esa.opt.meris.cloud.common.CloudAlgorithm;
 import eu.esa.opt.meris.sdr.utils.AlbedoUtils;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
@@ -181,7 +183,7 @@ public class CloudProbabilityOp extends MerisBasisOp {
 
     private void loadAuxdata(ProgressMonitor pm) throws IOException {
 
-        final Path auxdataDirPath = ModuleActivator.AUXDATA_DIR.resolve("cloudprob").toAbsolutePath();
+        final Path auxdataDirPath = ModuleActivator.AUXDATA_DIR.resolve("cloud").toAbsolutePath();
         final Path configPropFile = auxdataDirPath.resolve(configFile);
         final InputStream propertiesStream = Files.newInputStream(configPropFile);
         Properties configProperties = new Properties();

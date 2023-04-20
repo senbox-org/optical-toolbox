@@ -236,7 +236,7 @@ public class SmacOperator extends Operator {
     }
 
     // package private for testing reasons only
-    Path getAuxdataInstallDir() {
+    static Path getAuxdataInstallDir() {
         return ModuleActivator.AUXDATA_DIR.resolve("smac").toAbsolutePath();
     }
 

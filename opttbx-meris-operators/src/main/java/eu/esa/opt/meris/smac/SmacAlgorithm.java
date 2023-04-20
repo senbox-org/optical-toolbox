@@ -22,11 +22,11 @@ import org.esa.snap.core.util.Guardian;
  */
 public final class SmacAlgorithm {
 
-    private static final double _cdr = Math.PI / 180.0;
-    private static final double _crd = 180.0 / Math.PI;
-    private static final double _invMaxPressure = 1.0 / 1013.0;
-    private static final double _oneQuarter = 1.0 / 4.0;
-    private static final double _twoThird = 2.0 / 3.0;
+    private static final double CDR = Math.PI / 180.0;
+    private static final double CRD = 180.0 / Math.PI;
+    private static final double INV_MAX_PRESSURE = 1.0 / 1013.0;
+    private static final double ONE_QUARTER = 1.0 / 4.0;
+    private static final double TWO_THIRD = 2.0 / 3.0;
 
     // sensor calibration variables
     // ----------------------------
@@ -79,7 +79,10 @@ public final class SmacAlgorithm {
     private double _wo, _onemwo;
     private double _gc;
     private double _ak, _ak2, _pfac;
-    private double _b, _onepb, _onemb, _onepb2, _onemb2;
+    private double _onepb;
+    private double _onemb;
+    private double _onepb2;
+    private double _onemb2;
     private double _ww;
 
     private boolean _calcTo3;
@@ -98,7 +101,7 @@ public final class SmacAlgorithm {
     /**
      * Sets the sensor adjustment coefficients. Must be set BEFORE running the algorithm.
      *
-     * @param coeffs a class implementing the <code>SmacSensorCoefficients</code>
+     * @param coeffs a class implementing the {@code SmacSensorCoefficients}
      */
     public final void setSensorCoefficients(SmacSensorCoefficients coeffs) {
         Guardian.assertNotNull("coefficients", coeffs);
@@ -109,83 +112,52 @@ public final class SmacAlgorithm {
         // ozone coefficients
         _ao3 = coeffs.getAo3();
         _no3 = coeffs.getNo3();
-        _calcTo3 = true;
-        if (_ao3 == 0.0) {
-            _calcTo3 = false;
-        }
+        _calcTo3 = _ao3 != 0.0;
 
         // water vapour coefficients
         _ah2o = coeffs.getAh2o();
         _nh2o = coeffs.getNh2o();
-        _calcTh2o = true;
-        if (_ah2o == 0.0) {
-            _calcTh2o = false;
-        }
+        _calcTh2o = _ah2o != 0.0;
 
         // oxygene coefficients
         _ao2 = coeffs.getAo2();
         _no2 = coeffs.getNo2();
-        _calcTo2 = true;
-        if (_ao2 == 0.0) {
-            _calcTo2 = false;
-        }
+        _calcTo2 = _ao2 != 0.0;
+
         _po2 = coeffs.getPo2();
-        _calcUo2 = true;
-        if (_po2 == 0.0) {
-            _calcUo2 = false;
-        }
+        _calcUo2 = _po2 != 0.0;
 
         // co2 coefficients
         _aco2 = coeffs.getAco2();
         _nco2 = coeffs.getNco2();
-        _calcTco2 = true;
-        if (_aco2 == 0.0) {
-            _calcTco2 = false;
-        }
+        _calcTco2 = _aco2 != 0.0;
+
         _pco2 = coeffs.getPco2();
-        _calcUco2 = true;
-        if (_pco2 == 0.0) {
-            _calcUco2 = false;
-        }
+        _calcUco2 = _pco2 != 0.0;
 
         // methane coefficients
         _ach4 = coeffs.getAch4();
         _nch4 = coeffs.getNch4();
-        _calcTch4 = true;
-        if (_ach4 == 0.0) {
-            _calcTch4 = false;
-        }
+        _calcTch4 = _ach4 != 0.0;
+
         _pch4 = coeffs.getPch4();
-        _calcUch4 = true;
-        if (_pch4 == 0.0) {
-            _calcUch4 = false;
-        }
+        _calcUch4 = _pch4 != 0.0;
 
         // no2 coefficients
         _ano2 = coeffs.getAno2();
         _nno2 = coeffs.getNno2();
-        _calcTno2 = true;
-        if (_ano2 == 0.0) {
-            _calcTno2 = false;
-        }
+        _calcTno2 = _ano2 != 0.0;
+
         _pno2 = coeffs.getPno2();
-        _calcUno2 = true;
-        if (_pno2 == 0.0) {
-            _calcUno2 = false;
-        }
+        _calcUno2 = _pno2 != 0.0;
 
         // co coefficients
         _aco = coeffs.getAco();
         _nco = coeffs.getNco();
-        _calcTco = true;
-        if (_aco == 0.0) {
-            _calcTco = false;
-        }
+        _calcTco = _aco != 0.0;
+
         _pco = coeffs.getPco();
-        _calcUco = true;
-        if (_pco == 0.0) {
-            _calcUco = false;
-        }
+        _calcUco = _pco != 0.0;
 
         // scattering transmission coefficients
         _a0T = coeffs.getA0T();
@@ -233,12 +205,12 @@ public final class SmacAlgorithm {
         // ----------------------------------------------------
         _ak2 = (1.0 - _wo) * 3.0 * (1.0 - _wo * _gc);
         _ak = Math.sqrt(_ak2);
-        _b = _twoThird * _ak / (1.0 - _wo * _gc);
-        _onepb = 1.0 + _b;
+        double b = TWO_THIRD * _ak / (1.0 - _wo * _gc);
+        _onepb = 1.0 + b;
         _onepb2 = _onepb * _onepb;
-        _onemb = 1.0 - _b;
+        _onemb = 1.0 - b;
         _onemb2 = _onemb * _onemb;
-        _ww = _wo * _oneQuarter;
+        _ww = _wo * ONE_QUARTER;
         _onemwo = 1.0 - _wo;
         _pfac = _ak / (3.0 * (1.0 - _wo * _gc));
     }
@@ -257,14 +229,14 @@ public final class SmacAlgorithm {
      * @param process       boolean array indicating whether a pixel has to be processed or not
      * @param invalid       the value set for invalid pixels, i.e. the ones excluded by the process parameter
      * @param r_toa         array of top of atmosphere reflectances to be corrected
-     * @param r_surfRecycle if not <code>null</code> and of correct size this array will be reused for the return
+     * @param r_surfRecycle if not {@code null} and of correct size this array will be reused for the return
      *                      values
      * @return array of corrected surface reflectances
      */
-    public final float[] run(float[] sza, float[] saa, float[] vza, float[] vaa,
-                             float[] taup550, float[] uh2o, float[] uo3,
-                             float[] airPressure, boolean[] process, float invalid, float[] r_toa,
-                             float[] r_surfRecycle) {
+    public float[] run(float[] sza, float[] saa, float[] vza, float[] vaa,
+                       float[] taup550, float[] uh2o, float[] uo3,
+                       float[] airPressure, boolean[] process, float invalid, float[] r_toa,
+                       float[] r_surfRecycle) {
         // array to be returned
         float[] r_return;
         double us, invUs, us2, uv, invUv, usTimesuv, invUsTimesUv;
@@ -303,17 +275,17 @@ public final class SmacAlgorithm {
                 continue;
             }
             // parameter setup
-            us = Math.cos(sza[n] * _cdr);
+            us = Math.cos(sza[n] * CDR);
             invUs = 1.0 / us;
             us2 = us * us;
 
-            uv = Math.cos(vza[n] * _cdr);
+            uv = Math.cos(vza[n] * CDR);
             invUv = 1.0 / uv;
             usTimesuv = us * uv;
             invUsTimesUv = 1.0 / usTimesuv;
 
-            dphi = (saa[n] - vaa[n]) * _cdr;
-            Peq = airPressure[n] * _invMaxPressure;
+            dphi = (saa[n] - vaa[n]) * CDR;
+            Peq = airPressure[n] * INV_MAX_PRESSURE;
 
             /*------ 1) air mass */
             m = invUs + invUv;
@@ -392,13 +364,13 @@ public final class SmacAlgorithm {
             }
 
             /*------ 8) scattering angle in degree */
-            ksiD = _crd * Math.acos(cksi);
+            ksiD = CRD * Math.acos(cksi);
 
             /*------ 9) rayleigh atmospheric reflectance */
             /* pour 6s on a delta = 0.0279 */
             ray_phase = 0.7190443 * (1.0 + (cksi * cksi)) + 0.0412742;
             taurz = _taur * Peq;
-            ray_ref = (taurz * ray_phase) * _oneQuarter * invUsTimesUv;
+            ray_ref = (taurz * ray_phase) * ONE_QUARTER * invUsTimesUv;
 
             /*-----------------Residu Rayleigh ---------*/
             temp = taurz * ray_phase * invUsTimesUv;
@@ -427,7 +399,7 @@ public final class SmacAlgorithm {
             cp1 = c1 * _pfac;
             cp2 = -c2 * _pfac;
             temp = _wo * 3.0 * _gc * uv;
-            z = d - temp * dp + _wo * aer_phase * _oneQuarter;
+            z = d - temp * dp + _wo * aer_phase * ONE_QUARTER;
             x = c1 - temp * cp1;
             y = c2 - temp * cp2;
             temp = _ak * uv;

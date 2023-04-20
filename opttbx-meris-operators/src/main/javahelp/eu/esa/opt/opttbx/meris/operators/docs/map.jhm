@@ -5,6 +5,10 @@
 
 <map version="2.0">
 
+    <mapID target="cloudScientificTool" url="cloud/CloudTool.html"/>
+    <mapID target="cloudAlgorithmSpec" url="cloud/CloudAlgorithmSpecification.html"/>
+    <mapID target="cloudProcessorDesc" url="cloud/CloudProcessorDescription.html"/>
+
     <mapID target="smacScientificTool" url="smac/SmacTool.html"/>
     <mapID target="smacAlgorithmSpec" url="smac/SmacAlgorithmSpecification.html"/>
     <mapID target="smacProcessorDesc" url="smac/SmacProcessorDescription.html"/>
