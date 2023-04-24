@@ -97,14 +97,8 @@
         <module>opttbx-fub-wew-ui</module>
         <module>opttbx-fu-operator</module>
         <module>opttbx-landsat-reader</module>
-        <module>opttbx-meris-cloud</module>
-        <module>opttbx-meris-brr</module>
-        <module>opttbx-meris-sdr</module>
-        <module>opttbx-meris-l2auxdata</module>
-        <module>opttbx-meris-radiometry</module>
-        <module>opttbx-meris-radiometry-ui</module>
-        <module>opttbx-meris-smac</module>
-        <module>opttbx-meris-ops</module>
+        <module>opttbx-meris-operators-ui</module>
+        <module>opttbx-meris-operators</module>
         <module>opttbx-merisl3-reader</module>
         <module>opttbx-modis-reader</module>
         <module>opttbx-mphchl</module>
