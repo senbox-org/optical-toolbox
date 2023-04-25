@@ -3,36 +3,36 @@
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
     <xsl:param name="row0" select="'OFF'"/>
     <xsl:param name="col0" select="'OFF'"/>
-    <xsl:param name="nRowWin" select="'1200'"/>
-    <xsl:param name="nColWin" select="'1200'"/>
-    <xsl:param name="nrThreads" select="'AUTO'" />
-    <xsl:param name="productGenerator" select="'NONE'"/>
-    <xsl:param name="demDirectory" select="'NONE'"/>
-    <xsl:param name="demReference" select="'NONE'"/>
-    <xsl:param name="generateDemOutput" select="'FALSE'"/>
-    <xsl:param name="forceExitOnDemError" select="'FALSE'"/>
-    <xsl:param name="generateTciOutput" select="'TRUE'"/>
-    <xsl:param name="generateDdvOutput" select="'FALSE'"/>
-    <xsl:param name="handleL1cQltMask" select="'FALSE'"/>
-    <xsl:param name="downsample" select="'TRUE'"/>
-    <xsl:param name="psdVersion" select="'DEFAULT'"/>
-    <xsl:param name="medianFilter" select="0" />
-    <xsl:param name="aerosolType" select="'RURAL'"/>
-    <xsl:param name="midLatitude" select="'SUMMER'"/>
-    <xsl:param name="ozone" select="'0'"/>
-    <xsl:param name="wVCorrection" select="1"/>
-    <xsl:param name="vISUpdateMode" select="1"/>
-    <xsl:param name="wVWatermask" select="1"/>
-    <xsl:param name="cirrusCorrection" select="'FALSE'"/>
-    <xsl:param name="terrainCorrection" select="'TRUE'"/>
-    <xsl:param name="bRDFCorrection" select="0"/>
-    <xsl:param name="bRDFLowerBound" select="0.22"/>
-    <xsl:param name="adjacencyRange" select="1.000"/>
-    <xsl:param name="visibility" select="40.0"/>
-    <xsl:param name="altitude" select="0.100"/>
-    <xsl:param name="smoothWVMap" select="100.0"/>
-    <xsl:param name="wVThresholdCirrus" select="0.25"/>
-    <xsl:param name="databaseCompressionLevel" select="0"/>
+    <xsl:param name="nrow_win" select="'1200'"/>
+    <xsl:param name="ncol_win" select="'1200'"/>
+    <xsl:param name="Nr_Threads" select="'AUTO'" />
+    <xsl:param name="Product_Generator" select="'NONE'"/>
+    <xsl:param name="DEM_Directory" select="'NONE'"/>
+    <xsl:param name="DEM_Reference" select="'NONE'"/>
+    <xsl:param name="Generate_DEM_Output" select="'FALSE'"/>
+    <xsl:param name="Force_Exit_On_DEM_Error" select="'FALSE'"/>
+    <xsl:param name="Generate_TCI_Output" select="'TRUE'"/>
+    <xsl:param name="Generate_DDV_Output" select="'FALSE'"/>
+    <xsl:param name="Handle_L1C_QLT_Mask" select="'FALSE'"/>
+    <xsl:param name="Downsample_20_to_60" select="'TRUE'"/>
+    <xsl:param name="PSD_Version" select="'DEFAULT'"/>
+    <xsl:param name="Median_Filter" select="0" />
+    <xsl:param name="Aerosol_Type" select="'RURAL'"/>
+    <xsl:param name="Mid_Latitude" select="'SUMMER'"/>
+    <xsl:param name="Ozone_Content" select="'0'"/>
+    <xsl:param name="WV_Correction" select="1"/>
+    <xsl:param name="VIS_Update_Mode" select="1"/>
+    <xsl:param name="WV_Watermask" select="1"/>
+    <xsl:param name="Cirrus_Correction" select="'FALSE'"/>
+    <xsl:param name="DEM_Terrain_Correction" select="'TRUE'"/>
+    <xsl:param name="BRDF_Correction" select="0"/>
+    <xsl:param name="BRDF_Lower_Bound" select="0.22"/>
+    <xsl:param name="Adj_Km" select="1.000"/>
+    <xsl:param name="Visibility" select="40.0"/>
+    <xsl:param name="Altitude" select="0.100"/>
+    <xsl:param name="Smooth_WV_Map" select="100.0"/>
+    <xsl:param name="WV_Threshold_Cirrus" select="0.25"/>
+    <xsl:param name="Database_Compression_Level" select="0"/>
     <xsl:template match="/">
         <Level-2A_Ground_Image_Processing_Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="L2A_GIPP.xsd">
             <Common_Section>
@@ -52,37 +52,37 @@
                     <!-- else: col0: specifies the midpoint of the region of interest -->
                     <!-- col0 must be integer divisible by 6, to prevent rounding errors for downsampling -->
                     <!-- specify always a 10m resolution ROI, it will be automatically adapted to the lower resolutions -->
-                    <nrow_win><xsl:value-of select="$nRowWin"/></nrow_win>
+                    <nrow_win><xsl:value-of select="$nrow_win"/></nrow_win>
                     <!-- if row0, col0 not OFF or AUTO: nrow_win, ncol_win defines a rectangle around the midpoint in pixel -->
                     <!-- nrow_win must be integer divisible by 6, to prevent rounding errors for downsampling -->
                     <!-- specify always a 10m resolution ROI, it will be automatically adapted to the lower resolutions -->
-                    <ncol_win><xsl:value-of select="$nColWin"/></ncol_win>
+                    <ncol_win><xsl:value-of select="$ncol_win"/></ncol_win>
                     <!-- if row0, col0 not OFF or AUTO: ncol_win, ncol_win defines a rectangle around the midpoint in pixel -->
                     <!-- ncol_win must be integer divisible by 6, to prevent rounding errors for downsampling -->
                     <!-- specify always a 10m resolution ROI, it will be automatically adapted to the lower resolutions -->
                 </Region_Of_Interest>
                 <Product_DOI>https://doi.org/10.5270/S2_-znk9xsj</Product_DOI>
-                <Nr_Threads><xsl:value-of select="$nrThreads"/></Nr_Threads>
+                <Nr_Threads><xsl:value-of select="$Nr_Threads"/></Nr_Threads>
                 <!-- can be an unsigned integer value specifying the number or processes you intend to operate in parallel or: AUTO. If AUTO is chosen, the processor determines the number of processes automatically, using cpu_count() -->
-                <Product_Generator><xsl:value-of select="$productGenerator"/></Product_Generator>
+                <Product_Generator><xsl:value-of select="$Product_Generator"/></Product_Generator>
                 <!-- should be either a directory in the sen2cor home folder or 'NONE'. If NONE, no Product Generator will be used -->
-                <DEM_Directory><xsl:value-of select="$demDirectory"/></DEM_Directory>
+                <DEM_Directory><xsl:value-of select="$DEM_Directory"/></DEM_Directory>
                 <!-- should be either a directory in the sen2cor home folder or 'NONE'. If NONE, no DEM will be used -->
-                <DEM_Reference><xsl:value-of select="$demReference"/></DEM_Reference>
+                <DEM_Reference><xsl:value-of select="$DEM_Reference"/></DEM_Reference>
                 <!-- will be ignored, if DEM is NONE. A SRTM DEM will be downloaded from this reference, if no local DEM is available -->
-                <Generate_DEM_Output><xsl:value-of select="$generateDemOutput"/></Generate_DEM_Output>
+                <Generate_DEM_Output><xsl:value-of select="$Generate_DEM_Output"/></Generate_DEM_Output>
                 <!-- FALSE: no DEM output, TRUE: store DEM in the AUX data directory -->
-                <Force_Exit_On_DEM_Error><xsl:value-of select="$forceExitOnDemError"/></Force_Exit_On_DEM_Error>
+                <Force_Exit_On_DEM_Error><xsl:value-of select="$Force_Exit_On_DEM_Error"/></Force_Exit_On_DEM_Error>
                 <!-- FALSE: Processing continues with a flat surface, TRUE: processing will be stopped -->
-                <Generate_TCI_Output><xsl:value-of select="$generateTciOutput"/></Generate_TCI_Output>
+                <Generate_TCI_Output><xsl:value-of select="$Generate_TCI_Output"/></Generate_TCI_Output>
                 <!-- FALSE: no TCI output, TRUE: store TCI in the IMAGE data directory -->
-                <Generate_DDV_Output><xsl:value-of select="$generateDdvOutput"/></Generate_DDV_Output>
+                <Generate_DDV_Output><xsl:value-of select="$Generate_DDV_Output"/></Generate_DDV_Output>
                 <!-- FALSE: no DDV output, TRUE: store DDV in the QI_DATA directory -->
-                <Handle_L1C_QLT_Mask><xsl:value-of select="$handleL1cQltMask"/></Handle_L1C_QLT_Mask>
+                <Handle_L1C_QLT_Mask><xsl:value-of select="$Handle_L1C_QLT_Mask"/></Handle_L1C_QLT_Mask>
                 <!-- FALSE: no handling of L1C Quality Mask, TRUE: handling L1C Quality Mask -->
-                <Downsample_20_to_60><xsl:value-of select="$downsample"/></Downsample_20_to_60>
+                <Downsample_20_to_60><xsl:value-of select="$Downsample_20_to_60"/></Downsample_20_to_60>
                 <!-- TRUE: create additional 60m bands when 20m is processed -->
-                <PSD_Version><xsl:value-of select="$psdVersion"/></PSD_Version>
+                <PSD_Version><xsl:value-of select="$PSD_Version"/></PSD_Version>
                 <!-- Special entry for forcing a special PSD Version to be processed leave it to DEFAULT if you are not 100 % sure that you need a dedicated version -->
                 <PSD_Scheme PSD_Version="14.2" PSD_Reference="S2-PDGS-TAS-DI-PSD-V14.2_Schema">
                     <UP_Scheme_1C>S2_User_Product_Level-1C_Metadata</UP_Scheme_1C>
@@ -132,53 +132,53 @@
             </Common_Section>
             <Scene_Classification>
                 <Filters>
-                    <Median_Filter><xsl:value-of select="$medianFilter"/></Median_Filter>
+                    <Median_Filter><xsl:value-of select="$Median_Filter"/></Median_Filter>
                 </Filters>
             </Scene_Classification>
             <Atmospheric_Correction>
                 <Look_Up_Tables>
-                    <Aerosol_Type><xsl:value-of select="$aerosolType"/></Aerosol_Type>
+                    <Aerosol_Type><xsl:value-of select="$Aerosol_Type"/></Aerosol_Type>
                     <!-- RURAL, MARITIME, AUTO -->
-                    <Mid_Latitude><xsl:value-of select="$midLatitude"/></Mid_Latitude>
+                    <Mid_Latitude><xsl:value-of select="$Mid_Latitude"/></Mid_Latitude>
                     <!-- SUMMER, WINTER, AUTO -->
 
-                    <xsl:if test="$ozone = '0'">
+                    <xsl:if test="$Ozone_Content = '0'">
                         <Ozone_Content>0</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'f - 250'">
+                    <xsl:if test="$Ozone_Content = 'f - 250'">
                         <Ozone_Content>250</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'g - 290'">
+                    <xsl:if test="$Ozone_Content = 'g - 290'">
                         <Ozone_Content>290</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'h - 331'">
+                    <xsl:if test="$Ozone_Content = 'h - 331'">
                         <Ozone_Content>331</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'i - 370'">
+                    <xsl:if test="$Ozone_Content = 'i - 370'">
                         <Ozone_Content>370</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'j - 410'">
+                    <xsl:if test="$Ozone_Content = 'j - 410'">
                         <Ozone_Content>410</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'k - 450'">
+                    <xsl:if test="$Ozone_Content = 'k - 450'">
                         <Ozone_Content>450</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 't - 250'">
+                    <xsl:if test="$Ozone_Content = 't - 250'">
                         <Ozone_Content>250</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'u - 290'">
+                    <xsl:if test="$Ozone_Content = 'u - 290'">
                         <Ozone_Content>290</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'v - 330'">
+                    <xsl:if test="$Ozone_Content = 'v - 330'">
                         <Ozone_Content>330</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'w - 377'">
+                    <xsl:if test="$Ozone_Content = 'w - 377'">
                         <Ozone_Content>377</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'x - 420'">
+                    <xsl:if test="$Ozone_Content = 'x - 420'">
                         <Ozone_Content>420</Ozone_Content>
                     </xsl:if>
-                    <xsl:if test="$ozone = 'y - 460'">
+                    <xsl:if test="$Ozone_Content = 'y - 460'">
                         <Ozone_Content>460</Ozone_Content>
                     </xsl:if>
 
@@ -197,33 +197,33 @@
                      -->
                 </Look_Up_Tables>
                 <Flags>
-                    <WV_Correction><xsl:value-of select="$wVCorrection"/></WV_Correction>
+                    <WV_Correction><xsl:value-of select="$WV_Correction"/></WV_Correction>
                     <!-- 0: No WV correction, 1: only 940 nm bands, 2: only 1130 nm bands , 3: both regions used during wv retrieval, 4: Thermal region -->
-                    <VIS_Update_Mode><xsl:value-of select="$vISUpdateMode"/></VIS_Update_Mode>
+                    <VIS_Update_Mode><xsl:value-of select="$VIS_Update_Mode"/></VIS_Update_Mode>
                     <!-- 0: constant, 1: variable visibility -->
-                    <WV_Watermask><xsl:value-of select="$wVWatermask"/></WV_Watermask>
+                    <WV_Watermask><xsl:value-of select="$WV_Watermask"/></WV_Watermask>
                     <!-- 0: not replaced, 1: land-average, 2: line-average -->
-                    <Cirrus_Correction><xsl:value-of select="$cirrusCorrection"/></Cirrus_Correction>
+                    <Cirrus_Correction><xsl:value-of select="$Cirrus_Correction"/></Cirrus_Correction>
                     <!-- 0: no, 1: yes -->
-                    <DEM_Terrain_Correction><xsl:value-of select="$terrainCorrection"/></DEM_Terrain_Correction>
+                    <DEM_Terrain_Correction><xsl:value-of select="$DEM_Terrain_Correction"/></DEM_Terrain_Correction>
                     <!--Use DEM for Terrain Correction, otherwise only used for WVP and AOT -->
-                    <BRDF_Correction><xsl:value-of select="$bRDFCorrection"/></BRDF_Correction>
+                    <BRDF_Correction><xsl:value-of select="$BRDF_Correction"/></BRDF_Correction>
                     <!-- 0: no BRDF correction, 1: , 2: ,11, 12, 22, 21: -->
-                    <BRDF_Lower_Bound><xsl:value-of select="$bRDFLowerBound"/></BRDF_Lower_Bound>
+                    <BRDF_Lower_Bound><xsl:value-of select="$BRDF_Lower_Bound"/></BRDF_Lower_Bound>
                     <!-- In most cases, g=0.2 to 0.25 is adequate, in extreme cases of overcorrection g=0.1 should be applied -->
                 </Flags>
                 <Calibration>
-                    <Adj_Km><xsl:value-of select="$adjacencyRange"/></Adj_Km>
+                    <Adj_Km><xsl:value-of select="$Adj_Km"/></Adj_Km>
                     <!-- Adjancency Range [km] -->
-                    <Visibility><xsl:value-of select="$visibility"/></Visibility>
+                    <Visibility><xsl:value-of select="$Visibility"/></Visibility>
                     <!-- visibility (5 <= visib <= 120 km) -->
-                    <Altitude><xsl:value-of select="$altitude"/></Altitude>
+                    <Altitude><xsl:value-of select="$Altitude"/></Altitude>
                     <!-- [km] -->
-                    <Smooth_WV_Map><xsl:value-of select="$smoothWVMap"/></Smooth_WV_Map>
+                    <Smooth_WV_Map><xsl:value-of select="$Smooth_WV_Map"/></Smooth_WV_Map>
                     <!-- length of square box, [meters] -->
-                    <WV_Threshold_Cirrus><xsl:value-of select="$wVThresholdCirrus"/></WV_Threshold_Cirrus>
+                    <WV_Threshold_Cirrus><xsl:value-of select="$WV_Threshold_Cirrus"/></WV_Threshold_Cirrus>
                     <!-- water vapor threshold to switch off cirrus algorithm [cm]Range: 0.1-1.0 -->
-                    <Database_Compression_Level><xsl:value-of select="$databaseCompressionLevel"/></Database_Compression_Level>
+                    <Database_Compression_Level><xsl:value-of select="$Database_Compression_Level"/></Database_Compression_Level>
                     <!-- zlib compression level for image database [0-9, 0: best speed, 9: best size] -->
                 </Calibration>
             </Atmospheric_Correction>
