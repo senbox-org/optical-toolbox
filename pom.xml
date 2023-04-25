@@ -115,6 +115,10 @@
         <module>opttbx-spot-vgt-reader</module>
         <module>opttbx-seadas-reader</module>
         <module>opttbx-seadas-reader-ui</module>
+
+        <module>opttbx-unmix-ui</module>
+        <module>opttbx-unmix</module>
+
     </modules>
 
     <packaging>pom</packaging>
