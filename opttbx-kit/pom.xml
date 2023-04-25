@@ -13,7 +13,8 @@
 
     <name>Optical Toolbox Kit Module</name>
     <description>
-        The Optical Toolbox is a SNAP extension dedicated to the exploitation of optical high and medium resolution sensors
+        The Optical Toolbox is a SNAP extension dedicated to the exploitation of optical high and medium resolution
+        sensors
         as they are on board on Sentinel-2 and Sentinel-3.
     </description>
 
@@ -309,13 +310,13 @@
             <artifactId>opttbx-s2msi-resampler</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-kompsat2-reader</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
-        
+
 
         <dependency>
             <groupId>eu.esa.opt</groupId>
@@ -524,6 +525,16 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-spot-vgt-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-unmix</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-unmix-ui</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
         <dependency>
