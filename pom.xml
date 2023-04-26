@@ -113,6 +113,7 @@
         <module>opttbx-slstr-pdu-stitching-ui</module>
         <module>opttbx-slstr-regrid</module>
         <module>opttbx-spot-vgt-reader</module>
+        <module>opttbx-enmap-reader</module>
         <module>opttbx-seadas-reader</module>
         <module>opttbx-seadas-reader-ui</module>
 
