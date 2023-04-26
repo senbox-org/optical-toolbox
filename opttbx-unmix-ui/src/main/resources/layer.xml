@@ -1,0 +1,17 @@
+<filesystem>
+
+    <folder name="OperatorUIs">
+        <file name="eu.esa.opt.unmixing.gpf.ui.Unmix">
+            <attr name="operatorName" stringvalue="Unmix"/>
+            <attr name="disableFromGraphBuilder" stringvalue="true"/>
+        </file>
+    </folder>
+
+    <folder name="Services">
+        <folder name="JavaHelp">
+            <file name="eu-esa-opt-opttbx-unmix-ui-helpset.xml" url="helpset.xml">
+                <attr name="position" intvalue="4220"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>

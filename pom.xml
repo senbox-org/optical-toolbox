@@ -16,7 +16,7 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.esa.opt</groupId>
@@ -97,14 +97,8 @@
         <module>opttbx-fub-wew-ui</module>
         <module>opttbx-fu-operator</module>
         <module>opttbx-landsat-reader</module>
-        <module>opttbx-meris-cloud</module>
-        <module>opttbx-meris-brr</module>
-        <module>opttbx-meris-sdr</module>
-        <module>opttbx-meris-l2auxdata</module>
-        <module>opttbx-meris-radiometry</module>
-        <module>opttbx-meris-radiometry-ui</module>
-        <module>opttbx-meris-smac</module>
-        <module>opttbx-meris-ops</module>
+        <module>opttbx-meris-operators-ui</module>
+        <module>opttbx-meris-operators</module>
         <module>opttbx-merisl3-reader</module>
         <module>opttbx-modis-reader</module>
         <module>opttbx-mphchl</module>
@@ -121,6 +115,10 @@
         <module>opttbx-spot-vgt-reader</module>
         <module>opttbx-seadas-reader</module>
         <module>opttbx-seadas-reader-ui</module>
+
+        <module>opttbx-unmix-ui</module>
+        <module>opttbx-unmix</module>
+
     </modules>
 
     <packaging>pom</packaging>
@@ -147,7 +145,7 @@
         <repository>
             <id>snap-repo-public</id>
             <name>Public Maven Repository for SNAP</name>
-            <url>https://snap-build-server.tilaa.cloud/nexus/repository/snap-maven-public/</url>
+            <url>https://nexus.snap-ci.ovh/repository/snap-maven-public/</url>
             <releases>
                 <enabled>true</enabled>
                 <checksumPolicy>warn</checksumPolicy>
@@ -163,7 +161,7 @@
         <pluginRepository>
             <id>snap-repo-public</id>
             <name>Public Maven Repository for SNAP</name>
-            <url>https://snap-build-server.tilaa.cloud/nexus/repository/snap-maven-public/</url>
+            <url>https://nexus.snap-ci.ovh/repository/snap-maven-public/</url>
             <releases>
                 <enabled>true</enabled>
                 <checksumPolicy>warn</checksumPolicy>
@@ -179,13 +177,13 @@
         <repository>
             <id>snap-repo-public</id>
             <name>Public Maven Repository for SNAP</name>
-            <url>https://snap-build-server.tilaa.cloud/nexus/repository/snap-maven-releases/</url>
+            <url>https://nexus.snap-ci.ovh/repository/snap-maven-releases/</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
         <snapshotRepository>
             <id>snap-repo-public</id>
             <name>Public Maven Snapshot Repository for SNAP</name>
-            <url>https://snap-build-server.tilaa.cloud/nexus/repository/snap-maven-snapshot/</url>
+            <url>https://nexus.snap-ci.ovh/repository/snap-maven-snapshot/</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
@@ -441,7 +439,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.13.1</version>
+                <version>4.13.2</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
