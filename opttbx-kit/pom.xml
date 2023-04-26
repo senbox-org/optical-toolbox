@@ -538,6 +538,11 @@
             <version>${opttbx.version}</version>
         </dependency>
         <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-enmap-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.esa.snap.seadas</groupId>
             <artifactId>opttbx-seadas-reader</artifactId>
             <version>${seadas.reader.version}</version>
