@@ -9,7 +9,6 @@ import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -99,7 +98,6 @@ public class NcFileStitcherTest {
     }
 
     @Test
-    @Ignore("takes a few seconds")
     public void testStitchMet_tx() throws IOException, PDUStitchingException, InvalidRangeException, URISyntaxException {
         final String ncFileName = "met_tx.nc";
         final ImageSize targetImageSize = new ImageSize("in", 21687, 64, 6000, 130);
@@ -628,7 +626,7 @@ public class NcFileStitcherTest {
     }
 
     private static File getNcFile(String fileName, String name) throws URISyntaxException {
-        final String fullFileName = fileName + "/" + name;
+        final String fullFileName = "/testing/" + fileName + "/" + name;
         final URL resource = NcFileStitcherTest.class.getResource(fullFileName);
         URI uri = new URI(resource.toString());
         return new File(uri.getPath());

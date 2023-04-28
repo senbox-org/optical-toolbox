@@ -4,7 +4,11 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.SubProgressMonitor;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
 import org.esa.snap.core.dataio.ProductIO;
-import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.TiePointGeoCoding;
+import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
@@ -22,7 +26,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -318,7 +330,6 @@ public class PDUStitchingOp extends Operator {
         return sourceProductFileSet;
     }
 
-    //todo copied this from pixexop - move to utililty method? - tf 20151117
     public static Set<File> getSourceProductsPathFileSet(String[] sourceProductPaths, Logger logger) {
         Set<File> sourceProductFileSet = new TreeSet<>();
         String[] paths = trimSourceProductPaths(sourceProductPaths);

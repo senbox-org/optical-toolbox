@@ -27,7 +27,6 @@ import static org.junit.Assert.*;
 /**
  * @author Tonio Fincke
  */
-//@RunWith(LongTestRunner.class)
 public class NcFileStitcherLongTest {
     static {
         NetCdfActivator.activate();
