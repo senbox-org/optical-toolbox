@@ -8,15 +8,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * @author Tonio Fincke
  */
 public class PDUBoundariesProviderTest {
 
-    private static final String FIRST_FILE = "S3A_SL_1_RBT____20130707T153252_20130707T153752_20150217T183530_0299_158_182______SVL_O_NR_001.SEN3";
-    private static final String SECOND_FILE = "S3A_SL_1_RBT____20130707T153752_20130707T154252_20150217T183530_0299_158_182______SVL_O_NR_001.SEN3";
+    private static final String FIRST_FILE = "S3A_SL_1_RBT____20130707T153252_snip______SVL_O_NR_001.SEN3";
+    private static final String SECOND_FILE = "S3A_SL_1_RBT____20130707T153752_snip______SVL_O_NR_001.SEN3";
     private static final String NONSENSE_1_FILE = "nonsense1";
     private static final String NONSENSE_2_FILE = "S3A_SL_1_RBT____20130707T154252_20130707T154752_20150217T183537_0299_158_182______SVL_O_NR_001.SEN3";
     private static final GeoPos[] expectedFirstGeoBoundary = {new GeoPos(45.5154, -87.5954), new GeoPos(43.7689, -87.8511),
@@ -73,14 +74,14 @@ public class PDUBoundariesProviderTest {
         final GeoPos[] firstGeoBoundary = provider.getGeoBoundary(0);
         assertEquals(expectedFirstGeoBoundary.length, firstGeoBoundary.length);
         for (int i = 0; i < firstGeoBoundary.length; i++) {
-            assertEquals(expectedFirstGeoBoundary[i].getLat(), firstGeoBoundary[i].getLat());
-            assertEquals(expectedFirstGeoBoundary[i].getLon(), firstGeoBoundary[i].getLon());
+            assertEquals(expectedFirstGeoBoundary[i].getLat(), firstGeoBoundary[i].getLat(), 1.0e-6);
+            assertEquals(expectedFirstGeoBoundary[i].getLon(), firstGeoBoundary[i].getLon(), 1.0e-6);
         }
         final GeoPos[] secondGeoBoundary = provider.getGeoBoundary(1);
         assertEquals(expectedSecondGeoBoundary.length, secondGeoBoundary.length);
         for (int i = 0; i < secondGeoBoundary.length; i++) {
-            assertEquals(expectedSecondGeoBoundary[i].getLat(), secondGeoBoundary[i].getLat());
-            assertEquals(expectedSecondGeoBoundary[i].getLon(), secondGeoBoundary[i].getLon());
+            assertEquals(expectedSecondGeoBoundary[i].getLat(), secondGeoBoundary[i].getLat(), 1.0e-6);
+            assertEquals(expectedSecondGeoBoundary[i].getLon(), secondGeoBoundary[i].getLon(), 1.0e-6);
         }
 
         provider.clear();
@@ -88,7 +89,7 @@ public class PDUBoundariesProviderTest {
     }
 
     private String getResourceFilePath(String name) throws URISyntaxException {
-        final URL resource = PDUBoundariesProviderTest.class.getResource(name);
+        final URL resource = PDUBoundariesProviderTest.class.getResource("/testing/ui/" + name);
         final URI uri = new URI(resource.toString());
         return uri.getPath();
     }

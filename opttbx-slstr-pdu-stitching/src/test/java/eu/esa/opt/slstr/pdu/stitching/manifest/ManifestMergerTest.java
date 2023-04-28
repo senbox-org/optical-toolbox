@@ -20,22 +20,18 @@ import static org.junit.Assert.assertTrue;
  */
 public class ManifestMergerTest {
 
+    private static File getManifestFile(String fileName) {
+        final URL resource = ManifestMergerTest.class.getResource("/testing/manifest/" + fileName + "/xfdumanifest.xml");
+        return new File(resource.getFile());
+    }
+
     @Test
     public void testMergeManifests_OneFile() throws IOException, ParserConfigurationException, TransformerException, PDUStitchingException {
         final File inputManifest = getManifestFile(TestUtils.FIRST_FILE_NAME);
         final Date now = Calendar.getInstance().getTime();
-        final File productDir = new File(ManifestMergerTest.class.getResource("").getFile());
+        final File productDir = new File(ManifestMergerTest.class.getResource("/testing/manifest").getFile());
         ManifestMerger manifestMerger = new ManifestMerger();
         final File manifestFile = manifestMerger.createMergedManifest(new File[]{inputManifest}, now, productDir, 5000);
-        assertTrue(manifestFile.exists());
-    }
-
-    @Test
-    public void testMergeManifests_MultipleFiles() throws IOException, ParserConfigurationException, TransformerException, PDUStitchingException {
-        final Date now = Calendar.getInstance().getTime();
-        final File productDir = new File(ManifestMergerTest.class.getResource("").getFile());
-        ManifestMerger manifestMerger = new ManifestMerger();
-        final File manifestFile = manifestMerger.createMergedManifest(getManifestFiles(), now, productDir, 5000);
         assertTrue(manifestFile.exists());
     }
 
@@ -46,10 +42,13 @@ public class ManifestMergerTest {
         };
     }
 
-    private static File getManifestFile(String fileName) {
-        final String fullFileName = fileName + "/xfdumanifest.xml";
-        final URL resource = ManifestMergerTest.class.getResource(fullFileName);
-        return new File(resource.getFile());
+    @Test
+    public void testMergeManifests_MultipleFiles() throws IOException, ParserConfigurationException, TransformerException, PDUStitchingException {
+        final Date now = Calendar.getInstance().getTime();
+        final File productDir = new File(ManifestMergerTest.class.getResource("/testing/manifest").getFile());
+        ManifestMerger manifestMerger = new ManifestMerger();
+        final File manifestFile = manifestMerger.createMergedManifest(getManifestFiles(), now, productDir, 5000);
+        assertTrue(manifestFile.exists());
     }
 
 

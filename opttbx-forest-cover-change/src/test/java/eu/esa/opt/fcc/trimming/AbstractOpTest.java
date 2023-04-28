@@ -1,7 +1,7 @@
 package eu.esa.opt.fcc.trimming;
 
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Before;
 
 import java.nio.file.Files;

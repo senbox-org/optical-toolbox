@@ -1,11 +1,9 @@
 package eu.esa.opt.slstr.pdu.stitching;
 
 import com.bc.ceres.core.ProgressMonitor;
-import org.esa.snap.test.LongTestRunner;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
 
 import java.io.File;
 
@@ -15,7 +13,6 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author Tonio Fincke
  */
-@RunWith(LongTestRunner.class)
 public class SlstrPduStitcherLongTest {
 
     @Rule

@@ -1,14 +1,12 @@
 package eu.esa.opt.dataio.gdal.writer;
 
 import com.bc.ceres.core.ProgressMonitor;
-import org.esa.lib.gdal.activator.GDALDriverInfo;
-import org.esa.lib.gdal.activator.GDALInstallInfo;
-import org.esa.snap.dataio.gdal.GDALLoader;
-import org.esa.snap.dataio.gdal.drivers.GDAL;
-import org.esa.snap.dataio.gdal.drivers.GDALConstConstants;
 import eu.esa.opt.dataio.gdal.reader.GDALProductReader;
 import eu.esa.opt.dataio.gdal.reader.plugins.AbstractDriverProductReaderPlugIn;
 import eu.esa.opt.dataio.gdal.writer.plugins.AbstractDriverProductWriterPlugIn;
+import eu.esa.opt.utils.TestUtil;
+import org.esa.lib.gdal.activator.GDALDriverInfo;
+import org.esa.lib.gdal.activator.GDALInstallInfo;
 import org.esa.snap.core.dataio.ProductWriter;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.CrsGeoCoding;
@@ -16,7 +14,9 @@ import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.io.FileUtils;
-import org.esa.snap.utils.TestUtil;
+import org.esa.snap.dataio.gdal.GDALLoader;
+import org.esa.snap.dataio.gdal.drivers.GDAL;
+import org.esa.snap.dataio.gdal.drivers.GDALConstConstants;
 import org.geotools.referencing.CRS;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,11 +35,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
 /**

@@ -45,7 +45,7 @@ public class FootprintMergerTest {
         final Element manifestElement = manifest.createElement("sentinel-safe:footprint");
         manifest.appendChild(manifestElement);
 
-        new FootprintMerger(new File(FootprintMergerTest.class.getResource("").getFile())).mergeNodes(fromParents, manifestElement, manifest);
+        new FootprintMerger(new File(FootprintMergerTest.class.getResource("/testing/manifest").getFile())).mergeNodes(fromParents, manifestElement, manifest);
 
         final NodeList manifestElementChildNodes = manifestElement.getChildNodes();
         assertEquals(1, manifestElementChildNodes.getLength());

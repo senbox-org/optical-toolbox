@@ -2,11 +2,11 @@ package eu.esa.opt.dataio.worldview2;
 
 
 import eu.esa.opt.dataio.worldview2.common.WorldView2Constants;
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductIOPlugInManager;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,10 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
 /**

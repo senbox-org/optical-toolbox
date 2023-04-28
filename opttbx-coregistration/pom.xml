@@ -16,13 +16,6 @@
     <description>Sentinel-2 Coregistration</description>
 
     <dependencies>
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-commons</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
-            <version>${opttbx.version}</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.openpnp/opencv -->
         <dependency>
             <groupId>org.openpnp</groupId>
@@ -55,6 +48,13 @@
             <version>${snap.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-commons</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+            <version>${opttbx.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

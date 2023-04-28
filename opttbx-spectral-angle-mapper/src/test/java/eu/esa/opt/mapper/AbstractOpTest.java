@@ -1,16 +1,15 @@
 package eu.esa.opt.mapper;
 
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Before;
-
-import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertNotNull;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assume.assumeTrue;
 
 /**

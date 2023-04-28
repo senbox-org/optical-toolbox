@@ -9,7 +9,6 @@ import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -38,11 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * @author Tonio Fincke
@@ -99,7 +94,6 @@ public class NcFileStitcherTest {
     }
 
     @Test
-    @Ignore("takes a few seconds")
     public void testStitchMet_tx() throws IOException, PDUStitchingException, InvalidRangeException, URISyntaxException {
         final String ncFileName = "met_tx.nc";
         final ImageSize targetImageSize = new ImageSize("in", 21687, 64, 6000, 130);
@@ -127,21 +121,15 @@ public class NcFileStitcherTest {
         assertEquals(DataType.FLOAT, variables.get(9).getDataType());
         assertEquals("u_wind_tx", variables.get(10).getFullName());
         assertEquals(DataType.FLOAT, variables.get(10).getDataType());
-        assertEquals("snow_depth_tx", variables.get(27).getFullName());
-        assertEquals(DataType.FLOAT, variables.get(27).getDataType());
-        List<Attribute> snowLiquidAttributes = variables.get(27).getAttributes();
-        assertEquals("_ChunkSize", snowLiquidAttributes.get(0).getFullName());
-        assertEquals("1 600 130 ", snowLiquidAttributes.get(0).getValues().toString());
-        assertEquals("long_name", snowLiquidAttributes.get(1).getFullName());
-        assertEquals("Snow liquid water equivalent depth", snowLiquidAttributes.get(1).getStringValue());
-        assertEquals("standard_name", snowLiquidAttributes.get(2).getFullName());
-        assertEquals("lwe_thickness_of_surface_snow_amount", snowLiquidAttributes.get(2).getStringValue());
-        assertEquals("units", snowLiquidAttributes.get(3).getFullName());
-        assertEquals("metre", snowLiquidAttributes.get(3).getStringValue());
-        assertEquals("model", snowLiquidAttributes.get(4).getFullName());
-        assertEquals("ECMWF_F", snowLiquidAttributes.get(4).getStringValue());
-        assertEquals("parameter", snowLiquidAttributes.get(5).getFullName());
-        assertEquals("141", snowLiquidAttributes.get(5).getStringValue());
+        Variable varSnow_depth = variables.get(27);
+        assertEquals("snow_depth_tx", varSnow_depth.getFullName());
+        assertEquals(DataType.FLOAT, varSnow_depth.getDataType());
+        assertEquals("1 600 130 ", varSnow_depth.findAttribute("_ChunkSize").getValues().toString());
+        assertEquals("Snow liquid water equivalent depth", varSnow_depth.findAttribute("long_name").getStringValue());
+        assertEquals("lwe_thickness_of_surface_snow_amount", varSnow_depth.findAttribute("standard_name").getStringValue());
+        assertEquals("metre", varSnow_depth.findAttribute("units").getStringValue());
+        assertEquals("ECMWF_F", varSnow_depth.findAttribute("model").getStringValue());
+        assertEquals("141", varSnow_depth.findAttribute("parameter").getStringValue());
 
         final List<Variable>[] inputFileVariables = new ArrayList[3];
         for (int i = 0; i < 3; i++) {
@@ -204,52 +192,42 @@ public class NcFileStitcherTest {
         assertNotNull(netcdfFile);
         final List<Variable> variables = netcdfFile.getVariables();
         assertEquals(4, variables.size());
-        assertEquals("F1_BT_io", variables.get(0).getFullName());
-        assertEquals(DataType.SHORT, variables.get(0).getDataType());
-        assertEquals("rows columns", variables.get(0).getDimensionsString());
-        final List<Attribute> F1_BT_io_attributes = variables.get(0).getAttributes();
-        assertEquals("_ChunkSize", F1_BT_io_attributes.get(0).getFullName());
-        Array chunkLengths = F1_BT_io_attributes.get(0).getValues();
+        Variable varF1_BT_io = variables.get(0);
+        assertEquals("F1_BT_io", varF1_BT_io.getFullName());
+        assertEquals(DataType.SHORT, varF1_BT_io.getDataType());
+        assertEquals("rows columns", varF1_BT_io.getDimensionsString());
+        Array chunkLengths = varF1_BT_io.findAttribute("_ChunkSize").getValues();
         assertEquals(1, chunkLengths.getShape().length);
         assertEquals(2, chunkLengths.getShape()[0]);
         assertEquals(600, chunkLengths.getInt(0));
         assertEquals(450, chunkLengths.getInt(1));
-        assertEquals("standard_name", F1_BT_io_attributes.get(1).getFullName());
-        assertEquals("toa_brightness_temperature", F1_BT_io_attributes.get(1).getStringValue());
-        assertEquals("long_name", F1_BT_io_attributes.get(2).getFullName());
+        assertEquals("toa_brightness_temperature", varF1_BT_io.findAttribute("standard_name").getStringValue());
         assertEquals("Gridded pixel brightness temperature for channel F1 (1km TIR grid, oblique view)",
-                F1_BT_io_attributes.get(2).getStringValue());
-        assertEquals("units", F1_BT_io_attributes.get(3).getFullName());
-        assertEquals("K", F1_BT_io_attributes.get(3).getStringValue());
-        assertEquals("_FillValue", F1_BT_io_attributes.get(4).getFullName());
-        assertEquals((short) -32768, F1_BT_io_attributes.get(4).getNumericValue());
-        assertEquals("scale_factor", F1_BT_io_attributes.get(5).getFullName());
-        assertEquals(0.01, F1_BT_io_attributes.get(5).getNumericValue());
-        assertEquals("add_offset", F1_BT_io_attributes.get(6).getFullName());
-        assertEquals(283.73, F1_BT_io_attributes.get(6).getNumericValue());
+                varF1_BT_io.findAttribute("long_name").getStringValue());
+        assertEquals("K", varF1_BT_io.findAttribute("units").getStringValue());
+        assertEquals((short) -32768, varF1_BT_io.findAttribute("_FillValue").getNumericValue());
+        assertEquals(0.01, varF1_BT_io.findAttribute("scale_factor").getNumericValue());
+        assertEquals(283.73, varF1_BT_io.findAttribute("add_offset").getNumericValue());
 
         assertEquals("F1_exception_io", variables.get(1).getFullName());
         assertEquals("F1_BT_orphan_io", variables.get(2).getFullName());
 
-        assertEquals("F1_exception_orphan_io", variables.get(3).getFullName());
-        assertEquals(DataType.UBYTE, variables.get(3).getDataType());
-        assertTrue(variables.get(3).getDataType().isUnsigned());
-        assertEquals("rows orphan_pixels", variables.get(3).getDimensionsString());
-        final List<Attribute> F1_exception_orphan_io_attributes = variables.get(3).getAttributes();
-        assertEquals("_ChunkSize", F1_exception_orphan_io_attributes.get(0).getFullName());
-        chunkLengths = F1_exception_orphan_io_attributes.get(0).getValues();
+        Variable varF1_exception = variables.get(3);
+        assertEquals("F1_exception_orphan_io", varF1_exception.getFullName());
+        assertEquals(DataType.UBYTE, varF1_exception.getDataType());
+        assertTrue(varF1_exception.getDataType().isUnsigned());
+        assertEquals("rows orphan_pixels", varF1_exception.getDimensionsString());
+        chunkLengths = varF1_exception.findAttribute("_ChunkSize").getValues();
         assertEquals(1, chunkLengths.getShape().length);
         assertEquals(2, chunkLengths.getShape()[0]);
         assertEquals(600, chunkLengths.getInt(0));
         assertEquals(112, chunkLengths.getInt(1));
-        assertEquals("standard_name", F1_exception_orphan_io_attributes.get(1).getFullName());
-        assertEquals("toa_brightness_temperature_status_flag", F1_exception_orphan_io_attributes.get(1).getStringValue());
-        assertEquals("flag_masks", F1_exception_orphan_io_attributes.get(2).getFullName());
-        assertTrue(F1_exception_orphan_io_attributes.get(2).isArray());
-        final Array F1_exception_orphan_io_values = F1_exception_orphan_io_attributes.get(2).getValues();
+        assertEquals("toa_brightness_temperature_status_flag", varF1_exception.findAttribute("standard_name").getStringValue());
+        assertTrue(varF1_exception.findAttribute("flag_masks").isArray());
+        final Array F1_exception_orphan_io_values = varF1_exception.findAttribute("flag_masks").getValues();
         assertEquals(8, F1_exception_orphan_io_values.getSize());
         assertEquals(DataType.UBYTE, F1_exception_orphan_io_values.getDataType());
-        assertEquals(true, F1_exception_orphan_io_values.isUnsigned());
+        assertTrue(F1_exception_orphan_io_values.isUnsigned());
         assertEquals((byte) 1, F1_exception_orphan_io_values.getByte(0));
         assertEquals((byte) 2, F1_exception_orphan_io_values.getByte(1));
         assertEquals((byte) 4, F1_exception_orphan_io_values.getByte(2));
@@ -258,11 +236,9 @@ public class NcFileStitcherTest {
         assertEquals((byte) 32, F1_exception_orphan_io_values.getByte(5));
         assertEquals((byte) 64, F1_exception_orphan_io_values.getByte(6));
         assertEquals((byte) 128, F1_exception_orphan_io_values.getByte(7));
-        assertEquals("flag_meanings", F1_exception_orphan_io_attributes.get(3).getFullName());
         assertEquals("ISP_absent pixel_absent not_decompressed no_signal saturation invalid_radiance no_parameters unfilled_pixel",
-                F1_exception_orphan_io_attributes.get(3).getStringValue());
-        assertEquals("_FillValue", F1_exception_orphan_io_attributes.get(4).getFullName());
-        assertEquals((byte) -128, F1_exception_orphan_io_attributes.get(4).getNumericValue());
+                varF1_exception.findAttribute("flag_meanings").getStringValue());
+        assertEquals((byte) -128, varF1_exception.findAttribute("_FillValue").getNumericValue());
 
         List<Variable> inputFileVariables = new ArrayList<>();
         for (int i = 0; i < 1; i++) {
@@ -317,21 +293,13 @@ public class NcFileStitcherTest {
         netcdfWriteable.close();
         netcdfFile = NetcdfFileOpener.open(file);
         assertNotNull(netcdfFile);
-        final List<Attribute> globalAttributes = netcdfFile.getGlobalAttributes();
 
-        assertEquals(7, globalAttributes.size());
-        assertEquals("xyz", globalAttributes.get(0).getFullName());
-        assertEquals("yz", globalAttributes.get(0).getStringValue());
-        assertEquals("abc_1", globalAttributes.get(1).getFullName());
-        assertEquals("44", globalAttributes.get(1).getStringValue());
-        assertEquals("abc", globalAttributes.get(2).getFullName());
-        assertEquals("23", globalAttributes.get(2).getStringValue());
-        assertEquals("def", globalAttributes.get(3).getFullName());
-        assertEquals(someArray.toString(), globalAttributes.get(3).getStringValue());
-        assertEquals("defg", globalAttributes.get(4).getFullName());
-        assertEquals(someArray.toString(), globalAttributes.get(4).getStringValue());
-        assertEquals("creation_time", globalAttributes.get(5).getFullName());
-        assertEquals(nowAsString, globalAttributes.get(5).getStringValue());
+        assertEquals("yz", netcdfFile.findGlobalAttribute("xyz").getStringValue());
+        assertEquals("44", netcdfFile.findGlobalAttribute("abc_1").getStringValue());
+        assertEquals("23", netcdfFile.findGlobalAttribute("abc").getStringValue());
+        assertEquals(someArray.toString(), netcdfFile.findGlobalAttribute("def").getStringValue());
+        assertEquals(someArray.toString(), netcdfFile.findGlobalAttribute("defg").getStringValue());
+        assertEquals(nowAsString, netcdfFile.findGlobalAttribute("creation_time").getStringValue());
     }
 
     @Test
@@ -628,7 +596,7 @@ public class NcFileStitcherTest {
     }
 
     private static File getNcFile(String fileName, String name) throws URISyntaxException {
-        final String fullFileName = fileName + "/" + name;
+        final String fullFileName = "/testing/" + fileName + "/" + name;
         final URL resource = NcFileStitcherTest.class.getResource(fullFileName);
         URI uri = new URI(resource.toString());
         return new File(uri.getPath());

@@ -44,6 +44,11 @@
             <artifactId>ceres-binding</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-netcdf</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-sentinel3-reader</artifactId>
             <version>${opttbx.version}</version>
