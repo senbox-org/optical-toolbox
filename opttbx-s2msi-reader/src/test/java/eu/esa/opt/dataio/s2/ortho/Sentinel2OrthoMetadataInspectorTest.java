@@ -5,9 +5,9 @@ import eu.esa.opt.dataio.s2.ortho.metadata.Sentinel2OrthoMetadataInspector;
 import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM32N_ReaderPlugIn;
 import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM34S_ReaderPlugIn;
 import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM36N_ReaderPlugIn;
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.runtime.LogUtils4Tests;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -19,9 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Denisa Stefanescu
