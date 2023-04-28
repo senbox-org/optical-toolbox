@@ -23,8 +23,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -80,7 +80,7 @@ public class PDUStitchingOp extends Operator {
         final Set<File> filesByProduct = getSourceProductsFileSet(sourceProducts);
         final Set<File> filesByPath = getSourceProductsPathFileSet(sourceProductPaths, getLogger());
         filesByPath.addAll(filesByProduct);
-        files = filesByPath.toArray(new File[filesByPath.size()]);
+        files = filesByPath.toArray(new File[0]);
         if (files.length == 0) {
             throw new OperatorException("No PDUs to be stitched could be found.");
         }
@@ -105,9 +105,9 @@ public class PDUStitchingOp extends Operator {
         List<ProductData.UTC> startTimes = new ArrayList<>();
         List<ProductData.UTC> stopTimes = new ArrayList<>();
         for (int i = 0; i < slstrProductFiles.length; i++) {
-                slstrNameDecompositions[i] =
-                        SlstrPduStitcher.decomposeSlstrName(slstrProductFiles[i].getParentFile().getName());
-                manifestDocuments[i] = SlstrPduStitcher.createXmlDocument(new FileInputStream(slstrProductFiles[i]));
+            slstrNameDecompositions[i] =
+                    SlstrPduStitcher.decomposeSlstrName(slstrProductFiles[i].getParentFile().getName());
+            manifestDocuments[i] = SlstrPduStitcher.createXmlDocument(Files.newInputStream(slstrProductFiles[i].toPath()));
             final ImageSize[] imageSizes = ImageSizeHandler.extractImageSizes(manifestDocuments[i]);
             for (ImageSize imageSize : imageSizes) {
                 if (idToImageSizes.containsKey(imageSize.getIdentifier())) {

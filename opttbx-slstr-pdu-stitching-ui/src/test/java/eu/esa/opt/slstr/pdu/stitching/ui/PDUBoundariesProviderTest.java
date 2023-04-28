@@ -8,7 +8,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * @author Tonio Fincke
@@ -73,14 +74,14 @@ public class PDUBoundariesProviderTest {
         final GeoPos[] firstGeoBoundary = provider.getGeoBoundary(0);
         assertEquals(expectedFirstGeoBoundary.length, firstGeoBoundary.length);
         for (int i = 0; i < firstGeoBoundary.length; i++) {
-            assertEquals(expectedFirstGeoBoundary[i].getLat(), firstGeoBoundary[i].getLat());
-            assertEquals(expectedFirstGeoBoundary[i].getLon(), firstGeoBoundary[i].getLon());
+            assertEquals(expectedFirstGeoBoundary[i].getLat(), firstGeoBoundary[i].getLat(), 1.0e-6);
+            assertEquals(expectedFirstGeoBoundary[i].getLon(), firstGeoBoundary[i].getLon(), 1.0e-6);
         }
         final GeoPos[] secondGeoBoundary = provider.getGeoBoundary(1);
         assertEquals(expectedSecondGeoBoundary.length, secondGeoBoundary.length);
         for (int i = 0; i < secondGeoBoundary.length; i++) {
-            assertEquals(expectedSecondGeoBoundary[i].getLat(), secondGeoBoundary[i].getLat());
-            assertEquals(expectedSecondGeoBoundary[i].getLon(), secondGeoBoundary[i].getLon());
+            assertEquals(expectedSecondGeoBoundary[i].getLat(), secondGeoBoundary[i].getLat(), 1.0e-6);
+            assertEquals(expectedSecondGeoBoundary[i].getLon(), secondGeoBoundary[i].getLon(), 1.0e-6);
         }
 
         provider.clear();
