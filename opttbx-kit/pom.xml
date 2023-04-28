@@ -356,18 +356,6 @@
 
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-alosAV2-reader</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-alosPRI-reader</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-worldview2esa-reader</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
@@ -535,6 +523,11 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-unmix-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-enmap-reader</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
         <dependency>

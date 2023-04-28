@@ -17,11 +17,11 @@
 
 package eu.esa.opt.dataio.rapideye.metadata;
 
+import eu.esa.opt.utils.TestUtil;
 import org.apache.commons.lang.SystemUtils;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
-import org.esa.snap.utils.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

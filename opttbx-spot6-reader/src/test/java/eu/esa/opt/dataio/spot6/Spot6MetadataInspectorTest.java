@@ -1,18 +1,16 @@
 package eu.esa.opt.dataio.spot6;
 
 import eu.esa.opt.dataio.spot6.internal.Spot6MetadataInspector;
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.runtime.LogUtils4Tests;
-import org.esa.snap.utils.TestUtil;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
 public class Spot6MetadataInspectorTest {

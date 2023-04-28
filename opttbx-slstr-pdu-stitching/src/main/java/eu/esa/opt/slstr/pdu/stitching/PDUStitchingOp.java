@@ -4,7 +4,11 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.SubProgressMonitor;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
 import org.esa.snap.core.dataio.ProductIO;
-import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.TiePointGeoCoding;
+import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
@@ -19,10 +23,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,7 +80,7 @@ public class PDUStitchingOp extends Operator {
         final Set<File> filesByProduct = getSourceProductsFileSet(sourceProducts);
         final Set<File> filesByPath = getSourceProductsPathFileSet(sourceProductPaths, getLogger());
         filesByPath.addAll(filesByProduct);
-        files = filesByPath.toArray(new File[filesByPath.size()]);
+        files = filesByPath.toArray(new File[0]);
         if (files.length == 0) {
             throw new OperatorException("No PDUs to be stitched could be found.");
         }
@@ -93,9 +105,9 @@ public class PDUStitchingOp extends Operator {
         List<ProductData.UTC> startTimes = new ArrayList<>();
         List<ProductData.UTC> stopTimes = new ArrayList<>();
         for (int i = 0; i < slstrProductFiles.length; i++) {
-                slstrNameDecompositions[i] =
-                        SlstrPduStitcher.decomposeSlstrName(slstrProductFiles[i].getParentFile().getName());
-                manifestDocuments[i] = SlstrPduStitcher.createXmlDocument(new FileInputStream(slstrProductFiles[i]));
+            slstrNameDecompositions[i] =
+                    SlstrPduStitcher.decomposeSlstrName(slstrProductFiles[i].getParentFile().getName());
+            manifestDocuments[i] = SlstrPduStitcher.createXmlDocument(Files.newInputStream(slstrProductFiles[i].toPath()));
             final ImageSize[] imageSizes = ImageSizeHandler.extractImageSizes(manifestDocuments[i]);
             for (ImageSize imageSize : imageSizes) {
                 if (idToImageSizes.containsKey(imageSize.getIdentifier())) {
@@ -318,7 +330,6 @@ public class PDUStitchingOp extends Operator {
         return sourceProductFileSet;
     }
 
-    //todo copied this from pixexop - move to utililty method? - tf 20151117
     public static Set<File> getSourceProductsPathFileSet(String[] sourceProductPaths, Logger logger) {
         Set<File> sourceProductFileSet = new TreeSet<>();
         String[] paths = trimSourceProductPaths(sourceProductPaths);

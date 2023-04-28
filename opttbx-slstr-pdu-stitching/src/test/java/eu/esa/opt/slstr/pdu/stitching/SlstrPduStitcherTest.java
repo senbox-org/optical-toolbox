@@ -67,7 +67,7 @@ public class SlstrPduStitcherTest {
     @Test
     public void testDecomposeSlstrName() throws URISyntaxException, PDUStitchingException {
         final SlstrPduStitcher.SlstrNameDecomposition firstSlstrNameDecomposition =
-                SlstrPduStitcher.decomposeSlstrName(TestUtils.getFirstSlstrFile().getParentFile().getName());
+                SlstrPduStitcher.decomposeSlstrName("S3A_SL_1_RBT____20130707T153252_20130707T153752_20150217T183530_0299_158_182______SVL_O_NR_001.SEN3");
 
         Date startTime = new GregorianCalendar(2013, Calendar.JULY, 7, 15, 32, 52).getTime();
         Date stopTime = new GregorianCalendar(2013, Calendar.JULY, 7, 15, 37, 52).getTime();
@@ -86,9 +86,9 @@ public class SlstrPduStitcherTest {
     @Test
     public void testCreateParentDirectoryNameOfStitchedFile() throws URISyntaxException, PDUStitchingException {
         SlstrPduStitcher.SlstrNameDecomposition[] decompositions = new SlstrPduStitcher.SlstrNameDecomposition[3];
-        decompositions[0] = SlstrPduStitcher.decomposeSlstrName(TestUtils.getFirstSlstrFile().getParentFile().getName());
-        decompositions[1] = SlstrPduStitcher.decomposeSlstrName(TestUtils.getSecondSlstrFile().getParentFile().getName());
-        decompositions[2] = SlstrPduStitcher.decomposeSlstrName(TestUtils.getThirdSlstrFile().getParentFile().getName());
+        decompositions[0] = SlstrPduStitcher.decomposeSlstrName("S3A_SL_1_RBT____20130707T153252_20130707T153752_20150217T183530_0299_158_182______SVL_O_NR_001.SEN3");
+        decompositions[1] = SlstrPduStitcher.decomposeSlstrName("S3A_SL_1_RBT____20130707T153752_20130707T154252_20150217T183530_0299_158_182______SVL_O_NR_001.SEN3");
+        decompositions[2] = SlstrPduStitcher.decomposeSlstrName("S3A_SL_1_RBT____20130707T154252_20130707T154752_20150217T183537_0299_158_182______SVL_O_NR_001.SEN3");
 
         Date time = Calendar.getInstance().getTime();
         final String parentDirectoryNameOfStitchedFile =
@@ -96,7 +96,7 @@ public class SlstrPduStitcherTest {
 
         final String now = new SimpleDateFormat("yyyyMMdd'T'HHmmss").format(time);
         assertEquals("S3A_SL_1_RBT____20130707T153252_20130707T154752_" + now + "_0299_158_182______SVL_O_NR_001.SEN3",
-                              parentDirectoryNameOfStitchedFile);
+                parentDirectoryNameOfStitchedFile);
     }
 
     @Test

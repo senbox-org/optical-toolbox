@@ -37,8 +37,9 @@
         <!-- First opttbx-kit to be able to detect missing dependencies-->
         <module>opttbx-kit</module>
 
-        <!-- Former S2TBX modules-->
+        <module>opttbx-alos-reader</module>
 
+        <!-- Former S2TBX modules-->
         <module>opttbx-preferences-ui</module>
         <module>opttbx-s2msi-reader</module>
         <module>opttbx-s2msi-reader-ui</module>
@@ -77,14 +78,11 @@
         <module>opttbx-coregistration</module>
         <module>opttbx-coregistration-ui</module>
         <module>opttbx-ikonos-reader</module>
-        <module>opttbx-alosAV2-reader</module>
-        <module>opttbx-alosPRI-reader</module>
         <module>opttbx-worldview2esa-reader</module>
 
         <!-- Former S3TBX modules-->
         <module>opttbx-aatsr-sst</module>
         <module>opttbx-aatsr-sst-ui</module>
-        <module>opttbx-alos-reader</module>
         <module>opttbx-arc</module>
         <module>opttbx-arc-ui</module>
         <module>opttbx-atsr-reader</module>
@@ -113,6 +111,7 @@
         <module>opttbx-slstr-pdu-stitching-ui</module>
         <module>opttbx-slstr-regrid</module>
         <module>opttbx-spot-vgt-reader</module>
+        <module>opttbx-enmap-reader</module>
         <module>opttbx-seadas-reader</module>
         <module>opttbx-seadas-reader-ui</module>
 
