@@ -18,7 +18,7 @@
 package eu.esa.opt.dataio.spot.dimap;
 
 import eu.esa.opt.utils.TestUtil;
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
@@ -38,10 +38,10 @@ import static org.junit.Assume.assumeTrue;
  */
 public class SpotViewMetadataTest {
     private SpotViewMetadata metadata;
-    private String productsFolder = "_spot" + File.separator;
+    private final String productsFolder = "_spot" + File.separator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         assumeTrue(TestUtil.testdataAvailable());
 
         XmlMetadataParserFactory.registerParser(SpotViewMetadata.class, new XmlMetadataParser<SpotViewMetadata>(SpotViewMetadata.class));
@@ -49,48 +49,48 @@ public class SpotViewMetadataTest {
     }
 
     @Test
-    public void testGetFileName() throws Exception {
-        assertEquals("metadata.xml", metadata.getFileName()); ;
+    public void testGetFileName() {
+        assertEquals("metadata.xml", metadata.getFileName());
     }
 
     @Test
-    public void testGetProductName() throws Exception {
+    public void testGetProductName() {
         assertEquals("SP04_HRI1_X__1O_20050605T090007_20050605T090016_DLR_70_PREU.BIL.ZIP", metadata.getProductName());
     }
 
     @Test
-    public void testGetNumBands() throws Exception {
+    public void testGetNumBands() {
         assertEquals(4, metadata.getNumBands());
     }
 
     @Test
-    public void testGetFormatName() throws Exception {
+    public void testGetFormatName() {
         assertEquals("NOT DIMAP", metadata.getFormatName());
     }
 
     @Test
-    public void testGetMetadataProfile() throws Exception {
+    public void testGetMetadataProfile() {
         assertEquals("SPOTScene", metadata.getMetadataProfile());
     }
 
     @Test
-    public void testGetRasterWidth() throws Exception {
+    public void testGetRasterWidth() {
         assertEquals(2713, metadata.getRasterWidth());
     }
 
     @Test
-    public void testGetRasterHeight() throws Exception {
+    public void testGetRasterHeight() {
         assertEquals(2568, metadata.getRasterHeight());
     }
 
     @Test
-    public void testGetRasterFileNames() throws Exception {
+    public void testGetRasterFileNames() {
         assertEquals(1, metadata.getRasterFileNames().length);
         assertEquals("imagery.bil", metadata.getRasterFileNames()[0]);
     }
 
     @Test
-    public void testGetBandNames() throws Exception {
+    public void testGetBandNames() {
         assertEquals(4, metadata.getBandNames().length);
         assertEquals("band_0", metadata.getBandNames()[0]);
         assertEquals("band_1", metadata.getBandNames()[1]);
@@ -99,82 +99,82 @@ public class SpotViewMetadataTest {
     }
 
     @Test
-    public void testGetRasterJavaByteOrder() throws Exception {
+    public void testGetRasterJavaByteOrder() {
         assertEquals(ByteOrder.BIG_ENDIAN, metadata.getRasterJavaByteOrder());
     }
 
     @Test
-    public void testGetRasterDataType() throws Exception {
+    public void testGetRasterDataType() {
         assertEquals(ProductData.TYPE_UINT8, metadata.getRasterDataType());
     }
 
     @Test
-    public void testGetRasterPixelSize() throws Exception {
+    public void testGetRasterPixelSize() {
         assertEquals(1, metadata.getRasterPixelSize());
     }
 
     @Test
-    public void testGetRasterGeoRefX() throws Exception {
+    public void testGetRasterGeoRefX() {
         assertEquals(5733737.5, metadata.getRasterGeoRefX(), 0.001);
     }
 
     @Test
-    public void testGetRasterGeoRefY() throws Exception {
+    public void testGetRasterGeoRefY() {
         assertEquals(2049987.5, metadata.getRasterGeoRefY(), 0.001);
     }
 
     @Test
-    public void testGetRasterGeoRefSizeX() throws Exception {
+    public void testGetRasterGeoRefSizeX() {
         assertEquals(25.0, metadata.getRasterGeoRefSizeX(), 0.001);
     }
 
     @Test
-    public void testGetRasterGeoRefSizeY() throws Exception {
+    public void testGetRasterGeoRefSizeY() {
         assertEquals(25.0, metadata.getRasterGeoRefSizeY(), 0.001);
     }
 
     @Test
-    public void testGetGeolayerFileName() throws Exception {
+    public void testGetGeolayerFileName() {
         assertEquals("geolayer.bil", metadata.getGeolayerFileName());
     }
 
     @Test
-    public void testGetGeolayerNumBands() throws Exception {
+    public void testGetGeolayerNumBands() {
         assertEquals(2, metadata.getGeolayerNumBands());
     }
 
     @Test
-    public void testGetGeolayerWidth() throws Exception {
+    public void testGetGeolayerWidth() {
         assertEquals(3000, metadata.getGeolayerWidth());
     }
 
     @Test
-    public void testGetGeolayerHeight() throws Exception {
+    public void testGetGeolayerHeight() {
         assertEquals(3000, metadata.getGeolayerHeight());
     }
 
     @Test
-    public void testGetGeolayerJavaByteOrder() throws Exception {
+    public void testGetGeolayerJavaByteOrder() {
         assertEquals(ByteOrder.BIG_ENDIAN, metadata.getGeolayerJavaByteOrder());
     }
 
     @Test
-    public void testGetGeolayerPixelSize() throws Exception {
+    public void testGetGeolayerPixelSize() {
         assertEquals(4, metadata.getGeolayerPixelSize());
     }
 
     @Test
-    public void testGetGeolayerDataType() throws Exception {
+    public void testGetGeolayerDataType() {
         assertEquals(ProductData.TYPE_UINT8, metadata.getGeolayerDataType());
     }
 
     @Test
-    public void testGetProjectionCode() throws Exception {
+    public void testGetProjectionCode() {
         assertEquals("epsg:3035", metadata.getProjectionCode());
     }
 
     @Test
-    public void testSetFileName() throws Exception {
+    public void testSetFileName() {
         metadata.setFileName("testtest");
         //wrong!!!, actual result=metadata.xml
         //assertEquals("testtest", metadata.getFileName());
@@ -182,12 +182,11 @@ public class SpotViewMetadataTest {
     }
 
     @Test
-    public void testGetPath() throws Exception {
+    public void testGetPath() {
         String root = System.getProperty(TestUtil.PROPERTYNAME_DATA_DIR);
         String partialPath = root + File.separator + productsFolder + "SP04_HRI1_X__1O_20050605T090007_20050605T090016_DLR_70_PREU.BIL" + File.separator + "metadata.xml";
         String metadataPath = metadata.getPath().toString();
-        if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX)
-        {
+        if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX) {
             partialPath = partialPath.replaceAll("\\\\", "/");
         } else if (SystemUtils.IS_OS_WINDOWS) {
             partialPath = partialPath.replace("\\", "/");
@@ -198,7 +197,7 @@ public class SpotViewMetadataTest {
     }
 
     @Test
-    public void testSetPath() throws Exception {
+    public void testSetPath() {
         metadata.setPath(Paths.get("D:/testsetpath"));
         assertEquals("D:" + File.separator + "testsetpath", metadata.getPath().toString());
     }

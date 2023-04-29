@@ -2,7 +2,7 @@ package eu.esa.opt.olci.o2aharm;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.google.common.primitives.Doubles;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
@@ -101,7 +101,7 @@ class OlciO2aHarmonisationIO {
     static String[] parseJSON1DimStringArray(JSONObject jsonObject, String variableName) {
         JSONArray jsonArray = (JSONArray) jsonObject.get(variableName);
         List<String> stringList = (List<String>) jsonArray.stream().collect(Collectors.toList());
-        return stringList.toArray(new String[stringList.size()]);
+        return stringList.toArray(new String[0]);
     }
 
     /**

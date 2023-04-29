@@ -2,23 +2,26 @@ package eu.esa.opt.dataio.worldview2;
 
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
+import eu.esa.opt.commons.FilePathInputStream;
+import eu.esa.opt.dataio.VirtualDirEx;
+import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
 import eu.esa.opt.dataio.worldview2.common.WorldView2Constants;
 import eu.esa.opt.dataio.worldview2.metadata.TileComponent;
 import eu.esa.opt.dataio.worldview2.metadata.TileMetadata;
 import eu.esa.opt.dataio.worldview2.metadata.TileMetadataList;
 import eu.esa.opt.dataio.worldview2.metadata.WorldView2Metadata;
-import org.apache.commons.lang.StringUtils;
-import eu.esa.opt.commons.FilePathInputStream;
-import eu.esa.opt.dataio.VirtualDirEx;
-import org.esa.snap.core.metadata.XmlMetadataParser;
-import org.esa.snap.core.metadata.XmlMetadataParserFactory;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.apache.commons.lang3.StringUtils;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;
-import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.GeoCoding;
+import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.image.MosaicMatrix;
+import org.esa.snap.core.metadata.XmlMetadataParser;
+import org.esa.snap.core.metadata.XmlMetadataParserFactory;
 import org.esa.snap.core.util.jai.JAIUtils;
 import org.esa.snap.dataio.ImageRegistryUtils;
 import org.esa.snap.dataio.geotiff.GeoTiffImageReader;
@@ -31,7 +34,8 @@ import org.opengis.referencing.operation.TransformException;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -62,12 +66,69 @@ class WorldView2ProductReader extends AbstractProductReader {
         this.imageInputStreamSpi = ImageRegistryUtils.registerImageInputStreamSpi();
     }
 
-    @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand,
-                                          int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, com.bc.ceres.core.ProgressMonitor pm)
-                                          throws IOException {
+    public static WorldView2Metadata readMetadata(VirtualDirEx productDirectory) throws Exception {
+        String[] allFileNames = productDirectory.listAllFiles();
+        String metadataFileName = null;
+        for (String relativeFilePath : allFileNames) {
+            if (StringUtils.endsWithIgnoreCase(relativeFilePath, WorldView2Constants.METADATA_FILE_SUFFIX)) {
+                metadataFileName = relativeFilePath;
+            }
+        }
+        if (metadataFileName == null) {
+            throw new NullPointerException("The product has no metadata file.");
+        }
+        WorldView2Metadata worldView2Metadata;
+        try (FilePathInputStream filePathInputStream = productDirectory.getInputStream(metadataFileName)) {
+            worldView2Metadata = (WorldView2Metadata) XmlMetadataParserFactory.getParser(WorldView2Metadata.class).parse(filePathInputStream);
+        }
 
-        throw new UnsupportedOperationException("Method not implemented");
+        String[] subProductNames = worldView2Metadata.findSubProductNames();
+        for (String subProductName : subProductNames) {
+            TileMetadataList tileMetadataList = new TileMetadataList();
+            for (String fileRelativePath : allFileNames) {
+                if (fileRelativePath.contains(subProductName)) {
+                    if (fileRelativePath.endsWith(WorldView2Constants.METADATA_EXTENSION) && !fileRelativePath.endsWith(WorldView2Constants.METADATA_FILE_SUFFIX)
+                            && !fileRelativePath.endsWith(WorldView2Metadata.EXCLUSION_STRING)) {
+
+                        try (FilePathInputStream filePathInputStream = productDirectory.getInputStream(fileRelativePath)) {
+                            TileMetadata tileMetadata = TileMetadata.create(filePathInputStream);
+                            tileMetadataList.addTileMetadata(tileMetadata);
+                        }
+                    } else if (fileRelativePath.endsWith(WorldView2Constants.IMAGE_EXTENSION)) {
+                        tileMetadataList.getTiffImageRelativeFiles().add(fileRelativePath);
+                    }
+                }
+            }
+            tileMetadataList.sortTilesByFileName();
+            int multiSpectralBandCount = 0;
+            int bandsDataType = 0;
+            for (TileMetadata tileMetadata : tileMetadataList.getTiles()) {
+                TileComponent tileComponent = tileMetadata.getTileComponent();
+                for (int filesIndex = 0; filesIndex < tileComponent.getNumOfTiles(); filesIndex++) {
+                    for (String imageFileRelativePath : tileMetadataList.getTiffImageRelativeFiles()) {
+                        if (imageFileRelativePath.contains(tileComponent.getTileNames()[filesIndex])) {
+                            tileComponent.addDeliveredTile(tileComponent.getTileNames()[filesIndex]);
+                            if (!tileComponent.getBandID().equals("P")) {
+                                if (multiSpectralBandCount == 0) {
+                                    Path parentFolderPath = productDirectory.getBaseFile().toPath();
+                                    try (GeoTiffImageReader geoTiffImageReader = GeoTiffImageReader.buildGeoTiffImageReader(parentFolderPath, imageFileRelativePath)) {
+                                        SampleModel sampleModel = geoTiffImageReader.getBaseImage().getSampleModel();
+                                        multiSpectralBandCount = sampleModel.getNumBands();
+                                        bandsDataType = ImageManager.getProductDataType(sampleModel.getDataType());
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            tileMetadataList.setBandsData(multiSpectralBandCount, bandsDataType);
+            worldView2Metadata.addSubProductTileMetadataList(subProductName, tileMetadataList);
+        }
+        worldView2Metadata.sortSubProductsByName();
+
+        return worldView2Metadata;
     }
 
     @Override
@@ -78,138 +139,10 @@ class WorldView2ProductReader extends AbstractProductReader {
     }
 
     @Override
-    protected Product readProductNodesImpl() throws IOException {
-        boolean success = false;
-        try {
-            Path productPath = BaseProductReaderPlugIn.convertInputToPath(super.getInput());
-            this.productDirectory = VirtualDirEx.build(productPath, false, false);
+    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand,
+                                          int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, com.bc.ceres.core.ProgressMonitor pm) {
 
-            WorldView2Metadata metadata = readMetadata(this.productDirectory);
-            int subProductCount = metadata.getSubProductCount();
-            if (subProductCount == 0) {
-                throw new IllegalStateException("The product is empty.");
-            }
-
-            Dimension defaultProductSize = metadata.computeDefaultProductSize();
-            if (defaultProductSize == null) {
-                throw new NullPointerException("The product default size is null.");
-            }
-            ProductSubsetDef subsetDef = getSubsetDef();
-            GeoCoding productDefaultGeoCoding = null;
-            Rectangle productBounds;
-            boolean isMultiSize = metadata.isMultiSize();
-            if (subsetDef == null || subsetDef.getSubsetRegion() == null) {
-                productBounds = new Rectangle(0, 0, defaultProductSize.width, defaultProductSize.height);
-            } else {
-                productDefaultGeoCoding = metadata.buildProductGeoCoding(null);
-                productBounds = subsetDef.getSubsetRegion().computeProductPixelRegion(productDefaultGeoCoding, defaultProductSize.width, defaultProductSize.height, isMultiSize);
-            }
-            if (productBounds.isEmpty()) {
-                throw new IllegalStateException("Empty product bounds.");
-            }
-
-            String productName = metadata.getOrderNumber();
-            if (StringUtils.isBlank(productName)) {
-                productName = this.productDirectory.getBaseFile().getName();
-            }
-
-            Product product = new Product(productName, WorldView2Constants.PRODUCT_TYPE, productBounds.width, productBounds.height, this);
-            product.setStartTime(metadata.getProductStartTime());
-            product.setEndTime(metadata.getProductEndTime());
-            product.setDescription(metadata.getProductDescription());
-            product.setFileLocation(productPath.toFile());
-            Dimension preferredTileSize = JAIUtils.computePreferredTileSize(product.getSceneRasterWidth(), product.getSceneRasterHeight(), 1);
-            product.setPreferredTileSize(preferredTileSize);
-
-            GeoCoding productGeoCoding = metadata.buildProductGeoCoding(productBounds);
-            if (productGeoCoding != null) {
-                product.setSceneGeoCoding(productGeoCoding);
-            }
-
-            Dimension defaultJAIReadTileSize = JAI.getDefaultTileSize();
-            product.setPreferredTileSize(defaultJAIReadTileSize);
-
-            Path parentFolderPath = this.productDirectory.getBaseFile().toPath();
-            String autoGroupPattern = "";
-            String bandPrefix = "";
-            for (int k=0; k<subProductCount; k++) {
-                String subProductName = metadata.getSubProductNameAt(k);
-                TileMetadataList subProductTileMetadataList = metadata.getSubProductTileMetadataListAt(k);
-
-                if (subProductCount > 1) {
-                    if (autoGroupPattern.length() > 0) {
-                        autoGroupPattern += ":";
-                    }
-                    autoGroupPattern += subProductName;
-                    bandPrefix = subProductName + "_";
-                }
-
-                Dimension defaultSubProductSize = subProductTileMetadataList.computeDefaultProductSize();
-                if (defaultSubProductSize == null) {
-                    throw new NullPointerException("The subproduct default size is null.");
-                }
-
-                GeoCoding subProductDefaultGeoCoding = null;
-                GeoCoding subProductGeoCoding = null;
-                boolean canContinue = true;
-                if (subsetDef == null || subsetDef.getSubsetRegion() == null) {
-                    // do nothing
-                } else {
-                    subProductDefaultGeoCoding = subProductTileMetadataList.buildProductGeoCoding(null);
-                    Rectangle subProductBounds = subsetDef.getSubsetRegion().computeBandPixelRegion(productDefaultGeoCoding, subProductDefaultGeoCoding,
-                                                          defaultProductSize.width, defaultProductSize.height, defaultSubProductSize.width, defaultSubProductSize.height, isMultiSize);
-                    if (subProductBounds.isEmpty()) {
-                        canContinue = false; // no intersection
-                    } else {
-                        subProductGeoCoding = subProductTileMetadataList.buildProductGeoCoding(subProductBounds);
-                    }
-                }
-                if (canContinue) {
-                    Set<String> tiffImageRelativeFiles = subProductTileMetadataList.getTiffImageRelativeFiles();
-                    List<TileMetadata> subProductTiles = subProductTileMetadataList.getTiles();
-                    for (TileMetadata tileMetadata : subProductTiles) {
-                        if (subsetDef == null || !subsetDef.isIgnoreMetadata()) {
-                            product.getMetadataRoot().addElement(tileMetadata.getRootElement());
-                        }
-                        Pair<Integer, MosaicMatrix> result = buildMosaicMatrix(tileMetadata, parentFolderPath, tiffImageRelativeFiles);
-                        int dataBufferType = result.getFirst().intValue();
-                        MosaicMatrix subProductMosaicMatrix = result.getSecond();
-                        TileComponent tileComponent = tileMetadata.getTileComponent();
-                        String[] bandNames = subProductTileMetadataList.computeBandNames(tileMetadata);
-                        for (int bandIndex = 0; bandIndex < bandNames.length; bandIndex++) {
-                            String bandName = bandPrefix + bandNames[bandIndex];
-                            if (subsetDef == null || subsetDef.isNodeAccepted(bandName)) {
-                                // use the default product size to compute the band of a subproduct because the subset region
-                                // is set according to the default product size
-                                Band band = buildSubProductBand(defaultProductSize, subProductDefaultGeoCoding, subProductMosaicMatrix, dataBufferType, bandName,
-                                                                bandIndex, tileMetadata, subProductGeoCoding, subsetDef, isMultiSize, defaultJAIReadTileSize);
-                                if (band != null) {
-                                    band.setScalingFactor(tileComponent.getScalingFactor(bandNames[bandIndex]));
-                                    Integer spectralWavelength = WorldView2Constants.BAND_WAVELENGTH.get(bandName);
-                                    if (spectralWavelength != null) {
-                                        band.setSpectralWavelength(spectralWavelength.floatValue());
-                                    }
-                                    product.addBand(band);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            product.setAutoGrouping(autoGroupPattern);
-
-            success = true;
-
-            return product;
-        } catch (RuntimeException | IOException exception) {
-            throw exception;
-        } catch (Exception exception) {
-            throw new IOException(exception);
-        } finally {
-            if (!success) {
-                closeResources();
-            }
-        }
+        throw new UnsupportedOperationException("Method not implemented");
     }
 
     private void closeResources() {
@@ -313,68 +246,136 @@ class WorldView2ProductReader extends AbstractProductReader {
         return band;
     }
 
-    public static WorldView2Metadata readMetadata(VirtualDirEx productDirectory) throws Exception {
-        String[] allFileNames = productDirectory.listAllFiles();
-        String metadataFileName = null;
-        for (String relativeFilePath : allFileNames) {
-            if (StringUtils.endsWithIgnoreCase(relativeFilePath, WorldView2Constants.METADATA_FILE_SUFFIX)) {
-                metadataFileName = relativeFilePath;
+    @Override
+    protected Product readProductNodesImpl() throws IOException {
+        boolean success = false;
+        try {
+            Path productPath = BaseProductReaderPlugIn.convertInputToPath(super.getInput());
+            this.productDirectory = VirtualDirEx.build(productPath, false, false);
+
+            WorldView2Metadata metadata = readMetadata(this.productDirectory);
+            int subProductCount = metadata.getSubProductCount();
+            if (subProductCount == 0) {
+                throw new IllegalStateException("The product is empty.");
             }
-        }
-        if (metadataFileName == null) {
-            throw new NullPointerException("The product has no metadata file.");
-        }
-        WorldView2Metadata worldView2Metadata;
-        try (FilePathInputStream filePathInputStream = productDirectory.getInputStream(metadataFileName)) {
-            worldView2Metadata = (WorldView2Metadata)XmlMetadataParserFactory.getParser(WorldView2Metadata.class).parse(filePathInputStream);
-        }
 
-        String subProductNames[] = worldView2Metadata.findSubProductNames();
-        for (int i=0; i<subProductNames.length; i++) {
-            TileMetadataList tileMetadataList = new TileMetadataList();
-            for (String fileRelativePath : allFileNames) {
-                if (fileRelativePath.contains(subProductNames[i])) {
-                    if (fileRelativePath.endsWith(WorldView2Constants.METADATA_EXTENSION) && !fileRelativePath.endsWith(WorldView2Constants.METADATA_FILE_SUFFIX)
-                            && !fileRelativePath.endsWith(WorldView2Metadata.EXCLUSION_STRING)) {
+            Dimension defaultProductSize = metadata.computeDefaultProductSize();
+            if (defaultProductSize == null) {
+                throw new NullPointerException("The product default size is null.");
+            }
+            ProductSubsetDef subsetDef = getSubsetDef();
+            GeoCoding productDefaultGeoCoding = null;
+            Rectangle productBounds;
+            boolean isMultiSize = metadata.isMultiSize();
+            if (subsetDef == null || subsetDef.getSubsetRegion() == null) {
+                productBounds = new Rectangle(0, 0, defaultProductSize.width, defaultProductSize.height);
+            } else {
+                productDefaultGeoCoding = metadata.buildProductGeoCoding(null);
+                productBounds = subsetDef.getSubsetRegion().computeProductPixelRegion(productDefaultGeoCoding, defaultProductSize.width, defaultProductSize.height, isMultiSize);
+            }
+            if (productBounds.isEmpty()) {
+                throw new IllegalStateException("Empty product bounds.");
+            }
 
-                        try (FilePathInputStream filePathInputStream = productDirectory.getInputStream(fileRelativePath)) {
-                            TileMetadata tileMetadata = TileMetadata.create(filePathInputStream);
-                            tileMetadataList.addTileMetadata(tileMetadata);
-                        }
-                    } else if (fileRelativePath.endsWith(WorldView2Constants.IMAGE_EXTENSION)) {
-                        tileMetadataList.getTiffImageRelativeFiles().add(fileRelativePath);
+            String productName = metadata.getOrderNumber();
+            if (StringUtils.isBlank(productName)) {
+                productName = this.productDirectory.getBaseFile().getName();
+            }
+
+            Product product = new Product(productName, WorldView2Constants.PRODUCT_TYPE, productBounds.width, productBounds.height, this);
+            product.setStartTime(metadata.getProductStartTime());
+            product.setEndTime(metadata.getProductEndTime());
+            product.setDescription(metadata.getProductDescription());
+            product.setFileLocation(productPath.toFile());
+            Dimension preferredTileSize = JAIUtils.computePreferredTileSize(product.getSceneRasterWidth(), product.getSceneRasterHeight(), 1);
+            product.setPreferredTileSize(preferredTileSize);
+
+            GeoCoding productGeoCoding = metadata.buildProductGeoCoding(productBounds);
+            if (productGeoCoding != null) {
+                product.setSceneGeoCoding(productGeoCoding);
+            }
+
+            Dimension defaultJAIReadTileSize = JAI.getDefaultTileSize();
+            product.setPreferredTileSize(defaultJAIReadTileSize);
+
+            Path parentFolderPath = this.productDirectory.getBaseFile().toPath();
+            StringBuilder autoGroupPattern = new StringBuilder();
+            String bandPrefix = "";
+            for (int k=0; k<subProductCount; k++) {
+                String subProductName = metadata.getSubProductNameAt(k);
+                TileMetadataList subProductTileMetadataList = metadata.getSubProductTileMetadataListAt(k);
+
+                if (subProductCount > 1) {
+                    if (autoGroupPattern.length() > 0) {
+                        autoGroupPattern.append(":");
+                    }
+                    autoGroupPattern.append(subProductName);
+                    bandPrefix = subProductName + "_";
+                }
+
+                Dimension defaultSubProductSize = subProductTileMetadataList.computeDefaultProductSize();
+                if (defaultSubProductSize == null) {
+                    throw new NullPointerException("The subproduct default size is null.");
+                }
+
+                GeoCoding subProductDefaultGeoCoding = null;
+                GeoCoding subProductGeoCoding = null;
+                boolean canContinue = true;
+                if (subsetDef != null && subsetDef.getSubsetRegion() != null) {
+                    subProductDefaultGeoCoding = subProductTileMetadataList.buildProductGeoCoding(null);
+                    Rectangle subProductBounds = subsetDef.getSubsetRegion().computeBandPixelRegion(productDefaultGeoCoding, subProductDefaultGeoCoding,
+                            defaultProductSize.width, defaultProductSize.height, defaultSubProductSize.width, defaultSubProductSize.height, isMultiSize);
+                    if (subProductBounds.isEmpty()) {
+                        canContinue = false; // no intersection
+                    } else {
+                        subProductGeoCoding = subProductTileMetadataList.buildProductGeoCoding(subProductBounds);
                     }
                 }
-            }
-            tileMetadataList.sortTilesByFileName();
-            int multiSpectralBandCount = 0;
-            int bandsDataType = 0;
-            for (TileMetadata tileMetadata : tileMetadataList.getTiles()) {
-                TileComponent tileComponent = tileMetadata.getTileComponent();
-                for (int filesIndex = 0; filesIndex < tileComponent.getNumOfTiles(); filesIndex++) {
-                    for (String imageFileRelativePath : tileMetadataList.getTiffImageRelativeFiles()) {
-                        if (imageFileRelativePath.contains(tileComponent.getTileNames()[filesIndex])) {
-                            tileComponent.addDeliveredTile(tileComponent.getTileNames()[filesIndex]);
-                            if (!tileComponent.getBandID().equals("P")) {
-                                if (multiSpectralBandCount == 0) {
-                                    Path parentFolderPath = productDirectory.getBaseFile().toPath();
-                                    try (GeoTiffImageReader geoTiffImageReader = GeoTiffImageReader.buildGeoTiffImageReader(parentFolderPath, imageFileRelativePath)) {
-                                        SampleModel sampleModel = geoTiffImageReader.getBaseImage().getSampleModel();
-                                        multiSpectralBandCount = sampleModel.getNumBands();
-                                        bandsDataType = ImageManager.getProductDataType(sampleModel.getDataType());
+                if (canContinue) {
+                    Set<String> tiffImageRelativeFiles = subProductTileMetadataList.getTiffImageRelativeFiles();
+                    List<TileMetadata> subProductTiles = subProductTileMetadataList.getTiles();
+                    for (TileMetadata tileMetadata : subProductTiles) {
+                        if (subsetDef == null || !subsetDef.isIgnoreMetadata()) {
+                            product.getMetadataRoot().addElement(tileMetadata.getRootElement());
+                        }
+                        Pair<Integer, MosaicMatrix> result = buildMosaicMatrix(tileMetadata, parentFolderPath, tiffImageRelativeFiles);
+                        int dataBufferType = result.getFirst();
+                        MosaicMatrix subProductMosaicMatrix = result.getSecond();
+                        TileComponent tileComponent = tileMetadata.getTileComponent();
+                        String[] bandNames = subProductTileMetadataList.computeBandNames(tileMetadata);
+                        for (int bandIndex = 0; bandIndex < bandNames.length; bandIndex++) {
+                            String bandName = bandPrefix + bandNames[bandIndex];
+                            if (subsetDef == null || subsetDef.isNodeAccepted(bandName)) {
+                                // use the default product size to compute the band of a subproduct because the subset region
+                                // is set according to the default product size
+                                Band band = buildSubProductBand(defaultProductSize, subProductDefaultGeoCoding, subProductMosaicMatrix, dataBufferType, bandName,
+                                                                bandIndex, tileMetadata, subProductGeoCoding, subsetDef, isMultiSize, defaultJAIReadTileSize);
+                                if (band != null) {
+                                    band.setScalingFactor(tileComponent.getScalingFactor(bandNames[bandIndex]));
+                                    Integer spectralWavelength = WorldView2Constants.BAND_WAVELENGTH.get(bandName);
+                                    if (spectralWavelength != null) {
+                                        band.setSpectralWavelength(spectralWavelength.floatValue());
                                     }
+                                    product.addBand(band);
                                 }
                             }
-                            break;
                         }
                     }
                 }
             }
-            tileMetadataList.setBandsData(multiSpectralBandCount, bandsDataType);
-            worldView2Metadata.addSubProductTileMetadataList(subProductNames[i], tileMetadataList);
-        }
-        worldView2Metadata.sortSubProductsByName();
+            product.setAutoGrouping(autoGroupPattern.toString());
 
-        return worldView2Metadata;
+            success = true;
+
+            return product;
+        } catch (RuntimeException | IOException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new IOException(exception);
+        } finally {
+            if (!success) {
+                closeResources();
+            }
+        }
     }
 }

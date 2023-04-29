@@ -18,7 +18,7 @@
 package eu.esa.opt.dataio.rapideye.metadata;
 
 import eu.esa.opt.utils.TestUtil;
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
@@ -39,10 +39,10 @@ import static org.junit.Assume.assumeTrue;
  */
 public class RapidEyeMetadataTest {
     private RapidEyeMetadata metadata;
-    private String productsFolder = "_rapideye" + File.separator;
+    private final String productsFolder = "_rapideye" + File.separator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         assumeTrue(TestUtil.testdataAvailable());
 
         XmlMetadataParserFactory.registerParser(RapidEyeMetadata.class, new XmlMetadataParser<RapidEyeMetadata>(RapidEyeMetadata.class));
@@ -56,17 +56,17 @@ public class RapidEyeMetadataTest {
     }
 
     @Test
-    public void testGetBrowseFileName() throws Exception {
+    public void testGetBrowseFileName() {
         assertEquals("2009-04-16T104920_RE4_1B-NAC_3436599_84303_browse.tif", metadata.getBrowseFileName());
     }
 
     @Test
-    public void testGetMaskFileName() throws Exception {
+    public void testGetMaskFileName() {
         assertEquals("2009-04-16T104920_RE4_1B-NAC_3436599_84303_udm.tif", metadata.getMaskFileName());
     }
 
     @Test
-    public void testGetRasterFileNames() throws Exception {
+    public void testGetRasterFileNames() {
         assertEquals(5, metadata.getRasterFileNames().length);
         assertEquals("2009-04-16T104920_RE4_1B-NAC_3436599_84303_band1.ntf", metadata.getRasterFileNames()[0]);
         assertEquals("2009-04-16T104920_RE4_1B-NAC_3436599_84303_band2.ntf", metadata.getRasterFileNames()[1]);
@@ -76,7 +76,7 @@ public class RapidEyeMetadataTest {
     }
 
     @Test
-    public void testGetReferenceSystem() throws Exception {
+    public void testGetReferenceSystem() {
         assertNotNull(metadata.getReferenceSystem());
         assertEquals("4326", metadata.getReferenceSystem().epsgCode);
         assertEquals("N/A", metadata.getReferenceSystem().geodeticDatum);
@@ -103,7 +103,7 @@ public class RapidEyeMetadataTest {
     }
 
     @Test
-    public void testGetScaleFactor() throws Exception {
+    public void testGetScaleFactor() {
         assertEquals(0.01, metadata.getScaleFactor(0), 0.001);
         assertEquals(0.01, metadata.getScaleFactor(1), 0.001);
         assertEquals(0.01, metadata.getScaleFactor(2), 0.001);
@@ -111,12 +111,12 @@ public class RapidEyeMetadataTest {
     }
 
     @Test
-    public void testGetPixelFormat() throws Exception {
+    public void testGetPixelFormat() {
         assertEquals(21, metadata.getPixelFormat());
     }
 
     @Test
-    public void testGetCornersLatitudes() throws Exception {
+    public void testGetCornersLatitudes() {
         assertEquals(53.088257, metadata.getCornersLatitudes()[0], 0.001);
         assertEquals(52.924603, metadata.getCornersLatitudes()[1], 0.001);
         assertEquals(52.670235, metadata.getCornersLatitudes()[2], 0.001);
@@ -124,7 +124,7 @@ public class RapidEyeMetadataTest {
     }
 
     @Test
-    public void testGetCornersLongitudes() throws Exception {
+    public void testGetCornersLongitudes() {
         assertEquals(15.082264, metadata.getCornersLongitudes()[0], 0.001);
         assertEquals(16.193775, metadata.getCornersLongitudes()[1], 0.001);
         assertEquals(14.893127, metadata.getCornersLongitudes()[2], 0.001);
@@ -132,63 +132,62 @@ public class RapidEyeMetadataTest {
     }
 
     @Test
-    public void testGetRationalPolinomialCoefficients() throws Exception {
+    public void testGetRationalPolinomialCoefficients() {
         assertNull(metadata.getRationalPolinomialCoefficients());
     }
 
     @Test
-    public void testGetRootElement() throws Exception {
+    public void testGetRootElement() {
         assertNotNull(metadata.getRootElement());
     }
 
     @Test
-    public void testGetFileName() throws Exception {
+    public void testGetFileName() {
         assertEquals("L1B", metadata.getFileName());
     }
 
     @Test
-    public void testSetFileName() throws Exception {
+    public void testSetFileName() {
         metadata.setFileName("testname");
         assertEquals("testname", metadata.getFileName());
     }
 
     @Test
-    public void testGetNumBands() throws Exception {
+    public void testGetNumBands() {
         assertEquals(5, metadata.getNumBands());
     }
 
     @Test
-    public void testGetProductName() throws Exception {
+    public void testGetProductName() {
         assertEquals("2009-04-16T104920_RE4_1B-NAC_3436599_84303", metadata.getProductName());
     }
 
     @Test
-    public void testGetFormatName() throws Exception {
+    public void testGetFormatName() {
         assertEquals("NITF", metadata.getFormatName());
     }
 
     @Test
-    public void testGetMetadataProfile() throws Exception {
+    public void testGetMetadataProfile() {
         assertEquals("L1B", metadata.getMetadataProfile());
     }
 
     @Test
-    public void testGetRasterWidth() throws Exception {
+    public void testGetRasterWidth() {
         assertEquals(11829, metadata.getRasterWidth());
     }
 
     @Test
-    public void testGetRasterHeight() throws Exception {
+    public void testGetRasterHeight() {
         assertEquals(7422, metadata.getRasterHeight());
     }
 
     @Test
-    public void testGetPath() throws Exception {
+    public void testGetPath() {
         String root = System.getProperty(TestUtil.PROPERTYNAME_DATA_DIR);
         String partialPath = root + File.separator + productsFolder + "2009-04-16T104920_RE4_1B-NAC_3436599_84303_metadata.xml";
         String metadataPath = metadata.getPath().toString();
-        if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX)
-        {
+        if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX) {
             partialPath = partialPath.replaceAll("\\\\", "/");
         } else if (SystemUtils.IS_OS_WINDOWS) {
             partialPath = partialPath.replace("\\", "/");
@@ -199,7 +198,7 @@ public class RapidEyeMetadataTest {
     }
 
     @Test
-    public void testSetName() throws Exception {
+    public void testSetName() {
         metadata.setName("testname");
         assertEquals("testname", metadata.getFileName());
     }

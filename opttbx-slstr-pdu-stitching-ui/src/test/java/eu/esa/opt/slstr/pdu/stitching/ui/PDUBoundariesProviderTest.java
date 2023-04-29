@@ -19,7 +19,7 @@ public class PDUBoundariesProviderTest {
     private static final String FIRST_FILE = "S3A_SL_1_RBT____20130707T153252_snip______SVL_O_NR_001.SEN3";
     private static final String SECOND_FILE = "S3A_SL_1_RBT____20130707T153752_snip______SVL_O_NR_001.SEN3";
     private static final String NONSENSE_1_FILE = "nonsense1";
-    private static final String NONSENSE_2_FILE = "S3A_SL_1_RBT____20130707T154252_20130707T154752_20150217T183537_0299_158_182______SVL_O_NR_001.SEN3";
+    private static final String NONSENSE_2_FILE = "S3A_SL_1_RBT____20130707T154252_snip______SVL_O_NR_001.SEN3/nonsense2.xml";
     private static final GeoPos[] expectedFirstGeoBoundary = {new GeoPos(45.5154, -87.5954), new GeoPos(43.7689, -87.8511),
             new GeoPos(42.0217, -88.1109), new GeoPos(40.2738, -88.375), new GeoPos(38.5253, -88.6431),
             new GeoPos(36.7761, -88.9153), new GeoPos(35.0263, -89.1916), new GeoPos(33.2759, -89.4719),

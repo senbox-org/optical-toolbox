@@ -1,20 +1,18 @@
 package eu.esa.opt.dataio.s2.l1c;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import eu.esa.opt.dataio.s2.ECMWFTReader;
+import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.runtime.LogUtils4Tests;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import eu.esa.opt.dataio.s2.ECMWFTReader;
-import org.esa.snap.core.datamodel.TiePointGrid;
-import org.esa.snap.runtime.LogUtils4Tests;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.fail;
-import static org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS;
+import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+import static org.junit.Assert.*;
 
 public class ECMWFReaderTest {
 

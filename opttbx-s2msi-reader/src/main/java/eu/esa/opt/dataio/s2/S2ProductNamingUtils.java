@@ -11,27 +11,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.logging.Logger;
 
 /**
  * Created by obarrilero on 26/10/2016.
- *
  * Common utils to validate the product structure and to obtain some basic information
  * by using only the product structure and filenames. This class do not have into account any REGEX
  * in xml, granules, datastrip...
- * When possible, it is recommended to use the the namingConvention utils because they
+ * When possible, it is recommended to use the namingConvention utils because they
  * use the different REGEXs to check the filenames and implement optimized methods depending on
  * the product format.
  */
 public class S2ProductNamingUtils {
 
     // list of files to be ignored when searching xml files into a folder
-    private static String[] EXCLUDED_XML = {"INSPIRE", "L2A_Manifest", "manifest"};
-
-    //Pattern used to find the tile identifier in a string
-    private static String SIMPLIFIED_TILE_ID_REGEX = "(.*)(T[0-9]{2}[A-Z]{3})(.*)";
+    private static final String[] EXCLUDED_XML = {"INSPIRE", "L2A_Manifest", "manifest"};
 
     protected static final Logger logger = Logger.getLogger(S2ProductNamingUtils.class.getName());
     /**
@@ -41,7 +37,6 @@ public class S2ProductNamingUtils {
      * checks that subfolders contain a xml file
      *
      * @param xmlPath path to product metadata
-     * @return
      */
     public static boolean checkStructureFromProductXml(VirtualPath xmlPath) throws IOException {
         if (!xmlPath.resolveSibling("DATASTRIP").exists()) {
@@ -81,7 +76,6 @@ public class S2ProductNamingUtils {
      * checks if it contains "QI_DATA"
      *
      * @param xmlPath path to granule metadata
-     * @return
      */
     public static boolean checkStructureFromGranuleXml(VirtualPath xmlPath) {
         return checkStructureFromGranuleXml(xmlPath,true);
@@ -93,8 +87,6 @@ public class S2ProductNamingUtils {
      * checks if it contains "QI_DATA"
      *
      * @param xmlPath path to granule metadata
-     * @param requiredAuxData to disable the AuxData checking folder (L1B product, there are no AuxData in the Granule folder)
-     * @return
      */
     public static boolean checkStructureFromGranuleXml(VirtualPath xmlPath, boolean hasAuxDataFolder) {
         if (!xmlPath.resolveSibling("IMG_DATA").exists()) {
@@ -105,10 +97,9 @@ public class S2ProductNamingUtils {
             return false;
         }
 
-        if(hasAuxDataFolder)
-            if (!xmlPath.resolveSibling("AUX_DATA").exists()) {
-                return false;
-            }
+        if (hasAuxDataFolder) {
+            return xmlPath.resolveSibling("AUX_DATA").exists();
+        }
 
         return true;
     }
@@ -117,7 +108,6 @@ public class S2ProductNamingUtils {
      * Get the paths of the folders contained in the GRANULE folder
      *
      * @param xmlPath path to product metadata
-     * @return
      */
     public static ArrayList<VirtualPath> getTilesFromProductXml(VirtualPath xmlPath) {
         ArrayList<VirtualPath> tilePaths = new ArrayList<>();
@@ -132,7 +122,7 @@ public class S2ProductNamingUtils {
                     tilePaths.add(granuleFolder.resolve(granule.getFileName().toString()));
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ignore) {
         }
         return tilePaths;
     }
@@ -141,7 +131,6 @@ public class S2ProductNamingUtils {
      * Get the paths of the folders contained in the DATASTRIP folder
      *
      * @param xmlPath path to product metadata
-     * @return
      */
     public static ArrayList<VirtualPath> getDatastripsFromProductXml(VirtualPath xmlPath) throws IOException {
         ArrayList<VirtualPath> datastripPaths = new ArrayList<>();
@@ -201,10 +190,11 @@ public class S2ProductNamingUtils {
     /**
      * Search the pattern "T[0-9]{2}[A-Z]{3}" in string
      *
-     * @param string
      * @return a string with REGEX "T[0-9]{2}[A-Z]{3}", or null if not found
      */
     public static String getTileIdFromString(String string) {
+        //Pattern used to find the tile identifier in a string
+        String SIMPLIFIED_TILE_ID_REGEX = "(.*)(T[0-9]{2}[A-Z]{3})(.*)";
         Pattern pattern = Pattern.compile(SIMPLIFIED_TILE_ID_REGEX);
         Matcher matcher = pattern.matcher(string);
         if (!matcher.matches()) {
@@ -217,9 +207,6 @@ public class S2ProductNamingUtils {
     /**
      * Obtains the level from xmlPath
      *
-     * @param xmlPath
-     * @param inputType
-     * @return
      */
     public static S2Config.Sentinel2ProductLevel getLevel(VirtualPath xmlPath, S2Config.Sentinel2InputType inputType) {
         if (inputType.equals(S2Config.Sentinel2InputType.INPUT_TYPE_GRANULE_METADATA)) {
@@ -233,8 +220,6 @@ public class S2ProductNamingUtils {
     /**
      * Obtains the level from xmlPath or from its parent
      *
-     * @param xmlPath
-     * @return
      */
     private static S2Config.Sentinel2ProductLevel getLevelFromGranuleXml(VirtualPath xmlPath) {
         String filename = xmlPath.getFileName().toString();
@@ -256,8 +241,6 @@ public class S2ProductNamingUtils {
     /**
      * Obtains the level from xmlPath, from its parent, or from the tiles
      *
-     * @param xmlPath
-     * @return
      */
     private static S2Config.Sentinel2ProductLevel getLevelFromProductXml(VirtualPath xmlPath) {
         String filename = xmlPath.getFileName().toString();
@@ -294,7 +277,6 @@ public class S2ProductNamingUtils {
     /**
      * Searches L1C, L2A, L03 or L1C in string
      *
-     * @param string
      * @return the corresponding Sentinel2ProductLevel or UNKNOWN if it is not found
      */
     private static S2Config.Sentinel2ProductLevel getLevelFromString(String string) {
@@ -360,9 +342,6 @@ public class S2ProductNamingUtils {
      * Search the tileId from granuleFolder (TXXABC) and return the granuleId in
      * availableGranuleIds which contains the same. If it is not found returns null
      *
-     * @param availableGranuleIds
-     * @param granuleFolder
-     * @return
      */
     public static String searchGranuleId(Collection<String> availableGranuleIds, String granuleFolder) {
         String tileId = getTileIdFromString(granuleFolder);
@@ -398,7 +377,7 @@ public class S2ProductNamingUtils {
     public static Path processInputPath(Path inputPath) {
         if (inputPath.getFileSystem() == FileSystems.getDefault()) {
             // the local file system
-            if (org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS) {
+            if (org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS) {
                 String longInput = Utils.GetLongPathNameW(inputPath.toString());
                 if (longInput.length() > 0) {
                     return Paths.get(longInput);

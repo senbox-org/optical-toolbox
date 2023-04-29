@@ -17,15 +17,20 @@
 
 package eu.esa.opt.dataio.s2.ortho;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import eu.esa.opt.dataio.s2.S2Metadata;
 import eu.esa.opt.dataio.s2.S2SceneDescription;
 import eu.esa.opt.dataio.s2.S2SpatialResolution;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides information about the scene layout
@@ -39,11 +44,9 @@ public class S2OrthoSceneLayout extends S2SceneDescription {
     double[] sceneOrigin;
 
     private static class TileInfo {
-        private final String id;
         private final Map<S2SpatialResolution, Rectangle> pixelPositionInScene;
 
         public TileInfo(String id, Map<S2SpatialResolution, Rectangle> pixelPositionInScene) {
-            this.id = id;
             this.pixelPositionInScene = pixelPositionInScene;
         }
 
@@ -164,7 +167,7 @@ public class S2OrthoSceneLayout extends S2SceneDescription {
     }
 
     public static <T extends Comparable<? super T>> java.util.List<T> asSortedList(Collection<T> c) {
-        java.util.List<T> list = new ArrayList<T>(c);
+        java.util.List<T> list = new ArrayList<>(c);
         java.util.Collections.sort(list);
         return list;
     }
