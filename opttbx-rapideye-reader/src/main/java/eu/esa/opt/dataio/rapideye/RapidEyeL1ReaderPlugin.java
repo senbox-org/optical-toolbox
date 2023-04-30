@@ -17,14 +17,14 @@
 
 package eu.esa.opt.dataio.rapideye;
 
-import org.apache.commons.lang.SystemUtils;
 import eu.esa.opt.dataio.rapideye.metadata.RapidEyeConstants;
 import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.apache.commons.lang3.SystemUtils;
 import org.esa.snap.core.dataio.DecodeQualification;
-import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.RGBImageProfile;
 import org.esa.snap.core.datamodel.RGBImageProfileManager;
+import org.esa.snap.core.metadata.MetadataInspector;
 
 import java.util.Locale;
 

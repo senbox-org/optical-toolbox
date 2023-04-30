@@ -128,7 +128,7 @@
         <seadas.reader.version>1.10.0-SNAPSHOT</seadas.reader.version>
         <seadas.reader.ui.version>1.10.0-SNAPSHOT</seadas.reader.ui.version>
         <netbeans.version>RELEASE82</netbeans.version>
-        <geotools.version>20.0</geotools.version>
+        <geotools.version>28.2</geotools.version>
         <netcdf.version>5.3.1</netcdf.version>
         <javahelp.version>2.0.05</javahelp.version>
         <brandingToken>opttbx</brandingToken>
@@ -401,9 +401,9 @@
             </dependency>
 
             <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>2.6</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.12.0</version>
             </dependency>
 
 

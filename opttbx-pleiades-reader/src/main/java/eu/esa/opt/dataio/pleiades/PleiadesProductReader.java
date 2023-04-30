@@ -3,7 +3,6 @@ package eu.esa.opt.dataio.pleiades;
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
-import org.apache.commons.lang.StringUtils;
 import eu.esa.opt.commons.FilePathInputStream;
 import eu.esa.opt.dataio.ColorPaletteBand;
 import eu.esa.opt.dataio.VirtualDirEx;
@@ -14,9 +13,18 @@ import eu.esa.opt.dataio.pleiades.dimap.VolumeMetadata;
 import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
 import eu.esa.opt.dataio.readers.ColorIterator;
 import eu.esa.opt.dataio.readers.GMLReader;
+import org.apache.commons.lang3.StringUtils;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductSubsetDef;
-import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.GeoCoding;
+import org.esa.snap.core.datamodel.Mask;
+import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.ProductNodeGroup;
+import org.esa.snap.core.datamodel.TiePointGeoCoding;
+import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.VectorDataNode;
 import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.image.MosaicMatrix;
 import org.esa.snap.core.subset.PixelSubsetRegion;
@@ -41,7 +49,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 import javax.media.jai.JAI;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
@@ -287,12 +297,30 @@ public class PleiadesProductReader extends AbstractProductReader {
         closeResources();
     }
 
-    @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
-                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight,
-                                          ProductData destBuffer, ProgressMonitor pm)
-            throws IOException {
-        // do nothing
+    private static Path initLocalCacheFolder(Path inputPath) throws IOException {
+        String fullPathString = inputPath.toString();
+        String md5sum = Utils.getMD5sum(fullPathString);
+        if (md5sum == null) {
+            throw new IllegalStateException("Unable to get md5sum of path '" + fullPathString+"'.");
+        }
+        String readerDirName = "pleiades-reader";//getReaderCacheDir();
+        String productName = inputPath.getFileName().toString();
+        Path cacheFolderPath = SystemUtils.getCacheDir().toPath();
+        cacheFolderPath = cacheFolderPath.resolve("s2tbx");
+        cacheFolderPath = cacheFolderPath.resolve(readerDirName);
+        cacheFolderPath = cacheFolderPath.resolve(md5sum);
+        cacheFolderPath = cacheFolderPath.resolve(productName);
+        Path cacheDir = cacheFolderPath;
+        if (!Files.exists(cacheDir)) {
+            Files.createDirectories(cacheDir);
+        }
+        if (!Files.exists(cacheDir) || !Files.isDirectory(cacheDir) || !Files.isWritable(cacheDir)) {
+            throw new IOException("Can't access package cache directory");
+        }
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "Successfully set up cache dir for product " + productName + " to " + cacheDir);
+        }
+        return cacheDir;
     }
 
     private void closeResources() throws IOException {
@@ -316,30 +344,18 @@ public class PleiadesProductReader extends AbstractProductReader {
         System.gc();
     }
 
-    private static Path initLocalCacheFolder(Path inputPath) throws IOException {
-        String fullPathString = inputPath.toString();
-        String md5sum = Utils.getMD5sum(fullPathString);
-        if (md5sum == null) {
-            throw new IllegalStateException("Unable to get md5sum of path '" + fullPathString+"'.");
+    private static void addProductComponentIfNotPresent(String componentId, File componentFile, TreeNode<File> currentComponents) {
+        TreeNode<File> resultComponent = null;
+        for (TreeNode<File> node : currentComponents.getChildren()) {
+            if (node.getId().equalsIgnoreCase(componentId)) {
+                resultComponent = node;
+                break;
+            }
         }
-        String readerDirName = "pleiades-reader";//getReaderCacheDir();
-        String productName = inputPath.getFileName().toString();
-        Path cacheFolderPath = SystemUtils.getCacheDir().toPath();
-        cacheFolderPath = cacheFolderPath.resolve("s2tbx");
-        cacheFolderPath = cacheFolderPath.resolve(readerDirName);
-        cacheFolderPath = cacheFolderPath.resolve(md5sum);
-        cacheFolderPath = cacheFolderPath.resolve(productName);
-        Path cacheDir = cacheFolderPath;
-        if (!Files.exists(cacheDir)) {
-            Files.createDirectories(cacheDir);
+        if (resultComponent == null) {
+            resultComponent = new TreeNode<>(componentId, componentFile);
+            currentComponents.addChild(resultComponent);
         }
-        if (!Files.exists(cacheDir) || !Files.isDirectory(cacheDir) || !Files.isWritable(cacheDir)) {
-            throw new IOException("Can't access package cache directory");
-        }
-        if (logger.isLoggable(Level.FINE)) {
-            logger.log(Level.FINE, "Successfully set up cache dir for product " + productName + " to " + cacheDir.toString());
-        }
-        return cacheDir;
     }
 
     private static TiePointGeoCoding buildTiePointGridGeoCoding(ImageMetadata metadata, int width, int height, ProductSubsetDef subsetDef) {
@@ -435,18 +451,42 @@ public class PleiadesProductReader extends AbstractProductReader {
         return referenceBand;
     }
 
-    private static void addProductComponentIfNotPresent(String componentId, File componentFile, TreeNode<File> currentComponents) {
-        TreeNode<File> resultComponent = null;
-        for (TreeNode node : currentComponents.getChildren()) {
-            if (node.getId().toLowerCase().equals(componentId.toLowerCase())) {
-                resultComponent = node;
-                break;
+    private static BandGeoTiffMatrixData buildGeoTiffMosaicMatrix(ImageMetadata imageMetadata, String[][] matrixFiles, Path localTempFolder)
+            throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {
+
+        int tileRows = imageMetadata.getTileRowsCount();
+        int tileCols = imageMetadata.getTileColsCount();
+        int levelCount = 0;
+        int dataType = 0;
+        Path imagesMetadataParentPath = imageMetadata.getPath();
+        MosaicMatrix mosaicMatrix = new MosaicMatrix(tileRows, tileCols);
+        for (int rowIndex = 0; rowIndex < tileRows; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < tileCols; columnIndex++) {
+                String imageRelativeFilePath = matrixFiles[rowIndex][columnIndex];
+                int cellWidth;
+                int cellHeight;
+                int dataBufferType;
+                try (GeoTiffImageReader geoTiffImageReader = GeoTiffImageReader.buildGeoTiffImageReader(imagesMetadataParentPath, imageRelativeFilePath)) {
+                    cellWidth = geoTiffImageReader.getImageWidth();
+                    cellHeight = geoTiffImageReader.getImageHeight();
+                    dataBufferType = geoTiffImageReader.getSampleModel().getDataType();
+                }
+                int cellLevelCount = DefaultMultiLevelModel.getLevelCount(cellWidth, cellHeight);
+                if (columnIndex == 0 && rowIndex == 0) {
+                    dataType = dataBufferType;
+                    levelCount = cellLevelCount;
+                } else {
+                    if (dataType != dataBufferType) {
+                        throw new IllegalStateException("Different data type count: rowIndex=" + rowIndex + ", columnIndex=" + columnIndex + ", dataType=" + dataType + ", dataBufferType=" + dataBufferType + ".");
+                    }
+                }
+                GeoTiffMatrixCell matrixCell = new GeoTiffMatrixCell(cellWidth, cellHeight, dataBufferType, imagesMetadataParentPath, imageRelativeFilePath, localTempFolder);
+                mosaicMatrix.setCellAt(rowIndex, columnIndex, matrixCell, true, true);
             }
         }
-        if (resultComponent == null) {
-            resultComponent = new TreeNode<File>(componentId, componentFile);
-            currentComponents.addChild(resultComponent);
-        }
+
+        validateMatrix(imageMetadata, dataType, mosaicMatrix);
+        return new BandGeoTiffMatrixData(dataType, levelCount, mosaicMatrix);
     }
 
     public static GeoCoding buildGeoCoding(ImageMetadata maxResImageMetadata, int defaultProductWidth, int defaultProductHeight, VolumeMetadata metadata,
@@ -495,42 +535,11 @@ public class PleiadesProductReader extends AbstractProductReader {
         throw new IllegalStateException("Unknown image files.");
     }
 
-    private static BandGeoTiffMatrixData buildGeoTiffMosaicMatrix(ImageMetadata imageMetadata, String[][] matrixFiles, Path localTempFolder)
-            throws IOException, InterruptedException, IllegalAccessException, InvocationTargetException, InstantiationException {
-
-        int tileRows = imageMetadata.getTileRowsCount();
-        int tileCols = imageMetadata.getTileColsCount();
-        int levelCount = 0;
-        int dataType = 0;
-        Path imagesMetadataParentPath = imageMetadata.getPath();
-        MosaicMatrix mosaicMatrix = new MosaicMatrix(tileRows, tileCols);
-        for (int rowIndex = 0; rowIndex < tileRows; rowIndex++) {
-            for (int columnIndex = 0; columnIndex < tileCols; columnIndex++) {
-                String imageRelativeFilePath = matrixFiles[rowIndex][columnIndex];
-                int cellWidth;
-                int cellHeight;
-                int dataBufferType;
-                try (GeoTiffImageReader geoTiffImageReader = GeoTiffImageReader.buildGeoTiffImageReader(imagesMetadataParentPath, imageRelativeFilePath)) {
-                    cellWidth = geoTiffImageReader.getImageWidth();
-                    cellHeight = geoTiffImageReader.getImageHeight();
-                    dataBufferType = geoTiffImageReader.getSampleModel().getDataType();
-                }
-                int cellLevelCount = DefaultMultiLevelModel.getLevelCount(cellWidth, cellHeight);
-                if (columnIndex == 0 && rowIndex == 0) {
-                    dataType = dataBufferType;
-                    levelCount = cellLevelCount;
-                } else {
-                    if (dataType != dataBufferType) {
-                        throw new IllegalStateException("Different data type count: rowIndex=" + rowIndex + ", columnIndex=" + columnIndex + ", dataType=" + dataType + ", dataBufferType=" + dataBufferType + ".");
-                    }
-                }
-                GeoTiffMatrixCell matrixCell = new GeoTiffMatrixCell(cellWidth, cellHeight, dataBufferType, imagesMetadataParentPath, imageRelativeFilePath, localTempFolder);
-                mosaicMatrix.setCellAt(rowIndex, columnIndex, matrixCell, true, true);
-            }
-        }
-
-        validateMatrix(imageMetadata, dataType, mosaicMatrix);
-        return new BandGeoTiffMatrixData(dataType, levelCount, mosaicMatrix);
+    @Override
+    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight,
+                                          ProductData destBuffer, ProgressMonitor pm) {
+        // do nothing
     }
 
     private static BandJP2MatrixData buildJP2MosaicMatrix(ImageMetadata imageMetadata, String[][] matrixFiles, Path cacheFolder) throws IOException, InterruptedException {
@@ -598,7 +607,7 @@ public class PleiadesProductReader extends AbstractProductReader {
         }
 
         @Override
-        public Path getLocalFile() throws IOException {
+        public Path getLocalFile() {
             return this.jp2File;
         }
     }

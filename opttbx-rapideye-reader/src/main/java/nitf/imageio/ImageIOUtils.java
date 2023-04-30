@@ -23,7 +23,7 @@
 package nitf.imageio;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -492,7 +492,7 @@ public class ImageIOUtils {
      * @return An unsigned integer
      */
     public static int makeUnsigned(byte b) {
-        return b >= 0 ? (int) b : 255 + (int) b + 1;
+        return b >= 0 ? b : 255 + b + 1;
     }
 
     public static void main(String[] args) {

@@ -31,8 +31,6 @@ import nitf.PixelSkipDownSampler;
 import nitf.Reader;
 import nitf.Record;
 import nitf.SubWindow;
-import org.apache.commons.lang.NotImplementedException;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -42,7 +40,8 @@ import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
@@ -74,8 +73,8 @@ public class NITFReader extends ImageReader {
 
     private Record record = null;
 
-    private Map<Integer, nitf.ImageReader> imageReaderMap = Collections
-            .synchronizedMap(new HashMap<Integer, nitf.ImageReader>());
+    private final Map<Integer, nitf.ImageReader> imageReaderMap = Collections
+            .synchronizedMap(new HashMap<>());
 
     public NITFReader(ImageReaderSpi originatingProvider) {
         super(originatingProvider);
@@ -113,7 +112,7 @@ public class NITFReader extends ImageReader {
             reader = new Reader();
             record = reader.read(handle);
         } catch (NITFException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
+            log.error(e.getMessage(), e);
             throw new IIOException("NITF Exception", e);
         }
     }
@@ -137,7 +136,7 @@ public class NITFReader extends ImageReader {
                 imageReaderMap.put(imageIndex, reader.getNewImageReader(imageIndex));
             return imageReaderMap.get(imageIndex);
         } catch (NITFException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
+            log.error(e.getMessage(), e);
             throw new IIOException("NITF Exception", e);
         }
     }
@@ -148,7 +147,7 @@ public class NITFReader extends ImageReader {
         try {
             return record.getHeader().getNumImages().getIntData();
         } catch (NITFException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
+            log.error(e.getMessage(), e);
             throw new IIOException("NITF Exception", e);
         }
     }
@@ -160,7 +159,7 @@ public class NITFReader extends ImageReader {
             return record.getImages()[imageIndex].getSubheader().getNumCols()
                     .getIntData();
         } catch (NITFException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
+            log.error(e.getMessage(), e);
             throw new IIOException("NITF Exception", e);
         }
     }
@@ -172,7 +171,7 @@ public class NITFReader extends ImageReader {
             return record.getImages()[imageIndex].getSubheader().getNumRows()
                     .getIntData();
         } catch (NITFException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
+            log.error(e.getMessage(), e);
             throw new IIOException("NITF Exception", e);
         }
     }
@@ -182,7 +181,7 @@ public class NITFReader extends ImageReader {
             throws IOException {
         checkIndex(imageIndex);
 
-        List<ImageTypeSpecifier> l = new ArrayList<ImageTypeSpecifier>();
+        List<ImageTypeSpecifier> l = new ArrayList<>();
 
         try {
             ImageSubheader subheader = record.getImages()[imageIndex]
@@ -194,11 +193,6 @@ public class NITFReader extends ImageReader {
             int bandCount = subheader.getBandCount();
             int nbpp = subheader.getNumBitsPerPixel().getIntData();
 
-            // if (NITFUtils.isCompressed(record, imageIndex))
-            // {
-            // throw new NotImplementedException(
-            // "Only uncompressed imagery is currently supported");
-            // }
             int nBytes = ((nbpp - 1) / 8) + 1;
             if (nBytes == 1 || nBytes == 2
                     || (nBytes == 4 && pvType.equals("R"))
@@ -214,22 +208,21 @@ public class NITFReader extends ImageReader {
                 l.add(ImageTypeSpecifier.createGrayscale(8,
                                                          DataBuffer.TYPE_BYTE, false));
             } else {
-                throw new NotImplementedException("Support for pixels of size "
-                                                          + nbpp + " bytes has not been implemented yet");
+                throw new IllegalStateException(String.format("Support for pixels of size %d bytes has not been implemented yet", nbpp));
             }
         } catch (NITFException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
+            log.error(e.getMessage(), e);
         }
         return l.iterator();
     }
 
     @Override
-    public IIOMetadata getStreamMetadata() throws IOException {
+    public IIOMetadata getStreamMetadata() {
         return null;
     }
 
     @Override
-    public IIOMetadata getImageMetadata(int imageIndex) throws IOException {
+    public IIOMetadata getImageMetadata(int imageIndex) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -264,7 +257,7 @@ public class NITFReader extends ImageReader {
         try {
             subheader = record.getImages()[imageIndex].getSubheader();
         } catch (NITFException e) {
-            throw new IOException(ExceptionUtils.getStackTrace(e));
+            throw new IOException(e);
         }
 //        String irep = subheader.getImageRepresentation().getStringData().trim();
         String pvType = subheader.getPixelValueType().getStringData().trim();
@@ -307,7 +300,7 @@ public class NITFReader extends ImageReader {
         else if (nBytes == 8 && pvType.equals("R")) {
             bufType = DataBuffer.TYPE_DOUBLE;
         } else {
-            throw new NotImplementedException("not yet implemented");
+            throw new IllegalStateException("not yet implemented");
         }
 
         WritableRaster ras = ImageIOUtils
@@ -324,14 +317,6 @@ public class NITFReader extends ImageReader {
      * Optimization to read the entire image in one fell swoop... This is most
      * likely the common use case for this codec, so we hope this optimization
      * will be helpful.
-     *
-     * @param imageIndex
-     * @param sourceXSubsampling
-     * @param sourceYSubsampling
-     * @param bandOffsets
-     * @param pixelSize
-     * @param imRas
-     * @throws IOException
      */
     protected void readFullImage(int imageIndex, Rectangle destRegion,
                                  int sourceXSubsampling,
@@ -339,33 +324,8 @@ public class NITFReader extends ImageReader {
                                  int pixelSize, WritableRaster imRas)
             throws IOException {
         try {
-//            ImageSubheader subheader = record.getImages()[imageIndex]
-//                    .getSubheader();
             int numCols = destRegion.width;
             int numRows = destRegion.height;
-
-//            int nBands = subheader.getBandCount();
-
-            /*
-             * NOTE: This is a "fix" that will be removed once the underlying
-             * NITRO library gets patched. Currently, if you make a request of a
-             * single band, it doesn't matter which band you request - the data
-             * from the first band will be returned regardless. This is
-             * obviously wrong. To thwart this, we will read all bands, then
-             * scale down what we return to the user based on their actual
-             * request.
-             */
-
-            //int[] requestBands = bandOffsets;
-            /*
-             * if (nBands != bandOffsets.length && bandOffsets.length == 1
-             * && bandOffsets[0] != 0)
-             * {
-             * requestBands = new int[nBands];
-             * for (int i = 0; i < nBands; ++i)
-             * requestBands[i] = i;
-             * }
-             */
 
             int bufSize = numCols * numRows * pixelSize;
             byte[][] imageBuf = new byte[bandOffsets.length][bufSize];
@@ -389,35 +349,13 @@ public class NITFReader extends ImageReader {
                 window.setDownSampler(downSampler);
             }
 
-            // String pixelJustification = subheader.getPixelJustification()
-            // .getStringData().trim();
-            // boolean shouldSwap = pixelJustification.equals("R");
-
-            // since this is Java, we need the data in big-endian format
-            // boolean shouldSwap = ByteOrder.nativeOrder() !=
-            // ByteOrder.BIG_ENDIAN;
-
             nitf.ImageReader imageReader = getImageReader(imageIndex);
             imageReader.read(window, imageBuf);
 
-            List<ByteBuffer> bandBufs = new ArrayList<ByteBuffer>();
+            List<ByteBuffer> bandBufs = new ArrayList<>();
 
             for (int i = 0; i < bandOffsets.length; ++i) {
-//                ByteBuffer bandBuf = null;
-
-                // the special "fix" we added needs to do this
-//                if (bandOffsets.length != requestBands.length)
-//                {
-//                    bandBuf = ByteBuffer.wrap(imageBuf[bandOffsets[i]]);
-//                }
-//                else
-//                {
                 ByteBuffer bandBuf = ByteBuffer.wrap(imageBuf[i]);
-//                }
-                // ban dBuf.order(ByteOrder.nativeOrder());
-                // shouldSwap ? ByteOrder.LITTLE_ENDIAN
-                // : ByteOrder.BIG_ENDIAN);
-
                 bandBufs.add(bandBuf);
             }
 
@@ -463,20 +401,16 @@ public class NITFReader extends ImageReader {
 
                             switch (pixelSize) {
                                 case 1:
-                                    imRas.setSample(dstX, srcY, i, bandBuf
-                                            .get(srcX));
+                                    imRas.setSample(dstX, srcY, i, bandBuf.get(srcX));
                                     break;
                                 case 2:
-                                    imRas.setSample(dstX, srcY, i, bandBuf
-                                            .getShort(srcX));
+                                    imRas.setSample(dstX, srcY, i, bandBuf.getShort(srcX));
                                     break;
                                 case 4:
-                                    imRas.setSample(dstX, srcY, i, bandBuf
-                                            .getFloat(srcX));
+                                    imRas.setSample(dstX, srcY, i, bandBuf.getFloat(srcX));
                                     break;
                                 case 8:
-                                    imRas.setSample(dstX, srcY, i, bandBuf
-                                            .getDouble(srcX));
+                                    imRas.setSample(dstX, srcY, i, bandBuf.getDouble(srcX));
                                     break;
                             }
                         }
@@ -484,7 +418,7 @@ public class NITFReader extends ImageReader {
                 }
             }
         } catch (NITFException e1) {
-            throw new IOException(ExceptionUtils.getStackTrace(e1));
+            throw new IOException(e1);
         }
     }
 
@@ -492,14 +426,6 @@ public class NITFReader extends ImageReader {
      * Reads image data as bytes for the given region, and writes it to the
      * given writable raster
      *
-     * @param sourceRegion
-     * @param sourceXSubsampling
-     * @param sourceYSubsampling
-     * @param bandOffsets
-     * @param destinationOffset
-     * @param imRas
-     * @return Raster
-     * @throws IOException
      */
     protected void readRaster(int imageIndex, Rectangle sourceRegion,
                               Rectangle destRegion, int sourceXSubsampling,
@@ -568,17 +494,9 @@ public class NITFReader extends ImageReader {
                     window.setDownSampler(downSampler);
                 }
 
-                // String pixelJustification = record.getImages()[imageIndex]
-                // .getSubheader().getPixelJustification().getStringData()
-                // .trim();
-                // swap = pixelJustification.equals("R") ? 1 : 0;
-
-                List<ByteBuffer> bandBufs = new ArrayList<ByteBuffer>();
+                List<ByteBuffer> bandBufs = new ArrayList<>();
                 for (int i = 0; i < requestBands.length; ++i) {
                     ByteBuffer bandBuf = ByteBuffer.wrap(rowBuf[i]);
-                    // bandBuf.order(ByteOrder.nativeOrder());
-                    // bandBuf.order(swap == 0 ? ByteOrder.BIG_ENDIAN
-                    // : ByteOrder.LITTLE_ENDIAN);
                     bandBufs.add(bandBuf);
                 }
 
@@ -620,20 +538,16 @@ public class NITFReader extends ImageReader {
 
                             switch (pixelSize) {
                                 case 1:
-                                    imRas.setSample(dstX, dstY, i, bandBuf
-                                            .get(srcX));
+                                    imRas.setSample(dstX, dstY, i, bandBuf.get(srcX));
                                     break;
                                 case 2:
-                                    imRas.setSample(dstX, dstY, i, bandBuf
-                                            .getShort(srcX));
+                                    imRas.setSample(dstX, dstY, i, bandBuf.getShort(srcX));
                                     break;
                                 case 4:
-                                    imRas.setSample(dstX, dstY, i, bandBuf
-                                            .getFloat(srcX));
+                                    imRas.setSample(dstX, dstY, i, bandBuf.getFloat(srcX));
                                     break;
                                 case 8:
-                                    imRas.setSample(dstX, dstY, i, bandBuf
-                                            .getDouble(srcX));
+                                    imRas.setSample(dstX, dstY, i, bandBuf.getDouble(srcX));
                                     break;
                             }
                         }
@@ -641,7 +555,7 @@ public class NITFReader extends ImageReader {
                 }
             }
         } catch (NITFException e1) {
-            throw new IOException(ExceptionUtils.getStackTrace(e1));
+            throw new IOException(e1);
         }
     }
 
@@ -692,10 +606,9 @@ public class NITFReader extends ImageReader {
                 return ImageIOUtils.rasterToBufferedImage(raster, imageType);
             }
         } catch (NITFException e) {
-            throw new IOException(ExceptionUtils.getStackTrace(e));
+            throw new IOException(e);
         }
-        throw new NotImplementedException(
-                "Image pixel type or bits per pixel not yet supported");
+        throw new IllegalStateException("Image pixel type or bits per pixel not yet supported");
     }
 
     @Override
@@ -705,7 +618,6 @@ public class NITFReader extends ImageReader {
 
     /**
      * @return returns the underlying Record
-     * @throws IOException
      */
     public Record getRecord() throws IOException {
         readHeader();

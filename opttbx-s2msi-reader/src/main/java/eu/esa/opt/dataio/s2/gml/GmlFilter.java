@@ -21,7 +21,7 @@ package eu.esa.opt.dataio.s2.gml;
 import org.locationtech.jts.geom.Polygon;
 import org.apache.commons.math3.util.Pair;
 import org.geotools.gml3.GMLConfiguration;
-import org.geotools.xml.StreamingParser;
+import org.geotools.xsd.StreamingParser;
 import org.jdom2.Attribute;
 import org.jdom2.Content;
 import org.jdom2.Content.CType;
