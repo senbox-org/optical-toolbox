@@ -33,10 +33,6 @@
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
-            <artifactId>snap-netcdf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.esa.snap</groupId>
             <artifactId>ceres-core</artifactId>
         </dependency>
         <dependency>
