@@ -26,7 +26,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import sun.awt.image.SunWritableRaster;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -59,12 +58,12 @@ import java.awt.image.PixelInterleavedSampleModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class ImageIOUtils {
 
@@ -166,12 +165,8 @@ public class ImageIOUtils {
         for (String arg : filesOrDirs) {
             File file = new File(arg);
             if (file.isDirectory() && file.exists()) {
-                files.addAll(Arrays.asList(file.listFiles(new FilenameFilter() {
-                    public boolean accept(File dir, String name) {
-                        return ArrayUtils.contains(exts, FilenameUtils
-                                .getExtension(name.toLowerCase()));
-                    }
-                })));
+                files.addAll(Arrays.asList(Objects.requireNonNull(file.listFiles((dir, name) -> ArrayUtils.contains(exts, FilenameUtils
+                        .getExtension(name.toLowerCase()))))));
             } else
                 files.add(file);
         }
@@ -323,7 +318,7 @@ public class ImageIOUtils {
         BandedSampleModel bsm = new BandedSampleModel(dataType, numElems,
                                                       numLines, bandOffsets.length, bandOffsets, bandOffsets);
 
-        return new SunWritableRaster(bsm, d, new Point(0, 0));
+        return Raster.createWritableRaster(bsm, d, new Point(0, 0));
     }
 
     /**
@@ -356,8 +351,7 @@ public class ImageIOUtils {
         PixelInterleavedSampleModel pism = new PixelInterleavedSampleModel(
                 dataType, numElems, numLines, bandOffsets.length, numElems
                 * bandOffsets.length, bandOffsets);
-
-        return new SunWritableRaster(pism, d, new Point(0, 0));
+        return Raster.createWritableRaster(pism, d, new Point(0, 0));
     }
 
     /**
