@@ -36,6 +36,12 @@
             <artifactId>org-netbeans-modules-javahelp</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.help</groupId>
+            <artifactId>javahelp</artifactId>
+            <version>${javahelp.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-core</artifactId>
         </dependency>

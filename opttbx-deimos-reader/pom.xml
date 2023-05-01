@@ -62,6 +62,13 @@
             <artifactId>org-netbeans-modules-javahelp</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.help</groupId>
+            <artifactId>javahelp</artifactId>
+            <version>${javahelp.version}</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-commons</artifactId>
             <type>test-jar</type>
