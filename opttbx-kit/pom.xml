@@ -533,12 +533,12 @@
             <version>${opttbx.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.esa.snap.seadas</groupId>
+            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-seadas-reader</artifactId>
             <version>${seadas.reader.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.esa.snap.seadas</groupId>
+            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-seadas-reader-ui</artifactId>
             <version>${seadas.reader.ui.version}</version>
         </dependency>

@@ -23,7 +23,7 @@
         <version>10.0.0-JDK11SHOT</version>
     </parent>
 
-    <groupId>org.esa.snap.seadas</groupId>
+    <groupId>eu.esa.opt</groupId>
     <artifactId>opttbx-seadas-reader-ui</artifactId>
     <version>${seadas.reader.ui.version}</version>
     <packaging>nbm</packaging>
