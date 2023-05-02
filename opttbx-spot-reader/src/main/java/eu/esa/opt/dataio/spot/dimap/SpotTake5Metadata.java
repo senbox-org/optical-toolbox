@@ -17,11 +17,11 @@
 
 package eu.esa.opt.dataio.spot.dimap;
 
-import org.apache.commons.lang.StringUtils;
-import org.esa.snap.core.metadata.XmlMetadata;
+import org.apache.commons.lang3.StringUtils;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.utils.DateHelper;
 
 import java.util.HashMap;

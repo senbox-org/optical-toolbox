@@ -1,9 +1,9 @@
 package eu.esa.opt.dataio.readers;
 
 import com.bc.ceres.core.ProgressMonitor;
-import org.apache.commons.lang.StringUtils;
 import eu.esa.opt.commons.FilePathInputStream;
 import eu.esa.opt.dataio.VirtualDirEx;
+import org.apache.commons.lang3.StringUtils;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;
@@ -25,9 +25,9 @@ import org.xml.sax.SAXException;
 
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,12 +68,169 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
         closeResources();
     }
 
+    private static String computeGroupPattern(int metadataCount) {
+        StringBuilder groupPattern = new StringBuilder();
+        if (metadataCount > 1) {
+            for (int i = 0; i < metadataCount; i++) {
+                if (i > 0) {
+                    groupPattern.append(":");
+                }
+                groupPattern.append("scene_").append(i);
+            }
+        }
+        return groupPattern.toString();
+    }
+
+    public static String computeBandPrefix(int metadataCount, int bandIndex) {
+        return (metadataCount > 1) ? ("scene_" + bandIndex + "_") : "";
+    }
+
+    public static <MetadataType extends XmlMetadata> RastersMetadata computeMaximumDefaultProductSize(MetadataList<MetadataType> metadataList, VirtualDirEx productDirectory)
+            throws IOException {
+
+        int defaultProductWidth = 0;
+        int defaultProductHeight = 0;
+        RastersMetadata rastersMetadata = new RastersMetadata();
+        for (int i = 0; i < metadataList.getCount(); i++) {
+            try (FilePathInputStream filePathInputStream = productDirectory.getInputStream(metadataList.getMetadataImageRelativePath(i))) {
+                try (GeoTiffImageReader geoTiffImageReader = new GeoTiffImageReader(filePathInputStream, null)) {
+                    defaultProductWidth = Math.max(defaultProductWidth, geoTiffImageReader.getImageWidth());
+                    defaultProductHeight = Math.max(defaultProductHeight, geoTiffImageReader.getImageHeight());
+                    int bandCount = geoTiffImageReader.getSampleModel().getNumBands();
+                    rastersMetadata.setRasterBandCount(metadataList.getMetadataAt(i), bandCount);
+                }
+            }
+        }
+        if (defaultProductWidth <= 0) {
+            throw new IllegalStateException("The product width " + defaultProductWidth + " is invalid.");
+        }
+        if (defaultProductHeight <= 0) {
+            throw new IllegalStateException("The product height " + defaultProductHeight + " is invalid.");
+        }
+        rastersMetadata.setMaximumSize(defaultProductWidth, defaultProductHeight);
+        return rastersMetadata;
+    }
+
+    protected static <MetadataType extends XmlMetadata> MetadataList<MetadataType> readMetadata(VirtualDirEx productDirectory, String metadataFileSuffix, Class<MetadataType> metadataClass)
+            throws IOException, InstantiationException, ParserConfigurationException, SAXException {
+
+        String[] existingRelativeFilePaths = productDirectory.listAllFiles();
+        MetadataList<MetadataType> metadataList = new MetadataList<>();
+        for (String relativeFilePath : existingRelativeFilePaths) {
+            if (StringUtils.endsWithIgnoreCase(relativeFilePath, metadataFileSuffix)) {
+                MetadataType metaDataItem = readProductMetadata(productDirectory, relativeFilePath, metadataClass);
+                String existingImageRelativePath = null;
+                String[] rasterFileNames = metaDataItem.getRasterFileNames();
+                if (rasterFileNames != null && rasterFileNames.length > 0) {
+                    // find the image file using the raster file names
+                    for (int i = 0; i < rasterFileNames.length && existingImageRelativePath == null; i++) {
+                        for (int k = 0; k < existingRelativeFilePaths.length && existingImageRelativePath == null; k++) {
+                            existingImageRelativePath = findImageRelativePath(rasterFileNames[i], existingRelativeFilePaths);
+                        }
+                    }
+                }
+                if (existingImageRelativePath == null) {
+                    // find the image file using the metadata file name
+                    existingImageRelativePath = findImageRelativePath(relativeFilePath, existingRelativeFilePaths);
+                }
+                if (existingImageRelativePath == null) {
+                    throw new IllegalStateException("There is no image file for metadata file '" + relativeFilePath + "'.");
+                }
+                metadataList.addMetadata(metaDataItem, existingImageRelativePath);
+            }
+        }
+        return metadataList;
+    }
+
+    public static <MetadataType extends GenericXmlMetadata> MetadataType readProductMetadata(VirtualDirEx productDirectory, String productMetadataRelativeFilePath,
+                                                                                             Class<MetadataType> metadataClass)
+            throws IOException, InstantiationException, ParserConfigurationException, SAXException {
+
+        try (FilePathInputStream metadataInputStream = productDirectory.getInputStream(productMetadataRelativeFilePath)) {
+            MetadataType productMetadata = (MetadataType) XmlMetadataParserFactory.getParser(metadataClass).parse(metadataInputStream);
+            String metadataProfile = productMetadata.getMetadataProfile();
+            if (metadataProfile != null) {
+                productMetadata.setName(metadataProfile);
+            }
+            productMetadata.setPath(metadataInputStream.getPath());
+            productMetadata.setFileName(metadataInputStream.getPath().getFileName().toString());
+            return productMetadata;
+        }
+    }
+
+    private static String findImageRelativePath(String rasterFileNameToFind, String[] existingRelativeFilePaths) {
+        // check if the raster file name exists among the existing file paths
+        for (String relativeFilePath : existingRelativeFilePaths) {
+            if (hasTiffExtension(relativeFilePath)) {
+                if (StringUtils.endsWithIgnoreCase(relativeFilePath, rasterFileNameToFind)) {
+                    return relativeFilePath;
+                }
+            }
+        }
+        // check if the raster file has extension and search if by extension
+        int lastPointIndex = rasterFileNameToFind.lastIndexOf('.');
+        if (lastPointIndex <= 0) {
+            throw new IllegalStateException("The raster file name to find '" + rasterFileNameToFind + "' has no extension.");
+        }
+        String rasterFileNameWithoutExtension = rasterFileNameToFind.substring(0, lastPointIndex);
+        String existingImageRelativePath = null;
+        for (int k = 0; k < existingRelativeFilePaths.length && existingImageRelativePath == null; k++) {
+            String existingRelativeFilePath = existingRelativeFilePaths[k];
+            // check if the existing file ends with '.tif' or '.tiff'
+            if (hasTiffExtension(existingRelativeFilePath)) {
+                for (int index = rasterFileNameWithoutExtension.length() - 1; index >= 0; index--) {
+                    if (existingRelativeFilePath.regionMatches(true, 0, rasterFileNameWithoutExtension, 0, index)) {
+                        existingImageRelativePath = existingRelativeFilePath;
+                        break;
+                    }
+                }
+            }
+        }
+        return existingImageRelativePath;
+    }
+
+    private static boolean hasTiffExtension(String imageFilePath) {
+        if (StringUtils.isBlank(imageFilePath)) {
+            throw new NullPointerException("The image file path '" + imageFilePath + "' is null or empty.");
+        }
+        return (StringUtils.endsWithIgnoreCase(imageFilePath, ".tif") || StringUtils.endsWithIgnoreCase(imageFilePath, ".tiff"));
+    }
+
     @Override
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
                                           Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm)
-                                          throws IOException {
+            throws IOException {
 
         throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    private void closeResources() {
+        try {
+            if (this.bandImageReaders != null) {
+                for (GeoTiffImageReader geoTiffImageReader : this.bandImageReaders) {
+                    try {
+                        geoTiffImageReader.close();
+                    } catch (Exception ignore) {
+                        // ignore
+                    }
+                }
+                this.bandImageReaders.clear();
+                this.bandImageReaders = null;
+            }
+        } finally {
+            try {
+                if (this.imageInputStreamSpi != null) {
+                    ImageRegistryUtils.deregisterImageInputStreamSpi(this.imageInputStreamSpi);
+                    this.imageInputStreamSpi = null;
+                }
+            } finally {
+                if (this.productDirectory != null) {
+                    this.productDirectory.close();
+                    this.productDirectory = null;
+                }
+            }
+        }
+        System.gc();
     }
 
     @Override
@@ -226,8 +383,8 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
             List<Mask> masks = buildMasks(product.getSceneRasterWidth(), product.getSceneRasterHeight(), firstMetadata, subsetDef);
             if (masks != null) {
                 ProductNodeGroup<Mask> maskGroup = product.getMaskGroup();
-                for (int j = 0; j < masks.size(); j++) {
-                    maskGroup.add(masks.get(j));
+                for (Mask mask : masks) {
+                    maskGroup.add(mask);
                 }
             }
 
@@ -243,162 +400,6 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
                 closeResources();
             }
         }
-    }
-
-    private void closeResources() {
-        try {
-            if (this.bandImageReaders != null) {
-                for (GeoTiffImageReader geoTiffImageReader : this.bandImageReaders) {
-                    try {
-                        geoTiffImageReader.close();
-                    } catch (Exception ignore) {
-                        // ignore
-                    }
-                }
-                this.bandImageReaders.clear();
-                this.bandImageReaders = null;
-            }
-        } finally {
-            try {
-                if (this.imageInputStreamSpi != null) {
-                    ImageRegistryUtils.deregisterImageInputStreamSpi(this.imageInputStreamSpi);
-                    this.imageInputStreamSpi = null;
-                }
-            } finally {
-                if (this.productDirectory != null) {
-                    this.productDirectory.close();
-                    this.productDirectory = null;
-                }
-            }
-        }
-        System.gc();
-    }
-
-    private static String computeGroupPattern(int metadataCount) {
-        String groupPattern = "";
-        if (metadataCount > 1) {
-            for (int i = 0; i < metadataCount; i++) {
-                if (i > 0) {
-                    groupPattern += ":";
-                }
-                groupPattern += "scene_" + String.valueOf(i);
-            }
-        }
-        return groupPattern;
-    }
-
-    public static String computeBandPrefix(int metadataCount, int bandIndex) {
-        return (metadataCount > 1) ? ("scene_" + String.valueOf(bandIndex) + "_") : "";
-    }
-
-    public static <MetadataType extends XmlMetadata> RastersMetadata computeMaximumDefaultProductSize(MetadataList<MetadataType> metadataList, VirtualDirEx productDirectory)
-                                                                     throws InvocationTargetException, InstantiationException, IllegalAccessException, IOException {
-
-        int defaultProductWidth = 0;
-        int defaultProductHeight = 0;
-        RastersMetadata rastersMetadata = new RastersMetadata();
-        for (int i = 0; i < metadataList.getCount(); i++) {
-            try (FilePathInputStream filePathInputStream = productDirectory.getInputStream(metadataList.getMetadataImageRelativePath(i))) {
-                try (GeoTiffImageReader geoTiffImageReader = new GeoTiffImageReader(filePathInputStream, null)) {
-                    defaultProductWidth = Math.max(defaultProductWidth, geoTiffImageReader.getImageWidth());
-                    defaultProductHeight = Math.max(defaultProductHeight, geoTiffImageReader.getImageHeight());
-                    int bandCount = geoTiffImageReader.getSampleModel().getNumBands();
-                    rastersMetadata.setRasterBandCount(metadataList.getMetadataAt(i), bandCount);
-                }
-            }
-        }
-        if (defaultProductWidth <= 0) {
-            throw new IllegalStateException("The product width " + defaultProductWidth + " is invalid.");
-        }
-        if (defaultProductHeight <= 0) {
-            throw new IllegalStateException("The product height " + defaultProductHeight + " is invalid.");
-        }
-        rastersMetadata.setMaximumSize(defaultProductWidth, defaultProductHeight);
-        return rastersMetadata;
-    }
-
-    public static <MetadataType extends GenericXmlMetadata> MetadataType readProductMetadata(VirtualDirEx productDirectory, String productMetadataRelativeFilePath,
-                                                                                             Class<MetadataType> metadataClass)
-                                                                    throws IOException, InstantiationException, ParserConfigurationException, SAXException {
-
-        try (FilePathInputStream metadataInputStream = productDirectory.getInputStream(productMetadataRelativeFilePath)) {
-            MetadataType productMetadata = (MetadataType) XmlMetadataParserFactory.getParser(metadataClass).parse(metadataInputStream);
-            String metadataProfile = productMetadata.getMetadataProfile();
-            if (metadataProfile != null) {
-                productMetadata.setName(metadataProfile);
-            }
-            productMetadata.setPath(metadataInputStream.getPath());
-            productMetadata.setFileName(metadataInputStream.getPath().getFileName().toString());
-            return productMetadata;
-        }
-    }
-
-    protected static <MetadataType extends XmlMetadata> MetadataList<MetadataType> readMetadata(VirtualDirEx productDirectory, String metadataFileSuffix, Class<MetadataType> metadataClass)
-                                                                                            throws IOException, InstantiationException, ParserConfigurationException, SAXException {
-
-        String[] existingRelativeFilePaths = productDirectory.listAllFiles();
-        MetadataList<MetadataType> metadataList = new MetadataList<>();
-        for (String relativeFilePath : existingRelativeFilePaths) {
-            if (org.apache.commons.lang.StringUtils.endsWithIgnoreCase(relativeFilePath, metadataFileSuffix)) {
-                MetadataType metaDataItem = readProductMetadata(productDirectory, relativeFilePath, metadataClass);
-                String existingImageRelativePath = null;
-                String[] rasterFileNames = metaDataItem.getRasterFileNames();
-                if (rasterFileNames != null && rasterFileNames.length > 0) {
-                    // find the image file using the raster file names
-                    for (int i=0; i<rasterFileNames.length && existingImageRelativePath == null; i++) {
-                        for (int k=0; k<existingRelativeFilePaths.length && existingImageRelativePath == null; k++) {
-                            existingImageRelativePath = findImageRelativePath(rasterFileNames[i], existingRelativeFilePaths);
-                        }
-                    }
-                }
-                if (existingImageRelativePath == null) {
-                    // find the image file using the metadata file name
-                    existingImageRelativePath = findImageRelativePath(relativeFilePath, existingRelativeFilePaths);
-                }
-                if (existingImageRelativePath == null) {
-                    throw new IllegalStateException("There is no image file for metadata file '" + relativeFilePath + "'.");
-                }
-                metadataList.addMetadata(metaDataItem, existingImageRelativePath);
-            }
-        }
-        return metadataList;
-    }
-
-    private static boolean hasTiffExtension(String imageFilePath) {
-        if (StringUtils.isBlank(imageFilePath)) {
-            throw new NullPointerException("The image file path '" + imageFilePath + "' is null or empty.");
-        }
-        return (StringUtils.endsWithIgnoreCase(imageFilePath, ".tif") || StringUtils.endsWithIgnoreCase(imageFilePath, ".tiff"));
-    }
-
-    private static String findImageRelativePath(String rasterFileNameToFind, String[] existingRelativeFilePaths) {
-        // check if the raster file name exists among the existing file paths
-        for (int i=0; i<existingRelativeFilePaths.length; i++) {
-            if (hasTiffExtension(existingRelativeFilePaths[i])) {
-                if (StringUtils.endsWithIgnoreCase(existingRelativeFilePaths[i], rasterFileNameToFind)) {
-                    return existingRelativeFilePaths[i];
-                }
-            }
-        }
-        // check if the raster file has extension and search if by extension
-        int lastPointIndex = rasterFileNameToFind.lastIndexOf('.');
-        if (lastPointIndex <= 0) {
-            throw new IllegalStateException("The raster file name to find '" + rasterFileNameToFind+"' has no extension.");
-        }
-        String rasterFileNameWithoutExtension = rasterFileNameToFind.substring(0, lastPointIndex);
-        String existingImageRelativePath = null;
-        for (int k=0; k<existingRelativeFilePaths.length && existingImageRelativePath == null; k++) {
-            String existingRelativeFilePath = existingRelativeFilePaths[k];
-            // check if the existing file ends with '.tif' or '.tiff'
-            if (hasTiffExtension(existingRelativeFilePath)) {
-                for (int index=rasterFileNameWithoutExtension.length()-1; index>=0 && existingImageRelativePath == null; index--) {
-                    if (existingRelativeFilePath.regionMatches(true, 0, rasterFileNameWithoutExtension, 0, index)) {
-                        existingImageRelativePath = existingRelativeFilePath;
-                    }
-                }
-            }
-        }
-        return existingImageRelativePath;
     }
 
     private boolean isMultiSize() throws IOException {

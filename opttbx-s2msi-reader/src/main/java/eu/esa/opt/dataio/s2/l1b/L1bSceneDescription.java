@@ -18,17 +18,18 @@
 package eu.esa.opt.dataio.s2.l1b;
 
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import eu.esa.opt.dataio.s2.S2Metadata;
 import eu.esa.opt.dataio.s2.S2SceneDescription;
 import eu.esa.opt.dataio.s2.S2SpatialResolution;
 import eu.esa.opt.dataio.s2.l1b.metadata.L1bMetadata;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

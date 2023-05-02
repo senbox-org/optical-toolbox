@@ -243,16 +243,16 @@ public class AlosAV2ProductReader extends AbstractProductReader {
         String baseItemName = productDirectory.getBaseFile().getName();
         if (productDirectory.isArchive()) {
             // the product directory is an archive
-            if (org.apache.commons.lang.StringUtils.endsWithIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX)) {
-                int index = org.apache.commons.lang.StringUtils.lastIndexOfIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX);
+            if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX)) {
+                int index = org.apache.commons.lang3.StringUtils.lastIndexOfIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX);
                 String identifier = baseItemName.substring(0, index);
                 String zipArchiveFileName = identifier + AlosAV2Constants.IMAGE_ARCHIVE_FILE_EXTENSION;
                 return productDirectory.getFile(zipArchiveFileName).toPath();
             }
         } else {
             // the product directory is a folder
-            if (org.apache.commons.lang.StringUtils.endsWithIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_FOLDER_SUFFIX)) {
-                int index = org.apache.commons.lang.StringUtils.lastIndexOfIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_FOLDER_SUFFIX);
+            if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_FOLDER_SUFFIX)) {
+                int index = org.apache.commons.lang3.StringUtils.lastIndexOfIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_FOLDER_SUFFIX);
                 String identifier = baseItemName.substring(0, index);
                 if (productDirectory.exists(identifier)) {
                     // the identifier exists and it is a directory
@@ -266,7 +266,7 @@ public class AlosAV2ProductReader extends AbstractProductReader {
         // search the image metadata file
         String[] relativePaths = productDirectory.listAllFiles();
         for (String relativeFilePath : relativePaths) {
-            if (org.apache.commons.lang.StringUtils.endsWithIgnoreCase(relativeFilePath, AlosAV2Constants.IMAGE_METADATA_EXTENSION)) {
+            if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(relativeFilePath, AlosAV2Constants.IMAGE_METADATA_EXTENSION)) {
                 return productDirectory.getBaseFile().toPath();
             }
         }
@@ -277,7 +277,7 @@ public class AlosAV2ProductReader extends AbstractProductReader {
         String[] relativePaths = imageMetadataProductDirectory.listAllFiles();
         String imageMetadataRelativeFilePath = null;
         for (String relativeFilePath : relativePaths) {
-            if (org.apache.commons.lang.StringUtils.endsWithIgnoreCase(relativeFilePath, AlosAV2Constants.IMAGE_METADATA_EXTENSION)) {
+            if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(relativeFilePath, AlosAV2Constants.IMAGE_METADATA_EXTENSION)) {
                 if (imageMetadataRelativeFilePath == null) {
                     imageMetadataRelativeFilePath = relativeFilePath;
                 } else {
