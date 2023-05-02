@@ -125,8 +125,8 @@
     <properties>
         <snap.version>10.0.0-JDK11SHOT</snap.version>
         <opttbx.version>10.0.0-JDK11SHOT</opttbx.version>
-        <seadas.reader.version>1.10.0-SNAPSHOT</seadas.reader.version>
-        <seadas.reader.ui.version>1.10.0-SNAPSHOT</seadas.reader.ui.version>
+        <seadas.reader.version>1.10.0-JDK11SHOT</seadas.reader.version>
+        <seadas.reader.ui.version>1.10.0-JDK11SHOT</seadas.reader.ui.version>
         <netbeans.version>RELEASE100</netbeans.version>
         <geotools.version>28.2</geotools.version>
         <netcdf.version>5.3.1</netcdf.version>
