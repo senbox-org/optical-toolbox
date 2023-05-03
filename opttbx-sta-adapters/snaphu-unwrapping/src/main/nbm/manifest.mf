@@ -3,7 +3,7 @@ OpenIDE-Module-Specification-Version: 8.0.0
 OpenIDE-Module-Implementation-Version: 8.0.0
 OpenIDE-Module-Name: SNAPHU Unwrapping
 OpenIDE-Module-Display-Category: SNAP Supported Plugins
-OpenIDE-Module-Java-Dependencies: Java > 1.8
+OpenIDE-Module-Java-Dependencies: Java > 11
 OpenIDE-Module-Type: STA
 OpenIDE-Module-Short-Description: SNAPHU Phase Unwrapping
 OpenIDE-Module: org.esa.snap.core.gpf.operators.tooladapter.snaphu.unwrapping

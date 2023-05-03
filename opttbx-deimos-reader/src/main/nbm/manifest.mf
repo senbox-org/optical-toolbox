@@ -4,6 +4,6 @@ OpenIDE-Module-Implementation-Version: ${project.nbmImplVersion}
 AutoUpdate-Show-In-Client: false
 AutoUpdate-Essential-Module: false
 OpenIDE-Module-Layer: eu/esa/opt/dataio/deimos/layer.xml
-OpenIDE-Module-Java-Dependencies: Java > 1.8
+OpenIDE-Module-Java-Dependencies: Java > 11
 OpenIDE-Module-Display-Category: SNAP Toolboxes
 OpenIDE-Module-Long-Description: <p>This module enables the Sentinel Toolbox to read DEIMOS-1 products</p>
