@@ -54,7 +54,7 @@ public class DataObjectMergerTest {
         manifestElement.setAttribute("ID", "test");
         manifest.appendChild(manifestElement);
 
-        final DataObjectMerger dataObjectMerger = new DataObjectMerger(DataObjectMergerTest.class.getResource("").getFile());
+        final DataObjectMerger dataObjectMerger = new DataObjectMerger(DataObjectMergerTest.class.getResource("/testing/manifest").getFile());
         dataObjectMerger.mergeNodes(fromParents, manifestElement, manifest);
 
         final NodeList manifestChilds = manifestElement.getChildNodes();
@@ -96,7 +96,7 @@ public class DataObjectMergerTest {
 
     @Test
     public void testGetChecksum() {
-        File file = new File(DataObjectMergerTest.class.getResource("justSomeDummyFileForCreatingAChecksum").getFile());
+        File file = new File(DataObjectMergerTest.class.getResource("/testing/manifest/justSomeDummyFileForCreatingAChecksum").getFile());
 
         final String checksum = DataObjectMerger.getChecksum(file);
 
@@ -106,7 +106,7 @@ public class DataObjectMergerTest {
     @Test
     @Ignore("Speed test - Not running by default")
     public void testGetChecksum_speedTest() {
-        File file = new File(DataObjectMergerTest.class.getResource("justSomeDummyFileForCreatingAChecksum").getFile());
+        File file = new File(DataObjectMergerTest.class.getResource("/testing/manifest/justSomeDummyFileForCreatingAChecksum").getFile());
 
         long total = 0;
         long start;

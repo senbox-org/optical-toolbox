@@ -18,6 +18,7 @@
 package eu.esa.opt.dataio.spot;
 
 import com.bc.ceres.binding.ConversionException;
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
@@ -30,7 +31,6 @@ import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.TreeNode;
 import org.esa.snap.core.util.converters.JtsGeometryConverter;
 import org.esa.snap.runtime.LogUtils4Tests;
-import org.esa.snap.utils.TestUtil;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -41,9 +41,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
 /**

@@ -1,8 +1,8 @@
 package eu.esa.opt.dataio.gdal;
 
-import org.apache.commons.lang.SystemUtils;
+import eu.esa.opt.utils.TestUtil;
+import org.apache.commons.lang3.SystemUtils;
 import org.esa.snap.dataio.gdal.GDALLoader;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 

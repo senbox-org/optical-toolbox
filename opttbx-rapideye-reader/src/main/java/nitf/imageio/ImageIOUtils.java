@@ -23,10 +23,9 @@
 package nitf.imageio;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import sun.awt.image.SunWritableRaster;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -34,8 +33,17 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.image.BandedSampleModel;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -50,12 +58,12 @@ import java.awt.image.PixelInterleavedSampleModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class ImageIOUtils {
 
@@ -67,9 +75,6 @@ public class ImageIOUtils {
     /**
      * Returns an ImageReader given the input filename
      *
-     * @param filename
-     * @return
-     * @throws IOException
      */
     public static ImageReader getImageReader(String filename)
             throws IOException {
@@ -79,9 +84,6 @@ public class ImageIOUtils {
     /**
      * Returns an ImageReader given the input file
      *
-     * @param file
-     * @return
-     * @throws IOException
      */
     public static ImageReader getImageReader(File file) throws IOException {
         String ext = FilenameUtils.getExtension(file.getName().toLowerCase());
@@ -99,13 +101,8 @@ public class ImageIOUtils {
 
     /**
      * Returns an ImageReader given the format, and sets the input source
-     *
-     * @param file
-     * @return
-     * @throws IOException
      */
-    public static ImageReader getImageReader(String format, Object input)
-            throws IOException {
+    public static ImageReader getImageReader(String format, Object input) {
         ImageReader reader = null;
         Iterator<ImageReader> imageReaders = ImageIO
                 .getImageReadersByFormatName(format);
@@ -119,9 +116,6 @@ public class ImageIOUtils {
     /**
      * Returns an ImageWriter given the output filename
      *
-     * @param filename
-     * @return
-     * @throws IOException
      */
     public static ImageWriter getImageWriter(String filename)
             throws IOException {
@@ -131,9 +125,6 @@ public class ImageIOUtils {
     /**
      * Returns an ImageWriter given the input file
      *
-     * @param file
-     * @return
-     * @throws IOException
      */
     public static ImageWriter getImageWriter(File file) throws IOException {
         String ext = FilenameUtils.getExtension(file.getName().toLowerCase());
@@ -167,22 +158,15 @@ public class ImageIOUtils {
      * directories. If one of the array contents is a directory, it searches it.
      * Files ending in the extensions provided are returned in the list.
      *
-     * @param filesOrDirs
-     * @param extensions
-     * @return
      */
     public static List<File> getFiles(String[] filesOrDirs, String[] extensions) {
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         final String[] exts = extensions;
         for (String arg : filesOrDirs) {
             File file = new File(arg);
             if (file.isDirectory() && file.exists()) {
-                files.addAll(Arrays.asList(file.listFiles(new FilenameFilter() {
-                    public boolean accept(File dir, String name) {
-                        return ArrayUtils.contains(exts, FilenameUtils
-                                .getExtension(name.toLowerCase()));
-                    }
-                })));
+                files.addAll(Arrays.asList(Objects.requireNonNull(file.listFiles((dir, name) -> ArrayUtils.contains(exts, FilenameUtils
+                        .getExtension(name.toLowerCase()))))));
             } else
                 files.add(file);
         }
@@ -314,11 +298,6 @@ public class ImageIOUtils {
     /**
      * Returns a generic banded WritableRaster
      *
-     * @param numElems
-     * @param numLines
-     * @param bandOffsets
-     * @param dataType
-     * @return
      */
     public static WritableRaster makeGenericBandedWritableRaster(int numElems,
                                                                  int numLines,
@@ -339,17 +318,12 @@ public class ImageIOUtils {
         BandedSampleModel bsm = new BandedSampleModel(dataType, numElems,
                                                       numLines, bandOffsets.length, bandOffsets, bandOffsets);
 
-        return new SunWritableRaster(bsm, d, new Point(0, 0));
+        return Raster.createWritableRaster(bsm, d, new Point(0, 0));
     }
 
     /**
      * Returns a generic pixel interleaved WritableRaster
      *
-     * @param numElems
-     * @param numLines
-     * @param bandOffsets
-     * @param dataType
-     * @return
      */
     public static WritableRaster makeGenericPixelInterleavedWritableRaster(
             int numElems,
@@ -377,16 +351,13 @@ public class ImageIOUtils {
         PixelInterleavedSampleModel pism = new PixelInterleavedSampleModel(
                 dataType, numElems, numLines, bandOffsets.length, numElems
                 * bandOffsets.length, bandOffsets);
-
-        return new SunWritableRaster(pism, d, new Point(0, 0));
+        return Raster.createWritableRaster(pism, d, new Point(0, 0));
     }
 
     /**
      * Converts the float data to byte data, and sets the values in the byteData
      * buffer
      *
-     * @param floatData
-     * @param byteData
      */
     public static void floatToByteBuffer(float[] floatData, byte[] byteData,
                                          int pixelStride, int numBands) {
@@ -408,8 +379,6 @@ public class ImageIOUtils {
      * Converts the float data to byte data, and sets the values in the byteData
      * buffer
      *
-     * @param doubleData
-     * @param byteData
      */
     public static void doubleToByteBuffer(double[] doubleData, byte[] byteData,
                                           int pixelStride, int numBands) {
@@ -431,8 +400,6 @@ public class ImageIOUtils {
      * Converts the float data to byte data, and sets the values in the byteData
      * buffer
      *
-     * @param shortData
-     * @param byteData
      */
     public static void shortToByteBuffer(short[] shortData, byte[] byteData,
                                          int pixelStride, int numBands) {
@@ -457,9 +424,6 @@ public class ImageIOUtils {
      * Currently only Float->Byte and Byte->Byte are supported. Will throw an
      * {@link UnsupportedOperationException} if the conversion is not supported.
      *
-     * @param raster
-     * @param imageType
-     * @return
      */
     public static BufferedImage rasterToBufferedImage(
             Raster raster,

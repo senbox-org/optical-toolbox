@@ -17,14 +17,14 @@
 
 package eu.esa.opt.dataio.spot.dimap;
 
+import eu.esa.opt.utils.TestUtil;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
-import org.esa.snap.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.nio.file.Paths;

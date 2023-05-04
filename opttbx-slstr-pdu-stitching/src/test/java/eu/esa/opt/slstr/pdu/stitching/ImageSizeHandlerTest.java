@@ -83,7 +83,7 @@ public class ImageSizeHandlerTest {
     }
 
     private static File getResource(String fileName) throws URISyntaxException {
-        final String fullFileName = fileName + "/xfdumanifest.xml";
+        final String fullFileName = "/testing/" + fileName + "/xfdumanifest.xml";
         final URL resource = ImageSizeHandlerTest.class.getResource(fullFileName);
         URI uri = new URI(resource.toString());
         return new File(uri.getPath());

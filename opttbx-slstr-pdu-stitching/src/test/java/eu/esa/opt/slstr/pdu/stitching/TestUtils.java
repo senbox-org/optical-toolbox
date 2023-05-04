@@ -34,8 +34,7 @@ public class TestUtils {
     }
 
     private static File getResource(String fileName) throws URISyntaxException {
-        final String fullFileName = fileName + "/xfdumanifest.xml";
-        final URL resource = TestUtils.class.getResource(fullFileName);
+        final URL resource = TestUtils.class.getResource("/testing/" + fileName + "/xfdumanifest.xml");
         URI uri = new URI(resource.toString());
         return new File(uri.getPath());
     }

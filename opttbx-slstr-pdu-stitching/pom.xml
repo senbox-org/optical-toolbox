@@ -44,6 +44,11 @@
             <artifactId>ceres-binding</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-netcdf</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-sentinel3-reader</artifactId>
             <version>${opttbx.version}</version>
@@ -79,7 +84,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>

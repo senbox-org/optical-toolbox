@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.logging.Logger;
 
 /**
  * Created by obarrilero on 26/10/2016.
@@ -398,7 +398,7 @@ public class S2ProductNamingUtils {
     public static Path processInputPath(Path inputPath) {
         if (inputPath.getFileSystem() == FileSystems.getDefault()) {
             // the local file system
-            if (org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS) {
+            if (org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS) {
                 String longInput = Utils.GetLongPathNameW(inputPath.toString());
                 if (longInput.length() > 0) {
                     return Paths.get(longInput);

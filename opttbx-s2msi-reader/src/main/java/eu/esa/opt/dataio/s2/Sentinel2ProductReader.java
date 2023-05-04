@@ -21,8 +21,8 @@ import eu.esa.opt.dataio.s2.filepatterns.INamingConvention;
 import eu.esa.opt.dataio.s2.filepatterns.S2NamingConventionUtils;
 import eu.esa.opt.dataio.s2.metadata.AbstractS2MetadataReader;
 import eu.esa.opt.dataio.s2.tiles.MosaicMatrixCellCallback;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;
@@ -292,29 +292,37 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
         }
     }
 
+    private static int computeJP2MatrixCellsResolutionCountWithGDAL(MosaicMatrix mosaicMatrix) throws IOException {
+        final JP2MosaicBandMatrixCell matrixCell = (JP2MosaicBandMatrixCell) mosaicMatrix.getCellAt(0, 0);
+        try (final Dataset open = GDAL.open(matrixCell.getJp2ImageFile().getLocalFile().toString(), GDALConst.gaReadonly())) {
+            if (open == null) {
+                throw new IOException("Null Gdal dataset");
+            }
+            return open.getRasterBand(1).getOverviewCount();
+        }
+    }
+
+    private static int computeJP2MatrixCellsResolutionCountWithJP2(MosaicMatrix mosaicMatrix) {
+        final JP2MosaicBandMatrixCell firstMatrixCell = (JP2MosaicBandMatrixCell) mosaicMatrix.getCellAt(0, 0);
+        for (int rowIndex = 0; rowIndex < mosaicMatrix.getRowCount(); rowIndex++) {
+            for (int columnIndex = 0; columnIndex < mosaicMatrix.getColumnCount(); columnIndex++) {
+                final JP2MosaicBandMatrixCell matrixCell = (JP2MosaicBandMatrixCell) mosaicMatrix.getCellAt(rowIndex,
+                        columnIndex);
+                if (firstMatrixCell.getResolutionCount() != matrixCell.getResolutionCount()) {
+                    throw new IllegalStateException("Different resolution count: cell at " + rowIndex + ", "
+                            + columnIndex + " has data type " + matrixCell.getResolutionCount() + " and cell at " + 0
+                            + ", " + 0 + " has resolution count " + firstMatrixCell.getResolutionCount() + ".");
+                }
+            }
+        }
+        return firstMatrixCell.getResolutionCount();
+    }
+
     protected static int computeJP2MatrixCellsResolutionCount(MosaicMatrix mosaicMatrix) {
         try {
-            JP2MosaicBandMatrixCell matrixCell = (JP2MosaicBandMatrixCell) mosaicMatrix.getCellAt(0, 0);
-            try (Dataset open = GDAL.open(matrixCell.getJp2ImageFile().getLocalFile().toString(), GDALConst.gaReadonly())) {
-                if (open == null) {
-                    throw new IOException("Null Gdal dataset");
-                }
-                return open.getRasterBand(1).getOverviewCount();
-            }
+            return computeJP2MatrixCellsResolutionCountWithGDAL(mosaicMatrix);
         } catch (IOException e) {
-            JP2MosaicBandMatrixCell firstMatrixCell = (JP2MosaicBandMatrixCell) mosaicMatrix.getCellAt(0, 0);
-            for (int rowIndex = 0; rowIndex < mosaicMatrix.getRowCount(); rowIndex++) {
-                for (int columnIndex = 0; columnIndex < mosaicMatrix.getColumnCount(); columnIndex++) {
-                    JP2MosaicBandMatrixCell matrixCell = (JP2MosaicBandMatrixCell) mosaicMatrix.getCellAt(rowIndex,
-                            columnIndex);
-                    if (firstMatrixCell.getResolutionCount() != matrixCell.getResolutionCount()) {
-                        throw new IllegalStateException("Different resolution count: cell at " + rowIndex + ", "
-                                + columnIndex + " has data type " + matrixCell.getResolutionCount() + " and cell at " + 0
-                                + ", " + 0 + " has resolution count " + firstMatrixCell.getResolutionCount() + ".");
-                    }
-                }
-            }
-            return firstMatrixCell.getResolutionCount();
+            return computeJP2MatrixCellsResolutionCountWithJP2(mosaicMatrix);
         }
     }
 
