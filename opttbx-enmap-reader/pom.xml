@@ -15,10 +15,6 @@
     <name>EnMAP Product Reader</name>
     <description>A product reader for EnMAP L1B/L1C/L2A data</description>
 
-    <properties>
-        <netbeans.version>RELEASE82</netbeans.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.esa.snap</groupId>
