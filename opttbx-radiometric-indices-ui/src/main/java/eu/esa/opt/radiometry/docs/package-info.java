@@ -22,4 +22,4 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 2370)
 package eu.esa.opt.radiometry.docs;
 
-import org.netbeans.api.javahelp.HelpSetRegistration;
+import eu.esa.snap.netbeans.javahelp.api.HelpSetRegistration;

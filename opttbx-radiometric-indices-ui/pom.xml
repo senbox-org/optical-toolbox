@@ -39,7 +39,7 @@
 			<groupId>eu.esa.opt</groupId>
 			<artifactId>opttbx-radiometric-indices</artifactId>
             <version>${opttbx.version}</version>
-		</dependency>
+        </dependency>
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-commons</artifactId>
@@ -47,6 +47,10 @@
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.snap.netbeans</groupId>
+            <artifactId>snap-help-system</artifactId>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
@@ -73,10 +77,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-javahelp</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-gpf-ui</artifactId>

@@ -18,4 +18,3 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 2331)
 package eu.esa.opt.dataio.rapideye.docs;
 
-import org.netbeans.api.javahelp.HelpSetRegistration;

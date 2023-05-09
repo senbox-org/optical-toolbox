@@ -36,6 +36,10 @@
             <artifactId>snap-rcp</artifactId>
         </dependency>
         <dependency>
+            <groupId>eu.esa.snap.netbeans</groupId>
+            <artifactId>snap-help-system</artifactId>
+        </dependency>
+        <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-sentinel3-reader</artifactId>
             <version>${opttbx.version}</version>

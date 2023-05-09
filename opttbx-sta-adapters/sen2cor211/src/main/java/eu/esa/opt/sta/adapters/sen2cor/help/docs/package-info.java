@@ -18,4 +18,4 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 4320)
 package eu.esa.opt.sta.adapters.sen2cor.help.docs;
 
-import org.netbeans.api.javahelp.HelpSetRegistration;
+import eu.esa.snap.netbeans.javahelp.api.HelpSetRegistration;
