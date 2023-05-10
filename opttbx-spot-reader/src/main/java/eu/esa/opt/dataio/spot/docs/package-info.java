@@ -18,4 +18,3 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 2330)
 package eu.esa.opt.dataio.spot.docs;
 
-import org.netbeans.api.javahelp.HelpSetRegistration;

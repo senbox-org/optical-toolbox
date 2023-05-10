@@ -68,6 +68,14 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
         closeResources();
     }
 
+    @Override
+    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm)
+                                          throws IOException {
+
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
     private static String computeGroupPattern(int metadataCount) {
         StringBuilder groupPattern = new StringBuilder();
         if (metadataCount > 1) {
@@ -79,6 +87,35 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
             }
         }
         return groupPattern.toString();
+    }
+
+    private void closeResources() {
+        try {
+            if (this.bandImageReaders != null) {
+                for (GeoTiffImageReader geoTiffImageReader : this.bandImageReaders) {
+                    try {
+                        geoTiffImageReader.close();
+                    } catch (Exception ignore) {
+                        // ignore
+                    }
+                }
+                this.bandImageReaders.clear();
+                this.bandImageReaders = null;
+            }
+        } finally {
+            try {
+                if (this.imageInputStreamSpi != null) {
+                    ImageRegistryUtils.deregisterImageInputStreamSpi(this.imageInputStreamSpi);
+                    this.imageInputStreamSpi = null;
+                }
+            } finally {
+                if (this.productDirectory != null) {
+                    this.productDirectory.close();
+                    this.productDirectory = null;
+                }
+            }
+        }
+        System.gc();
     }
 
     public static String computeBandPrefix(int metadataCount, int bandIndex) {
@@ -112,7 +149,7 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
     }
 
     protected static <MetadataType extends XmlMetadata> MetadataList<MetadataType> readMetadata(VirtualDirEx productDirectory, String metadataFileSuffix, Class<MetadataType> metadataClass)
-            throws IOException, InstantiationException, ParserConfigurationException, SAXException {
+                                                                                            throws IOException, InstantiationException, ParserConfigurationException, SAXException {
 
         String[] existingRelativeFilePaths = productDirectory.listAllFiles();
         MetadataList<MetadataType> metadataList = new MetadataList<>();
@@ -144,7 +181,7 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
 
     public static <MetadataType extends GenericXmlMetadata> MetadataType readProductMetadata(VirtualDirEx productDirectory, String productMetadataRelativeFilePath,
                                                                                              Class<MetadataType> metadataClass)
-            throws IOException, InstantiationException, ParserConfigurationException, SAXException {
+                                                                    throws IOException, InstantiationException, ParserConfigurationException, SAXException {
 
         try (FilePathInputStream metadataInputStream = productDirectory.getInputStream(productMetadataRelativeFilePath)) {
             MetadataType productMetadata = (MetadataType) XmlMetadataParserFactory.getParser(metadataClass).parse(metadataInputStream);
@@ -174,7 +211,7 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
         }
         String rasterFileNameWithoutExtension = rasterFileNameToFind.substring(0, lastPointIndex);
         String existingImageRelativePath = null;
-        for (int k = 0; k < existingRelativeFilePaths.length && existingImageRelativePath == null; k++) {
+        for (int k=0; k<existingRelativeFilePaths.length && existingImageRelativePath == null; k++) {
             String existingRelativeFilePath = existingRelativeFilePaths[k];
             // check if the existing file ends with '.tif' or '.tiff'
             if (hasTiffExtension(existingRelativeFilePath)) {
@@ -194,43 +231,6 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
             throw new NullPointerException("The image file path '" + imageFilePath + "' is null or empty.");
         }
         return (StringUtils.endsWithIgnoreCase(imageFilePath, ".tif") || StringUtils.endsWithIgnoreCase(imageFilePath, ".tiff"));
-    }
-
-    @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
-                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm)
-            throws IOException {
-
-        throw new UnsupportedOperationException("Method not implemented");
-    }
-
-    private void closeResources() {
-        try {
-            if (this.bandImageReaders != null) {
-                for (GeoTiffImageReader geoTiffImageReader : this.bandImageReaders) {
-                    try {
-                        geoTiffImageReader.close();
-                    } catch (Exception ignore) {
-                        // ignore
-                    }
-                }
-                this.bandImageReaders.clear();
-                this.bandImageReaders = null;
-            }
-        } finally {
-            try {
-                if (this.imageInputStreamSpi != null) {
-                    ImageRegistryUtils.deregisterImageInputStreamSpi(this.imageInputStreamSpi);
-                    this.imageInputStreamSpi = null;
-                }
-            } finally {
-                if (this.productDirectory != null) {
-                    this.productDirectory.close();
-                    this.productDirectory = null;
-                }
-            }
-        }
-        System.gc();
     }
 
     @Override

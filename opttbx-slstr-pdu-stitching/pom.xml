@@ -6,7 +6,7 @@
     <parent>
         <artifactId>optical-toolbox</artifactId>
         <groupId>eu.esa.opt</groupId>
-        <version>10.0.0-SNAPSHOT</version>
+        <version>10.0.0-JDK11SHOT</version>
     </parent>
 
     <name>Sentinel-3 SLSTR PDU Stitching</name>
@@ -30,10 +30,6 @@
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.esa.snap</groupId>
-            <artifactId>snap-netcdf</artifactId>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>

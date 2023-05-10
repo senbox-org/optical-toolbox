@@ -20,10 +20,10 @@
     <parent>
         <groupId>eu.esa.opt</groupId>
         <artifactId>optical-toolbox</artifactId>
-        <version>10.0.0-SNAPSHOT</version>
+        <version>10.0.0-JDK11SHOT</version>
     </parent>
 
-    <groupId>org.esa.snap.seadas</groupId>
+    <groupId>eu.esa.opt</groupId>
     <artifactId>opttbx-seadas-reader</artifactId>
     <version>${seadas.reader.version}</version>
     <packaging>nbm</packaging>

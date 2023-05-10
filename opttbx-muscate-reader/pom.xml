@@ -7,7 +7,7 @@
     <parent>
         <artifactId>optical-toolbox</artifactId>
         <groupId>eu.esa.opt</groupId>
-        <version>10.0.0-SNAPSHOT</version>
+        <version>10.0.0-JDK11SHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -38,8 +38,8 @@
             <artifactId>snap-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-javahelp</artifactId>
+            <groupId>eu.esa.snap.netbeans</groupId>
+            <artifactId>snap-help-system</artifactId>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>

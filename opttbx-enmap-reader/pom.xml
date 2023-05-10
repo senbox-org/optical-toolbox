@@ -6,7 +6,7 @@
     <parent>
         <groupId>eu.esa.opt</groupId>
         <artifactId>optical-toolbox</artifactId>
-        <version>10.0.0-SNAPSHOT</version>
+        <version>10.0.0-JDK11SHOT</version>
     </parent>
 
     <artifactId>opttbx-enmap-reader</artifactId>
@@ -14,10 +14,6 @@
 
     <name>EnMAP Product Reader</name>
     <description>A product reader for EnMAP L1B/L1C/L2A data</description>
-
-    <properties>
-        <netbeans.version>RELEASE82</netbeans.version>
-    </properties>
 
     <dependencies>
         <dependency>

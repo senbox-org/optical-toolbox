@@ -6,7 +6,7 @@
     <parent>
         <groupId>eu.esa.opt</groupId>
         <artifactId>optical-toolbox</artifactId>
-        <version>10.0.0-SNAPSHOT</version>
+        <version>10.0.0-JDK11SHOT</version>
     </parent>
 
     <artifactId>opttbx-probav-reader</artifactId>
@@ -24,7 +24,10 @@
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-core</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>eu.esa.snap.netbeans</groupId>
+            <artifactId>snap-help-system</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-gpf</artifactId>
@@ -51,10 +54,6 @@
             <version>2.7</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-javahelp</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-annotations-common</artifactId>

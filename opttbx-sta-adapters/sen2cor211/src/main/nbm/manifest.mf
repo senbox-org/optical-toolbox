@@ -3,7 +3,7 @@ OpenIDE-Module-Specification-Version: 9.0.0
 OpenIDE-Module-Implementation-Version: 9.0.0
 OpenIDE-Module-Name: Sentinel-2 SEN2COR 2.11.0 Processor
 OpenIDE-Module-Display-Category: SNAP Supported Plugins
-OpenIDE-Module-Java-Dependencies: Java > 1.8
+OpenIDE-Module-Java-Dependencies: Java > 11
 OpenIDE-Module-Type: STA
 OpenIDE-Module-Short-Description: Sen2Cor v02.11.00
 OpenIDE-Module: eu.esa.opt.sen2cor211

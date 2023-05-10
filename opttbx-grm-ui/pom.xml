@@ -5,7 +5,7 @@
     <parent>
         <artifactId>optical-toolbox</artifactId>
         <groupId>eu.esa.opt</groupId>
-        <version>10.0.0-SNAPSHOT</version>
+        <version>10.0.0-JDK11SHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -28,6 +28,10 @@
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.snap.netbeans</groupId>
+            <artifactId>snap-help-system</artifactId>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
@@ -53,10 +57,6 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-javahelp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
@@ -110,7 +110,7 @@
                         <configuration>
                             <name>project.nbmSpecVersion</name>
                             <value>${opttbx.version}</value>
-                            <regex>(-SNAPSHOT)|(-rc[0-9]+)</regex>
+                            <regex>(-JDK11SHOT)|(-SNAPSHOT)|(-rc[0-9]+)</regex>
                             <replacement>.0</replacement>
                             <failIfNoMatch>false</failIfNoMatch>
                         </configuration>

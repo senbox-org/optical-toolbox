@@ -4,7 +4,7 @@ OpenIDE-Module-Implementation-Version: ${project.nbmImplVersion}
 AutoUpdate-Show-In-Client: false
 AutoUpdate-Essential-Module: false
 OpenIDE-Module-Layer: eu/esa/opt/grm/layer.xml
-OpenIDE-Module-Java-Dependencies: Java > 1.8
+OpenIDE-Module-Java-Dependencies: Java > 11
 OpenIDE-Module-Display-Category: SNAP Toolboxes
 OpenIDE-Module-Long-Description: <p>Reflectance to Radiance Processor GUI</p><p><b>Vendor:</b> CS ROMANIA</p><
  p><b>Copyright:</b> (C) 2016 by CS ROMANIA</p><p><

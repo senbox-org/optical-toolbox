@@ -20,4 +20,4 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 2360)
 package eu.esa.opt.reflectance2radiance.docs;
 
-import org.netbeans.api.javahelp.HelpSetRegistration;
+import eu.esa.snap.netbeans.javahelp.api.HelpSetRegistration;
