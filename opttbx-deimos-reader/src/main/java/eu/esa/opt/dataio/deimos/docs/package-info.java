@@ -18,3 +18,5 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 4996)
 package eu.esa.opt.dataio.deimos.docs;
 
+import eu.esa.snap.netbeans.javahelp.api.HelpSetRegistration;
+
