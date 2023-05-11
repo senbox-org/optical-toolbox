@@ -5,3 +5,5 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 2334)
 package eu.esa.opt.dataio.jp2.docs;
 
+import eu.esa.snap.netbeans.javahelp.api.HelpSetRegistration;
+
