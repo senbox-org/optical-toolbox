@@ -6,7 +6,7 @@
     <parent>
         <artifactId>optical-toolbox</artifactId>
         <groupId>eu.esa.opt</groupId>
-        <version>10.0.0-JDK11SHOT</version>
+        <version>10.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>opttbx-forest-cover-change-ui</artifactId>
@@ -116,7 +116,7 @@
                         <configuration>
                             <name>project.nbmSpecVersion</name>
                             <value>${opttbx.version}</value>
-                            <regex>(-JDK11SHOT)|(-SNAPSHOT)|(-rc[0-9]+)</regex>
+                            <regex>(-SNAPSHOT)|(-rc[0-9]+)</regex>
                             <replacement>.0</replacement>
                             <failIfNoMatch>false</failIfNoMatch>
                         </configuration>
