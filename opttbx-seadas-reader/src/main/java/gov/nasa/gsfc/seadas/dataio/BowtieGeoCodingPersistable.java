@@ -21,7 +21,7 @@ import org.esa.snap.core.dataio.dimap.spi.DimapPersistable;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.TiePointGrid;
-import org.jdom.Element;
+import org.jdom2.Element;
 
 public class BowtieGeoCodingPersistable implements DimapPersistable {
 
