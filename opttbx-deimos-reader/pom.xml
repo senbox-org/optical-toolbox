@@ -27,9 +27,9 @@
 
     <artifactId>opttbx-deimos-reader</artifactId>
     <packaging>nbm</packaging>
-    <name>Sentinel-2 Toolbox Deimos-1 Reader</name>
+    <name>Optical Toolbox Deimos-1 Reader</name>
     <description>
-        This module enables the Sentinel Toolbox to read Deimos-1 data products
+        This module enables the Optical Toolbox to read Deimos-1 data products
     </description>
 
     <dependencies>

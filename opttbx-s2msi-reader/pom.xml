@@ -12,9 +12,9 @@
 
     <packaging>nbm</packaging>
     <artifactId>opttbx-s2msi-reader</artifactId>
-    <name>Sentinel-2 Toolbox S2-MSI Reader</name>
+    <name>Sentinel-2 MSI Reader</name>
     <description>
-        This module enables the Sentinel Toolbox to read S2-MSI products
+        This module enables the Optical Toolbox to read S2-MSI products
     </description>
 
     <properties>

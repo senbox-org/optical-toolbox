@@ -15,8 +15,8 @@
     <artifactId>opttbx-gdal-reader</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Generic GDAL Reader Bundle</name>
-    <description>This module enables the Sentinel Toolbox to read data products</description>
+    <name>Optical Toolbox Generic GDAL Reader</name>
+    <description>This module enables SNAP to read data products</description>
 
 
     <dependencies>

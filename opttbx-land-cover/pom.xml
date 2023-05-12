@@ -12,7 +12,7 @@
     <artifactId>opttbx-land-cover</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Land Cover Providers</name>
+    <name>Optical Toolbox Land Cover Providers</name>
     <description>This module extends the SNAP list of land cover providers</description>
 
     <dependencies>
@@ -32,9 +32,14 @@
             <version>${snap.version}</version>
         </dependency>
         <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-commons</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+        <!--<dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-archiver</artifactId>
-        </dependency>
+        </dependency>-->
         <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>

@@ -13,8 +13,8 @@
     <artifactId>opttbx-jp2-writer</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox JP2 Writer</name>
-    <description>Generates JP2 Writer</description>
+    <name>Optical Toolbox JP2 Writer</name>
+    <description>Writer for JP2 format</description>
 
     <dependencies>
         <dependency>
