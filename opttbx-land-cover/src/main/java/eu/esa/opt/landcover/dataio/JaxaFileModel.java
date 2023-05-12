@@ -19,6 +19,7 @@
 package eu.esa.opt.landcover.dataio;
 
 //import org.codehaus.plexus.archiver.tar.TarGZipUnArchiver;
+import eu.esa.opt.dataio.VirtualDirTgz;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.GeoPos;
@@ -32,6 +33,7 @@ import org.esa.snap.landcover.dataio.LandCoverModelDescriptor;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -138,7 +140,11 @@ public class JaxaFileModel extends FileLandCoverModel {
         return tile;
     }
 
-    private void uncompress(String archiveName, File destDir) {
+    private void uncompress(String archiveName, File destDir) throws IOException {
+        final Path archive = destDir.toPath().resolve(archiveName);
+        try (VirtualDirTgz tar = new VirtualDirTgz(archive)) {
+            tar.ensureUnpacked(destDir);
+        }
 //        final TarGZipUnArchiver archiver = new TarGZipUnArchiver();
 //        File archive = new File(destDir, archiveName);
 //        archiver.setSourceFile(archive);

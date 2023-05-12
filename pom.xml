@@ -360,11 +360,11 @@
                 <version>${netcdf.version}</version>
             </dependency>
 
-            <dependency>
+            <!--<dependency>
                 <groupId>org.xeustechnologies</groupId>
                 <artifactId>jtar</artifactId>
                 <version>1.1</version>
-            </dependency>
+            </dependency>-->
 
             <dependency>
                 <groupId>com.bc.jnn</groupId>

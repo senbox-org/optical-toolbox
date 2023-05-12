@@ -315,7 +315,9 @@ public class LandsatGeotiffColl2L2Reader extends AbstractProductReader {
         final String[] allFiles = virtualDir.listAllFiles();
         for (String file : allFiles) {
             if (file != null && file.trim().toLowerCase().endsWith("_ang.txt")) {
-                final MetadataElement parsed = OdlParser.parse(virtualDir.getFile(basePath + file));
+                //If inside a tar, file already comes with the base path, so the line below will fail
+                //final MetadataElement parsed = OdlParser.parse(virtualDir.getFile(basePath + file));
+                final MetadataElement parsed = OdlParser.parse(virtualDir.getFile(file));
                 if (parsed != null && parsed.getNumElements() > 0) {
                     final MetadataElement angleElement = new MetadataElement("Angle Coefficient File");
                     Arrays.stream(parsed.getElements()).forEach(angleElement::addElement);
