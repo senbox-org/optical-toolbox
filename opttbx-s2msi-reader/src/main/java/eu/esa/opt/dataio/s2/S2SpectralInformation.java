@@ -25,7 +25,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class S2SpectralInformation extends S2BandInformation {
 
-    private int bandId;
+    private final int bandId;
     private double wavelengthMin;
     private double wavelengthMax;
     private double wavelengthCentral;

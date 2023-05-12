@@ -6,6 +6,7 @@ import eu.esa.opt.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.alos.geotiff.av2.internal.AlosAV2Constants;
 import eu.esa.opt.dataio.alos.geotiff.av2.internal.AlosAV2Metadata;
 import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.apache.commons.lang3.StringUtils;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;
@@ -55,12 +56,29 @@ public class AlosAV2ProductReader extends AbstractProductReader {
         this.imageInputStreamSpi = ImageRegistryUtils.registerImageInputStreamSpi();
     }
 
-    @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
-                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm)
-                                          throws IOException {
-
-        throw new UnsupportedOperationException("Method not implemented");
+    public static TiePointGeoCoding buildTiePointGridGeoCoding(AlosAV2Metadata alosAV2Metadata) {
+        if (!AlosAV2Constants.PROCESSING_1B.equals(alosAV2Metadata.getProcessingLevel())) {
+            AlosAV2Metadata.InsertionPoint[] geoPositionPoints = alosAV2Metadata.getGeopositionPoints();
+            if (geoPositionPoints != null) {
+                int numPoints = geoPositionPoints.length;
+                if (numPoints > 1 && (int) (numPoints / Math.sqrt(numPoints)) == numPoints) {
+                    float stepX = geoPositionPoints[1].stepX - geoPositionPoints[0].stepX;
+                    float stepY = geoPositionPoints[1].stepY - geoPositionPoints[0].stepY;
+                    float[] latitudes = new float[numPoints];
+                    float[] longitudes = new float[numPoints];
+                    for (int i = 0; i < numPoints; i++) {
+                        latitudes[i] = geoPositionPoints[i].y;
+                        longitudes[i] = geoPositionPoints[i].x;
+                    }
+                    int latitudeGridSize = (int) Math.sqrt(latitudes.length);
+                    TiePointGrid latGrid = buildTiePointGrid("latitude", latitudeGridSize, latitudeGridSize, 0, 0, stepX, stepY, latitudes, TiePointGrid.DISCONT_NONE);
+                    int longitudeGridSize = (int) Math.sqrt(longitudes.length);
+                    TiePointGrid lonGrid = buildTiePointGrid("longitude", longitudeGridSize, longitudeGridSize, 0, 0, stepX, stepY, longitudes, TiePointGrid.DISCONT_AT_180);
+                    return new TiePointGeoCoding(latGrid, lonGrid);
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -214,45 +232,20 @@ public class AlosAV2ProductReader extends AbstractProductReader {
         System.gc();
     }
 
-    public static TiePointGeoCoding buildTiePointGridGeoCoding(AlosAV2Metadata alosAV2Metadata) {
-        if (!AlosAV2Constants.PROCESSING_1B.equals(alosAV2Metadata.getProcessingLevel())) {
-            AlosAV2Metadata.InsertionPoint[] geoPositionPoints = alosAV2Metadata.getGeopositionPoints();
-            if (geoPositionPoints != null) {
-                int numPoints = geoPositionPoints.length;
-                if (numPoints > 1 && (int) (numPoints / Math.sqrt((double) numPoints)) == numPoints) {
-                    float stepX = geoPositionPoints[1].stepX - geoPositionPoints[0].stepX;
-                    float stepY = geoPositionPoints[1].stepY - geoPositionPoints[0].stepY;
-                    float[] latitudes = new float[numPoints];
-                    float[] longitudes = new float[numPoints];
-                    for (int i = 0; i < numPoints; i++) {
-                        latitudes[i] = geoPositionPoints[i].y;
-                        longitudes[i] = geoPositionPoints[i].x;
-                    }
-                    int latitudeGridSize = (int) Math.sqrt(latitudes.length);
-                    TiePointGrid latGrid = buildTiePointGrid("latitude", latitudeGridSize, latitudeGridSize, 0, 0, stepX, stepY, latitudes, TiePointGrid.DISCONT_NONE);
-                    int longitudeGridSize = (int) Math.sqrt(longitudes.length);
-                    TiePointGrid lonGrid = buildTiePointGrid("longitude", longitudeGridSize, longitudeGridSize, 0, 0, stepX, stepY, longitudes, TiePointGrid.DISCONT_AT_180);
-                    return new TiePointGeoCoding(latGrid, lonGrid);
-                }
-            }
-        }
-        return null;
-    }
-
     public static Path buildImageMetadataParentPath(VirtualDirEx productDirectory) throws IOException {
         String baseItemName = productDirectory.getBaseFile().getName();
         if (productDirectory.isArchive()) {
             // the product directory is an archive
-            if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX)) {
-                int index = org.apache.commons.lang3.StringUtils.lastIndexOfIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX);
+            if (StringUtils.endsWithIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX)) {
+                int index = StringUtils.lastIndexOfIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX);
                 String identifier = baseItemName.substring(0, index);
                 String zipArchiveFileName = identifier + AlosAV2Constants.IMAGE_ARCHIVE_FILE_EXTENSION;
                 return productDirectory.getFile(zipArchiveFileName).toPath();
             }
         } else {
             // the product directory is a folder
-            if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_FOLDER_SUFFIX)) {
-                int index = org.apache.commons.lang3.StringUtils.lastIndexOfIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_FOLDER_SUFFIX);
+            if (StringUtils.endsWithIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_FOLDER_SUFFIX)) {
+                int index = StringUtils.lastIndexOfIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_FOLDER_SUFFIX);
                 String identifier = baseItemName.substring(0, index);
                 if (productDirectory.exists(identifier)) {
                     // the identifier exists and it is a directory
@@ -266,7 +259,7 @@ public class AlosAV2ProductReader extends AbstractProductReader {
         // search the image metadata file
         String[] relativePaths = productDirectory.listAllFiles();
         for (String relativeFilePath : relativePaths) {
-            if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(relativeFilePath, AlosAV2Constants.IMAGE_METADATA_EXTENSION)) {
+            if (StringUtils.endsWithIgnoreCase(relativeFilePath, AlosAV2Constants.IMAGE_METADATA_EXTENSION)) {
                 return productDirectory.getBaseFile().toPath();
             }
         }
@@ -277,7 +270,7 @@ public class AlosAV2ProductReader extends AbstractProductReader {
         String[] relativePaths = imageMetadataProductDirectory.listAllFiles();
         String imageMetadataRelativeFilePath = null;
         for (String relativeFilePath : relativePaths) {
-            if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(relativeFilePath, AlosAV2Constants.IMAGE_METADATA_EXTENSION)) {
+            if (StringUtils.endsWithIgnoreCase(relativeFilePath, AlosAV2Constants.IMAGE_METADATA_EXTENSION)) {
                 if (imageMetadataRelativeFilePath == null) {
                     imageMetadataRelativeFilePath = relativeFilePath;
                 } else {
@@ -286,6 +279,13 @@ public class AlosAV2ProductReader extends AbstractProductReader {
             }
         }
         return imageMetadataRelativeFilePath;
+    }
+
+    @Override
+    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) {
+
+        throw new UnsupportedOperationException("Method not implemented");
     }
 
     public static AlosAV2Metadata readMetadata(VirtualDirEx imageMetadataProductDirectory, String imageMetadataRelativeFilePath)

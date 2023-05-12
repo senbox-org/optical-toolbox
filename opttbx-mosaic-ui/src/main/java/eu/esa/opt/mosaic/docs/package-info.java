@@ -6,4 +6,4 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 3035)
 package eu.esa.opt.mosaic.docs;
 
-        import org.netbeans.api.javahelp.HelpSetRegistration;
+        import eu.esa.snap.netbeans.javahelp.api.HelpSetRegistration;

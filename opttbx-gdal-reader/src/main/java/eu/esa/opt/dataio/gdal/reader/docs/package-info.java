@@ -4,4 +4,5 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 2336)
 package eu.esa.opt.dataio.gdal.reader.docs;
 
-import org.netbeans.api.javahelp.HelpSetRegistration;
+import eu.esa.snap.netbeans.javahelp.api.HelpSetRegistration;
+

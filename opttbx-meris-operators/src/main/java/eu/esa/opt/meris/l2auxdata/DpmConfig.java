@@ -7,16 +7,12 @@
 package eu.esa.opt.meris.l2auxdata;
 
 import org.esa.snap.core.util.SystemUtils;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -40,8 +36,7 @@ public class DpmConfig {
     /**
      * Constructs a new configuration.
      *
-     * @throws L2AuxDataException
-     *          if the configuration could not be loaded from the file
+     * @throws L2AuxDataException if the configuration could not be loaded from the file
      */
     public DpmConfig() throws L2AuxDataException {
         final Path auxdataDirPath = SystemUtils.getAuxDataPath().resolve(AUXDATA_DIRNAME).toAbsolutePath();
@@ -94,7 +89,7 @@ public class DpmConfig {
     /**
      * Gets the file path for the given database.
      *
-     * @param name           the database name, e.g. {@code "landaero"} or {@code "case2"}
+     * @param name            the database name, e.g. {@code "landaero"} or {@code "case2"}
      * @param acquisitionDate the acquisition date of a given level 1b input product, can be {@code null}
      * @return the file path to the database file, never {@code null}
      * @throws L2AuxDataException if the file could not be retrieved from this configuration

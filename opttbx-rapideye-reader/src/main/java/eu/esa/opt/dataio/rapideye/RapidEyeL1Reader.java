@@ -103,8 +103,7 @@ public class RapidEyeL1Reader extends AbstractProductReader {
 
     @Override
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
-                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm)
-                                          throws IOException {
+                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) {
         // do nothing
     }
 
@@ -159,7 +158,7 @@ public class RapidEyeL1Reader extends AbstractProductReader {
             }
 
             if (logger.isLoggable(Level.FINE)) {
-                String logMessage = "Use the NITF API to read the RapidEye L1 product from input '" + productPath.toString() + "'.";
+                String logMessage = "Use the NITF API to read the RapidEye L1 product from input '" + productPath + "'.";
                 logger.log(Level.FINE, logMessage);
             }
 
@@ -194,7 +193,6 @@ public class RapidEyeL1Reader extends AbstractProductReader {
                         ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
                         targetBand.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
                         targetBand.setSpectralWavelength(RapidEyeConstants.WAVELENGTHS[i]);
-//                        targetBand.setUnit("cW/m\u00B2 sr μm");// issues on windows testing platform with special characters, therefore use the characters codes instead
                         targetBand.setUnit("cW/m\u00B2 sr \u03bcm");
                         targetBand.setSpectralBandwidth(RapidEyeConstants.BANDWIDTHS[i]);
                         targetBand.setSpectralBandIndex(i);
@@ -217,8 +215,8 @@ public class RapidEyeL1Reader extends AbstractProductReader {
                     GeoTiffProductReader geoTiffProductReader = new GeoTiffProductReader(getReaderPlugIn());
                     Product udmGeoTiffProduct = geoTiffProductReader.readProduct(this.geoTiffImageReader, null);
                     Band geoTiffBand = udmGeoTiffProduct.getBandAt(0);
-                    float scaleX = (float) metadata.getRasterWidth() / (float) udmGeoTiffProduct.getSceneRasterWidth();
-                    float scaleY = (float) metadata.getRasterHeight() / (float) udmGeoTiffProduct.getSceneRasterHeight();
+                    float scaleX = metadata.getRasterWidth() / (float) udmGeoTiffProduct.getSceneRasterWidth();
+                    float scaleY = metadata.getRasterHeight() / (float) udmGeoTiffProduct.getSceneRasterHeight();
                     RenderedOp renderedOp = ScaleDescriptor.create(geoTiffBand.getSourceImage(), scaleX, scaleY, 0.0f, 0.0f, Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
                     Band unusableDataBand = product.addBand(UNUSABLE_DATA_BAND_NAME, geoTiffBand.getDataType());
                     unusableDataBand.setSourceImage(renderedOp);
@@ -236,12 +234,11 @@ public class RapidEyeL1Reader extends AbstractProductReader {
                     }
                 }
             }
-            if (product != null) {
-                TiePointGeoCoding productGeoCoding = buildTiePointGridGeoCoding(metadata, defaultProductWidth, defaultProductHeight, subsetDef);
-                product.addTiePointGrid(productGeoCoding.getLatGrid());
-                product.addTiePointGrid(productGeoCoding.getLonGrid());
-                product.setSceneGeoCoding(productGeoCoding);
-            }
+
+            TiePointGeoCoding productGeoCoding = buildTiePointGridGeoCoding(metadata, defaultProductWidth, defaultProductHeight, subsetDef);
+            product.addTiePointGrid(productGeoCoding.getLatGrid());
+            product.addTiePointGrid(productGeoCoding.getLonGrid());
+            product.setSceneGeoCoding(productGeoCoding);
 
             success = true;
 
@@ -295,7 +292,7 @@ public class RapidEyeL1Reader extends AbstractProductReader {
         if (productDirectory.isCompressed()) {
             return super.getProductComponents();
         } else {
-            RapidEyeMetadata metadata = null;
+            RapidEyeMetadata metadata;
             try {
                 metadata = readMetadata(this.productDirectory);
             } catch (Exception e) {
@@ -374,9 +371,8 @@ public class RapidEyeL1Reader extends AbstractProductReader {
 
     private void addProductComponentIfNotPresent(String componentId, File componentFile, TreeNode<File> currentComponents) {
         TreeNode<File> resultComponent = null;
-        for (TreeNode node : currentComponents.getChildren()) {
+        for (TreeNode<File> node : currentComponents.getChildren()) {
             if (node.getId().equalsIgnoreCase(componentId.toLowerCase())) {
-                //noinspection unchecked
                 resultComponent = node;
                 break;
             }

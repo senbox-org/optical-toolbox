@@ -19,7 +19,6 @@ package eu.esa.opt.dataio;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +31,7 @@ import java.net.URLDecoder;
  *
  * @author Adam Heirnich <adam@adamh.cz>, http://www.adamh.cz
  * @author Modified by Cosmin Cara <cosmin.cara@c-s.ro> to work with file system libraries,
- *         and also to detect the OS and processor type.
+ * and also to detect the OS and processor type.
  * @see "http://frommyplayground.com/how-to-load-native-jni-library-from-jar"
  */
 public class NativeLibraryLoader {
@@ -48,9 +47,9 @@ public class NativeLibraryLoader {
      * <p>
      * The file from JAR is copied into system temporary directory and then loaded.
      *
-     * @param path          The path from which the load is attempted
-     * @param libraryName   The name of the library to be loaded (without extension)
-     * @throws IOException              If temporary file creation or read/write operation fails
+     * @param path        The path from which the load is attempted
+     * @param libraryName The name of the library to be loaded (without extension)
+     * @throws IOException If temporary file creation or read/write operation fails
      */
     public static void loadLibrary(String path, String libraryName) throws IOException {
         path = URLDecoder.decode(path, "UTF-8");
@@ -84,7 +83,7 @@ public class NativeLibraryLoader {
         } else if (sysName.contains("mac")) {
             ret = "macosx";
         } else {
-            throw new NotImplementedException();
+            throw new RuntimeException("Unsupported OS family: " + sysName + " " + sysArch);
         }
         return ret;
     }

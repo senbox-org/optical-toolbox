@@ -44,11 +44,9 @@ public class S2OrthoSceneLayout extends S2SceneDescription {
     double[] sceneOrigin;
 
     private static class TileInfo {
-        private final String id;
         private final Map<S2SpatialResolution, Rectangle> pixelPositionInScene;
 
         public TileInfo(String id, Map<S2SpatialResolution, Rectangle> pixelPositionInScene) {
-            this.id = id;
             this.pixelPositionInScene = pixelPositionInScene;
         }
 
@@ -169,7 +167,7 @@ public class S2OrthoSceneLayout extends S2SceneDescription {
     }
 
     public static <T extends Comparable<? super T>> java.util.List<T> asSortedList(Collection<T> c) {
-        java.util.List<T> list = new ArrayList<T>(c);
+        java.util.List<T> list = new ArrayList<>(c);
         java.util.Collections.sort(list);
         return list;
     }

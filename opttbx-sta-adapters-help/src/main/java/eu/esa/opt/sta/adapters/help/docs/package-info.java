@@ -18,4 +18,5 @@
 @HelpSetRegistration(helpSet = "help.hs", position = 4315)
 package eu.esa.opt.sta.adapters.help.docs;
 
-import org.netbeans.api.javahelp.HelpSetRegistration;
+import eu.esa.snap.netbeans.javahelp.api.HelpSetRegistration;
+

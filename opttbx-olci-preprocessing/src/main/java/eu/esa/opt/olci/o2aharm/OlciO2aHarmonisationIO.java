@@ -101,7 +101,7 @@ class OlciO2aHarmonisationIO {
     static String[] parseJSON1DimStringArray(JSONObject jsonObject, String variableName) {
         JSONArray jsonArray = (JSONArray) jsonObject.get(variableName);
         List<String> stringList = (List<String>) jsonArray.stream().collect(Collectors.toList());
-        return stringList.toArray(new String[stringList.size()]);
+        return stringList.toArray(new String[0]);
     }
 
     /**

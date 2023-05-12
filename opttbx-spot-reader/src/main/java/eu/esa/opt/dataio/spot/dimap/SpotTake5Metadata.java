@@ -77,7 +77,7 @@ public class SpotTake5Metadata extends XmlMetadata {
     /**
      * This method returns the name of the bands, as they appear in the metadata file, under the tag METADATA/RADIOMETRY/BANDS
      *
-     * @return a list of String values, representing the name of the bands from the metadata
+     * @return an arraylist of String values, representing the name of the bands from the metadata
      */
     public String[] getBandNames() {
         MetadataElement currentElement;
@@ -105,7 +105,7 @@ public class SpotTake5Metadata extends XmlMetadata {
         MetadataAttribute currentElement;
         MetadataElement filesElement;
         if (((filesElement = rootElement.getElement(SpotConstants.SPOT4_TAKE5_TAG_FILES)) != null)) {
-            this.tiffFiles = new HashMap<String, String>();
+            this.tiffFiles = new HashMap<>();
             if ((currentElement = filesElement.getAttribute(SpotConstants.SPOT4_TAKE5_TAG_GEOTIFF)) != null) {
                 this.tiffFiles.put(SpotConstants.SPOT4_TAKE5_TAG_GEOTIFF, currentElement.getData().toString());
             }

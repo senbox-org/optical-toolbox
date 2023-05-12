@@ -22,7 +22,6 @@
 
 package nitf.imageio;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -58,14 +57,6 @@ public class NITFReaderSpi extends ImageReaderSpi {
         );
     }
 
-    @Override
-    public boolean canDecodeInput(Object source) throws IOException {
-        boolean result = source instanceof File;
-        if (result)
-            result = isNITF((File) source);
-        return result;
-    }
-
     public static boolean isNITF(File file) {
         FileInputStream fin = null;
         try {
@@ -83,14 +74,21 @@ public class NITFReaderSpi extends ImageReaderSpi {
                 if (fin != null)
                     fin.close();
             } catch (IOException e) {
-                log.error(ExceptionUtils.getStackTrace(e));
+                log.error(e.getMessage(), e);
             }
         }
     }
 
     @Override
-    public ImageReader createReaderInstance(Object extension)
-            throws IOException {
+    public boolean canDecodeInput(Object source) {
+        boolean result = source instanceof File;
+        if (result)
+            result = isNITF((File) source);
+        return result;
+    }
+
+    @Override
+    public ImageReader createReaderInstance(Object extension) {
         return new NITFReader(this);
     }
 

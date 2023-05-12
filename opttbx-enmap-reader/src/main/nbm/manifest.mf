@@ -4,7 +4,7 @@ AutoUpdate-Essential-Module: false
 OpenIDE-Module-Specification-Version: ${project.nbmSpecVersion}
 OpenIDE-Module-Implementation-Version: ${project.nbmImplVersion}
 OpenIDE-Module-Layer: layer.xml
-OpenIDE-Module-Java-Dependencies: Java > 1.8
+OpenIDE-Module-Java-Dependencies: Java > 11
 OpenIDE-Module-Display-Category: SNAP Toolboxes
 OpenIDE-Module-Long-Description: <p>Provides product reader for EnMAP L1B/L1C/L2A data.
  </p><p><b>Vendor:</b> Brockmann Consult Gmb

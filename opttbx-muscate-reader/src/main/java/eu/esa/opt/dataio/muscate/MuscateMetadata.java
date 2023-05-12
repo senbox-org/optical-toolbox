@@ -61,15 +61,50 @@ public class MuscateMetadata extends XmlMetadata {
         return null;
     }
 
-    public List<Geoposition> getGeoPositions() {
-        if (this.geoPositions == null) {
-            String resolutionStrings[] = getResolutionStrings();
-            this.geoPositions = new ArrayList<>(resolutionStrings.length);
-            for (String resolution : resolutionStrings) {
-                this.geoPositions.add(getGeoposition(resolution));
+    public static AnglesGrid[] wrapStandardViewingAngles(MetadataElement tileAnglesMetadataElement) {
+        ArrayList<AnglesGrid> anglesGrids = new ArrayList<>();
+        for (MetadataElement viewingAnglesGridsElement : tileAnglesMetadataElement.getElements()) {
+            if (!viewingAnglesGridsElement.getName().equals("Band_Viewing_Incidence_Angles_Grids_List")) {
+                continue;
+            }
+            for (MetadataElement viewingAnglesElement : viewingAnglesGridsElement.getElements()) {
+                if (!viewingAnglesElement.getName().equals("Viewing_Incidence_Angles_Grids")) {
+                    continue;
+                }
+
+                MetadataElement azimuthElement = viewingAnglesElement.getElement("Azimuth");
+                if (azimuthElement == null) continue;
+                MetadataElement valuesAzimuthElement = azimuthElement.getElement("Values_List");
+                if (valuesAzimuthElement == null) continue;
+                MetadataAttribute[] azAnglesAttributes = valuesAzimuthElement.getAttributes();
+                if (azAnglesAttributes == null) continue;
+
+                MetadataElement zenithElement = viewingAnglesElement.getElement("Zenith");
+                if (zenithElement == null) continue;
+                MetadataElement valuesZenithElement = zenithElement.getElement("Values_List");
+                if (valuesZenithElement == null) continue;
+                MetadataAttribute[] zenAnglesAttributes = valuesZenithElement.getAttributes();
+                if (zenAnglesAttributes == null) continue;
+
+                int nRows = azAnglesAttributes.length;
+                if (nRows != zenAnglesAttributes.length) {
+                    continue;
+                }
+                String[] azAnglesString = new String[nRows];
+                String[] zenAnglesString = new String[nRows];
+                for (int i = 0; i < nRows; i++) {
+                    azAnglesString[i] = azAnglesAttributes[i].getData().toString();
+                    zenAnglesString[i] = zenAnglesAttributes[i].getData().toString();
+                }
+                AnglesGrid anglesGrid = wrapAngles(zenAnglesString, azAnglesString);
+                anglesGrid.setBandId(viewingAnglesGridsElement.getAttributeString("band_id"));
+                anglesGrid.setDetectorId(viewingAnglesElement.getAttributeString("detector_id"));
+                anglesGrid.setResolutionX(Float.parseFloat(zenithElement.getAttributeString("COL_STEP")));
+                anglesGrid.setResolutionY(Float.parseFloat(zenithElement.getAttributeString("ROW_STEP")));
+                anglesGrids.add(anglesGrid);
             }
         }
-        return this.geoPositions;
+        return anglesGrids.toArray(new AnglesGrid[0]);
     }
 
     public String getProductDescription() {
@@ -85,9 +120,37 @@ public class MuscateMetadata extends XmlMetadata {
         return getAttributeValue(MuscateConstants.PATH_PRODUCT_VERSION, null);
     }
 
-    public float getVersion() {
-        String version = getProductVersion();
-        return (version == null) ? 0.0f : Float.valueOf(version);
+    public static AnglesGrid wrapAngles (String[] valuesZenith, String[] valuesAzimuth) {
+
+        if(valuesAzimuth == null || valuesZenith == null) {
+            return null;
+        }
+        int nRows = valuesZenith.length;
+        int nCols = valuesZenith[0].split(" ").length;
+
+        if(nRows != valuesAzimuth.length || nCols != valuesAzimuth[0].split(" ").length) {
+            return null;
+        }
+
+        AnglesGrid anglesGrid = new AnglesGrid();
+        anglesGrid.setHeight(nRows);
+        anglesGrid.setWidth(nCols);
+        anglesGrid.setAzimuth(new float[nRows*nCols]);
+        anglesGrid.setZenith(new float[nRows*nCols]);
+
+        for (int rowindex = 0; rowindex < nRows; rowindex++) {
+            String[] zenithSplit = valuesZenith[rowindex].split(" ");
+            String[] azimuthSplit = valuesAzimuth[rowindex].split(" ");
+            if (zenithSplit.length != nCols || azimuthSplit.length != nCols) {
+                SystemUtils.LOG.severe("zenith and azimuth array length differ in line " + rowindex + " - " + valuesZenith[rowindex] + " - " + valuesAzimuth[rowindex]);
+                return null;
+            }
+            for (int colindex = 0; colindex < nCols; colindex++) {
+                anglesGrid.getZenith()[rowindex*nCols + colindex] = parseFloat(zenithSplit[colindex]);
+                anglesGrid.getAzimuth()[rowindex*nCols + colindex] = parseFloat(azimuthSplit[colindex]);
+            }
+        }
+        return anglesGrid;
     }
 
     @Override
@@ -161,20 +224,15 @@ public class MuscateMetadata extends XmlMetadata {
         return parseDate(dateString, MuscateConstants.DATE_FORMAT);
     }
 
-    @Override
-    public int getNumBands() {
-        //compute the number of spectral bands
-        int numBands = 0;
-        String[] resolutionIds = getResolutionStrings();
-        if (resolutionIds == null || resolutionIds.length == 0) {
-            return numBands;
+    public List<Geoposition> getGeoPositions() {
+        if (this.geoPositions == null) {
+            String[] resolutionStrings = getResolutionStrings();
+            this.geoPositions = new ArrayList<>(resolutionStrings.length);
+            for (String resolution : resolutionStrings) {
+                this.geoPositions.add(getGeoposition(resolution));
+            }
         }
-
-        for (String resolutionId : resolutionIds) {
-            numBands = numBands + getBandNames(resolutionId).size();
-        }
-
-        return numBands;
+        return this.geoPositions;
     }
 
     public synchronized ArrayList<MuscateImage> getImages() {
@@ -413,16 +471,25 @@ public class MuscateMetadata extends XmlMetadata {
         return bestResolutionString;
     }
 
-    public float getSolarIrradiance(String bandID) {
-        float value = Float.parseFloat(getAttributeSiblingValue(MuscateConstants.PATH_SPECTRAL_BAND_INFORMATION_BAND, bandID,
-                                                                MuscateConstants.PATH_SPECTRAL_BAND_INFORMATION_IRRADIANCE, MuscateConstants.STRING_ZERO));
-        return value;
+    public float getVersion() {
+        String version = getProductVersion();
+        return (version == null) ? 0.0f : Float.parseFloat(version);
     }
 
-    public float getCentralWavelength(String bandID) {
-        float value = Float.parseFloat(getAttributeSiblingValue(MuscateConstants.PATH_SPECTRAL_BAND_INFORMATION_BAND, bandID,
-                                                                MuscateConstants.PATH_SPECTRAL_BAND_INFORMATION_CENTRAL_WAVELENGTH, MuscateConstants.STRING_ZERO));
-        return value;
+    @Override
+    public int getNumBands() {
+        //compute the number of spectral bands
+        int numBands = 0;
+        String[] resolutionIds = getResolutionStrings();
+        if (resolutionIds == null) {
+            return numBands;
+        }
+
+        for (String resolutionId : resolutionIds) {
+            numBands = numBands + getBandNames(resolutionId).size();
+        }
+
+        return numBands;
     }
 
     public Geoposition getGeoposition(String resolution) {
@@ -450,14 +517,9 @@ public class MuscateMetadata extends XmlMetadata {
         return geoposition;
     }
 
-    public class Geoposition {
-        public String id;
-        public float ulx;
-        public float uly;
-        public float xDim;
-        public float yDim;
-        public int nRows;
-        public int nCols;
+    public float getSolarIrradiance(String bandID) {
+        return Float.parseFloat(getAttributeSiblingValue(MuscateConstants.PATH_SPECTRAL_BAND_INFORMATION_BAND, bandID,
+                MuscateConstants.PATH_SPECTRAL_BAND_INFORMATION_IRRADIANCE, MuscateConstants.STRING_ZERO));
     }
 
     public AnglesGrid getSunAnglesGrid() {
@@ -591,70 +653,9 @@ public class MuscateMetadata extends XmlMetadata {
         return bandAngleGrid;
     }
 
-    public AnglesGrid getMeanViewingAnglesGrid() {
-
-        ArrayList<AnglesGrid> viewingAnglesGrids = new ArrayList<>();
-        for(String bandId : getBandNames()) {
-            AnglesGrid bandAngleGrid = getViewingAnglesGrid(bandId);
-            if(bandAngleGrid == null) {
-                continue;
-            }
-            viewingAnglesGrids.add(bandAngleGrid);
-        }
-
-        if(viewingAnglesGrids == null || viewingAnglesGrids.size() < 1) {
-            return null;
-        }
-        int width = viewingAnglesGrids.get(0).getWidth();
-        int height = viewingAnglesGrids.get(0).getHeight();
-
-        //check size
-        for(AnglesGrid angleGrid : viewingAnglesGrids) {
-            if(angleGrid.getWidth() != width || angleGrid.getHeight() != height) {
-                return null;
-            }
-        }
-
-        float[] zenith = new float[width * height];
-        float[] azimuth = new float[width * height];
-
-        Arrays.fill(zenith,Float.NaN);
-        Arrays.fill(azimuth,Float.NaN);
-
-        //compute means
-        for(int i = 0 ; i < width * height ; i++) {
-            int countZenith = 0;
-            float sumZenith = 0.0f;
-            int countAzimuth = 0;
-            float sumAzimuth = 0.0f;
-            for(AnglesGrid angleGrid : viewingAnglesGrids) {
-                if(Float.isFinite(angleGrid.getZenith()[i])) {
-                    countZenith++;
-                    sumZenith = sumZenith + angleGrid.getZenith()[i];
-                }
-                if(Float.isFinite(angleGrid.getAzimuth()[i])) {
-                    countAzimuth++;
-                    sumAzimuth = sumAzimuth + angleGrid.getAzimuth()[i];
-                }
-            }
-            if(countZenith > 0) {
-                zenith[i] = sumZenith/countZenith;
-            }
-            if(countAzimuth > 0) {
-                azimuth[i] = sumAzimuth/countAzimuth;
-            }
-        }
-
-        AnglesGrid meanViewingAnglesGrid = new AnglesGrid();
-
-        meanViewingAnglesGrid.setHeight(height);
-        meanViewingAnglesGrid.setWidth(width);
-        meanViewingAnglesGrid.setAzimuth(azimuth);
-        meanViewingAnglesGrid.setZenith(zenith);
-        meanViewingAnglesGrid.setBandId("MEAN");
-        meanViewingAnglesGrid.setResolutionX(viewingAnglesGrids.get(0).getResolutionX());
-        meanViewingAnglesGrid.setResolutionY(viewingAnglesGrids.get(0).getResolutionY());
-        return meanViewingAnglesGrid;
+    public float getCentralWavelength(String bandID) {
+        return Float.parseFloat(getAttributeSiblingValue(MuscateConstants.PATH_SPECTRAL_BAND_INFORMATION_BAND, bandID,
+                MuscateConstants.PATH_SPECTRAL_BAND_INFORMATION_CENTRAL_WAVELENGTH, MuscateConstants.STRING_ZERO));
     }
 
     private boolean isValidAngle(float value) {
@@ -753,84 +754,80 @@ public class MuscateMetadata extends XmlMetadata {
         }
     }
 
-    public static AnglesGrid[] wrapStandardViewingAngles(MetadataElement tileAnglesMetadataElement) {
-        ArrayList<AnglesGrid> anglesGrids = new ArrayList<>();
-        for (MetadataElement viewingAnglesGridsElement : tileAnglesMetadataElement.getElements()) {
-            if (!viewingAnglesGridsElement.getName().equals("Band_Viewing_Incidence_Angles_Grids_List")) {
+    public AnglesGrid getMeanViewingAnglesGrid() {
+
+        ArrayList<AnglesGrid> viewingAnglesGrids = new ArrayList<>();
+        for(String bandId : getBandNames()) {
+            AnglesGrid bandAngleGrid = getViewingAnglesGrid(bandId);
+            if(bandAngleGrid == null) {
                 continue;
             }
-            for (MetadataElement viewingAnglesElement : viewingAnglesGridsElement.getElements()) {
-                if (!viewingAnglesElement.getName().equals("Viewing_Incidence_Angles_Grids")) {
-                    continue;
-                }
-
-                MetadataElement azimuthElement = viewingAnglesElement.getElement("Azimuth");
-                if (azimuthElement == null) continue;
-                MetadataElement valuesAzimuthElement = azimuthElement.getElement("Values_List");
-                if (valuesAzimuthElement == null) continue;
-                MetadataAttribute[] azAnglesAttributes = valuesAzimuthElement.getAttributes();
-                if (azAnglesAttributes == null) continue;
-
-                MetadataElement zenithElement = viewingAnglesElement.getElement("Zenith");
-                if (zenithElement == null) continue;
-                MetadataElement valuesZenithElement = zenithElement.getElement("Values_List");
-                if (valuesZenithElement == null) continue;
-                MetadataAttribute[] zenAnglesAttributes = valuesZenithElement.getAttributes();
-                if (zenAnglesAttributes == null) continue;
-
-                int nRows = azAnglesAttributes.length;
-                if (nRows != zenAnglesAttributes.length) {
-                    continue;
-                }
-                String[] azAnglesString = new String[nRows];
-                String[] zenAnglesString = new String[nRows];
-                for (int i = 0; i < nRows; i++) {
-                    azAnglesString[i] = azAnglesAttributes[i].getData().toString();
-                    zenAnglesString[i] = zenAnglesAttributes[i].getData().toString();
-                }
-                AnglesGrid anglesGrid = wrapAngles(zenAnglesString, azAnglesString);
-                anglesGrid.setBandId(viewingAnglesGridsElement.getAttributeString("band_id"));
-                anglesGrid.setDetectorId(viewingAnglesElement.getAttributeString("detector_id"));
-                anglesGrid.setResolutionX(Float.parseFloat(zenithElement.getAttributeString("COL_STEP")));
-                anglesGrid.setResolutionY(Float.parseFloat(zenithElement.getAttributeString("ROW_STEP")));
-                anglesGrids.add(anglesGrid);
-            }
+            viewingAnglesGrids.add(bandAngleGrid);
         }
-        return anglesGrids.toArray(new AnglesGrid[anglesGrids.size()]);
-    }
 
-    public static AnglesGrid wrapAngles (String[] valuesZenith, String[] valuesAzimuth) {
-        AnglesGrid anglesGrid = null;
-
-        if(valuesAzimuth == null || valuesZenith == null) {
+        if (viewingAnglesGrids.size() < 1) {
             return null;
         }
-        int nRows = valuesZenith.length;
-        int nCols = valuesZenith[0].split(" ").length;
+        int width = viewingAnglesGrids.get(0).getWidth();
+        int height = viewingAnglesGrids.get(0).getHeight();
 
-        if(nRows != valuesAzimuth.length || nCols != valuesAzimuth[0].split(" ").length) {
-            return null;
-        }
-
-        anglesGrid = new AnglesGrid();
-        anglesGrid.setHeight(nRows);
-        anglesGrid.setWidth(nCols);
-        anglesGrid.setAzimuth(new float[nRows*nCols]);
-        anglesGrid.setZenith(new float[nRows*nCols]);
-
-        for (int rowindex = 0; rowindex < nRows; rowindex++) {
-            String[] zenithSplit = valuesZenith[rowindex].split(" ");
-            String[] azimuthSplit = valuesAzimuth[rowindex].split(" ");
-            if(zenithSplit == null || azimuthSplit == null || zenithSplit.length != nCols ||azimuthSplit.length != nCols) {
-                SystemUtils.LOG.severe("zenith and azimuth array length differ in line " + rowindex + " - " + valuesZenith[rowindex] + " - " + valuesAzimuth[rowindex]);
+        //check size
+        for(AnglesGrid angleGrid : viewingAnglesGrids) {
+            if(angleGrid.getWidth() != width || angleGrid.getHeight() != height) {
                 return null;
             }
-            for (int colindex = 0; colindex < nCols; colindex++) {
-                anglesGrid.getZenith()[rowindex*nCols + colindex] = parseFloat(zenithSplit[colindex]);
-                anglesGrid.getAzimuth()[rowindex*nCols + colindex] = parseFloat(azimuthSplit[colindex]);
+        }
+
+        float[] zenith = new float[width * height];
+        float[] azimuth = new float[width * height];
+
+        Arrays.fill(zenith,Float.NaN);
+        Arrays.fill(azimuth,Float.NaN);
+
+        //compute means
+        for(int i = 0 ; i < width * height ; i++) {
+            int countZenith = 0;
+            float sumZenith = 0.0f;
+            int countAzimuth = 0;
+            float sumAzimuth = 0.0f;
+            for(AnglesGrid angleGrid : viewingAnglesGrids) {
+                if(Float.isFinite(angleGrid.getZenith()[i])) {
+                    countZenith++;
+                    sumZenith = sumZenith + angleGrid.getZenith()[i];
+                }
+                if(Float.isFinite(angleGrid.getAzimuth()[i])) {
+                    countAzimuth++;
+                    sumAzimuth = sumAzimuth + angleGrid.getAzimuth()[i];
+                }
+            }
+            if(countZenith > 0) {
+                zenith[i] = sumZenith/countZenith;
+            }
+            if(countAzimuth > 0) {
+                azimuth[i] = sumAzimuth/countAzimuth;
             }
         }
-        return anglesGrid;
+
+        AnglesGrid meanViewingAnglesGrid = new AnglesGrid();
+
+        meanViewingAnglesGrid.setHeight(height);
+        meanViewingAnglesGrid.setWidth(width);
+        meanViewingAnglesGrid.setAzimuth(azimuth);
+        meanViewingAnglesGrid.setZenith(zenith);
+        meanViewingAnglesGrid.setBandId("MEAN");
+        meanViewingAnglesGrid.setResolutionX(viewingAnglesGrids.get(0).getResolutionX());
+        meanViewingAnglesGrid.setResolutionY(viewingAnglesGrids.get(0).getResolutionY());
+        return meanViewingAnglesGrid;
+    }
+
+    public static class Geoposition {
+        public String id;
+        public float ulx;
+        public float uly;
+        public float xDim;
+        public float yDim;
+        public int nRows;
+        public int nCols;
     }
 
     static float parseFloat(String s) {

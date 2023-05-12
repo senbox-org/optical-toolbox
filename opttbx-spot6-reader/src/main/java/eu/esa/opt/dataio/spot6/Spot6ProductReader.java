@@ -135,11 +135,42 @@ public class Spot6ProductReader extends AbstractProductReader {
         }
     }
 
-    @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand,
-                                          int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm)
-                                          throws IOException {
-        // do nothing
+    private static BandGeoTiffMatrixData buildGeoTiffMosaicMatrix(ImageMetadata imageMetadata, String[][] matrixFiles, Path localTempFolder)
+            throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {
+
+        int tileRows = imageMetadata.getTileRowsCount();
+        int tileCols = imageMetadata.getTileColsCount();
+        int levelCount = 0;
+        int dataType = 0;
+        Path imagesMetadataParentPath = imageMetadata.getPath();
+        MosaicMatrix mosaicMatrix = new MosaicMatrix(tileRows, tileCols);
+        for (int rowIndex = 0; rowIndex < tileRows; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < tileCols; columnIndex++) {
+                String imageRelativeFilePath = matrixFiles[rowIndex][columnIndex];
+                int cellWidth;
+                int cellHeight;
+                int dataBufferType;
+                try (GeoTiffImageReader geoTiffImageReader = GeoTiffImageReader.buildGeoTiffImageReader(imagesMetadataParentPath, imageRelativeFilePath)) {
+                    cellWidth = geoTiffImageReader.getImageWidth();
+                    cellHeight = geoTiffImageReader.getImageHeight();
+                    dataBufferType = geoTiffImageReader.getSampleModel().getDataType();
+                }
+                int cellLevelCount = DefaultMultiLevelModel.getLevelCount(cellWidth, cellHeight);
+                if (columnIndex == 0 && rowIndex == 0) {
+                    dataType = dataBufferType;
+                    levelCount = cellLevelCount;
+                } else {
+                    if (dataType != dataBufferType) {
+                        throw new IllegalStateException("Different data type count: rowIndex=" + rowIndex + ", columnIndex=" + columnIndex + ", dataType=" + dataType + ", dataBufferType=" + dataBufferType + ".");
+                    }
+                }
+                GeoTiffMatrixCell matrixCell = new GeoTiffMatrixCell(cellWidth, cellHeight, dataBufferType, imagesMetadataParentPath, imageRelativeFilePath, localTempFolder);
+                mosaicMatrix.setCellAt(rowIndex, columnIndex, matrixCell, true, true);
+            }
+        }
+
+        validateMatrix(imageMetadata, dataType, mosaicMatrix);
+        return new BandGeoTiffMatrixData(dataType, levelCount, mosaicMatrix);
     }
 
     @Override
@@ -336,7 +367,6 @@ public class Spot6ProductReader extends AbstractProductReader {
     }
 
     private static BandMatrixData buildMosaicMatrix(ImageMetadata imageMetadata, Path cacheDir, VirtualDirEx productDirectory) throws IOException, InterruptedException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        int dataTypeFromMetadata = imageMetadata.getPixelDataType();
         int tileRows = imageMetadata.getTileRowsCount();
         int tileCols = imageMetadata.getTileColsCount();
         Map<String, int[]> tileInfo = imageMetadata.getRasterTileInfo();
@@ -365,42 +395,18 @@ public class Spot6ProductReader extends AbstractProductReader {
         throw new IllegalStateException("Unknown image files.");
     }
 
-    private static BandGeoTiffMatrixData buildGeoTiffMosaicMatrix(ImageMetadata imageMetadata, String[][] matrixFiles, Path localTempFolder)
-            throws IOException, InterruptedException, IllegalAccessException, InvocationTargetException, InstantiationException {
-
-        int tileRows = imageMetadata.getTileRowsCount();
-        int tileCols = imageMetadata.getTileColsCount();
-        int levelCount = 0;
-        int dataType = 0;
-        Path imagesMetadataParentPath = imageMetadata.getPath();
-        MosaicMatrix mosaicMatrix = new MosaicMatrix(tileRows, tileCols);
-        for (int rowIndex = 0; rowIndex < tileRows; rowIndex++) {
-            for (int columnIndex = 0; columnIndex < tileCols; columnIndex++) {
-                String imageRelativeFilePath = matrixFiles[rowIndex][columnIndex];
-                int cellWidth;
-                int cellHeight;
-                int dataBufferType;
-                try (GeoTiffImageReader geoTiffImageReader = GeoTiffImageReader.buildGeoTiffImageReader(imagesMetadataParentPath, imageRelativeFilePath)) {
-                    cellWidth = geoTiffImageReader.getImageWidth();
-                    cellHeight = geoTiffImageReader.getImageHeight();
-                    dataBufferType = geoTiffImageReader.getSampleModel().getDataType();
-                }
-                int cellLevelCount = DefaultMultiLevelModel.getLevelCount(cellWidth, cellHeight);
-                if (columnIndex == 0 && rowIndex == 0) {
-                    dataType = dataBufferType;
-                    levelCount = cellLevelCount;
-                } else {
-                    if (dataType != dataBufferType) {
-                        throw new IllegalStateException("Different data type count: rowIndex=" + rowIndex + ", columnIndex=" + columnIndex + ", dataType=" + dataType + ", dataBufferType=" + dataBufferType + ".");
-                    }
-                }
-                GeoTiffMatrixCell matrixCell = new GeoTiffMatrixCell(cellWidth, cellHeight, dataBufferType, imagesMetadataParentPath, imageRelativeFilePath, localTempFolder);
-                mosaicMatrix.setCellAt(rowIndex, columnIndex, matrixCell, true, true);
+    private static void addProductComponentIfNotPresent(String componentId, File componentFile, TreeNode<File> currentComponents) {
+        TreeNode<File> resultComponent = null;
+        for (TreeNode<File> node : currentComponents.getChildren()) {
+            if (node.getId().equalsIgnoreCase(componentId)) {
+                resultComponent = node;
+                break;
             }
         }
-
-        validateMatrix(imageMetadata, dataType, mosaicMatrix);
-        return new BandGeoTiffMatrixData(dataType, levelCount, mosaicMatrix);
+        if (resultComponent == null) {
+            resultComponent = new TreeNode<>(componentId, componentFile);
+            currentComponents.addChild(resultComponent);
+        }
     }
 
     private static BandJP2MatrixData buildJP2MosaicMatrix(ImageMetadata imageMetadata, String[][] matrixFiles, Path cacheFolder) throws IOException, InterruptedException {
@@ -529,19 +535,15 @@ public class Spot6ProductReader extends AbstractProductReader {
         return referenceBand;
     }
 
-    private static void addProductComponentIfNotPresent(String componentId, File componentFile, TreeNode<File> currentComponents) {
-        TreeNode<File> resultComponent = null;
-        for (TreeNode node : currentComponents.getChildren()) {
-            if (node.getId().toLowerCase().equals(componentId.toLowerCase())) {
-                //noinspection unchecked
-                resultComponent = node;
-                break;
-            }
+    private static TiePointGeoCoding buildTiePointGridGeoCoding(ImageMetadata metadata, int defaultRasterWidth, int defaultRasterHeight, ProductSubsetDef subsetDef) {
+        float[][] cornerLonsLats = metadata.getCornerLonsLats();
+        TiePointGrid latGrid = buildTiePointGrid("latitude", 2, 2, 0, 0, defaultRasterWidth, defaultRasterHeight, cornerLonsLats[1], TiePointGrid.DISCONT_NONE);
+        TiePointGrid lonGrid = buildTiePointGrid("longitude", 2, 2, 0, 0, defaultRasterWidth, defaultRasterHeight, cornerLonsLats[0], TiePointGrid.DISCONT_AT_180);
+        if (subsetDef != null) {
+            lonGrid = TiePointGrid.createSubset(lonGrid, subsetDef);
+            latGrid = TiePointGrid.createSubset(latGrid, subsetDef);
         }
-        if (resultComponent == null) {
-            resultComponent = new TreeNode<File>(componentId, componentFile);
-            currentComponents.addChild(resultComponent);
-        }
+        return new TiePointGeoCoding(latGrid, lonGrid);
     }
 
     private static GeoCoding buildProductGeoCoding(ImageMetadata maxResImageMetadata, int defaultRasterWidth, int defaultRasterHeight,
@@ -556,17 +558,6 @@ public class Spot6ProductReader extends AbstractProductReader {
 
         }
         return buildTiePointGridGeoCoding(maxResImageMetadata, defaultRasterWidth, defaultRasterHeight, subsetDef);
-    }
-
-    private static TiePointGeoCoding buildTiePointGridGeoCoding(ImageMetadata metadata, int defaultRasterWidth, int defaultRasterHeight, ProductSubsetDef subsetDef) {
-        float[][] cornerLonsLats = metadata.getCornerLonsLats();
-        TiePointGrid latGrid = buildTiePointGrid("latitude", 2, 2, 0, 0, defaultRasterWidth, defaultRasterHeight, cornerLonsLats[1], TiePointGrid.DISCONT_NONE);
-        TiePointGrid lonGrid = buildTiePointGrid("longitude", 2, 2, 0, 0, defaultRasterWidth, defaultRasterHeight, cornerLonsLats[0], TiePointGrid.DISCONT_AT_180);
-        if (subsetDef != null && subsetDef != null) {
-            lonGrid = TiePointGrid.createSubset(lonGrid, subsetDef);
-            latGrid = TiePointGrid.createSubset(latGrid, subsetDef);
-        }
-        return new TiePointGeoCoding(latGrid, lonGrid);
     }
 
     private static Path initLocalCacheFolder(Path inputPath) throws IOException {
@@ -590,9 +581,15 @@ public class Spot6ProductReader extends AbstractProductReader {
             throw new IOException("Can't access package cache directory");
         }
         if (logger.isLoggable(Level.FINE)) {
-            logger.log(Level.FINE, "Successfully set up cache dir for product " + productName + " to " + cacheDir.toString());
+            logger.log(Level.FINE, "Successfully set up cache dir for product " + productName + " to " + cacheDir);
         }
         return cacheDir;
+    }
+
+    @Override
+    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand,
+                                          int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) {
+        // do nothing
     }
 
     private static class SpotJp2LocalFile implements JP2LocalFile {
@@ -604,7 +601,7 @@ public class Spot6ProductReader extends AbstractProductReader {
         }
 
         @Override
-        public Path getLocalFile() throws IOException {
+        public Path getLocalFile() {
             return this.jp2File;
         }
     }
