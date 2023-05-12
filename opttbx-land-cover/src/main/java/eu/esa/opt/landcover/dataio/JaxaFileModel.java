@@ -18,8 +18,7 @@
 
 package eu.esa.opt.landcover.dataio;
 
-import org.codehaus.plexus.archiver.tar.TarGZipUnArchiver;
-import org.codehaus.plexus.logging.console.ConsoleLoggerManager;
+//import org.codehaus.plexus.archiver.tar.TarGZipUnArchiver;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.GeoPos;
@@ -57,7 +56,7 @@ public class JaxaFileModel extends FileLandCoverModel {
     private final Set<File> unpackedDirs;
     private final Map<String, FileLandCoverTile> tiles;
 
-    public JaxaFileModel(LandCoverModelDescriptor descriptor, File[] files, Resampling resamplingMethod) throws IOException {
+    public JaxaFileModel(LandCoverModelDescriptor descriptor, File[] files, Resampling resamplingMethod) {
         super(descriptor, files, resamplingMethod, ARCHIVE_EXT);
         this.unpackedDirs = new HashSet<>();
         this.tiles = new HashMap<>();
@@ -99,7 +98,7 @@ public class JaxaFileModel extends FileLandCoverModel {
         this.unpackedDirs.clear();
     }
 
-    private FileLandCoverTile loadTile(GeoPos geoPos) throws Exception {
+    private FileLandCoverTile loadTile(GeoPos geoPos) {
         FileLandCoverTile tile = null;
         final double lat = geoPos.getLat();
         final double lon = geoPos.getLon();
@@ -140,17 +139,14 @@ public class JaxaFileModel extends FileLandCoverModel {
     }
 
     private void uncompress(String archiveName, File destDir) {
-        final TarGZipUnArchiver archiver = new TarGZipUnArchiver();
-        ConsoleLoggerManager manager = new ConsoleLoggerManager();
-        manager.initialize();
-        archiver.enableLogging(manager.getLoggerForComponent(JaxaFileModel.class.getName()));
-        File archive = new File(destDir, archiveName);
-        archiver.setSourceFile(archive);
-        if (!destDir.exists()) {
-            destDir.mkdirs();
-        }
-        archiver.setDestDirectory(destDir);
-        archiver.extract();
+//        final TarGZipUnArchiver archiver = new TarGZipUnArchiver();
+//        File archive = new File(destDir, archiveName);
+//        archiver.setSourceFile(archive);
+//        if (!destDir.exists()) {
+//            destDir.mkdirs();
+//        }
+//        archiver.setDestDirectory(destDir);
+//        archiver.extract();
     }
 
     private String createSubTileFilename(GeoPos geoPos) {
