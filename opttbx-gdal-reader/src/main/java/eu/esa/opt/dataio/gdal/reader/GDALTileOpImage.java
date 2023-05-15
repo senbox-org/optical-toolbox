@@ -131,33 +131,26 @@ class GDALTileOpImage extends AbstractSubsetTileOpImage {
                     DataBuffer imageDataBuffer;
                     switch (dataBufferType) {
                         case DataBuffer.TYPE_BYTE:
-                            byte[] bytes = new byte[pixels];
-                            data.get(bytes);
-                            imageDataBuffer = new DataBufferByte(bytes, pixels);
+                            imageDataBuffer = new DataBufferByte(data.array(), pixels);
                             break;
                         case DataBuffer.TYPE_SHORT:
-                            short[] shorts = new short[pixels];
-                            data.asShortBuffer().get(shorts);
+                            short[] shorts = data.asShortBuffer().array();
                             imageDataBuffer = new DataBufferShort(shorts, shorts.length);
                             break;
                         case DataBuffer.TYPE_USHORT:
-                            short[] ushorts = new short[pixels];
-                            data.asShortBuffer().get(ushorts);
-                            imageDataBuffer = new DataBufferUShort(ushorts, ushorts.length);
+                            short[] uShorts = data.asShortBuffer().array();
+                            imageDataBuffer = new DataBufferUShort(uShorts, uShorts.length);
                             break;
                         case DataBuffer.TYPE_INT:
-                            int[] ints = new int[pixels];
-                            data.asIntBuffer().get(ints);
+                            int[] ints = data.asIntBuffer().array();
                             imageDataBuffer = new DataBufferInt(ints, ints.length);
                             break;
                         case DataBuffer.TYPE_FLOAT:
-                            float[] floats = new float[pixels];
-                            data.asFloatBuffer().get(floats);
+                            float[] floats = data.asFloatBuffer().array();
                             imageDataBuffer = new DataBufferFloat(floats, floats.length);
                             break;
                         case DataBuffer.TYPE_DOUBLE:
-                            double[] doubles = new double[pixels];
-                            data.asDoubleBuffer().get(doubles);
+                            double[] doubles = data.asDoubleBuffer().array();
                             imageDataBuffer = new DataBufferDouble(doubles, doubles.length);
                             break;
                         default:
