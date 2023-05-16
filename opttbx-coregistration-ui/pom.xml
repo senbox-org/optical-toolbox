@@ -12,8 +12,8 @@
     <artifactId>opttbx-coregistration-ui</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Coregistration Processor GUI</name>
-    <description>Coregister two products</description>
+    <name>Sentinel-2 Coregistration Processor GUI</name>
+    <description>Coregisters two products</description>
 
     <dependencies>
         <dependency>

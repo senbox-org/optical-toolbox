@@ -30,8 +30,8 @@
     <artifactId>opttbx-rapideye-reader</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox RapidEye Reader</name>
-    <description>This module enables the Sentinel Toolbox to read RapidEye products</description>
+    <name>Optical Toolbox RapidEye Reader</name>
+    <description>This module enables the Optical Toolbox to read RapidEye products</description>
 
 
     <properties>

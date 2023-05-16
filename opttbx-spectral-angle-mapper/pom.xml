@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>opttbx-spectral-angle-mapper</artifactId>
     <packaging>nbm</packaging>
-    <name>Sentinel-2 Toolbox Spectral Angle Mapper</name>
+    <name>Optical Toolbox Spectral Angle Mapper</name>
     <dependencies>
         <dependency>
             <groupId>org.esa.snap</groupId>

@@ -12,8 +12,8 @@
     <artifactId>opttbx-sta-adapters-help</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Adapters Help</name>
-    <description>Help modules for the adapters for the Standalone Tools of the Sentinel-2 Toolbox</description>
+    <name>Optical Toolbox Adapters Help</name>
+    <description>Help modules for the adapters for the Standalone Tools of the Optical Toolbox</description>
 
     <dependencies>
         <dependency>

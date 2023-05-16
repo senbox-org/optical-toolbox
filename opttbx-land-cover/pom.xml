@@ -12,7 +12,7 @@
     <artifactId>opttbx-land-cover</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Land Cover Providers</name>
+    <name>Optical Toolbox Land Cover Providers</name>
     <description>This module extends the SNAP list of land cover providers</description>
 
     <dependencies>

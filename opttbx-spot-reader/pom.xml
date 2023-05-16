@@ -28,9 +28,9 @@
 
     <artifactId>opttbx-spot-reader</artifactId>
     <packaging>nbm</packaging>
-    <name>Sentinel-2 Toolbox Spot Reader</name>
+    <name>Optical Toolbox Spot Reader</name>
     <description>
-        This module enables the Sentinel Toolbox to read SPOT products
+        This module enables the Optical Toolbox to read SPOT 1-5 products
     </description>
 
     <dependencies>

@@ -15,9 +15,9 @@
     <packaging>nbm</packaging>
     <artifactId>opttbx-ikonos-reader</artifactId>
 
-    <name>Sentinel-2 Toolbox Ikonos Reader</name>
+    <name>Optical Toolbox Ikonos Reader</name>
     <description>
-        This module enables the Sentinel Toolbox to read Ikonos data products
+        This module enables the Optical Toolbox to read Ikonos data products
     </description>
 
     <dependencies>

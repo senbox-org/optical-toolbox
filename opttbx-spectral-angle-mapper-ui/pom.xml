@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>nbm</packaging>
     <artifactId>opttbx-spectral-angle-mapper-ui</artifactId>
-    <name>Sentinel-2 Toolbox Spectral Angle Mapper GUI</name>
+    <name>Optical Toolbox Spectral Angle Mapper GUI</name>
     <dependencies>
         <dependency>
             <groupId>eu.esa.opt</groupId>

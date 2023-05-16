@@ -15,8 +15,8 @@
     <packaging>nbm</packaging>
     <artifactId>opttbx-worldview2-reader</artifactId>
 
-    <name>Sentinel-2 Toolbox WorldView2 Reader</name>
-    <description>This module enables the Sentinel Toolbox to read WorldView-2 data products</description>
+    <name>Optical Toolbox WorldView2 Reader</name>
+    <description>This module enables the Optical Toolbox to read WorldView-2 data products</description>
 
     <dependencies>
         <dependency>

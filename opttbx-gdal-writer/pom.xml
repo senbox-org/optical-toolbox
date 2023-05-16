@@ -15,8 +15,8 @@
     <artifactId>opttbx-gdal-writer</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Generic GDAL Writer Bundle</name>
-    <description>This module enables the Sentinel Toolbox to write data products</description>
+    <name>Optical Toolbox Generic GDAL Writer</name>
+    <description>This module enables SNAP to write data products using GDAL</description>
 
 
     <dependencies>

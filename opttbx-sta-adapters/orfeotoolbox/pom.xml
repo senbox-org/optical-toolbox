@@ -12,7 +12,7 @@
     <artifactId>opttbx-sta-adapters-otb</artifactId>
     <packaging>pom</packaging>
 
-    <name>Sentinel-2 Toolbox Adapters for Orfeo Toolbox</name>
+    <name>Optical Toolbox Adapters for Orfeo Toolbox</name>
     <description>Provides adapters for Orfeo Toolbox external tools</description>
 
     <modules>

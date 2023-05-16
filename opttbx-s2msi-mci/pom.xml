@@ -26,7 +26,7 @@
     <artifactId>opttbx-s2msi-mci</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox MCI Processor</name>
+    <name>Sentinel-2 MCI Processor</name>
     <description>The S2 MCI Processor calculates the Maximum Chlorophyll Index by exploiting
         the height of a measurement over a specific baseline.</description>
 

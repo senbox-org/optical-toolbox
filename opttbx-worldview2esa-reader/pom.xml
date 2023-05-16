@@ -15,8 +15,8 @@
     <packaging>nbm</packaging>
     <artifactId>opttbx-worldview2esa-reader</artifactId>
 
-    <name>Sentinel-2 Toolbox WorldView ESA archive Reader</name>
-    <description>This module enables the Sentinel Toolbox to read WorldView data products</description>
+    <name>Optical Toolbox WorldView ESA archive Reader</name>
+    <description>This module enables the Optical Toolbox to read WorldView data products</description>
 
     <dependencies>
         <dependency>

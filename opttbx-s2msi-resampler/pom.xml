@@ -13,9 +13,9 @@
 
     <packaging>nbm</packaging>
     <artifactId>opttbx-s2msi-resampler</artifactId>
-    <name>Sentinel-2 Toolbox S2-MSI Resampler</name>
+    <name>Sentinel-2 MSI Resampler</name>
     <description>
-        This module enables the Sentinel Toolbox to resample S2-MSI products
+        This module enables the Optical Toolbox to resample S2-MSI products
     </description>
 
     <properties>
