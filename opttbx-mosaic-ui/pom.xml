@@ -28,7 +28,7 @@
     <artifactId>opttbx-mosaic-ui</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Mosaic GUI</name>
+    <name>Optical Toolbox Mosaic GUI</name>
     <description>Basic framework for processing using Mosaic Operator.</description>
 
     <dependencies>

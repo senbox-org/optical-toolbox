@@ -9,11 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-	<groupId>eu.esa.opt</groupId>
     <artifactId>opttbx-reflectance-to-radiance</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Reflectance to Radiance Processor</name>
+    <name>Sentinel-2 Reflectance to Radiance Processor</name>
     <description>Generates Reflectance to Radiance from L1C Sentinel 2 products</description>
 
     <dependencies>

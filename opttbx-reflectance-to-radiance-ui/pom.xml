@@ -13,7 +13,7 @@
     <artifactId>opttbx-reflectance-to-radiance-ui</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Reflectance to Radiance Processor GUI</name>
+    <name>Sentinel-2 Reflectance to Radiance Processor GUI</name>
     <description>Generates Reflectance to Radiance from L1C Sentinel 2 products</description>
 
     <dependencies>

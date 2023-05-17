@@ -27,7 +27,7 @@
     <artifactId>opttbx-biophysical</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Biophysical Product Processor</name>
+    <name>Optical Toolbox Biophysical Product Processor</name>
     <description>Generates biophysical products (L2B) from L2A Sentinel 2 products</description>
 
 

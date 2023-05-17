@@ -12,7 +12,7 @@
     <artifactId>opttbx-grm-ui</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Generic Region Merging GUI</name>
+    <name>Optical Toolbox Generic Region Merging GUI</name>
     <description>Generates generic region merging products</description>
 
     <dependencies>

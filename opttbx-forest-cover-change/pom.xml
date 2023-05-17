@@ -12,8 +12,8 @@
     <artifactId>opttbx-forest-cover-change</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Forest Cover Change</name>
-    <description>This module enables the Sentinel Toolbox to read data products</description>
+    <name>Optical Toolbox Forest Cover Change</name>
+    <description>This module enables the Optical Toolbox to read data products</description>
 
 
     <dependencies>

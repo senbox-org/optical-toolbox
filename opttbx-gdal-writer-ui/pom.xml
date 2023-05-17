@@ -15,8 +15,8 @@
     <artifactId>opttbx-gdal-writer-ui</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Generic GDAL Writer GUI</name>
-    <description>This module enables the Sentinel Toolbox to export data products</description>
+    <name>Optical Toolbox Generic GDAL Writer GUI</name>
+    <description>This module enables SNAP to export data products using GDAL</description>
 
 
     <dependencies>

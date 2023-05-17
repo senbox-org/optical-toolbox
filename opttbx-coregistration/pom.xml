@@ -12,7 +12,7 @@
     <artifactId>opttbx-coregistration</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Coregistration Processor</name>
+    <name>Sentinel-2 Coregistration Processor</name>
     <description>Sentinel-2 Coregistration</description>
 
     <dependencies>

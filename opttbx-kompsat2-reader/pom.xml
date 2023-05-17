@@ -15,9 +15,9 @@
     <packaging>nbm</packaging>
     <artifactId>opttbx-kompsat2-reader</artifactId>
 
-    <name>Sentinel-2 Toolbox Kompsat2 Reader</name>
+    <name>Optical Toolbox Kompsat2 Reader</name>
     <description>
-        This module enables the Sentinel Toolbox to read Kompsat-2 data products
+        This module enables the Optical Toolbox to read Kompsat-2 data products
     </description>
 
     <dependencies>

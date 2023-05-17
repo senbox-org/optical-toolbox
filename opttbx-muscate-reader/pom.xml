@@ -15,9 +15,9 @@
     <artifactId>opttbx-muscate-reader</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox MUSCATE Reader</name>
+    <name>Optical Toolbox MUSCATE Reader</name>
     <description>
-        This module enables the Sentinel Toolbox to read MUSCATE data products
+        This module enables the Optical Toolbox to read MUSCATE data products
     </description>
 
     <dependencies>

@@ -30,7 +30,7 @@
     <artifactId>opttbx-radiometric-indices</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Radiometric Indices</name>
+    <name>Optical Toolbox Radiometric Indices</name>
 
     <dependencies>
         <dependency>

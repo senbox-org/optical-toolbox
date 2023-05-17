@@ -12,8 +12,8 @@
     <artifactId>opttbx-grm</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox Generic Region Merging</name>
-    <description>This module enables the Sentinel Toolbox to process the products</description>
+    <name>Optical Toolbox Generic Region Merging</name>
+    <description>This module enables the Optical Toolbox to produce segmentation</description>
 
     <dependencies>
         <dependency>

@@ -11,9 +11,9 @@
     <artifactId>opttbx-otb-adapters-kit</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Sentinel-2 Toolbox OTB Adapters Module</name>
+    <name>Optical Toolbox OTB Adapters Module</name>
     <description>
-        OTB tools integration in the Sentinel-2 Toolbox
+        OTB tools integration in the Optical Toolbox
     </description>
 
     <build>

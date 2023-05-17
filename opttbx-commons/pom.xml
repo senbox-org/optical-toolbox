@@ -12,9 +12,9 @@
 
     <packaging>nbm</packaging>
     <artifactId>opttbx-commons</artifactId>
-    <name>Sentinel-2 Toolbox Common Tools</name>
+    <name>Optical Toolbox Common Tools</name>
     <description>
-        This module provides common tools to Sentinel2 Toolbox modules
+        This module provides common tools to Optical Toolbox modules
     </description>
 
     <dependencies>

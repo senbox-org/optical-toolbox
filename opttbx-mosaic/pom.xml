@@ -11,7 +11,7 @@
 
     <artifactId>opttbx-mosaic</artifactId>
     <packaging>nbm</packaging>
-    <name>Sentinel-2 Toolbox Mosaic</name>
+    <name>Optical Toolbox Mosaic</name>
     <dependencies>
         <dependency>
             <groupId>org.esa.snap</groupId>

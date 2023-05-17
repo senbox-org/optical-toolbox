@@ -28,9 +28,9 @@
 
     <artifactId>opttbx-pleiades-reader</artifactId>
     <packaging>nbm</packaging>
-    <name>Sentinel-2 Toolbox Pleiades Reader</name>
+    <name>Optical Toolbox Pleiades Reader</name>
     <description>
-        This module enables the Sentinel Toolbox to read Pleiades products
+        This module enables the Optical Toolbox to read Pleiades products
     </description>
 
     <properties>
