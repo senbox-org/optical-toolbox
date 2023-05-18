@@ -3,7 +3,7 @@ package eu.esa.opt.dataio.kompsat2.metadata;
 import eu.esa.opt.dataio.kompsat2.internal.Kompsat2Constants;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 
 /**
  * Specialized <code>XmlMetadata</code> for Kompsat2.
@@ -66,7 +66,7 @@ public class Kompsat2Metadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, Kompsat2Constants.PATH_START_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, Kompsat2Constants.KOMPSAT2_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, Kompsat2Constants.KOMPSAT2_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -92,7 +92,7 @@ public class Kompsat2Metadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, Kompsat2Constants.PATH_END_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, Kompsat2Constants.KOMPSAT2_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, Kompsat2Constants.KOMPSAT2_UTC_DATE_FORMAT);
         }
         return date;
     }

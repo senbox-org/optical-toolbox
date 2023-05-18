@@ -1,8 +1,8 @@
 package eu.esa.opt.dataio.muscate;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.opt.dataio.VirtualDirEx;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import eu.esa.opt.dataio.s2.S2BandAnglesGrid;
 import eu.esa.opt.dataio.s2.S2BandAnglesGridByDetector;
 import eu.esa.opt.dataio.s2.S2BandConstants;
@@ -34,7 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.awt.image.DataBuffer.TYPE_FLOAT;
-import static org.esa.snap.utils.DateHelper.parseDate;
+import static org.esa.snap.core.util.DateTimeUtils.parseDate;
 
 /**
  * Created by obarrile on 26/01/2017.

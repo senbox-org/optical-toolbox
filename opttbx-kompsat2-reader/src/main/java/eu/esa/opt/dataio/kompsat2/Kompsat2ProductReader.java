@@ -1,14 +1,14 @@
 package eu.esa.opt.dataio.kompsat2;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.opt.commons.FilePathInputStream;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.kompsat2.internal.Kompsat2Constants;
 import eu.esa.opt.dataio.kompsat2.metadata.BandMetadata;
 import eu.esa.opt.dataio.kompsat2.metadata.BandMetadataUtil;
 import eu.esa.opt.dataio.kompsat2.metadata.Kompsat2Component;
 import eu.esa.opt.dataio.kompsat2.metadata.Kompsat2Metadata;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import eu.esa.opt.dataio.readers.MultipleMetadataGeoTiffBasedReader;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;

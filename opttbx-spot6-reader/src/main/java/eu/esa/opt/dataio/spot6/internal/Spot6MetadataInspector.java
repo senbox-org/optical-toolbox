@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.spot6.internal;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.readers.GMLReader;
 import eu.esa.opt.dataio.spot6.dimap.Spot6Constants;
 import eu.esa.opt.dataio.spot6.dimap.ImageMetadata;

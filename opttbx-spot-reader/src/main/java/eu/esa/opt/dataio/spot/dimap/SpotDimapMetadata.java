@@ -20,7 +20,7 @@ package eu.esa.opt.dataio.spot.dimap;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 
 import java.awt.*;
@@ -328,7 +328,7 @@ public class SpotDimapMetadata extends XmlMetadata {
                 ((currentElement = currentElement.getElement(SpotConstants.TAG_SENSOR_CONFIGURATION)) != null) &&
                 ((currentElement = currentElement.getElement(SpotConstants.TAG_TIME_STAMP)) != null)) {
             String stringData = currentElement.getAttributeString(SpotConstants.TAG_SCENE_CENTER_TIME);
-            centerTime = DateHelper.parseDate(stringData, SpotConstants.UTC_DATE_FORMAT);
+            centerTime = DateTimeUtils.parseDate(stringData, SpotConstants.UTC_DATE_FORMAT);
         } else {
             logger.warning(String.format(MISSING_ELEMENT_WARNING, SpotConstants.TAG_SCENE_CENTER_TIME));
         }

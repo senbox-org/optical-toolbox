@@ -3,7 +3,7 @@ package eu.esa.opt.dataio.worldview2esa.metadata;
 import org.esa.snap.core.metadata.XmlMetadata;
 import eu.esa.opt.dataio.worldview2esa.common.WorldView2ESAConstants;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 
 public class WorldView2ESAMetadata extends XmlMetadata {
 
@@ -57,7 +57,7 @@ public class WorldView2ESAMetadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, WorldView2ESAConstants.PATH_START_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, WorldView2ESAConstants.WORLDVIEW2_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, WorldView2ESAConstants.WORLDVIEW2_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -72,7 +72,7 @@ public class WorldView2ESAMetadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, WorldView2ESAConstants.PATH_END_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, WorldView2ESAConstants.WORLDVIEW2_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, WorldView2ESAConstants.WORLDVIEW2_UTC_DATE_FORMAT);
         }
         return date;
     }

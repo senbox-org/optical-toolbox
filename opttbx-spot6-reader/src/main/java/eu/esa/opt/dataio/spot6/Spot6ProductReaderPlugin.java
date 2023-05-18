@@ -16,7 +16,7 @@
  */
 package eu.esa.opt.dataio.spot6;
 
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import eu.esa.opt.dataio.spot6.dimap.Spot6Constants;
 import eu.esa.opt.dataio.spot6.internal.Spot6MetadataInspector;
 import org.esa.snap.core.metadata.MetadataInspector;

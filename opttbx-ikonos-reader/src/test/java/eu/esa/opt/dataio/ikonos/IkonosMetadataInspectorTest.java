@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.ikonos;
 
 import eu.esa.opt.dataio.ikonos.metadata.IkonosMetadataInspector;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.runtime.LogUtils4Tests;

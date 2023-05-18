@@ -6,7 +6,7 @@ import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.Stx;
 import org.esa.snap.core.datamodel.StxFactory;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -167,7 +167,7 @@ public class ImageMetadata extends XmlMetadata {
         ProductData.UTC date = null;
         String value = getAttributeSiblingValue(Spot6Constants.PATH_IMG_LOCATION_TYPE, "BottomCenter", Spot6Constants.PATH_IMG_TIME, null);
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, Spot6Constants.SPOT6_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, Spot6Constants.SPOT6_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -177,7 +177,7 @@ public class ImageMetadata extends XmlMetadata {
         ProductData.UTC date = null;
         String value = getAttributeSiblingValue(Spot6Constants.PATH_IMG_LOCATION_TYPE, "TopCenter", Spot6Constants.PATH_IMG_TIME, null);
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, Spot6Constants.SPOT6_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, Spot6Constants.SPOT6_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -187,7 +187,7 @@ public class ImageMetadata extends XmlMetadata {
         ProductData.UTC date = null;
         String value = getAttributeSiblingValue(Spot6Constants.PATH_IMG_LOCATION_TYPE, "Center", Spot6Constants.PATH_IMG_TIME, null);
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, Spot6Constants.SPOT6_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, Spot6Constants.SPOT6_UTC_DATE_FORMAT);
         }
         return date;
     }

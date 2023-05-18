@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.kompsat2;
 
 import eu.esa.opt.dataio.kompsat2.internal.Kompsat2Constants;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.RGBImageProfile;

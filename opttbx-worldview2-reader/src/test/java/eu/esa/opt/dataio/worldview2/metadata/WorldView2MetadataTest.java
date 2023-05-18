@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.worldview2.metadata;
 
 import eu.esa.opt.dataio.worldview2.common.WorldView2Constants;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;

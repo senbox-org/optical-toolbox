@@ -18,7 +18,7 @@
 package eu.esa.opt.dataio.deimos;
 
 import eu.esa.opt.dataio.deimos.dimap.DeimosConstants;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.core.dataio.ProductReader;

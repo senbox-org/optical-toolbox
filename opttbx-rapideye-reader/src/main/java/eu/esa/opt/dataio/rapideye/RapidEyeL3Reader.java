@@ -17,7 +17,7 @@
 
 package eu.esa.opt.dataio.rapideye;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.rapideye.metadata.RapidEyeConstants;
 import eu.esa.opt.dataio.rapideye.metadata.RapidEyeMetadata;
 import eu.esa.opt.dataio.readers.MetadataList;

@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.gdal.reader;
 
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.lib.gdal.activator.GDALInstallInfo;
 import org.esa.snap.dataio.gdal.GDALLoader;
 import org.junit.Before;

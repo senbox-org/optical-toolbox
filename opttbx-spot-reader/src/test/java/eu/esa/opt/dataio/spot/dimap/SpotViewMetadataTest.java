@@ -17,7 +17,7 @@
 
 package eu.esa.opt.dataio.spot.dimap;
 
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.apache.commons.lang3.SystemUtils;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.metadata.GenericXmlMetadata;

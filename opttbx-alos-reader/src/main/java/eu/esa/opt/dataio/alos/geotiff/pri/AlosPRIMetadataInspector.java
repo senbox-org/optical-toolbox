@@ -3,7 +3,7 @@ package eu.esa.opt.dataio.alos.geotiff.pri;
 import eu.esa.opt.dataio.alos.geotiff.pri.internal.AlosPRIConstants;
 import eu.esa.opt.dataio.alos.geotiff.pri.internal.AlosPRIMetadata;
 import eu.esa.opt.dataio.alos.geotiff.pri.internal.ImageMetadata;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.metadata.MetadataInspector;
 

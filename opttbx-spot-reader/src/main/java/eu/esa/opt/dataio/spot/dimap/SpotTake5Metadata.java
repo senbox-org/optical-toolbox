@@ -22,7 +22,7 @@ import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.metadata.XmlMetadata;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -329,7 +329,7 @@ public class SpotTake5Metadata extends XmlMetadata {
             dateStr = currentElement.getAttributeString(SpotConstants.SPOT4_TAKE5_TAG_DATE_PDV);
         }
         if (dateStr != null) {
-            dateValue = DateHelper.parseDate(dateStr, SpotConstants.SPOT4_TAKE5_UTC_DATE_FORMAT);
+            dateValue = DateTimeUtils.parseDate(dateStr, SpotConstants.SPOT4_TAKE5_UTC_DATE_FORMAT);
         }
         return dateValue;
     }

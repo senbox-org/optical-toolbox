@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.worldview2esa.metadata;
 
 import com.bc.ceres.core.Assert;
-import eu.esa.opt.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
 import eu.esa.opt.dataio.worldview2esa.common.WorldView2ESAConstants;

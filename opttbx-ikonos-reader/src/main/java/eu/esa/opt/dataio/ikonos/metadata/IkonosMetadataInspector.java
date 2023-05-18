@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.ikonos.metadata;
 
-import eu.esa.opt.commons.FilePathInputStream;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.ikonos.IkonosProductReader;
 import eu.esa.opt.dataio.ikonos.internal.IkonosConstants;
 import org.esa.snap.core.datamodel.GeoCoding;

@@ -7,7 +7,7 @@ import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.core.util.io.SnapFileFilter;
-import org.esa.snap.utils.StringHelper;
+import org.esa.snap.core.util.StringUtils;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -60,7 +60,7 @@ public abstract class AbstractDriverProductReaderPlugIn implements ProductReader
     public DecodeQualification getDecodeQualification(Object input) {
         final String filePath = getInput(input).toString();
         for (String extension : this.extensions) {
-            if (StringHelper.endsWithIgnoreCase(filePath, extension)) {
+            if (StringUtils.endsWithIgnoreCase(filePath, extension)) {
                 return DecodeQualification.SUITABLE;
             }
         }

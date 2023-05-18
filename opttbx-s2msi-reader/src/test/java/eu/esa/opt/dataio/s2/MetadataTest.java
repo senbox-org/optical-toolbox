@@ -19,7 +19,7 @@ package eu.esa.opt.dataio.s2;
 
 
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.s2.l1c.metadata.IL1cGranuleMetadata;
 import eu.esa.opt.dataio.s2.l1c.metadata.L1cMetadataFactory;
 import eu.esa.opt.dataio.s2.ortho.filepatterns.S2OrthoGranuleDirFilename;

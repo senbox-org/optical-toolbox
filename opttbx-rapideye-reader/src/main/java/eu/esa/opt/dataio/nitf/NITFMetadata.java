@@ -19,7 +19,7 @@ package eu.esa.opt.dataio.nitf;
 
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 
 /**
  * Contains parsed metadata from a NITF file.
@@ -47,7 +47,7 @@ public class NITFMetadata {
         MetadataElement currentElement = root.getElement(NITFFields.TAG_FILE_HEADER);
         if (currentElement != null) {
             try {
-                fileDate = DateHelper.parseDate(currentElement.getAttributeString(NITFFields.FDT, ""), "ddHHmmss'Z'MMMyy");
+                fileDate = DateTimeUtils.parseDate(currentElement.getAttributeString(NITFFields.FDT, ""), "ddHHmmss'Z'MMMyy");
             } catch (Exception e) {
                 e.printStackTrace();
             }

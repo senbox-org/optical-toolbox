@@ -48,10 +48,6 @@
             <artifactId>lib-gdal</artifactId>
             <version>${snap.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>opttbx-commons</artifactId>
-        </dependency>
 
         <!-- NetBeans Platform -->
         <dependency>

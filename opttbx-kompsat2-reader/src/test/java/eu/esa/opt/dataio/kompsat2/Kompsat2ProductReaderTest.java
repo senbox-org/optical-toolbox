@@ -2,7 +2,7 @@ package eu.esa.opt.dataio.kompsat2;
 
 import com.bc.ceres.binding.ConversionException;
 import eu.esa.opt.dataio.kompsat2.internal.Kompsat2Constants;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoPos;

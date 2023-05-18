@@ -3,7 +3,7 @@ package eu.esa.opt.dataio.alos.geotiff.pri.internal;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 
 /**
  * Holder class for DIMAP metadata file.
@@ -102,7 +102,7 @@ public class ImageMetadata extends XmlMetadata {
         ProductData.UTC date = null;
         String value = getAttributeValue(AlosPRIConstants.PATH_TIME_FIRST_LINE, null);
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -112,7 +112,7 @@ public class ImageMetadata extends XmlMetadata {
         ProductData.UTC date = null;
         String value = getAttributeValue(AlosPRIConstants.PATH_TIME_LAST_LINE, null);
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -122,7 +122,7 @@ public class ImageMetadata extends XmlMetadata {
         ProductData.UTC date = null;
         String value = getAttributeValue(AlosPRIConstants.PATH_TIME_CENTER_LINE, null);
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
         }
         return date;
     }

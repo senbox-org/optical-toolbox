@@ -122,7 +122,7 @@ import java.util.stream.Collectors;
 
 import static eu.esa.opt.dataio.s2.ortho.metadata.S2OrthoMetadataProc.makeTileInformation;
 import static java.awt.image.DataBuffer.TYPE_FLOAT;
-import static org.esa.snap.utils.DateHelper.parseDate;
+import static org.esa.snap.core.util.DateTimeUtils.parseDate;
 
 /**
  * <p>

@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.worldview2;
 
 import eu.esa.opt.dataio.worldview2.metadata.TileMetadata;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.worldview2.metadata.TileMetadataList;
 import eu.esa.opt.dataio.worldview2.metadata.WorldView2Metadata;
 import org.esa.snap.core.metadata.MetadataInspector;

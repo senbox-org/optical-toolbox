@@ -17,7 +17,7 @@
 
 package eu.esa.opt.dataio.s2.l1b;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.s2.VirtualPath;
 import eu.esa.opt.dataio.s2.l1b.metadata.IL1bDatastripMetadata;
 import eu.esa.opt.dataio.s2.l1b.metadata.IL1bGranuleMetadata;

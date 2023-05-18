@@ -2,7 +2,7 @@ package eu.esa.opt.dataio.worldview2;
 
 import com.bc.ceres.binding.ConversionException;
 import eu.esa.opt.dataio.worldview2.common.WorldView2Constants;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;

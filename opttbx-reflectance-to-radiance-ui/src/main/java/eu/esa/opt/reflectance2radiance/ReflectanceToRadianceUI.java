@@ -8,11 +8,11 @@ import com.bc.ceres.binding.ValueSet;
 import com.bc.ceres.swing.binding.BindingContext;
 import com.bc.ceres.swing.binding.PropertyPane;
 import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.graphbuilder.gpf.ui.BaseOperatorUI;
 import org.esa.snap.graphbuilder.gpf.ui.OperatorUIUtils;
 import org.esa.snap.graphbuilder.gpf.ui.UIValidation;
 import org.esa.snap.ui.AppContext;
-import org.esa.snap.utils.StringHelper;
 
 import javax.swing.*;
 import java.util.Map;
@@ -55,8 +55,8 @@ public class ReflectanceToRadianceUI extends BaseOperatorUI {
         OperatorUIUtils.initParamList(bandList, getBandNames(), (Object[]) this.paramMap.get("sourceBands"));
         Product sourceProduct = getCurrentProduct();
         if (sourceProduct != null) {
-            boolean isSentinel2 = StringHelper.startsWithIgnoreCase(sourceProduct.getProductType(), "S2_MSI_Level");
-            boolean isSpot = StringHelper.startsWithIgnoreCase(sourceProduct.getProductType(), "SPOTSCENE");
+            boolean isSentinel2 = StringUtils.startsWithIgnoreCase(sourceProduct.getProductType(), "S2_MSI_Level");
+            boolean isSpot = StringUtils.startsWithIgnoreCase(sourceProduct.getProductType(), "SPOTSCENE");
             PropertySet propertySet = this.bindingContext.getPropertySet();
 
             // Solar irradiance: for Sentinel-2 and SPOT products it can be extracted from metadata (done in initialize() method of the operator)
