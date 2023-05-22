@@ -65,6 +65,12 @@ public class VirtualDirTgz extends VirtualDirEx {
         return lowerCaseFilename.endsWith(".tgz") || lowerCaseFilename.endsWith(".tar.gz");
     }
 
+    public static boolean isTbz(String filename) {
+        String lcName = filename.toLowerCase();
+        return lcName.endsWith(".tar.bz") || lcName.endsWith(".tbz") ||
+                lcName.endsWith(".tar.bz2") || lcName.endsWith(".tbz2");
+    }
+
     public static boolean isTar(String filename) {
         return ".tar".equals(FileUtils.getExtension(filename));
     }
@@ -135,12 +141,13 @@ public class VirtualDirTgz extends VirtualDirEx {
 
     @Override
     public boolean isCompressed() {
-        return isTgz(this.archiveFile.getFileName().toString());
+        final String fileName = this.archiveFile.getFileName().toString();
+        return isTgz(fileName) || isTbz(fileName);
     }
 
     @Override
     public boolean isArchive() {
-        return isTgz(this.archiveFile.getFileName().toString());
+        return true;
     }
 
     @Override
