@@ -36,7 +36,7 @@ public class VirtualDirTgz extends VirtualDirEx {
 
     public VirtualDirTgz(File tgz) {
         if (tgz == null) {
-            throw new NullPointerException("Input file shall not be null");
+            throw new IllegalArgumentException("Input file shall not be null");
         }
         this.archiveFile = tgz.toPath();
     }
@@ -125,6 +125,21 @@ public class VirtualDirTgz extends VirtualDirEx {
     public String[] list(String path) throws IOException {
         final File file = getFile(path);
         return file.list();
+    }
+
+    @Override
+    public String[] listAllFiles() throws IOException {
+        try (TarArchiveInputStream tarStream = buildTarInputStream()) {
+
+            TarArchiveEntry entry;
+            List<String> entryNames = new ArrayList<>();
+            while ((entry = tarStream.getNextTarEntry()) != null) {
+                if (!entry.isDirectory()) {
+                    entryNames.add(entry.getName());
+                }
+            }
+            return entryNames.toArray(new String[0]);
+        }
     }
 
     public boolean exists(String s) {
@@ -243,7 +258,7 @@ public class VirtualDirTgz extends VirtualDirEx {
         CompressorInputStream compressorInputStream = null;
         InputStream stream = null;
         try {
-            stream = Files.newInputStream(this.archiveFile);
+            stream = new BufferedInputStream(Files.newInputStream(this.archiveFile));
             compressorInputStream = compressorStreamFactory.createCompressorInputStream(stream);
             return new TarArchiveInputStream(compressorInputStream);
         } catch (IOException | CompressorException | IllegalArgumentException ex) {
