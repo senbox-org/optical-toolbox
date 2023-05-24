@@ -45,9 +45,13 @@
             <artifactId>netcdfAll</artifactId>
         </dependency>
         <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-commons</artifactId>
+        </dependency>
+        <!--<dependency>
             <groupId>org.xeustechnologies</groupId>
             <artifactId>jtar</artifactId>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>junit</groupId>

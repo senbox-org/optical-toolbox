@@ -19,7 +19,8 @@
 package eu.esa.opt.dataio.landsat.geotiff;
 
 import com.bc.ceres.core.VirtualDir;
-import eu.esa.opt.dataio.landsat.tgz.VirtualDirTgz;
+//import eu.esa.opt.dataio.landsat.tgz.VirtualDirTgz;
+import eu.esa.opt.dataio.VirtualDirTgz;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -166,7 +167,7 @@ public class LandsatGeotiffColl2L2ReaderPlugin implements ProductReaderPlugIn {
 
         VirtualDir virtualDir = VirtualDir.create(inputFile);
         if (virtualDir == null) {
-            virtualDir = new VirtualDirTgz(inputFile);
+            virtualDir = new VirtualDirTgz(inputFile.toPath());
         }
         return virtualDir;
     }
