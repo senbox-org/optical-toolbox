@@ -236,24 +236,6 @@
 
         <dependency>
             <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-gdal-reader</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-gdal-writer</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-gdal-writer-ui</artifactId>
-            <version>${opttbx.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-grm</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
