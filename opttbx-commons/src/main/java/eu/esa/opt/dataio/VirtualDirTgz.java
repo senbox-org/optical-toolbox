@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 /**
  * Implementation of a virtual directory representing the contents of a tar or a tar-gz file.
- * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.dataio.TarVirtualDir} instead
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.dataio.VirtualDirTgz} instead
  */
 public class VirtualDirTgz extends VirtualDirEx {
 
