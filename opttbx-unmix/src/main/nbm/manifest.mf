@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 OpenIDE-Module-Specification-Version: ${project.nbmSpecVersion}
 OpenIDE-Module-Implementation-Version: ${project.nbmImplVersion}
 AutoUpdate-Show-In-Client: false
-AutoUpdate-Essential-Module: true
+AutoUpdate-Essential-Module: false
 OpenIDE-Module-Java-Dependencies: Java > 11
 OpenIDE-Module-Display-Category: SNAP Core
 OpenIDE-Module-Long-Description: <p>Spectral unmixing tool.</p><p><b>V

@@ -6,7 +6,6 @@
 package eu.esa.opt.about;
 
 import com.bc.ceres.core.runtime.Version;
-import org.esa.snap.rcp.about.AboutBox;
 import org.esa.snap.rcp.util.BrowserUtils;
 import org.openide.modules.ModuleInfo;
 import org.openide.modules.Modules;
@@ -26,8 +25,11 @@ import java.util.TimeZone;
 /**
  * @author Norman
  * @author Marco
+ *
+ * Replaced by {@link OpttbxAboutBox}
  */
-@AboutBox(displayName = "S3TBX", position = 30)
+//@AboutBox(displayName = "S3TBX", position = 30)
+@Deprecated
 public class S3tbxAboutBox extends JPanel {
 
     private final static String releaseNotesUrlString = "https://senbox.atlassian.net/issues/?filter=-4&jql=project%20%3D%20SIIITBX%20AND%20fixVersion%20%3D%20";

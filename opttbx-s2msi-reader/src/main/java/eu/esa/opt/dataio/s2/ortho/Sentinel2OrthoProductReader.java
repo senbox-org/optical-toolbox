@@ -582,10 +582,13 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                                 throw new IOException("Cannot open " + localFile);
                             }
                             try (org.esa.snap.dataio.gdal.drivers.Band gdalBand = dataset.getRasterBand(1)) {
+                                final Dimension tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
                                 multiLevelSource = new GDALMultiLevelSource(localFile, dataBufferType, bandBounds,
-                                                                            new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize()),
+                                                                            tileSize,
                                                                             bandIndexNumber, resolutionCount, band.getGeoCoding(),
-                                                                            band.getNoDataValue(), defaultJAIReadTileSize);
+                                                                            band.getNoDataValue(),
+                                                                            defaultJAIReadTileSize);
+                                                                            //tileSize);
                             }
                         }
                         ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
@@ -850,9 +853,12 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                             throw new IOException("Cannot open " + maskPath.getLocalFile());
                         }
                         try (org.esa.snap.dataio.gdal.drivers.Band gdalBand = dataset.getRasterBand(i + 1)) {
+                            final Dimension tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
                             multiLevelSource = new GDALMultiLevelSource(maskPath.getLocalFile(), dataBufferType, bandBounds,
-                                                                        new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize()), i,
-                                                                        resolutionCount, band.getGeoCoding(), band.getNoDataValue(), defaultJAIReadTileSize);
+                                                                        tileSize, i,
+                                                                        resolutionCount, band.getGeoCoding(), band.getNoDataValue(),
+                                                                        defaultJAIReadTileSize);
+                                                                        //tileSize);
                         }
                     }
                     ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
@@ -933,9 +939,12 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                                 throw new IOException("Cannot open " + maskPath.getLocalFile());
                             }
                             try (org.esa.snap.dataio.gdal.drivers.Band gdalBand = dataset.getRasterBand(i + 1)) {
+                                final Dimension tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
                                 multiLevelSource = new GDALMultiLevelSource(maskPath.getLocalFile(), dataBufferType, bandBounds,
-                                                                            new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize()), i,
-                                                                            resolutionCount, band.getGeoCoding(), band.getNoDataValue(), defaultJAIReadTileSize);
+                                                                            tileSize, i,
+                                                                            resolutionCount, band.getGeoCoding(), band.getNoDataValue(),
+                                                                            defaultJAIReadTileSize);
+                                                                            //tileSize);
                             }
                         }
                         ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
