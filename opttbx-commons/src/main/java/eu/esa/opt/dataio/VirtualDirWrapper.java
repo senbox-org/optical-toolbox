@@ -29,6 +29,7 @@ import static org.esa.snap.utils.CollectionHelper.firstOrDefault;
  * on partial matches of the names (see findKeyFile() method)
  *
  * @author Cosmin Cara
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.dataio.VirtualDirWrapper} instead
  */
 class VirtualDirWrapper extends VirtualDirEx {
 

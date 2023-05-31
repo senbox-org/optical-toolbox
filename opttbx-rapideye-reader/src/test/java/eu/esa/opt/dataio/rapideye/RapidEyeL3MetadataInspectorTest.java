@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.rapideye;
 
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.runtime.LogUtils4Tests;
 import org.junit.BeforeClass;

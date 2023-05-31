@@ -34,7 +34,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.Guardian;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.runtime.Config;
-import org.esa.snap.utils.StringHelper;
+import org.esa.snap.core.util.StringUtils;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 
 import java.io.File;
@@ -121,7 +121,7 @@ public class GDALProductWriter extends AbstractProductWriter {
         }
 
         String fileName = outputFile.toFile().getName();
-        if (!StringHelper.endsWithIgnoreCase(fileName, this.writerDriver.getExtensionName())) {
+        if (!StringUtils.endsWithIgnoreCase(fileName, this.writerDriver.getExtensionName())) {
             throw new IllegalArgumentException("The extension of the file name '" + fileName + "' is unknown.");
         }
         if (!this.writerDriver.canExportProduct(this.gdalDataType)) {

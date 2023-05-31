@@ -19,7 +19,7 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 import org.esa.snap.core.util.ProductUtils;
-import org.esa.snap.utils.StringHelper;
+import org.esa.snap.core.util.StringUtils;
 
 import java.awt.Rectangle;
 import java.util.Arrays;
@@ -88,7 +88,7 @@ public class ReflectanceToRadianceOp extends Operator {
         MetadataElement currentElement = null;
         for (MetadataElement element : elements) {
             String name = element.getName();
-            if (StringHelper.startsWithIgnoreCase(name, "SPOTSCENE")) {
+            if (StringUtils.startsWithIgnoreCase(name, "SPOTSCENE")) {
                 currentElement = element;
                 break;
             }
@@ -292,11 +292,11 @@ public class ReflectanceToRadianceOp extends Operator {
     }
 
     private boolean isSentinelProduct(Product product) {
-        return StringHelper.startsWithIgnoreCase(product.getProductType(), "S2_MSI_Level");
+        return StringUtils.startsWithIgnoreCase(product.getProductType(), "S2_MSI_Level");
     }
 
     private boolean isSpotProduct(Product product) {
-        return StringHelper.startsWithIgnoreCase(product.getProductType(), "SPOTSCENE");
+        return StringUtils.startsWithIgnoreCase(product.getProductType(), "SPOTSCENE");
     }
 
     private void copyStartAndEndTime() {
@@ -320,7 +320,7 @@ public class ReflectanceToRadianceOp extends Operator {
                 final Mask mask = sourceMaskGroup.get(i);
                 String maskName = mask.getName();
                 if (!targetProduct.getMaskGroup().contains(maskName)
-                    && StringHelper.endsWithIgnoreCase(maskName, bandNames)) {
+                    && StringUtils.endsWithIgnoreCase(maskName, bandNames)) {
                     if (mask.getImageType().transferMask(mask, targetProduct) == null) {
                         Mask targetMask = new Mask(maskName, mask.getRasterWidth(), mask.getRasterHeight(), mask.getImageType());
                         ProductUtils.copyRasterDataNodeProperties(mask, targetMask);
@@ -386,7 +386,7 @@ public class ReflectanceToRadianceOp extends Operator {
             MetadataElement currentElement = null;
             for (MetadataElement element : elements) {
                 String name = element.getName();
-                if (StringHelper.startsWithIgnoreCase(name, "SPOTSCENE")) {
+                if (StringUtils.startsWithIgnoreCase(name, "SPOTSCENE")) {
                     currentElement = element;
                     break;
                 }

@@ -1,7 +1,7 @@
 package eu.esa.opt.gdal.writer.ui;
 
 import org.esa.lib.gdal.activator.GDALDriverInfo;
-import org.esa.snap.utils.StringHelper;
+import org.esa.snap.core.util.StringUtils;
 
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
@@ -23,7 +23,7 @@ public class ExportDriversFileFilter extends FileFilter {
         if (fileToAccept.isDirectory()) {
             return true;
         }
-        return StringHelper.endsWithIgnoreCase(fileToAccept.getName(), this.driverInfo.getExtensionName());
+        return StringUtils.endsWithIgnoreCase(fileToAccept.getName(), this.driverInfo.getExtensionName());
     }
 
     @Override

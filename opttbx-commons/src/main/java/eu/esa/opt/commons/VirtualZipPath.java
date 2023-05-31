@@ -17,6 +17,7 @@ import java.util.TreeSet;
 
 /**
  * Created by jcoravu on 3/4/2019.
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.commons.VirtualZipPath} instead
  */
 public class VirtualZipPath extends AbstractVirtualPath {
 

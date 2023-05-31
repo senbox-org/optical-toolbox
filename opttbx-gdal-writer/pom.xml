@@ -50,8 +50,8 @@
             <version>${snap.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>opttbx-commons</artifactId>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-engine-utilities</artifactId>
         </dependency>
 
         <!-- JUnit -->
@@ -60,8 +60,8 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-commons</artifactId>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-engine-utilities</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
             <version>${opttbx.version}</version>

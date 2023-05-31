@@ -1,12 +1,12 @@
 package eu.esa.opt.dataio.ikonos.metadata;
 
-import eu.esa.opt.commons.FilePathInputStream;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.ikonos.internal.IkonosConstants;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -161,7 +161,7 @@ public class IkonosMetadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, IkonosConstants.PATH_START_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, IkonosConstants.IKONOS_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, IkonosConstants.IKONOS_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -176,7 +176,7 @@ public class IkonosMetadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, IkonosConstants.PATH_END_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, IkonosConstants.IKONOS_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, IkonosConstants.IKONOS_UTC_DATE_FORMAT);
         }
         return date;
     }

@@ -19,12 +19,16 @@ import java.awt.geom.NoninvertibleTransformException;
 
 /**
  * @author Jean Coravu
+ * @deprecated since 10.0.0, use {@link org.esa.snap.core.util.ProductUtils} instead
  */
 public class ProductHelper {
 
     private ProductHelper() {
     }
 
+    /**
+     * @deprecated since 10.0.0, use {@link org.esa.snap.core.util.ProductUtils#copyMasks(Product, Product, String[])} instead
+     */
     public static void copyMasks(Product sourceProduct, Product targetProduct, String[] sourceMaskNames) {
         double scaleX = (double) sourceProduct.getSceneRasterWidth() / targetProduct.getSceneRasterWidth();
         double scaleY = (double) sourceProduct.getSceneRasterHeight() / targetProduct.getSceneRasterHeight();
@@ -72,6 +76,8 @@ public class ProductHelper {
      * @param sourceProduct   the source product
      * @param targetProduct   the target product
      * @param copySourceImage whether the source image of the source band should be copied.
+     *
+     * @deprecated since 10.0.0, use {@link org.esa.snap.core.util.ProductUtils#copyFlagBandsWithoutMasks(Product, Product, boolean)} instead
      */
     public static void copyFlagBands(Product sourceProduct, Product targetProduct, boolean copySourceImage) {
         Guardian.assertNotNull("source", sourceProduct);
@@ -89,6 +95,10 @@ public class ProductHelper {
         }
     }
 
+    /**
+     * 
+     * @deprecated since 10.0.0, use {@link org.esa.snap.core.util.ProductUtils#transferVectorDataNode(Product, VectorDataNode, AffineTransform)}  } instead
+     */
     private static VectorDataNode transferVectorDataNode(Product targetProduct, VectorDataNode sourceVectorDataNode, AffineTransform referenceImageToModelTransform) {
         AffineTransform referenceModelToImageTransform;
         try {

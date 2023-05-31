@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.kompsat2.metadata;
 
 import eu.esa.opt.dataio.kompsat2.Kompsat2MetadataInspector;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.junit.Test;
 

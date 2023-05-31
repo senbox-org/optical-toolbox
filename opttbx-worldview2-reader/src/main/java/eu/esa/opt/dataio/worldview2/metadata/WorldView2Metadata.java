@@ -6,7 +6,7 @@ import eu.esa.opt.dataio.worldview2.common.WorldView2Constants;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.ImageUtils;
 import org.esa.snap.engine_utilities.util.Pair;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -79,7 +79,7 @@ public class WorldView2Metadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, WorldView2Constants.PATH_START_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, WorldView2Constants.WORLDVIEW2_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, WorldView2Constants.WORLDVIEW2_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -94,7 +94,7 @@ public class WorldView2Metadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, WorldView2Constants.PATH_END_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, WorldView2Constants.WORLDVIEW2_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, WorldView2Constants.WORLDVIEW2_UTC_DATE_FORMAT);
         }
         return date;
     }

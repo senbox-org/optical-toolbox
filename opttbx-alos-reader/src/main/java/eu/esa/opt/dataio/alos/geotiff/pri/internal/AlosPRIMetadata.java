@@ -4,7 +4,7 @@ import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public class AlosPRIMetadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, AlosPRIConstants.PATH_START_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -126,7 +126,7 @@ public class AlosPRIMetadata extends XmlMetadata {
             warn(MISSING_ELEMENT_WARNING, AlosPRIConstants.PATH_END_TIME);
         }
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, AlosPRIConstants.ALOSPRI_UTC_DATE_FORMAT);
         }
         return date;
     }

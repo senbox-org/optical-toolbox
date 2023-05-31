@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.esa.snap.utils.DateHelper.parseDate;
+import static org.esa.snap.core.util.DateTimeUtils.parseDate;
 
 /**
  * Created by obarrile on 26/01/2017.

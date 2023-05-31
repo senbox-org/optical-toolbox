@@ -43,6 +43,7 @@ import java.util.regex.Pattern;
  *
  * @see eu.esa.opt.dataio.readers.ProductContentEnforcer
  * @author Cosmin Cara
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn} instead
  */
 public abstract class BaseProductReaderPlugIn implements ProductReaderPlugIn {
 

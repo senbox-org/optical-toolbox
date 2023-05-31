@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.gdal.reader;
 
-import eu.esa.opt.commons.VirtualFile;
+import org.esa.snap.engine_utilities.commons.VirtualFile;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.dataio.gdal.drivers.Band;

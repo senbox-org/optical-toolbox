@@ -10,6 +10,7 @@ import java.nio.file.Path;
 
 /**
  * Created by jcoravu on 14/5/2019.
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.commons.VirtualFile} instead
  */
 public class VirtualFile extends AbstractFile implements Closeable {
 

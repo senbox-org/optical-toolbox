@@ -8,6 +8,7 @@ import java.nio.file.Path;
 
 /**
  * Created by jcoravu on 30/4/2019.
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.commons.FilePathInputStream} instead
  */
 public class FilePathInputStream extends FilterInputStream {
 

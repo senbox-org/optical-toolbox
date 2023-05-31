@@ -2,7 +2,7 @@ package eu.esa.opt.dataio.gdal.reader.plugins;
 
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.util.io.FileUtils;
-import org.esa.snap.utils.StringHelper;
+import org.esa.snap.core.util.StringUtils;
 
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
@@ -40,14 +40,14 @@ public class MFFDriverProductReaderPlugIn extends AbstractDriverProductReaderPlu
             // '.rat.hdr' file extension for RATProductReaderPlugIn
             // 'bin.hdr' file extension for PolsarProProductReaderPlugIn
             // '.snaphu.hdr' file extension for SNAPHUProductReaderPlugIn
-            if (StringHelper.endsWithIgnoreCase(filePath, ".rat.hdr") || StringHelper.endsWithIgnoreCase(filePath, "bin.hdr")
-                    || StringHelper.endsWithIgnoreCase(filePath, ".snaphu.hdr")) {
+            if (StringUtils.endsWithIgnoreCase(filePath, ".rat.hdr") || StringUtils.endsWithIgnoreCase(filePath, "bin.hdr")
+                    || StringUtils.endsWithIgnoreCase(filePath, ".snaphu.hdr")) {
 
                 result = DecodeQualification.UNABLE;
             } else {
                 // '.hdr, .dbl' file extensions for SmosProductReaderPlugIn
                 boolean canContinue = true;
-                if (StringHelper.endsWithIgnoreCase(filePath, ".hdr")) {
+                if (StringUtils.endsWithIgnoreCase(filePath, ".hdr")) {
                     File hdrFile = FileUtils.exchangeExtension(inputFile, ".hdr");
                     File dblFile = FileUtils.exchangeExtension(inputFile, ".dbl");
                     if (hdrFile.exists() && dblFile.exists()) {

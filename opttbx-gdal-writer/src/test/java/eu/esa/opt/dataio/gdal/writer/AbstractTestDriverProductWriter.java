@@ -4,7 +4,7 @@ import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.dataio.gdal.reader.GDALProductReader;
 import eu.esa.opt.dataio.gdal.reader.plugins.AbstractDriverProductReaderPlugIn;
 import eu.esa.opt.dataio.gdal.writer.plugins.AbstractDriverProductWriterPlugIn;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.lib.gdal.activator.GDALDriverInfo;
 import org.esa.lib.gdal.activator.GDALInstallInfo;
 import org.esa.snap.core.dataio.ProductWriter;

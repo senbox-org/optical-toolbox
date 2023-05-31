@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.s2;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import org.junit.Test;
 
 import java.io.File;

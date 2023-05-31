@@ -2,7 +2,7 @@ package eu.esa.opt.dataio.alos.geotiff.av2.internal;
 
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -84,7 +84,7 @@ public class AlosAV2Metadata extends XmlMetadata {
         ProductData.UTC date = null;
         String value = getAttributeValue(AlosAV2Constants.PATH_TIME_FIRST_LINE, null);
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, AlosAV2Constants.ALOSAV2_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, AlosAV2Constants.ALOSAV2_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -94,7 +94,7 @@ public class AlosAV2Metadata extends XmlMetadata {
         ProductData.UTC date = null;
         String value = getAttributeValue(AlosAV2Constants.PATH_TIME_LAST_LINE, null);
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, AlosAV2Constants.ALOSAV2_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, AlosAV2Constants.ALOSAV2_UTC_DATE_FORMAT);
         }
         return date;
     }
@@ -201,7 +201,7 @@ public class AlosAV2Metadata extends XmlMetadata {
         ProductData.UTC date = null;
         String value = getAttributeValue(AlosAV2Constants.PATH_TIME_CENTER_LINE, null);
         if (value != null && !value.isEmpty()) {
-            date = DateHelper.parseDate(value, AlosAV2Constants.ALOSAV2_UTC_DATE_FORMAT);
+            date = DateTimeUtils.parseDate(value, AlosAV2Constants.ALOSAV2_UTC_DATE_FORMAT);
         }
         return date;
     }

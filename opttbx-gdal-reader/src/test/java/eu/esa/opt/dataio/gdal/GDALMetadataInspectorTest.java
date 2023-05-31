@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.gdal;
 
 import eu.esa.opt.dataio.gdal.reader.GDALMetadataInspector;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.lib.gdal.activator.GDALInstallInfo;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.runtime.LogUtils4Tests;

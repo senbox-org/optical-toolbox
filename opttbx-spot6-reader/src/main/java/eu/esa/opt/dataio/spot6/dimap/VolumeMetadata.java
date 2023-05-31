@@ -18,11 +18,11 @@
 package eu.esa.opt.dataio.spot6.dimap;
 
 import com.bc.ceres.core.Assert;
-import eu.esa.opt.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -262,7 +262,7 @@ public class VolumeMetadata extends GenericXmlMetadata {
         ProductData.UTC prodDate = null;
         String stringData = getAttributeValue(Spot6Constants.PATH_VOL_PRODUCTION_DATE, null);
         if (stringData != null && !stringData.isEmpty()) {
-            prodDate = DateHelper.parseDate(stringData, Spot6Constants.SPOT6_UTC_DATE_FORMAT);
+            prodDate = DateTimeUtils.parseDate(stringData, Spot6Constants.SPOT6_UTC_DATE_FORMAT);
         }
         return prodDate;
     }

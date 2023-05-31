@@ -33,6 +33,8 @@ import java.util.regex.Pattern;
  * given by Deimos-1 and RapidEye L3 products).
  *
  * @author Cosmin Cara
+ *
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.dataio.readers.ProductContentEnforcer} instead
  */
 public class ProductContentEnforcer {
 

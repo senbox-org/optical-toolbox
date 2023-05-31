@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.pleiades.internal;
 
-import eu.esa.opt.commons.FilePathInputStream;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.pleiades.PleiadesProductReader;
 import eu.esa.opt.dataio.pleiades.dimap.Constants;
 import eu.esa.opt.dataio.pleiades.dimap.ImageMetadata;

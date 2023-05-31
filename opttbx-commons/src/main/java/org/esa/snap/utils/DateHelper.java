@@ -31,6 +31,7 @@ import java.util.logging.Logger;
  * Utility class for date manipulation
  *
  * @author Cosmin Cara
+ * @deprecated since 10.0.0, use {@link org.esa.snap.core.util.DateTimeUtils} instead
  */
 public class DateHelper {
 
@@ -41,7 +42,10 @@ public class DateHelper {
      * @param startDate The first date
      * @param endDate   The second date
      * @return The date between the two input dates
+     *
+     * @deprecated since 10.0.0, use {@link org.esa.snap.core.util.DateTimeUtils#average(Date, Date)} instead
      */
+    @Deprecated
     public static Date average(Date startDate, Date endDate) {
         Date averageDate = null;
         if (startDate != null && endDate != null) {
@@ -59,7 +63,10 @@ public class DateHelper {
      * @param startDate The first date
      * @param endDate   The second date
      * @return The date between the two input dates
+     *
+     * @deprecated since 10.0.0, use {@link org.esa.snap.core.util.DateTimeUtils#average(ProductData.UTC, ProductData.UTC)} instead
      */
+    @Deprecated
     public static ProductData.UTC average(ProductData.UTC startDate, ProductData.UTC endDate) {
         ProductData.UTC average = null;
         if (startDate != null && endDate != null) {
@@ -81,6 +88,7 @@ public class DateHelper {
      * @param dateFormat The format of the string date
      * @return The UTC date representation.
      */
+    @Deprecated
     public static ProductData.UTC parseDate(String stringData, String dateFormat) {
         ProductData.UTC parsedDate = null;
         if (stringData != null) {

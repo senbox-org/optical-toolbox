@@ -29,6 +29,7 @@ import java.util.stream.Stream;
  * Helper class for simplifying lambda expression usage on collections and arrays.
  *
  * @author Cosmin Cara
+ * @deprecated since 10.0.0, use {@link org.esa.snap.core.util.CollectionHelper} instead
  */
 public final class CollectionHelper {
 

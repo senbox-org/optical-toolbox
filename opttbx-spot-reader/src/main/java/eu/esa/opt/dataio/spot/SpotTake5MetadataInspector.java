@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.spot;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.spot.dimap.SpotConstants;
 import eu.esa.opt.dataio.spot.dimap.SpotTake5Metadata;
 import org.esa.snap.core.datamodel.FlagCoding;

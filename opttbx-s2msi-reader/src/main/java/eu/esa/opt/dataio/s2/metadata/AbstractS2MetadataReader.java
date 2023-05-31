@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.s2.metadata;
 
-import eu.esa.opt.commons.FilePath;
+import org.esa.snap.engine_utilities.commons.FilePath;
 import eu.esa.opt.dataio.s2.S2Config;
 import eu.esa.opt.dataio.s2.S2Metadata;
 import eu.esa.opt.dataio.s2.S2SpatialResolution;
@@ -10,10 +10,8 @@ import org.esa.snap.dataio.geotiff.GeoTiffProductReader;
 import org.esa.snap.dataio.geotiff.GeoTiffProductReaderPlugIn;
 import org.esa.snap.lib.openjpeg.jp2.TileLayout;
 import org.esa.snap.lib.openjpeg.utils.OpenJpegUtils;
-import eu.esa.opt.dataio.VirtualDirEx;
-import eu.esa.opt.dataio.s2.*;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.s2.filepatterns.INamingConvention;
-import eu.esa.opt.dataio.s2.filepatterns.NamingConventionFactory;
 import org.xml.sax.SAXException;
 
 import javax.imageio.ImageIO;

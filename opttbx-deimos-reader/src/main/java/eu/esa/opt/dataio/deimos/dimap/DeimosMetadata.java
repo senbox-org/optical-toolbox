@@ -22,7 +22,7 @@ import org.esa.snap.core.datamodel.ProductData;
 
 import java.awt.*;
 
-import static org.esa.snap.utils.DateHelper.parseDate;
+import static org.esa.snap.core.util.DateTimeUtils.parseDate;
 
 /**
  * Holder for DIMAP metadata file.

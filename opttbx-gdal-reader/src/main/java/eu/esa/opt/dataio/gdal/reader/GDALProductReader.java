@@ -2,14 +2,14 @@ package eu.esa.opt.dataio.gdal.reader;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
-import eu.esa.opt.commons.VirtualFile;
+import org.esa.snap.engine_utilities.commons.VirtualFile;
 import org.esa.snap.dataio.gdal.drivers.Dataset;
 import org.esa.snap.dataio.gdal.drivers.Driver;
 import org.esa.snap.dataio.gdal.drivers.GCP;
 import org.esa.snap.dataio.gdal.drivers.GDAL;
 import org.esa.snap.dataio.gdal.drivers.GDALConst;
 import org.esa.snap.dataio.gdal.drivers.GDALConstConstants;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;

@@ -1,13 +1,13 @@
 package eu.esa.opt.dataio.ikonos;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.opt.commons.FilePathInputStream;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.ikonos.internal.IkonosConstants;
 import eu.esa.opt.dataio.ikonos.metadata.BandMetadata;
 import eu.esa.opt.dataio.ikonos.metadata.BandMetadataUtil;
 import eu.esa.opt.dataio.ikonos.metadata.IkonosMetadata;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;

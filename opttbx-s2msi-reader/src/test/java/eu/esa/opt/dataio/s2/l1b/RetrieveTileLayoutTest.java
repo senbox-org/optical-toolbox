@@ -17,11 +17,11 @@
 
 package eu.esa.opt.dataio.s2.l1b;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.s2.S2SpatialResolution;
 import eu.esa.opt.dataio.s2.VirtualPath;
 import eu.esa.opt.dataio.s2.l1b.metadata.L1bProductMetadataReader;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.lib.openjpeg.jp2.TileLayout;
 import org.esa.snap.runtime.Engine;
 import org.junit.After;

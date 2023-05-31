@@ -19,7 +19,7 @@ package eu.esa.opt.dataio.rapideye.nitf;
 
 import eu.esa.opt.dataio.nitf.NITFMetadata;
 import eu.esa.opt.dataio.nitf.NITFReaderWrapper;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Before;
 import org.junit.Test;

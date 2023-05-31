@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.s2;
 
-import eu.esa.opt.commons.FilePath;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.commons.FilePath;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import org.esa.snap.jp2.reader.JP2LocalFile;
 
 import java.io.File;

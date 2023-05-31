@@ -102,9 +102,9 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-commons</artifactId>
-            <version>${opttbx.version}</version>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-engine-utilities</artifactId>
+            <version>${snap.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
