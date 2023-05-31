@@ -24,7 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.dataio.TarVirtualDirTest} instead
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.dataio.VirtualDirTgzTest} instead
  */
 public class VirtualDirTgzTest {
     @Test

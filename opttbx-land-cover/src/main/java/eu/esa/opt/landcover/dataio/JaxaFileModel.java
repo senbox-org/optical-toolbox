@@ -19,7 +19,7 @@
 package eu.esa.opt.landcover.dataio;
 
 //import org.codehaus.plexus.archiver.tar.TarGZipUnArchiver;
-import eu.esa.opt.dataio.VirtualDirTgz;
+import org.esa.snap.engine_utilities.dataio.VirtualDirTgz;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.GeoPos;
