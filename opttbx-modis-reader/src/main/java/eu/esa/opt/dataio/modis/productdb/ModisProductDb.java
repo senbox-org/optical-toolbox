@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 
 public class ModisProductDb {
 
-    private static final String DB_PATH = "/eu/esa/optresources/modisdb";
+    private static final String DB_PATH = "/eu/esa/opt/resources/modisdb";
     public static final int EXP_NUM_SDS_DEFAULT_RECORD = 9;
     public static final int EXP_NUM_SDS_SPECTRAL_RECORD = 12;
     private static final int EXP_NUM_GEO_RECORDS_MIN = 2;
@@ -43,8 +43,8 @@ public class ModisProductDb {
     private static final int EXP_NUM_TIEP_RECORDS = 5;
 
     private HashMap<String, String> _productTypes = null;
-    private HashMap _productDescriptions = null;
-    private Logger logger;
+    private HashMap _productDescriptions;
+    private final Logger logger;
     private static final String META_KEY = "META";
     private static final String SDS_KEY = "SDS";
     private static final String GEO_KEY = "GEO";
