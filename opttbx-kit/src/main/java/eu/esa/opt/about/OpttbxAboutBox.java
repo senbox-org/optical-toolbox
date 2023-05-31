@@ -23,6 +23,7 @@
 package eu.esa.opt.about;
 
 import com.bc.ceres.core.runtime.Version;
+import org.esa.snap.rcp.about.AboutBox;
 import org.esa.snap.rcp.util.BrowserUtils;
 import org.openide.modules.ModuleInfo;
 import org.openide.modules.Modules;
@@ -35,19 +36,17 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * @author Norman
- * Replaced by {@link OpttbxAboutBox}
+ * @author DianaH
  */
-//@AboutBox(displayName = "S2TBX", position = 20)
-@Deprecated
-public class S2tbxAboutBox extends JPanel {
+@AboutBox(displayName = "OpticalTBX", position = 20)
+public class OpttbxAboutBox extends JPanel {
 
-    private final static String releaseNotesUrlString = "https://senbox.atlassian.net/issues/?filter=-4&jql=project%20%3D%20SIITBX%20AND%20fixVersion%20%3D%20";
+    private final static String releaseNotesUrlString = "https://github.com/senbox-org/optical-toolbox/blob/master/ReleaseNotes.md";
 
-    public S2tbxAboutBox() {
+    public OpttbxAboutBox() {
         super(new BorderLayout(4, 4));
         setBorder(new EmptyBorder(4, 4, 4, 4));
-        ImageIcon aboutImage = new ImageIcon(S2tbxAboutBox.class.getResource("about_s2tbx.jpg"));
+        ImageIcon aboutImage = new ImageIcon(OpttbxAboutBox.class.getResource("about_opttbx.jpg"));
         JLabel iconLabel = new JLabel(aboutImage);
         add(iconLabel, BorderLayout.CENTER);
         add(createVersionPanel(), BorderLayout.SOUTH);
@@ -56,10 +55,10 @@ public class S2tbxAboutBox extends JPanel {
     private JPanel createVersionPanel() {
         Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.ENGLISH);
         int year = utc.get(Calendar.YEAR);
-        JLabel copyRightLabel = new JLabel("<html><b>© 2014-" + year + " CS GROUP - France, CS GROUP - ROMANIA and contributors</b>", SwingConstants.CENTER);
+        JLabel copyRightLabel = new JLabel("<html><b>© 2014-" + year + " Brockmann Consult GmbH, CS GROUP - France, CS GROUP - ROMANIA and contributors</b>", SwingConstants.CENTER);
 
-        final ModuleInfo moduleInfo = Modules.getDefault().ownerOf(S2tbxAboutBox.class);
-        JLabel versionLabel = new JLabel("<html><b>Sentinel-2 Toolbox (S2TBX) version " + moduleInfo.getImplementationVersion() + "</b>", SwingConstants.CENTER);
+        final ModuleInfo moduleInfo = Modules.getDefault().ownerOf(OpttbxAboutBox.class);
+        JLabel versionLabel = new JLabel("<html><b>Optical Toolbox version " + moduleInfo.getImplementationVersion() + "</b>", SwingConstants.CENTER);
 
         Version specVersion = Version.parseVersion(moduleInfo.getSpecificationVersion().toString());
         String versionString = String.format("%s.%s.%s", specVersion.getMajor(), specVersion.getMinor(), specVersion.getMicro());

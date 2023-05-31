@@ -7,7 +7,7 @@
     <tocitem text="Sentinel Toolbox Application">
         <tocitem text="Tools">
             <tocitem text="Options">
-                <tocitem text="OPTTBX" target="S3ReaderOptionsHelp"/>
+                <tocitem text="S3 Reader" target="S3ReaderOptionsHelp"/>
             </tocitem>
         </tocitem>
     </tocitem>

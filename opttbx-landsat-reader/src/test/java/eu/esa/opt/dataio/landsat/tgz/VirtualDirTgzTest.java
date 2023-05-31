@@ -3,6 +3,7 @@ package eu.esa.opt.dataio.landsat.tgz;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import eu.esa.opt.dataio.VirtualDirTgz;
 import eu.esa.opt.dataio.landsat.TestUtil;
 import org.junit.*;
 
@@ -84,7 +85,7 @@ public class VirtualDirTgzTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testOpenNull() throws Exception {
-        new VirtualDirTgz(null);
+        new VirtualDirTgz((File) null);
     }
 
     @Test
@@ -211,7 +212,7 @@ public class VirtualDirTgzTest {
 
         assertTrue(tempDir.isDirectory());
 
-        virtualDir.finalize();
+        virtualDir.close();
         assertFalse(tempDir.isDirectory());
     }
 

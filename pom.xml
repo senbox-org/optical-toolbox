@@ -127,7 +127,7 @@
         <snap-help-system.version>1.0.0</snap-help-system.version>
         <netbeans.version>RELEASE113</netbeans.version>
         <geotools.version>28.2</geotools.version>
-        <netcdf.version>5.3.1</netcdf.version>
+        <netcdf.version>5.3.3</netcdf.version>
         <javahelp.version>2.0.05</javahelp.version>
         <brandingToken>opttbx</brandingToken>
         <user.language>en</user.language>
@@ -357,11 +357,11 @@
                 <version>${netcdf.version}</version>
             </dependency>
 
-            <dependency>
+            <!--<dependency>
                 <groupId>org.xeustechnologies</groupId>
                 <artifactId>jtar</artifactId>
                 <version>1.1</version>
-            </dependency>
+            </dependency>-->
 
             <dependency>
                 <groupId>com.bc.jnn</groupId>
@@ -372,24 +372,24 @@
             <dependency>
                 <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna</artifactId>
-                <version>5.5.0</version>
+                <version>5.13.0</version>
             </dependency>
             <dependency>
                 <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna-platform</artifactId>
-                <version>5.5.0</version>
+                <version>5.13.0</version>
             </dependency>
 
             <dependency>
                 <groupId>hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
-                <version>1.8.0.10</version>
+                <version>2.7.1</version>
             </dependency>
 
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.8.11.2</version>
+                <version>3.42.0.0</version>
             </dependency>
 
             <dependency>
@@ -401,7 +401,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.7</version>
+                <version>2.12.0</version>
             </dependency>
 
             <dependency>
@@ -425,19 +425,6 @@
                 <version>20140925</version>
             </dependency>
 
-            <!-- not necessary -->
-            <!--            <dependency>-->
-            <!--                <groupId>com.github.relaxng</groupId>-->
-            <!--                <artifactId>relaxngDatatype</artifactId>-->
-            <!--                <version>2011.1</version>-->
-            <!--            </dependency>-->
-
-            <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-archiver</artifactId>
-                <version>2.2</version>
-            </dependency>
-
             <!-- unit level testing dependencies -->
             <dependency>
                 <groupId>junit</groupId>
@@ -448,7 +435,7 @@
             <dependency>
                 <groupId>com.google.jimfs</groupId>
                 <artifactId>jimfs</artifactId>
-                <version>1.1</version>
+                <version>1.2</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

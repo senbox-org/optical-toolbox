@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 public class TestUtil {
 
-    private static final String[] DIRS_TO_CHECK = new String[]{".", "s3tbx", "s3tbx-landsat-reader", "s3tbx/s3tbx-landsat-reader"};
+    private static final String[] DIRS_TO_CHECK = new String[]{".", "optical-toolbox", "opttbx-landsat-reader", "optical-toolbox/opttbx-landsat-reader"};
     private static final String REL_PATH_TEST_RESOURCES = "src/test/resources/eu/esa/opt/dataio/landsat/";
 
     public static File getTestFile(String file) {
