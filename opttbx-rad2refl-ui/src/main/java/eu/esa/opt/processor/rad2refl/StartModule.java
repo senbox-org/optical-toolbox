@@ -13,7 +13,7 @@ public class StartModule {
 
         @Override
         public void run() {
-            ResourceUtils.installGraphs(this.getClass(), "eu/esa/optprocessor/rad2refl/graphs/");
+            ResourceUtils.installGraphs(this.getClass(), "eu/esa/opt/processor/rad2refl/graphs/");
         }
     }
 }
