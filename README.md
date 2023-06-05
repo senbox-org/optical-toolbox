@@ -8,7 +8,7 @@ Optical Toolbox (OptTbx)
 A toolbox for optical sensors like the MSI and OLCI and SLSTR instruments on board of ESA's Sentinel-2 and 3 satellites.
 
 The project page of SNAP, and the toolbox can be found at http://step.esa.int.
-There you can find tutorials, developer guides, a user forum and other interesting things.
+There you can find tutorials, developer guides, a user forum and more.
 
 
 Building the OptTbx from the source
