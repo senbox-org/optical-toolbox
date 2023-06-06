@@ -21,7 +21,7 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.glevel.MultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
-import eu.esa.opt.dataio.gdal.reader.GDALMultiLevelSource;
+import org.esa.snap.dataio.gdal.reader.GDALMultiLevelSource;
 import eu.esa.opt.dataio.s2.CAMSReader;
 import eu.esa.opt.dataio.s2.ColorIterator;
 import eu.esa.opt.dataio.s2.ECMWFTReader;
