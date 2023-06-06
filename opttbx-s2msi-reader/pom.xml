@@ -75,9 +75,9 @@
             <version>${snap.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-gdal-reader</artifactId>
-            <version>${opttbx.version}</version>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-gdal-reader</artifactId>
+            <version>${snap.version}</version>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>

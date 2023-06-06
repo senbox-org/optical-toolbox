@@ -59,9 +59,6 @@
         <module>opttbx-biophysical</module>
         <module>opttbx-reflectance-to-radiance</module>
         <module>opttbx-reflectance-to-radiance-ui</module>
-        <module>opttbx-gdal-reader</module>
-        <module>opttbx-gdal-writer</module>
-        <module>opttbx-gdal-writer-ui</module>
         <module>opttbx-grm</module>
         <module>opttbx-grm-ui</module>
         <module>opttbx-land-cover</module>

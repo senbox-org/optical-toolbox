@@ -1,9 +1,0 @@
-{
-    "testProducts": [
-        {
-            "id": "GDAL-product",
-            "relativePath": "_gdal/S2A_4.jp2",
-            "description": "GDAL product"
-        }
-    ]
-}
