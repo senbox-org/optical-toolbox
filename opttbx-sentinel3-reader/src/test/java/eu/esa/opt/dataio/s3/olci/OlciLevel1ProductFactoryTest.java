@@ -19,7 +19,6 @@ public class OlciLevel1ProductFactoryTest {
 
         assertNotEquals(-1, autoGrouping.indexOf("Oa02_radiance"));
         assertNotEquals(-1, autoGrouping.indexOf("Oa20_radiance"));
-        assertNotEquals(-1, autoGrouping.indexOf("Oa13_radiance_err"));
         assertNotEquals(-1, autoGrouping.indexOf("Oa13_radiance_unc"));
         assertNotEquals(-1, autoGrouping.indexOf("Oa01_radiance_unc"));
         assertNotEquals(-1, autoGrouping.indexOf("atmospheric_temperature_profile_pressure_level_3"));
@@ -28,6 +27,8 @@ public class OlciLevel1ProductFactoryTest {
         assertNotEquals(-1, autoGrouping.indexOf("solar_flux_band_19"));
         assertEquals(-1, autoGrouping.indexOf("not_handled"));
 
+        // err kept because it is not causing problems, just in case if somewhere exists a product with err bands
+        assertNotEquals(-1, autoGrouping.indexOf("Oa13_radiance_err"));
 
     }
 }
