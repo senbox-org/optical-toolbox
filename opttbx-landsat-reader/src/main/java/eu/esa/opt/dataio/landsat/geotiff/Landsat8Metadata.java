@@ -34,7 +34,7 @@ public class Landsat8Metadata extends AbstractLandsatMetadata {
     private static final double DEFAULT_SCALE_FACTOR = 1.0;
     private static final double DEFAULT_OFFSET = 0.0;
 
-    private static final Preferences PREFERENCES = Config.instance("s3tbx").load().preferences();
+    private static final Preferences PREFERENCES = Config.instance("opttbx").load().preferences();
     private static final Logger LOG = Logger.getLogger(Landsat8Metadata.class.getName());
 
     private static final String[] BAND_DESCRIPTIONS = {
@@ -199,7 +199,7 @@ public class Landsat8Metadata extends AbstractLandsatMetadata {
     }
 
     static String getSpectralInputString() {
-        final Preferences preferences = Config.instance("s3tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String readAs = preferences.get(LandsatGeotiffReader.SYSPROP_READ_AS, null);
         String spectralInput;
         if (readAs != null) {

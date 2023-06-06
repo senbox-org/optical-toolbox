@@ -5,12 +5,24 @@ import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
 import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
-import org.esa.snap.core.dataio.geocoding.*;
+import org.esa.snap.core.dataio.geocoding.ComponentFactory;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.ForwardCoding;
+import org.esa.snap.core.dataio.geocoding.GeoChecks;
+import org.esa.snap.core.dataio.geocoding.GeoRaster;
+import org.esa.snap.core.dataio.geocoding.InverseCoding;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
-import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.GeoCoding;
+import org.esa.snap.core.datamodel.Mask;
+import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.datamodel.ProductNodeGroup;
+import org.esa.snap.core.datamodel.RasterDataNode;
+import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.runtime.Config;
 
@@ -25,8 +37,8 @@ import java.util.prefs.Preferences;
 public class SlstrFrpProductFactory extends SlstrProductFactory {
 
     private static final double RESOLUTION_IN_KM = 1.0;
-    private final static String SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE = "s3tbx.reader.slstr.frp.pixelGeoCoding.inverse";
-    private final static String SYSPROP_SLSTR_FRP_TIE_POINT_CODING_FORWARD = "s3tbx.reader.slstr.frp.tiePointGeoCoding.forward";
+    private final static String SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE = "opttbx.reader.slstr.frp.pixelGeoCoding.inverse";
+    private final static String SYSPROP_SLSTR_FRP_TIE_POINT_CODING_FORWARD = "opttbx.reader.slstr.frp.tiePointGeoCoding.forward";
 
     private Map<String, GeoCoding> geoCodingMap;
     private final Map<String, Double> gridIndexToTrackOffset;
@@ -165,7 +177,7 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
                 final RenderedImage sourceRenderedImage = sourceBand.getSourceImage().getImage(0);
                 //todo remove commented lines when resampling works with scenetransforms
                 //if pixel band geo-codings are used, scenetransforms are set
-//                if (Config.instance("s3tbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, false)) {
+//                if (Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, false)) {
 //                    targetBand.setSourceImage(sourceRenderedImage);
 //                } else {
                 final AffineTransform imageToModelTransform = new AffineTransform();
@@ -207,7 +219,7 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
                 lonGrid.getOffsetX(), lonGrid.getOffsetY(),
                 lonGrid.getSubSamplingX(), lonGrid.getSubSamplingY());
 
-        final Preferences preferences = Config.instance("s3tbx").preferences();
+        final Preferences preferences = Config.instance("opttbx").preferences();
         final String forwardKey = preferences.get(SYSPROP_SLSTR_FRP_TIE_POINT_CODING_FORWARD, TiePointBilinearForward.KEY);
         final ForwardCoding forward = ComponentFactory.getForward(forwardKey);
         final InverseCoding inverse = ComponentFactory.getInverse(TiePointInverse.KEY);
@@ -250,7 +262,7 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
                 final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
                         sceneRasterWidth, sceneRasterHeight, RESOLUTION_IN_KM);
 
-                final Preferences preferences = Config.instance("s3tbx").preferences();
+                final Preferences preferences = Config.instance("opttbx").preferences();
                 final String inverseKey = preferences.get(SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE, PixelQuadTreeInverse.KEY);
                 final String[] keys = getForwardAndInverseKeys_pixelCoding(inverseKey);
                 final ForwardCoding forward = ComponentFactory.getForward(keys[0]);

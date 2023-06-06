@@ -159,20 +159,20 @@ public class S2OrthoUtils {
     }
 
     static public boolean addNegativeOffset() {
-        final Preferences preferences = Config.instance("s2tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
         final boolean DEFAULT_MASK_ENABLEMENT = true;
-        return preferences.getBoolean("s2tbx.dataio.negativeRadiometricOffset", DEFAULT_MASK_ENABLEMENT);
+        return preferences.getBoolean("opttbx.dataio.s2msi.negativeRadiometricOffset", DEFAULT_MASK_ENABLEMENT);
     }
 
     static public boolean enableECMWFTData() {
-        final Preferences preferences = Config.instance("s2tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
         final boolean DEFAULT_MASK_ENABLEMENT = true;
-        return preferences.getBoolean("s2tbx.dataio.ECMWFTData", DEFAULT_MASK_ENABLEMENT);
+        return preferences.getBoolean("opttbx.dataio.s2msi.ECMWFTData", DEFAULT_MASK_ENABLEMENT);
     }
 
     static public boolean enableCAMSData() {
-        final Preferences preferences = Config.instance("s2tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
         final boolean DEFAULT_MASK_ENABLEMENT = true;
-        return preferences.getBoolean("s2tbx.dataio.CAMSData", DEFAULT_MASK_ENABLEMENT);
+        return preferences.getBoolean("opttbx.dataio.s2msi.CAMSData", DEFAULT_MASK_ENABLEMENT);
     }
 }

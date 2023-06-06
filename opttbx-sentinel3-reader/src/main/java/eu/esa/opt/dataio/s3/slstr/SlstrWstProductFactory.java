@@ -33,7 +33,7 @@ public class SlstrWstProductFactory extends SlstrSstProductFactory {
 
     private static final short[] RESOLUTIONS = new short[]{1000, 1000};
     private static final double RESOLUTION_IN_KM = 1.0;
-    private final static String SYSPROP_SLSTR_WST_PIXEL_INVERSE = "s3tbx.reader.slstr.wst.pixelGeoCoding.inverse";
+    private final static String SYSPROP_SLSTR_WST_PIXEL_INVERSE = "opttbx.reader.slstr.wst.pixelGeoCoding.inverse";
 
     public SlstrWstProductFactory(Sentinel3ProductReader productReader) {
         super(productReader);

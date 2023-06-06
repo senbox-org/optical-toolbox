@@ -38,8 +38,8 @@ import java.util.prefs.Preferences;
 public class SlstrLstProductFactory extends SlstrProductFactory {
 
     private static final double RESOLUTION_IN_KM = 1.0;
-    private final static String SYSPROP_SLSTR_LST_TIE_POINT_FORWARD = "s3tbx.reader.slstr.lst.tiePointGeoCoding.forward";
-    private final static String SYSPROP_SLSTR_LST_PIXEL_INVERSE = "s3tbx.reader.slstr.lst.pixelGeoCoding.inverse";
+    private final static String SYSPROP_SLSTR_LST_TIE_POINT_FORWARD = "opttbx.reader.slstr.lst.tiePointGeoCoding.forward";
+    private final static String SYSPROP_SLSTR_LST_PIXEL_INVERSE = "opttbx.reader.slstr.lst.pixelGeoCoding.inverse";
 
     public SlstrLstProductFactory(Sentinel3ProductReader productReader) {
         super(productReader);
@@ -121,7 +121,7 @@ public class SlstrLstProductFactory extends SlstrProductFactory {
                                                   lonGrid.getOffsetX(), lonGrid.getOffsetY(),
                                                   lonGrid.getSubSamplingX(), lonGrid.getSubSamplingY());
 
-        final Preferences preferences = Config.instance("s3tbx").preferences();
+        final Preferences preferences = Config.instance("opttbx").preferences();
         final String fwdKey = preferences.get(SYSPROP_SLSTR_LST_TIE_POINT_FORWARD, TiePointBilinearForward.KEY);
 
         final ForwardCoding forward = ComponentFactory.getForward(fwdKey);

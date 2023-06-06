@@ -43,7 +43,7 @@ public class GeoCodingTest_PlateCarree {
 
         // read input product and ensure pixel geocoding
         // ---------------------------------------------
-        Config.instance("s3tbx").load().preferences().putBoolean(OLCI_USE_PIXELGEOCODING, false);
+        Config.instance("opttbx").load().preferences().putBoolean(OLCI_USE_PIXELGEOCODING, false);
         // D:\Satellite\reader_tests\sensors_platforms\SENTINEL-3\olci\L1\S3A_OL_1_ERR____20180608T084209_20180608T090412_20180609T114251_1322_032_107______MAR_O_NT_002.SEN3\xfdumanifest.xml
         final Product sourceProduct = ProductIO.readProduct(inputFilePath);
 

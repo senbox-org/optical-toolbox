@@ -173,7 +173,7 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
     }
 
     void load() {
-        final Preferences preferences = Config.instance("s3tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
         slstrL1BPixelGeocodingsCheckBox.setSelected(
                 preferences.getBoolean(SlstrLevel1ProductFactory.SLSTR_L1B_USE_PIXELGEOCODINGS, true));
         slstrL1BOrphanPixelsCheckBox.setSelected(
@@ -193,7 +193,7 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
     }
 
     void store() {
-        final Preferences preferences = Config.instance("s3tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
         preferences.putBoolean(SlstrLevel1ProductFactory.SLSTR_L1B_USE_PIXELGEOCODINGS,
                                slstrL1BPixelGeocodingsCheckBox.isSelected());
         preferences.putBoolean(SlstrLevel1ProductFactory.SLSTR_L1B_LOAD_ORPHAN_PIXELS,

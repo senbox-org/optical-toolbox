@@ -63,12 +63,12 @@ import java.util.Map;
 
 public class SlstrLevel1ProductFactory extends SlstrProductFactory {
 
-    public final static String SLSTR_L1B_USE_PIXELGEOCODINGS = "s3tbx.reader.slstrl1b.pixelGeoCodings";
-    public final static String SLSTR_L1B_PIXEL_GEOCODING_INVERSE = "s3tbx.reader.slstrl1b.pixelGeoCodings.inverse";
-    public final static String SLSTR_L1B_LOAD_ORPHAN_PIXELS = "s3tbx.reader.slstrl1b.loadOrphanPixels";
-    public final static String SLSTR_L1B_CUSTOM_CALIBRATION = "s3tbx.reader.slstrl1b.applyCustomCalibration";
-    public final static String SLSTR_L1B_S3MPC_CALIBRATION = "s3tbx.reader.slstrl1b.applyS3MPCCalibration";
-    private final static String SLSTR_L1B_CALIBRATION_PATTERN = "s3tbx.reader.slstrl1b.ID.calibration.TYPE";
+    public final static String SLSTR_L1B_USE_PIXELGEOCODINGS = "opttbx.reader.slstrl1b.pixelGeoCodings";
+    public final static String SLSTR_L1B_PIXEL_GEOCODING_INVERSE = "opttbx.reader.slstrl1b.pixelGeoCodings.inverse";
+    public final static String SLSTR_L1B_LOAD_ORPHAN_PIXELS = "opttbx.reader.slstrl1b.loadOrphanPixels";
+    public final static String SLSTR_L1B_CUSTOM_CALIBRATION = "opttbx.reader.slstrl1b.applyCustomCalibration";
+    public final static String SLSTR_L1B_S3MPC_CALIBRATION = "opttbx.reader.slstrl1b.applyS3MPCCalibration";
+    private final static String SLSTR_L1B_CALIBRATION_PATTERN = "opttbx.reader.slstrl1b.ID.calibration.TYPE";
     private final static double SLSTR_L1B_S3MPC_S5_NADIR_ADJUSTMENT_FACTOR = 1.12;
     private final static double SLSTR_L1B_S3MPC_S6_NADIR_ADJUSTMENT_FACTOR = 1.13;
     private final static double SLSTR_L1B_S3MPC_S5_OBLIQUE_ADJUSTMENT_FACTOR = 1.15;
@@ -280,20 +280,20 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
     private double getCalibrationOffset(String sourceBandName) {
         String calibrationOffsetPropertyName =
                 SLSTR_L1B_CALIBRATION_PATTERN.replace("ID", sourceBandName.toLowerCase()).replace("TYPE", "offset");
-        return Config.instance("s3tbx").load().preferences().getDouble(calibrationOffsetPropertyName, Double.NaN);
+        return Config.instance("opttbx").load().preferences().getDouble(calibrationOffsetPropertyName, Double.NaN);
     }
 
     private double getCalibrationFactor(String sourceBandName) {
         String calibrationFactorPropertyName =
                 SLSTR_L1B_CALIBRATION_PATTERN.replace("ID", sourceBandName.toLowerCase()).replace("TYPE", "factor");
-        return Config.instance("s3tbx").load().preferences().getDouble(calibrationFactorPropertyName, Double.NaN);
+        return Config.instance("opttbx").load().preferences().getDouble(calibrationFactorPropertyName, Double.NaN);
     }
 
     private double getCalibrationAdjustmentFactor(String sourceBandName) {
         String calibrationFactorPropertyName =
                 SLSTR_L1B_CALIBRATION_PATTERN.replace("ID", sourceBandName.toLowerCase()).
                         replace("TYPE", "adjustment_factor");
-        return Config.instance("s3tbx").load().preferences().getDouble(calibrationFactorPropertyName, Double.NaN);
+        return Config.instance("opttbx").load().preferences().getDouble(calibrationFactorPropertyName, Double.NaN);
     }
 
     private double getS3MPCAdjustmentFactor(String sourceBandName) {
@@ -385,7 +385,7 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
                 final RenderedImage sourceRenderedImage = sourceBand.getSourceImage().getImage(0);
                 //todo remove commented lines when resampling works with scenetransforms
                 //if pixel band geo-codings are used, scenetransforms are set
-//                if (Config.instance("s3tbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, false)) {
+//                if (Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, false)) {
 //                    targetBand.setSourceImage(sourceRenderedImage);
 //                } else {
                 final AffineTransform imageToModelTransform = new AffineTransform();
@@ -471,7 +471,7 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
     protected void setSceneTransforms(Product product) {
         //if tie point band geo-codings are used, imagetomodeltransforms are set
         //todo remove commented lines when resampling works with scenetransforms
-//        if (Config.instance("s3tbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, false)) {
+//        if (Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, false)) {
 //            final Band[] bands = product.getBands();
 //            for (Band band : bands) {
 //                final GeoCoding bandGeoCoding = getBandGeoCoding(product, getGridIndex(band.getName));
@@ -494,7 +494,7 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
 
     @Override
     protected void setBandGeoCodings(Product product) throws IOException {
-        if (Config.instance("s3tbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, true)) {
+        if (Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, true)) {
             setPixelBandGeoCodings(product);
         } else {
             setTiePointBandGeoCodings(product);
@@ -507,15 +507,15 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
     }
 
     protected boolean isOrphanPixelsAllowed() {
-        return Config.instance("s3tbx").load().preferences().getBoolean(SLSTR_L1B_LOAD_ORPHAN_PIXELS, false);
+        return Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_LOAD_ORPHAN_PIXELS, false);
     }
 
     private boolean applyCustomCalibration() {
-        return Config.instance("s3tbx").load().preferences().getBoolean(SLSTR_L1B_CUSTOM_CALIBRATION, false);
+        return Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_CUSTOM_CALIBRATION, false);
     }
 
     private boolean applyS3MPCCalibration() {
-        return Config.instance("s3tbx").load().preferences().getBoolean(SLSTR_L1B_S3MPC_CALIBRATION, false);
+        return Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_S3MPC_CALIBRATION, false);
     }
 
     private void loadOrphanPixelBands(Product targetProduct, final Product sourceProduct) throws IOException {

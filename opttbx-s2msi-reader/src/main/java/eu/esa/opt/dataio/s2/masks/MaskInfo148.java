@@ -19,7 +19,7 @@ package eu.esa.opt.dataio.s2.masks;
 
 import org.esa.snap.runtime.Config;
 
-import java.awt.*;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.prefs.Preferences;
 
@@ -257,18 +257,18 @@ public enum MaskInfo148 {
     }
 
     public boolean isEnabled() {
-        final Preferences preferences = Config.instance("s2tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
         final boolean DEFAULT_MASK_ENABLEMENT = true;
         return preferences.getBoolean(category.getKey(), DEFAULT_MASK_ENABLEMENT);
     }
 
     public enum MaskCategory {
 
-        DETECTOR_FOOTPRINT ("s2tbx.dataio.detectorFootprintMasks"),
-        RADIOMETRIC_QUALITY ("s2tbx.dataio.radiometricQualityMasks"),
-        TECHNICAL_QUALITY ("s2tbx.dataio.technicalQualityMasks"),
-        CLOUD ("s2tbx.dataio.cloudMasks"),
-        CLASSI("s2tbx.dataio.classificationMasks");
+        DETECTOR_FOOTPRINT("opttbx.dataio.s2msi.detectorFootprintMasks"),
+        RADIOMETRIC_QUALITY("opttbx.dataio.s2msi.radiometricQualityMasks"),
+        TECHNICAL_QUALITY("opttbx.dataio.s2msi.technicalQualityMasks"),
+        CLOUD("opttbx.dataio.s2msi.cloudMasks"),
+        CLASSI("opttbx.dataio.s2msi.classificationMasks");
         private final String key;
 
         MaskCategory(String key) {
