@@ -1,7 +1,7 @@
 package eu.esa.opt.coregistration;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;

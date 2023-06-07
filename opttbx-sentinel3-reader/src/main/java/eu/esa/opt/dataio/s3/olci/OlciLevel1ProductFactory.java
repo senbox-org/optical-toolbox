@@ -26,14 +26,16 @@ public class OlciLevel1ProductFactory extends OlciProductFactory {
 
     private final static String validExpression = "!quality_flags.invalid";
 
+    static final String BAND_GROUPING_PATTERN = "Oa*_radiance:Oa*_radiance_unc:Oa*_radiance_err:atmospheric_temperature_profile:" +
+            "lambda0:FWHM:solar_flux";
+
     public OlciLevel1ProductFactory(Sentinel3ProductReader productReader) {
         super(productReader);
     }
 
     @Override
     protected void setAutoGrouping(Product[] sourceProducts, Product targetProduct) {
-        targetProduct.setAutoGrouping("Oa*_radiance:Oa*_radiance_err:atmospheric_temperature_profile:" +
-                "lambda0:FWHM:solar_flux");
+        targetProduct.setAutoGrouping(BAND_GROUPING_PATTERN);
     }
 
     @Override

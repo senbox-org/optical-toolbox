@@ -19,14 +19,14 @@ package eu.esa.opt.dataio.rapideye;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
-import eu.esa.opt.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import eu.esa.opt.dataio.ColorPaletteBand;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.nitf.NITFMetadata;
 import eu.esa.opt.dataio.nitf.NITFReaderWrapper;
 import eu.esa.opt.dataio.rapideye.metadata.RapidEyeConstants;
 import eu.esa.opt.dataio.rapideye.metadata.RapidEyeMetadata;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import eu.esa.opt.dataio.readers.MultipleMetadataGeoTiffBasedReader;
 import org.apache.commons.lang3.StringUtils;
 import org.esa.snap.core.dataio.AbstractProductReader;

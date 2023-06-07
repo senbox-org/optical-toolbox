@@ -34,11 +34,11 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-commons</artifactId>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-engine-utilities</artifactId>
+            <version>${snap.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
-            <version>${opttbx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>

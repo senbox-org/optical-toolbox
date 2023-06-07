@@ -1,8 +1,8 @@
 package eu.esa.opt.dataio.ikonos.metadata;
 
-import eu.esa.opt.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import eu.esa.opt.dataio.ikonos.internal.IkonosConstants;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;

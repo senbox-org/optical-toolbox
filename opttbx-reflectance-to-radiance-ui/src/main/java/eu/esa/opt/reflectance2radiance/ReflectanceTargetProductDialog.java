@@ -8,8 +8,8 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.ui.DefaultIOParametersPanel;
 import org.esa.snap.core.gpf.ui.DefaultSingleTargetProductDialog;
 import org.esa.snap.core.gpf.ui.SourceProductSelector;
+import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.ui.AppContext;
-import org.esa.snap.utils.StringHelper;
 
 import java.util.List;
 
@@ -71,8 +71,8 @@ public class ReflectanceTargetProductDialog extends DefaultSingleTargetProductDi
     private void processSelectedProduct() {
         Product selectedProduct = getSelectedProduct();
         if (selectedProduct != null) {
-            boolean isSentinel2 = StringHelper.startsWithIgnoreCase(selectedProduct.getProductType(), "S2_MSI_Level");
-            boolean isSpot = StringHelper.startsWithIgnoreCase(selectedProduct.getProductType(), "SPOTSCENE");
+            boolean isSentinel2 = StringUtils.startsWithIgnoreCase(selectedProduct.getProductType(), "S2_MSI_Level");
+            boolean isSpot = StringUtils.startsWithIgnoreCase(selectedProduct.getProductType(), "SPOTSCENE");
             BindingContext bindingContext = getBindingContext();
             PropertySet propertySet = bindingContext.getPropertySet();
             propertySet.setDefaultValues();

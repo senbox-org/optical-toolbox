@@ -19,7 +19,7 @@ package eu.esa.opt.dataio.spot6;
 
 import com.bc.ceres.binding.ConversionException;
 import com.bc.ceres.core.NullProgressMonitor;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoPos;

@@ -17,7 +17,7 @@
 
 package eu.esa.opt.dataio.s2.ortho;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.s2.S2Config;
 import eu.esa.opt.dataio.s2.S2ProductReaderPlugIn;
 import eu.esa.opt.dataio.s2.VirtualPath;

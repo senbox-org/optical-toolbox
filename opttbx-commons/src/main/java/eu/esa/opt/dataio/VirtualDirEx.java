@@ -51,6 +51,7 @@ import java.util.stream.Collectors;
  * and proper methods of retrieving the contents of the virtual directory.
  *
  * @author Cosmin Cara
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.dataio.VirtualDirEx} instead
  */
 public abstract class VirtualDirEx extends VirtualDir implements Closeable {
 

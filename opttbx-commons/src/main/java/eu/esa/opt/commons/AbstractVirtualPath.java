@@ -17,6 +17,7 @@ import java.util.zip.GZIPInputStream;
 
 /**
  * Created by jcoravu on 9/4/2019.
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.commons.AbstractVirtualPath} instead
  */
 public abstract class AbstractVirtualPath extends VirtualDir {
 

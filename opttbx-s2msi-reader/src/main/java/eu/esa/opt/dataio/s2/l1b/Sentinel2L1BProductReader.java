@@ -80,7 +80,7 @@ import static eu.esa.opt.dataio.s2.l1b.CoordinateUtils.convertDoublesToFloats;
 import static eu.esa.opt.dataio.s2.l1b.CoordinateUtils.getLatitudes;
 import static eu.esa.opt.dataio.s2.l1b.CoordinateUtils.getLongitudes;
 import static eu.esa.opt.dataio.s2.l1b.metadata.L1bMetadataProc.makeTileInformation;
-import static org.esa.snap.utils.DateHelper.parseDate;
+import static org.esa.snap.core.util.DateTimeUtils.parseDate;
 
 // todo - register reasonable RGB profile(s)
 // todo - set a band's validMaskExpr or no-data value (read from GML)

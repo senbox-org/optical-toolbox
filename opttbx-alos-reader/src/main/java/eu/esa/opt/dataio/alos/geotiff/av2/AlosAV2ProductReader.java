@@ -1,11 +1,11 @@
 package eu.esa.opt.dataio.alos.geotiff.av2;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.opt.commons.FilePathInputStream;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.alos.geotiff.av2.internal.AlosAV2Constants;
 import eu.esa.opt.dataio.alos.geotiff.av2.internal.AlosAV2Metadata;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import org.apache.commons.lang3.StringUtils;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;

@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.alos.geotiff.av2;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.alos.geotiff.av2.internal.AlosAV2Constants;
 import eu.esa.opt.dataio.alos.geotiff.av2.internal.AlosAV2Metadata;
 import org.esa.snap.core.datamodel.GeoCoding;

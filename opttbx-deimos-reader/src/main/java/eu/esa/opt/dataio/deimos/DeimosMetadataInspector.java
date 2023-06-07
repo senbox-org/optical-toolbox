@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.deimos;
 
-import eu.esa.opt.commons.FilePathInputStream;
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.deimos.dimap.DeimosConstants;
 import eu.esa.opt.dataio.deimos.dimap.DeimosMetadata;
 import eu.esa.opt.dataio.readers.MetadataList;

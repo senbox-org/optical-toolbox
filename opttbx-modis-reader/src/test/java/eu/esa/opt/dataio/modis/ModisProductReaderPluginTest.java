@@ -10,12 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class ModisProductReaderPluginTest {
 
@@ -139,7 +134,7 @@ public class ModisProductReaderPluginTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         if (testFile != null) {
             if (!testFile.delete()) {
                 fail("unable to delete test file");

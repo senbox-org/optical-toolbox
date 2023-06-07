@@ -43,6 +43,7 @@ public class CloudAlgorithm {
     /**
      * @deprecated since OPTTBX 10.0; use {@link #CloudAlgorithm(Path, String)}  CloudAlgorithm() } instead
      */
+    @Deprecated
     public CloudAlgorithm(File auxDataDir, String configName) throws IOException {
         this(auxDataDir.toPath(), configName);
     }

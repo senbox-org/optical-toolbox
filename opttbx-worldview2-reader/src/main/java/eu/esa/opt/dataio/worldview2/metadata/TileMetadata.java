@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.worldview2.metadata;
 
 import com.bc.ceres.core.Assert;
-import eu.esa.opt.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import org.esa.snap.core.datamodel.CrsGeoCoding;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;

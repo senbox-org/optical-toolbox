@@ -19,6 +19,10 @@ package eu.esa.opt.meris.smac;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
 
@@ -105,7 +109,7 @@ public class SmacAlgorithmTest {
             0.824207626660916, // coef_MODIS18_DES.dat
     };
 
-    static String _referenceCoeffs[] = {"coef_ASTER1_CONT.dat",
+    static String[] _referenceCoeffs = {"coef_ASTER1_CONT.dat",
             "coef_ASTER1_DES.dat",
             "coef_ASTER2_CONT.dat",
             "coef_ASTER2_DES.dat",
@@ -182,7 +186,7 @@ public class SmacAlgorithmTest {
     static float _defToa = 0.4f;
 
     @Test
-    public void testRun() {
+    public void testRun() throws IOException, URISyntaxException {
         int n;
         SmacAlgorithm smac = new SmacAlgorithm();
 
@@ -214,32 +218,30 @@ public class SmacAlgorithmTest {
             process[n] = true;
         }
 
-        try {
-            SensorCoefficientFile file = new SensorCoefficientFile();
-            String filePath = "../../src/eu/esa/opttoolviews/smac/coefficients/";
+        SensorCoefficientFile file = new SensorCoefficientFile();
+        URL resource = getClass().getResource("/auxdata/smac/coef_ASTER1_CONT.dat");
+        Path basePath = Paths.get(resource.toURI()).getParent();
 
-            // loop over all sensor coefficient files and perform smac
-            for (n = 0; n < _referenceCoeffs.length; n++) {
-                file.readFile(filePath + _referenceCoeffs[n]);
-
-                smac.setSensorCoefficients(file);
-                t_surf = smac.run(sza, saa, vza, vaa, taup550, uh2o, uo3, pressure, process, invalid, toa, t_surf);
-
-                assertEquals(_referenceCoeffs[n], _reference[n], t_surf[0], 1e-7f);
-            }
-
-            // check whether the process boolean array is working properly
-            for (n = 0; n < _vectorSize; n++) {
-                process[n] = false;
-            }
-
-            file.readFile(filePath + _referenceCoeffs[0]);
+        // loop over all sensor coefficient files and perform smac
+        for (n = 0; n < _referenceCoeffs.length; n++) {
+            file.readFile(basePath.resolve(_referenceCoeffs[n]).toAbsolutePath().toString());
 
             smac.setSensorCoefficients(file);
             t_surf = smac.run(sza, saa, vza, vaa, taup550, uh2o, uo3, pressure, process, invalid, toa, t_surf);
-            assertEquals(invalid, t_surf[0], 1e-7f);
-        } catch (IOException ignored) {
+
+            assertEquals(_referenceCoeffs[n], _reference[n], t_surf[0], 1e-7f);
         }
+
+        // check whether the process boolean array is working properly
+        for (n = 0; n < _vectorSize; n++) {
+            process[n] = false;
+        }
+
+        file.readFile(basePath.resolve(_referenceCoeffs[0]).toAbsolutePath().toString());
+
+        smac.setSensorCoefficients(file);
+        t_surf = smac.run(sza, saa, vza, vaa, taup550, uh2o, uo3, pressure, process, invalid, toa, t_surf);
+        assertEquals(invalid, t_surf[0], 1e-7f);
     }
 
 }

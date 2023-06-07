@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.kompsat2;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.kompsat2.internal.Kompsat2Constants;
 import eu.esa.opt.dataio.kompsat2.metadata.BandMetadata;
 import eu.esa.opt.dataio.kompsat2.metadata.BandMetadataUtil;

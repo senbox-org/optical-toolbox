@@ -21,7 +21,7 @@ import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.utils.DateHelper;
+import org.esa.snap.core.util.DateTimeUtils;
 
 /**
  * Specialized <code>XmlMetadata</code> for RapidEye.
@@ -250,7 +250,7 @@ public class RapidEyeMetadata extends XmlMetadata {
                 MetadataElement[] bandSpecificMetadataElements = currentElement.getElements();
                 for (MetadataElement element : bandSpecificMetadataElements) {
                     if (RapidEyeConstants.TAG_BAND_SPECIFIC_METADATA.equals(element.getName())) {
-                        ProductData.UTC currentTime = DateHelper.parseDate(element.getAttributeString(RapidEyeConstants.TAG_START_DATE_TIME, null),
+                        ProductData.UTC currentTime = DateTimeUtils.parseDate(element.getAttributeString(RapidEyeConstants.TAG_START_DATE_TIME, null),
                                                                            RapidEyeConstants.UTC_DATE_FORMAT);
                         if (bandsStartTime == null) {
                             bandsStartTime = currentTime;
@@ -263,7 +263,7 @@ public class RapidEyeMetadata extends XmlMetadata {
         }
         if (((currentElement = rootElement.getElement(RapidEyeConstants.TAG_VALID_TIME)) != null) &&
                     ((currentElement = currentElement.getElement(RapidEyeConstants.TAG_TIME_PERIOD)) != null)) {
-            productStartTime = DateHelper.parseDate(currentElement.getAttributeString(RapidEyeConstants.TAG_BEGIN_POSITION, null),
+            productStartTime = DateTimeUtils.parseDate(currentElement.getAttributeString(RapidEyeConstants.TAG_BEGIN_POSITION, null),
                                                     RapidEyeConstants.UTC_DATE_FORMAT);
         }
         if (productStartTime != null && bandsStartTime != null && !productStartTime.equalElems(bandsStartTime)) {
@@ -284,7 +284,7 @@ public class RapidEyeMetadata extends XmlMetadata {
                 MetadataElement[] bandSpecificMetadataElements = currentElement.getElements();
                 for (MetadataElement element : bandSpecificMetadataElements) {
                     if (RapidEyeConstants.TAG_BAND_SPECIFIC_METADATA.equals(element.getName())) {
-                        ProductData.UTC currentTime = DateHelper.parseDate(element.getAttributeString(RapidEyeConstants.TAG_END_DATE_TIME, null),
+                        ProductData.UTC currentTime = DateTimeUtils.parseDate(element.getAttributeString(RapidEyeConstants.TAG_END_DATE_TIME, null),
                                                                            RapidEyeConstants.UTC_DATE_FORMAT);
                         if (bandsEndTime == null) {
                             bandsEndTime = currentTime;
@@ -297,7 +297,7 @@ public class RapidEyeMetadata extends XmlMetadata {
         }
         if (((currentElement = rootElement.getElement(RapidEyeConstants.TAG_VALID_TIME)) != null) &&
                 ((currentElement = currentElement.getElement(RapidEyeConstants.TAG_TIME_PERIOD)) != null)) {
-            productEndTime = DateHelper.parseDate(currentElement.getAttributeString(RapidEyeConstants.TAG_END_POSITION, null),
+            productEndTime = DateTimeUtils.parseDate(currentElement.getAttributeString(RapidEyeConstants.TAG_END_POSITION, null),
                                                   RapidEyeConstants.UTC_DATE_FORMAT);
         }
         if (productEndTime != null && bandsEndTime != null && !productEndTime.equalElems(bandsEndTime)) {
@@ -314,7 +314,7 @@ public class RapidEyeMetadata extends XmlMetadata {
         if (startTime != null) {
             ProductData.UTC endTime = getProductEndTime();
             if (endTime != null) {
-                centerTime = DateHelper.average(startTime, endTime);
+                centerTime = DateTimeUtils.average(startTime, endTime);
             }
         }
         return centerTime;

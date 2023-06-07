@@ -1,6 +1,6 @@
 package eu.esa.opt.mapper;
 
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.junit.Before;
 

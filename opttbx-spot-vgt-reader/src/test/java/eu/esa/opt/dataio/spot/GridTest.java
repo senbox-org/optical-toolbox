@@ -16,6 +16,8 @@
 
 package eu.esa.opt.dataio.spot;
 
+import org.esa.snap.core.util.SystemUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.media.jai.BorderExtender;
@@ -24,8 +26,14 @@ import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.CropDescriptor;
 import javax.media.jai.operator.ScaleDescriptor;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
@@ -38,57 +46,9 @@ public class GridTest {
     private static final int MAX_USHORT = (2 << 15) - 1;
     private static final int SAMPLING = 100;
 
-    @Test
-    public void testJaiImageScaling() throws Exception {
-        int destW = 1024;
-        int destH = 512;
-
-        int srcW = destW / SAMPLING + 1;
-        int srcH = destH / SAMPLING + 1;
-
-        BufferedImage srcImg = createSrcImage(srcW, srcH);
-
-        int tempW = srcW * SAMPLING + 1;
-        int tempH = srcH * SAMPLING + 1;
-        float xScale = (float) tempW / (float) srcW;
-        float yScale = (float) tempH / (float) srcH;
-
-        // dstMinX   = 0
-        // dstMinY   = 0
-        // dstWidth  = ceil(srcWidth  * scaleX - 0.5 + transX)
-        // dstHeight = ceil(srcHeight * scaleY - 0.5 + transY)
-        //
-        RenderingHints renderingHints = new RenderingHints(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
-        RenderedOp tempImg = ScaleDescriptor.create(srcImg, xScale, yScale, -0.5f * SAMPLING + 1, -0.5f * SAMPLING + 1,
-                                                    Interpolation.getInstance(Interpolation.INTERP_BILINEAR), renderingHints);
-
-        assertEquals(tempW, tempImg.getWidth());
-        assertEquals(tempH, tempImg.getHeight());
-
-        RenderedOp dstImg = CropDescriptor.create(tempImg, 0f, 0f, (float) destW, (float) destH, null);
-
-        assertEquals(1024, dstImg.getWidth());
-        assertEquals(512, dstImg.getHeight());
-
-        Raster data = dstImg.getData();
-        assertEquals(MAX_USHORT, data.getSample(0, 0, 0));
-        assertEquals(MAX_USHORT, data.getSample(destW - 1, 0, 0));
-        assertEquals(MAX_USHORT, data.getSample(0, destH - 1, 0));
-        assertEquals(MAX_USHORT, data.getSample(destW - 1, destH - 1, 0));
-    }
-
-    private static BufferedImage createSrcImage(int srcW, int srcH) {
-        BufferedImage srcImg = new BufferedImage(srcW, srcH, BufferedImage.TYPE_USHORT_GRAY);
-        for (int y = 0; y < srcH; y++) {
-            for (int x = 0; x < srcW; x++) {
-                srcImg.getRaster().setSample(x, y, 0, (int) (MAX_USHORT * Math.random()));
-            }
-        }
-        srcImg.getRaster().setSample(0, 0, 0, MAX_USHORT);
-        srcImg.getRaster().setSample(srcW - 1, 0, 0, MAX_USHORT);
-        srcImg.getRaster().setSample(0, srcH - 1, 0, MAX_USHORT);
-        srcImg.getRaster().setSample(srcW - 1, srcH - 1, 0, MAX_USHORT);
-        return srcImg;
+    @BeforeClass
+    public static void beforeClass() {
+        SystemUtils.initJAI(GridTest.class);
     }
 
     public static void main(String[] args) {
@@ -102,8 +62,8 @@ public class GridTest {
 
         int tempW = srcW * SAMPLING + 1;
         int tempH = srcH * SAMPLING + 1;
-        float xScale = (float) tempW / (float) srcW;
-        float yScale = (float) tempH / (float) srcH;
+        float xScale = tempW / (float) srcW;
+        float yScale = tempH / (float) srcH;
         float xTrans = -SAMPLING * 0.5f;
         float yTrans = -SAMPLING * 0.5f;
 
@@ -125,6 +85,59 @@ public class GridTest {
 
             showImage("[" + i + "] - " + interpolation, image);
         }
+    }
+
+    private static BufferedImage createSrcImage(int srcW, int srcH) {
+        BufferedImage srcImg = new BufferedImage(srcW, srcH, BufferedImage.TYPE_USHORT_GRAY);
+        for (int y = 0; y < srcH; y++) {
+            for (int x = 0; x < srcW; x++) {
+                srcImg.getRaster().setSample(x, y, 0, (int) (MAX_USHORT * Math.random()));
+            }
+        }
+        srcImg.getRaster().setSample(0, 0, 0, MAX_USHORT);
+        srcImg.getRaster().setSample(srcW - 1, 0, 0, MAX_USHORT);
+        srcImg.getRaster().setSample(0, srcH - 1, 0, MAX_USHORT);
+        srcImg.getRaster().setSample(srcW - 1, srcH - 1, 0, MAX_USHORT);
+        return srcImg;
+    }
+
+    @Test
+    public void testJaiImageScaling() {
+        int destW = 1024;
+        int destH = 512;
+
+        int srcW = destW / SAMPLING + 1;
+        int srcH = destH / SAMPLING + 1;
+
+        BufferedImage srcImg = createSrcImage(srcW, srcH);
+
+        int tempW = srcW * SAMPLING + 1;
+        int tempH = srcH * SAMPLING + 1;
+        float xScale = tempW / (float) srcW;
+        float yScale = tempH / (float) srcH;
+
+        // dstMinX   = 0
+        // dstMinY   = 0
+        // dstWidth  = ceil(srcWidth  * scaleX - 0.5 + transX)
+        // dstHeight = ceil(srcHeight * scaleY - 0.5 + transY)
+        //
+        RenderingHints renderingHints = new RenderingHints(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
+        RenderedOp tempImg = ScaleDescriptor.create(srcImg, xScale, yScale, -0.5f * SAMPLING + 1, -0.5f * SAMPLING + 1,
+                Interpolation.getInstance(Interpolation.INTERP_BILINEAR), renderingHints);
+
+        assertEquals(tempW, tempImg.getWidth());
+        assertEquals(tempH, tempImg.getHeight());
+
+        RenderedOp dstImg = CropDescriptor.create(tempImg, 0f, 0f, (float) destW, (float) destH, null);
+
+        assertEquals(1024, dstImg.getWidth());
+        assertEquals(512, dstImg.getHeight());
+
+        Raster data = dstImg.getData();
+        assertEquals(MAX_USHORT, data.getSample(0, 0, 0));
+        assertEquals(MAX_USHORT, data.getSample(destW - 1, 0, 0));
+        assertEquals(MAX_USHORT, data.getSample(0, destH - 1, 0));
+        assertEquals(MAX_USHORT, data.getSample(destW - 1, destH - 1, 0));
     }
 
     private static void showImage(String name, final RenderedImage image) {

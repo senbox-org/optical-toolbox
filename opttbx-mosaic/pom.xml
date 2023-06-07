@@ -113,6 +113,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-gdal-reader</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>3.2.2</version>
@@ -124,11 +130,6 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-commons</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-gdal-reader</artifactId>
-            <version>10.0.0-SNAPSHOT</version>
         </dependency>
 
 

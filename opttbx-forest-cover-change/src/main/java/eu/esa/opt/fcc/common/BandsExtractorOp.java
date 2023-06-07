@@ -11,7 +11,6 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 import org.esa.snap.core.util.ProductUtils;
-import org.esa.snap.utils.ProductHelper;
 
 /**
  * @author Razvan Dumitrascu
@@ -60,8 +59,8 @@ public class BandsExtractorOp extends Operator {
         if (sourceMaskNames != null && sourceMaskNames.length > 0) {
             // first the bands have to be copied and then the masks, otherwise the referenced bands, e.g. flag band,
             // is not contained in the target product and the mask is not copied
-            ProductHelper.copyFlagBands(sourceProduct, product, true);
-            ProductHelper.copyMasks(sourceProduct, product, sourceMaskNames);
+            ProductUtils.copyFlagBandsWithoutMasks(sourceProduct, product, true);
+            ProductUtils.copyMasks(sourceProduct, product, sourceMaskNames);
         }
 
         for (int i=0; i<sourceBandNames.length; i++) {

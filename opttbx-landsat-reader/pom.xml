@@ -45,8 +45,9 @@
             <artifactId>netcdfAll</artifactId>
         </dependency>
         <dependency>
-            <groupId>eu.esa.opt</groupId>
-            <artifactId>opttbx-commons</artifactId>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-engine-utilities</artifactId>
+            <version>${snap.version}</version>
         </dependency>
         <!--<dependency>
             <groupId>org.xeustechnologies</groupId>

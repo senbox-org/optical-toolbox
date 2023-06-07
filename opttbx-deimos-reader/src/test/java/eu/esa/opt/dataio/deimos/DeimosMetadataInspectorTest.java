@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.deimos;
 
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.junit.Test;
 

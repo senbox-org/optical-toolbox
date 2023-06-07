@@ -43,7 +43,7 @@ import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.landcover.dataio.LandCoverFactory;
 import org.esa.snap.landcover.gpf.AddLandCoverOp;
-import org.esa.snap.utils.StringHelper;
+import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.utils.matrix.IntMatrix;
 
 import javax.media.jai.JAI;
@@ -160,10 +160,10 @@ public class ForestCoverChangeOp extends Operator {
     public void initialize() {
         validateSourceProducts();
 
-        if (StringHelper.isNullOrEmpty(this.landCoverName)) {
+        if (StringUtils.isNullOrBlank(this.landCoverName)) {
             throw new OperatorException("No land cover name specified.");
         }
-        if (StringHelper.isNullOrEmpty(this.landCoverMapIndices)) {
+        if (StringUtils.isNullOrBlank(this.landCoverMapIndices)) {
             throw new OperatorException("No land cover map indices specified.");
         }
         this.currentProductBandsNames = findBandNames(this.currentSourceProduct);
@@ -449,7 +449,7 @@ public class ForestCoverChangeOp extends Operator {
     }
 
     public static boolean isSentinelProduct(Product product) {
-        return StringHelper.startsWithIgnoreCase(product.getProductType(), "S2_MSI_Level");
+        return StringUtils.startsWithIgnoreCase(product.getProductType(), "S2_MSI_Level");
     }
 
     private static Product resampleAllBands(Product sourceProduct, int targetWidth, int targetHeight) {

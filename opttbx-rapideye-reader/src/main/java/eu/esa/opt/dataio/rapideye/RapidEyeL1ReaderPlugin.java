@@ -18,7 +18,7 @@
 package eu.esa.opt.dataio.rapideye;
 
 import eu.esa.opt.dataio.rapideye.metadata.RapidEyeConstants;
-import eu.esa.opt.dataio.readers.BaseProductReaderPlugIn;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import org.apache.commons.lang3.SystemUtils;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;

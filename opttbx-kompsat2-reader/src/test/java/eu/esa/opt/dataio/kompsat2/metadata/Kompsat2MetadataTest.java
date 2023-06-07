@@ -1,9 +1,9 @@
 package eu.esa.opt.dataio.kompsat2.metadata;
 
-import eu.esa.opt.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.kompsat2.Kompsat2ProductReader;
 import eu.esa.opt.dataio.kompsat2.internal.Kompsat2Constants;
-import eu.esa.opt.utils.TestUtil;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;

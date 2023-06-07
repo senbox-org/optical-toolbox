@@ -24,6 +24,9 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.utils.TestUtil} instead
+ */
 public class TestUtil {
 
     public static final String PROPERTYNAME_DATA_DIR = "snap.reader.tests.data.dir";

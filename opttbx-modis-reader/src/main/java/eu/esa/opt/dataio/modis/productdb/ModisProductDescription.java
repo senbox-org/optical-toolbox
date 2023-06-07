@@ -23,23 +23,23 @@ import java.util.Vector;
 
 public class ModisProductDescription {
 
-    private Vector _bandVec;
-    private HashMap _bands;
-    private HashMap _tiePoints;
-    private Vector _tiePointVec;
+    private final Vector<ModisBandDescription> bandVec;
+    private final HashMap<String, ModisBandDescription> bands;
+    private final HashMap<String, ModisTiePointDescription> tiePoints;
+    private final Vector<ModisTiePointDescription> tiePointVec;
 
-    private String[] _geolocationDatasetNames;
-    private String _externalGeolocationPattern;
-    private boolean _flipTopDown;
+    private String[] geolocationDatasetNames;
+    private String externalGeolocationPattern;
+    private boolean flipTopDown;
 
     /**
      * Constructs the object with default parameters.
      */
     public ModisProductDescription() {
-        _bands = new HashMap();
-        _bandVec = new Vector();
-        _tiePoints = new HashMap();
-        _tiePointVec = new Vector();
+        bands = new HashMap<>();
+        bandVec = new Vector<>();
+        tiePoints = new HashMap<>();
+        tiePointVec = new Vector<>();
     }
 
     /**
@@ -90,8 +90,8 @@ public class ModisProductDescription {
     }
 
     private void addBand(final ModisBandDescription bandDesc) {
-        _bandVec.add(bandDesc);
-        _bands.put(bandDesc.getName(), bandDesc);
+        bandVec.add(bandDesc);
+        bands.put(bandDesc.getName(), bandDesc);
     }
 
     /**
@@ -100,10 +100,10 @@ public class ModisProductDescription {
      * @return the names of the scientific datasets.
      */
     public String[] getBandNames() {
-        String[] strRet = new String[_bandVec.size()];
+        String[] strRet = new String[bandVec.size()];
 
-        for (int n = 0; n < _bandVec.size(); n++) {
-            strRet[n] = ((ModisBandDescription) _bandVec.get(n)).getName();
+        for (int n = 0; n < bandVec.size(); n++) {
+            strRet[n] = bandVec.get(n).getName();
         }
         return strRet;
     }
@@ -111,12 +111,11 @@ public class ModisProductDescription {
     /**
      * Retrieves the description for the band with the given name
      *
-     * @param bandName
-     *
+     * @param bandName the band name
      * @return the description of the band
      */
     public ModisBandDescription getBandDescription(String bandName) {
-        return (ModisBandDescription) _bands.get(bandName);
+        return bands.get(bandName);
     }
 
     /**
@@ -132,10 +131,20 @@ public class ModisProductDescription {
     }
 
     /**
+     * Gets the geolocation dataset names.
+     *
+     * @return the geolocation dataset names. Can be null. If not null {@code geolocationDatasetNames[0]} is the name of the dataset providing the latitude values
+     *         {@code geolocationDatasetNames[1]} is the name of the dataset providing the longitude values
+     */
+    public String[] getGeolocationDatasetNames() {
+        return geolocationDatasetNames;
+    }
+
+    /**
      * Sets the geolocation dataset names.
      *
-     * @param geolocationDatasetNames if not null <code>geolocationDatasetNames[0]</code> is the name of the dataset providing the latitude values
-     *                                <code>geolocationDatasetNames[1]</code> is the name of the dataset providing the longitude values
+     * @param geolocationDatasetNames if not null {@code geolocationDatasetNames[0]} is the name of the dataset providing the latitude values
+     *                                {@code geolocationDatasetNames[1]} is the name of the dataset providing the longitude values
      */
     public void setGeolocationDatasetNames(String[] geolocationDatasetNames) {
         Guardian.assertNotNull("geolocationDatasetNames", geolocationDatasetNames);
@@ -144,17 +153,16 @@ public class ModisProductDescription {
         }
         Guardian.assertNotNull("geolocationDatasetNames[0]", geolocationDatasetNames[0]);
         Guardian.assertNotNull("geolocationDatasetNames[1]", geolocationDatasetNames[1]);
-        _geolocationDatasetNames = geolocationDatasetNames;
+        this.geolocationDatasetNames = geolocationDatasetNames;
     }
 
     /**
-     * Gets the geolocation dataset names.
+     * Gets the pattern string for the external geolocation.
      *
-     * @return the geolocation dataset names. Can be null. If not null <code>geolocationDatasetNames[0]</code> is the name of the dataset providing the latitude values
-     *         <code>geolocationDatasetNames[1]</code> is the name of the dataset providing the longitude values
+     * @return the pattern for the external geolocation or null
      */
-    public String[] getGeolocationDatasetNames() {
-        return _geolocationDatasetNames;
+    public String getExternalGeolocationPattern() {
+        return externalGeolocationPattern;
     }
 
     /**
@@ -164,16 +172,7 @@ public class ModisProductDescription {
      */
     public void setExternalGeolocationPattern(String externalGeolocationPattern) {
         Debug.trace("ModisProductDescription.externalGeolocationPattern = " + externalGeolocationPattern);
-        _externalGeolocationPattern = externalGeolocationPattern;
-    }
-
-    /**
-     * Gets the pattern string for the external geolocation.
-     *
-     * @return the pattern for the external geolocation or null
-     */
-    public String getExternalGeolocationPattern() {
-        return _externalGeolocationPattern;
+        this.externalGeolocationPattern = externalGeolocationPattern;
     }
 
     /**
@@ -182,17 +181,17 @@ public class ModisProductDescription {
      * @return true, if so
      */
     public boolean hasExternalGeolocation() {
-        return _externalGeolocationPattern != null /*&& _geolocationDatasetNames == null*/;
+        return externalGeolocationPattern != null /*&& _geolocationDatasetNames == null*/;
     }
 
     /**
      * Adds a tie point grid to the product description
      *
-     * @param desc
+     * @param desc the description of the tie-point grid
      */
     void addTiePointGrid(final ModisTiePointDescription desc) {
-        _tiePoints.put(desc.getName(), desc);
-        _tiePointVec.add(desc);
+        tiePoints.put(desc.getName(), desc);
+        tiePointVec.add(desc);
     }
 
     /**
@@ -201,10 +200,10 @@ public class ModisProductDescription {
      * @return the names of the tie point grids.
      */
     public String[] getTiePointNames() {
-        String[] strRet = new String[_tiePointVec.size()];
+        String[] strRet = new String[tiePointVec.size()];
 
-        for (int n = 0; n < _tiePointVec.size(); n++) {
-            strRet[n] = ((ModisTiePointDescription) _tiePointVec.get(n)).getName();
+        for (int n = 0; n < tiePointVec.size(); n++) {
+            strRet[n] = tiePointVec.get(n).getName();
         }
         return strRet;
     }
@@ -212,29 +211,29 @@ public class ModisProductDescription {
     /**
      * Retrieves the tie point description for the given tie point name
      *
-     * @param name
+     * @param name the name
      *
      * @return the description of the tie point.
      */
     public ModisTiePointDescription getTiePointDescription(String name) {
-        return (ModisTiePointDescription) _tiePoints.get(name);
+        return tiePoints.get(name);
     }
 
     /**
      * Sets whether to flip top down the product or not
      *
-     * @param bFlip
+     * @param bFlip Whether to flip the product vertically
      */
     void setTopDownFlip(boolean bFlip) {
-        _flipTopDown = bFlip;
+        flipTopDown = bFlip;
     }
 
     /**
      * Retrieves whether the product has to be flipped top down or not
      *
-     * @return <code>true</code> if the product has to be flipped top down, otherwise <code>false</code>.
+     * @return {@code true} if the product has to be flipped top down, otherwise {@code false}.
      */
     public boolean mustFlipTopDown() {
-        return _flipTopDown;
+        return flipTopDown;
     }
 }
