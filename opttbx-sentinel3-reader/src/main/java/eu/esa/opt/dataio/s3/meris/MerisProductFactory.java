@@ -31,7 +31,7 @@ public class MerisProductFactory extends AbstractProductFactory {
     private int subSamplingY;
     private int rows;
     private int columns;
-    public final static String MERIS_SAFE_USE_PIXELGEOCODING = "s3tbx.reader.meris.pixelGeoCoding";
+    public final static String MERIS_SAFE_USE_PIXELGEOCODING = "opttbx.reader.meris.pixelGeoCoding";
 
     public MerisProductFactory(Sentinel3ProductReader productReader) {
         super(productReader);
@@ -118,7 +118,7 @@ public class MerisProductFactory extends AbstractProductFactory {
     @Override
     protected void setGeoCoding(Product targetProduct) {
         // @todo 1 tb/tb replace this with the new implementation 2020-01-27
-        if (Config.instance("s3tbx").load().preferences().getBoolean(MERIS_SAFE_USE_PIXELGEOCODING, true)) {
+        if (Config.instance("opttbx").load().preferences().getBoolean(MERIS_SAFE_USE_PIXELGEOCODING, true)) {
             final Band latBand = targetProduct.getBand("latitude");
             final Band lonBand = targetProduct.getBand("longitude");
             if (latBand != null && lonBand != null) {

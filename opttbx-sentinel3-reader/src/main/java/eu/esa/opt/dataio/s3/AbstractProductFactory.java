@@ -477,8 +477,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
         final Preferences snapPreferences = Config.instance("snap").preferences();
         final boolean useFractAccuracy = snapPreferences.getBoolean(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY, false);
 
-        final Preferences s3TbxPreferences = Config.instance("s3tbx").preferences();
-        codingNames[1] = s3TbxPreferences.get(inverseCodingProperty, PixelQuadTreeInverse.KEY);
+        final Preferences opttbxPreferences = Config.instance("opttbx").preferences();
+        codingNames[1] = opttbxPreferences.get(inverseCodingProperty, PixelQuadTreeInverse.KEY);
         if (useFractAccuracy) {
             codingNames[0] = PixelInterpolatingForward.KEY;
             codingNames[1] = codingNames[1].concat(KEY_SUFFIX_INTERPOLATING);

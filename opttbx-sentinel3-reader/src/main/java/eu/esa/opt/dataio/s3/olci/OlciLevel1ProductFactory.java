@@ -21,8 +21,8 @@ import org.esa.snap.runtime.Config;
 
 public class OlciLevel1ProductFactory extends OlciProductFactory {
 
-    public final static String OLCI_L1_CUSTOM_CALIBRATION = "s3tbx.reader.olcil1.applyCustomCalibration";
-    private final static String OLCI_L1_CALIBRATION_PATTERN = "s3tbx.reader.olcil1.ID.calibration.TYPE";
+    public final static String OLCI_L1_CUSTOM_CALIBRATION = "opttbx.reader.olcil1.applyCustomCalibration";
+    private final static String OLCI_L1_CALIBRATION_PATTERN = "opttbx.reader.olcil1.ID.calibration.TYPE";
 
     private final static String validExpression = "!quality_flags.invalid";
 
@@ -44,19 +44,19 @@ public class OlciLevel1ProductFactory extends OlciProductFactory {
     }
 
     private boolean applyCustomCalibration() {
-        return Config.instance("s3tbx").load().preferences().getBoolean(OLCI_L1_CUSTOM_CALIBRATION, false);
+        return Config.instance("opttbx").load().preferences().getBoolean(OLCI_L1_CUSTOM_CALIBRATION, false);
     }
 
     private double getCalibrationOffset(String bandName) {
         String calibrationOffsetPropertyName =
                 OLCI_L1_CALIBRATION_PATTERN.replace("ID", bandName.toLowerCase()).replace("TYPE", "offset");
-        return Config.instance("s3tbx").load().preferences().getDouble(calibrationOffsetPropertyName, Double.NaN);
+        return Config.instance("opttbx").load().preferences().getDouble(calibrationOffsetPropertyName, Double.NaN);
     }
 
     private double getCalibrationFactor(String bandName) {
         String calibrationFactorPropertyName =
                 OLCI_L1_CALIBRATION_PATTERN.replace("ID", bandName.toLowerCase()).replace("TYPE", "factor");
-        return Config.instance("s3tbx").load().preferences().getDouble(calibrationFactorPropertyName, Double.NaN);
+        return Config.instance("opttbx").load().preferences().getDouble(calibrationFactorPropertyName, Double.NaN);
     }
 
     @Override

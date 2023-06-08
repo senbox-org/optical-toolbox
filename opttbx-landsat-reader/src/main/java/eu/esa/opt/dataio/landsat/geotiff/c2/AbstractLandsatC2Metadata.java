@@ -213,7 +213,7 @@ abstract class AbstractLandsatC2Metadata extends AbstractLandsatMetadata {
     }
 
     protected String getSpectralInputString() {
-        final Preferences preferences = Config.instance("s3tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String readAs = preferences.get(LandsatGeotiffReader.SYSPROP_READ_AS, null);
         String spectralInput;
         if (readAs != null) {

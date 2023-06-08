@@ -291,7 +291,7 @@ public class SpotVgtProductReader extends AbstractProductReader {
     private Band addBand(Product product, int bandDataType, BandInfo bandInfo, NetcdfFile netcdfFile,
                          Variable variable) {
         Band band = product.addBand(bandInfo.name, bandDataType);
-        if (!Boolean.getBoolean("s3tbx.spotvgt.donotapplysolarilluminationfactor") &&
+        if (!Boolean.getBoolean("opttbx.spotvgt.donotapplysolarilluminationfactor") &&
                 product.getName().matches("V.KRNP.*") &&
                 ("B0".equals(bandInfo.name) ||
                         "B2".equals(bandInfo.name) ||

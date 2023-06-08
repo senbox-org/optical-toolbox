@@ -5,15 +5,9 @@ import org.esa.snap.runtime.Config;
 import org.openide.awt.Mnemonics;
 import org.openide.util.NbBundle;
 
-import java.awt.Dimension;
+import javax.swing.JLabel;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-
-import com.bc.ceres.swing.TableLayout;
 
 /**
  * Created by obarrile on 27/06/2016.
@@ -145,37 +139,37 @@ public class S2ReaderPanel extends javax.swing.JPanel {
     }
 
     void load() {
-        final Preferences preferences = Config.instance("s2tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
 
         detectorFootprintMasks.setSelected(
-                preferences.getBoolean("s2tbx.dataio.detectorFootprintMasks", true));
+                preferences.getBoolean("opttbx.dataio.s2msi.detectorFootprintMasks", true));
         radiometricQualityMasks.setSelected(
-                preferences.getBoolean("s2tbx.dataio.radiometricQualityMasks", true));
+                preferences.getBoolean("opttbx.dataio.s2msi.radiometricQualityMasks", true));
         technicalQualityMasks.setSelected(
-                preferences.getBoolean("s2tbx.dataio.technicalQualityMasks", true));
+                preferences.getBoolean("opttbx.dataio.s2msi.technicalQualityMasks", true));
         cloudMasks.setSelected(
-                preferences.getBoolean("s2tbx.dataio.cloudMasks", true));
+                preferences.getBoolean("opttbx.dataio.s2msi.cloudMasks", true));
         classificationMasks.setSelected(
-                preferences.getBoolean("s2tbx.dataio.classificationMasks", true));
+                preferences.getBoolean("opttbx.dataio.s2msi.classificationMasks", true));
         ECMWFTData.setSelected(
-                preferences.getBoolean("s2tbx.dataio.ECMWFTData", true));
+                preferences.getBoolean("opttbx.dataio.s2msi.ECMWFTData", true));
         CAMSData.setSelected(
-            preferences.getBoolean("s2tbx.dataio.CAMSData", true));
+                preferences.getBoolean("opttbx.dataio.s2msi.CAMSData", true));
         addNegativeOffset.setSelected(
-                preferences.getBoolean("s2tbx.dataio.negativeRadiometricOffset", false));
+                preferences.getBoolean("opttbx.dataio.s2msi.negativeRadiometricOffset", false));
     }
 
     void store() {
-        final Preferences preferences = Config.instance("s2tbx").load().preferences();
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
 
-        preferences.putBoolean("s2tbx.dataio.detectorFootprintMasks", detectorFootprintMasks.isSelected());
-        preferences.putBoolean("s2tbx.dataio.radiometricQualityMasks", radiometricQualityMasks.isSelected());
-        preferences.putBoolean("s2tbx.dataio.technicalQualityMasks", technicalQualityMasks.isSelected());
-        preferences.putBoolean("s2tbx.dataio.cloudMasks", cloudMasks.isSelected());
-        preferences.putBoolean("s2tbx.dataio.classificationMasks", classificationMasks.isSelected());
-        preferences.putBoolean("s2tbx.dataio.ECMWFTData", ECMWFTData.isSelected());
-        preferences.putBoolean("s2tbx.dataio.CAMSData", CAMSData.isSelected());
-        preferences.putBoolean("s2tbx.dataio.negativeRadiometricOffset", addNegativeOffset.isSelected());
+        preferences.putBoolean("opttbx.dataio.s2msi.detectorFootprintMasks", detectorFootprintMasks.isSelected());
+        preferences.putBoolean("opttbx.dataio.s2msi.radiometricQualityMasks", radiometricQualityMasks.isSelected());
+        preferences.putBoolean("opttbx.dataio.s2msi.technicalQualityMasks", technicalQualityMasks.isSelected());
+        preferences.putBoolean("opttbx.dataio.s2msi.cloudMasks", cloudMasks.isSelected());
+        preferences.putBoolean("opttbx.dataio.s2msi.classificationMasks", classificationMasks.isSelected());
+        preferences.putBoolean("opttbx.dataio.s2msi.ECMWFTData", ECMWFTData.isSelected());
+        preferences.putBoolean("opttbx.dataio.s2msi.CAMSData", CAMSData.isSelected());
+        preferences.putBoolean("opttbx.dataio.s2msi.negativeRadiometricOffset", addNegativeOffset.isSelected());
 
         try {
             preferences.flush();

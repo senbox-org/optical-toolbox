@@ -28,9 +28,14 @@ import org.esa.snap.rcp.util.BrowserUtils;
 import org.openide.modules.ModuleInfo;
 import org.openide.modules.Modules;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -38,10 +43,10 @@ import java.util.TimeZone;
 /**
  * @author DianaH
  */
-@AboutBox(displayName = "OpticalTBX", position = 20)
+@AboutBox(displayName = "Optical", position = 20)
 public class OpttbxAboutBox extends JPanel {
 
-    private final static String releaseNotesUrlString = "https://github.com/senbox-org/optical-toolbox/blob/master/ReleaseNotes.md";
+    private final static String releaseNotesUrlString = "https://senbox.atlassian.net/jira/software/c/projects/SNAP/issues/?jql=project%20%3D%20%22SNAP%22%20AND%20component%20%3D%20Optical%20AND%20fixversion%20%3D%20"; // the version is appended in the code below
 
     public OpttbxAboutBox() {
         super(new BorderLayout(4, 4));

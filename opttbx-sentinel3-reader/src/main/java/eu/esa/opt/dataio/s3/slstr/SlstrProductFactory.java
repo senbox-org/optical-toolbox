@@ -48,7 +48,7 @@ import java.util.prefs.Preferences;
 
 public abstract class SlstrProductFactory extends AbstractProductFactory {
 
-    private final static String SYSPROP_SLSTR_PIXEL_TIE_POINT_FORWARD = "s3tbx.reader.slstr.tiePointGeoCoding.forward";
+    private final static String SYSPROP_SLSTR_PIXEL_TIE_POINT_FORWARD = "opttbx.reader.slstr.tiePointGeoCoding.forward";
     private static final String[] SLSTR_GRID_INDEXES = new String[]{
             "an", "ao", "bn", "bo", "cn", "co", "in", "io", "fn", "fo", "tn", "to", "tx"
     };
@@ -194,7 +194,7 @@ public abstract class SlstrProductFactory extends AbstractProductFactory {
                                                   lonGrid.getOffsetX(), lonGrid.getOffsetY(),
                                                   lonGrid.getSubSamplingX(), lonGrid.getSubSamplingY());
 
-        final Preferences preferences = Config.instance("s3tbx").preferences();
+        final Preferences preferences = Config.instance("opttbx").preferences();
         final String fwdKey = preferences.get(SYSPROP_SLSTR_PIXEL_TIE_POINT_FORWARD, TiePointBilinearForward.KEY);
 
         final ForwardCoding forward = ComponentFactory.getForward(fwdKey);

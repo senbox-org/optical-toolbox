@@ -37,9 +37,9 @@ import java.util.regex.Pattern;
  */
 public abstract class OlciProductFactory extends AbstractProductFactory {
 
-    public final static String OLCI_USE_PIXELGEOCODING = "s3tbx.reader.olci.pixelGeoCoding";
-    final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "s3tbx.reader.olci.tiePointGeoCoding.forward";
-    private final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "s3tbx.reader.olci.pixelGeoCoding.inverse";
+    public final static String OLCI_USE_PIXELGEOCODING = "opttbx.reader.olci.pixelGeoCoding";
+    final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "opttbx.reader.olci.tiePointGeoCoding.forward";
+    private final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "opttbx.reader.olci.pixelGeoCoding.inverse";
     private final static String[] excludedIDs = new String[]{"removedPixelsData"};
     private final Map<String, Float> nameToWavelengthMap;
     private final Map<String, Float> nameToBandwidthMap;
@@ -91,7 +91,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     static String[] getForwardAndInverseKeys_tiePointCoding() {
         final String[] codingNames = new String[2];
 
-        final Preferences preferences = Config.instance("s3tbx").preferences();
+        final Preferences preferences = Config.instance("opttbx").preferences();
         codingNames[0] = preferences.get(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD, TiePointBilinearForward.KEY);
         codingNames[1] = TiePointInverse.KEY;
 
@@ -148,7 +148,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
 
     @Override
     protected void setGeoCoding(Product targetProduct) throws IOException {
-        if (Config.instance("s3tbx").load().preferences().getBoolean(OLCI_USE_PIXELGEOCODING, true)) {
+        if (Config.instance("opttbx").load().preferences().getBoolean(OLCI_USE_PIXELGEOCODING, true)) {
             setPixelGeoCoding(targetProduct);
         } else {
             setTiePointGeoCoding(targetProduct);
