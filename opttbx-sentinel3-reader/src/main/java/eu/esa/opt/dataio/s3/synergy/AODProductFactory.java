@@ -10,24 +10,20 @@ import org.esa.snap.core.dataio.geocoding.ForwardCoding;
 import org.esa.snap.core.dataio.geocoding.GeoChecks;
 import org.esa.snap.core.dataio.geocoding.GeoRaster;
 import org.esa.snap.core.dataio.geocoding.InverseCoding;
-import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
-import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.runtime.Config;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 public class AODProductFactory extends AbstractProductFactory {
 
     private static final double FILL_VALUE = -999.0;
     private static final double RESOLUTION_IN_KM = 4.5;
 
-    private final static String SYSPROP_SYN_AOD_PIXEL_GEO_CODING_INVERSE = "s3tbx.reader.syn.aod.pixelGeoCoding.inverse";
+    private final static String SYSPROP_SYN_AOD_PIXEL_GEO_CODING_INVERSE = "opttbx.reader.syn.aod.pixelGeoCoding.inverse";
 
     public AODProductFactory(Sentinel3ProductReader productReader) {
         super(productReader);

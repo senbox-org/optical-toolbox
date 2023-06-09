@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  */
 public class LandsatGeotiffReader extends AbstractProductReader {
 
-    public static final String SYSPROP_READ_AS = "s3tbx.landsat.readAs";
+    public static final String SYSPROP_READ_AS = "opttbx.landsat.readAs";
     static final String READ_AS_REFLECTANCE = "reflectance";
     private static final GeoTiffProductReaderPlugIn BAND_READER_PLUGIN = new GeoTiffProductReaderPlugIn();
 
@@ -196,7 +196,7 @@ public class LandsatGeotiffReader extends AbstractProductReader {
 
                     band.setDescription(landsatMetadata.getBandDescription(bandNumber));
                     band.setUnit(RADIANCE_UNITS);
-                    final Preferences preferences = Config.instance("s3tbx").load().preferences();
+                    final Preferences preferences = Config.instance("opttbx").load().preferences();
                     final String readAs = preferences.get(LandsatGeotiffReader.SYSPROP_READ_AS, null);
                     if (readAs != null) {
                         if (READ_AS_REFLECTANCE.equalsIgnoreCase(readAs)) {

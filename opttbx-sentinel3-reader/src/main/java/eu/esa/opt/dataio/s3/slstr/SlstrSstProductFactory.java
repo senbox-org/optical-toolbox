@@ -49,8 +49,8 @@ import java.util.Map;
 
 public class SlstrSstProductFactory extends SlstrProductFactory {
 
-    public final static String SLSTR_L2_SST_USE_PIXELGEOCODINGS = "s3tbx.reader.slstrl2sst.pixelGeoCodings";
-    private final static String SLSTR_L2_SST_PIXEL_CODING_INVERSE = "s3tbx.reader.slstrl2sst.pixelGeoCodings.inverse";
+    public final static String SLSTR_L2_SST_USE_PIXELGEOCODINGS = "opttbx.reader.slstrl2sst.pixelGeoCodings";
+    private final static String SLSTR_L2_SST_PIXEL_CODING_INVERSE = "opttbx.reader.slstrl2sst.pixelGeoCodings.inverse";
 
     private Map<String, GeoCoding> geoCodingMap;
     private Double nadirStartOffset;
@@ -166,7 +166,7 @@ public class SlstrSstProductFactory extends SlstrProductFactory {
         final RenderedImage sourceRenderedImage = sourceBand.getSourceImage().getImage(0);
         //todo remove commented lines when resampling works with scenetransforms
         //if pixel band geo-codings are used, scenetransforms are set
-//                if (Config.instance("s3tbx").load().preferences().getBoolean(SLSTR_L2_SST_USE_PIXELGEOCODINGS, false)) {
+//                if (Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L2_SST_USE_PIXELGEOCODINGS, false)) {
 //                    targetBand.setSourceImage(sourceRenderedImage);
         final AffineTransform imageToModelTransform = new AffineTransform();
         final float[] offsets = getOffsets(sourceStartOffset, sourceTrackOffset, sourceResolutions);
@@ -187,7 +187,7 @@ public class SlstrSstProductFactory extends SlstrProductFactory {
 
     @Override
     protected void setBandGeoCodings(Product product) throws IOException {
-        if (Config.instance("s3tbx").load().preferences().getBoolean(SLSTR_L2_SST_USE_PIXELGEOCODINGS, true)) {
+        if (Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L2_SST_USE_PIXELGEOCODINGS, true)) {
             setPixelBandGeoCodings(product);
         } else {
             setTiePointBandGeoCodings(product);

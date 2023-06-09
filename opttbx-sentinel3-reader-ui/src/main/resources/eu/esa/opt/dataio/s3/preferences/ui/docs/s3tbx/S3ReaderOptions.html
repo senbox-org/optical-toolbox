@@ -16,7 +16,7 @@
 
 <html>
 <head>
-    <title>Sentinel Toolbox Help - Performance parameters</title>
+    <title>Optical Toolbox Help - Performance parameters</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 
@@ -70,7 +70,7 @@
 
         <p><code>s3tbx.reader.slstrl1b.xx.calibration.adjustment_factor = 1.2</code></p>
 
-        Where <b>xx</b> is to be replaced by any bandname in lowercase.
+        Where <b>xx</b> is to be replaced by any band name in lowercase.
 
         Note that possibly pre-existing scaling factors or offsets, defined by the Sentinel-3 product will be replaced.
     </li>
@@ -129,15 +129,18 @@
     </li>
 </ul>
 
-<h4><b>NOTE:</b> s3tbx.properties file</h4>
-<p>The <i><b>s3tbx.properties</b></i> file let's users specify special properties for the Sentinel-3 Toolbox. There are two locations where this file
+<h4><b>NOTE:</b> opttbx.properties file</h4>
+<p>The <i><b>opttbx.properties</b></i> file let's users specify special properties for the Optical Toolbox. There are
+    two locations where this file
     can be defined. At both places, if the file does not yet exist it can simply be created as a plain text
     file.
 </p>
-<p>One is located within the SNAP installation directory in the <i><b>etc</b></i> folder and defines the properties for the installed SNAP instance.
+<p>One is located within the SNAP installation directory in the <i><b>etc</b></i> folder and defines the properties for
+    the installed SNAP instance.
     Here you need usually admin right to modify the file.<br>
     The other is located in the <i><b>.snap/etc</b></i> folder within the user's home directory.
-    The second, in the user directory defines the settings per user and overrules the ones in the installation directory.
+    The second, in the user directory defines the settings per user and overrules the ones in the installation
+    directory.
 </p>
 <p>Depending on the operating system and your settings the <i><b>.snap</b></i> folder might not be visible to you.
     You can do the following to make it visible:

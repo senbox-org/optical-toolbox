@@ -42,7 +42,7 @@ public class SynLevel2ProductFactory extends AbstractProductFactory {
             "tiepoints_slstr_n_Data", "tiepoints_slstr_o_Data", "tiepoints_meteo_Data"};
 
     private static final double RESOLUTION_IN_KM = 0.3;
-    private final static String SYSPROP_SYN_L2_PIXEL_GEO_CODING_INVERSE = "s3tbx.reader.syn.l2.pixelGeoCoding.inverse";
+    private final static String SYSPROP_SYN_L2_PIXEL_GEO_CODING_INVERSE = "opttbx.reader.syn.l2.pixelGeoCoding.inverse";
 
     public SynLevel2ProductFactory(Sentinel3ProductReader productReader) {
         super(productReader);
