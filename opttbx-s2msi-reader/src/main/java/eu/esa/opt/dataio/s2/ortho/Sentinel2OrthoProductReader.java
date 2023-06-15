@@ -575,22 +575,25 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                         band.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
                         product.addBand(band);
                     } else {
-                        Path localFile = bandInfo.getTileIdToPathMap().values().iterator().next().getLocalFile();
-                        GDALMultiLevelSource multiLevelSource;
-                        try (Dataset dataset = GDAL.open(localFile.toString(), GDALConst.gaReadonly())) {
+                        Path[] localFiles = new Path[bandInfo.getTileIdToPathMap().size()];
+                        int idx = 0;
+                        for (VirtualPath virtualPath : bandInfo.getTileIdToPathMap().values()) {
+                            localFiles[idx++] = virtualPath.getLocalFile();
+                        }
+                        Dimension tileSize;
+                        try (Dataset dataset = GDAL.open(localFiles[0].toString(), GDALConst.gaReadonly())) {
                             if (dataset == null) {
-                                throw new IOException("Cannot open " + localFile);
+                                throw new IOException("Cannot open " + localFiles[0]);
                             }
                             try (org.esa.snap.dataio.gdal.drivers.Band gdalBand = dataset.getRasterBand(1)) {
-                                final Dimension tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
-                                multiLevelSource = new GDALMultiLevelSource(localFile, dataBufferType, bandBounds,
-                                                                            tileSize,
-                                                                            bandIndexNumber, resolutionCount, band.getGeoCoding(),
-                                                                            band.getNoDataValue(),
-                                                                            defaultJAIReadTileSize);
-                                                                            //tileSize);
+                                tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
                             }
                         }
+                        GDALMultiLevelSource multiLevelSource = new GDALMultiLevelSource(dataBufferType, bandBounds,
+                                                                                         tileSize,
+                                                                                         bandIndexNumber, resolutionCount, band.getGeoCoding(),
+                                                                                         band.getNoDataValue(),
+                                                                                         defaultJAIReadTileSize, localFiles);
                         ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
                         band.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
                         if (offsets != null && band.getUnit().matches("dl")) {
@@ -854,10 +857,10 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                         }
                         try (org.esa.snap.dataio.gdal.drivers.Band gdalBand = dataset.getRasterBand(i + 1)) {
                             final Dimension tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
-                            multiLevelSource = new GDALMultiLevelSource(maskPath.getLocalFile(), dataBufferType, bandBounds,
+                            multiLevelSource = new GDALMultiLevelSource(dataBufferType, bandBounds,
                                                                         tileSize, i,
                                                                         resolutionCount, band.getGeoCoding(), band.getNoDataValue(),
-                                                                        defaultJAIReadTileSize);
+                                                                        defaultJAIReadTileSize, maskPath.getLocalFile());
                                                                         //tileSize);
                         }
                     }
@@ -940,10 +943,10 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                             }
                             try (org.esa.snap.dataio.gdal.drivers.Band gdalBand = dataset.getRasterBand(i + 1)) {
                                 final Dimension tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
-                                multiLevelSource = new GDALMultiLevelSource(maskPath.getLocalFile(), dataBufferType, bandBounds,
+                                multiLevelSource = new GDALMultiLevelSource(dataBufferType, bandBounds,
                                                                             tileSize, i,
                                                                             resolutionCount, band.getGeoCoding(), band.getNoDataValue(),
-                                                                            defaultJAIReadTileSize);
+                                                                            defaultJAIReadTileSize, maskPath.getLocalFile());
                                                                             //tileSize);
                             }
                         }
