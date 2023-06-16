@@ -17,12 +17,12 @@
 
 package eu.esa.opt.dataio.spot;
 
-import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import eu.esa.opt.dataio.spot.dimap.SpotConstants;
-import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.RGBImageProfile;
 import org.esa.snap.core.datamodel.RGBImageProfileManager;
+import org.esa.snap.core.metadata.MetadataInspector;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 
 import java.util.Locale;
 
@@ -36,7 +36,7 @@ public class SpotViewProductReaderPlugin extends BaseProductReaderPlugIn {
     private static final String COLOR_PALETTE_FILE_NAME = "Spot_color_palette.cpd";
 
     public SpotViewProductReaderPlugin() {
-        super("org/" + SpotViewProductReaderPlugin.COLOR_PALETTE_FILE_NAME);
+        super("eu/" + SpotViewProductReaderPlugin.COLOR_PALETTE_FILE_NAME);
     }
 
     @Override
