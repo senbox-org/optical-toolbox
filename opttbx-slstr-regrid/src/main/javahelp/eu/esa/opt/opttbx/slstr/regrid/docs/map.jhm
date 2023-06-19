@@ -6,7 +6,7 @@
 <map version="2.0">
 
     <mapID target="aatsrRegridding" url="AatsrRegriddingOverview.html"/>
-    <mapID target="aatsrRegriddingSpecification" url="AatsrRegriddingSpecification.html"/>
-    <mapID target="aatsrRegriddingDescription" url="AatsrRegriddingDescription.html"/>
+    <mapID target="aatsrRegriddingSpecification" url="AatsrRegriddingAlgorithmSpecification.html"/>
+    <mapID target="aatsrRegriddingDescription" url="AatsrRegriddingProcessorDescription.html"/>
 
 </map>
