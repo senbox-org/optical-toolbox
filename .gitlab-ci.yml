@@ -2,10 +2,17 @@
 include:
   - 'https://gitlab.com/senbox-org/snap-engine/raw/master/.gitlab-ci.yml'
 
+.add_libs: &add_libs
+  - apt-get -qq update && apt-get -qq -y install libgfortran5
+
 mvn-build:
+  before_script:
+    - *add_libs
+    - !reference [".mvn-base", "before_script"]
   artifacts:
     paths:
       - "${MAVEN_PROJECT_DIR}/**/target/*.jar"
       - "${MAVEN_PROJECT_DIR}/**/target/classes"
       - "${MAVEN_PROJECT_DIR}/**/target/*.nbm"
-      - "${MAVEN_PROJECT_DIR}/opttbx-kit/target/netbeans_clusters/opttbx"
+      - "${MAVEN_PROJECT_DIR}/microwavetbx-kit/target/netbeans_clusters/microwavetbx"
+      - "${MAVEN_PROJECT_DIR}/microwavetbx-kit/target/netbeans_clusters/rstb"
