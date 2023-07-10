@@ -79,9 +79,9 @@ Setting up IntelliJ IDEA
    --userdir
    "${snap}/optical-toolbox/target/userdir"
    --clusters
-   "${snap}/optical-toolbox/optical-kit/target/netbeans_clusters/optical"
+   "${snap}/optical-toolbox/opttbx-kit/target/netbeans_clusters/optical"
    --patches
-   "${snap}/snap-engine/$/target/classes;${snap}/opttbx/$/target/classes"
+   "${snap}/snap-engine/$/target/classes;${snap}/optical-toolbox/$/target/classes"
    **Working directory:** ${snap}/snap-desktop/snap-application/target/snap/
    **Use classpath of module:** snap-main
 

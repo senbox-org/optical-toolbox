@@ -19,7 +19,7 @@ public class AlosPRIProductReaderPlugin extends BaseProductReaderPlugIn {
     private static final String COLOR_PALETTE_FILE_NAME = "AlosPRI_color_palette.cpd";
 
     public AlosPRIProductReaderPlugin() {
-        super("eu/esa/opt/dataio/alos/pri/" + AlosPRIProductReaderPlugin.COLOR_PALETTE_FILE_NAME);
+        super("eu/esa/opt/dataio/alos/geotiff/pri/" + AlosPRIProductReaderPlugin.COLOR_PALETTE_FILE_NAME);
     }
 
     @Override

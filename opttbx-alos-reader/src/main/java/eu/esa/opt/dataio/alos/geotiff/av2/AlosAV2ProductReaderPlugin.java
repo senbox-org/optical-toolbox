@@ -20,7 +20,7 @@ public class AlosAV2ProductReaderPlugin extends BaseProductReaderPlugIn {
     private static final String COLOR_PALETTE_FILE_NAME = "AlosAV2_color_palette.cpd";
 
     public AlosAV2ProductReaderPlugin(){
-        super("eu/esa/opt/dataio/alos/av2/"+AlosAV2ProductReaderPlugin.COLOR_PALETTE_FILE_NAME);
+        super("eu/esa/opt/dataio/alos/geotiff/av2/"+AlosAV2ProductReaderPlugin.COLOR_PALETTE_FILE_NAME);
         this.folderDepth = 1;
     }
 
