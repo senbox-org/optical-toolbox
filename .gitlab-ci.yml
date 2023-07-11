@@ -2,10 +2,30 @@
 include:
   - 'https://gitlab.com/senbox-org/snap-engine/raw/master/.gitlab-ci.yml'
 
+.add_libs: &add_libs
+  - apt-get -qq update && apt-get -qq -y install libgfortran5
+
+
 mvn-build:
+  # Override .mvn-base > before_script to add 1 more line
+  before_script:
+    - *add_libs
+    - !reference [".mvn-base", "before_script"]
   artifacts:
     paths:
       - "${MAVEN_PROJECT_DIR}/**/target/*.jar"
       - "${MAVEN_PROJECT_DIR}/**/target/classes"
       - "${MAVEN_PROJECT_DIR}/**/target/*.nbm"
+      - "${MAVEN_PROJECT_DIR}/**/target/site"
+      - "${MAVEN_PROJECT_DIR}/**/target/surefire-reports"
       - "${MAVEN_PROJECT_DIR}/opttbx-kit/target/netbeans_clusters/opttbx"
+
+mvn-deploy-snapshot:
+  before_script:
+    - *add_libs
+    - !reference [".mvn-base", "before_script"]
+
+mvn-deploy-release:
+  before_script:
+    - *add_libs
+    - !reference [".mvn-base", "before_script"]
