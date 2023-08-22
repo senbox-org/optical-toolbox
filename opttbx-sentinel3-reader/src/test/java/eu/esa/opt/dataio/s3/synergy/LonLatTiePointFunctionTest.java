@@ -14,10 +14,8 @@ package eu.esa.opt.dataio.s3.synergy;/*
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-import eu.esa.opt.dataio.s3.synergy.LonLatTiePointFunction;
-import eu.esa.opt.dataio.s3.synergy.NcFile;
 import eu.esa.opt.dataio.s3.LonLatFunction;
-import org.esa.snap.test.LongTestRunner;
+import com.bc.ceres.test.LongTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ucar.nc2.Variable;

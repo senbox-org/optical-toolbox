@@ -2,7 +2,7 @@ package eu.esa.opt.meris.radiometry;
 
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.test.LongTestRunner;
+import com.bc.ceres.test.LongTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

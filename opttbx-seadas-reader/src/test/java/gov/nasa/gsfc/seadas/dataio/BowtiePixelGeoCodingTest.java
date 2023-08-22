@@ -26,7 +26,7 @@ import org.esa.snap.core.datamodel.PixelPos;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.subset.PixelSubsetRegion;
 import org.esa.snap.core.util.ProductUtils;
-import org.esa.snap.test.LongTestRunner;
+import com.bc.ceres.test.LongTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

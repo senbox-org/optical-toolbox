@@ -4,7 +4,7 @@ package eu.esa.opt.meris.sdr.brr.operator;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.GPF;
-import org.esa.snap.test.LongTestRunner;
+import com.bc.ceres.test.LongTestRunner;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
