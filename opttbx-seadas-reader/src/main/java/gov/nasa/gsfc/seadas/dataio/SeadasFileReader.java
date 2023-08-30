@@ -29,10 +29,7 @@ import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Section;
-import ucar.nc2.Attribute;
-import ucar.nc2.Group;
-import ucar.nc2.NetcdfFile;
-import ucar.nc2.Variable;
+import ucar.nc2.*;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -390,6 +387,21 @@ public abstract class SeadasFileReader {
                         product.getSceneRasterWidth(),
                         product.getSceneRasterHeight(), "l2_flags.PRODFAIL",
                         FailRed, 0.1));
+                product.getMaskGroup().add(Mask.BandMathsType.create("Quality_L2", "Product could be computed (l2_flags composite)",
+                        product.getSceneRasterWidth(),
+
+                        product.getSceneRasterHeight(), "!(l2_flags.ATMFAIL or l2_flags.LAND or l2_flags.HILT or l2_flags.STRAYLIGHT or l2_flags.CLDICE or l2_flags.NAVFAIL)",
+                        DarkGreen, 0.0));
+
+                product.getMaskGroup().add(Mask.BandMathsType.create("Quality_L3", "Best quality (l2_flags composite)",
+                        product.getSceneRasterWidth(),
+
+                        product.getSceneRasterHeight(), "!(l2_flags.ATMFAIL or l2_flags.LAND or l2_flags.HIGLINT or l2_flags.HILT or l2_flags.STRAYLIGHT  or l2_flags.CLDICE or l2_flags.COCCOLITH or l2_flags.HISOLZEN or l2_flags.LOWLW or l2_flags.CHLFAIL or l2_flags.NAVWARN or l2_flags.MAXAERITER or l2_flags.CHLWARN or l2_flags.ATMWARN or l2_flags.NAVFAIL or l2_flags.FILTER)",
+                        Color.GREEN, 0.0));
+                product.getMaskGroup().add(Mask.BandMathsType.create("Water", "Not land (l2_flags.LAND)",
+                        product.getSceneRasterWidth(),
+                        product.getSceneRasterHeight(), "!l2_flags.LAND",
+                        Color.BLUE, 0.0));
 
             }
             Band QFBandSST = product.getBand("flags_sst");
@@ -808,11 +820,22 @@ public abstract class SeadasFileReader {
         final int bands = dimensions[2];
         final int height = dimensions[0];
         final int width = dimensions[1];
+        int dim = 0;
+        Variable wvl = null;
 
         if (height == sceneRasterHeight && width == sceneRasterWidth) {
             // final List<Attribute> list = variable.getAttributes();
-
-            Variable wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+            List<Dimension> dims = ncFile.getDimensions();
+            for (Dimension d: dims){
+                if (d.getShortName().equalsIgnoreCase("wavelength_3d")) {
+                    dim = d.getLength();
+                }
+            }
+            if (dim == bands) {
+                wvl = ncFile.findVariable("sensor_band_parameters/wavelength_3d");
+            } else {
+                wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+            }
             // wavenlengths for modis L2 files
             if (wvl == null) {
                 if (bands == 2 || bands == 3) {
