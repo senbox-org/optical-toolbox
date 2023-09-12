@@ -855,6 +855,7 @@ public abstract class SeadasFileReader {
                     longname.append("_");
                     longname.append(wavelengths.getInt(i));
                     String name = longname.toString();
+                    String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                     final int dataType = getProductDataType(variable);
 
                     if (!product.containsBand(name)) {
@@ -918,7 +919,7 @@ public abstract class SeadasFileReader {
                         if (validMinMax[0] != validMinMax[1]) {
                             String validExp;
                             if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                                validExp = format("%s >= %.05f && %s <= %.05f", name, validMinMax[0], name, validMinMax[1]);
+                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
 
                             } else {
                                 double[] minmax = {0.0, 0.0};
@@ -933,7 +934,7 @@ public abstract class SeadasFileReader {
                                     minmax[0] += band.getScalingOffset();
                                     minmax[1] += band.getScalingOffset();
                                 }
-                                validExp = format("%s >= %.05f && %s <= %.05f", name, minmax[0], name, minmax[1]);
+                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
 
                             }
                             band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
@@ -960,6 +961,8 @@ public abstract class SeadasFileReader {
             final int width = dimensions[1];
             if (height == sceneRasterHeight && width == sceneRasterWidth) {
                 final String name = variable.getShortName();
+                String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
+
                 final int dataType = getProductDataType(variable);
 
                 if (!product.containsBand(name)) {
@@ -1015,8 +1018,9 @@ public abstract class SeadasFileReader {
                     }
                     if (validMinMax[0] != validMinMax[1]) {
                         String validExp;
+
                         if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                            validExp = format("%s >= %.05f && %s <= %.05f", name, validMinMax[0], name, validMinMax[1]);
+                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
 
                         } else {
                             double[] minmax = {0.0, 0.0};
@@ -1031,8 +1035,8 @@ public abstract class SeadasFileReader {
                                 minmax[0] += band.getScalingOffset();
                                 minmax[1] += band.getScalingOffset();
                             }
-                            validExp = format("%s >= %.05f && %s <= %.05f", name, minmax[0], name, minmax[1]);
 
+                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
