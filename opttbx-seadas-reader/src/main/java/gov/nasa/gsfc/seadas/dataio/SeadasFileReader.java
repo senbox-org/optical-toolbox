@@ -1120,6 +1120,9 @@ public abstract class SeadasFileReader {
         if (productReader.getProductType() == SeadasProductReader.ProductType.Level1B_HICO) {
             group = ncFile.findGroup("products");
         }
+        if (productReader.getProductType() == SeadasProductReader.ProductType.Level1C_Pace) {
+            group = ncFile.findGroup("observation_data");
+        }
 
         if (group != null) {
             final MetadataElement bandAttributes = new MetadataElement("Band_Attributes");

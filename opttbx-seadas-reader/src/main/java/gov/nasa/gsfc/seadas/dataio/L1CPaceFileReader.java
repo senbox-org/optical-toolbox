@@ -108,6 +108,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
         addGeocoding(product);
         addMetadata(product, "products", "Band_Metadata");
         addMetadata(product, "navigation", "Navigation_Metadata");
+        addBandMetadata(product);
 
         if (scene_title.toString().contains("PACE OCI Level-1C Data")) {
             product.setAutoGrouping("I_-20:I_20:obs_per_view:");
