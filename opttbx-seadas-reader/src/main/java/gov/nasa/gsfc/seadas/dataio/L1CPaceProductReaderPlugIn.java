@@ -56,12 +56,14 @@ public class L1CPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
         try {
             ncfile = NetcdfFileOpener.open(file.getPath());
             if (ncfile != null) {
-                Attribute scene_title = ncfile.findGlobalAttributeIgnoreCase("Title");
+                Attribute instrument = ncfile.findGlobalAttributeIgnoreCase("instrument");
+                Attribute processing_level = ncfile.findGlobalAttributeIgnoreCase("processing_level");
 
-                if (scene_title != null) {
-                    if (scene_title.toString().contains("PACE OCI Level-1C Data")
-                            || scene_title.toString().contains("PACE SPEXone Level-1C Data")
-                            || scene_title.toString().contains("HARP2 Level-1C Data")){
+                if (processing_level != null  && instrument != null) {
+                    if (processing_level.toString().toUpperCase().contains("1C") &&
+                            (instrument.toString().toUpperCase().contains("OCI")
+                                    || instrument.toString().toUpperCase().contains("HARP")
+                                    || instrument.toString().toUpperCase().contains("SPEXONE"))){
                         if (DEBUG) {
                             System.out.println(file);
                         }
@@ -72,12 +74,12 @@ public class L1CPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
                         return DecodeQualification.INTENDED;
                     } else {
                         if (DEBUG) {
-                            System.out.println("# Unrecognized scene title =[" + scene_title + "]: " + file);
+                            System.out.println("# Unrecognized instrument =[" + instrument + "]: " + file);
                         }
                     }
                 } else {
                     if (DEBUG) {
-                        System.out.println("# Missing scene title attribute': " + file);
+                        System.out.println("# Missing processing_level or instrument attribute': " + file);
                     }
                 }
             } else {

@@ -330,10 +330,17 @@ public class SeadasProductReader extends AbstractProductReader {
     }
     public ProductType findProductType() throws ProductIOException {
         Attribute titleAttr = ncfile.findGlobalAttributeIgnoreCase("Title");
+        Attribute processing_levelAttr = ncfile.findGlobalAttributeIgnoreCase("processing_level");
+        Attribute instrumentAttr = ncfile.findGlobalAttributeIgnoreCase("instrument");
+
         String title;
+        String processing_level;
+        String instrument;
         ProductType tmp;
         if (titleAttr != null) {
             title = titleAttr.getStringValue().trim();
+            processing_level = processing_levelAttr.getStringValue().trim();
+            instrument = instrumentAttr.getStringValue().trim();
             if (title.equals("Oceansat OCM2 Level-1B Data")) {
                 return ProductType.Level1B_OCM2;
             } else if (title.equals("CZCS Level-2 Data")) {
@@ -350,6 +357,12 @@ public class SeadasProductReader extends AbstractProductReader {
                     || title.contains("PACE SPEXone Level-1C Data")
                     || title.contains("HARP2 Level-1C Data")) {
                 return ProductType.Level1C_Pace;
+            } else if (processing_level !=null && instrument != null && processing_level.toUpperCase().contains("1C")) {
+             if (instrument.toUpperCase().contains("OCI")
+                    || instrument.toUpperCase().contains("HARP")
+                    || instrument.toUpperCase().contains("SPEXONE")) {
+                    return ProductType.Level1C_Pace;
+                }
             } else if (title.equals("OCIS Level-2 Data")) {
                 return ProductType.Level2_PaceOCIS;
             } else if (title.equals("OCI Level-2 Data")) {
