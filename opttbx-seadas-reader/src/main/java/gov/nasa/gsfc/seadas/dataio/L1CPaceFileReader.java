@@ -71,15 +71,74 @@ public class L1CPaceFileReader extends SeadasFileReader {
 //        Attribute scene_title = ncFile.findGlobalAttributeIgnoreCase("Title");
         Attribute instrument = ncFile.findGlobalAttributeIgnoreCase("instrument");
 
+        Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
+        Array view_Angles = null;
+
+        Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
+        Variable wvl_pol = ncFile.findVariable("sensor_views_bands/polarization_wavelengths");
+        if (wvl == null) {
+            wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelength");
+        }
+        Variable wvl_sliced = null;
+        Variable wvl_sliced_pol = null;
+        Array waveLengths = null;
+        Array waveLengths_pol = null;
+
+
         if (instrument != null && instrument.toString().toUpperCase().contains("OCI")) {
             mustFlipY = true;
-            variableMap = addOciBands(product, ncFile.getVariables());
+            if (view_angle != null && wvl != null) {
+                try {
+                        view_Angles = view_angle.read();
+                    try {
+                        wvl_sliced = wvl.slice(0,1);
+                    } catch (InvalidRangeException e) {
+                        e.printStackTrace();  //Todo change body of catch statement.
+                    }
+                    waveLengths = wvl_sliced.read();
+                    waveLengths.setInt(120, waveLengths.getInt(120) + 1);
+                    waveLengths.setInt(121, waveLengths.getInt(121) + 1);
+                    waveLengths.setInt(122, waveLengths.getInt(122) + 1);
+                    waveLengths.setInt(123, waveLengths.getInt(123) + 1);
+                    waveLengths.setInt(243, waveLengths.getInt(243) + 1);
+                    waveLengths.setInt(246, waveLengths.getInt(246) + 1);
+
+                } catch (IOException e) {
+                }
+            }
+            variableMap = addOciBands(product, ncFile.getVariables(), view_Angles, waveLengths);
         } else if (instrument != null && instrument.toString().toUpperCase().contains("HARP")) {
             mustFlipY = true;
-            variableMap = addHarpBands(product, ncFile.getVariables());
+            if (view_angle != null && wvl != null) {
+                try {
+                    view_Angles = view_angle.read();
+                    try {
+                        wvl_sliced = wvl.slice(0, 0);
+                    } catch (InvalidRangeException e) {
+                        e.printStackTrace();  //Todo change body of catch statement.
+                    }
+                    waveLengths = wvl_sliced.read();
+                } catch (IOException e) {
+                }
+            }
+            variableMap = addHarpBands(product, ncFile.getVariables(), view_Angles, waveLengths);
         } else if (instrument != null && instrument.toString().toUpperCase().contains("SPEXONE")) {
             mustFlipY = true;
-            variableMap = addSPEXoneBands(product, ncFile.getVariables());
+            if (view_angle != null && wvl != null) {
+                try {
+                    view_Angles = view_angle.read();
+                    try {
+                        wvl_sliced = wvl.slice(0, 1);
+                        wvl_sliced_pol = wvl_pol.slice(0, 1);
+                    } catch (InvalidRangeException e) {
+                        e.printStackTrace();  //Todo change body of catch statement.
+                    }
+                    waveLengths = wvl_sliced.read();
+                    waveLengths_pol = wvl_sliced_pol.read();
+                } catch (IOException e) {
+                }
+            }
+            variableMap = addSPEXoneBands(product, ncFile.getVariables(), view_Angles, waveLengths, waveLengths_pol);
         }
 
 
@@ -98,21 +157,43 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         "U_noise_*_549:U_noise_*_669:U_noise_*_867:U_noise_*_441:DOLP_noise_*_549:DOLP_noise_*_669:DOLP_noise_*_867:DOLP_noise_*_441:" +
                         "Sensor_Zenith:Sensor_Azimuth:Solar_Zenith:Solar_Azimuth:obs_per_view:view_time_offsets");
             } else if (instrument.toString().toUpperCase().contains("SPEXONE")) {
-                product.setAutoGrouping("I:I_58_*:I_22_*:I_4_*:I_-22_*:I_-58_*:" +
-                        "AOLP:AOLP_58_*:AOLP_22_*:AOLP_4_*:AOLP_-22_*:AOLP_-58_*:" +
-                        "DOLP:DOLP_58_*:DOLP_22_*:DOLP_4_*:DOLP_-22_*:DOLP_-58_*:" +
-                        "QC:QC_58_*:QC_22_*:QC_4_*:QC_-22_*:QC_-58_*:" +
-                        "I_57_*:I_20_*:I_0_*:I_-20_*:I_-57_*:" +
-                        "AOLP_57_*:AOLP_20_*:AOLP_0_*:AOLP_-20_*:AOLP_-57_*:" +
-                        "DOLP_57_*:DOLP_20_*:DOLP_0_*:DOLP_-20_*:DOLP_-57_*:" +
-                        "QC_57_*:QC_20_*:QC_0_*:QC_-22_*:QC_-57_*:" +
-                        "QC_bitwise:QC_polsample_bitwise:QC_polsample:" +
-                        "I_noise:I_noisefree:I_polsample:I_polsample_noise:I_noisefree_polsample:" +
-                        "DOLP_noise:DOLP_noisefree:AOLP_noise:AOLP_noisefree:" +
-                        "Q_over_I:Q_over_I_noise:Q_over_I_noisefree:" +
+                String autoGroupingStr = "QC:QC_bitwise:QC_polsample_bitwise:QC_polsample:";
+                if (view_Angles != null) {
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "I_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "DOLP_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "AOLP_" + viewAngle + "_*:";
+                    }
+                }
+                autoGroupingStr += "I:I_noise:I_noisefree:I_polsample:" +
+                        "I_polsample_noise:I_noisefree_polsample:DOLP:DOLP_noise:DOLP_noisefree:" +
+                        "Q_over_I:Q_over_I_noise:Q_over_I_noisefree:AOLP:AOLP_noise:AOLP_noisefree:" +
                         "U_over_I:U_over_I_noise:U_over_I_noisefree:scattering_angle:" +
                         "sensor_azimuth:sensor_zenith:solar_azimuth:solar_zenith:" +
-                        "obs_per_view:view_time_offsets");
+                        "obs_per_view:view_time_offsets";
+                product.setAutoGrouping(autoGroupingStr);
+//                product.setAutoGrouping("I:I_58_*:I_22_*:I_4_*:I_-22_*:I_-58_*:" +
+//                        "AOLP:AOLP_58_*:AOLP_22_*:AOLP_4_*:AOLP_-22_*:AOLP_-58_*:" +
+//                        "DOLP:DOLP_58_*:DOLP_22_*:DOLP_4_*:DOLP_-22_*:DOLP_-58_*:" +
+//                        "QC:QC_58_*:QC_22_*:QC_4_*:QC_-22_*:QC_-58_*:" +
+//                        "I_57_*:I_20_*:I_0_*:I_-20_*:I_-57_*:" +
+//                        "AOLP_57_*:AOLP_20_*:AOLP_0_*:AOLP_-20_*:AOLP_-57_*:" +
+//                        "DOLP_57_*:DOLP_20_*:DOLP_0_*:DOLP_-20_*:DOLP_-57_*:" +
+//                        "QC_57_*:QC_20_*:QC_0_*:QC_-22_*:QC_-57_*:" +
+//                        "QC_bitwise:QC_polsample_bitwise:QC_polsample:" +
+//                        "I_noise:I_noisefree:I_polsample:I_polsample_noise:I_noisefree_polsample:" +
+//                        "DOLP_noise:DOLP_noisefree:AOLP_noise:AOLP_noisefree:" +
+//                        "Q_over_I:Q_over_I_noise:Q_over_I_noisefree:" +
+//                        "U_over_I:U_over_I_noise:U_over_I_noisefree:scattering_angle:" +
+//                        "sensor_azimuth:sensor_zenith:solar_azimuth:solar_zenith:" +
+//                        "obs_per_view:view_time_offsets");
             }
         }
         return product;
@@ -144,13 +225,13 @@ public class L1CPaceFileReader extends SeadasFileReader {
         }
     }
 
-    private Map<Band, Variable> addHarpBands(Product product, List<Variable> variables) {
+    private Map<Band, Variable> addHarpBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Array wavelengths = null;
-        Array view_angles = null;
+//        Array wavelengths = null;
+//        Array view_angles = null;
 
         Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
         int spectralBandIndex = 0;
@@ -256,21 +337,25 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String description = variable.getShortName();
 
-                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
-                    Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
-                    Variable wvl_sliced = null;
-
-                    if (view_angle != null && wvl != null) {
-                        try {
-                            view_angles = view_angle.read();
-                            try {
-                                wvl_sliced = wvl.slice(0,0);
-                            } catch (InvalidRangeException e) {
-                                e.printStackTrace();  //Todo change body of catch statement.
-                            }
-                            wavelengths = wvl_sliced.read();
-                        } catch (IOException e) {
-                        }
+//                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
+//                    Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
+//                    if (wvl == null) {
+//                       wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelength");
+//                    }
+//                    Variable wvl_sliced = null;
+//
+//                    if (view_angle != null && wvl != null) {
+                    if (view_angles != null && wavelengths != null) {
+//                        try {
+////                            view_angles = view_angle.read();
+//                            try {
+//                                wvl_sliced = wvl.slice(0,0);
+//                            } catch (InvalidRangeException e) {
+//                                e.printStackTrace();  //Todo change body of catch statement.
+//                            }
+//                            wavelengths = wvl_sliced.read();
+//                        } catch (IOException e) {
+//                        }
                         ArrayList wavelength_list = new ArrayList();
                         for (int i = 0; i < views; i++) {
                             StringBuilder longname = new StringBuilder(description);
@@ -379,13 +464,13 @@ public class L1CPaceFileReader extends SeadasFileReader {
         return bandToVariableMap;
     }
 
-    private Map<Band, Variable> addOciBands(Product product, List<Variable> variables) {
+    private Map<Band, Variable> addOciBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Array wavelengths = null;
-        Array view_angles = null;
+//        Array wavelengths = null;
+//        Array view_angles = null;
 
         Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
         int spectralBandIndex = 0;
@@ -491,13 +576,14 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String description = variable.getShortName();
 
-                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
+//                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
 
-                    if (view_angle != null) {
-                        try {
-                            view_angles = view_angle.read();
-                        } catch (IOException e) {
-                        }
+//                    if (view_angle != null) {
+                    if (view_angles != null) {
+//                        try {
+//                            view_angles = view_angle.read();
+//                        } catch (IOException e) {
+//                        }
 
                         for (int i = 0; i < views; i++) {
                             StringBuilder longname = new StringBuilder(description);
@@ -601,29 +687,29 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String description = variable.getShortName();
 
-                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
-                    Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
-                    Variable wvl_sliced = null;
+//                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
+//                    Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
+//                    Variable wvl_sliced = null;
 
-                    if (view_angle != null && wvl != null) {
-                        try {
-                            view_angles = view_angle.read();
-                            try {
-                                wvl_sliced = wvl.slice(0,1);
-                            } catch (InvalidRangeException e) {
-                                e.printStackTrace();  //Todo change body of catch statement.
-                            }
-                            wavelengths = wvl_sliced.read();
-                            wavelengths.setInt(120, wavelengths.getInt(120) + 1);
-                            wavelengths.setInt(121, wavelengths.getInt(121) + 1);
-                            wavelengths.setInt(122, wavelengths.getInt(122) + 1);
-                            wavelengths.setInt(123, wavelengths.getInt(123) + 1);
-                            wavelengths.setInt(243, wavelengths.getInt(243) + 1);
-                            wavelengths.setInt(246, wavelengths.getInt(246) + 1);
-
-                        } catch (IOException e) {
-                        }
-
+//                    if (view_angle != null && wvl != null) {
+                    if (view_angles != null && wavelengths != null) {
+//                        try {
+////                            view_angles = view_angle.read();
+//                            try {
+//                                wvl_sliced = wvl.slice(0,1);
+//                            } catch (InvalidRangeException e) {
+//                                e.printStackTrace();  //Todo change body of catch statement.
+//                            }
+//                            wavelengths = wvl_sliced.read();
+//                            wavelengths.setInt(120, wavelengths.getInt(120) + 1);
+//                            wavelengths.setInt(121, wavelengths.getInt(121) + 1);
+//                            wavelengths.setInt(122, wavelengths.getInt(122) + 1);
+//                            wavelengths.setInt(123, wavelengths.getInt(123) + 1);
+//                            wavelengths.setInt(243, wavelengths.getInt(243) + 1);
+//                            wavelengths.setInt(246, wavelengths.getInt(246) + 1);
+//
+//                        } catch (IOException e) {
+//                        }
 
                         for (int i = 0; i < views; i++) {
                             for (int j = 0; j < bands; j++) {
@@ -731,17 +817,16 @@ public class L1CPaceFileReader extends SeadasFileReader {
         return bandToVariableMap;
     }
 
-    private Map<Band, Variable> addSPEXoneBands(Product product, List<Variable> variables) {
+    private Map<Band, Variable> addSPEXoneBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, Array wavelengths_pol) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Array wavelengths = null;
-        Array wavelengths_pol = null;
-        Array view_angles = null;
+//        Array wavelengths = null;
+//        Array wavelengths_pol = null;
+//        Array view_angles = null;
 
         Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
-        int spectralBandIndex = 0;
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
                 continue;
@@ -844,13 +929,14 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String description = variable.getShortName();
 
-                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
+//                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
 
-                    if (view_angle != null) {
-                        try {
-                            view_angles = view_angle.read();
-                        } catch (IOException e) {
-                        }
+//                    if (view_angle != null) {
+                    if (view_angles != null) {
+//                        try {
+//                            view_angles = view_angle.read();
+//                        } catch (IOException e) {
+//                        }
 
                         for (int i = 0; i < views; i++) {
                             StringBuilder longname = new StringBuilder(description);
@@ -961,37 +1047,30 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String description = variable.getShortName();
 
-                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
-                    Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
-                    Variable wvl_sliced = null;
-                    Variable wvl_pol = ncFile.findVariable("sensor_views_bands/polarization_wavelengths");
-                    Variable wvl_sliced_pol = null;
+//                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
+//                    Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
+//                    Variable wvl_sliced = null;
+//                    Variable wvl_pol = ncFile.findVariable("sensor_views_bands/polarization_wavelengths");
+//                    Variable wvl_sliced_pol = null;
 
-                    if (view_angle != null && wvl != null) {
-                        try {
-                            view_angles = view_angle.read();
-                            try {
-                                wvl_sliced = wvl.slice(0,1);
-                                wvl_sliced_pol = wvl_pol.slice(0,1);
-                            } catch (InvalidRangeException e) {
-                                e.printStackTrace();  //Todo change body of catch statement.
-                            }
-                            wavelengths = wvl_sliced.read();
-                            wavelengths_pol = wvl_sliced_pol.read();
-//                            wavelengths.setInt(120, wavelengths.getInt(120) + 1);
-//                            wavelengths.setInt(121, wavelengths.getInt(121) + 1);
-//                            wavelengths.setInt(122, wavelengths.getInt(122) + 1);
-//                            wavelengths.setInt(123, wavelengths.getInt(123) + 1);
-//                            wavelengths.setInt(243, wavelengths.getInt(243) + 1);
-//                            wavelengths.setInt(246, wavelengths.getInt(246) + 1);
-
-                        } catch (IOException e) {
-                        }
+//                    if (view_angle != null && wvl != null) {
+                    if (view_angles != null && wavelengths != null) {
+//                        try {
+////                            view_angles = view_angle.read();
+//                            try {
+//                                wvl_sliced = wvl.slice(0,1);
+//                                wvl_sliced_pol = wvl_pol.slice(0,1);
+//                            } catch (InvalidRangeException e) {
+//                                e.printStackTrace();  //Todo change body of catch statement.
+//                            }
+//                            wavelengths = wvl_sliced.read();
+//                            wavelengths_pol = wvl_sliced_pol.read();
+//                        } catch (IOException e) {
+//                        }
 
 
                         for (int i = 0; i < views; i++) {
                             for (int j = 0; j < bands; j++) {
-//                                spectralBandIndex = 0;
                                 StringBuilder longname = new StringBuilder(description);
                                 longname.append("_");
                                 if ((i > views / 2) && (view_angles.getInt(i) == view_angles.getInt(views - 1 - i))) {
