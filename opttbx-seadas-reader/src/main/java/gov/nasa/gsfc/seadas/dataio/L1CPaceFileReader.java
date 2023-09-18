@@ -900,7 +900,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             for (int j = 0; j < bands; j++) {
                                 StringBuilder longname = new StringBuilder(description);
                                 longname.append("_");
-                                longname.append(view_angles.getInt(j));
+                                longname.append(view_angles.getInt(i));
                                 longname.append("_");
                                 longname.append(wavelengths.getInt(j));
                                 String name = longname.toString();
@@ -913,14 +913,14 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 band.setSpectralWavelength(wavelengths.getFloat(j));
                                 band.setSpectralBandIndex(j);
 
-                                band.setAngularValue(view_angles.getFloat(j));
-                                band.setAngularBandIndex(j);
+                                band.setAngularValue(view_angles.getFloat(i));
+                                band.setAngularBandIndex(i);
 
                                 Variable sliced1 = null;
                                 Variable sliced = null;
                                 try {
-                                    sliced1 = variable.slice(0, i);
-                                    sliced = sliced1.slice(0, j);
+                                    sliced1 = variable.slice(2, i);
+                                    sliced = sliced1.slice(2, j);
                                 } catch (InvalidRangeException e) {
                                     e.printStackTrace();  //Todo change body of catch statement.
                                 }
