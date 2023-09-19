@@ -14,16 +14,20 @@
  */
 package eu.esa.opt.unmixing;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class SpectralUnmixingOpTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class SpectralUnmixingOpTest {
+
+    @Test
     public void testDefaults() {
         SpectralUnmixingOp op = new SpectralUnmixingOp();
         op.setParameterDefaultValues();
         assertEquals("_error", op.getErrorBandNameSuffix());
         assertEquals("_abundance", op.getAbundanceBandNameSuffix());
         assertNull(op.getEndmemberFile());
-        assertEquals(10.0, op.getMinBandwidth());
+        assertEquals(10.0, op.getMinBandwidth(), 1e-8);
         assertFalse(op.getComputeErrorBands());
         assertNull(op.getSourceBandNames());
         assertEquals("Constrained LSU", op.getUnmixingModelName());

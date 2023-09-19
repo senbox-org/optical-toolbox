@@ -18,6 +18,8 @@
 
 package eu.esa.opt.radiometry;
 
+import org.junit.Before;
+
 import java.util.HashMap;
 
 /**
@@ -26,19 +28,18 @@ import java.util.HashMap;
 
 public class PviOpTest extends BaseIndexOpTest<PviOp> {
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        setupBands(new String[] { "RED", "NIR" }, 3, 3, new float[] { 650, 850 }, new float[] { 1, 2 }, new float[] { 9, 10 });
+        setupBands(new String[]{"RED", "NIR"}, 3, 3, new float[]{650, 850}, new float[]{1, 2}, new float[]{9, 10});
         setOperatorParameters(new HashMap<String, Float>() {{
             put("redFactor", 1.0f);
             put("nirFactor", 1.0f);
             put("angleSoilLineNIRAxis", 45.0f);
         }});
 
-        setTargetValues(new float[] {
+        setTargetValues(new float[]{
                 0.707106f, 0.707106f, 0.707106f,
                 0.707106f, 0.707106f, 0.707106f,
-                0.707106f, 0.707106f, 0.707106f } );
-        super.setUp();
+                0.707106f, 0.707106f, 0.707106f});
     }
 }

@@ -15,24 +15,18 @@
  */
 package eu.esa.opt.processor.mci;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.esa.snap.core.gpf.OperatorException;
+import org.junit.Before;
+import org.junit.Test;
 
-public class BaselineAlgorithmTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+public class BaselineAlgorithmTest {
 
     private BaselineAlgorithm algo;
 
-    public BaselineAlgorithmTest(String testName) {
-        super(testName);
-    }
-
-    public static Test suite() {
-        return new TestSuite(BaselineAlgorithmTest.class);
-    }
-
-    @Override
+    @Before
     public void setUp() {
         algo = new BaselineAlgorithm();
     }
@@ -40,6 +34,7 @@ public class BaselineAlgorithmTest extends TestCase {
     /**
      * Tests the functionality of setWavelengths()
      */
+    @Test
     public void testSetWavelengths() {
         float correctLow = 650.f;
         float correctSignal = 700.f;
@@ -87,9 +82,9 @@ public class BaselineAlgorithmTest extends TestCase {
     /**
      * Tests the cloud correction factor default value constant for correct value
      */
+    @Test
     public void testDefaultCloudCorrectionFactor() {
         assertEquals(1.005f, BaselineAlgorithm.DEFAULT_CLOUD_CORRECT, 1e-6);
     }
-
 }
 

@@ -18,13 +18,12 @@
 
 package eu.esa.opt.radiometry;
 
-import junit.framework.TestCase;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.annotations.Parameter;
-import org.junit.Assert;
+import org.junit.Test;
 
 import java.awt.image.Raster;
 import java.lang.reflect.Constructor;
@@ -32,8 +31,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 
+import static org.junit.Assert.assertTrue;
 
-public abstract class BaseIndexOpTest<O extends BaseIndexOp> extends TestCase {
+
+public abstract class BaseIndexOpTest<O extends BaseIndexOp> {
 
     protected Product sourceProduct;
     protected int width;
@@ -47,6 +48,7 @@ public abstract class BaseIndexOpTest<O extends BaseIndexOp> extends TestCase {
         threshold = 0.000001f;
     }
 
+    @Test
     public void testOperator() throws OperatorException {
         O operator = null;
         try {
@@ -90,7 +92,7 @@ public abstract class BaseIndexOpTest<O extends BaseIndexOp> extends TestCase {
     }
 
     protected void setupBands(String[] names, int width, int height, float[] wavelengths, float[] minValues, float[] maxValues) {
-        Assert.assertTrue(names != null && names.length > 0
+        assertTrue(names != null && names.length > 0
                 && minValues != null && maxValues != null && wavelengths != null
                 && names.length == minValues.length && names.length == maxValues.length && names.length == wavelengths.length);
         this.width = width;
@@ -114,5 +116,4 @@ public abstract class BaseIndexOpTest<O extends BaseIndexOp> extends TestCase {
         }
         return values;
     }
-
 }
