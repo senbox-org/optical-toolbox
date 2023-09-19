@@ -237,6 +237,18 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         int viewAngle = view_Angles.getInt(i);
                         autoGroupingStr += "AOLP_" + viewAngle + "_*:";
                     }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "i_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "alop_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "dolp_" + viewAngle + "_*:";
+                    }
                 }
                 autoGroupingStr += "I:I_noise:I_noisefree:I_polsample:" +
                         "I_polsample_noise:I_noisefree_polsample:DOLP:DOLP_noise:DOLP_noisefree:" +
@@ -552,9 +564,9 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 band = new Band(name, dataType, width, height);
                                 product.addBand(band);
 
-                                band.setSpectralWavelength(wavelengths.getFloat(i));
-                                if (!wavelength_list.contains(wavelengths.getInt(i))) {
-                                    wavelength_list.add(wavelengths.getInt(i));
+                                band.setSpectralWavelength(wavelengths.getFloat(j));
+                                if (!wavelength_list.contains(wavelengths.getInt(j))) {
+                                    wavelength_list.add(wavelengths.getInt(j));
                                     angularBandIndex = 0;
                                     spectralBandIndex++;
                                 }
@@ -562,7 +574,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 band.setSpectralBandIndex(spectralBandIndex);
 
 
-                                band.setAngularValue(view_angles.getFloat(i));
+                                band.setAngularValue(view_angles.getFloat(j));
                                 band.setAngularBandIndex(angularBandIndex++);
 
                                 Variable sliced1 = null;
