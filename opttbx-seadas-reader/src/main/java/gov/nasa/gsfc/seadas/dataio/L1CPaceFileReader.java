@@ -1407,12 +1407,28 @@ public class L1CPaceFileReader extends SeadasFileReader {
     }
 
     public void addGeocoding(final Product product) throws ProductIOException {
-        final String longitude = "longitude";
-        final String latitude = "latitude";
         String navGroup = "geolocation_data";
 
-        Variable latVar = ncFile.findVariable(navGroup + "/" + latitude);
-        Variable lonVar = ncFile.findVariable(navGroup + "/" + longitude);
+        final String[] longitudeArray = {"longitude", "Longitude", "LONGITUDE"};
+        final String[] latitudeArray = {"latitude", "Latitude", "LATITUDE"};
+
+        Variable latVar = null;
+        for (String latitude : latitudeArray) {
+            latVar = ncFile.findVariable(navGroup + "/" + latitude);
+            if (latVar != null) {
+                break;
+            }
+        }
+
+        Variable lonVar = null;
+        for (String longitude : longitudeArray) {
+            lonVar = ncFile.findVariable(navGroup + "/" + longitude);
+            if (lonVar != null) {
+                break;
+            }
+        }
+
+
 
         if (latVar != null && lonVar != null) {
             final ProductData lonRawData;
