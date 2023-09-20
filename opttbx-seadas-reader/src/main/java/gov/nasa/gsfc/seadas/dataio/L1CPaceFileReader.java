@@ -224,6 +224,12 @@ public class L1CPaceFileReader extends SeadasFileReader {
 //                );
             } else if (instrument.toString().toUpperCase().contains("SPEXONE")) {
                 String autoGroupingStr = "QC:QC_bitwise:QC_polsample_bitwise:QC_polsample:";
+                if (view_Angles.getInt(4) == view_Angles.getInt(0)) {
+                    view_Angles.setInt(4, - view_Angles.getInt(0));
+                }
+                if (view_Angles.getInt(3) == view_Angles.getInt(1)) {
+                    view_Angles.setInt(3, - view_Angles.getInt(1));
+                }
                 if (view_Angles != null) {
                     for (int i = 0; i < 5; i ++) {
                         int viewAngle = view_Angles.getInt(i);
