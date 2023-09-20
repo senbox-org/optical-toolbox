@@ -322,7 +322,8 @@ public class L1CPaceFileReader extends SeadasFileReader {
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
                 continue;
-            if ((variable.getShortName().equals("latitude")) || (variable.getShortName().equals("longitude")))
+            if ((variable.getShortName().toLowerCase().equals("latitude")) ||
+                    (variable.getShortName().toLowerCase().equals("longitude")))
                 continue;
             int variableRank = variable.getRank();
 
@@ -672,15 +673,13 @@ public class L1CPaceFileReader extends SeadasFileReader {
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-//        Array wavelengths = null;
-//        Array view_angles = null;
-
         Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
                 continue;
-            if ((variable.getShortName().equals("latitude")) || (variable.getShortName().equals("longitude")))
+            if ((variable.getShortName().toLowerCase().equals("latitude")) ||
+                    (variable.getShortName().toLowerCase().equals("longitude")))
                 continue;
             int variableRank = variable.getRank();
 
@@ -1033,7 +1032,8 @@ public class L1CPaceFileReader extends SeadasFileReader {
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
                 continue;
-            if ((variable.getShortName().equals("latitude")) || (variable.getShortName().equals("longitude")))
+            if ((variable.getShortName().toLowerCase().equals("latitude")) ||
+                    (variable.getShortName().toLowerCase().equals("longitude")))
                 continue;
             int variableRank = variable.getRank();
 
