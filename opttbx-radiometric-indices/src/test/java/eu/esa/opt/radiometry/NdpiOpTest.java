@@ -18,6 +18,8 @@
 
 package eu.esa.opt.radiometry;
 
+import org.junit.Before;
+
 import java.util.HashMap;
 
 /**
@@ -26,17 +28,16 @@ import java.util.HashMap;
 
 public class NdpiOpTest extends BaseIndexOpTest<NdpiOp> {
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        setupBands(new String[] { "GREEN", "MIR" }, 3, 3, new float[] { 550, 1600 }, new float[] { 1, 2 }, new float[] { 9, 10 });
+        setupBands(new String[]{"GREEN", "MIR"}, 3, 3, new float[]{550, 1600}, new float[]{1, 2}, new float[]{9, 10});
         setOperatorParameters(new HashMap<String, Float>() {{
             put("greenFactor", 1.0f);
             put("mirFactor", 1.0f);
         }});
-        setTargetValues(new float[] {
+        setTargetValues(new float[]{
                 0.33333334f, 0.200000f, 0.14285715f,
                 0.11111111f, 0.09090909f, 0.07692308f,
-                0.06666667f, 0.05882353f, 0.05263158f } );
-        super.setUp();
+                0.06666667f, 0.05882353f, 0.05263158f});
     }
 }

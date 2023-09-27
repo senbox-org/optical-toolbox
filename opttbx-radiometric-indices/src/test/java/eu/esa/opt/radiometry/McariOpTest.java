@@ -18,6 +18,8 @@
 
 package eu.esa.opt.radiometry;
 
+import org.junit.Before;
+
 import java.util.HashMap;
 
 /**
@@ -26,18 +28,17 @@ import java.util.HashMap;
 
 public class McariOpTest extends BaseIndexOpTest<McariOp> {
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        setupBands(new String[] { "GREEN (B3)", "RED (B4)", "RED (B5)" }, 3, 3, new float[] { 560, 665, 705 }, new float[] { 1, 2, 3 }, new float[] { 9, 10, 11 });
+        setupBands(new String[]{"GREEN (B3)", "RED (B4)", "RED (B5)"}, 3, 3, new float[]{560, 665, 705}, new float[]{1, 2, 3}, new float[]{9, 10, 11});
         setOperatorParameters(new HashMap<String, Float>() {{
             put("greenFactor", 1.0f);
             put("red1Factor", 1.0f);
             put("red2Factor", 1.0f);
         }});
-        setTargetValues(new float[] {
+        setTargetValues(new float[]{
                 0.9f, 0.8f, 0.75f,
                 0.72f, 0.7f, 0.685714f,
-                0.675f, 0.666666f, 0.66f } );
-        super.setUp();
+                0.675f, 0.666666f, 0.66f});
     }
 }
