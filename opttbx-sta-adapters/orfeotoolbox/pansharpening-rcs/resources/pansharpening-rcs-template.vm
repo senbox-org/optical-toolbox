@@ -1,6 +1,0 @@
--inp
-$sourceProductFile[0]
--inxs
-$sourceProductFile[1]
--out
-$targetProductFile

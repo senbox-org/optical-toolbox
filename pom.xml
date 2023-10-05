@@ -128,7 +128,6 @@
         <netbeans.version>RELEASE113</netbeans.version>
         <geotools.version>28.2</geotools.version>
         <netcdf.version>5.3.3</netcdf.version>
-        <hdf.version>2.7.2</hdf.version>
         <hdf.native.version>2.7.2</hdf.native.version>
         <javahelp.version>2.0.05</javahelp.version>
         <brandingToken>opttbx</brandingToken>
@@ -360,18 +359,6 @@
             </dependency>
 
             <dependency>
-                <groupId>ncsa.hdf</groupId>
-                <artifactId>lib-hdf</artifactId>
-                <version>${hdf.native.version}</version>
-            </dependency>
-
-            <!--<dependency>
-                <groupId>org.xeustechnologies</groupId>
-                <artifactId>jtar</artifactId>
-                <version>1.1</version>
-            </dependency>-->
-
-            <dependency>
                 <groupId>com.bc.jnn</groupId>
                 <artifactId>jnn</artifactId>
                 <version>1.7</version>
@@ -417,14 +404,6 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.12.0</version>
             </dependency>
-
-
-            <!-- not necessary -->
-            <!--            <dependency>-->
-            <!--                <groupId>org.jvnet.ogc</groupId>-->
-            <!--                <artifactId>ogc-tools-gml-jts</artifactId>-->
-            <!--                <version>1.0.3</version>-->
-            <!--            </dependency>-->
 
             <!-- can this be replaced?? -->
             <dependency>

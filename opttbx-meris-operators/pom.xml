@@ -55,16 +55,6 @@
             <groupId>com.bc.jnn</groupId>
             <artifactId>jnn</artifactId>
         </dependency>
-        <dependency>
-            <groupId>ncsa.hdf</groupId>
-            <artifactId>jhdf</artifactId>
-            <version>2.7</version>
-        </dependency>
-        <dependency>
-            <groupId>ncsa.hdf</groupId>
-            <artifactId>lib-hdf</artifactId>
-            <version>${hdf.native.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
