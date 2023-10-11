@@ -40,6 +40,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
         int sceneHeight = ncFile.findDimension("bins_along_track").getLength();
         int sceneWidth = ncFile.findDimension("bins_across_track").getLength();
+        boolean correctHarpDim = false;
 
         String productName = productReader.getInputFile().getName();
 
@@ -110,7 +111,13 @@ public class L1CPaceFileReader extends SeadasFileReader {
                 try {
                     view_Angles = view_angle.read();
                     try {
-                        wvl_sliced = wvl.slice(0, 0);
+                        int lenDim0 = wvl.getDimension(0).getLength();
+                        if (lenDim0 != 1) {
+                            wvl_sliced = wvl.slice(1, 0);
+                            correctHarpDim = true;
+                        } else {
+                         wvl_sliced = wvl.slice(0, 0);
+                        }
                     } catch (InvalidRangeException e) {
                         e.printStackTrace();  //Todo change body of catch statement.
                     }
@@ -118,7 +125,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                 } catch (IOException e) {
                 }
             }
-            variableMap = addHarpBands(product, ncFile.getVariables(), view_Angles, waveLengths);
+            variableMap = addHarpBands(product, ncFile.getVariables(), view_Angles, waveLengths, correctHarpDim);
         } else if (instrument != null && instrument.toString().toUpperCase().contains("SPEXONE")) {
             mustFlipY = true;
             if (view_angle != null && wvl != null) {
@@ -198,6 +205,26 @@ public class L1CPaceFileReader extends SeadasFileReader {
                 it = waveLengthSet.iterator();
                 while(it.hasNext()) {
                     autoGroupingStr += "dolp_variability_*_" + it.next() + ":";
+                }
+                it = waveLengthSet.iterator();
+                while(it.hasNext()) {
+                    autoGroupingStr += "i_stdev_*_" + it.next() + ":";
+                }
+                it = waveLengthSet.iterator();
+                while(it.hasNext()) {
+                    autoGroupingStr += "q_stdev_*_" + it.next() + ":";
+                }
+                it = waveLengthSet.iterator();
+                while(it.hasNext()) {
+                    autoGroupingStr += "u_stdev_*_" + it.next() + ":";
+                }
+                it = waveLengthSet.iterator();
+                while(it.hasNext()) {
+                    autoGroupingStr += "aolp_stdev_*_" + it.next() + ":";
+                }
+                it = waveLengthSet.iterator();
+                while(it.hasNext()) {
+                    autoGroupingStr += "dolp_stdev_*_" + it.next() + ":";
                 }
 
                 autoGroupingStr += "I_*_549:I_*_669:I_*_867:I_*_441:Q_*_549:Q_*_669:Q_*_867:Q_*_441:" +
@@ -309,7 +336,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
         }
     }
 
-    private Map<Band, Variable> addHarpBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths) {
+    private Map<Band, Variable> addHarpBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, boolean correctDim) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
@@ -412,10 +439,16 @@ public class L1CPaceFileReader extends SeadasFileReader {
                 int angularBandIndex = 0;
                 spectralBandIndex = -1;
                 final int[] dimensions = variable.getShape();
-                final int views = dimensions[0];
-                final int height = dimensions[1];
-                final int width = dimensions[2];
 
+                int views = dimensions[0];
+                int height = dimensions[1];
+                int width = dimensions[2];
+
+                if (correctDim) {
+                    height = dimensions[0];
+                    width = dimensions[1];
+                    views = dimensions[2];
+                }
                 if (height == sceneRasterHeight && width == sceneRasterWidth) {
                     // final List<Attribute> list = variable.getAttributes();
 
@@ -468,7 +501,11 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
                             Variable sliced = null;
                             try {
-                                sliced = variable.slice(0, i);
+                                if (correctDim) {
+                                    sliced = variable.slice(2,i);
+                                } else {
+                                    sliced = variable.slice(0, i);
+                                }
                             } catch (InvalidRangeException e) {
                                 e.printStackTrace();  //Todo change body of catch statement.
                             }
@@ -546,10 +583,18 @@ public class L1CPaceFileReader extends SeadasFileReader {
                 int angularBandIndex = 0;
                 spectralBandIndex = -1;
                 final int[] dimensions = variable.getShape();
-                final int views = dimensions[0];
-                final int height = dimensions[2];
-                final int width = dimensions[3];
-                final int bands = dimensions[1];
+
+                int views = dimensions[1];
+                int height = dimensions[2];
+                int width = dimensions[3];
+                int bands = dimensions[0];
+
+                if (correctDim) {
+                    height = dimensions[0];
+                    width = dimensions[1];
+                    views = dimensions[2];
+                    bands = dimensions[3];
+                }
 
                 if (height == sceneRasterHeight && width == sceneRasterWidth) {
 
@@ -558,8 +603,8 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
                     if (view_angles != null && wavelengths != null) {
                         ArrayList wavelength_list = new ArrayList();
-                        for (int i = 0; i < views; i++) {
-                            for (int j = 0; j < bands; j++) {
+                        for (int j = 0; j < views; j++) {
+//                            for (int j = 0; j < bands; j++) {
                                 StringBuilder longname = new StringBuilder(description);
                                 longname.append("_");
                                 longname.append(view_angles.getInt(j));
@@ -587,8 +632,13 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 Variable sliced1 = null;
                                 Variable sliced = null;
                                 try {
-                                    sliced1 = variable.slice(0, i);
-                                    sliced = sliced1.slice(0, j);
+                                    if (correctDim) {
+                                        sliced1 = variable.slice(2, j);
+                                        sliced = sliced1.slice(2, 0);
+                                    } else {
+                                        sliced1 = variable.slice(0, 0);
+                                        sliced = sliced1.slice(0, j);
+                                    }
                                 } catch (InvalidRangeException e) {
                                     e.printStackTrace();  //Todo change body of catch statement.
                                 }
@@ -659,7 +709,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 bandToVariableMap.put(band, sliced);
                                 band.setUnit(units);
                                 band.setDescription(description);
-                            }
+//                            }
                         }
                     }
                 }
