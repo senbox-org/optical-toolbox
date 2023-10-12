@@ -205,7 +205,7 @@ public abstract class SeadasFileReader {
         return flagName.replaceAll("\\W+", "_");
     }
 
-    final static Color LandBrown = new Color(100, 49, 12);
+    final static Color LandBrown = new Color(80, 60, 0);
     final static Color LightBrown = new Color(137, 99, 31);
     final static Color FailRed = new Color(255, 0, 26);
     final static Color DeepBlue = new Color(0, 16, 143);
