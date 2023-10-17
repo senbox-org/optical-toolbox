@@ -382,7 +382,7 @@ public class RayleighCorrectionOp extends Operator {
     private void addTargetBands(Product sourceProduct, Product targetProduct, String bandCategory) {
         for (String sourceBandName : sourceBandNames) {
             Band sourceBand = sourceProduct.getBand(sourceBandName);
-            if (sourceBand != null) {
+            if (sourceBand != null && !sourceBandName.endsWith("_unc")) {  // ignore uncertainty bands
                 final int spectralBandIndex = getSpectralBandIndex(sourceBand);
                 if (spectralBandIndex >= 0 && spectralBandIndex < sensor.getNumBands()) {
                     final String targetBandName = getTargetBandName(bandCategory, sourceBand);
