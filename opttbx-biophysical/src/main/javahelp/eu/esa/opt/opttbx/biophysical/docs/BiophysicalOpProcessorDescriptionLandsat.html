@@ -33,7 +33,40 @@
 
 <h3>Processor Description</h3>
 
+<p>
 The <i>Biophysical Processor LANDSAT8</i> is optimized to use a LANDSAT8 product as input instead of a Sentinel2 product, however it is only capable of computing <i>LAI</i>, <i>FAPAR</i> and <i>FVC</i> indexes.
+</p>
+
+<h4>Additional user actions for LANDSAT8 C2</h4>
+<p>
+LANDSAT8 Collection 2 does not provide the zenith and azimuth angles for L2 products. To use the Biophysical operator on these products, the 4 bands must be added first.
+</p>
+<p>
+Steps:
+<ol>
+    <p class="i1">
+        1. Download both the Level 1 and Level 2 products for the same image.
+    </p>
+
+    <p class="i1">
+        2. Copy the four total sun and view azimuth files from Level 1 folder (the four TIFs ending in <i>_SZA.tif</i>, <i>_SAA.tif</i>, <i>_VAA.tif</i>, <i>_VZA.tif</i>) to Level 2 folder.
+    </p>
+
+    <p class="i1">
+        3. Copy the information for these four layers in the Level 1 metadata file (ending in ?_MTL.txt?), and paste it into the Level 2 metadata file. The four new bands will be loaded in SNAP as <i>vaa</i>, <i>vza</i>, <i>saa</i>, and <i>sza</i>.
+    </p>
+
+    <p class="i1">
+        4. The DN values of the angles are scaled by 100, so we need to apply the Band Maths operator to multiply them by 0.01. The new 4 bands will be:
+        <ul>
+            <li class="i2">view_azimuth_mean = vaa * 0.01</li>
+            <li class="i2">view_zenith_mean = vza * 0.01</li>
+            <li class="i2">sun_azimuth = saa * 0.01</li>
+            <li class="i2">sun_zenith = sza * 0.01</li>
+        </ul>
+    </p>
+</ol>
+</p>
 
 <h4>I/O Parameters Tab</h4>
 
