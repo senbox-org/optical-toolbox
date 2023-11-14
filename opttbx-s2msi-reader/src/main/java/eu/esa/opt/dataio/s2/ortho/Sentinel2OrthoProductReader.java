@@ -154,6 +154,8 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
 
     private S2OrthoMetadata orthoMetadataHeader;
 
+    private final boolean useNativeBlockSize = Boolean.parseBoolean(System.getenv("SNAP_GDAL_USE_NATIVE_BLOCKS"));
+
     protected Sentinel2OrthoProductReader(ProductReaderPlugIn readerPlugIn, String epsgCode) {
         super(readerPlugIn);
 
@@ -197,7 +199,6 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
             logger.log(Level.FINE,
                        "Finish reading the scene description, elapsed time: " + elapsedTimeInSeconds + " seconds.");
         }
-
         // Check sceneDescription because a NullPointerException can be launched:
         // An error can be reproduced with a L2A product with 2 tiles in zone UTM30 and
         // 2 other tiles in zone UTM31.
@@ -580,7 +581,7 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                         for (VirtualPath virtualPath : bandInfo.getTileIdToPathMap().values()) {
                             localFiles[idx++] = virtualPath.getLocalFile();
                         }
-                        Dimension tileSize;
+                        /*Dimension tileSize;
                         try (Dataset dataset = GDAL.open(localFiles[0].toString(), GDALConst.gaReadonly())) {
                             if (dataset == null) {
                                 throw new IOException("Cannot open " + localFiles[0]);
@@ -588,12 +589,11 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                             try (org.esa.snap.dataio.gdal.drivers.Band gdalBand = dataset.getRasterBand(1)) {
                                 tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
                             }
-                        }
+                        }*/
                         GDALMultiLevelSource multiLevelSource = new GDALMultiLevelSource(dataBufferType, bandBounds,
-                                                                                         tileSize,
                                                                                          bandIndexNumber, resolutionCount, band.getGeoCoding(),
                                                                                          band.getNoDataValue(),
-                                                                                         defaultJAIReadTileSize, localFiles);
+                                                                                         localFiles);
                         ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
                         band.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
                         if (offsets != null && band.getUnit().matches("dl")) {
@@ -850,20 +850,10 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                     GeoCoding geoCoding = buildGeoCoding(sceneDescription, mapCRS, pixelSize, pixelSize,
                                                          defaultBandSize, bandBounds);
                     band.setGeoCoding(geoCoding);
-                    GDALMultiLevelSource multiLevelSource;
-                    try (Dataset dataset = GDAL.open(maskPath.getLocalFile().toString(), GDALConst.gaReadonly())) {
-                        if (dataset == null) {
-                            throw new IOException("Cannot open " + maskPath.getLocalFile());
-                        }
-                        try (org.esa.snap.dataio.gdal.drivers.Band gdalBand = dataset.getRasterBand(i + 1)) {
-                            final Dimension tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
-                            multiLevelSource = new GDALMultiLevelSource(dataBufferType, bandBounds,
-                                                                        tileSize, i,
+                    GDALMultiLevelSource multiLevelSource = new GDALMultiLevelSource(dataBufferType, bandBounds,
+                                                                        i,
                                                                         resolutionCount, band.getGeoCoding(), band.getNoDataValue(),
-                                                                        defaultJAIReadTileSize, maskPath.getLocalFile());
-                                                                        //tileSize);
-                        }
-                    }
+                                                                        maskPath.getLocalFile());
                     ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
                     band.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
                     band.setNoDataValueUsed(false);
@@ -936,20 +926,10 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                         geoCoding = buildGeoCoding(sceneDescription, mapCRS, pixelSize, pixelSize,
                                                    defaultBandSize, bandBounds);
                         band.setGeoCoding(geoCoding);
-                        GDALMultiLevelSource multiLevelSource;
-                        try (Dataset dataset = GDAL.open(maskPath.getLocalFile().toString(), GDALConst.gaReadonly())) {
-                            if (dataset == null) {
-                                throw new IOException("Cannot open " + maskPath.getLocalFile());
-                            }
-                            try (org.esa.snap.dataio.gdal.drivers.Band gdalBand = dataset.getRasterBand(i + 1)) {
-                                final Dimension tileSize = new Dimension(gdalBand.getBlockXSize(), gdalBand.getBlockYSize());
-                                multiLevelSource = new GDALMultiLevelSource(dataBufferType, bandBounds,
-                                                                            tileSize, i,
+                        GDALMultiLevelSource multiLevelSource = new GDALMultiLevelSource(dataBufferType, bandBounds,
+                                                                            i,
                                                                             resolutionCount, band.getGeoCoding(), band.getNoDataValue(),
-                                                                            defaultJAIReadTileSize, maskPath.getLocalFile());
-                                                                            //tileSize);
-                            }
-                        }
+                                                                            maskPath.getLocalFile());
                         ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
                         band.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
                         band.setNoDataValueUsed(false);
