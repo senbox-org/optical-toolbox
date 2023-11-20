@@ -17,22 +17,15 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.dataio.ProductIOException;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.FlagCoding;
-import org.esa.snap.core.datamodel.Mask;
-import org.esa.snap.core.datamodel.MetadataAttribute;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.PropertyMap;
 import org.esa.snap.core.util.io.CsvReader;
+import org.esa.snap.rcp.SnapApp;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Section;
-import ucar.nc2.Attribute;
-import ucar.nc2.Group;
-import ucar.nc2.NetcdfFile;
-import ucar.nc2.Variable;
+import ucar.nc2.*;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -249,148 +242,383 @@ public abstract class SeadasFileReader {
 
             Band QFBand = product.getBand("l2_flags");
             if (QFBand != null) {
+                String ATMFAIL_Description = "Atmospheric correction failure";
+                String LAND_Description = "Land";
+                String PRODWARN_Description = "One (or more) product algorithms generated a warning";
+                String HIGLINT_Description = "High glint determined";
+                String HILT_Description = "High (or saturating) TOA radiance";
+                String HISATZEN_Description = "Large satellite zenith angle";
+                String COASTZ_Description = "Shallow water (<30m)";
+                String SPARE8_Description = "Unused";
+                String STRAYLIGHT_Description = "Straylight determined";
+                String CLDICE_Description = "Cloud/Ice determined";
+                String COCCOLITH_Description = "Coccolithophores detected";
+                String TURBIDW_Description = "Turbid water determined";
+                String HISOLZEN_Description = "High solar zenith angle";
+                String SPARE14_Description = "Unused";
+                String LOWLW_Description = "Low Lw @ 555nm (possible cloud shadow)";
+                String CHLFAIL_Description = "Chlorophyll algorithm failure";
+                String NAVWARN_Description = "Navigation suspect";
+                String ABSAER_Description = "Absorbing Aerosols determined";
+                String SPARE19_Description = "Unused";
+                String MAXAERITER_Description = "Maximum iterations reached for NIR iteration";
+                String MODGLINT_Description = "Moderate glint determined";
+                String CHLWARN_Description = "Chlorophyll out-of-bounds (<0.01 or >100 mg m^-3)";
+                String ATMWARN_Description = "Atmospheric correction warning; Epsilon out-of-bounds";
+                String SPARE24_Description = "Unused";
+                String SEAICE_Description = "Sea ice determined";
+                String NAVFAIL_Description = "Navigation failure";
+                String FILTER_Description = "Insufficient data for smoothing filter";
+                String SPARE28_Description = "Unused";
+                String BOWTIEDEL_Description = "Bowtie deleted pixels (VIIRS)";
+                String HIPOL_Description = "High degree of polariztion determined";
+                String PRODFAIL_Description = "One (or more) product algorithms produced a failure";
+                String SPARE32_Description = "Unused";
+                
+                String Quality_L2_Description = "Product could be computed (l2_flags composite)";
+                String Quality_L3_Description = "Best quality (l2_flags composite)";
+                String Water_Description = "Not land (l2_flags.LAND)";
+                
+                
+                
                 FlagCoding flagCoding = new FlagCoding("L2Flags");
-                flagCoding.addFlag("ATMFAIL", 0x01, "Atmospheric correction failure");
-                flagCoding.addFlag("LAND", 0x02, "Land");
-                flagCoding.addFlag("PRODWARN", 0x04, "One (or more) product algorithms generated a warning");
-                flagCoding.addFlag("HIGLINT", 0x08, "High glint determined");
-                flagCoding.addFlag("HILT", 0x10, "High (or saturating) TOA radiance");
-                flagCoding.addFlag("HISATZEN", 0x20, "Large satellite zenith angle");
-                flagCoding.addFlag("COASTZ", 0x40, "Shallow water (<30m)");
-                flagCoding.addFlag("SPARE8", 0x80, "Unused");
-                flagCoding.addFlag("STRAYLIGHT", 0x100, "Straylight determined");
-                flagCoding.addFlag("CLDICE", 0x200, "Cloud/Ice determined");
-                flagCoding.addFlag("COCCOLITH", 0x400, "Coccolithophores detected");
-                flagCoding.addFlag("TURBIDW", 0x800, "Turbid water determined");
-                flagCoding.addFlag("HISOLZEN", 0x1000, "High solar zenith angle");
-                flagCoding.addFlag("SPARE14", 0x2000, "Unused");
-                flagCoding.addFlag("LOWLW", 0x4000, "Low Lw @ 555nm (possible cloud shadow)");
-                flagCoding.addFlag("CHLFAIL", 0x8000, "Chlorophyll algorithm failure");
-                flagCoding.addFlag("NAVWARN", 0x10000, "Navigation suspect");
-                flagCoding.addFlag("ABSAER", 0x20000, "Absorbing Aerosols determined");
-                flagCoding.addFlag("SPARE19", 0x40000, "Unused");
-                flagCoding.addFlag("MAXAERITER", 0x80000, "Maximum iterations reached for NIR iteration");
-                flagCoding.addFlag("MODGLINT", 0x100000, "Moderate glint determined");
-                flagCoding.addFlag("CHLWARN", 0x200000, "Chlorophyll out-of-bounds (<0.01 or >100 mg m^-3)");
-                flagCoding.addFlag("ATMWARN", 0x400000, "Atmospheric correction warning; Epsilon out-of-bounds");
-                flagCoding.addFlag("SPARE24", 0x800000, "Unused");
-                flagCoding.addFlag("SEAICE", 0x1000000, "Sea ice determined");
-                flagCoding.addFlag("NAVFAIL", 0x2000000, "Navigation failure");
-                flagCoding.addFlag("FILTER", 0x4000000, "Insufficient data for smoothing filter");
-                flagCoding.addFlag("SPARE28", 0x8000000, "Unused");
-                flagCoding.addFlag("BOWTIEDEL", 0x10000000, "Bowtie deleted pixels (VIIRS)");
-                flagCoding.addFlag("HIPOL", 0x20000000, "High degree of polariztion determined");
-                flagCoding.addFlag("PRODFAIL", 0x40000000, "One (or more) product algorithms produced a failure");
-                flagCoding.addFlag("SPARE32", 0x80000000, "Unused");
-
+                
+                flagCoding.addFlag("ATMFAIL", 0x01, ATMFAIL_Description);
+                flagCoding.addFlag("LAND", 0x02, LAND_Description);
+                flagCoding.addFlag("PRODWARN", 0x04, PRODWARN_Description);
+                flagCoding.addFlag("HIGLINT", 0x08, HIGLINT_Description);
+                flagCoding.addFlag("HILT", 0x10, HILT_Description);
+                flagCoding.addFlag("HISATZEN", 0x20, HISATZEN_Description);
+                flagCoding.addFlag("COASTZ", 0x40, COASTZ_Description);
+                flagCoding.addFlag("SPARE8", 0x80, SPARE8_Description);
+                flagCoding.addFlag("STRAYLIGHT", 0x100, STRAYLIGHT_Description);
+                flagCoding.addFlag("CLDICE", 0x200, CLDICE_Description);
+                flagCoding.addFlag("COCCOLITH", 0x400, COCCOLITH_Description);
+                flagCoding.addFlag("TURBIDW", 0x800, TURBIDW_Description);
+                flagCoding.addFlag("HISOLZEN", 0x1000, HISOLZEN_Description);
+                flagCoding.addFlag("SPARE14", 0x2000, SPARE14_Description);
+                flagCoding.addFlag("LOWLW", 0x4000, LOWLW_Description);
+                flagCoding.addFlag("CHLFAIL", 0x8000, CHLFAIL_Description);
+                flagCoding.addFlag("NAVWARN", 0x10000, NAVWARN_Description);
+                flagCoding.addFlag("ABSAER", 0x20000, ABSAER_Description);
+                flagCoding.addFlag("SPARE19", 0x40000, SPARE19_Description);
+                flagCoding.addFlag("MAXAERITER", 0x80000, MAXAERITER_Description);
+                flagCoding.addFlag("MODGLINT", 0x100000, MODGLINT_Description);
+                flagCoding.addFlag("CHLWARN", 0x200000, CHLWARN_Description);
+                flagCoding.addFlag("ATMWARN", 0x400000, ATMWARN_Description);
+                flagCoding.addFlag("SPARE24", 0x800000, SPARE24_Description);
+                flagCoding.addFlag("SEAICE", 0x1000000, SEAICE_Description);
+                flagCoding.addFlag("NAVFAIL", 0x2000000, NAVFAIL_Description);
+                flagCoding.addFlag("FILTER", 0x4000000, FILTER_Description);
+                flagCoding.addFlag("SPARE28", 0x8000000, SPARE28_Description);
+                flagCoding.addFlag("BOWTIEDEL", 0x10000000, BOWTIEDEL_Description);
+                flagCoding.addFlag("HIPOL", 0x20000000, HIPOL_Description);
+                flagCoding.addFlag("PRODFAIL", 0x40000000, PRODFAIL_Description);
+                flagCoding.addFlag("SPARE32", 0x80000000, SPARE32_Description);
+                
+                
                 product.getFlagCodingGroup().add(flagCoding);
                 QFBand.setSampleCoding(flagCoding);
 
-                product.getMaskGroup().add(Mask.BandMathsType.create("ATMFAIL", "Atmospheric correction failure",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.ATMFAIL",
-                        FailRed, 0.0));
-                product.getMaskGroup().add(Mask.BandMathsType.create("LAND", "Land",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.LAND",
-                        LandBrown, 0.0));
-                product.getMaskGroup().add(Mask.BandMathsType.create("PRODWARN", "One (or more) product algorithms generated a warning",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.PRODWARN",
-                        DeepBlue, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("HILT", "High (or saturating) TOA radiance",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.HILT",
-                        Color.GRAY, 0.2));
-                product.getMaskGroup().add(Mask.BandMathsType.create("HIGLINT", "High glint determined",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.HIGLINT",
-                        BrightPink, 0.2));
-                product.getMaskGroup().add(Mask.BandMathsType.create("HISATZEN", "Large satellite zenith angle",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.HISATZEN",
-                        LightCyan, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("COASTZ", "Shallow water (<30m)",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.COASTZ",
-                        BurntUmber, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("STRAYLIGHT", "Straylight determined",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.STRAYLIGHT",
-                        Color.YELLOW, 0.2));
-                product.getMaskGroup().add(Mask.BandMathsType.create("CLDICE", "Cloud/Ice determined",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.CLDICE",
-                        Color.WHITE, 0.0));
-                product.getMaskGroup().add(Mask.BandMathsType.create("COCCOLITH", "Coccolithophores detected",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.COCCOLITH",
-                        Color.CYAN, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("TURBIDW", "Turbid water determined",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.TURBIDW",
-                        LightBrown, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("HISOLZEN", "High solar zenith angle",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.HISOLZEN",
-                        Purple, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("LOWLW", "Low Lw @ 555nm (possible cloud shadow)",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.LOWLW",
-                        Cornflower, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("CHLFAIL", "Chlorophyll algorithm failure",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.CHLFAIL",
-                        FailRed, 0.0));
-                product.getMaskGroup().add(Mask.BandMathsType.create("NAVWARN", "Navigation suspect",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.NAVWARN",
-                        Color.MAGENTA, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("ABSAER", "Absorbing Aerosols determined",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.ABSAER",
-                        Color.ORANGE, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("MAXAERITER", "Maximum iterations reached for NIR correction",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.MAXAERITER",
-                        MediumGray, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("MODGLINT", "Moderate glint determined",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.MODGLINT",
-                        LightPurple, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("CHLWARN", "Chlorophyll out-of-bounds (<0.01 or >100 mg m^-3)",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.CHLWARN",
-                        Color.LIGHT_GRAY, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("ATMWARN", "Atmospheric correction warning; Epsilon out-of-bounds",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.ATMWARN",
-                        Color.MAGENTA, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("SEAICE", "Sea ice determined",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.SEAICE",
-                        Color.DARK_GRAY, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("NAVFAIL", "Navigation failure",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.NAVFAIL",
-                        FailRed, 0.0));
-                product.getMaskGroup().add(Mask.BandMathsType.create("FILTER", "Insufficient data for smoothing filter",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.FILTER",
-                        Color.LIGHT_GRAY, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("BOWTIEDEL", "Bowtie deleted pixel",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.BOWTIEDEL",
-                        FailRed, 0.1));
-                product.getMaskGroup().add(Mask.BandMathsType.create("HIPOL", "High degree of polariztion determined",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.HIPOL",
-                        Color.PINK, 0.5));
-                product.getMaskGroup().add(Mask.BandMathsType.create("PRODFAIL", "One (or more) product algorithms produced a failure",
-                        product.getSceneRasterWidth(),
-                        product.getSceneRasterHeight(), "l2_flags.PRODFAIL",
-                        FailRed, 0.1));
 
+
+                
+                Mask ATMFAIL_Mask = Mask.BandMathsType.create("ATMFAIL", ATMFAIL_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.ATMFAIL",
+                        get_ATMFAIL_MaskColor(), get_ATMFAIL_MaskTransparency());
+                    product.getMaskGroup().add(ATMFAIL_Mask);
+                    
+                
+                Mask LAND_Mask = Mask.BandMathsType.create("LAND", LAND_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.LAND",
+                        get_LAND_MaskColor(), get_LAND_MaskTransparency());
+                    product.getMaskGroup().add(LAND_Mask);
+
+
+                Mask PRODWARN_Mask = Mask.BandMathsType.create("PRODWARN", PRODWARN_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.PRODWARN",
+                        get_PRODWARN_MaskColor(), get_PRODWARN_MaskTransparency());
+                    product.getMaskGroup().add(PRODWARN_Mask);
+
+                    
+                Mask HIGLINT_Mask = Mask.BandMathsType.create("HIGLINT", HIGLINT_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.HIGLINT",
+                        get_HIGLINT_MaskColor(), get_HIGLINT_MaskTransparency());
+                product.getMaskGroup().add(HIGLINT_Mask);
+
+                
+                Mask HILT_Mask = Mask.BandMathsType.create("HILT", HILT_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.HILT",
+                        get_HILT_MaskColor(), get_HILT_MaskTransparency());
+                product.getMaskGroup().add(HILT_Mask);
+                
+
+                Mask HISATZEN_Mask = Mask.BandMathsType.create("HISATZEN", HISATZEN_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.HISATZEN",
+                        get_HISATZEN_MaskColor(), get_HISATZEN_MaskTransparency());
+                product.getMaskGroup().add(HISATZEN_Mask);
+
+                
+                Mask COASTZ_Mask = Mask.BandMathsType.create("COASTZ", COASTZ_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.COASTZ",
+                        get_COASTZ_MaskColor(), get_COASTZ_MaskTransparency());
+                product.getMaskGroup().add(COASTZ_Mask);
+                
+                
+                Mask STRAYLIGHT_Mask = Mask.BandMathsType.create("STRAYLIGHT", STRAYLIGHT_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.STRAYLIGHT",
+                        get_STRAYLIGHT_MaskColor(), get_STRAYLIGHT_MaskTransparency());
+                product.getMaskGroup().add(STRAYLIGHT_Mask);
+
+
+                Mask CLDICE_Mask = Mask.BandMathsType.create("CLDICE", CLDICE_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.CLDICE",
+                        get_CLDICE_MaskColor(), get_CLDICE_MaskTransparency());
+                product.getMaskGroup().add(CLDICE_Mask);
+
+                
+                Mask COCCOLITH_Mask = Mask.BandMathsType.create("COCCOLITH", COCCOLITH_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.COCCOLITH",
+                        get_COCCOLITH_MaskColor(), get_COCCOLITH_MaskTransparency());
+                product.getMaskGroup().add(COCCOLITH_Mask);
+
+                
+                Mask TURBIDW_Mask = Mask.BandMathsType.create("TURBIDW", TURBIDW_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.TURBIDW",
+                        get_TURBIDW_MaskColor(), get_TURBIDW_MaskTransparency());
+                product.getMaskGroup().add(TURBIDW_Mask);
+
+                
+                Mask HISOLZEN_Mask = Mask.BandMathsType.create("HISOLZEN", HISOLZEN_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.HISOLZEN",
+                        get_HISOLZEN_MaskColor(), get_HISOLZEN_MaskTransparency());
+                product.getMaskGroup().add(HISOLZEN_Mask);
+
+
+                Mask LOWLW_Mask = Mask.BandMathsType.create("LOWLW", LOWLW_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.LOWLW",
+                        get_LOWLW_MaskColor(), get_LOWLW_MaskTransparency());
+                product.getMaskGroup().add(LOWLW_Mask);
+                
+
+                Mask CHLFAIL_Mask = Mask.BandMathsType.create("CHLFAIL", CHLFAIL_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.CHLFAIL",
+                        get_CHLFAIL_MaskColor(), get_CHLFAIL_MaskTransparency());
+                product.getMaskGroup().add(CHLFAIL_Mask);
+
+
+                Mask NAVWARN_Mask = Mask.BandMathsType.create("NAVWARN", NAVWARN_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.NAVWARN",
+                        get_NAVWARN_MaskColor(), get_NAVWARN_MaskTransparency());
+                product.getMaskGroup().add(NAVWARN_Mask);
+
+
+                Mask ABSAER_Mask = Mask.BandMathsType.create("ABSAER", ABSAER_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.ABSAER",
+                        get_ABSAER_MaskColor(), get_ABSAER_MaskTransparency());
+                product.getMaskGroup().add(ABSAER_Mask);
+
+                
+                Mask MAXAERITER_Mask = Mask.BandMathsType.create("MAXAERITER", MAXAERITER_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.MAXAERITER",
+                        get_MAXAERITER_MaskColor(), get_MAXAERITER_MaskTransparency());
+                product.getMaskGroup().add(MAXAERITER_Mask);
+
+
+                Mask MODGLINT_Mask = Mask.BandMathsType.create("MODGLINT", MODGLINT_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.MODGLINT",
+                        get_MODGLINT_MaskColor(), get_MODGLINT_MaskTransparency());
+                product.getMaskGroup().add(MODGLINT_Mask);
+
+
+                Mask CHLWARN_Mask = Mask.BandMathsType.create("CHLWARN", CHLWARN_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.CHLWARN",
+                        get_CHLWARN_MaskColor(), get_CHLWARN_MaskTransparency());
+                product.getMaskGroup().add(CHLWARN_Mask);
+
+
+                Mask ATMWARN_Mask = Mask.BandMathsType.create("ATMWARN", ATMWARN_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.ATMWARN",
+                        get_ATMWARN_MaskColor(), get_ATMWARN_MaskTransparency());
+                product.getMaskGroup().add(ATMWARN_Mask);
+
+
+                Mask SEAICE_Mask = Mask.BandMathsType.create("SEAICE", SEAICE_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.SEAICE",
+                        get_SEAICE_MaskColor(), get_SEAICE_MaskTransparency());
+                product.getMaskGroup().add(SEAICE_Mask);
+
+
+                Mask NAVFAIL_Mask = Mask.BandMathsType.create("NAVFAIL", NAVFAIL_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.NAVFAIL",
+                        get_NAVFAIL_MaskColor(), get_NAVFAIL_MaskTransparency());
+                product.getMaskGroup().add(NAVFAIL_Mask);
+
+
+                Mask FILTER_Mask = Mask.BandMathsType.create("FILTER", FILTER_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.FILTER",
+                        get_FILTER_MaskColor(), get_FILTER_MaskTransparency());
+                product.getMaskGroup().add(FILTER_Mask);
+
+                
+                Mask BOWTIEDEL_Mask = Mask.BandMathsType.create("BOWTIEDEL", BOWTIEDEL_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.BOWTIEDEL",
+                        get_BOWTIEDEL_MaskColor(), get_BOWTIEDEL_MaskTransparency());
+                product.getMaskGroup().add(BOWTIEDEL_Mask);
+
+
+                Mask HIPOL_Mask = Mask.BandMathsType.create("HIPOL", HIPOL_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.HIPOL",
+                        get_HIPOL_MaskColor(), get_HIPOL_MaskTransparency());
+                product.getMaskGroup().add(HIPOL_Mask);
+
+
+                Mask PRODFAIL_Mask = Mask.BandMathsType.create("PRODFAIL", PRODFAIL_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(), 
+                        "l2_flags.PRODFAIL",
+                        get_PRODFAIL_MaskColor(), get_PRODFAIL_MaskTransparency());
+                product.getMaskGroup().add(PRODFAIL_Mask);
+
+                
+                Mask Quality_L2_Mask = Mask.BandMathsType.create("Quality_L2", Quality_L2_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                        "!(l2_flags.ATMFAIL or l2_flags.LAND or l2_flags.HILT or l2_flags.STRAYLIGHT or l2_flags.CLDICE or l2_flags.NAVFAIL)",
+                        get_Quality_L2_MaskColor(), get_Quality_L2_MaskTransparency());
+                product.getMaskGroup().add(Quality_L2_Mask);
+                
+
+                Mask Quality_L3_Mask = Mask.BandMathsType.create("Quality_L3", Quality_L3_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                        "!(l2_flags.ATMFAIL or l2_flags.LAND or l2_flags.HIGLINT or l2_flags.HILT or l2_flags.STRAYLIGHT  or l2_flags.CLDICE or l2_flags.COCCOLITH or l2_flags.HISOLZEN or l2_flags.LOWLW or l2_flags.CHLFAIL or l2_flags.NAVWARN or l2_flags.MAXAERITER or l2_flags.CHLWARN or l2_flags.ATMWARN or l2_flags.NAVFAIL or l2_flags.FILTER)",
+                        get_Quality_L3_MaskColor(), get_Quality_L3_MaskTransparency());
+                product.getMaskGroup().add(Quality_L3_Mask);
+
+                
+                Mask Water_Mask = Mask.BandMathsType.create("Water", Water_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                        "!l2_flags.LAND",
+                        get_Water_MaskColor(), get_Water_MaskTransparency());
+                product.getMaskGroup().add(Water_Mask);
+
+
+
+
+
+
+                Mask SPARE8_Mask = Mask.BandMathsType.create("SPARE8", SPARE8_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                        "l2_flags.SPARE8",
+                        get_SPARE_MaskColor(), get_SPARE_MaskTransparency());
+                if (is_SPARE_MaskInclude()) {
+                    product.getMaskGroup().add(SPARE8_Mask);
+                }
+
+
+                Mask SPARE14_Mask = Mask.BandMathsType.create("SPARE14", SPARE14_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                        "l2_flags.SPARE14",
+                        get_SPARE_MaskColor(), get_SPARE_MaskTransparency());
+                if (is_SPARE_MaskInclude()) {
+                    product.getMaskGroup().add(SPARE14_Mask);
+                }
+
+
+                Mask SPARE19_Mask = Mask.BandMathsType.create("SPARE19", SPARE19_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                        "l2_flags.SPARE19",
+                        get_SPARE_MaskColor(), get_SPARE_MaskTransparency());
+                if (is_SPARE_MaskInclude()) {
+                    product.getMaskGroup().add(SPARE19_Mask);
+                }
+
+                Mask SPARE24_Mask = Mask.BandMathsType.create("SPARE24", SPARE24_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                        "l2_flags.SPARE24",
+                        get_SPARE_MaskColor(), get_SPARE_MaskTransparency());
+                if (is_SPARE_MaskInclude()) {
+                    product.getMaskGroup().add(SPARE24_Mask);
+                }
+
+                Mask SPARE28_Mask = Mask.BandMathsType.create("SPARE28", SPARE28_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                        "l2_flags.SPARE28",
+                        get_SPARE_MaskColor(), get_SPARE_MaskTransparency());
+                if (is_SPARE_MaskInclude()) {
+                    product.getMaskGroup().add(SPARE28_Mask);
+                }
+
+                Mask SPARE32_Mask = Mask.BandMathsType.create("SPARE32", SPARE32_Description,
+                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                        "l2_flags.SPARE32",
+                        get_SPARE_MaskColor(), get_SPARE_MaskTransparency());
+                if (is_SPARE_MaskInclude()) {
+                    product.getMaskGroup().add(SPARE32_Mask);
+                }                
+                
+                
+                
+
+                String[] bandNames = product.getBandNames();
+                for (String bandName : bandNames) {
+                    RasterDataNode raster = product.getRasterDataNode(bandName);
+                    if (is_ATMFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(ATMFAIL_Mask);}
+                    if (is_LAND_MaskEnabled()) {raster.getOverlayMaskGroup().add(LAND_Mask);}
+                    if (is_PRODWARN_MaskEnabled()) {raster.getOverlayMaskGroup().add(PRODWARN_Mask);}
+                    if (is_HIGLINT_MaskEnabled()) {raster.getOverlayMaskGroup().add(HIGLINT_Mask);}
+                    if (is_HILT_MaskEnabled()) {raster.getOverlayMaskGroup().add(HILT_Mask);}
+                    if (is_HISATZEN_MaskEnabled()) {raster.getOverlayMaskGroup().add(HISATZEN_Mask);}
+                    if (is_COASTZ_MaskEnabled()) {raster.getOverlayMaskGroup().add(COASTZ_Mask);}
+                    if (is_STRAYLIGHT_MaskEnabled()) {raster.getOverlayMaskGroup().add(STRAYLIGHT_Mask);}
+                    if (is_CLDICE_MaskEnabled()) {raster.getOverlayMaskGroup().add(CLDICE_Mask);}
+                    if (is_COCCOLITH_MaskEnabled()) {raster.getOverlayMaskGroup().add(COCCOLITH_Mask);}
+                    if (is_TURBIDW_MaskEnabled()) {raster.getOverlayMaskGroup().add(TURBIDW_Mask);}
+                    if (is_HISOLZEN_MaskEnabled()) {raster.getOverlayMaskGroup().add(HISOLZEN_Mask);}
+                    if (is_LOWLW_MaskEnabled()) {raster.getOverlayMaskGroup().add(LOWLW_Mask);}
+                    if (is_CHLFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(CHLFAIL_Mask);}
+                    if (is_NAVWARN_MaskEnabled()) {raster.getOverlayMaskGroup().add(NAVWARN_Mask);}
+                    if (is_ABSAER_MaskEnabled()) {raster.getOverlayMaskGroup().add(ABSAER_Mask);}
+                    if (is_MAXAERITER_MaskEnabled()) {raster.getOverlayMaskGroup().add(MAXAERITER_Mask);}
+                    if (is_MODGLINT_MaskEnabled()) {raster.getOverlayMaskGroup().add(MODGLINT_Mask);}
+                    if (is_CHLWARN_MaskEnabled()) {raster.getOverlayMaskGroup().add(CHLWARN_Mask);}
+                    if (is_ATMWARN_MaskEnabled()) {raster.getOverlayMaskGroup().add(ATMWARN_Mask);}
+                    if (is_SEAICE_MaskEnabled()) {raster.getOverlayMaskGroup().add(SEAICE_Mask);}
+                    if (is_NAVFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(NAVFAIL_Mask);}
+                    if (is_FILTER_MaskEnabled()) {raster.getOverlayMaskGroup().add(FILTER_Mask);}
+                    if (is_BOWTIEDEL_MaskEnabled()) {raster.getOverlayMaskGroup().add(BOWTIEDEL_Mask);}
+                    if (is_HIPOL_MaskEnabled()) {raster.getOverlayMaskGroup().add(HIPOL_Mask);}
+                    if (is_PRODFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(PRODFAIL_Mask);}
+                    if (is_Quality_L2_MaskEnabled()) {raster.getOverlayMaskGroup().add(Quality_L2_Mask);}
+                    if (is_Quality_L3_MaskEnabled()) {raster.getOverlayMaskGroup().add(Quality_L3_Mask);}
+                    if (is_Water_MaskEnabled()) {raster.getOverlayMaskGroup().add(Water_Mask);}
+                }
+
+                
+                
             }
             Band QFBandSST = product.getBand("flags_sst");
             if (QFBandSST != null) {
@@ -808,11 +1036,22 @@ public abstract class SeadasFileReader {
         final int bands = dimensions[2];
         final int height = dimensions[0];
         final int width = dimensions[1];
+        int dim = 0;
+        Variable wvl = null;
 
         if (height == sceneRasterHeight && width == sceneRasterWidth) {
             // final List<Attribute> list = variable.getAttributes();
-
-            Variable wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+            List<Dimension> dims = ncFile.getDimensions();
+            for (Dimension d: dims){
+                if (d.getShortName().equalsIgnoreCase("wavelength_3d")) {
+                    dim = d.getLength();
+                }
+            }
+            if (dim == bands) {
+                wvl = ncFile.findVariable("sensor_band_parameters/wavelength_3d");
+            } else {
+                wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+            }
             // wavenlengths for modis L2 files
             if (wvl == null) {
                 if (bands == 2 || bands == 3) {
@@ -832,6 +1071,7 @@ public abstract class SeadasFileReader {
                     longname.append("_");
                     longname.append(wavelengths.getInt(i));
                     String name = longname.toString();
+                    String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                     final int dataType = getProductDataType(variable);
 
                     if (!product.containsBand(name)) {
@@ -895,7 +1135,7 @@ public abstract class SeadasFileReader {
                         if (validMinMax[0] != validMinMax[1]) {
                             String validExp;
                             if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                                validExp = format("%s >= %.05f && %s <= %.05f", name, validMinMax[0], name, validMinMax[1]);
+                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
 
                             } else {
                                 double[] minmax = {0.0, 0.0};
@@ -910,7 +1150,7 @@ public abstract class SeadasFileReader {
                                     minmax[0] += band.getScalingOffset();
                                     minmax[1] += band.getScalingOffset();
                                 }
-                                validExp = format("%s >= %.05f && %s <= %.05f", name, minmax[0], name, minmax[1]);
+                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
 
                             }
                             band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
@@ -937,6 +1177,8 @@ public abstract class SeadasFileReader {
             final int width = dimensions[1];
             if (height == sceneRasterHeight && width == sceneRasterWidth) {
                 final String name = variable.getShortName();
+                String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
+
                 final int dataType = getProductDataType(variable);
 
                 if (!product.containsBand(name)) {
@@ -992,8 +1234,9 @@ public abstract class SeadasFileReader {
                     }
                     if (validMinMax[0] != validMinMax[1]) {
                         String validExp;
+
                         if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                            validExp = format("%s >= %.05f && %s <= %.05f", name, validMinMax[0], name, validMinMax[1]);
+                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
 
                         } else {
                             double[] minmax = {0.0, 0.0};
@@ -1008,8 +1251,8 @@ public abstract class SeadasFileReader {
                                 minmax[0] += band.getScalingOffset();
                                 minmax[1] += band.getScalingOffset();
                             }
-                            validExp = format("%s >= %.05f && %s <= %.05f", name, minmax[0], name, minmax[1]);
 
+                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
@@ -1092,6 +1335,9 @@ public abstract class SeadasFileReader {
         }
         if (productReader.getProductType() == SeadasProductReader.ProductType.Level1B_HICO) {
             group = ncFile.findGroup("products");
+        }
+        if (productReader.getProductType() == SeadasProductReader.ProductType.Level1C_Pace) {
+            group = ncFile.findGroup("observation_data");
         }
 
         if (group != null) {
@@ -1514,6 +1760,620 @@ public abstract class SeadasFileReader {
             throw new IOException(e.getMessage());
         }
     }
+
+
+
+    // ATMFAIL
+
+    private boolean is_ATMFAIL_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_ENABLED_DEFAULT);
+    }
+
+    private Color get_ATMFAIL_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_COLOR_DEFAULT);
+    }
+
+    private double get_ATMFAIL_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+    // LAND
+
+    private Color get_LAND_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_LAND_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_LAND_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_LAND_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_LAND_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_LAND_ENABLED_DEFAULT);
+    }
+
+    private double get_LAND_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_LAND_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_LAND_TRANSPARENCY_DEFAULT);
+    }
+
+
+    // PRODWARN
+
+    private boolean is_PRODWARN_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_ENABLED_DEFAULT);
+    }
+
+    private Color get_PRODWARN_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_COLOR_DEFAULT);
+    }
+
+    private double get_PRODWARN_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_TRANSPARENCY_DEFAULT);
+    }
+
+
+
+    // HIGLINT
+
+    private boolean is_HIGLINT_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_ENABLED_DEFAULT);
+    }
+
+    private Color get_HIGLINT_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_COLOR_DEFAULT);
+    }
+
+    private double get_HIGLINT_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_TRANSPARENCY_DEFAULT);
+    }
+
+
+
+    // HILT
+
+    private boolean is_HILT_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_HILT_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_HILT_ENABLED_DEFAULT);
+    }
+
+    private Color get_HILT_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_HILT_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_HILT_COLOR_DEFAULT);
+    }
+
+    private double get_HILT_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_HILT_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_HILT_TRANSPARENCY_DEFAULT);
+    }
+
+
+
+    // HISATZEN
+
+    private boolean is_HISATZEN_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_ENABLED_DEFAULT);
+    }
+
+    private Color get_HISATZEN_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_COLOR_DEFAULT);
+    }
+
+    private double get_HISATZEN_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT);
+    }
+
+
+
+    // COASTZ
+
+    private boolean is_COASTZ_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_COASTZ_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_COASTZ_ENABLED_DEFAULT);
+    }
+
+    private Color get_COASTZ_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_COASTZ_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_COASTZ_COLOR_DEFAULT);
+    }
+
+    private double get_COASTZ_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_COASTZ_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_COASTZ_TRANSPARENCY_DEFAULT);
+    }
+
+
+
+
+
+    // STRAYLIGHT
+
+    private boolean is_STRAYLIGHT_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_ENABLED_DEFAULT);
+    }
+
+    private Color get_STRAYLIGHT_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_COLOR_DEFAULT);
+    }
+
+    private double get_STRAYLIGHT_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_TRANSPARENCY_DEFAULT);
+    }
+
+
+
+    // CLDICE
+    
+    private boolean is_CLDICE_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_CLDICE_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_CLDICE_ENABLED_DEFAULT);
+    }
+
+    private Color get_CLDICE_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_CLDICE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_CLDICE_COLOR_DEFAULT);
+    }
+
+    private double get_CLDICE_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_CLDICE_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_CLDICE_TRANSPARENCY_DEFAULT);
+    }
+
+
+
+
+    // COCCOLITH
+
+    private Color get_COCCOLITH_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_COCCOLITH_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_ENABLED_DEFAULT);
+    }
+
+    private double get_COCCOLITH_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+    // TURBIDW
+
+    private Color get_TURBIDW_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_TURBIDW_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_ENABLED_DEFAULT);
+    }
+
+    private double get_TURBIDW_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+    // HISOLZEN
+
+    private Color get_HISOLZEN_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_HISOLZEN_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_ENABLED_DEFAULT);
+    }
+
+    private double get_HISOLZEN_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+    
+    // LOWLW
+
+    private Color get_LOWLW_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_LOWLW_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_LOWLW_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_LOWLW_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_LOWLW_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_LOWLW_ENABLED_DEFAULT);
+    }
+
+    private double get_LOWLW_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_LOWLW_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_LOWLW_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    // CHLFAIL
+
+    private Color get_CHLFAIL_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_CHLFAIL_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_ENABLED_DEFAULT);
+    }
+
+    private double get_CHLFAIL_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+    // NAVWARN
+
+    private Color get_NAVWARN_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_NAVWARN_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_ENABLED_DEFAULT);
+    }
+
+    private double get_NAVWARN_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    // ABSAER
+
+    private Color get_ABSAER_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_ABSAER_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_ABSAER_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_ABSAER_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_ABSAER_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_ABSAER_ENABLED_DEFAULT);
+    }
+
+    private double get_ABSAER_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_ABSAER_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_ABSAER_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+    
+    // MAXAERITER
+
+    private Color get_MAXAERITER_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_MAXAERITER_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_ENABLED_DEFAULT);
+    }
+
+    private double get_MAXAERITER_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    // MODGLINT
+
+    private Color get_MODGLINT_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_MODGLINT_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_ENABLED_DEFAULT);
+    }
+
+    private double get_MODGLINT_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    // CHLWARN
+
+    private Color get_CHLWARN_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_CHLWARN_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_ENABLED_DEFAULT);
+    }
+
+    private double get_CHLWARN_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    // ATMWARN
+
+    private Color get_ATMWARN_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_ATMWARN_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_ENABLED_DEFAULT);
+    }
+
+    private double get_ATMWARN_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    
+    // SEAICE
+
+    private Color get_SEAICE_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_SEAICE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_SEAICE_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_SEAICE_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_SEAICE_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_SEAICE_ENABLED_DEFAULT);
+    }
+
+    private double get_SEAICE_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_SEAICE_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_SEAICE_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    // NAVFAIL
+
+    private Color get_NAVFAIL_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_NAVFAIL_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_ENABLED_DEFAULT);
+    }
+
+    private double get_NAVFAIL_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    // FILTER
+
+    private Color get_FILTER_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_FILTER_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_FILTER_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_FILTER_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_FILTER_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_FILTER_ENABLED_DEFAULT);
+    }
+
+    private double get_FILTER_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_FILTER_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_FILTER_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+    
+    // BOWTIEDEL
+
+    private Color get_BOWTIEDEL_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_BOWTIEDEL_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_ENABLED_DEFAULT);
+    }
+
+    private double get_BOWTIEDEL_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    // HIPOL
+
+    private Color get_HIPOL_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_HIPOL_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_HIPOL_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_HIPOL_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_HIPOL_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_HIPOL_ENABLED_DEFAULT);
+    }
+
+    private double get_HIPOL_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_HIPOL_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_HIPOL_TRANSPARENCY_DEFAULT);
+    }
+    
+    
+    
+
+    // PRODFAIL
+
+    private Color get_PRODFAIL_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_PRODFAIL_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_ENABLED_DEFAULT);
+    }
+
+    private double get_PRODFAIL_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_DEFAULT);
+    }
+
+    
+    
+    // Quality_L2
+
+    private Color get_Quality_L2_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_Quality_L2_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_ENABLED_DEFAULT);
+    }
+
+    private double get_Quality_L2_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_TRANSPARENCY_DEFAULT);
+    }
+
+    
+
+
+    // Quality_L3
+
+    private Color get_Quality_L3_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_Quality_L3_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_DEFAULT);
+    }
+
+    private double get_Quality_L3_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_DEFAULT);
+    }
+
+
+    
+
+    // Water
+
+    private Color get_Water_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_Water_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_Water_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_Water_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_Water_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_Water_ENABLED_DEFAULT);
+    }
+
+    private double get_Water_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_Water_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_Water_TRANSPARENCY_DEFAULT);
+    }
+
+
+
+
+    // SPARE
+
+    private boolean is_SPARE_MaskInclude() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_DEFAULT);
+    }
+    
+    private Color get_SPARE_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_DEFAULT);
+    }
+
+
+    private double get_SPARE_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_DEFAULT);
+    }
+
+
+
 
     private interface SkipBadNav {
 

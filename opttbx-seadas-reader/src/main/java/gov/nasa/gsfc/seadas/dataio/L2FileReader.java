@@ -118,6 +118,7 @@ public class L2FileReader extends SeadasFileReader {
             utcEnd = getUTCAttribute("time_coverage_stop");
         }
 
+        //todo Investigate why this inversion is required
         if (utcStart != null) {
             if (mustFlipY){
                 product.setEndTime(utcStart);
