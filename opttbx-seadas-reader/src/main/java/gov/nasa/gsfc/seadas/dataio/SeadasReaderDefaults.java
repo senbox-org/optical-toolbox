@@ -7,8 +7,8 @@ import java.awt.*;
 public class SeadasReaderDefaults {
 
 
-    final static Color LandBrown = new Color(100, 49, 12);
-    final static Color LandDarkGray = new Color(81, 81, 81);
+    final static Color LandBrown = new Color(80, 60, 0);
+    final static Color LandDarkGreenBrown = new Color(55, 55, 81);
     final static Color LightBrown = new Color(137, 99, 31);
     final static Color FailRed = new Color(255, 0, 26);
     final static Color DeepBlue = new Color(0, 16, 143);
@@ -82,7 +82,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_LAND_COLOR_KEY = PROPERTY_MASK_LAND_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_LAND_COLOR_LABEL = "LAND: Color";
     public static final String PROPERTY_MASK_LAND_COLOR_TOOLTIP = "Set default color of the LAND mask";
-    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandDarkGray;
+    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandDarkGreenBrown;
 
 
     
