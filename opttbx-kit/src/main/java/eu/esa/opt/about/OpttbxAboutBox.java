@@ -36,6 +36,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -46,7 +49,8 @@ import java.util.TimeZone;
 @AboutBox(displayName = "Optical", position = 20)
 public class OpttbxAboutBox extends JPanel {
 
-    private final static String releaseNotesUrlString = "https://senbox.atlassian.net/jira/software/c/projects/SNAP/issues/?jql=project%20%3D%20%22SNAP%22%20AND%20component%20%3D%20Optical%20AND%20fixversion%20%3D%20"; // the version is appended in the code below
+    private final static String defaultReleaseNotesUrlString = "https://senbox.atlassian.net/jira/software/c/projects/SNAP/issues/?jql=project%20%3D%20%22SNAP%22%20AND%20component%20%3D%20Optical%20AND%20fixversion%20%3D%20"; // the version is appended in the code below
+    private final static String stepReleaseNotesUrlString = "https://step.esa.int/main/wp-content/releasenotes/Optical/Optical_<version>.html"; // the version is appended in the code below
 
     public OpttbxAboutBox() {
         super(new BorderLayout(4, 4));
@@ -67,7 +71,7 @@ public class OpttbxAboutBox extends JPanel {
 
         Version specVersion = Version.parseVersion(moduleInfo.getSpecificationVersion().toString());
         String versionString = String.format("%s.%s.%s", specVersion.getMajor(), specVersion.getMinor(), specVersion.getMicro());
-        String changelogUrl = releaseNotesUrlString + versionString;
+        String changelogUrl = getReleaseNotesURLString(versionString);
         final JLabel releaseNoteLabel = new JLabel("<html><a href=\"" + changelogUrl + "\">Release Notes</a>", SwingConstants.CENTER);
         releaseNoteLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         releaseNoteLabel.addMouseListener(new BrowserUtils.URLClickAdaptor(changelogUrl));
@@ -78,5 +82,22 @@ public class OpttbxAboutBox extends JPanel {
         mainPanel.add(versionLabel);
         mainPanel.add(releaseNoteLabel);
         return mainPanel;
+    }
+
+    private String getReleaseNotesURLString(String versionString){
+        String changelogUrl = stepReleaseNotesUrlString.replace("<version>", versionString);
+        try {
+            URL url = new URL(changelogUrl);
+            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+            huc.setRequestMethod("HEAD");
+
+            int responseCode = huc.getResponseCode();
+            if(responseCode != HttpURLConnection.HTTP_OK) {
+                changelogUrl = defaultReleaseNotesUrlString + versionString;
+            }
+        } catch (IOException e) {
+            changelogUrl = defaultReleaseNotesUrlString + versionString;
+        }
+        return changelogUrl;
     }
 }
