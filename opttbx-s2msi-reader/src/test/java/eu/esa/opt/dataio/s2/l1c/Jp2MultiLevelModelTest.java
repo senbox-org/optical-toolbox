@@ -55,10 +55,10 @@ public class Jp2MultiLevelModelTest {
 
         assertEquals(1826, doit2(1826, 0));
         assertEquals(913, doit2(1826, 1));
-        assertEquals(456, doit2(1826, 2));
-        assertEquals(228, doit2(1826, 3));
-        assertEquals(114, doit2(1826, 4));
-        assertEquals(57, doit2(1826, 5));
+        assertEquals(457, doit2(1826, 2));
+        assertEquals(229, doit2(1826, 3));
+        assertEquals(115, doit2(1826, 4));
+        assertEquals(58, doit2(1826, 5));
     }
 
     private int doit2(int width, int level) {
