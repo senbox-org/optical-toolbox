@@ -17,10 +17,12 @@
 
 package eu.esa.opt.dataio.s2.l2a;
 
-import com.bc.ceres.glevel.support.AbstractMultiLevelSource;
-
+import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
 
 import static java.lang.Math.pow;
 import static org.junit.Assert.assertEquals;
@@ -33,8 +35,10 @@ public class Jp2MultiLevelModelTest {
     public void setup() {
         System.setProperty("com.sun.media.jai.disableMediaLib", "true");
     }
+
     @Test
-    public void testModel() throws Exception {
+    @STTM("SNAP-3508")
+    public void testModel() {
         assertEquals(4096, doit(4096, 0));
         assertEquals(2048, doit(4096, 1));
         assertEquals(1024, doit(4096, 2));
@@ -58,19 +62,11 @@ public class Jp2MultiLevelModelTest {
     }
 
     private int doit2(int width, int level) {
-        return AbstractMultiLevelSource.getImageDimension(width, 2*width, pow(2.0, level)).width;
+        final Rectangle imageRect = new Rectangle(0, 0, width, 2 * width);
+        return DefaultMultiLevelSource.getLevelImageBounds(imageRect, pow(2.0, level)).width;
     }
 
     private int doit(int w, int r) {
         return (int) Math.ceil((w) / Math.pow(2, r));
-        /*
-        final int i = w >> r;
-        if (w > i << r) {
-            return i + 1;
-        }
-        return i;
-        */
     }
-
-
 }
