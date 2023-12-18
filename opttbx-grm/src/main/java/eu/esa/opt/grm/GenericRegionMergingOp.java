@@ -147,12 +147,6 @@ public class GenericRegionMergingOp extends Operator {
         Band firstSelectedSourceBand = this.sourceProduct.getBand(this.sourceBandNames[0]);
         int targetWidth = firstSelectedSourceBand.getRasterWidth();
         int targetHeight = firstSelectedSourceBand.getRasterHeight();
-        for (int i=1; i<this.sourceBandNames.length; i++) {
-            Band band = this.sourceProduct.getBand(this.sourceBandNames[i]);
-            if (targetWidth != band.getRasterWidth() || targetHeight != band.getRasterHeight()) {
-                throw new OperatorException("Please select the bands with the same resolution.");
-            }
-        }
         String productName = this.sourceProduct.getName() + "_grm";
         String productType = this.sourceProduct.getProductType();
 
@@ -166,6 +160,20 @@ public class GenericRegionMergingOp extends Operator {
         ProductUtils.copyGeoCoding(firstSelectedSourceBand, this.targetProduct);
 
         initTiles();
+    }
+
+    @Override
+    public void doExecute(ProgressMonitor pm) throws OperatorException {
+        final Band firstSelectedSourceBand = this.sourceProduct.getBand(this.sourceBandNames[0]);
+        final int targetWidth = firstSelectedSourceBand.getRasterWidth();
+        final int targetHeight = firstSelectedSourceBand.getRasterHeight();
+        for (int i=1; i<this.sourceBandNames.length; i++) {
+            final Band band = this.sourceProduct.getBand(this.sourceBandNames[i]);
+            if (targetWidth != band.getRasterWidth() || targetHeight != band.getRasterHeight()) {
+                throw new OperatorException("Please select the bands with the same resolution.");
+            }
+        }
+        super.doExecute(pm);
     }
 
     private void computeGRMTiles() {
