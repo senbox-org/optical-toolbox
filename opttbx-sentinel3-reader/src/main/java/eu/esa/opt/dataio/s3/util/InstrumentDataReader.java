@@ -97,7 +97,7 @@ class InstrumentDataReader extends S3NetcdfReader {
         }
     }
 
-    private String getMetadataElementName(String attributeName) {
+    static String getMetadataElementName(String attributeName) {
         switch (attributeName) {
             case "relative_spectral_covariance":
                 return "Covariances";
@@ -111,14 +111,14 @@ class InstrumentDataReader extends S3NetcdfReader {
         return "";
     }
 
-    private String getMetadataAttributeName(String attributeName) {
+    static String getMetadataAttributeName(String attributeName) {
         switch (attributeName) {
             case "relative_spectral_covariance":
                 return "Covariance";
             case "lambda0":
                 return "Central wavelength";
             case "FWHM":
-                return "Bandwidths";
+                return "Bandwidth";
             case "solar_flux":
                 return "Solar flux";
         }
