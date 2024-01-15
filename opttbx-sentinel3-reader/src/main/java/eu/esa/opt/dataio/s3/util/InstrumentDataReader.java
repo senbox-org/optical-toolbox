@@ -1,10 +1,6 @@
 package eu.esa.opt.dataio.s3.util;
 
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.MetadataAttribute;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.*;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -19,40 +15,85 @@ import java.util.logging.Logger;
 class InstrumentDataReader extends S3NetcdfReader {
 
     private final static String DETECTOR_INDEX_NAME = "detector_index";
+    private final static String FRAME_OFFSET_NAME = "frame_offset";
     private Band detectorIndexBand;
+    private boolean is2dFrameOffset;
+
+    static String getMetadataElementName(String attributeName) {
+        switch (attributeName) {
+            case "relative_spectral_covariance":
+                return "Covariances";
+            case "lambda0":
+                return "Central wavelengths";
+            case "FWHM":
+                return "Bandwidths";
+            case "solar_flux":
+                return "Solar fluxes";
+        }
+        return "";
+    }
+
+    static String getMetadataAttributeName(String attributeName) {
+        switch (attributeName) {
+            case "relative_spectral_covariance":
+                return "Covariance";
+            case "lambda0":
+                return "Central wavelength";
+            case "FWHM":
+                return "Bandwidth";
+            case "solar_flux":
+                return "Solar flux";
+        }
+        return "";
+    }
 
     @Override
     protected void addBands(Product product) {
         final NetcdfFile netcdfFile = getNetcdfFile();
-        Variable detectorIndexVariable = netcdfFile.findVariable(DETECTOR_INDEX_NAME);
-        if (detectorIndexVariable == null) {
-            return;
-        }
-        addVariableAsBand(product, detectorIndexVariable, DETECTOR_INDEX_NAME, false);
-        detectorIndexBand = product.getBand(DETECTOR_INDEX_NAME);
-        addVariableMetadata(detectorIndexVariable, product);
+
         final List<Variable> variables = netcdfFile.getVariables();
         for (final Variable variable : variables) {
+            final String variableFullName = variable.getFullName();
+            if (variableFullName.equals(DETECTOR_INDEX_NAME)) {
+                addVariableAsBand(product, variable, DETECTOR_INDEX_NAME, false);
+                detectorIndexBand = product.getBand(DETECTOR_INDEX_NAME);
+                continue;
+            }
+
+            if (variableFullName.equals(FRAME_OFFSET_NAME)) {
+                final int rank = variable.getRank();
+                final boolean isSynthetic = rank == 1;
+                is2dFrameOffset = !isSynthetic; // store that frame offset is a full variable for later use tb 2024-01-11
+                addVariableAsBand(product, variable, variableFullName, isSynthetic);
+                continue;
+            }
+
             final int bandsDimensionIndex = variable.findDimensionIndex("bands");
             final int detectorsDimensionIndex = variable.findDimensionIndex("detectors");
             if (bandsDimensionIndex != -1 && detectorsDimensionIndex != -1) {
                 final int numBands = variable.getDimension(bandsDimensionIndex).getLength();
                 for (int i = 1; i <= numBands; i++) {
-                    addVariableAsBand(product, variable, variable.getFullName() + "_band_" + i, true);
+                    addVariableAsBand(product, variable, variableFullName + "_band_" + i, true);
                 }
             } else if (variable.getDimensions().size() == 1 && detectorsDimensionIndex != -1) {
-                addVariableAsBand(product, variable, variable.getFullName(), true);
+                addVariableAsBand(product, variable, variableFullName, true);
+            } else {
+                addVariableMetadata(variable, product);
             }
-            addVariableMetadata(variable, product);
         }
     }
 
     @Override
     protected RenderedImage createSourceImage(Band band) {
-        if (band.getName().equals(DETECTOR_INDEX_NAME)) {
+        final String bandName = band.getName();
+        if (bandName.equals(DETECTOR_INDEX_NAME)) {
             return super.createSourceImage(band);
         }
-        final String bandName = band.getName();
+        if (bandName.equals(FRAME_OFFSET_NAME)) {
+            if (is2dFrameOffset) {
+                return super.createSourceImage(band);
+            }
+        }
         String variableName = bandName;
         Variable variable;
         int dimensionIndex = -1;
@@ -95,34 +136,6 @@ class InstrumentDataReader extends S3NetcdfReader {
                 logger.warning("Could not read variable " + variable.getFullName());
             }
         }
-    }
-
-    static String getMetadataElementName(String attributeName) {
-        switch (attributeName) {
-            case "relative_spectral_covariance":
-                return "Covariances";
-            case "lambda0":
-                return "Central wavelengths";
-            case "FWHM":
-                return "Bandwidths";
-            case "solar_flux":
-                return "Solar fluxes";
-        }
-        return "";
-    }
-
-    static String getMetadataAttributeName(String attributeName) {
-        switch (attributeName) {
-            case "relative_spectral_covariance":
-                return "Covariance";
-            case "lambda0":
-                return "Central wavelength";
-            case "FWHM":
-                return "Bandwidth";
-            case "solar_flux":
-                return "Solar flux";
-        }
-        return "";
     }
 
 }
