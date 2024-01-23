@@ -2,7 +2,7 @@
 # Coefficients taken from record #77 of dataset GRIDDED_LUT which corresponds to
 #    - latitude zone POLAR_INDEX
 #    - across track band index 0 (center pixel)
-# For more information see http://envisat.esa.int/dataproducts/aatsr/CNTR2-7-1.htm
+# For more information see https://earth.esa.int/eogateway/documents/20142/37627/AATSR-product-handbook.pdf/5c3e92c6-a8fd-7d16-b0a8-2fe07bd9f39e
 #
 # This file uses Java property file syntax. It is
 # composed of lines which are key-value pairs in the form
