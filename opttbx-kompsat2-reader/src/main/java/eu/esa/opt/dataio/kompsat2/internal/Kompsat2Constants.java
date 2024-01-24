@@ -6,7 +6,7 @@ import java.io.File;
 /**
  * Holder class for string constants.
  *
- * The band wavelength range is from https://earth.esa.int/web/guest/missions/3rd-party-missions/instruments/msc
+ * The band wavelength range is from https://earth.esa.int/eogateway/missions/kompsat-2
  *
  * @author Razvan Dumitrascu
  * @author Denisa Stefanescu
