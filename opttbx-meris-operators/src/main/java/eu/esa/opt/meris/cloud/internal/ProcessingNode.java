@@ -184,7 +184,7 @@ public abstract class ProcessingNode implements ProductReader {
 
     @Override
     public GeoCoding readGeoCoding(Product product) {
-        throw new RuntimeException("not implemented");
+        return null;
     }
 
     @Override

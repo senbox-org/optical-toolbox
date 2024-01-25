@@ -217,7 +217,7 @@ public class ProcessingNodeTest {
 
         @Override
         public GeoCoding readGeoCoding(Product product) {
-            throw new RuntimeException("not implemented");
+            return null;
         }
     }
 }
