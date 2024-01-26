@@ -130,8 +130,8 @@
 
     <folder name="Services">
         <folder name="JavaHelp">
-            <file name="eu-esa-opt-opttbx/-sentinel3-reader-helpset.xml" url="helpset.xml">
-                <attr name="position" intvalue="4600"/>
+            <file name="eu-esa-opt-opttbx-sentinel3-reader-helpset.xml" url="helpset.xml">
+                <attr name="position" intvalue="4602"/>
             </file>
         </folder>
     </folder>
