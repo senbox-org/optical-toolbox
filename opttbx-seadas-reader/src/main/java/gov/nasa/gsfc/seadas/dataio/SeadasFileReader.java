@@ -32,10 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -275,8 +272,9 @@ public abstract class SeadasFileReader {
                 String PRODFAIL_Description = "One (or more) product algorithms produced a failure";
                 String SPARE32_Description = "Unused";
                 
-                String Quality_L2_Description = "Product could be computed (l2_flags composite)";
-                String Quality_L3_Description = "Best quality (l2_flags composite)";
+                String composite1Description = "Composite1 Mask (see preferences to set)";
+                String composite2Description = "Composite2 Mask (see preferences to set)";
+                String composite3Description = "Composite3 Mask (see preferences to set)";
                 String Water_Description = "Not land (l2_flags.LAND)";
                 
                 
@@ -504,21 +502,58 @@ public abstract class SeadasFileReader {
                         get_PRODFAIL_MaskColor(), get_PRODFAIL_MaskTransparency());
                 product.getMaskGroup().add(PRODFAIL_Mask);
 
-                
-                Mask Quality_L2_Mask = Mask.BandMathsType.create("Quality_L2", Quality_L2_Description,
+   
+
+                Mask composite1Mask = null;
+                String composite1Expression = getComposite1Expression();
+                String composite1MaskName = getComposite1MaskName();
+                if (isComposite1MaskInclude() &&
+                        composite1Expression != null && composite1Expression.trim().length() > 1 &&
+                        composite1MaskName != null && composite1MaskName.trim().length() > 1) {
+
+                composite1Mask = Mask.BandMathsType.create(composite1MaskName, composite1Description,
                         product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                        "!(l2_flags.ATMFAIL or l2_flags.LAND or l2_flags.HILT or l2_flags.STRAYLIGHT or l2_flags.CLDICE or l2_flags.NAVFAIL)",
-                        get_Quality_L2_MaskColor(), get_Quality_L2_MaskTransparency());
-                product.getMaskGroup().add(Quality_L2_Mask);
+                        composite1Expression,
+                        getComposite1MaskColor(), getComposite1MaskTransparency());
+
+                    product.getMaskGroup().add(composite1Mask);
+                }
+
+
+                Mask composite2Mask = null;
+                String composite2Expression = getComposite2Expression();
+                String composite2MaskName = getComposite2MaskName();
+                if (isComposite2MaskInclude() &&
+                        composite2Expression != null && composite2Expression.trim().length() > 1 &&
+                        composite2MaskName != null && composite2MaskName.trim().length() > 1) {
+
+                    composite2Mask = Mask.BandMathsType.create(composite2MaskName, composite2Description,
+                            product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                            composite2Expression,
+                            getComposite2MaskColor(), getComposite2MaskTransparency());
+
+                    product.getMaskGroup().add(composite2Mask);
+                }
+
+
+
+                Mask composite3Mask = null;
+                String composite3Expression = getComposite3Expression();
+                String composite3MaskName = getComposite3MaskName();
+                if (isComposite3MaskInclude() &&
+                        composite3Expression != null && composite3Expression.trim().length() > 1 &&
+                        composite3MaskName != null && composite3MaskName.trim().length() > 1) {
+
+                    composite3Mask = Mask.BandMathsType.create(composite3MaskName, composite3Description,
+                            product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                            composite3Expression,
+                            getComposite3MaskColor(), getComposite3MaskTransparency());
+
+                    product.getMaskGroup().add(composite3Mask);
+                }
+
                 
 
-                Mask Quality_L3_Mask = Mask.BandMathsType.create("Quality_L3", Quality_L3_Description,
-                        product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                        "!(l2_flags.ATMFAIL or l2_flags.LAND or l2_flags.HIGLINT or l2_flags.HILT or l2_flags.STRAYLIGHT  or l2_flags.CLDICE or l2_flags.COCCOLITH or l2_flags.HISOLZEN or l2_flags.LOWLW or l2_flags.CHLFAIL or l2_flags.NAVWARN or l2_flags.MAXAERITER or l2_flags.CHLWARN or l2_flags.ATMWARN or l2_flags.NAVFAIL or l2_flags.FILTER)",
-                        get_Quality_L3_MaskColor(), get_Quality_L3_MaskTransparency());
-                product.getMaskGroup().add(Quality_L3_Mask);
-
-                
                 Mask Water_Mask = Mask.BandMathsType.create("Water", Water_Description,
                         product.getSceneRasterWidth(), product.getSceneRasterHeight(),
                         "!l2_flags.LAND",
@@ -612,8 +647,9 @@ public abstract class SeadasFileReader {
                     if (is_BOWTIEDEL_MaskEnabled()) {raster.getOverlayMaskGroup().add(BOWTIEDEL_Mask);}
                     if (is_HIPOL_MaskEnabled()) {raster.getOverlayMaskGroup().add(HIPOL_Mask);}
                     if (is_PRODFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(PRODFAIL_Mask);}
-                    if (is_Quality_L2_MaskEnabled()) {raster.getOverlayMaskGroup().add(Quality_L2_Mask);}
-                    if (is_Quality_L3_MaskEnabled()) {raster.getOverlayMaskGroup().add(Quality_L3_Mask);}
+                    if (composite1Mask != null && isComposite1MaskEnabled()) {raster.getOverlayMaskGroup().add(composite1Mask);}
+                    if (composite2Mask != null && isComposite2MaskEnabled()) {raster.getOverlayMaskGroup().add(composite2Mask);}
+                    if (composite3Mask != null && isComposite3MaskEnabled()) {raster.getOverlayMaskGroup().add(composite3Mask);}
                     if (is_Water_MaskEnabled()) {raster.getOverlayMaskGroup().add(Water_Mask);}
                 }
 
@@ -2291,45 +2327,295 @@ public abstract class SeadasFileReader {
 
     
     
-    // Quality_L2
 
-    private Color get_Quality_L2_MaskColor() {
+
+
+    // Composite1
+    
+    private boolean isComposite1MaskInclude() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_COLOR_DEFAULT);
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_INCLUDE_DEFAULT);
+    }
+    
+    private boolean isComposite1MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_ENABLED_DEFAULT);
+    }
+    
+    private String getComposite1MaskName() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        String composite1MaskName = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_DEFAULT);
+
+        // don't let mask name be same as any of the flags/composites
+        if (composite1MaskName != null) {
+            composite1MaskName = validateCompositeFlagsName(composite1MaskName, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_KEY);
+        }
+
+        return composite1MaskName;
+    }
+    
+    private String getComposite1Expression() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        String flags = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAGS_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAGS_DEFAULT);
+        
+        return getCompositeFlagsExpression(flags);
+    }
+    
+    private double getComposite1MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_TRANSPARENCY_DEFAULT);
+    }
+
+    private Color getComposite1MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_COLOR_DEFAULT);
     }
 
 
-    private boolean is_Quality_L2_MaskEnabled() {
+
+
+
+    // Composite2
+
+    private boolean isComposite2MaskInclude() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_ENABLED_DEFAULT);
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_INCLUDE_DEFAULT);
     }
 
-    private double get_Quality_L2_MaskTransparency() {
+    private boolean isComposite2MaskEnabled() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_TRANSPARENCY_DEFAULT);
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_ENABLED_DEFAULT);
+    }
+
+    private String getComposite2MaskName() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        String composite2MaskName = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_DEFAULT);
+
+        // don't let mask name be same as any of the flags/composites
+        if (composite2MaskName != null) {
+            composite2MaskName = validateCompositeFlagsName(composite2MaskName, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_KEY);
+        }
+
+        return composite2MaskName;
+    }
+
+    private String getComposite2Expression() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        String flags = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAGS_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAGS_DEFAULT);
+
+        return getCompositeFlagsExpression(flags);
+    }
+
+    private double getComposite2MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_TRANSPARENCY_DEFAULT);
+    }
+
+    private Color getComposite2MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_COLOR_DEFAULT);
+    }
+
+
+
+
+
+
+    // Composite3
+
+    private boolean isComposite3MaskInclude() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_INCLUDE_DEFAULT);
+    }
+
+    private boolean isComposite3MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_ENABLED_DEFAULT);
+    }
+
+    private String getComposite3MaskName() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        String composite3MaskName = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_DEFAULT);
+
+        // don't let mask name be same as any of the flags/composites
+        if (composite3MaskName != null) {
+            composite3MaskName = validateCompositeFlagsName(composite3MaskName, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_KEY);
+        }
+
+        return composite3MaskName;
+    }
+
+    private String getComposite3Expression() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        String flags = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAGS_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAGS_DEFAULT);
+
+        return getCompositeFlagsExpression(flags);
+    }
+
+    private double getComposite3MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_TRANSPARENCY_DEFAULT);
+    }
+
+    private Color getComposite3MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_COLOR_DEFAULT);
     }
 
     
 
 
-    // Quality_L3
 
-    private Color get_Quality_L3_MaskColor() {
-        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_COLOR_DEFAULT);
+    private String validateCompositeFlagsName(String compositeMaskName, String propertyKey) {
+        // don't let mask name be same as any of the flags
+        if (compositeMaskName != null) {
+            for (String validFlag : validFlags()) {
+                if (compositeMaskName.equals(validFlag)) {
+                    return null;
+                }
+            }
+        }
+
+        if (propertyKey != null) {
+            final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+
+            // don't let obvious name conflict occur which could result in duplicate masks and confusion
+            // do this hierarchically (for instance such that Composite1 still gets set but Composite2 doesn't if they are the same name)
+//            if (propertyKey.equals(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_KEY)) {
+//                String composite2MaskName = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_DEFAULT);
+//                if (composite2MaskName != null && composite2MaskName.equals(compositeMaskName)) {
+//                    return null;
+//                }
+//                String composite3MaskName = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_DEFAULT);
+//                if (composite3MaskName != null && composite3MaskName.equals(compositeMaskName)) {
+//                    return null;
+//                }
+//            }
+            if (propertyKey.equals(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_KEY)) {
+                String composite1MaskName = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_DEFAULT);
+                if (composite1MaskName != null && composite1MaskName.equals(compositeMaskName)) {
+                    return null;
+                }
+//                String composite3MaskName = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_DEFAULT);
+//                if (composite3MaskName != null && composite3MaskName.equals(compositeMaskName)) {
+//                    return null;
+//                }
+            }
+            if (propertyKey.equals(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_KEY)) {
+                String composite2MaskName = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_DEFAULT);
+                if (composite2MaskName != null && composite2MaskName.equals(compositeMaskName)) {
+                    return null;
+                }
+                String composite1MaskName = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_DEFAULT);
+                if (composite1MaskName != null && composite1MaskName.equals(compositeMaskName)) {
+                    return null;
+                }
+            }
+        }
+        
+        return compositeMaskName;
+    }
+    
+    private String getCompositeFlagsExpression(String flags) {
+
+        String[] flagsArray = flags.split("\\s+|,");
+
+        for (int i=0; i < flagsArray.length; i++) {
+            if (flagsArray[i].contains("l2_flags.")) {
+                flagsArray[i] = flagsArray[i].replace("l2_flags.", "");
+            }
+        }
+        ArrayList<String> flagsCompositeArray = getValidFlagsComposite(flagsArray);
+
+        if (flagsCompositeArray == null || flagsCompositeArray.size() == 0) {
+            return null;
+        }
+
+        String expression = String.join(" || ", flagsCompositeArray);
+
+        return expression;
+    }
+    
+    private ArrayList<String> getValidFlagsComposite(String[] flagsArray) {
+        ArrayList<String> validFlagComposite = null;
+
+        if (flagsArray != null) {
+            validFlagComposite = new ArrayList<String>();
+
+            for (String flag : flagsArray) {
+                if (flag != null) {
+                    flag = flag.trim();
+                    boolean flagIsComplement = false;
+                    if (flag.startsWith("~")) {
+                        flag = flag.replace("~", "");
+                        flagIsComplement = true;
+                    }
+
+                    for (String validFlag : validFlags()) {
+                        if (validFlag != null) {
+//                            if (flag.startsWith("~")) {
+//                                flag = flag.replace("~", "");
+//                                if (flag.equals(validFlag)) {
+//                                    validFlagComposite.add("!l2_flags." + flag);
+//                                    continue;
+//                                }
+//                            } else {
+                                if (flag.equals(validFlag)) {
+                                    if (flagIsComplement) {
+                                        validFlagComposite.add("!l2_flags." + flag);
+                                    } else {
+                                        validFlagComposite.add("l2_flags." + flag);
+                                    }
+                                    continue;
+                                }
+//                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return validFlagComposite;
     }
 
 
-    private boolean is_Quality_L3_MaskEnabled() {
-        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_DEFAULT);
-    }
+    private ArrayList<String> validFlags() {
+        ArrayList<String> validFlags = new ArrayList();
+        validFlags.add("ATMFAIL");
+        validFlags.add("LAND");
+        validFlags.add("PRODWARN");
+        validFlags.add("HIGLINT");
+        validFlags.add("HILT");
+        validFlags.add("HISATZEN");
+        validFlags.add("COASTZ");
+        validFlags.add("SPARE8");
+        validFlags.add("STRAYLIGHT");
+        validFlags.add("CLDICE");
+        validFlags.add("COCCOLITH");
+        validFlags.add("TURBIDW");
+        validFlags.add("HISOLZEN");
+        validFlags.add("SPARE14");
+        validFlags.add("LOWLW");
+        validFlags.add("CHLFAIL");
+        validFlags.add("NAVWARN");
+        validFlags.add("ABSAER");
+        validFlags.add("SPARE19");
+        validFlags.add("MAXAERITER");
+        validFlags.add("MODGLINT");
+        validFlags.add("CHLWARN");
+        validFlags.add("ATMWARN");
+        validFlags.add("SPARE24");
+        validFlags.add("SEAICE");
+        validFlags.add("NAVFAIL");
+        validFlags.add("FILTER");
+        validFlags.add("SPARE28");
+        validFlags.add("BOWTIEDEL");
+        validFlags.add("HIPOL");
+        validFlags.add("PRODFAIL");
+        validFlags.add("SPARE32");
 
-    private double get_Quality_L3_MaskTransparency() {
-        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_DEFAULT);
+        return validFlags;
     }
-
 
     
 
