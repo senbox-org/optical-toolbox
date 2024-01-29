@@ -1,7 +1,5 @@
 package gov.nasa.gsfc.seadas.dataio;
 
-import org.esa.snap.core.datamodel.Mask;
-
 import java.awt.*;
 
 public class SeadasReaderDefaults {
@@ -721,50 +719,153 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_Quality_L2_COLOR_DEFAULT = DarkGreen;
 
 
+
+
+    public static final String PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1 = "Select Stored Presets";
+    public static final String PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION2_FLAGS_ONLY = "ATMFAIL,LAND,HILT,HISATZEN,STRAYLIGHT,CLDICE,COCCOLITH,LOWLW,CHLWARN,CHLFAIL,NAVWARN,MAXAERITER,ATMWARN,HISOLZEN,NAVFAIL,FILTER,HIGLINT,BOWTIEDEL";
+    public static final String PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION2 = "OC: " + PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION2_FLAGS_ONLY;
+    public static final String PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION3 = "CYAN: LAND,CLDICE,HISATZEN,BOWTIEDEL";
+    public static final String PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION4 = "SFREFL: ATMFAIL,BOWTIEDEL";
+
+
     
-    // Quality_L3
+    // COMPOSITE1
 
-    public static final String PROPERTY_MASK_Quality_L3_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Composite1";
+    public static final String PROPERTY_MASK_COMPOSITE1_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Composite1";
 
-    public static final String PROPERTY_MASK_Quality_L3_SECTION_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".section";
-    public static final String PROPERTY_MASK_Quality_L3_SECTION_LABEL = "Derived Mask: Composite1";
-    public static final String PROPERTY_MASK_Quality_L3_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask Composite1";
+    public static final String PROPERTY_MASK_COMPOSITE1_SECTION_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_COMPOSITE1_SECTION_LABEL = "Derived Mask: Composite1";
+    public static final String PROPERTY_MASK_COMPOSITE1_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask Composite1";
 
-    public static final String PROPERTY_MASK_Quality_L3_INCLUDE_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".include";
-    public static final String PROPERTY_MASK_Quality_L3_INCLUDE_LABEL = "Composite1: Include";
-    public static final String PROPERTY_MASK_Quality_L3_INCLUDE_TOOLTIP = "Include Composite1 mask";
-    public static final boolean PROPERTY_MASK_Quality_L3_INCLUDE_DEFAULT = true;
+    public static final String PROPERTY_MASK_COMPOSITE1_INCLUDE_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".include";
+    public static final String PROPERTY_MASK_COMPOSITE1_INCLUDE_LABEL = "Composite1: Include";
+    public static final String PROPERTY_MASK_COMPOSITE1_TOOLTIP = "Include Composite1 mask";
+    public static final boolean PROPERTY_MASK_COMPOSITE1_INCLUDE_DEFAULT = true;
 
-    public static final String PROPERTY_MASK_Quality_L3_ENABLED_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".show";
-    public static final String PROPERTY_MASK_Quality_L3_ENABLED_LABEL = "Composite1: Set as Selected";
-    public static final String PROPERTY_MASK_Quality_L3_ENABLED_TOOLTIP = "Set Composite1 mask as selected by default";
-    public static final boolean PROPERTY_MASK_Quality_L3_ENABLED_DEFAULT = false;
+    public static final String PROPERTY_MASK_COMPOSITE1_ENABLED_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_COMPOSITE1_ENABLED_LABEL = "Composite1: Set as Selected";
+    public static final String PROPERTY_MASK_COMPOSITE1_ENABLED_TOOLTIP = "Set Composite1 mask as selected by default";
+    public static final boolean PROPERTY_MASK_COMPOSITE1_ENABLED_DEFAULT = false;
+    
+    public static final String PROPERTY_MASK_COMPOSITE1_NAME_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".name";
+    public static final String PROPERTY_MASK_COMPOSITE1_NAME_LABEL = "Composite1: Mask Name";
+    public static final String PROPERTY_MASK_COMPOSITE1_NAME_TOOLTIP = "Set name of Composite1 mask";
+    public static final String PROPERTY_MASK_COMPOSITE1_NAME_DEFAULT = "Composite1_OC";
+
+    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".flag.presets";
+    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_LABEL = "Composite1: Flag Presets";
+    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_TOOLTIP = "Set flags for Composite1 mask";
+    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
+
+    public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".flags";
+    public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_LABEL = "Composite1: Flags";
+    public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_TOOLTIP = "Set flags for Composite1 mask";
+    public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION2_FLAGS_ONLY;
+
+    public static final String PROPERTY_MASK_COMPOSITE1_TRANSPARENCY_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_COMPOSITE1_TRANSPARENCY_LABEL = "Composite1: Transparency";
+    public static final String PROPERTY_MASK_COMPOSITE1_TRANSPARENCY_TOOLTIP = "Set default transparency of the Composite1 mask";
+    public static final double PROPERTY_MASK_COMPOSITE1_TRANSPARENCY_DEFAULT = 0.0;
+
+    public static final String PROPERTY_MASK_COMPOSITE1_COLOR_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_COMPOSITE1_COLOR_LABEL = "Composite1: Color";
+    public static final String PROPERTY_MASK_COMPOSITE1_COLOR_TOOLTIP = "Set default color of the Composite1 mask";
+    public static final Color PROPERTY_MASK_COMPOSITE1_COLOR_DEFAULT = Color.YELLOW;
 
 
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION1  = "Select Stored Preset";
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION2  = "OC: ATMFAIL LAND HIGLINT HILT STRAYLIGHT CLDICE COCCOLITH HISOLZEN LOWLW CHLFAIL NAVWARN MAXAERITER CHLWARN ATMWARN NAVFAIL FILTER BOWTIEDEL";
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION3  = "CYAN: CLDICE HISOLZEN LOWLW CHLFAIL";
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION4  = "SFREFL: STRAYLIGHT CLDICE";
 
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".flags";
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_LABEL = "Composite1: Flag Presets";
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_TOOLTIP = "Set flags for Composite1 mask";
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_DEFAULT  = PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION1;
 
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".flags.custom";
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_LABEL = "Composite1: Flags";
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_TOOLTIP = "Set flags for Composite1 mask";
-    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_DEFAULT  = PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION2;
 
-    public static final String PROPERTY_MASK_Quality_L3_TRANSPARENCY_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".transparency";
-    public static final String PROPERTY_MASK_Quality_L3_TRANSPARENCY_LABEL = "Composite1: Transparency";
-    public static final String PROPERTY_MASK_Quality_L3_TRANSPARENCY_TOOLTIP = "Set default transparency of the Composite1 mask";
-    public static final double PROPERTY_MASK_Quality_L3_TRANSPARENCY_DEFAULT = 0.0;
 
-    public static final String PROPERTY_MASK_Quality_L3_COLOR_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".color";
-    public static final String PROPERTY_MASK_Quality_L3_COLOR_LABEL = "Composite1: Color";
-    public static final String PROPERTY_MASK_Quality_L3_COLOR_TOOLTIP = "Set default color of the Composite1 mask";
-    public static final Color PROPERTY_MASK_Quality_L3_COLOR_DEFAULT = Color.YELLOW;
+    // COMPOSITE2
+
+    public static final String PROPERTY_MASK_COMPOSITE2_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Composite2";
+
+    public static final String PROPERTY_MASK_COMPOSITE2_SECTION_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_COMPOSITE2_SECTION_LABEL = "Derived Mask: Composite2";
+    public static final String PROPERTY_MASK_COMPOSITE2_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask Composite2";
+
+    public static final String PROPERTY_MASK_COMPOSITE2_INCLUDE_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".include";
+    public static final String PROPERTY_MASK_COMPOSITE2_INCLUDE_LABEL = "Composite2: Include";
+    public static final String PROPERTY_MASK_COMPOSITE2_TOOLTIP = "Include Composite2 mask";
+    public static final boolean PROPERTY_MASK_COMPOSITE2_INCLUDE_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_COMPOSITE2_ENABLED_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_COMPOSITE2_ENABLED_LABEL = "Composite2: Set as Selected";
+    public static final String PROPERTY_MASK_COMPOSITE2_ENABLED_TOOLTIP = "Set Composite2 mask as selected by default";
+    public static final boolean PROPERTY_MASK_COMPOSITE2_ENABLED_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_COMPOSITE2_NAME_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".name";
+    public static final String PROPERTY_MASK_COMPOSITE2_NAME_LABEL = "Composite2: Mask Name";
+    public static final String PROPERTY_MASK_COMPOSITE2_NAME_TOOLTIP = "Set name of Composite2 mask";
+    public static final String PROPERTY_MASK_COMPOSITE2_NAME_DEFAULT = "Composite2";
+
+    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".flag.presets";
+    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_LABEL = "Composite2: Flag Presets";
+    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_TOOLTIP = "Set flags for Composite2 mask";
+    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
+
+    public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".flags";
+    public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_LABEL = "Composite2: Flags";
+    public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_TOOLTIP = "Set flags for Composite2 mask";
+    public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_DEFAULT = "";
+
+    public static final String PROPERTY_MASK_COMPOSITE2_TRANSPARENCY_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_COMPOSITE2_TRANSPARENCY_LABEL = "Composite2: Transparency";
+    public static final String PROPERTY_MASK_COMPOSITE2_TRANSPARENCY_TOOLTIP = "Set default transparency of the Composite2 mask";
+    public static final double PROPERTY_MASK_COMPOSITE2_TRANSPARENCY_DEFAULT = 0.0;
+
+    public static final String PROPERTY_MASK_COMPOSITE2_COLOR_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_COMPOSITE2_COLOR_LABEL = "Composite2: Color";
+    public static final String PROPERTY_MASK_COMPOSITE2_COLOR_TOOLTIP = "Set default color of the Composite2 mask";
+    public static final Color PROPERTY_MASK_COMPOSITE2_COLOR_DEFAULT = Color.YELLOW;
+
+
+
+
+
+    // COMPOSITE3
+
+    public static final String PROPERTY_MASK_COMPOSITE3_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Composite3";
+
+    public static final String PROPERTY_MASK_COMPOSITE3_SECTION_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_COMPOSITE3_SECTION_LABEL = "Derived Mask: Composite3";
+    public static final String PROPERTY_MASK_COMPOSITE3_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask Composite3";
+
+    public static final String PROPERTY_MASK_COMPOSITE3_INCLUDE_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".include";
+    public static final String PROPERTY_MASK_COMPOSITE3_INCLUDE_LABEL = "Composite3: Include";
+    public static final String PROPERTY_MASK_COMPOSITE3_TOOLTIP = "Include Composite3 mask";
+    public static final boolean PROPERTY_MASK_COMPOSITE3_INCLUDE_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_COMPOSITE3_ENABLED_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_COMPOSITE3_ENABLED_LABEL = "Composite3: Set as Selected";
+    public static final String PROPERTY_MASK_COMPOSITE3_ENABLED_TOOLTIP = "Set Composite3 mask as selected by default";
+    public static final boolean PROPERTY_MASK_COMPOSITE3_ENABLED_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_COMPOSITE3_NAME_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".name";
+    public static final String PROPERTY_MASK_COMPOSITE3_NAME_LABEL = "Composite3: Mask Name";
+    public static final String PROPERTY_MASK_COMPOSITE3_NAME_TOOLTIP = "Set name of Composite3 mask";
+    public static final String PROPERTY_MASK_COMPOSITE3_NAME_DEFAULT = "Composite3";
+
+    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".flag.presets";
+    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_LABEL = "Composite3: Flag Presets";
+    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_TOOLTIP = "Set flags for Composite3 mask";
+    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
+
+    public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".flags";
+    public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_LABEL = "Composite3: Flags";
+    public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_TOOLTIP = "Set flags for Composite3 mask";
+    public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_DEFAULT = "";
+
+    public static final String PROPERTY_MASK_COMPOSITE3_TRANSPARENCY_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_COMPOSITE3_TRANSPARENCY_LABEL = "Composite3: Transparency";
+    public static final String PROPERTY_MASK_COMPOSITE3_TRANSPARENCY_TOOLTIP = "Set default transparency of the Composite3 mask";
+    public static final double PROPERTY_MASK_COMPOSITE3_TRANSPARENCY_DEFAULT = 0.0;
+
+    public static final String PROPERTY_MASK_COMPOSITE3_COLOR_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_COMPOSITE3_COLOR_LABEL = "Composite3: Color";
+    public static final String PROPERTY_MASK_COMPOSITE3_COLOR_TOOLTIP = "Set default color of the Composite3 mask";
+    public static final Color PROPERTY_MASK_COMPOSITE3_COLOR_DEFAULT = Color.YELLOW;
 
 
 
@@ -774,7 +875,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_Water_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Water";
 
     public static final String PROPERTY_MASK_Water_SECTION_KEY = PROPERTY_MASK_Water_ROOT_KEY + ".section";
-    public static final String PROPERTY_MASK_Water_SECTION_LABEL = "L2 Flag Mask: Water";
+    public static final String PROPERTY_MASK_Water_SECTION_LABEL = "Derived Mask: Water";
     public static final String PROPERTY_MASK_Water_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask Water";
 
     public static final String PROPERTY_MASK_Water_ENABLED_KEY = PROPERTY_MASK_Water_ROOT_KEY + ".show";
