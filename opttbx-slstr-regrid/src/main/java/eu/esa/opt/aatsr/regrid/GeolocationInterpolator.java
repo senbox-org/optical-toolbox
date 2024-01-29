@@ -41,7 +41,7 @@ class GeolocationInterpolator {
         /* This function finds the pixel geolocation using the provided instrument coordinates and the geolocationADS.
          Note that this methodology is extracted from the AATSR Frequently Asked Questions (FAQ) document
          "Appendix A Interpolations of pixel geolocation in AATSR full resolution products"
-         available @ (https://earth.esa.int/instruments/aatsr/faq/) (Link accessed 02/08/2013)
+         available @ (https://earth.esa.int/eogateway/instruments/aatsr) (Link accessed 02/08/2013)
          */
 
         /* Convert x coordinate into km */
