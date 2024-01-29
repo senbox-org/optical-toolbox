@@ -32,10 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -510,15 +507,22 @@ public abstract class SeadasFileReader {
                         "!(l2_flags.ATMFAIL or l2_flags.LAND or l2_flags.HILT or l2_flags.STRAYLIGHT or l2_flags.CLDICE or l2_flags.NAVFAIL)",
                         get_Quality_L2_MaskColor(), get_Quality_L2_MaskTransparency());
                 product.getMaskGroup().add(Quality_L2_Mask);
-                
 
-                Mask Quality_L3_Mask = Mask.BandMathsType.create("Quality_L3", Quality_L3_Description,
+
+
+                Mask Quality_L3_Mask = null;
+                String quality_L3_Expression = get_Quality_L3_MaskExpression();
+                if (is_Quality_L3_MaskInclude() && quality_L3_Expression != null) {
+
+                Quality_L3_Mask = Mask.BandMathsType.create("Composite1", Quality_L3_Description,
                         product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                        "!(l2_flags.ATMFAIL or l2_flags.LAND or l2_flags.HIGLINT or l2_flags.HILT or l2_flags.STRAYLIGHT  or l2_flags.CLDICE or l2_flags.COCCOLITH or l2_flags.HISOLZEN or l2_flags.LOWLW or l2_flags.CHLFAIL or l2_flags.NAVWARN or l2_flags.MAXAERITER or l2_flags.CHLWARN or l2_flags.ATMWARN or l2_flags.NAVFAIL or l2_flags.FILTER)",
+                        quality_L3_Expression,
                         get_Quality_L3_MaskColor(), get_Quality_L3_MaskTransparency());
-                product.getMaskGroup().add(Quality_L3_Mask);
 
-                
+                    product.getMaskGroup().add(Quality_L3_Mask);
+                }
+
+
                 Mask Water_Mask = Mask.BandMathsType.create("Water", Water_Description,
                         product.getSceneRasterWidth(), product.getSceneRasterHeight(),
                         "!l2_flags.LAND",
@@ -612,8 +616,8 @@ public abstract class SeadasFileReader {
                     if (is_BOWTIEDEL_MaskEnabled()) {raster.getOverlayMaskGroup().add(BOWTIEDEL_Mask);}
                     if (is_HIPOL_MaskEnabled()) {raster.getOverlayMaskGroup().add(HIPOL_Mask);}
                     if (is_PRODFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(PRODFAIL_Mask);}
-                    if (is_Quality_L2_MaskEnabled()) {raster.getOverlayMaskGroup().add(Quality_L2_Mask);}
-                    if (is_Quality_L3_MaskEnabled()) {raster.getOverlayMaskGroup().add(Quality_L3_Mask);}
+                    if (Quality_L2_Mask != null && is_Quality_L2_MaskEnabled()) {raster.getOverlayMaskGroup().add(Quality_L2_Mask);}
+                    if (Quality_L3_Mask != null && is_Quality_L3_MaskEnabled()) {raster.getOverlayMaskGroup().add(Quality_L3_Mask);}
                     if (is_Water_MaskEnabled()) {raster.getOverlayMaskGroup().add(Water_Mask);}
                 }
 
@@ -2309,7 +2313,11 @@ public abstract class SeadasFileReader {
         return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_TRANSPARENCY_DEFAULT);
     }
 
-    
+    private double get_Quality_L2_MaskExpression() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L2_TRANSPARENCY_DEFAULT);
+    }
+
 
 
     // Quality_L3
@@ -2317,6 +2325,12 @@ public abstract class SeadasFileReader {
     private Color get_Quality_L3_MaskColor() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_Quality_L3_MaskInclude() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_INCLUDE_DEFAULT);
     }
 
 
@@ -2330,6 +2344,81 @@ public abstract class SeadasFileReader {
         return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_DEFAULT);
     }
 
+    private String get_Quality_L3_MaskExpression() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        String flags = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_DEFAULT);
+
+        String[] flagsArray = flags.split("\\s+|,");
+
+        for (int i=0; i < flagsArray.length; i++) {
+            if (flagsArray[i].startsWith("l2_flags.")) {
+                flagsArray[i] = flagsArray[i].replace("l2_flags.", "");
+            }
+        }
+        ArrayList<String> flagsCompositeArray = getValidFlagsComposite(flagsArray);
+
+        if (flagsCompositeArray == null || flagsCompositeArray.size() == 0) {
+            return null;
+        }
+
+        String expression = String.join(" || ", flagsCompositeArray);
+
+        return expression;
+    }
+
+    private ArrayList<String> getValidFlagsComposite(String[] flagsArray) {
+        ArrayList<String> validFlagComposite = new ArrayList<String>();
+
+        for(String flag : flagsArray) {
+            for (String validFlag : validFlags()) {
+                if (flag.equals(validFlag)) {
+                    validFlagComposite.add("l2_flags." + flag);
+                    continue;
+                }
+            }
+        }
+
+        return validFlagComposite;
+    }
+
+
+    private ArrayList<String> validFlags() {
+        ArrayList<String> validFlags = new ArrayList();
+        validFlags.add("ATMFAIL");
+        validFlags.add("LAND");
+        validFlags.add("PRODWARN");
+        validFlags.add("HIGLINT");
+        validFlags.add("HILT");
+        validFlags.add("HISATZEN");
+        validFlags.add("COASTZ");
+        validFlags.add("SPARE8");
+        validFlags.add("STRAYLIGHT");
+        validFlags.add("CLDICE");
+        validFlags.add("COCCOLITH");
+        validFlags.add("TURBIDW");
+        validFlags.add("HISOLZEN");
+        validFlags.add("SPARE14");
+        validFlags.add("LOWLW");
+        validFlags.add("CHLFAIL");
+        validFlags.add("NAVWARN");
+        validFlags.add("ABSAER");
+        validFlags.add("SPARE19");
+        validFlags.add("MAXAERITER");
+        validFlags.add("MODGLINT");
+        validFlags.add("CHLWARN");
+        validFlags.add("ATMWARN");
+        validFlags.add("SPARE24");
+        validFlags.add("SEAICE");
+        validFlags.add("NAVFAIL");
+        validFlags.add("FILTER");
+        validFlags.add("SPARE28");
+        validFlags.add("BOWTIEDEL");
+        validFlags.add("HIPOL");
+        validFlags.add("PRODFAIL");
+        validFlags.add("SPARE32");
+
+        return validFlags;
+    }
 
     
 

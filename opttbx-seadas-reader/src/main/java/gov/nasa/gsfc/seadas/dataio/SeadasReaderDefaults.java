@@ -724,26 +724,47 @@ public class SeadasReaderDefaults {
     
     // Quality_L3
 
-    public static final String PROPERTY_MASK_Quality_L3_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Quality_L3";
+    public static final String PROPERTY_MASK_Quality_L3_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Composite1";
 
     public static final String PROPERTY_MASK_Quality_L3_SECTION_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".section";
-    public static final String PROPERTY_MASK_Quality_L3_SECTION_LABEL = "L2 Flag Mask: Quality_L3";
-    public static final String PROPERTY_MASK_Quality_L3_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask Quality_L3";
+    public static final String PROPERTY_MASK_Quality_L3_SECTION_LABEL = "Derived Mask: Composite1";
+    public static final String PROPERTY_MASK_Quality_L3_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask Composite1";
+
+    public static final String PROPERTY_MASK_Quality_L3_INCLUDE_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".include";
+    public static final String PROPERTY_MASK_Quality_L3_INCLUDE_LABEL = "Composite1: Include";
+    public static final String PROPERTY_MASK_Quality_L3_INCLUDE_TOOLTIP = "Include Composite1 mask";
+    public static final boolean PROPERTY_MASK_Quality_L3_INCLUDE_DEFAULT = true;
 
     public static final String PROPERTY_MASK_Quality_L3_ENABLED_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".show";
-    public static final String PROPERTY_MASK_Quality_L3_ENABLED_LABEL = "Quality_L3: Set as Selected";
-    public static final String PROPERTY_MASK_Quality_L3_ENABLED_TOOLTIP = "Set Quality_L3 mask as selected by default";
+    public static final String PROPERTY_MASK_Quality_L3_ENABLED_LABEL = "Composite1: Set as Selected";
+    public static final String PROPERTY_MASK_Quality_L3_ENABLED_TOOLTIP = "Set Composite1 mask as selected by default";
     public static final boolean PROPERTY_MASK_Quality_L3_ENABLED_DEFAULT = false;
 
+
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION1  = "Select Stored Preset";
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION2  = "OC: ATMFAIL LAND HIGLINT HILT STRAYLIGHT CLDICE COCCOLITH HISOLZEN LOWLW CHLFAIL NAVWARN MAXAERITER CHLWARN ATMWARN NAVFAIL FILTER BOWTIEDEL";
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION3  = "CYAN: CLDICE HISOLZEN LOWLW CHLFAIL";
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION4  = "SFREFL: STRAYLIGHT CLDICE";
+
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".flags";
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_LABEL = "Composite1: Flag Presets";
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_TOOLTIP = "Set flags for Composite1 mask";
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_DEFAULT  = PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION1;
+
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".flags.custom";
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_LABEL = "Composite1: Flags";
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_TOOLTIP = "Set flags for Composite1 mask";
+    public static final String PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_DEFAULT  = PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION2;
+
     public static final String PROPERTY_MASK_Quality_L3_TRANSPARENCY_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".transparency";
-    public static final String PROPERTY_MASK_Quality_L3_TRANSPARENCY_LABEL = "Quality_L3: Transparency";
-    public static final String PROPERTY_MASK_Quality_L3_TRANSPARENCY_TOOLTIP = "Set default transparency of the Quality_L3 mask";
-    public static final double PROPERTY_MASK_Quality_L3_TRANSPARENCY_DEFAULT = 0.1;
+    public static final String PROPERTY_MASK_Quality_L3_TRANSPARENCY_LABEL = "Composite1: Transparency";
+    public static final String PROPERTY_MASK_Quality_L3_TRANSPARENCY_TOOLTIP = "Set default transparency of the Composite1 mask";
+    public static final double PROPERTY_MASK_Quality_L3_TRANSPARENCY_DEFAULT = 0.0;
 
     public static final String PROPERTY_MASK_Quality_L3_COLOR_KEY = PROPERTY_MASK_Quality_L3_ROOT_KEY + ".color";
-    public static final String PROPERTY_MASK_Quality_L3_COLOR_LABEL = "Quality_L3: Color";
-    public static final String PROPERTY_MASK_Quality_L3_COLOR_TOOLTIP = "Set default color of the Quality_L3 mask";
-    public static final Color PROPERTY_MASK_Quality_L3_COLOR_DEFAULT = Color.GREEN;
+    public static final String PROPERTY_MASK_Quality_L3_COLOR_LABEL = "Composite1: Color";
+    public static final String PROPERTY_MASK_Quality_L3_COLOR_TOOLTIP = "Set default color of the Composite1 mask";
+    public static final Color PROPERTY_MASK_Quality_L3_COLOR_DEFAULT = Color.YELLOW;
 
 
 

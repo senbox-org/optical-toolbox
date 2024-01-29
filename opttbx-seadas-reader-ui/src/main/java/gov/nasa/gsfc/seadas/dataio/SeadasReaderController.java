@@ -22,6 +22,7 @@ import com.bc.ceres.binding.PropertySet;
 import com.bc.ceres.binding.ValidationException;
 import com.bc.ceres.swing.TableLayout;
 import com.bc.ceres.swing.binding.BindingContext;
+import com.bc.ceres.swing.binding.Enablement;
 import com.bc.ceres.swing.binding.PropertyEditorRegistry;
 import com.bc.ceres.swing.binding.PropertyPane;
 import org.esa.snap.rcp.preferences.DefaultConfigController;
@@ -51,6 +52,11 @@ import java.awt.*;
 public final class SeadasReaderController extends DefaultConfigController {
 
     Property restoreDefaults;
+
+
+    Property compositeFlagSelector;
+    boolean compositeFlagSelectorIgnore = false;
+    Property compositeFlags;
 
 
     boolean propertyValueChangeEventsEnabled = true;
@@ -209,6 +215,9 @@ public final class SeadasReaderController extends DefaultConfigController {
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_CLDICE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_CLDICE_COLOR_DEFAULT);
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_SECTION_KEY, true);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_INCLUDE_DEFAULT);
+        compositeFlagSelector = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_DEFAULT);
+        compositeFlags = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_COLOR_DEFAULT);
@@ -284,9 +293,30 @@ public final class SeadasReaderController extends DefaultConfigController {
         context.bindEnabledState(SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_KEY).apply();
         context.bindEnabledState(SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_KEY).apply();
 
+
+//        context.bindEnabledState(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_KEY, true,
+//                SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_KEY,
+//                SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION5).apply();
+//
+
         // Handle resetDefaults events - set all other components to defaults
         restoreDefaults.addPropertyChangeListener(evt -> {
             handleRestoreDefaults(context);
+        });
+
+
+
+        compositeFlagSelector.addPropertyChangeListener(evt -> {
+                    if (!compositeFlagSelectorIgnore &&
+                            !SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION1.equals(compositeFlagSelector.getValue())) {
+                        try {
+                            compositeFlags.setValue(compositeFlagSelector.getValue());
+                            compositeFlagSelectorIgnore = true;
+                            compositeFlagSelector.setValue(SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION1);
+                            compositeFlagSelectorIgnore = false;
+                        } catch (Exception e) {
+                        }
+                    }
         });
 
 
@@ -1124,10 +1154,31 @@ public final class SeadasReaderController extends DefaultConfigController {
                 description = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_SECTION_TOOLTIP)
         boolean mask_Quality_L3_Section = true;
 
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_INCLUDE_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_INCLUDE_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_INCLUDE_TOOLTIP)
+        boolean mask_quality_l3_include_default = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_INCLUDE_DEFAULT;
+
+
         @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_KEY,
                 label = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_LABEL,
                 description = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_TOOLTIP)
         boolean mask_Quality_L3_EnabledDefault = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_ENABLED_DEFAULT;
+
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_LABEL,
+                valueSet = {SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION1,
+                        SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION2,
+                        SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION3,
+                        SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_OPTION4},
+                description = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_TOOLTIP)
+        String mask_quality_l3_expression_default = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_TOOLTIP)
+        String mask_quality_l3_expression_custom_default = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_EXPRESSION_CUSTOM_DEFAULT;
 
         @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_KEY,
                 label = SeadasReaderDefaults.PROPERTY_MASK_Quality_L3_TRANSPARENCY_LABEL,
