@@ -115,6 +115,10 @@ h6 {
     margin-left: 6pt;
 }
 
+ul.circle {
+    list-style-type: circle;
+}
+
 li {
     margin-top: 4pt;
     margin-bottom: 4pt;
