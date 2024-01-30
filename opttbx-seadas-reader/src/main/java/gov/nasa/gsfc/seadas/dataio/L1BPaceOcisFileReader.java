@@ -118,7 +118,7 @@ public class L1BPaceOcisFileReader extends SeadasFileReader {
         addMetadata(product, "products", "Band_Metadata");
         addMetadata(product, "navigation", "Navigation_Metadata");
 
-        product.setAutoGrouping("Lt");
+        product.setAutoGrouping("rhot_blue:rhot_red:rhot_SWIR:Lt_blue:Lt_red:Lt_SWIR");
 
         return product;
     }
