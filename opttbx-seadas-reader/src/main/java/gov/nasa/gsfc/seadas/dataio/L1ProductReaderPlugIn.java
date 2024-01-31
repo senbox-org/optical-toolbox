@@ -61,7 +61,7 @@ public class L1ProductReaderPlugIn implements ProductReaderPlugIn {
             "SeaWiFS Level-1B",
             "SeaWiFS Level-1A Data",
             "Hawkeye Level-1A Data",
-            "PACE OCI Level-1B Data",
+//            "PACE OCI Level-1B Data",
     };
     private static final Set<String> supportedProductTypeSet = new HashSet<>(Arrays.asList(supportedProductTypes));
 

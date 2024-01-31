@@ -116,7 +116,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         addMetadata(product, "products", "Band_Metadata");
         addMetadata(product, "navigation", "Navigation_Metadata");
 
-        product.setAutoGrouping("Lt");
+        product.setAutoGrouping("rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR");
 
         return product;
     }
@@ -266,11 +266,11 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     private WvlType getWvlType(String productName) {
         WvlType wvltype = null;
-        if (productName.equals("Lt_blue") || productName.equals("rhot_blue")) {
+        if (productName.equals("Lt_blue") || productName.equals("rhot_blue") || productName.equals("qual_blue")) {
             wvltype = WvlType.BLUE;
-        } else if (productName.equals("Lt_red") || productName.equals("rhot_red")) {
+        } else if (productName.equals("Lt_red") || productName.equals("rhot_red") || productName.equals("qual_red")) {
             wvltype = WvlType.RED;
-        } else if (productName.equals("Lt_SWIR") || productName.equals("rhot_SWIR")) {
+        } else if (productName.equals("Lt_SWIR") || productName.equals("rhot_SWIR") || productName.equals("qual_SWIR")) {
             wvltype = WvlType.SWIR;
         }
         return wvltype;
