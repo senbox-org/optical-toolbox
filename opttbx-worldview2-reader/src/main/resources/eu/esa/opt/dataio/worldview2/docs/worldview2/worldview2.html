@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>WorldView 2 Product Reader</title>
     <link rel="stylesheet" href="../style.css">
 </head>
-<>
 
+<body>
 <table class="header">
     <tr class="header">
-        <td class="header">&nbsp;Import Worldview2 2 Products</td>
+        <td class="header">&nbsp;Import Worldview 2 Products</td>
         <td class="header" align="right">
             <a href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html"><img src="../images/snap_header.jpg" border="0"/></a>
         </td>
@@ -17,14 +15,237 @@
 </table>
 
 <h4>Overview</h4>
+<p>
+    WorldView-2 provides commercially available panchromatic imagery of 0.46 m resolution, and eight-band multispectral imagery with 1.84 m resolution
+    - representing one of the highest available spaceborne resolutions on the market. Along with the Pan (450-800 nm) and the four typical multispectral bands (blue, green, red, NIR),
+    WorldView-2 has four additional bands for enhanced multispectral analysis (coastal blue, yellow, red edge, NIR2) designed to improve segmentation and classification of land
+    and aquatic features.
+</p>
 
-<h4>Imaging Performance</h4>
+<img src="../images/worldview-2-satellite-spectral-bands.jpg" border="0"/>
 
+<p>
+    It has a wide swath width of 16.4 kilometers, and it is capable of capturing imagery with a high degree of detail.
+</p>
+<p>
+    The satellite's advanced imaging capabilities make it valuable for various applications, including cartography, land cover classification, change detection,
+     and disaster monitoring. Additionally, the agility and maneuverability of the satellite contribute to its versatility in capturing precise and targeted imagery.
+</p>
+<p>
+    WorldView-2 mission characteristics are outlined in the next table:
+    <table>
+        <tr>
+            <td rowspan="3">Launch Information</td>
+            <td>Date: October 8, 2009</td>
+        </tr>
+        <tr>
+            <td>Launch Vehicle: Delta II 7920</td>
+        </tr>
+        <tr>
+            <td>Launch Site: Vandenberg Air Force Base</td>
+        </tr>
+        <tr>
+            <td rowspan="3">Orbit</td>
+            <td>Altitude: 770 kilometers</td>
+        </tr>
+        <tr>
+            <td>Type: Sun synchronous, 10:30 am descending node</td>
+        </tr>
+        <tr>
+            <td>Period: 100 minutes</td>
+        </tr>
+        <tr>
+            <td>Sensor Bands</td>
+            <td>
+                <table class="noborders" style="border-collapse: collapse">
+                    <tr>
+                        <td>Band Name </td>
+                        <td>Center Wavelength<br>(nm)</td>
+                        <td>Minimum Lower Band<br>Edge (nm)</td>
+                        <td>Maximum Upper Band <br>Edge (nm)</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <td style="text-align:left;">Panchromatic</td>
+                        <td>625</td>
+                        <td>450</td>
+                        <td>800</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <td style="text-align:left;">MS1 (NIR 1)</td>
+                        <td>835</td>
+                        <td>770</td>
+                        <td>895</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <td style="text-align:left;">MS2 (Red)</td>
+                        <td>660</td>
+                        <td>630</td>
+                        <td>690</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <td style="text-align:left;">MS3 (Green)</td>
+                        <td>545</td>
+                        <td>510</td>
+                        <td>580</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <td style="text-align:left;">MS4 (Blue)</td>
+                        <td>480</td>
+                        <td>450</td>
+                        <td>510</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <td style="text-align:left;">MS5 (Red Edge)</td>
+                        <td>725</td>
+                        <td>705</td>
+                        <td>745</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <td style="text-align:left;">MS6 (Yellow)</td>
+                        <td>605</td>
+                        <td>585</td>
+                        <td>625</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <td style="text-align:left;">MS7 (Coastal)</td>
+                        <td>425</td>
+                        <td>400</td>
+                        <td>450</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <td style="text-align:left;">MS8 (NIR 2)</td>
+                        <td>950</td>
+                        <td>860</td>
+                        <td>1040</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Sensor Resolution</td>
+            <td>0.46 meters GSD at nadir Panchromatic
+                <br>
+                1.85 meters GSD at nadir Multispectral
+            </td>
+        </tr>
+        <tr>
+            <td>(GSD = Ground Sample Distance)</td>
+            <td>0.52 meters GSD at 20° off-nadir Panchromatic<br>
+                2.07 meters GSD at 20° off-nadir Multispectral
+            </td>
+        </tr>
+        <tr>
+            <td>NIIRS Equivalency</td>
+            <td>NIIRS potential of greater than 5.0</td>
+        </tr>
+        <tr>
+            <td>Dynamic Range</td>
+            <td>11-bits per pixel</td>
+        </tr>
+        <tr>
+            <td>Swath Width</td>
+            <td>16.4 kilometers at nadir</td>
+        </tr>
+        <tr>
+            <td rowspan="2">Pointing Accuracy Knowledge</td>
+            <td>Accuracy: &lt;500 meters at image start and stop</td>
+        </tr>
+        <tr>
+            <td>Knowledge: Supports geolocation accuracy below</td>
+        </tr>
+        <tr>
+            <td rowspan="3">Retargeting Agility</td>
+            <td>Acceleration: 1.43 deg/s/s</td>
+        </tr>
+        <tr>
+            <td>Rate: 3.86 deg/s</td>
+        </tr>
+        <tr>
+            <td>Time to slew 200 kilometers: 10 seconds</td>
+        </tr>
+        <tr>
+            <td>Onboard Storage</td>
+            <td>2199 gigabits solid state with EDAC</td>
+        </tr>
+        <tr>
+            <td>Max Viewing Angle /Accessible Ground Swath</td>
+            <td>Nominally +/-45° off-nadir = 1651 km wide swath<br>
+                Higher angles selectively available
+            </td>
+        </tr>
+        <tr>
+            <td>Per Orbit Collection</td>
+            <td>524 gigabits</td>
+        </tr>
+        <tr>
+            <td>Max Contiguous Area Collected in a Single Pass</td>
+            <td>138 x 112 km mono<br>
+                63 x 112 km stereo
+            </td>
+        </tr>
+        <tr>
+            <td>Revisit Frequency to target at 40° N latitude</td>
+            <td>1.1 days at 1 meter GSD<br>
+                3.7 days at 20° off-nadir or less (0.52 GSD)
+            </td>
+        </tr>
+        <tr>
+            <td>Geolocation Accuracy (CE90)</td>
+            <td>Specification of 5 m CE90 at less than 30° off-nadir,<br>
+                with predicted performance in the range of 4.6 to 10.7 meters (15 to 35 feet) CE90,<br>
+                excluding terrain and offnadir effects <br>
+                With registration to GCPs in image: 2.0 m (6.6 feet)
+            </td>
+        </tr>
+    </table>
+<h4>WorldView-2 Spectral Bands - Applications</h4>
+<p>
+    <i>Coastal Band (400 - 450 nm):</i><br>
+    This band supports vegetation identification and analysis, and supports bathymetric
+    studies based upon its chlorophyll and water penetration characteristics. Also, this band is
+    subject to atmospheric scattering and will be used to investigate atmospheric correction
+    techniques.
+</p>
+<p>
+    <i>Yellow Band (585 - 625 nm):</i><br>
+    Used to identify "yellow-ness" characteristics of targets, important for vegetation
+    applications. Also, this band will assist in the development of "true-color"
+    hue correction for human vision representation.
+</p>
+<p>
+    <i>Red Edge Band (705 - 745 nm):</i><br>
+    Aids in the analysis of vegetative condition. Directly related to plant health revealed
+    through chlorophyll production.
+</p>
+<p>
+<i>Near Infrared (IR) 2 Band (860 - 1040 nm):</i><br>
+    This band overlaps the NIR 1 band but is less affected by atmospheric influence. It
+    supports vegetation analysis and biomass studies.
+</p>
 <h4>MS image data format</h4>
+<p>This command allows to import WorldView-2 products in GeoTIFF format.</p>
+
+<h4>Product Structure</h4>
+<p>The product must contain at least the metadata file (*_README.XML) and the Product Level Directories.</p>
+<p>
+    Product Level Directories are identified with the product ID and a three-character descriptor: PAN for Panchromatic and MUL for Multispectral: <i>&lt;product info&gt;-&lt;product id&gt;</i><br>
+    Example: ZON24-PAN
+</p>
+<p>
+    The naming convention for the images is <i>&lt;acquisition time&gt;-&lt;product info&gt;-&lt;product id&gt;.&lt;format extension&gt;</i>i>
+</p>
 
 <h4> Geodetic Coordinate System </h4>
 <p>The  geodetic  coordinate  system  is  based  on  the  WGS84  reference  frame  with  coordinates
-    expressed latitude, longitude, and height above the reference Earth ellipsoid</p>
-<br>
+    expressed latitude, longitude, and height above the reference Earth ellipsoid.</p>
+
+<p class="inote">
+    A brief description of the sensor characteristics can be found at :
+    <object classid="java:eu.esa.snap.netbeans.javahelp.BrowserDisplayer">
+        <param name="content" value="https://www.satimagingcorp.com/satellite-sensors/worldview-2/">
+        <param name="text"
+               value="<html><u>WorldView-2 Satellite Sensor</u></html>">
+    </object>
+</p>
 </body>
 </html>
