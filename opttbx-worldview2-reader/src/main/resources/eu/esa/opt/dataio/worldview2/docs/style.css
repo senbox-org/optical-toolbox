@@ -195,3 +195,31 @@ hr {
     border-style: solid;
     border-width: 1;
 }
+
+table.nobordersx {
+     border-collapse: collapse;
+     border-spacing: 0;
+     tr{
+        th {
+            text-align:center;
+            color: red;
+            font-weight: normal;
+            border-width: 0px;
+            padding: 4px;
+            margin: 0px;
+        }
+        td {
+            border-width: 0px;
+            padding: 4px;
+            margin: 0px;
+        }
+     }
+}
+
+table.noborders>tbody>tr>td{
+    text-align:center;
+    font-weight: normal;
+    border-width: 0px;
+    padding: 4px;
+    margin: 0px;
+}

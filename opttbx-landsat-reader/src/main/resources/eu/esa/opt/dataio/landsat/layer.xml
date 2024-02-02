@@ -86,7 +86,7 @@
 
     <folder name="Services">
         <folder name="JavaHelp">
-            <file name="eu-esa-opt-opttbx/-landsat-reader-helpset.xml" url="helpset.xml">
+            <file name="eu-esa-opt-opttbx-landsat-reader-helpset.xml" url="helpset.xml">
                 <attr name="position" intvalue="4600"/>
             </file>
         </folder>
