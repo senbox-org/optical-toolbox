@@ -82,6 +82,9 @@ public class PpeOp extends Operator {
 
     private Mask validPixelMask;
 
+    private static final ThreadLocal<double[]> pixelListTL = ThreadLocal.withInitial(() -> new double[5]);
+    private static final ThreadLocal<double[]> listMadTL = ThreadLocal.withInitial(() -> new double[5]);
+
     @Override
     public void initialize() throws OperatorException {
         validPixelMask = Mask.BandMathsType.create("__valid_pixel_mask", null,
@@ -183,7 +186,7 @@ public class PpeOp extends Operator {
 
 
     static double[] getPixelList(int x, int y, Tile sourceTile) {
-        double[] pixelList = new double[5];
+        double[] pixelList = pixelListTL.get();
         pixelList[0] = getPixelValue(sourceTile, x, y - 2);
         pixelList[1] = getPixelValue(sourceTile, x, y - 1);
         pixelList[2] = getPixelValue(sourceTile, x, y);
@@ -196,7 +199,7 @@ public class PpeOp extends Operator {
         return pixelList;
     }
 
-    static Double getPixelValue(Tile tile, int x, int y) {
+    static double getPixelValue(Tile tile, int x, int y) {
         if ((y >= tile.getMinY()) && (y <= tile.getMaxY())) {
             return tile.getSampleDouble(x, y);
         } else {
@@ -204,20 +207,20 @@ public class PpeOp extends Operator {
         }
     }
 
-    static Double getMedian(double[] listDoubles) {
+    static double getMedian(double[] listDoubles) {
         Arrays.sort(listDoubles);
         if (listDoubles[1] == 0) {
             return (listDoubles[3]);
         } else if (listDoubles[0] == 0) {
-            return ((listDoubles[2] + listDoubles[3]) / 2);
+            return ((listDoubles[2] + listDoubles[3]) * 0.5);
         } else {
             return (listDoubles[2]);
         }
     }
 
-    static Double getMAD(double[] listDoubles) {
-        Double median = getMedian(listDoubles);
-        double[] listMAD = new double[5];
+    static double getMAD(double[] listDoubles) {
+        double median = getMedian(listDoubles);
+        double[] listMAD = listMadTL.get();
         for (int i = 0; i < 5; i++) {
             if (listDoubles[i] != 0) {
                 listMAD[i] = Math.abs(listDoubles[i] - median);
@@ -229,7 +232,7 @@ public class PpeOp extends Operator {
         if (listMAD[1] == -1) {
             return listMAD[3];
         } else if (listMAD[0] == -1) {
-            return (listMAD[2] + listMAD[3]) / 2;
+            return (listMAD[2] + listMAD[3]) * 0.5;
         } else {
             return listMAD[2];
         }

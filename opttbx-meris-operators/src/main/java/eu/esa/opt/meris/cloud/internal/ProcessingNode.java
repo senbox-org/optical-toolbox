@@ -181,7 +181,6 @@ public abstract class ProcessingNode implements ProductReader {
         clearFrameDataMap();
     }
 
-
     @Override
     public ProductReaderPlugIn getReaderPlugIn() {
         throw new IllegalStateException("Should never be asked for reader plugin");
@@ -196,5 +195,4 @@ public abstract class ProcessingNode implements ProductReader {
     public final ProductSubsetDef getSubsetDef() {
         throw new IllegalStateException("Should never be asked for subset definition");
     }
-
 }
