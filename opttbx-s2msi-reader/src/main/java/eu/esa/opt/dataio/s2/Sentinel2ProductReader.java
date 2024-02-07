@@ -298,7 +298,9 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
             if (open == null) {
                 throw new IOException("Null Gdal dataset");
             }
-            return open.getRasterBand(1).getOverviewCount();
+            try (org.esa.snap.dataio.gdal.drivers.Band band = open.getRasterBand(1)) {
+                return band.getOverviewCount();
+            }
         }
     }
 
