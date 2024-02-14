@@ -70,7 +70,7 @@ public class Sentinel2OrthoMetadataInspectorTest {
         assertTrue(metadata.getBandList().contains("B12"));
 
         assertNotNull(metadata.getMaskList());
-        assertEquals(162, metadata.getMaskList().size());
+        assertEquals(283, metadata.getMaskList().size());
         assertTrue(metadata.getMaskList().contains("nodata_B1"));
         assertTrue(metadata.getMaskList().contains("partially_corrected_crosstalk_B2"));
         assertTrue(metadata.getMaskList().contains("saturated_l1a_B3"));
@@ -114,7 +114,7 @@ public class Sentinel2OrthoMetadataInspectorTest {
         assertTrue(metadata.getBandList().contains("B11"));
 
         assertNotNull(metadata.getMaskList());
-        assertEquals(198, metadata.getMaskList().size());
+        assertEquals(274, metadata.getMaskList().size());
         assertTrue(metadata.getMaskList().contains("nodata_B1"));
         assertTrue(metadata.getMaskList().contains("scl_nodata"));
         assertTrue(metadata.getMaskList().contains("partially_corrected_crosstalk_B2"));
