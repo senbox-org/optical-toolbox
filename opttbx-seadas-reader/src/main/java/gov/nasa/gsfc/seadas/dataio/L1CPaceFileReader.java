@@ -70,12 +70,18 @@ public class L1CPaceFileReader extends SeadasFileReader {
         Attribute instrument = ncFile.findGlobalAttributeIgnoreCase("instrument");
 
         Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
+        if (view_angle == null) {
+            view_angle = ncFile.findVariable("sensor_views_bands/sensor_view_angle");
+        }
         Array view_Angles = null;
 
         Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
         Variable wvl_pol = ncFile.findVariable("sensor_views_bands/polarization_wavelengths");
         if (wvl == null) {
             wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelength");
+        }
+        if (wvl_pol == null) {
+            wvl_pol = ncFile.findVariable("sensor_views_bands/polarization_wavelength");
         }
         Variable wvl_sliced = null;
         Variable wvl_sliced_pol = null;
