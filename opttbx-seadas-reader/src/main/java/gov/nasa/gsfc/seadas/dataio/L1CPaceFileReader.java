@@ -159,7 +159,9 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
         if (instrument != null) {
             if (instrument.toString().toUpperCase().contains("OCI")) {
-                product.setAutoGrouping("I_-20:I_20:obs_per_view:");
+                product.setAutoGrouping("I_-20:I_20:obs_per_view:view_time_offsets:sensor_azimuth:sensor_zenith:" +
+                        "solar_azimuth:solar_zenith:scattering_angle:rotation_angle:qc_bitwise_-20:qc_bitwise_20:" +
+                        "qc_-20:qc_20:I_stdev_-20:I_stdev_20");
             } else if (instrument.toString().toUpperCase().contains("HARP") && waveLengths != null) {
                 int wvlSize = (int) waveLengths.getSize();
 
