@@ -1,6 +1,7 @@
 package eu.esa.opt.slstr.pdu.stitching;
 
 import com.bc.ceres.core.ProgressMonitor;
+import org.esa.snap.dataio.netcdf.NetCdfActivator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -14,6 +15,10 @@ import static org.junit.Assert.assertNotNull;
  * @author Tonio Fincke
  */
 public class SlstrPduStitcherLongTest {
+
+    static {
+        NetCdfActivator.activate();
+    }
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
