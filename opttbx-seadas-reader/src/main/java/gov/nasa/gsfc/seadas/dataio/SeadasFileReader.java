@@ -2097,7 +2097,8 @@ public abstract class SeadasFileReader {
     public String getStringAttribute(String key, List<Attribute> attributeList) throws ProductIOException {
         Attribute attribute = findAttribute(key, attributeList);
         if (attribute == null || attribute.getLength() != 1) {
-            throw new ProductIOException("Global attribute '" + key + "' is missing.");
+            return null;
+//            throw new ProductIOException("Global attribute '" + key + "' is missing.");
         } else {
             return attribute.getStringValue().trim();
         }
