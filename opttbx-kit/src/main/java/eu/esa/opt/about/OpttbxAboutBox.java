@@ -55,7 +55,7 @@ public class OpttbxAboutBox extends JPanel {
     public OpttbxAboutBox() {
         super(new BorderLayout(4, 4));
         setBorder(new EmptyBorder(4, 4, 4, 4));
-        ImageIcon aboutImage = new ImageIcon(OpttbxAboutBox.class.getResource("about_opttbx.jpg"));
+        ImageIcon aboutImage = new ImageIcon(OpttbxAboutBox.class.getResource("about_opt_tbx.jpg"));
         JLabel iconLabel = new JLabel(aboutImage);
         add(iconLabel, BorderLayout.CENTER);
         add(createVersionPanel(), BorderLayout.SOUTH);
