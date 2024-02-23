@@ -21,7 +21,7 @@
 
     <groupId>eu.esa.opt</groupId>
     <artifactId>optical-toolbox</artifactId>
-    <version>10.0.0-SNAPSHOT</version>
+    <version>10.0.0-RC2</version>
     <name>SNAP Optical Toolbox</name>
     <description>Tools for optical Satellites</description>
     <url>https://sentinel.esa.int/web/sentinel/toolboxes/optical</url>
