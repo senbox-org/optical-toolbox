@@ -82,6 +82,16 @@ public class L2FileReader extends SeadasFileReader {
                     navGroup = "navigation_data";
                 }
             }
+            if (ncFile.findGroup(navGroup) == null) {
+                if (ncFile.findGroup("geolocation_data") != null) {
+                    navGroup = "geolocation_data";
+                }
+            }
+            if (ncFile.findGroup(navGroup) == null) {
+                if (ncFile.findGroup("geolocation") != null) {
+                    navGroup = "geolocation";
+                }
+            }
             final Variable variable = ncFile.findVariable(navGroup + "/" + latitude);
             if (!keepBadNavLines) {
                 invalidateLines(LAT_SKIP_BAD_NAV, variable);
@@ -94,7 +104,9 @@ public class L2FileReader extends SeadasFileReader {
 
         }
         String productName = getStringAttribute("Product_Name");
-
+        if (productName == null) {
+            productName = productReader.getInputFile().getName();
+        }
         mustFlipX = mustFlipY = getDefaultFlip();
         SeadasProductReader.ProductType productType = productReader.getProductType();
         if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
@@ -148,7 +160,7 @@ public class L2FileReader extends SeadasFileReader {
         addGeocoding(product);
 
         addFlagsAndMasks(product);
-        product.setAutoGrouping("Rrs_unc:Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:vgain:BT:tg_sol:tg_sen");
+        product.setAutoGrouping("Rrs_unc:Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:a:bb:vgain:BT:tg_sol:tg_sen");
 
         return product;
     }

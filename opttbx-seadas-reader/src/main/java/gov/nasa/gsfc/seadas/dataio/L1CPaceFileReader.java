@@ -70,12 +70,18 @@ public class L1CPaceFileReader extends SeadasFileReader {
         Attribute instrument = ncFile.findGlobalAttributeIgnoreCase("instrument");
 
         Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
+        if (view_angle == null) {
+            view_angle = ncFile.findVariable("sensor_views_bands/sensor_view_angle");
+        }
         Array view_Angles = null;
 
         Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
         Variable wvl_pol = ncFile.findVariable("sensor_views_bands/polarization_wavelengths");
         if (wvl == null) {
             wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelength");
+        }
+        if (wvl_pol == null) {
+            wvl_pol = ncFile.findVariable("sensor_views_bands/polarization_wavelength");
         }
         Variable wvl_sliced = null;
         Variable wvl_sliced_pol = null;
@@ -153,7 +159,9 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
         if (instrument != null) {
             if (instrument.toString().toUpperCase().contains("OCI")) {
-                product.setAutoGrouping("I_-20:I_20:obs_per_view:");
+                product.setAutoGrouping("I_-20:I_20:obs_per_view:view_time_offsets:sensor_azimuth:sensor_zenith:" +
+                        "solar_azimuth:solar_zenith:scattering_angle:rotation_angle:qc_bitwise_-20:qc_bitwise_20:" +
+                        "qc_-20:qc_20:I_stdev_-20:I_stdev_20");
             } else if (instrument.toString().toUpperCase().contains("HARP") && waveLengths != null) {
                 int wvlSize = (int) waveLengths.getSize();
 
@@ -272,23 +280,107 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     }
                     for (int i = 0; i < 5; i ++) {
                         int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "qc_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
                         autoGroupingStr += "i_" + viewAngle + "_*:";
                     }
                     for (int i = 0; i < 5; i ++) {
                         int viewAngle = view_Angles.getInt(i);
-                        autoGroupingStr += "alop_" + viewAngle + "_*:";
+                        autoGroupingStr += "i_stdev_" + viewAngle + "_*:";
                     }
                     for (int i = 0; i < 5; i ++) {
                         int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "qc_polsample_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "i_polsample_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "i_polsample_stdev_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "q_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "q_stdev_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "u_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "u_stdev_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "q_over_i_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "q_over_i_stdev_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "u_over_i_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "u_over_i_stdev_" + viewAngle + "_*:";
+                    }for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
                         autoGroupingStr += "dolp_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "dolp_stdev_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "aolp_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "aolp_stdev_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "i_noisefree_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "i_noisefree_polsample_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "dolp_noisefree_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "q_over_i_noisefree_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "aolp_noisefree_" + viewAngle + "_*:";
+                    }
+                    for (int i = 0; i < 5; i ++) {
+                        int viewAngle = view_Angles.getInt(i);
+                        autoGroupingStr += "u_over_i_noisefree_" + viewAngle + "_*:";
                     }
                 }
                 autoGroupingStr += "I:I_noise:I_noisefree:I_polsample:" +
                         "I_polsample_noise:I_noisefree_polsample:DOLP:DOLP_noise:DOLP_noisefree:" +
                         "Q_over_I:Q_over_I_noise:Q_over_I_noisefree:AOLP:AOLP_noise:AOLP_noisefree:" +
-                        "U_over_I:U_over_I_noise:U_over_I_noisefree:scattering_angle:" +
-                        "sensor_azimuth:sensor_zenith:solar_azimuth:solar_zenith:" +
-                        "obs_per_view:view_time_offsets";
+                        "U_over_I:U_over_I_noise:U_over_I_noisefree:scattering_angle:rotation_angle:" +
+                        "sensor_azimuth:sensor_azimuth_angle:sensor_zenith:sensor_zenith_angle:"  +
+                        "solar_azimuth:solar_azimuth_angle:solar_zenith:solar_zenith_angle:" +
+                        "obs_per_view:view_time_offsets:number_of_observations";
                 product.setAutoGrouping(autoGroupingStr);
 //                product.setAutoGrouping("I:I_58_*:I_22_*:I_4_*:I_-22_*:I_-58_*:" +
 //                        "AOLP:AOLP_58_*:AOLP_22_*:AOLP_4_*:AOLP_-22_*:AOLP_-58_*:" +

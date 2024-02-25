@@ -221,6 +221,11 @@ public final class SeadasReaderController extends DefaultConfigController {
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_DEFAULT);
 
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_SECTION_KEY, true);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_DEFAULT);
+
 
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_SECTION_KEY, true);
@@ -1280,6 +1285,36 @@ public final class SeadasReaderController extends DefaultConfigController {
 
 
 
+
+
+
+        // GEOREGION
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_SECTION_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_SECTION_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_SECTION_TOOLTIP)
+        boolean mask_GEOREGION_Section = true;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_TOOLTIP)
+        boolean mask_GEOREGION_EnabledDefault = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_TOOLTIP,
+                interval = "[0.0,1.0]")
+        double mask_GEOREGION_TransparencyDefault = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_TOOLTIP)
+        Color mask_GEOREGION_ColorDefault = SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_DEFAULT;
+
+
+
+        
+        
 
 
 
