@@ -62,6 +62,10 @@ public abstract class SeadasFileReader {
     protected int[] count = new int[2];
     protected String sensor = null;
 
+    protected String[] flagNames = null;
+    protected String flagMeanings = null;
+
+
     protected int leadLineSkip = 0;
     protected int tailLineSkip = 0;
 
@@ -237,6 +241,35 @@ public abstract class SeadasFileReader {
                 }
             }
 
+            boolean containsGEOREGION = false;
+//            String flagMeanings = null;
+            try {
+
+//                containsGEOREGION = product.getMetadataRoot().getElement("Global_Attributes").containsAttribute("processing_control_flag_percentages_GEO_REGION");
+//                String flagMeanings = product.getMetadataRoot().getElement("Band_Attributes").getElement("l2_flags").getAttribute("FLAG_MEANINGS").getData().getElemString();
+
+                MetadataElement metadataElementBand = product.getMetadataRoot().getElement("Band_Attributes");
+                if (metadataElementBand != null) {
+                    MetadataElement metadataElementL2Flags = metadataElementBand.getElement("l2_flags");
+                    if (metadataElementL2Flags != null) {
+                        flagMeanings =metadataElementL2Flags.getAttribute("FLAG_MEANINGS").getData().getElemString();
+                        if (flagMeanings != null) {
+                            flagNames = flagMeanings.split(" ");
+                        }
+
+                        for (String flagname : flagNames) {
+                            if ("GEOREGION".equals(flagname)) {
+                                containsGEOREGION = true;
+                            }
+                        }
+                    }
+                }
+
+            } catch (Exception ignore) {
+
+            }
+
+
             Band QFBand = product.getBand("l2_flags");
             if (QFBand != null) {
                 String ATMFAIL_Description = "Atmospheric correction failure";
@@ -271,7 +304,9 @@ public abstract class SeadasFileReader {
                 String HIPOL_Description = "High degree of polariztion determined";
                 String PRODFAIL_Description = "One (or more) product algorithms produced a failure";
                 String SPARE32_Description = "Unused";
-                
+
+                String GEOREGION_Description = "User supplied geolocation region";
+
                 String composite1Description = "Composite1 Mask (see preferences to set)";
                 String composite2Description = "Composite2 Mask (see preferences to set)";
                 String composite3Description = "Composite3 Mask (see preferences to set)";
@@ -288,7 +323,11 @@ public abstract class SeadasFileReader {
                 flagCoding.addFlag("HILT", 0x10, HILT_Description);
                 flagCoding.addFlag("HISATZEN", 0x20, HISATZEN_Description);
                 flagCoding.addFlag("COASTZ", 0x40, COASTZ_Description);
-                flagCoding.addFlag("SPARE8", 0x80, SPARE8_Description);
+                if (containsGEOREGION) {
+                    flagCoding.addFlag("GEOREGION", 0x80, SPARE8_Description);
+                } else {
+                    flagCoding.addFlag("SPARE8", 0x80, SPARE8_Description);
+                }
                 flagCoding.addFlag("STRAYLIGHT", 0x100, STRAYLIGHT_Description);
                 flagCoding.addFlag("CLDICE", 0x200, CLDICE_Description);
                 flagCoding.addFlag("COCCOLITH", 0x400, COCCOLITH_Description);
@@ -353,12 +392,16 @@ public abstract class SeadasFileReader {
                 Mask Water_Mask = null;
 
 
+                Mask GEOREGION_Mask = null;
+
                 Mask SPARE8_Mask = null;
                 Mask SPARE14_Mask = null;
                 Mask SPARE19_Mask = null;
                 Mask SPARE24_Mask = null;
                 Mask SPARE28_Mask = null;
                 Mask SPARE32_Mask = null;
+
+
 
 
 
@@ -499,6 +542,11 @@ public abstract class SeadasFileReader {
                                     PRODFAIL_Mask = createMaskPRODFAIL(product, PRODFAIL_Description);
                                 }
                                 break;
+                            case "GEOREGION":
+                                if (GEOREGION_Mask == null && containsGEOREGION) {
+                                    GEOREGION_Mask = createMaskGEOREGION(product, GEOREGION_Description);
+                                }
+                                break;
                         }
 
                         if (isComposite1MaskInclude() && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
@@ -519,7 +567,7 @@ public abstract class SeadasFileReader {
                         }
 
                         if (is_SPARE_MaskInclude()) {
-                            if (SPARE8_Mask == null && flagName.equals("SPARE8")) {
+                            if (SPARE8_Mask == null && flagName.equals("SPARE8") && !containsGEOREGION) {
                                 SPARE8_Mask = createSPARE8Mask(product, SPARE8_Description);
                             }
                             if (SPARE14_Mask == null && flagName.equals("SPARE14")) {
@@ -664,8 +712,12 @@ public abstract class SeadasFileReader {
                 }
 
 
+                if (GEOREGION_Mask == null && containsGEOREGION) {
+                    GEOREGION_Mask = createMaskGEOREGION(product, GEOREGION_Description);
+                }
+
                 if (is_SPARE_MaskInclude()) {
-                    if (SPARE8_Mask == null) {
+                    if (SPARE8_Mask == null && !containsGEOREGION) {
                         SPARE8_Mask = createSPARE8Mask(product, SPARE8_Description);
                     }
                     if (SPARE14_Mask == null) {
@@ -718,6 +770,7 @@ public abstract class SeadasFileReader {
                     if (is_BOWTIEDEL_MaskEnabled()) {raster.getOverlayMaskGroup().add(BOWTIEDEL_Mask);}
                     if (is_HIPOL_MaskEnabled()) {raster.getOverlayMaskGroup().add(HIPOL_Mask);}
                     if (is_PRODFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(PRODFAIL_Mask);}
+                    if (is_GEOREGION_MaskEnabled() && containsGEOREGION) {raster.getOverlayMaskGroup().add(GEOREGION_Mask);}
                     if (composite1Mask != null && isComposite1MaskEnabled()) {raster.getOverlayMaskGroup().add(composite1Mask);}
                     if (composite2Mask != null && isComposite2MaskEnabled()) {raster.getOverlayMaskGroup().add(composite2Mask);}
                     if (composite3Mask != null && isComposite3MaskEnabled()) {raster.getOverlayMaskGroup().add(composite3Mask);}
@@ -1415,6 +1468,17 @@ public abstract class SeadasFileReader {
         product.getMaskGroup().add(PRODFAIL_Mask);
 
         return PRODFAIL_Mask;
+    }
+
+
+    private Mask createMaskGEOREGION(Product product, String GEOREGION_Description) {
+        Mask GEOREGION_Mask = Mask.BandMathsType.create("GEOREGION", GEOREGION_Description,
+                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                "l2_flags.GEOREGION",
+                get_GEOREGION_MaskColor(), get_GEOREGION_MaskTransparency());
+        product.getMaskGroup().add(GEOREGION_Mask);
+
+        return GEOREGION_Mask;
     }
 
 
@@ -2900,6 +2964,26 @@ public abstract class SeadasFileReader {
 
 
 
+    // GEOREGION
+
+    private Color get_GEOREGION_MaskColor() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_DEFAULT);
+    }
+
+
+    private boolean is_GEOREGION_MaskEnabled() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_DEFAULT);
+    }
+
+    private double get_GEOREGION_MaskTransparency() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyDouble(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_DEFAULT);
+    }
+
+
+
 
     private String getMaskSort() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
@@ -3052,9 +3136,9 @@ public abstract class SeadasFileReader {
 
 
     private String validateCompositeFlagsName(String compositeMaskName, String propertyKey) {
-        // don't let mask name be same as any of the flags
+        // don't let composite mask name be same as any of the flags
         if (compositeMaskName != null) {
-            for (String validFlag : validFlags()) {
+            for (String validFlag : flagNames) {
                 if (compositeMaskName.equals(validFlag)) {
                     return null;
                 }
@@ -3136,7 +3220,7 @@ public abstract class SeadasFileReader {
                         flagIsComplement = true;
                     }
 
-                    for (String validFlag : validFlags()) {
+                    for (String validFlag : flagNames) {
                         if (validFlag != null) {
                                 if (flag.equals(validFlag)) {
                                     if (flagIsComplement) {
@@ -3163,7 +3247,7 @@ public abstract class SeadasFileReader {
 
         flagMask = flagMask.trim();
         
-        for (String validFlag : validFlags()) {
+        for (String validFlag : flagNames) {
             if (validFlag != null) {
                 if (flagMask.equals(validFlag)) {
                     return true;
@@ -3209,6 +3293,7 @@ public abstract class SeadasFileReader {
         validFlags.add("HIPOL");
         validFlags.add("PRODFAIL");
         validFlags.add("SPARE32");
+        validFlags.add("GEOREGION");
 
         return validFlags;
     }

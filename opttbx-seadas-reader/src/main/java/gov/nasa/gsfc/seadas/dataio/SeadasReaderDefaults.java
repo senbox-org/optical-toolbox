@@ -714,7 +714,31 @@ public class SeadasReaderDefaults {
 
 
 
-    
+    // GEOREGION
+
+    public static final String PROPERTY_MASK_GEOREGION_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.GEOREGION";
+
+    public static final String PROPERTY_MASK_GEOREGION_SECTION_KEY = PROPERTY_MASK_GEOREGION_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_GEOREGION_SECTION_LABEL = "L2 Flag Mask: GEOREGION";
+    public static final String PROPERTY_MASK_GEOREGION_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask GEOREGION";
+
+    public static final String PROPERTY_MASK_GEOREGION_ENABLED_KEY = PROPERTY_MASK_GEOREGION_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_GEOREGION_ENABLED_LABEL = "GEOREGION: Set as Selected";
+    public static final String PROPERTY_MASK_GEOREGION_ENABLED_TOOLTIP = "Set GEOREGION mask as selected by default";
+    public static final boolean PROPERTY_MASK_GEOREGION_ENABLED_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_GEOREGION_TRANSPARENCY_KEY = PROPERTY_MASK_GEOREGION_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_GEOREGION_TRANSPARENCY_LABEL = "GEOREGION: Transparency";
+    public static final String PROPERTY_MASK_GEOREGION_TRANSPARENCY_TOOLTIP = "Set default transparency of the GEOREGION mask";
+    public static final double PROPERTY_MASK_GEOREGION_TRANSPARENCY_DEFAULT = 0.0;
+
+    public static final String PROPERTY_MASK_GEOREGION_COLOR_KEY = PROPERTY_MASK_GEOREGION_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_GEOREGION_COLOR_LABEL = "GEOREGION: Color";
+    public static final String PROPERTY_MASK_GEOREGION_COLOR_TOOLTIP = "Set default color of the GEOREGION mask";
+    public static final Color PROPERTY_MASK_GEOREGION_COLOR_DEFAULT = MiscFlags;
+
+
+
 
 
     public static final String PROPERTY_MASK_OVERRIDE_COLOR_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".override.color";
@@ -731,7 +755,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_SORT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.sort";
     public static final String PROPERTY_MASK_SORT_LABEL = "Ordered Flag List";
     public static final String PROPERTY_MASK_SORT_TOOLTIP = "Ordered Flags (any flags not included in this list will still be loaded at bottom of Mask Manager)";
-    public static final String PROPERTY_MASK_SORT_DEFAULT = "LAND CLDICE ABSAER ATMFAIL ATMWARN BOWTIEDEL CHLFAIL CHLWARN COASTZ COCCOLITH FILTER HIGLINT HILT HIPOL HISATZEN HISOLZEN LOWLW MAXAERITER MODGLINT NAVFAIL NAVWARN PRODFAIL PRODWARN SEAICE STRAYLIGHT TURBIDW";
+    public static final String PROPERTY_MASK_SORT_DEFAULT = "LAND ABSAER ATMFAIL ATMWARN BOWTIEDEL CHLFAIL CHLWARN CLDICE COASTZ COCCOLITH FILTER GEOREGION HIGLINT HILT HIPOL HISATZEN HISOLZEN LOWLW MAXAERITER MODGLINT NAVFAIL NAVWARN PRODFAIL PRODWARN SEAICE STRAYLIGHT TURBIDW";
 
 
 
