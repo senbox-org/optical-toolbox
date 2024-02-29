@@ -87,7 +87,8 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             throw new ProductIOException(e.getMessage(), e);
         }
 //        mustFlipX = mustFlipY = getDefaultFlip();
-        mustFlipY = getDefaultFlip();
+//        mustFlipY = getDefaultFlip();
+        mustFlipY = true;
         mustFlipX = false;
         SeadasProductReader.ProductType productType = productReader.getProductType();
 
