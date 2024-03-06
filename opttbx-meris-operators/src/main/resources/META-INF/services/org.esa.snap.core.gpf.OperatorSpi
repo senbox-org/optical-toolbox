@@ -1,8 +1,6 @@
 eu.esa.opt.meris.N1PatcherOp$Spi
 eu.esa.opt.meris.L3ToL1Op$Spi
 eu.esa.opt.meris.RRToFRSOp$Spi
-eu.esa.opt.meris.sdr.aerosol.AerosolMergerOp$Spi
-eu.esa.opt.meris.sdr.aerosol.ModisAerosolOp$Spi
 eu.esa.opt.meris.sdr.brr.operator.BrrOp$Spi
 eu.esa.opt.meris.sdr.cloud.BlueBandOp$Spi
 eu.esa.opt.meris.sdr.cloud.CloudProbabilityOp$Spi
