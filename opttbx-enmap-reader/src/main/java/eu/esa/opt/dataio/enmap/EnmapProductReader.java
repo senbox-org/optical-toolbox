@@ -57,7 +57,7 @@ class EnmapProductReader extends AbstractProductReader {
     private final List<EnmapImageReader> imageReaderList = new ArrayList<>();
     private VirtualDir dataDir;
 
-    public EnmapProductReader(EnmapProductReaderPlugIn readerPlugIn) {
+    EnmapProductReader(EnmapProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         syncObject = new Object();
     }

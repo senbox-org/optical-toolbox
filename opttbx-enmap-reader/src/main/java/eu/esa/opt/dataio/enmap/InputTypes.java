@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.IntStream;
 
-final class InputTypes {
+class InputTypes {
 
     private static final Class<?>[] types;
     private static final String[] typeNames;

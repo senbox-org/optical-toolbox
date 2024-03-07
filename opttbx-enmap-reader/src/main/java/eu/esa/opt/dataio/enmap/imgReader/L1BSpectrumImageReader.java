@@ -7,7 +7,7 @@ import java.awt.Dimension;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 
-class L1BSpectrumImageReader implements EnmapImageReader {
+class L1BSpectrumImageReader extends EnmapImageReader {
 
     private final EnmapImageReader vnirImageReader;
     private final EnmapImageReader swirImageReader;

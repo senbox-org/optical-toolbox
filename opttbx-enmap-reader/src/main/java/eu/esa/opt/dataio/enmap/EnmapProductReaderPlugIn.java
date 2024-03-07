@@ -5,8 +5,9 @@ import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
-import org.esa.snap.runtime.Config;
+import org.esa.snap.engine_utilities.dataio.VirtualDirTgz;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,22 +15,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
 
-    public static final String[] FILE_EXTENSIONS = {".zip", ".xml"};
-    public static final String DESCRIPTION = "EnMAP L1B/L1C/L2A Product Reader";
-    public static final Preferences PREFERENCES = Config.instance("enmap").load().preferences();
-    public static final String ENMAP_GEOTIFF_USE_JAI = "enmap.geotiff.useJai";
+    private static final String[] FILE_EXTENSIONS = {".zip", ".xml", ".tar.gz"};
+    private static final String DESCRIPTION = "EnMAP L1B/L1C/L2A Product Reader";
+    private static final String[] FORMAT_NAMES = {"EnMAP L1B/L1C/L2A"};
 
     static {
         EnMapRgbProfiles.registerRGBProfiles();
     }
-
-    private final String[] FORMAT_NAMES = new String[]{"EnMAP L1B/L1C/L2A"};
 
     static Path convertToPath(final Object object) {
         try {
@@ -47,17 +44,16 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
                 return DecodeQualification.UNABLE;
             }
 
+            // @todo 1 tb/tb check file name patterns tb 2024-03-07
+
             List<Path> filePaths;
-            if (!EnmapFileUtils.isZip(path)) {
+            if (EnmapFileUtils.isZip(path)) {
+                filePaths = extractPathsFromZip(path);
+            } else if (EnmapFileUtils.isTar(path)) {
+                filePaths = extractPathsFromTar(path);
+            } else {
                 try (Stream<Path> list = Files.list(path.getParent())) {
                     filePaths = list.collect(Collectors.toList());
-                }
-            } else {
-                VirtualDir virtualDir = VirtualDir.create(path.toFile());
-                String[] fileNames = virtualDir.listAllFiles();
-                filePaths = new ArrayList<>();
-                for (String fileName : fileNames) {
-                    filePaths.add(Paths.get(fileName));
                 }
             }
             if (areEnmapL1bFiles(filePaths) || areEnmapL1cFiles(filePaths) || areEnmapL2aFiles(filePaths)) {
@@ -67,6 +63,38 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
             return DecodeQualification.UNABLE;
         }
         return DecodeQualification.UNABLE;
+    }
+
+    static List<Path> extractPathsFromTar(Path path) throws IOException {
+        final List<Path> filePaths = new ArrayList<>();
+
+        VirtualDir virtualDir = new VirtualDirTgz(path);
+        try {
+            final String[] fileNames = virtualDir.listAllFiles();
+            for (final String fileName : fileNames) {
+                filePaths.add(Paths.get(fileName));
+            }
+        } finally {
+            virtualDir.close();
+        }
+
+        return filePaths;
+    }
+
+    // package access for testing only tb 2024-03-07
+    static List<Path> extractPathsFromZip(Path path) throws IOException {
+        final VirtualDir virtualDir = VirtualDir.create(path.toFile());
+
+        final List<Path> filePaths = new ArrayList<>();
+        try {
+            final String[] fileNames = virtualDir.listAllFiles();
+            for (final String fileName : fileNames) {
+                filePaths.add(Paths.get(fileName));
+            }
+        } finally {
+            virtualDir.close();
+        }
+        return filePaths;
     }
 
     @Override
