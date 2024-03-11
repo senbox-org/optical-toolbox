@@ -127,7 +127,6 @@
         <snap-help-system.version>1.0.0</snap-help-system.version>
         <netbeans.version>RELEASE113</netbeans.version>
         <geotools.version>28.2</geotools.version>
-        <hdf.native.version>2.7.2</hdf.native.version>
         <javahelp.version>2.0.05</javahelp.version>
         <brandingToken>opttbx</brandingToken>
         <user.language>en</user.language>
@@ -290,6 +289,12 @@
             <dependency>
                 <groupId>org.esa.snap</groupId>
                 <artifactId>snap-netcdf</artifactId>
+                <version>${snap.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ncsa.hdf</groupId>
+                <artifactId>lib-hdf</artifactId>
                 <version>${snap.version}</version>
             </dependency>
 
