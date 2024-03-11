@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 public class EnmapProductReaderPlugInTest {
 
     private EnmapProductReaderPlugIn plugIn;
+    private String sep;
 
     private static void assertFormatName(String formatName) {
         assertEquals("EnMAP L1B/L1C/L2A", formatName);
@@ -27,6 +28,7 @@ public class EnmapProductReaderPlugInTest {
     @Before
     public void setUp() {
         plugIn = new EnmapProductReaderPlugIn();
+        sep = File.separator;
     }
 
     @Test
@@ -120,9 +122,9 @@ public class EnmapProductReaderPlugInTest {
 
         final List<Path> paths = EnmapProductReaderPlugIn.extractPathsFromZip(inputZip.toPath());
         assertEquals(12, paths.size());
-        assertEquals("enmap_L2A_gtif_qualification\\ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-METADATA.XML", paths.get(0).toString());
-        assertEquals("enmap_L2A_gtif_qualification\\ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_CLOUD.TIF", paths.get(4).toString());
-        assertEquals("enmap_L2A_gtif_qualification\\ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_TESTFLAGS.TIF", paths.get(8).toString());
+        assertEquals("enmap_L2A_gtif_qualification" + sep + "ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-METADATA.XML", paths.get(0).toString());
+        assertEquals("enmap_L2A_gtif_qualification" + sep + "ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_CLOUD.TIF", paths.get(4).toString());
+        assertEquals("enmap_L2A_gtif_qualification" + sep + "ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_TESTFLAGS.TIF", paths.get(8).toString());
     }
 
     @Test
@@ -132,9 +134,9 @@ public class EnmapProductReaderPlugInTest {
 
         final List<Path> paths = EnmapProductReaderPlugIn.extractPathsFromTar(inputTar.toPath());
         assertEquals(15, paths.size());
-        assertEquals("enmap_L1B_gtif_qualification\\ENMAP01-____L1B-DT0000326721_20170626T102020Z_001_V000204_20200406T154119Z-QL_PIXELMASK_SWIR.TIF", paths.get(1).toString());
-        assertEquals("enmap_L1B_gtif_qualification\\ENMAP01-____L1B-DT0000326721_20170626T102020Z_001_V000204_20200406T154119Z-QL_QUALITY_CLOUD.TIF", paths.get(5).toString());
-        assertEquals("enmap_L1B_gtif_qualification\\ENMAP01-____L1B-DT0000326721_20170626T102020Z_001_V000204_20200406T154119Z-QL_QUALITY_TESTFLAGS_SWIR.TIF", paths.get(9).toString());
+        assertEquals("enmap_L1B_gtif_qualification" + sep + "ENMAP01-____L1B-DT0000326721_20170626T102020Z_001_V000204_20200406T154119Z-QL_PIXELMASK_SWIR.TIF", paths.get(1).toString());
+        assertEquals("enmap_L1B_gtif_qualification" + sep + "ENMAP01-____L1B-DT0000326721_20170626T102020Z_001_V000204_20200406T154119Z-QL_QUALITY_CLOUD.TIF", paths.get(5).toString());
+        assertEquals("enmap_L1B_gtif_qualification" + sep + "ENMAP01-____L1B-DT0000326721_20170626T102020Z_001_V000204_20200406T154119Z-QL_QUALITY_TESTFLAGS_SWIR.TIF", paths.get(9).toString());
     }
 
     private static void assertExtensions(String[] fileExtensions) {
