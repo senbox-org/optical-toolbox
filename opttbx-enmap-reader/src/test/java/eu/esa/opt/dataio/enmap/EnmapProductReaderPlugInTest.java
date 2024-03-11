@@ -2,6 +2,7 @@ package eu.esa.opt.dataio.enmap;
 
 import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.dataio.DecodeQualification;
+import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +47,13 @@ public class EnmapProductReaderPlugInTest {
     @Test
     public void testGetDecodeQualification_l2a_gtif_zip() throws URISyntaxException {
         File inputZip = new File(Objects.requireNonNull(getClass().getResource("enmap_L2A_gtif_qualification.zip")).toURI());
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(inputZip));
+    }
+
+    @Test
+    @STTM("SNAP-3627")
+    public void testGetDecodeQualification_l1c_gtif_tar() throws URISyntaxException {
+        File inputZip = new File(Objects.requireNonNull(getClass().getResource("dims_op_oc_oc-en_701293165_1.tar.gz")).toURI());
         assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(inputZip));
     }
 
@@ -128,22 +136,43 @@ public class EnmapProductReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-3627")
-    public void testExtractPathsFromTar() throws URISyntaxException, IOException {
-        final File inputTar = new File(Objects.requireNonNull(getClass().getResource("dims_op_oc_oc-en_701293165_1.tar.gz")).toURI());
+    public void testExtractFromDir() throws IOException, URISyntaxException {
+        final File inputFolder = new File(Objects.requireNonNull(getClass().getResource("enmap_L2A_gtif_qualification/ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-METADATA.XML")).toURI());
 
-        final List<Path> paths = EnmapProductReaderPlugIn.extractPathsFromTar(inputTar.toPath());
-        assertEquals(15, paths.size());
-        assertEquals("enmap_L1B_gtif_qualification" + sep + "ENMAP01-____L1B-DT0000326721_20170626T102020Z_001_V000204_20200406T154119Z-QL_PIXELMASK_SWIR.TIF", paths.get(1).toString());
-        assertEquals("enmap_L1B_gtif_qualification" + sep + "ENMAP01-____L1B-DT0000326721_20170626T102020Z_001_V000204_20200406T154119Z-QL_QUALITY_CLOUD.TIF", paths.get(5).toString());
-        assertEquals("enmap_L1B_gtif_qualification" + sep + "ENMAP01-____L1B-DT0000326721_20170626T102020Z_001_V000204_20200406T154119Z-QL_QUALITY_TESTFLAGS_SWIR.TIF", paths.get(9).toString());
+        final List<Path> paths = EnmapProductReaderPlugIn.extractPathsFromDir(inputFolder.toPath());
+        assertEquals(12, paths.size());
+        assertTrue(paths.get(2).toString().contains("enmap_L2A_gtif_qualification\\ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_CIRRUS.TIF"));
+        assertTrue(paths.get(6).toString().contains("enmap_L2A_gtif_qualification\\ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_HAZE.TIF"));
+        assertTrue(paths.get(10).toString().contains("enmap_L2A_gtif_qualification\\ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_VNIR.TIF"));
+    }
+
+    @Test
+    public void testCreateReaderInstance() {
+        final ProductReader reader = plugIn.createReaderInstance();
+        assertTrue(reader instanceof EnmapProductReader);
+
+        assertEquals(plugIn, reader.getReaderPlugIn());
+    }
+
+    @Test
+    @STTM("SNAP-3627")
+    public void testIsValidEnmapZipName() {
+        assertTrue(EnmapProductReaderPlugIn.isValidEnmapName("ENMAP01-____L1B-DT0000025905_20230707T192008Z_001_V010303_20230922T131734Z.ZIP"));
+        assertTrue(EnmapProductReaderPlugIn.isValidEnmapName("dims_op_oc_oc-en_700949147_3\\ENMAP.HSI.L1B\\ENMAP-HSI-L1BDT0000002446_02-2022-08-10T11:24:29.404_schwipe-charter_700949145_722423507_2023-09-22T21:24:00\\ENMAP01-____L1B-DT0000002446_20220810T112429Z_002_V010303_20230922T131816Z.ZIP"));
+
+        assertTrue(EnmapProductReaderPlugIn.isValidEnmapName("ENMAP01-____L1C-DT0000063762_20240303T180131Z_001_V010401_20240305T120002Z.ZIP"));
+        assertTrue(EnmapProductReaderPlugIn.isValidEnmapName("ENMAP-HSI-L1CDT0000063762_01-2024-03-03T18_01_31.002_tomblock-cat1distributor_701293163_759889783_2024-03-05T14_/ENMAP01-____L1C-DT0000063762_20240303T180131Z_001_V010401_20240305T120002Z.ZIP"));
+
+        assertTrue(EnmapProductReaderPlugIn.isValidEnmapName("ENMAP01-____L2A-DT0000001049_20220612T105735Z_028_V010303_20230922T131826Z.ZIP"));
+        assertTrue(EnmapProductReaderPlugIn.isValidEnmapName("dims_op_oc_oc-en_700949147_4\\ENMAP.HSI.L2A\\ENMAP-HSI-L2ADT0000001049_28-2022-06-12T10_57_35.160_schwipe-charter_700949145_722423345_2023-09-22T19_27_20\\ENMAP01-____L2A-DT0000001049_20220612T105735Z_028_V010303_20230922T131826Z.ZIP"));
     }
 
     private static void assertExtensions(String[] fileExtensions) {
-        assertEquals(3, fileExtensions.length);
+        assertEquals(4, fileExtensions.length);
         assertEquals(".zip", fileExtensions[0]);
         assertEquals(".xml", fileExtensions[1]);
         assertEquals(".tar.gz", fileExtensions[2]);
+        assertEquals(".tgz", fileExtensions[3]);
     }
 
     private static void assertDescription(String description) {

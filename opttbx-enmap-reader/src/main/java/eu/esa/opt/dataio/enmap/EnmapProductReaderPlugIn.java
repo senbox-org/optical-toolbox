@@ -4,10 +4,12 @@ import com.bc.ceres.core.VirtualDir;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
+import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.engine_utilities.dataio.VirtualDirTgz;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,14 +17,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
 
 public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
 
-    private static final String[] FILE_EXTENSIONS = {".zip", ".xml", ".tar.gz"};
+    private static final String[] FILE_EXTENSIONS = {".zip", ".xml", ".tar.gz", ".tgz"};
     private static final String DESCRIPTION = "EnMAP L1B/L1C/L2A Product Reader";
     private static final String[] FORMAT_NAMES = {"EnMAP L1B/L1C/L2A"};
+    private static final Pattern l1bPattern = Pattern.compile(".*" + L1B_BASEFILENAME + ".(zip|ZIP)");
+    private static final Pattern l1cPattern = Pattern.compile(".*" + L1C_BASEFILENAME + ".(zip|ZIP)");
+    private static final Pattern l2aPattern = Pattern.compile(".*" + L2A_BASEFILENAME + ".(zip|ZIP)");
 
     static {
         EnMapRgbProfiles.registerRGBProfiles();
@@ -36,25 +46,28 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
         }
     }
 
+    static boolean isValidEnmapName(String path) {
+        return l1bPattern.matcher(path).matches() || l1cPattern.matcher(path).matches() || l2aPattern.matcher(path).matches();
+    }
+
     @Override
-    public DecodeQualification getDecodeQualification(Object o) {
+    public DecodeQualification getDecodeQualification(Object input) {
         try {
-            Path path = convertToPath(o);
+            Path path = convertToPath(input);
             if (path == null) {
                 return DecodeQualification.UNABLE;
             }
 
-            // @todo 1 tb/tb check file name patterns tb 2024-03-07
-
-            List<Path> filePaths;
-            if (EnmapFileUtils.isZip(path)) {
-                filePaths = extractPathsFromZip(path);
-            } else if (EnmapFileUtils.isTar(path)) {
-                filePaths = extractPathsFromTar(path);
-            } else {
-                try (Stream<Path> list = Files.list(path.getParent())) {
-                    filePaths = list.collect(Collectors.toList());
+            List<Path> filePaths = new ArrayList<>();
+            if (EnmapFileUtils.isTar(path)) {
+                // we do not want to extract the whole tar, so just check for naming convention of entries
+                if (isValidTar(path)) {
+                    return DecodeQualification.INTENDED;
                 }
+            } else if (EnmapFileUtils.isZip(path)) {
+                filePaths = extractPathsFromZip(path);
+            } else {
+                filePaths = extractPathsFromDir(path);
             }
             if (areEnmapL1bFiles(filePaths) || areEnmapL1cFiles(filePaths) || areEnmapL2aFiles(filePaths)) {
                 return DecodeQualification.INTENDED;
@@ -65,20 +78,34 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
         return DecodeQualification.UNABLE;
     }
 
-    static List<Path> extractPathsFromTar(Path path) throws IOException {
-        final List<Path> filePaths = new ArrayList<>();
+    // package access for testing only tb 2024-03-08
+    static List<Path> extractPathsFromDir(Path path) throws IOException {
+        List<Path> filePaths;
+        try (Stream<Path> list = Files.list(path.getParent())) {
+            filePaths = list.collect(Collectors.toList());
+        }
+        return filePaths;
+    }
 
-        VirtualDir virtualDir = new VirtualDirTgz(path);
+    // @todo 1 tb/tb add tests 2024-03-11
+    static boolean isValidTar(Path path) throws IOException {
+        final VirtualDir virtualDir = new VirtualDirTgz(path);
         try {
             final String[] fileNames = virtualDir.listAllFiles();
+            String zipFileName = null;
             for (final String fileName : fileNames) {
-                filePaths.add(Paths.get(fileName));
+                if (fileName.endsWith(".ZIP") || fileName.endsWith(".zip")) {
+                    zipFileName = fileName;
+                    break;
+                }
             }
+            if (StringUtils.isNullOrEmpty(zipFileName)) {
+               return false;
+            }
+            return isValidEnmapName(zipFileName);
         } finally {
             virtualDir.close();
         }
-
-        return filePaths;
     }
 
     // package access for testing only tb 2024-03-07
@@ -127,19 +154,18 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
         return new SnapFileFilter(FORMAT_NAMES[0], FILE_EXTENSIONS, DESCRIPTION);
     }
 
-    private boolean areEnmapL1bFiles(List<Path> filePaths) {
-        return Arrays.stream(EnmapFileUtils.L1B_FILENAME_PATTERNS).allMatch(p ->
+    private static boolean areEnmapL1bFiles(List<Path> filePaths) {
+        return Arrays.stream(L1B_FILENAME_PATTERNS).allMatch(p ->
                 filePaths.stream().anyMatch(path -> p.matcher(path.getFileName().toString()).matches()));
     }
 
-    private boolean areEnmapL1cFiles(List<Path> filePaths) {
-        return Arrays.stream(EnmapFileUtils.L1C_FILENAME_PATTERNS).allMatch(p ->
+    private static boolean areEnmapL1cFiles(List<Path> filePaths) {
+        return Arrays.stream(L1C_FILENAME_PATTERNS).allMatch(p ->
                 filePaths.stream().anyMatch(path -> p.matcher(path.getFileName().toString()).matches()));
     }
 
-    private boolean areEnmapL2aFiles(List<Path> filePaths) {
-        return Arrays.stream(EnmapFileUtils.L2A_FILENAME_PATTERNS).allMatch(p ->
+    private static boolean areEnmapL2aFiles(List<Path> filePaths) {
+        return Arrays.stream(L2A_FILENAME_PATTERNS).allMatch(p ->
                 filePaths.stream().anyMatch(path -> p.matcher(path.getFileName().toString()).matches()));
     }
-
 }

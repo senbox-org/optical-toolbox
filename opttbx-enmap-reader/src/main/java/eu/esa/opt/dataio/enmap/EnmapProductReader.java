@@ -117,8 +117,8 @@ class EnmapProductReader extends AbstractProductReader {
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        Path path = InputTypes.toPath(super.getInput());
-        if (!EnmapFileUtils.isZip(path)) {
+        Path path = InputTypes.toPath(getInput());
+        if (!isZip(path)) {
             path = path.getParent();
         }
         dataDir = VirtualDir.create(path.toFile());

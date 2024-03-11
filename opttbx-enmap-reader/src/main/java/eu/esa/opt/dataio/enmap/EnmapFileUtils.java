@@ -27,7 +27,7 @@ public class EnmapFileUtils {
     public final static String QUALITY_PIXELMASK_KEY = "PIXELMASK";
     public final static String QUALITY_PIXELMASK_VNIR_KEY = "PIXELMASK_VNIR";
     public final static String QUALITY_PIXELMASK_SWIR_KEY = "PIXELMASK_SWIR";
-    private static final String L1B_BASEFILENAME = "ENMAP\\d{2}-____L1B-DT.{10}_\\d{8}T\\d{6}Z_.{3}_V.{6}_\\d{8}T\\d{6}Z";
+    static final String L1B_BASEFILENAME = "ENMAP\\d{2}-____L1B-DT.{10}_\\d{8}T\\d{6}Z_.{3}_V.{6}_\\d{8}T\\d{6}Z";
     static final Pattern[] L1B_FILENAME_PATTERNS = new Pattern[]{
             Pattern.compile(L1B_BASEFILENAME + METADATA_SUFFIX),
 //            Pattern.compile(L1B_BASEFILENAME + HISTORY_SUFFIX),
@@ -48,7 +48,7 @@ public class EnmapFileUtils {
 //            Pattern.compile(L1B_BASEFILENAME + "-SPECTRAL_IMAGE_SWIR.(BSQ|BIP|BIL)") // only in case of HDR
 //            Pattern.compile(L1B_BASEFILENAME + "-SPECTRAL_IMAGE_VNIR.(BSQ|BIP|BIL)") // only in case of HDR
     };
-    private static final String L1C_BASEFILENAME = "ENMAP\\d{2}-____L1C-DT.{10}_\\d{8}T\\d{6}Z_.{3}_V.{6}_\\d{8}T\\d{6}Z";
+    static final String L1C_BASEFILENAME = "ENMAP\\d{2}-____L1C-DT.{10}_\\d{8}T\\d{6}Z_.{3}_V.{6}_\\d{8}T\\d{6}Z";
     static final Pattern[] L1C_FILENAME_PATTERNS = new Pattern[]{
             Pattern.compile(L1C_BASEFILENAME + METADATA_SUFFIX),
 //            Pattern.compile(L1C_BASEFILENAME + HISTORY_SUFFIX),
@@ -65,7 +65,7 @@ public class EnmapFileUtils {
             Pattern.compile(L1C_BASEFILENAME + "-SPECTRAL_IMAGE.(TIF|HDR|JPEG2000)"),
 //            Pattern.compile(L1C_BASEFILENAME + "-SPECTRAL_IMAGE.(BSQ|BIP|BIL)") // only in case of HDR
     };
-    private static final String L2A_BASEFILENAME = "ENMAP\\d{2}-____L2A-DT.{10}_\\d{8}T\\d{6}Z_.{3}_V.{6}_\\d{8}T\\d{6}Z";
+    static final String L2A_BASEFILENAME = "ENMAP\\d{2}-____L2A-DT.{10}_\\d{8}T\\d{6}Z_.{3}_V.{6}_\\d{8}T\\d{6}Z";
     static final Pattern[] L2A_FILENAME_PATTERNS = new Pattern[]{
             Pattern.compile(L2A_BASEFILENAME + METADATA_SUFFIX),
 //            Pattern.compile(L2A_BASEFILENAME + HISTORY_SUFFIX),
