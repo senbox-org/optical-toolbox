@@ -12,33 +12,25 @@ import org.esa.snap.core.dataio.geocoding.GeoChecks;
 import org.esa.snap.core.dataio.geocoding.GeoRaster;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.CrsGeoCoding;
-import org.esa.snap.core.datamodel.FlagCoding;
-import org.esa.snap.core.datamodel.GeoCoding;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.*;
+import org.esa.snap.engine_utilities.dataio.VirtualDirTgz;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
@@ -56,10 +48,13 @@ class EnmapProductReader extends AbstractProductReader {
     private final Map<String, RenderedImage> bandImageMap = new TreeMap<>();
     private final List<EnmapImageReader> imageReaderList = new ArrayList<>();
     private VirtualDir dataDir;
+    private VirtualDir tgzDataDir;
 
     EnmapProductReader(EnmapProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         syncObject = new Object();
+        dataDir = null;
+        tgzDataDir = null;
     }
 
     private static TiePointGrid addTPG(Product product, String tpgName, double[] tpgValue) {
@@ -105,9 +100,9 @@ class EnmapProductReader extends AbstractProductReader {
             } else {
                 code = 32700 + utmZone;
             }
-        } else if (projection.equals("LAEA-ETRS89")) {
+        } else if ("LAEA-ETRS89".equals(projection)) {
             code = 3035;
-        } else if (projection.equals("Geographic")) {
+        } else if ("Geographic".equals(projection)) {
             code = 4326;
         } else {
             throw new Exception(String.format("Cannot decode EPSG code from projection string '%s'", projection));
@@ -118,9 +113,24 @@ class EnmapProductReader extends AbstractProductReader {
     @Override
     protected Product readProductNodesImpl() throws IOException {
         Path path = InputTypes.toPath(getInput());
-        if (!isZip(path)) {
+        if (isTar(path)) {
+            tgzDataDir = new VirtualDirTgz(path);
+            final String[] fileNames = tgzDataDir.listAllFiles();
+
+            String zipFileName = null;
+            for (final String fileName : fileNames) {
+                if (fileName.endsWith(".ZIP") || fileName.endsWith(".zip")) {
+                    zipFileName = fileName;
+                    break;
+                }
+            }
+
+            final File tgzDataDirFile = tgzDataDir.getFile(zipFileName);
+            path = tgzDataDirFile.toPath();
+        } else if (!isZip(path)) {
             path = path.getParent();
         }
+
         dataDir = VirtualDir.create(path.toFile());
         if (dataDir == null) {
             throw new IOException(String.format("%s%nVirtual directory could not be created", CANNOT_READ_PRODUCT_MSG));
@@ -274,7 +284,7 @@ class EnmapProductReader extends AbstractProductReader {
     }
 
     private void addTestFlagsQl(Product product, EnmapMetadata meta) throws IOException {
-        if (EnmapMetadata.PROCESSING_LEVEL.L1B.equals(meta.getProcessingLevel())) {
+        if (EnmapMetadata.PROCESSING_LEVEL.L1B == meta.getProcessingLevel()) {
             String vnirQualityKey = QUALITY_TESTFLAGS_VNIR_KEY;
             FlagCoding vnirFlagCoding = new FlagCoding(vnirQualityKey);
             product.getFlagCodingGroup().add(vnirFlagCoding);
@@ -454,7 +464,18 @@ class EnmapProductReader extends AbstractProductReader {
 
         if (dataDir != null) {
             dataDir.close();
+            dataDir = null;
         }
+        if (tgzDataDir != null) {
+            tgzDataDir.close();
+            tgzDataDir = null;
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        close();
     }
 
     private void addCrsGeoCoding(Product product, EnmapMetadata meta) throws IOException {
@@ -484,7 +505,7 @@ class EnmapProductReader extends AbstractProductReader {
     private Point2D getEastingNorthing(EnmapMetadata meta) throws IOException {
         Map<String, String> fileNameMap = meta.getFileNameMap();
         String dataFileName = fileNameMap.get(QUALITY_CLASSES_KEY);
-        InputStream inputStream = EnmapFileUtils.getInputStream(dataDir, dataFileName);
+        InputStream inputStream = getInputStream(dataDir, dataFileName);
         ProductReader reader = null;
         try {
             reader = ProductIO.getProductReader("GeoTIFF");
@@ -504,9 +525,7 @@ class EnmapProductReader extends AbstractProductReader {
     }
 
     private String getMetadataFile(String[] fileNames) throws IOException {
-        Optional<String> first = Arrays.stream(fileNames).filter(s -> s.endsWith(EnmapFileUtils.METADATA_SUFFIX)).findFirst();
+        Optional<String> first = Arrays.stream(fileNames).filter(s -> s.endsWith(METADATA_SUFFIX)).findFirst();
         return first.orElseThrow(() -> new IOException("Metadata file not found"));
     }
-
-
 }
