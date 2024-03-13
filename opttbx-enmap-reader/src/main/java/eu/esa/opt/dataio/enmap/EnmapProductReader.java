@@ -28,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 import java.util.stream.IntStream;
@@ -36,12 +35,13 @@ import java.util.stream.IntStream;
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
 
 class EnmapProductReader extends AbstractProductReader {
-    public static final int KM_IN_METERS = 1000;
-    public static final String SCENE_AZIMUTH_TPG_NAME = "scene_azimuth";
-    public static final String SUN_AZIMUTH_TPG_NAME = "sun_azimuth";
-    public static final String SUN_ELEVATION_TPG_NAME = "sun_elevation";
-    public static final String ACROSS_OFF_NADIR_TPG_NAME = "across_off_nadir";
-    public static final String ALONG_OFF_NADIR_TPG_NAME = "along_off_nadir";
+
+    private static final int KM_IN_METERS = 1000;
+    private static final String SCENE_AZIMUTH_TPG_NAME = "scene_azimuth";
+    private static final String SUN_AZIMUTH_TPG_NAME = "sun_azimuth";
+    private static final String SUN_ELEVATION_TPG_NAME = "sun_elevation";
+    private static final String ACROSS_OFF_NADIR_TPG_NAME = "across_off_nadir";
+    private static final String ALONG_OFF_NADIR_TPG_NAME = "along_off_nadir";
 
     private static final String CANNOT_READ_PRODUCT_MSG = "Cannot read product";
     private final Object syncObject;
@@ -91,7 +91,7 @@ class EnmapProductReader extends AbstractProductReader {
         product.setSceneGeoCoding(sceneGeoCoding);
     }
 
-    private static String getEPSGCode(String projection) throws Exception {
+    static String getEPSGCode(String projection) throws Exception {
         int code;
         if (projection.startsWith("UTM")) {
             int utmZone = Integer.parseInt(projection.substring(8, 10));
@@ -105,7 +105,7 @@ class EnmapProductReader extends AbstractProductReader {
         } else if ("Geographic".equals(projection)) {
             code = 4326;
         } else {
-            throw new Exception(String.format("Cannot decode EPSG code from projection string '%s'", projection));
+            throw new IllegalArgumentException(String.format("Cannot decode EPSG code from projection string '%s'", projection));
         }
         return "EPSG:" + code;
     }
@@ -162,7 +162,7 @@ class EnmapProductReader extends AbstractProductReader {
         return product;
     }
 
-    private void addMetadata(Product product, EnmapMetadata meta) throws IOException {
+    private static void addMetadata(Product product, EnmapMetadata meta) throws IOException {
         meta.insertInto(product.getMetadataRoot());
     }
 
@@ -386,7 +386,7 @@ class EnmapProductReader extends AbstractProductReader {
         return flagBand;
     }
 
-    private void addTiePointGrids(Product product, EnmapMetadata meta) throws IOException {
+    private static void addTiePointGrids(Product product, EnmapMetadata meta) throws IOException {
         addTPG(product, SCENE_AZIMUTH_TPG_NAME, meta.getSceneAzimuthAngles());
         addTPG(product, SUN_AZIMUTH_TPG_NAME, meta.getSunAzimuthAngles());
         addTPG(product, SUN_ELEVATION_TPG_NAME, meta.getSunElevationAngles());
@@ -524,7 +524,7 @@ class EnmapProductReader extends AbstractProductReader {
         return null;
     }
 
-    private String getMetadataFile(String[] fileNames) throws IOException {
+    private static String getMetadataFile(String[] fileNames) throws IOException {
         Optional<String> first = Arrays.stream(fileNames).filter(s -> s.endsWith(METADATA_SUFFIX)).findFirst();
         return first.orElseThrow(() -> new IOException("Metadata file not found"));
     }
