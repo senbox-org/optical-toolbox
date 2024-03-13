@@ -141,9 +141,18 @@ public class EnmapProductReaderPlugInTest {
 
         final List<Path> paths = EnmapProductReaderPlugIn.extractPathsFromDir(inputFolder.toPath());
         assertEquals(12, paths.size());
-        assertTrue(paths.get(2).toString().contains("enmap_L2A_gtif_qualification\\ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_CIRRUS.TIF"));
-        assertTrue(paths.get(6).toString().contains("enmap_L2A_gtif_qualification\\ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_HAZE.TIF"));
-        assertTrue(paths.get(10).toString().contains("enmap_L2A_gtif_qualification\\ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_VNIR.TIF"));
+        assertAnyPathContains(paths, "enmap_L2A_gtif_qualification" + sep + "ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_CIRRUS.TIF");
+        assertAnyPathContains(paths, "enmap_L2A_gtif_qualification" + sep + "ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_QUALITY_HAZE.TIF");
+        assertAnyPathContains(paths, "enmap_L2A_gtif_qualification" + sep + "ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-QL_VNIR.TIF");
+    }
+
+    private void assertAnyPathContains(List<Path> paths, String pathSegment) {
+        for (final Path path : paths) {
+            if (path.toString().contains(pathSegment)) {
+                return;
+            }
+        }
+        fail("Path segment: " + pathSegment + " not in list");
     }
 
     @Test
