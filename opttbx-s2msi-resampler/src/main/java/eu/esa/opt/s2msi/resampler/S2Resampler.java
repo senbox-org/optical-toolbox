@@ -174,9 +174,15 @@ public class S2Resampler implements Resampler {
         if (this.bandFilter != null && !this.bandFilter.isEmpty()) {
             //Use SubsetOp
             spi = new SubsetOp.Spi();
-            parameters.put("bandNames", this.bandFilter.toArray(new String[0]));
             parameters.put("copyMetadata", true);
-            operator = spi.createOperator(parameters, sourceProducts);
+            try {
+                parameters.put("bandNames", this.bandFilter.toArray(new String[0]));
+                operator = spi.createOperator(parameters, sourceProducts);
+            } catch (Exception e) {
+                this.bandFilter.removeIf(b -> b.startsWith("B_"));
+                parameters.put("bandNames", this.bandFilter.toArray(new String[0]));
+                operator = spi.createOperator(parameters, sourceProducts);
+            }
             operator.setSourceProduct(multiSizeProduct);
             subsetProduct = operator.getTargetProduct();
             sourceProducts.clear();
