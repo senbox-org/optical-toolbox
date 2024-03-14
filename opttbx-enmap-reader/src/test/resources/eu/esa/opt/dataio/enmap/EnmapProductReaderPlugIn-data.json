@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "ENMAP01-____L2A-DT0000001049",
+      "relativePath": "sensors_platforms/EnMAP/ENMAP01-____L2A-DT0000001049_20220612T105735Z_028_V010303_20230922T131826Z.ZIP",
+      "description": "EnMAP L2A Data Product"
+    }
+  ]
+}

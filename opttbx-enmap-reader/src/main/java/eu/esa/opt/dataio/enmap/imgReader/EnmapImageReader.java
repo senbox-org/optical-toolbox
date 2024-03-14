@@ -2,25 +2,28 @@ package eu.esa.opt.dataio.enmap.imgReader;
 
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.enmap.EnmapMetadata;
-import eu.esa.opt.dataio.enmap.EnmapProductReaderPlugIn;
 import eu.esa.opt.dataio.enmap.ProductFormat;
+import org.esa.snap.runtime.Config;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
-import static eu.esa.opt.dataio.enmap.EnmapProductReaderPlugIn.ENMAP_GEOTIFF_USE_JAI;
 
-public interface EnmapImageReader {
+public abstract class EnmapImageReader {
+
+    private static String ENMAP_GEOTIFF_USE_JAI = "enmap.geotiff.useJai";
+
     // todo - should be private but this is only possible with Java 9
-    static EnmapImageReader createSpectralReader(VirtualDir dataDir, EnmapMetadata meta) throws IOException {
+    public static EnmapImageReader createSpectralReader(VirtualDir dataDir, EnmapMetadata meta) throws IOException {
         return getEnmapImageReader(meta, dataDir, SPECTRAL_IMAGE_VNIR_KEY, SPECTRAL_IMAGE_SWIR_KEY, SPECTRAL_IMAGE_KEY);
     }
 
     // todo - should be private but this is only possible with Java 9
-    static EnmapImageReader createPixelMaskReader(VirtualDir dataDir, EnmapMetadata meta) throws IOException {
+    public static EnmapImageReader createPixelMaskReader(VirtualDir dataDir, EnmapMetadata meta) throws IOException {
         return getEnmapImageReader(meta, dataDir, QUALITY_PIXELMASK_VNIR_KEY, QUALITY_PIXELMASK_SWIR_KEY, QUALITY_PIXELMASK_KEY);
     }
 
@@ -47,12 +50,13 @@ public interface EnmapImageReader {
      * @return reader instance to access the image data
      * @throws IOException in case an exception occurs
      */
-    static EnmapImageReader createImageReader(VirtualDir dataDir, EnmapMetadata meta, String imageKey) throws IOException {
+    public static EnmapImageReader createImageReader(VirtualDir dataDir, EnmapMetadata meta, String imageKey) throws IOException {
+        final Preferences preferences = Config.instance("enmap").load().preferences();
         // based on format we decide which reader to use; currently only GeoTiff supported
         String productFormat = meta.getProductFormat();
         ProductFormat format = ProductFormat.valueOf(ProductFormat.toEnumName(productFormat));
-        if (ProductFormat.GeoTIFF_Metadata.equals(format)) {
-            boolean useJai = EnmapProductReaderPlugIn.PREFERENCES.getBoolean(ENMAP_GEOTIFF_USE_JAI, false);
+        if (ProductFormat.GeoTIFF_Metadata == format) {
+            boolean useJai = preferences.getBoolean(ENMAP_GEOTIFF_USE_JAI, false);
             Map<String, String> fileNameMap = meta.getFileNameMap();
             if (useJai) {
                 return JaiGeoTiffImageReader.createImageReader(dataDir, fileNameMap.get(imageKey));
@@ -73,7 +77,7 @@ public interface EnmapImageReader {
      * @return the tile dimension
      * @throws IOException in case the information could not be retrieved from the source
      */
-    Dimension getTileDimension() throws IOException;
+    abstract public Dimension getTileDimension() throws IOException;
 
     /**
      * returns the number of images provided by this reader
@@ -81,7 +85,7 @@ public interface EnmapImageReader {
      * @return the number of images
      * @throws IOException in case the information could not be retrieved from the source
      */
-    int getNumImages() throws IOException;
+    abstract public int getNumImages() throws IOException;
 
     /**
      * returns the spectral image at the specified index (zero based)
@@ -91,10 +95,10 @@ public interface EnmapImageReader {
      * @throws IOException              in case the information could not be retrieved from the source
      * @throws IllegalArgumentException in case the index is less than zero or higher than the maximum number of images minus one
      */
-    RenderedImage getImageAt(int index) throws IOException;
+    abstract public RenderedImage getImageAt(int index) throws IOException;
 
     /**
      * Closes any open resource
      */
-    void close();
+    abstract public void close();
 }

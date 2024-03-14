@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class InputTypesTest {
 
@@ -39,5 +40,14 @@ public class InputTypesTest {
         String input = "test";
         Path path = InputTypes.toPath(input);
         assertEquals(input, path.toString());
+    }
+
+    @Test
+    public void toPath_invalidInput() {
+        try {
+            InputTypes.toPath(23.88);
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException expected) {
+        }
     }
 }
