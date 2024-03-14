@@ -208,25 +208,35 @@ public class BiophysicalOp extends PixelOperator {
      */
     @Override
     protected void configureTargetProduct(ProductConfigurer productConfigurer) {
+        Product tp;
         if (needsResample) {
             OperatorSpi spi = new S2ResamplingOp.Spi();
             HashMap<String, Product> sourceProducts = new HashMap<>();
             sourceProducts.put(this.sourceProduct.getName(), this.sourceProduct);
-            S2ResamplingOp operator = (S2ResamplingOp) spi.createOperator(new HashMap<>(), sourceProducts);
+            final HashMap<String, Object> params = new HashMap<>();
+            //params.put("targetResolution", "60");
+            S2ResamplingOp operator = (S2ResamplingOp) spi.createOperator(params, sourceProducts);
+            // Only resample selected bands
             operator.setBandFilter(getS2BandList());
             operator.setSourceProduct(this.sourceProduct);
+            // The new source product is the resampled one, we need to reset references
             this.sourceProduct = operator.getTargetProduct();
-            setSourceProducts(this.sourceProduct);
+            // Dirty hack, but no other way to clear productList and productMap from OperatorContext
+            setSourceProducts();
             setSourceProduct("source", this.sourceProduct);
+            // We need to recreate the target product since scene dimensions may have changed from the initial one
+            tp = createTargetProduct();
+            setTargetProduct(tp);
             productConfigurer.setSourceProduct(this.sourceProduct);
+            needsResample = false;
+        } else {
+            tp = productConfigurer.getTargetProduct();
         }
         super.configureTargetProduct(productConfigurer);
         productConfigurer.copyMetadata();
         productConfigurer.copyMasks();
 
-        Product tp = productConfigurer.getTargetProduct();
-        // todo setDescription
-
+        final List<String> description = new ArrayList<>();
         for (BiophysicalVariable biophysicalVariable : BiophysicalVariable.values()) {
             if (BiophysicalModel.S2A.computesVariable(biophysicalVariable) && isComputed(biophysicalVariable)) {
                 // Add biophysical variable band
@@ -257,8 +267,10 @@ public class BiophysicalOp extends PixelOperator {
                                flagDef.getDescription(),
                                flagDef.getColor(), flagDef.getTransparency());
                 }
+                description.add(biophysicalVariable.getDescription());
             }
         }
+        tp.setDescription("Biophysical variables (" + String.join(",", description));
     }
 
     /**
