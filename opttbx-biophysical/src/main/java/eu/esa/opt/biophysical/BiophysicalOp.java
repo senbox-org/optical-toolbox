@@ -65,6 +65,14 @@ public class BiophysicalOp extends PixelOperator {
     @Parameter(defaultValue = "S2A", label = "Sensor", description = "Sensor", valueSet = {"S2A", "S2B"})
     private String sensor;
 
+    @Parameter(alias = "resolution",
+            label = "Output resolution (m)",
+            description = "The output resolution.",
+            valueSet = {"10", "20", "60"},
+            defaultValue = "60"
+    )
+    private String targetResolution;
+
     @Parameter(defaultValue = "true", label = "Compute LAI", description = "Compute LAI (Leaf Area Index)")
     private boolean computeLAI;
 
@@ -214,7 +222,7 @@ public class BiophysicalOp extends PixelOperator {
             HashMap<String, Product> sourceProducts = new HashMap<>();
             sourceProducts.put(this.sourceProduct.getName(), this.sourceProduct);
             final HashMap<String, Object> params = new HashMap<>();
-            //params.put("targetResolution", "60");
+            params.put("targetResolution", targetResolution);
             S2ResamplingOp operator = (S2ResamplingOp) spi.createOperator(params, sourceProducts);
             // Only resample selected bands
             operator.setBandFilter(getS2BandList());
