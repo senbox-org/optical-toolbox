@@ -153,8 +153,11 @@ public class BiophysicalOp extends PixelOperator {
             add("B3"); add("B4"); add("B5"); add("B6"); add("B7"); add("B8A"); add("B11"); add("B12");
         }};
         final List<String> bands = new ArrayList<>(bandNames);
+        boolean hasDetectorBands = Arrays.stream(this.sourceProduct.getBandNames()).anyMatch(n -> n.startsWith("B_detector_footprint_\""));
         for (String bandName : bandNames) {
-            bands.add("B_detector_footprint_" + bandName);
+            if (hasDetectorBands) {
+                bands.add("B_detector_footprint_" + bandName);
+            }
             bands.add("view_azimuth_" + bandName);
             bands.add("view_zenith_" + bandName);
         }
