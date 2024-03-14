@@ -16,6 +16,7 @@
 
 package eu.esa.opt.biophysical;
 
+import eu.esa.opt.s2msi.resampler.S2ResamplingOp;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
 import org.esa.snap.core.datamodel.Mask;
@@ -24,6 +25,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.SampleCoding;
 import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.datamodel.VirtualBand;
+import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.annotations.OperatorMetadata;
@@ -38,8 +40,8 @@ import org.esa.snap.core.gpf.pointop.WritableSample;
 import org.esa.snap.core.util.math.MathUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * TODO
@@ -78,7 +80,9 @@ public class BiophysicalOp extends PixelOperator {
     @Parameter(defaultValue = "true", label = "Compute CWC", description = "Compute Cw (Canopy Water Content)")
     private boolean computeCw;
 
+    private final Pattern S2Pattern = Pattern.compile("S2[A-B]_MSIL2A_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
 
+    private boolean needsResample = false;
 
     /**
      * Configures all source samples that this operator requires for the computation of target samples.
@@ -107,7 +111,16 @@ public class BiophysicalOp extends PixelOperator {
 
     @Override
     protected void prepareInputs() throws OperatorException {
-        super.prepareInputs();
+        try {
+            super.prepareInputs();
+        } catch (OperatorException e) {
+            // multi-size
+            if (S2Pattern.matcher(this.sourceProduct.getName()).find()) {
+                needsResample = true;
+            } else {
+                throw e;
+            }
+        }
         loadAuxData();
     }
 
@@ -125,6 +138,23 @@ public class BiophysicalOp extends PixelOperator {
         } catch(IOException e) {
             throw new OperatorException(e.getMessage());
         }
+    }
+
+    private List<String> getS2BandList() {
+        final Set<String> bandNames = new LinkedHashSet<>() {{
+            add("B3"); add("B4"); add("B5"); add("B6"); add("B7"); add("B8A"); add("B11"); add("B12");
+        }};
+        final List<String> bands = new ArrayList<>(bandNames);
+        for (String bandName : bandNames) {
+            bands.add("B_detector_footprint_" + bandName);
+            bands.add("view_azimuth_" + bandName);
+            bands.add("view_zenith_" + bandName);
+        }
+        bands.add("view_zenith_mean");
+        bands.add("sun_zenith");
+        bands.add("sun_azimuth");
+        bands.add("view_azimuth_mean");
+        return bands;
     }
 
     /**
@@ -178,6 +208,18 @@ public class BiophysicalOp extends PixelOperator {
      */
     @Override
     protected void configureTargetProduct(ProductConfigurer productConfigurer) {
+        if (needsResample) {
+            OperatorSpi spi = new S2ResamplingOp.Spi();
+            HashMap<String, Product> sourceProducts = new HashMap<>();
+            sourceProducts.put(this.sourceProduct.getName(), this.sourceProduct);
+            S2ResamplingOp operator = (S2ResamplingOp) spi.createOperator(new HashMap<>(), sourceProducts);
+            operator.setBandFilter(getS2BandList());
+            operator.setSourceProduct(this.sourceProduct);
+            this.sourceProduct = operator.getTargetProduct();
+            setSourceProducts(this.sourceProduct);
+            setSourceProduct("source", this.sourceProduct);
+            productConfigurer.setSourceProduct(this.sourceProduct);
+        }
         super.configureTargetProduct(productConfigurer);
         productConfigurer.copyMetadata();
         productConfigurer.copyMasks();
@@ -380,12 +422,12 @@ public class BiophysicalOp extends PixelOperator {
         B11("B11", "B11", 11, 1532, 1704, 1610),
         B12("B12", "B12", 12, 2035, 2311, 2190);
 
-        private String physicalName;
-        private String filenameBandId;
-        private int bandIndex;
-        private double wavelengthMin;
-        private double wavelengthMax;
-        private double wavelengthCentral;
+        private final String physicalName;
+        private final String filenameBandId;
+        private final int bandIndex;
+        private final double wavelengthMin;
+        private final double wavelengthMax;
+        private final double wavelengthCentral;
 
         S2BandConstant(String physicalName,
                         String filenameBandId,

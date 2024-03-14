@@ -48,6 +48,11 @@
             <version>${snap.version}</version>
         </dependency>
         <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-s2msi-resampler</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>

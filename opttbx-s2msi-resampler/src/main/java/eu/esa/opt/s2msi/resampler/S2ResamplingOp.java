@@ -13,7 +13,7 @@ import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 
 import java.awt.*;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,6 +73,12 @@ public class S2ResamplingOp extends Operator {
 
     private S2Resampler s2Resampler;
 
+    private List<String> bandFilter;
+
+    public void setBandFilter(List<String> bandFilter) {
+        this.bandFilter = bandFilter;
+    }
+
     @Override
     public void initialize() throws OperatorException {
         s2Resampler = new S2Resampler(Integer.parseInt(targetResolution));
@@ -84,6 +90,8 @@ public class S2ResamplingOp extends Operator {
         if (!s2Resampler.canResample(sourceProduct)) {
             throw new OperatorException("Invalid S2 source product.");
         }
+
+        s2Resampler.setBandFilter(this.bandFilter);
 
         targetProduct = s2Resampler.resample(sourceProduct);
         this.targetProduct.getBand("view_zenith_mean").setSourceImage(null);
@@ -104,18 +112,16 @@ public class S2ResamplingOp extends Operator {
     @Override
     public void computeTileStack(Map<Band, Tile> targetTiles, Rectangle rectangle, ProgressMonitor pm) throws OperatorException {
         try {
-            Iterator<Map.Entry<Band, Tile>> it = targetTiles.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<Band, Tile> entry = it.next();
+            for (Map.Entry<Band, Tile> entry : targetTiles.entrySet()) {
                 Band targetBand = entry.getKey();
                 Tile targetTile = entry.getValue();
                 int length = targetBand.getName().length();
-                String bandName = targetBand.getName().substring(5, length-5);
-                
+                String bandName = targetBand.getName().substring(5, length - 5);
+
                 Tile[] sourceTiles = new Tile[s2Resampler.getListUpdatedBands().size()];
 
-                for(int i = 0; i < sourceTiles.length; i++) {
-                    String name = "view_"+ bandName + "_" + s2Resampler.getListUpdatedBands().get(i).getPhysicalName();
+                for (int i = 0; i < sourceTiles.length; i++) {
+                    String name = "view_" + bandName + "_" + s2Resampler.getListUpdatedBands().get(i).getPhysicalName();
                     Band sourceBand = this.targetProduct.getBand(name);
                     sourceTiles[i] = getSourceTile(sourceBand, rectangle);
                 }
@@ -123,14 +129,14 @@ public class S2ResamplingOp extends Operator {
                 for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                     for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
                         float value = sourceTiles[0].getSampleFloat(x, y);
-                        for (int i = 1; i < sourceTiles.length; i++){
+                        for (int i = 1; i < sourceTiles.length; i++) {
                             value += sourceTiles[i].getSampleFloat(x, y);
                         }
 
                         targetTile.setSample(x, y, value / sourceTiles.length);
                     }
                 }
-                
+                pm.worked(1);
             }
         } finally {
             pm.done();
