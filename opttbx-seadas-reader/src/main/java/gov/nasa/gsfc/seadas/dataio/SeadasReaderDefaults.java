@@ -1,5 +1,6 @@
 package gov.nasa.gsfc.seadas.dataio;
 
+import org.esa.snap.core.datamodel.Mask;
 import org.esa.snap.core.jexp.impl.AbstractSymbol;
 
 import java.awt.*;
@@ -39,7 +40,8 @@ public class SeadasReaderDefaults {
     final static Color Warnings = Gray100;
     final static Color Failures = Gray75;
     final static Color BrightFlags = Gray225;
-    final static Color MiscFlags = Gray150;
+//    final static Color MiscFlags = Gray150;
+    final static Color MiscFlags = Purple;
 
 
 
@@ -73,11 +75,12 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_ATMFAIL_COLOR_KEY = PROPERTY_MASK_ATMFAIL_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_ATMFAIL_COLOR_LABEL = "ATMFAIL: Color";
     public static final String PROPERTY_MASK_ATMFAIL_COLOR_TOOLTIP = "Set default color of the ATMFAIL mask";
-    public static final Color PROPERTY_MASK_ATMFAIL_COLOR_DEFAULT = Failures;
+//    public static final Color PROPERTY_MASK_ATMFAIL_COLOR_DEFAULT = Failures;
+    public static final Color PROPERTY_MASK_ATMFAIL_COLOR_DEFAULT = FailRed;
 
 
-    
-    
+
+
 
     // LAND
 
@@ -100,7 +103,8 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_LAND_COLOR_KEY = PROPERTY_MASK_LAND_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_LAND_COLOR_LABEL = "LAND: Color";
     public static final String PROPERTY_MASK_LAND_COLOR_TOOLTIP = "Set default color of the LAND mask";
-    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandDarkGreenBrown;
+//    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandDarkGreenBrown;
+    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandBrown;
 
 
     
@@ -121,12 +125,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_PRODWARN_TRANSPARENCY_KEY = PROPERTY_MASK_PRODWARN_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_PRODWARN_TRANSPARENCY_LABEL = "PRODWARN: Transparency";
     public static final String PROPERTY_MASK_PRODWARN_TRANSPARENCY_TOOLTIP = "Set default transparency of the PRODWARN mask";
-    public static final double PROPERTY_MASK_PRODWARN_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_PRODWARN_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_PRODWARN_COLOR_KEY = PROPERTY_MASK_PRODWARN_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_PRODWARN_COLOR_LABEL = "PRODWARN: Color";
     public static final String PROPERTY_MASK_PRODWARN_COLOR_TOOLTIP = "Set default color of the PRODWARN mask";
-    public static final Color PROPERTY_MASK_PRODWARN_COLOR_DEFAULT = Warnings;
+//    public static final Color PROPERTY_MASK_PRODWARN_COLOR_DEFAULT = Warnings;
+    public static final Color PROPERTY_MASK_PRODWARN_COLOR_DEFAULT = DeepBlue;
 
 
 
@@ -146,12 +151,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HIGLINT_TRANSPARENCY_KEY = PROPERTY_MASK_HIGLINT_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_HIGLINT_TRANSPARENCY_LABEL = "HIGLINT: Transparency";
     public static final String PROPERTY_MASK_HIGLINT_TRANSPARENCY_TOOLTIP = "Set default transparency of the HIGLINT mask";
-    public static final double PROPERTY_MASK_HIGLINT_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_HIGLINT_TRANSPARENCY_DEFAULT = 0.2;
 
     public static final String PROPERTY_MASK_HIGLINT_COLOR_KEY = PROPERTY_MASK_HIGLINT_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_HIGLINT_COLOR_LABEL = "HIGLINT: Color";
     public static final String PROPERTY_MASK_HIGLINT_COLOR_TOOLTIP = "Set default color of the HIGLINT mask";
-    public static final Color PROPERTY_MASK_HIGLINT_COLOR_DEFAULT = BrightFlags;
+//    public static final Color PROPERTY_MASK_HIGLINT_COLOR_DEFAULT = BrightFlags;
+    public static final Color PROPERTY_MASK_HIGLINT_COLOR_DEFAULT = BrightPink;
 
     
 
@@ -171,12 +177,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HILT_TRANSPARENCY_KEY = PROPERTY_MASK_HILT_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_HILT_TRANSPARENCY_LABEL = "HILT: Transparency";
     public static final String PROPERTY_MASK_HILT_TRANSPARENCY_TOOLTIP = "Set default transparency of the HILT mask";
-    public static final double PROPERTY_MASK_HILT_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_HILT_TRANSPARENCY_DEFAULT = 0.2;
 
     public static final String PROPERTY_MASK_HILT_COLOR_KEY = PROPERTY_MASK_HILT_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_HILT_COLOR_LABEL = "HILT: Color";
     public static final String PROPERTY_MASK_HILT_COLOR_TOOLTIP = "Set default color of the HILT mask";
-    public static final Color PROPERTY_MASK_HILT_COLOR_DEFAULT = BrightFlags;
+//    public static final Color PROPERTY_MASK_HILT_COLOR_DEFAULT = BrightFlags;
+    public static final Color PROPERTY_MASK_HILT_COLOR_DEFAULT =  Color.GRAY;
 
     
     
@@ -197,12 +204,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HISATZEN_TRANSPARENCY_KEY = PROPERTY_MASK_HISATZEN_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_HISATZEN_TRANSPARENCY_LABEL = "HISATZEN: Transparency";
     public static final String PROPERTY_MASK_HISATZEN_TRANSPARENCY_TOOLTIP = "Set default transparency of the HISATZEN mask";
-    public static final double PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_HISATZEN_COLOR_KEY = PROPERTY_MASK_HISATZEN_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_HISATZEN_COLOR_LABEL = "HISATZEN: Color";
     public static final String PROPERTY_MASK_HISATZEN_COLOR_TOOLTIP = "Set default color of the HISATZEN mask";
-    public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = MiscFlags;
+//    public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = LightCyan;
 
     
     
@@ -222,12 +230,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COASTZ_TRANSPARENCY_KEY = PROPERTY_MASK_COASTZ_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_COASTZ_TRANSPARENCY_LABEL = "COASTZ: Transparency";
     public static final String PROPERTY_MASK_COASTZ_TRANSPARENCY_TOOLTIP = "Set default transparency of the COASTZ mask";
-    public static final double PROPERTY_MASK_COASTZ_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_COASTZ_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_COASTZ_COLOR_KEY = PROPERTY_MASK_COASTZ_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_COASTZ_COLOR_LABEL = "COASTZ: Color";
     public static final String PROPERTY_MASK_COASTZ_COLOR_TOOLTIP = "Set default color of the COASTZ mask";
-    public static final Color PROPERTY_MASK_COASTZ_COLOR_DEFAULT = MiscFlags;
+//    public static final Color PROPERTY_MASK_COASTZ_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_COASTZ_COLOR_DEFAULT = BurntUmber;
 
     
 
@@ -248,12 +257,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_STRAYLIGHT_TRANSPARENCY_KEY = PROPERTY_MASK_STRAYLIGHT_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_STRAYLIGHT_TRANSPARENCY_LABEL = "STRAYLIGHT: Transparency";
     public static final String PROPERTY_MASK_STRAYLIGHT_TRANSPARENCY_TOOLTIP = "Set default transparency of the STRAYLIGHT mask";
-    public static final double PROPERTY_MASK_STRAYLIGHT_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_STRAYLIGHT_TRANSPARENCY_DEFAULT = 0.2;
 
     public static final String PROPERTY_MASK_STRAYLIGHT_COLOR_KEY = PROPERTY_MASK_STRAYLIGHT_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_STRAYLIGHT_COLOR_LABEL = "STRAYLIGHT: Color";
     public static final String PROPERTY_MASK_STRAYLIGHT_COLOR_TOOLTIP = "Set default color of the STRAYLIGHT mask";
-    public static final Color PROPERTY_MASK_STRAYLIGHT_COLOR_DEFAULT = BrightFlags;
+//    public static final Color PROPERTY_MASK_STRAYLIGHT_COLOR_DEFAULT = BrightFlags;
+    public static final Color PROPERTY_MASK_STRAYLIGHT_COLOR_DEFAULT = Color.YELLOW;
 
 
 
@@ -278,7 +288,8 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_CLDICE_COLOR_KEY = PROPERTY_MASK_CLDICE_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_CLDICE_COLOR_LABEL = "CLDICE: Color";
     public static final String PROPERTY_MASK_CLDICE_COLOR_TOOLTIP = "Set default color of the CLDICE mask";
-    public static final Color PROPERTY_MASK_CLDICE_COLOR_DEFAULT = Gray240;
+//    public static final Color PROPERTY_MASK_CLDICE_COLOR_DEFAULT = Gray240;
+    public static final Color PROPERTY_MASK_CLDICE_COLOR_DEFAULT = Color.WHITE;
 
 
 
@@ -299,12 +310,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COCCOLITH_TRANSPARENCY_KEY = PROPERTY_MASK_COCCOLITH_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_COCCOLITH_TRANSPARENCY_LABEL = "COCCOLITH: Transparency";
     public static final String PROPERTY_MASK_COCCOLITH_TRANSPARENCY_TOOLTIP = "Set default transparency of the COCCOLITH mask";
-    public static final double PROPERTY_MASK_COCCOLITH_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_COCCOLITH_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_COCCOLITH_COLOR_KEY = PROPERTY_MASK_COCCOLITH_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_COCCOLITH_COLOR_LABEL = "COCCOLITH: Color";
     public static final String PROPERTY_MASK_COCCOLITH_COLOR_TOOLTIP = "Set default color of the COCCOLITH mask";
-    public static final Color PROPERTY_MASK_COCCOLITH_COLOR_DEFAULT = MiscFlags;
+//    public static final Color PROPERTY_MASK_COCCOLITH_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_COCCOLITH_COLOR_DEFAULT = Color.CYAN;
 
     
     
@@ -324,12 +336,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_TURBIDW_TRANSPARENCY_KEY = PROPERTY_MASK_TURBIDW_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_TURBIDW_TRANSPARENCY_LABEL = "TURBIDW: Transparency";
     public static final String PROPERTY_MASK_TURBIDW_TRANSPARENCY_TOOLTIP = "Set default transparency of the TURBIDW mask";
-    public static final double PROPERTY_MASK_TURBIDW_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_TURBIDW_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_TURBIDW_COLOR_KEY = PROPERTY_MASK_TURBIDW_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_TURBIDW_COLOR_LABEL = "TURBIDW: Color";
     public static final String PROPERTY_MASK_TURBIDW_COLOR_TOOLTIP = "Set default color of the TURBIDW mask";
-    public static final Color PROPERTY_MASK_TURBIDW_COLOR_DEFAULT = MiscFlags;
+//    public static final Color PROPERTY_MASK_TURBIDW_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_TURBIDW_COLOR_DEFAULT = LightBrown;
 
     
     
@@ -349,12 +362,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HISOLZEN_TRANSPARENCY_KEY = PROPERTY_MASK_HISOLZEN_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_HISOLZEN_TRANSPARENCY_LABEL = "HISOLZEN: Transparency";
     public static final String PROPERTY_MASK_HISOLZEN_TRANSPARENCY_TOOLTIP = "Set default transparency of the HISOLZEN mask";
-    public static final double PROPERTY_MASK_HISOLZEN_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_HISOLZEN_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_HISOLZEN_COLOR_KEY = PROPERTY_MASK_HISOLZEN_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_HISOLZEN_COLOR_LABEL = "HISOLZEN: Color";
     public static final String PROPERTY_MASK_HISOLZEN_COLOR_TOOLTIP = "Set default color of the HISOLZEN mask";
-    public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = MiscFlags;
+//    public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = Purple;
 
     
     
@@ -374,12 +388,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_LOWLW_TRANSPARENCY_KEY = PROPERTY_MASK_LOWLW_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_LOWLW_TRANSPARENCY_LABEL = "LOWLW: Transparency";
     public static final String PROPERTY_MASK_LOWLW_TRANSPARENCY_TOOLTIP = "Set default transparency of the LOWLW mask";
-    public static final double PROPERTY_MASK_LOWLW_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_LOWLW_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_LOWLW_COLOR_KEY = PROPERTY_MASK_LOWLW_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_LOWLW_COLOR_LABEL = "LOWLW: Color";
     public static final String PROPERTY_MASK_LOWLW_COLOR_TOOLTIP = "Set default color of the LOWLW mask";
-    public static final Color PROPERTY_MASK_LOWLW_COLOR_DEFAULT = Gray75;
+//    public static final Color PROPERTY_MASK_LOWLW_COLOR_DEFAULT = Gray75;
+    public static final Color PROPERTY_MASK_LOWLW_COLOR_DEFAULT = Cornflower;
 
     
     
@@ -404,7 +419,8 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_CHLFAIL_COLOR_KEY = PROPERTY_MASK_CHLFAIL_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_CHLFAIL_COLOR_LABEL = "CHLFAIL: Color";
     public static final String PROPERTY_MASK_CHLFAIL_COLOR_TOOLTIP = "Set default color of the CHLFAIL mask";
-    public static final Color PROPERTY_MASK_CHLFAIL_COLOR_DEFAULT = Failures;
+//    public static final Color PROPERTY_MASK_CHLFAIL_COLOR_DEFAULT = Failures;
+    public static final Color PROPERTY_MASK_CHLFAIL_COLOR_DEFAULT = FailRed;
 
 
 
@@ -424,12 +440,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_NAVWARN_TRANSPARENCY_KEY = PROPERTY_MASK_NAVWARN_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_NAVWARN_TRANSPARENCY_LABEL = "NAVWARN: Transparency";
     public static final String PROPERTY_MASK_NAVWARN_TRANSPARENCY_TOOLTIP = "Set default transparency of the NAVWARN mask";
-    public static final double PROPERTY_MASK_NAVWARN_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_NAVWARN_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_NAVWARN_COLOR_KEY = PROPERTY_MASK_NAVWARN_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_NAVWARN_COLOR_LABEL = "NAVWARN: Color";
     public static final String PROPERTY_MASK_NAVWARN_COLOR_TOOLTIP = "Set default color of the NAVWARN mask";
-    public static final Color PROPERTY_MASK_NAVWARN_COLOR_DEFAULT = Warnings;
+//    public static final Color PROPERTY_MASK_NAVWARN_COLOR_DEFAULT = Warnings;
+    public static final Color PROPERTY_MASK_NAVWARN_COLOR_DEFAULT = Color.MAGENTA;
 
 
 
@@ -450,12 +467,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_ABSAER_TRANSPARENCY_KEY = PROPERTY_MASK_ABSAER_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_ABSAER_TRANSPARENCY_LABEL = "ABSAER: Transparency";
     public static final String PROPERTY_MASK_ABSAER_TRANSPARENCY_TOOLTIP = "Set default transparency of the ABSAER mask";
-    public static final double PROPERTY_MASK_ABSAER_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_ABSAER_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_ABSAER_COLOR_KEY = PROPERTY_MASK_ABSAER_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_ABSAER_COLOR_LABEL = "ABSAER: Color";
     public static final String PROPERTY_MASK_ABSAER_COLOR_TOOLTIP = "Set default color of the ABSAER mask";
-    public static final Color PROPERTY_MASK_ABSAER_COLOR_DEFAULT = MiscFlags;
+//    public static final Color PROPERTY_MASK_ABSAER_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_ABSAER_COLOR_DEFAULT = Color.ORANGE;
 
 
 
@@ -476,12 +494,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_MAXAERITER_TRANSPARENCY_KEY = PROPERTY_MASK_MAXAERITER_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_MAXAERITER_TRANSPARENCY_LABEL = "MAXAERITER: Transparency";
     public static final String PROPERTY_MASK_MAXAERITER_TRANSPARENCY_TOOLTIP = "Set default transparency of the MAXAERITER mask";
-    public static final double PROPERTY_MASK_MAXAERITER_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_MAXAERITER_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_MAXAERITER_COLOR_KEY = PROPERTY_MASK_MAXAERITER_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_MAXAERITER_COLOR_LABEL = "MAXAERITER: Color";
     public static final String PROPERTY_MASK_MAXAERITER_COLOR_TOOLTIP = "Set default color of the MAXAERITER mask";
-    public static final Color PROPERTY_MASK_MAXAERITER_COLOR_DEFAULT = MiscFlags;
+//    public static final Color PROPERTY_MASK_MAXAERITER_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_MAXAERITER_COLOR_DEFAULT = MediumGray;
 
 
 
@@ -502,12 +521,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_MODGLINT_TRANSPARENCY_KEY = PROPERTY_MASK_MODGLINT_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_MODGLINT_TRANSPARENCY_LABEL = "MODGLINT: Transparency";
     public static final String PROPERTY_MASK_MODGLINT_TRANSPARENCY_TOOLTIP = "Set default transparency of the MODGLINT mask";
-    public static final double PROPERTY_MASK_MODGLINT_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_MODGLINT_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_MODGLINT_COLOR_KEY = PROPERTY_MASK_MODGLINT_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_MODGLINT_COLOR_LABEL = "MODGLINT: Color";
     public static final String PROPERTY_MASK_MODGLINT_COLOR_TOOLTIP = "Set default color of the MODGLINT mask";
-    public static final Color PROPERTY_MASK_MODGLINT_COLOR_DEFAULT = BrightFlags;
+//    public static final Color PROPERTY_MASK_MODGLINT_COLOR_DEFAULT = BrightFlags;
+    public static final Color PROPERTY_MASK_MODGLINT_COLOR_DEFAULT = LightPurple;
 
 
 
@@ -528,12 +548,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_CHLWARN_TRANSPARENCY_KEY = PROPERTY_MASK_CHLWARN_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_CHLWARN_TRANSPARENCY_LABEL = "CHLWARN: Transparency";
     public static final String PROPERTY_MASK_CHLWARN_TRANSPARENCY_TOOLTIP = "Set default transparency of the CHLWARN mask";
-    public static final double PROPERTY_MASK_CHLWARN_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_CHLWARN_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_CHLWARN_COLOR_KEY = PROPERTY_MASK_CHLWARN_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_CHLWARN_COLOR_LABEL = "CHLWARN: Color";
     public static final String PROPERTY_MASK_CHLWARN_COLOR_TOOLTIP = "Set default color of the CHLWARN mask";
-    public static final Color PROPERTY_MASK_CHLWARN_COLOR_DEFAULT = Warnings;
+//    public static final Color PROPERTY_MASK_CHLWARN_COLOR_DEFAULT = Warnings;
+    public static final Color PROPERTY_MASK_CHLWARN_COLOR_DEFAULT = Color.LIGHT_GRAY;
 
 
 
@@ -553,12 +574,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_ATMWARN_TRANSPARENCY_KEY = PROPERTY_MASK_ATMWARN_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_ATMWARN_TRANSPARENCY_LABEL = "ATMWARN: Transparency";
     public static final String PROPERTY_MASK_ATMWARN_TRANSPARENCY_TOOLTIP = "Set default transparency of the ATMWARN mask";
-    public static final double PROPERTY_MASK_ATMWARN_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_ATMWARN_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_ATMWARN_COLOR_KEY = PROPERTY_MASK_ATMWARN_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_ATMWARN_COLOR_LABEL = "ATMWARN: Color";
     public static final String PROPERTY_MASK_ATMWARN_COLOR_TOOLTIP = "Set default color of the ATMWARN mask";
-    public static final Color PROPERTY_MASK_ATMWARN_COLOR_DEFAULT = Warnings;
+//    public static final Color PROPERTY_MASK_ATMWARN_COLOR_DEFAULT = Warnings;
+    public static final Color PROPERTY_MASK_ATMWARN_COLOR_DEFAULT = Color.MAGENTA;
 
 
 
@@ -579,12 +601,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_SEAICE_TRANSPARENCY_KEY = PROPERTY_MASK_SEAICE_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_SEAICE_TRANSPARENCY_LABEL = "SEAICE: Transparency";
     public static final String PROPERTY_MASK_SEAICE_TRANSPARENCY_TOOLTIP = "Set default transparency of the SEAICE mask";
-    public static final double PROPERTY_MASK_SEAICE_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_SEAICE_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_SEAICE_COLOR_KEY = PROPERTY_MASK_SEAICE_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_SEAICE_COLOR_LABEL = "SEAICE: Color";
     public static final String PROPERTY_MASK_SEAICE_COLOR_TOOLTIP = "Set default color of the SEAICE mask";
-    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = BrightFlags;
+//    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = BrightFlags;
+    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = Color.DARK_GRAY;
 
 
 
@@ -609,7 +632,8 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_NAVFAIL_COLOR_KEY = PROPERTY_MASK_NAVFAIL_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_NAVFAIL_COLOR_LABEL = "NAVFAIL: Color";
     public static final String PROPERTY_MASK_NAVFAIL_COLOR_TOOLTIP = "Set default color of the NAVFAIL mask";
-    public static final Color PROPERTY_MASK_NAVFAIL_COLOR_DEFAULT = Failures;
+//    public static final Color PROPERTY_MASK_NAVFAIL_COLOR_DEFAULT = Failures;
+    public static final Color PROPERTY_MASK_NAVFAIL_COLOR_DEFAULT = FailRed;
 
 
 
@@ -629,12 +653,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_FILTER_TRANSPARENCY_KEY = PROPERTY_MASK_FILTER_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_FILTER_TRANSPARENCY_LABEL = "FILTER: Transparency";
     public static final String PROPERTY_MASK_FILTER_TRANSPARENCY_TOOLTIP = "Set default transparency of the FILTER mask";
-    public static final double PROPERTY_MASK_FILTER_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_FILTER_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_FILTER_COLOR_KEY = PROPERTY_MASK_FILTER_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_FILTER_COLOR_LABEL = "FILTER: Color";
     public static final String PROPERTY_MASK_FILTER_COLOR_TOOLTIP = "Set default color of the FILTER mask";
-    public static final Color PROPERTY_MASK_FILTER_COLOR_DEFAULT = MiscFlags;
+//    public static final Color PROPERTY_MASK_FILTER_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_FILTER_COLOR_DEFAULT = Color.LIGHT_GRAY;
 
 
 
@@ -654,12 +679,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_BOWTIEDEL_TRANSPARENCY_KEY = PROPERTY_MASK_BOWTIEDEL_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_BOWTIEDEL_TRANSPARENCY_LABEL = "BOWTIEDEL: Transparency";
     public static final String PROPERTY_MASK_BOWTIEDEL_TRANSPARENCY_TOOLTIP = "Set default transparency of the BOWTIEDEL mask";
-    public static final double PROPERTY_MASK_BOWTIEDEL_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_BOWTIEDEL_TRANSPARENCY_DEFAULT = 0.1;
 
     public static final String PROPERTY_MASK_BOWTIEDEL_COLOR_KEY = PROPERTY_MASK_BOWTIEDEL_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_BOWTIEDEL_COLOR_LABEL = "BOWTIEDEL: Color";
     public static final String PROPERTY_MASK_BOWTIEDEL_COLOR_TOOLTIP = "Set default color of the BOWTIEDEL mask";
-    public static final Color PROPERTY_MASK_BOWTIEDEL_COLOR_DEFAULT = MiscFlags;
+//    public static final Color PROPERTY_MASK_BOWTIEDEL_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_BOWTIEDEL_COLOR_DEFAULT = FailRed;
 
 
 
@@ -679,12 +705,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HIPOL_TRANSPARENCY_KEY = PROPERTY_MASK_HIPOL_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_HIPOL_TRANSPARENCY_LABEL = "HIPOL: Transparency";
     public static final String PROPERTY_MASK_HIPOL_TRANSPARENCY_TOOLTIP = "Set default transparency of the HIPOL mask";
-    public static final double PROPERTY_MASK_HIPOL_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_HIPOL_TRANSPARENCY_DEFAULT = 0.5;
 
     public static final String PROPERTY_MASK_HIPOL_COLOR_KEY = PROPERTY_MASK_HIPOL_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_HIPOL_COLOR_LABEL = "HIPOL: Color";
     public static final String PROPERTY_MASK_HIPOL_COLOR_TOOLTIP = "Set default color of the HIPOL mask";
-    public static final Color PROPERTY_MASK_HIPOL_COLOR_DEFAULT = BrightFlags;
+//    public static final Color PROPERTY_MASK_HIPOL_COLOR_DEFAULT = BrightFlags;
+    public static final Color PROPERTY_MASK_HIPOL_COLOR_DEFAULT = Color.PINK;
 
 
 
@@ -705,12 +732,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_PRODFAIL_TRANSPARENCY_KEY = PROPERTY_MASK_PRODFAIL_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_PRODFAIL_TRANSPARENCY_LABEL = "PRODFAIL: Transparency";
     public static final String PROPERTY_MASK_PRODFAIL_TRANSPARENCY_TOOLTIP = "Set default transparency of the PRODFAIL mask";
-    public static final double PROPERTY_MASK_PRODFAIL_TRANSPARENCY_DEFAULT = 0.0;
+    public static final double PROPERTY_MASK_PRODFAIL_TRANSPARENCY_DEFAULT = 0.1;
 
     public static final String PROPERTY_MASK_PRODFAIL_COLOR_KEY = PROPERTY_MASK_PRODFAIL_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_PRODFAIL_COLOR_LABEL = "PRODFAIL: Color";
     public static final String PROPERTY_MASK_PRODFAIL_COLOR_TOOLTIP = "Set default color of the PRODFAIL mask";
-    public static final Color PROPERTY_MASK_PRODFAIL_COLOR_DEFAULT = Failures;
+//    public static final Color PROPERTY_MASK_PRODFAIL_COLOR_DEFAULT = Failures;
+    public static final Color PROPERTY_MASK_PRODFAIL_COLOR_DEFAULT = FailRed;
 
 
 
