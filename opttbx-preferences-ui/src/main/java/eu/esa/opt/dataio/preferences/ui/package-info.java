@@ -6,7 +6,7 @@
 @OptionsPanelController.ContainerRegistration(
         id = "OPTTBX",
         categoryName = "OptTbx",
-        iconBase = "eu/esa/opt/dataio/preferences/s2tbx-icon-32.jpg",
+        iconBase = "eu/esa/opt/dataio/preferences/optical_icon_32.png",
         keywords = "OptTbx",
         keywordsCategory = "OptTbx",
         position = 1100
