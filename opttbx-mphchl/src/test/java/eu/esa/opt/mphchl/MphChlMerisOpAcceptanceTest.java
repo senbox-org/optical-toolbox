@@ -1,5 +1,6 @@
 package eu.esa.opt.mphchl;
 
+import com.bc.ceres.test.LongTestRunner;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
@@ -8,17 +9,19 @@ import org.esa.snap.core.gpf.OperatorException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
+@RunWith(LongTestRunner.class)
 public class MphChlMerisOpAcceptanceTest {
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
-
 
     @Test
     public void testComputeMphChlProduct() throws IOException {
@@ -102,7 +105,7 @@ public class MphChlMerisOpAcceptanceTest {
         mphChlOp.setParameter("validPixelExpression", Sensor.MERIS_3RD.getValidPixelExpression());
         final Product mphChlProduct = mphChlOp.getTargetProduct();
 
-                Product savedProduct = null;
+        Product savedProduct = null;
         try {
             File testOutDirectory = tempFolder.newFolder("testComputeMphChlProduct_withMph_MERIS");
             final String targetProductPath = testOutDirectory.getAbsolutePath() + File.separator + "MERIS_MPHCHL.dim";
@@ -128,7 +131,7 @@ public class MphChlMerisOpAcceptanceTest {
     public void testWithFaultyValidPixelExpression() {
         final Product brrProduct = MerisBrrProduct.create();
 
-        HashMap<String, Object> params = new HashMap<>();
+        final Map<String, Object> params = new HashMap<>();
         params.put("validPixelExpression", "extremely INVALID");
 
         try {
@@ -137,5 +140,4 @@ public class MphChlMerisOpAcceptanceTest {
         } catch (OperatorException ignored) {
         }
     }
-
 }

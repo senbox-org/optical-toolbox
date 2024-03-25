@@ -1,5 +1,6 @@
 package eu.esa.opt.mphchl;
 
+import com.bc.ceres.test.LongTestRunner;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
@@ -8,18 +9,20 @@ import org.esa.snap.core.gpf.OperatorException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
+@RunWith(LongTestRunner.class)
 public class MphChlOlciOpAcceptanceTest {
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
-
 
     @Test
     public void testComputeMphChlProduct() throws IOException {
@@ -130,7 +133,7 @@ public class MphChlOlciOpAcceptanceTest {
     public void testWithFaultyValidPixelExpression() {
         final Product brrProduct = OlciBrrProduct.create();
 
-        HashMap<String, Object> params = new HashMap<>();
+        final Map<String, Object> params = new HashMap<>();
         params.put("validPixelExpression", "extremely INVALID");
 
         try {
@@ -139,5 +142,4 @@ public class MphChlOlciOpAcceptanceTest {
         } catch (OperatorException ignored) {
         }
     }
-
 }

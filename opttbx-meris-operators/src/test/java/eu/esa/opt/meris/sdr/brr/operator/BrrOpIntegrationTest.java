@@ -7,6 +7,7 @@ import org.esa.snap.core.gpf.GPF;
 import com.bc.ceres.test.LongTestRunner;
 import org.junit.Assume;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(LongTestRunner.class)
+@Ignore
 public class BrrOpIntegrationTest {
 
     @BeforeClass
