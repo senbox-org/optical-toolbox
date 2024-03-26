@@ -21,6 +21,7 @@ import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 
@@ -182,6 +183,11 @@ public abstract class ProcessingNode implements ProductReader {
     }
 
     @Override
+    public GeoCoding readGeoCoding(Product product) {
+        return null;
+    }
+
+    @Override
     public ProductReaderPlugIn getReaderPlugIn() {
         throw new IllegalStateException("Should never be asked for reader plugin");
     }
@@ -195,4 +201,5 @@ public abstract class ProcessingNode implements ProductReader {
     public final ProductSubsetDef getSubsetDef() {
         throw new IllegalStateException("Should never be asked for subset definition");
     }
+
 }
