@@ -21,7 +21,7 @@
 
     <groupId>eu.esa.opt</groupId>
     <artifactId>optical-toolbox</artifactId>
-    <version>10.0.0-SNAPSHOT</version>
+    <version>11.0.0-SNAPSHOT</version>
     <name>SNAP Optical Toolbox</name>
     <description>Tools for optical Satellites</description>
     <url>https://sentinel.esa.int/web/sentinel/toolboxes/optical</url>
@@ -120,15 +120,13 @@
     <packaging>pom</packaging>
 
     <properties>
-        <snap.version>10.0.0-SNAPSHOT</snap.version>
-        <opttbx.version>10.0.0-SNAPSHOT</opttbx.version>
+        <snap.version>11.0.0-SNAPSHOT</snap.version>
+        <opttbx.version>11.0.0-SNAPSHOT</opttbx.version>
         <seadas.reader.version>1.10.0-SNAPSHOT</seadas.reader.version>
         <seadas.reader.ui.version>1.10.0-SNAPSHOT</seadas.reader.ui.version>
         <snap-help-system.version>1.0.0</snap-help-system.version>
         <netbeans.version>RELEASE113</netbeans.version>
         <geotools.version>28.2</geotools.version>
-        <netcdf.version>5.3.3</netcdf.version>
-        <hdf.native.version>2.7.2</hdf.native.version>
         <javahelp.version>2.0.05</javahelp.version>
         <brandingToken>opttbx</brandingToken>
         <user.language>en</user.language>
@@ -295,6 +293,12 @@
             </dependency>
 
             <dependency>
+                <groupId>ncsa.hdf</groupId>
+                <artifactId>lib-hdf</artifactId>
+                <version>${snap.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.esa.snap</groupId>
                 <artifactId>snap-geotiff</artifactId>
                 <version>${snap.version}</version>
@@ -352,12 +356,6 @@
             </dependency>
 
             <!-- Other third party libraries  -->
-            <dependency>
-                <groupId>edu.ucar</groupId>
-                <artifactId>netcdfAll</artifactId>
-                <version>${netcdf.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>com.bc.jnn</groupId>
                 <artifactId>jnn</artifactId>

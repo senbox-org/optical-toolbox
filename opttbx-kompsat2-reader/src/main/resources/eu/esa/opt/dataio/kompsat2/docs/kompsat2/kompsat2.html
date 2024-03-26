@@ -5,7 +5,6 @@
     <title>Kompsat 2 Product Reader</title>
     <link rel="stylesheet" href="../style.css">
 </head>
-<>
 
 <table class="header">
     <tr class="header">
@@ -36,18 +35,20 @@
     altitude for PAN data and MS data
 </p>
 <ul>
-    <li><a href=https://earth.esa.int/eogateway/missions/kompsat-2">Kompsat2 Documentation</a></li>
+    <li><a href="https://earth.esa.int/eogateway/missions/kompsat-2">Kompsat2 Documentation</a></li>
 </ul>
 <p>
     This command allows to import Kompsat2 products.
     There are two levels of products that can be imported:
 </p>
+<p>
 <ul>
     <li>Level 1R : Level 1R data is the image data cut by catalogue (15000 column X15500 line), optionally MTF
         corrected and stored by Tiff format </li>
     <li>Level 1G :Level 1G data is geometrically corrected from Level 1R image data using KOMPSAT-2
         ancillary data only and stored by GeoTiff format  </li>
 </ul>
+</p>
 <h4>MSC image data format</h4>
 <p>
     The products can be either compressed in a zip archive, or uncompressed in a specific folder structure.
@@ -55,13 +56,14 @@
 <p>Whether the product is an archive or a folder, the list of files must have the same structure:</p>
 <br>
 <p>The product must contain 1 file and a image directory containing a TIFF images and metadata files:</p>
+<p>
 <ul>
     <li>
         the xml file provides the image metadata
     </li>
     <li>
         the zip folder contains 5 TIFF images that each represents a band. For each TIFF image there is a .txt file containing information about
-        <ul>
+        <ul class="circle">
             <li>File _M1XXXG_1G/_M1XXXG_1R for band MS1 (green)</li>
             <li>File _M2XXXB_1G/_M2XXXB_1R for band MS2 (blue)</li>
             <li>File _M3XXXN_1G/_M3XXXN_1R for band MS3 (NIR)</li>
@@ -70,44 +72,48 @@
         </ul>
     </li>
 </ul>
+</p>
+<h5>File Naming Convention</h5>
+<p>
 <ul>
-    <h5>File Naming Convention</h5>
-    <ul>
-        <li>TIFF Level 1R</li>
-        <li>MSC_YYMMDDHhmmss_nnnnn_PPPPrrrrPAxx_tt.tif - PAN </li>
-        <li>MSC_YYMMDDHhmmss_nnnnn_PPPPrrrrMXAxxB_tt.tif - MS</li>
-        <li>YYMMDDHhmmss – Scene center time in UTC </li>
-        <li>nnnnn – Orbit number </li>
-        <li>PPPP – Path number</li>
-        <li>rrrr – Row number</li>
-        <li>P – P(Pan only)</li>
-        <li>MX - M(MS only) X(1,2,3,4)</li>
-        <li>A – P(positive), N(negative) tilt angle</li>
-        <li>xx – Tilting angle(first two digit)</li>
-        <li>B – G(Green), B(Blue), N(NIR), R(Red)</li>
-        <li> tt – 1R</li>
-    </ul>
-    <ul>
-        <li>TIFF Level 1G</li>
-        <li>MSC_YYMMDDHhmmss_nnnnn_PPPPrrrrPAxx_tt.tif - PAN </li>
-        <li>MSC_YYMMDDHhmmss_nnnnn_PPPPrrrrMXAxxB_tt.tif - MS</li>
-        <li>YYMMDDHhmmss – Scene center time in UTC </li>
-        <li>nnnnn – Orbit number </li>
-        <li>PPPP – Path number</li>
-        <li>rrrr – Row number</li>
-        <li>P – P(Pan only)</li>
-        <li>MX - M(MS only) X(1,2,3,4)</li>
-        <li>A – P(positive), N(negative) tilt angle</li>
-        <li>xx – Tilting angle(first two digit)</li>
-        <li>B – G(Green), B(Blue), N(NIR), R(Red)</li>
-        <li> tt – 1G</li>
-    </ul>
+    <li>TIFF Level 1R
+        <ul class="circle">
+            <li>MSC_YYMMDDHhmmss_nnnnn_PPPPrrrrPAxx_tt.tif - PAN </li>
+            <li>MSC_YYMMDDHhmmss_nnnnn_PPPPrrrrMXAxxB_tt.tif - MS</li>
+            <li>YYMMDDHhmmss - Scene center time in UTC </li>
+            <li>nnnnn - Orbit number </li>
+            <li>PPPP - Path number</li>
+            <li>rrrr - Row number</li>
+            <li>P - P(Pan only)</li>
+            <li>MX - M(MS only) X(1,2,3,4)</li>
+            <li>A - P(positive), N(negative) tilt angle</li>
+            <li>xx - Tilting angle(first two digit)</li>
+            <li>B - G(Green), B(Blue), N(NIR), R(Red)</li>
+            <li>tt - 1R</li>
+        </ul>
+    </li>
+    <li>
+        TIFF Level 1G
+        <ul class="circle">
+            <li>MSC_YYMMDDHhmmss_nnnnn_PPPPrrrrPAxx_tt.tif - PAN </li>
+            <li>MSC_YYMMDDHhmmss_nnnnn_PPPPrrrrMXAxxB_tt.tif - MS</li>
+            <li>YYMMDDHhmmss - Scene center time in UTC </li>
+            <li>nnnnn - Orbit number </li>
+            <li>PPPP - Path number</li>
+            <li>rrrr - Row number</li>
+            <li>P - P(Pan only)</li>
+            <li>MX - M(MS only) X(1,2,3,4)</li>
+            <li>A - P(positive), N(negative) tilt angle</li>
+            <li>xx - Tilting angle(first two digit)</li>
+            <li>B - G(Green), B(Blue), N(NIR), R(Red)</li>
+            <li>tt - 1G</li>
+        </ul>
+    </li>
 </ul>
-<ul>
-    <h4> Geodetic Coordinate System </h4>
+</p>
+<h4> Geodetic Coordinate System </h4>
     <p>The  geodetic  coordinate  system  is  based  on  the  WGS84  reference  frame  with  coordinates
         expressed latitude, longitude, and height above the reference Earth ellipsoid</p>
-</ul>
 <br>
 </body>
 </html>

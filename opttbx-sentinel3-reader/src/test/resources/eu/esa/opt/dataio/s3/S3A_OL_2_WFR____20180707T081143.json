@@ -4044,25 +4044,25 @@
         "name": "WQSF_CHL_NN_RECOM",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
         "color": "63,127,191",
-        "description": "Excluding pixels that are deemed unreliable for Algal Pigment Concentration. Flag recommended by QWG"
+        "description": "Excluding pixels that are deemed unreliable for Algal Pigment Concentration. Flag recommended by QWG."
       },
       {
         "name": "WQSF_TSM_NN_RECOM",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
         "color": "63,127,255",
-        "description": "Excluding pixels that are deemed unreliable for Total Suspended Matter Concentration. Flag recommended by QWG"
+        "description": "Excluding pixels that are deemed unreliable for Total Suspended Matter Concentration. Flag recommended by QWG."
       },
       {
         "name": "WQSF_ADG443_NN_RECOM",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
         "color": "63,191,0",
-        "description": "Excluding pixels that are deemed unreliable for Coloured Detrital and Dissolved Material Absorption. Flag recommended by QWG"
+        "description": "Excluding pixels that are deemed unreliable for Coloured Detrital and Dissolved Material Absorption. Flag recommended by QWG."
       },
       {
         "name": "WQSF_IWV_RECOM",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
         "color": "63,191,63",
-        "description": "Excluding pixels that are deemed unreliable for Integrated Water Vapour Column. Flag recommended by QWG"
+        "description": "Excluding pixels that are deemed unreliable for Integrated Water Vapour Column. Flag recommended by QWG."
       }
     ],
     "metadata": [

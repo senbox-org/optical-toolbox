@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.getInputStream;
 
-class JaiGeoTiffImageReader implements EnmapImageReader {
+class JaiGeoTiffImageReader extends EnmapImageReader {
     private GeoTiffImageReader geoTiffImageReader;
 
     private JaiGeoTiffImageReader(GeoTiffImageReader geoTiffImageReader) {

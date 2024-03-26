@@ -428,8 +428,8 @@ public class Sentinel2OrthoProductReaderTest {
         assertEquals(0.0170f, pixelValue, 4);
 
         Band band_B8A = finalProduct.getBand("B8A");
-        assertEquals(3146, band_B8A.getRasterWidth());
-        assertEquals(2665, band_B8A.getRasterHeight());
+        assertEquals(3145, band_B8A.getRasterWidth());
+        assertEquals(2664, band_B8A.getRasterHeight());
 
         pixelValue = band_B8A.getSampleFloat(290, 203);
         assertEquals(0.5300f, pixelValue, 4);
@@ -488,8 +488,8 @@ public class Sentinel2OrthoProductReaderTest {
         assertEquals(1.0f, pixelValue, 0);
 
         Band band_quality_scene_classification_20m = finalProduct.getBand("quality_scene_classification_20m");
-        assertEquals(3146, band_quality_scene_classification_20m.getRasterWidth());
-        assertEquals(2665, band_quality_scene_classification_20m.getRasterHeight());
+        assertEquals(3145, band_quality_scene_classification_20m.getRasterWidth());
+        assertEquals(2664, band_quality_scene_classification_20m.getRasterHeight());
 
         pixelValue = band_quality_scene_classification_20m.getSampleFloat(233, 150);
         assertEquals(5.0f, pixelValue, 0);

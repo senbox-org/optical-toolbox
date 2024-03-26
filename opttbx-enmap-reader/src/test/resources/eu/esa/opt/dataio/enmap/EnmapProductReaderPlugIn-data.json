@@ -1,0 +1,19 @@
+{
+  "testProducts": [
+    {
+      "id": "ENMAP01-____L2A-DT0000001049",
+      "relativePath": "sensors_platforms/EnMAP/ENMAP01-____L2A-DT0000001049_20220612T105735Z_028_V010303_20230922T131826Z.ZIP",
+      "description": "EnMAP L2A Data Product as zip archive"
+    },
+    {
+      "id": "ENMAP01-____L1B-DT0000002446",
+      "relativePath": "sensors_platforms/EnMAP/Groningen_Netherlands_L1B.tar.gz",
+      "description": "EnMAP L1B Data Product as tar.gz archive, offical download format"
+    },
+    {
+      "id": "ENMAP01-____L1C-DT0000063982",
+      "relativePath": "sensors_platforms/EnMAP/ENMAP01-____L1C-DT0000063982_20240305T104023Z_001_V010401_20240314T085432Z/ENMAP01-____L1C-DT0000063982_20240305T104023Z_001_V010401_20240314T085432Z-METADATA.XML",
+      "description": "EnMAP L1C Data Product decompressed"
+    }
+  ]
+}
