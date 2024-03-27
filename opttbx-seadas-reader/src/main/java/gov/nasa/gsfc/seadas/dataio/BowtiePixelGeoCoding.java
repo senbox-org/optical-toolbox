@@ -18,6 +18,7 @@ package gov.nasa.gsfc.seadas.dataio;
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.datamodel.Product;
@@ -334,7 +335,7 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
             if (subsetDef.getSubSamplingY() != 1) {
                 final ComponentGeoCoding geoCoding;
                 try {
-                    geoCoding = org.esa.snap.core.dataio.geocoding.GeoCodingFactory.createPixelGeoCoding(targetLatBand, targetLonBand);
+                    geoCoding = GeoCodingFactory.createPixelGeoCoding(targetLatBand, targetLonBand);
                 } catch (IOException e) {
                     return false;
                 }

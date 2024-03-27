@@ -18,8 +18,8 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.dataio.ProductIOException;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.PixelGeoCoding;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import ucar.ma2.InvalidRangeException;
@@ -234,7 +234,7 @@ public class BrowseProductReader extends SeadasFileReader {
 
         try {
 
-            product.setSceneGeoCoding(new PixelGeoCoding(latBand, lonBand, null, 5, ProgressMonitor.NULL));
+            product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand));
 
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage(), e);
