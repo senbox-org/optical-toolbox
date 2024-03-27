@@ -17,17 +17,19 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.ProductIOException;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
  * User: seadas
  * Date: 11/14/11
  * Time: 2:23 PM
-  */
+ */
 public class AquariusL2FileReader extends SeadasFileReader {
 
     AquariusL2FileReader(SeadasProductReader productReader) {
@@ -35,7 +37,7 @@ public class AquariusL2FileReader extends SeadasFileReader {
     }
 
     @Override
-    public Product createProduct() throws ProductIOException {
+    public Product createProduct() throws IOException {
 
         int sceneWidth = getIntAttribute("Number_of_Beams");
         int sceneHeight = getIntAttribute("Number_of_Blocks");
@@ -99,19 +101,19 @@ public class AquariusL2FileReader extends SeadasFileReader {
         return product;
     }
 
-    public void addGeocoding(final Product product) throws ProductIOException {
+    public void addGeocoding(final Product product) throws IOException {
         final String longitude = "scat_beam_clon";
         final String latitude = "scat_beam_clat";
         Band latBand = null;
         Band lonBand = null;
-
 
         if (product.containsBand(latitude) && product.containsBand(longitude)) {
             latBand = product.getBand(latitude);
             lonBand = product.getBand(longitude);
         }
         if (latBand != null && lonBand != null) {
-            product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, null, 5));
+            final ComponentGeoCoding geoCoding = org.esa.snap.core.dataio.geocoding.GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+            product.setSceneGeoCoding(geoCoding);
         }
     }
 }

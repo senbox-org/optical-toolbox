@@ -18,6 +18,7 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.dataio.ProductIOException;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Product;
@@ -94,7 +95,7 @@ public class L2DscovrEpicFileReader extends SeadasFileReader {
     }
 
 
-    private void addPixelGeocoding(final Product product) {
+    private void addPixelGeocoding(final Product product) throws ProductIOException {
 
         final String longitude = "Longitude";
         final String latitude = "Latitude";
@@ -111,14 +112,13 @@ public class L2DscovrEpicFileReader extends SeadasFileReader {
             lonBand.setNoDataValueUsed(true);
         }
 
-        String validPixelExpression = "Latitude <= 90.0 and Latitude >= -90.0 and !nan(Latitude)";
-
         if (latBand != null) {
-            // Initializing all pixels to NAN
-            // Necessary to ensure the pixels outside the disk not get random default geocoding and a clean worldmap
-            product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, "1==2", 5));
-            // Applying geocoding to valid pixels
-            product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, validPixelExpression, 5));
+            try {
+                ComponentGeoCoding geoCoding = org.esa.snap.core.dataio.geocoding.GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+                product.setSceneGeoCoding(geoCoding);
+            } catch (IOException e) {
+                throw new ProductIOException(e.getMessage());
+            }
         }
     }
 

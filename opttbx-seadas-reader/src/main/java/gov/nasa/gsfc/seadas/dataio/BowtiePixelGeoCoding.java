@@ -17,9 +17,9 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.dataio.ProductSubsetDef;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoCoding;
-import org.esa.snap.core.datamodel.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.Scene;
 import org.esa.snap.core.subset.PixelSubsetRegion;
@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * The <code>BowtiePixelGeoCoding</code> class is a special geo-coding for
+ * The {@code BowtiePixelGeoCoding} class is a special geo-coding for
  * MODIS Level-1B and Level-2 swath products.
  * <p/>
  * <p>It enables BEAM to transform the MODIS swaths to uniformly gridded
@@ -50,12 +50,11 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
     /**
      * Constructs geo-coding based on two given tie-point grids.
      *
-     * @param latBand       the latitude band, must not be <code>null</code>
-     * @param lonBand       the longitude band, must not be <code>null</code>
+     * @param latBand        the latitude band, must not be {@code null}
+     * @param lonBand        the longitude band, must not be {@code null}
      * @param scanlineHeight the number of detectors in a scan
      */
     public BowtiePixelGeoCoding(Band latBand, Band lonBand, int scanlineHeight) {
-        super();
         Guardian.assertNotNull("latBand", latBand);
         Guardian.assertNotNull("lonBand", lonBand);
         if (latBand.getRasterWidth() != lonBand.getRasterWidth() ||
@@ -76,6 +75,7 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
 
     /**
      * get the number of line in the whole scene
+     *
      * @return lines in the scene
      */
     public int getSceneHeight() {
@@ -84,6 +84,7 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
 
     /**
      * get the number of lines (num detectors) in a scan
+     *
      * @return number of lines in a scan
      */
     public int getScanlineHeight() {
@@ -92,6 +93,7 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
 
     /**
      * get the number of lines between the start of a scan and the first line of data
+     *
      * @return scan line offset
      */
     public int getScanlineOffset() {
@@ -125,11 +127,7 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
         if (lonBand == null || that.lonBand == null) {
             return false;
         }
-        if (!lonBand.equals(that.lonBand)) {
-            return false;
-        }
-
-        return true;
+        return lonBand.equals(that.lonBand);
     }
 
     @Override
@@ -144,7 +142,7 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
      * allow the garbage collector to perform a vanilla job.
      * <p/>
      * <p>This method should be called only if it is for sure that this object instance will never be used again. The
-     * results of referencing an instance of this class after a call to <code>dispose()</code> are undefined.
+     * results of referencing an instance of this class after a call to {@code dispose()} are undefined.
      */
     @Override
     public void dispose() {
@@ -161,11 +159,11 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
         // look at first pixel in each line
         int start = findStart(0);
         // if not found try end of line
-        if(start == -1) {
+        if (start == -1) {
             start = findStart(latBand.getRasterWidth() - 1);
         }
 
-        if(start == -1) {       // did not find an overlap
+        if (start == -1) {       // did not find an overlap
             _scanlineOffset = 0;
         } else {
             _scanlineOffset = start % _scanlineHeight;
@@ -182,10 +180,10 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
                 continue;
             }
             int change = 0;
-            if((p0 - p1) < -0.001) {
+            if ((p0 - p1) < -0.001) {
                 // increase
                 change = +1;
-            } else if((p1 - p0) < -0.001) {
+            } else if ((p1 - p0) < -0.001) {
                 // decrease
                 change = -1;
             }
@@ -267,8 +265,8 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
             for (int x = 0; x < scanW; x++) {
                 float deltaLat;
                 float deltaLon;
-                float refLat = latFloats[(sceneH-1) * scanW + x];
-                float refLon = lonFloats[(sceneH-1) * scanW + x];
+                float refLat = latFloats[(sceneH - 1) * scanW + x];
+                float refLon = lonFloats[(sceneH - 1) * scanW + x];
                 if (lastStripeH > 1) {
                     deltaLat = refLat - latFloats[(sceneH - 2) * scanW + x];
                     deltaLon = refLon - lonFloats[(sceneH - 2) * scanW + x];
@@ -315,13 +313,13 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
      *
      * @param srcScene  the source scene
      * @param destScene the destination scene
-     * @param subsetDef the definition of the subset, may be <code>null</code>
+     * @param subsetDef the definition of the subset, may be {@code null}
      * @return true, if the geo-coding could be transferred.
      */
     @Override
     public boolean transferGeoCoding(final Scene srcScene, final Scene destScene, final ProductSubsetDef subsetDef) {
 
-        BowtiePixelGeoCoding srcGeocoding = (BowtiePixelGeoCoding)srcScene.getGeoCoding();
+        BowtiePixelGeoCoding srcGeocoding = (BowtiePixelGeoCoding) srcScene.getGeoCoding();
         final String latBandName = srcGeocoding.latBand.getName();
         final String lonBandName = srcGeocoding.lonBand.getName();
 
@@ -332,9 +330,15 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
         }
         final Band targetLatBand = destScene.getProduct().getBand(latBandName);
         final Band targetLonBand = destScene.getProduct().getBand(lonBandName);
-        if(subsetDef != null) {
-            if(subsetDef.getSubSamplingY() != 1) {
-                destScene.setGeoCoding(GeoCodingFactory.createPixelGeoCoding(targetLatBand, targetLonBand, null, 5));
+        if (subsetDef != null) {
+            if (subsetDef.getSubSamplingY() != 1) {
+                final ComponentGeoCoding geoCoding;
+                try {
+                    geoCoding = org.esa.snap.core.dataio.geocoding.GeoCodingFactory.createPixelGeoCoding(targetLatBand, targetLonBand);
+                } catch (IOException e) {
+                    return false;
+                }
+                destScene.setGeoCoding(geoCoding);
                 return true;
             }
         }
@@ -361,15 +365,14 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
                 Product temp = latBand.getProduct().createSubset(bandSubset, "__temp", "");
                 tempLatBand = temp.getBand(latBand.getName());
                 tempLonBand = temp.getBand(lonBand.getName());
-            }else {
+            } else {
                 tempLatBand = latBand;
                 tempLonBand = lonBand;
             }
 
-
             ProductUtils.copyBand(tempLatBand.getName(), tempLatBand.getProduct(), destScene.getProduct(), true);
             ProductUtils.copyBand(tempLonBand.getName(), tempLonBand.getProduct(), destScene.getProduct(), true);
         }
-     }
+    }
 
 }
