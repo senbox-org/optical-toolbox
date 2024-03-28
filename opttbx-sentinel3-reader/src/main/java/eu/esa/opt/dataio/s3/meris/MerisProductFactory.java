@@ -5,8 +5,8 @@ import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReaderFactory;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.GeoCodingFactory;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.RasterDataNode;
@@ -116,14 +116,12 @@ public class MerisProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected void setGeoCoding(Product targetProduct) {
-        // @todo 1 tb/tb replace this with the new implementation 2020-01-27
+    protected void setGeoCoding(Product targetProduct) throws IOException {
         if (Config.instance("opttbx").load().preferences().getBoolean(MERIS_SAFE_USE_PIXELGEOCODING, true)) {
             final Band latBand = targetProduct.getBand("latitude");
             final Band lonBand = targetProduct.getBand("longitude");
             if (latBand != null && lonBand != null) {
-                targetProduct.setSceneGeoCoding(
-                        GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, getValidExpression(), 5));
+                targetProduct.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand));
             }
         }
         if (targetProduct.getSceneGeoCoding() == null) {

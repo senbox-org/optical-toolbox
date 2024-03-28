@@ -1,31 +1,24 @@
 package eu.esa.opt.meris.radiometry;
 
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.FlagCoding;
-import org.esa.snap.core.datamodel.GeoCodingFactory;
-import org.esa.snap.core.datamodel.Mask;
-import org.esa.snap.core.datamodel.MetadataAttribute;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.core.datamodel.ProductNodeGroup;
-import org.esa.snap.core.datamodel.TiePointGeoCoding;
-import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.jexp.ParseException;
 
-import java.awt.Color;
+import java.awt.*;
+import java.io.IOException;
 
 class TestHelper {
 
-    public static final int SCENE_WIDTH = 10;
-    public static final int SCENE_HEIGHT = 10;
+    private static final int SCENE_WIDTH = 10;
+    private static final int SCENE_HEIGHT = 10;
 
-    public static Product createL1bProduct(String resolutionString) throws ParseException, java.text.ParseException {
-        boolean isFSG = resolutionString.equals("FSG");
+    public static Product createL1bProduct(String resolutionString) throws ParseException, java.text.ParseException, IOException {
+        boolean isFSG = "FSG".equals(resolutionString);
         String productType = String.format("MER_%s_1P", resolutionString);
         Product product = new Product("MERIS-TEST-PRODUCT", productType, SCENE_WIDTH, SCENE_HEIGHT);
 
-        final float[] MERIS_WAVELENGTHS = new float[]{
+        final float[] MERIS_WAVELENGTHS = {
                 412.0f, 442.0f, 490.0f, 510.0f, 560.0f, 620.0f, 665.0f,
                 681.0f, 705.0f, 753.0f, 760.0f, 775.0f, 865.0f, 890.0f, 900.0f
         };
@@ -101,20 +94,22 @@ class TestHelper {
         // adding minimal metadata for detecting reprocessing version
         MetadataElement dsd23 = new MetadataElement("DSD.23");
         dsd23.addAttribute(new MetadataAttribute("DATASET_NAME",
-                                                 new ProductData.ASCII("RADIOMETRIC_CALIBRATION_FILE"), true));
+                new ProductData.ASCII("RADIOMETRIC_CALIBRATION_FILE"), true));
         dsd23.addAttribute(new MetadataAttribute("FILE_NAME",
-                                                 new ProductData.ASCII("MER_RAC_AXVIEC20050708_135806_20041213_220000_20141213_220000"),
-                                                 true));
+                new ProductData.ASCII("MER_RAC_AXVIEC20050708_135806_20041213_220000_20141213_220000"),
+                true));
         MetadataElement dsd = new MetadataElement("DSD");
         dsd.addElement(dsd23);
         product.getMetadataRoot().addElement(dsd);
 
         if (isFSG) {
-            product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(product.getBand("corr_latitude"),
-                                                                            product.getBand("corr_longitude"), null, 3));
+            final Band corrLat = product.getBand("corr_latitude");
+            final Band corrLon = product.getBand("corr_longitude");
+            final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(corrLat, corrLon, 0.3);
+            product.setSceneGeoCoding(geoCoding);
         } else {
             product.setSceneGeoCoding(new TiePointGeoCoding(product.getTiePointGrid("latitude"),
-                                                            product.getTiePointGrid("longitude")));
+                    product.getTiePointGrid("longitude")));
 
         }
 
@@ -122,7 +117,7 @@ class TestHelper {
     }
 
     private static Mask mask(String name, String expression) {
-        return Mask.BandMathsType.create(name, null, TestHelper.SCENE_WIDTH, TestHelper.SCENE_HEIGHT, expression, Color.green, 0.5f);
+        return Mask.BandMathsType.create(name, null, SCENE_WIDTH, SCENE_HEIGHT, expression, Color.green, 0.5f);
     }
 
     private static Band addBandToProduct(Product product, String name, int dataType) {
