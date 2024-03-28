@@ -18,6 +18,7 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
@@ -84,7 +85,7 @@ public class L1ASeawifsFileReader extends SeadasFileReader {
         ProductData lons = ProductData.createInstance(longitudes);
         lonBand.setData(lons);
         try {
-            ComponentGeoCoding geoCoding = org.esa.snap.core.dataio.geocoding.GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+            final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
             product.setSceneGeoCoding(geoCoding);
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage());

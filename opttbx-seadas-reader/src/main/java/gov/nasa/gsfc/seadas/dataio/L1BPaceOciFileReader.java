@@ -18,6 +18,7 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
@@ -308,7 +309,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         return ProductData.createInstance(dataType, storage);
     }
 
-    public void addGeocoding(final Product product) throws ProductIOException {
+    private void addGeocoding(final Product product) throws ProductIOException {
         final String longitude = "longitude";
         final String latitude = "latitude";
         String navGroup = "geolocation_data";
@@ -337,7 +338,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             lonBand.setData(lonRawData);
 
             try {
-                ComponentGeoCoding geoCoding = org.esa.snap.core.dataio.geocoding.GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+                final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
                 product.setSceneGeoCoding(geoCoding);
             } catch (IOException e) {
                 throw new ProductIOException(e.getMessage());

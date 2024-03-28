@@ -1,6 +1,7 @@
 package eu.esa.opt.meris.radiometry;
 
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.jexp.ParseException;
 
@@ -9,8 +10,8 @@ import java.io.IOException;
 
 class TestHelper {
 
-    public static final int SCENE_WIDTH = 10;
-    public static final int SCENE_HEIGHT = 10;
+    private static final int SCENE_WIDTH = 10;
+    private static final int SCENE_HEIGHT = 10;
 
     public static Product createL1bProduct(String resolutionString) throws ParseException, java.text.ParseException, IOException {
         boolean isFSG = "FSG".equals(resolutionString);
@@ -104,7 +105,7 @@ class TestHelper {
         if (isFSG) {
             final Band corrLat = product.getBand("corr_latitude");
             final Band corrLon = product.getBand("corr_longitude");
-            final ComponentGeoCoding geoCoding = org.esa.snap.core.dataio.geocoding.GeoCodingFactory.createPixelGeoCoding(corrLat, corrLon);
+            final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(corrLat, corrLon, 0.3);
             product.setSceneGeoCoding(geoCoding);
         } else {
             product.setSceneGeoCoding(new TiePointGeoCoding(product.getTiePointGrid("latitude"),

@@ -16,8 +16,8 @@
 
 package gov.nasa.gsfc.seadas.dataio;
 
-import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
@@ -101,7 +101,7 @@ public class AquariusL2FileReader extends SeadasFileReader {
         return product;
     }
 
-    public void addGeocoding(final Product product) throws IOException {
+    private static void addGeocoding(final Product product) throws IOException {
         final String longitude = "scat_beam_clon";
         final String latitude = "scat_beam_clat";
         Band latBand = null;
@@ -112,7 +112,7 @@ public class AquariusL2FileReader extends SeadasFileReader {
             lonBand = product.getBand(longitude);
         }
         if (latBand != null && lonBand != null) {
-            final ComponentGeoCoding geoCoding = org.esa.snap.core.dataio.geocoding.GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+            final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
             product.setSceneGeoCoding(geoCoding);
         }
     }

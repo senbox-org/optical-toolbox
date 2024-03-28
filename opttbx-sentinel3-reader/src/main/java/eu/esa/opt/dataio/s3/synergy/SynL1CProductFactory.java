@@ -6,6 +6,7 @@ import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.transform.MathTransform2D;
 import org.esa.snap.core.util.ProductUtils;
@@ -172,7 +173,7 @@ public class SynL1CProductFactory extends AbstractProductFactory {
         if (bandGroup.contains("GEOLOCATION_REF_latitude") && bandGroup.contains("GEOLOCATION_REF_longitude")) {
             final Band latBand = bandGroup.get("GEOLOCATION_REF_latitude");
             final Band lonBand = bandGroup.get("GEOLOCATION_REF_longitude");
-            final ComponentGeoCoding pixelGeoCoding = org.esa.snap.core.dataio.geocoding.GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+            final ComponentGeoCoding pixelGeoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
             targetProduct.setSceneGeoCoding(pixelGeoCoding);
         }
     }
