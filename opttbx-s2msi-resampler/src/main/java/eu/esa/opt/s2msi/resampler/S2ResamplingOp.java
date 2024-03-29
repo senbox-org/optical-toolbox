@@ -1,6 +1,7 @@
 package eu.esa.opt.s2msi.resampler;
 
 import com.bc.ceres.core.ProgressMonitor;
+import com.bc.ceres.glevel.MultiLevelImage;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.Operator;
@@ -13,7 +14,6 @@ import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 
 import java.awt.*;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,13 +71,12 @@ public class S2ResamplingOp extends Operator {
                     "are only retrieved when zooming in on a pixel.")
     private boolean resampleOnPyramidLevels;
 
+    @Parameter(alias = "bands",
+            label = "Resample only bands", defaultValue = "",
+            description = "Resample only the selected bands.")
+    private String[] bands;
+
     private S2Resampler s2Resampler;
-
-    private List<String> bandFilter;
-
-    public void setBandFilter(List<String> bandFilter) {
-        this.bandFilter = bandFilter;
-    }
 
     @Override
     public void initialize() throws OperatorException {
@@ -91,11 +90,15 @@ public class S2ResamplingOp extends Operator {
             throw new OperatorException("Invalid S2 source product.");
         }
 
-        s2Resampler.setBandFilter(this.bandFilter);
+        s2Resampler.setBandFilter(this.bands);
 
         targetProduct = s2Resampler.resample(sourceProduct);
-        this.targetProduct.getBand("view_zenith_mean").setSourceImage(null);
-        this.targetProduct.getBand("view_azimuth_mean").setSourceImage(null);
+        if (this.targetProduct.getBandIndex("view_zenith_mean") >= 0) {
+            this.targetProduct.getBand("view_zenith_mean").setSourceImage((MultiLevelImage) null);
+        }
+        if (this.targetProduct.getBandIndex("view_azimuth_mean") >= 0) {
+            this.targetProduct.getBand("view_azimuth_mean").setSourceImage((MultiLevelImage) null);
+        }
     }
 
 

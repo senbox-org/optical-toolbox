@@ -16,7 +16,6 @@
 
 package eu.esa.opt.biophysical;
 
-import eu.esa.opt.s2msi.resampler.S2ResamplingOp;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
 import org.esa.snap.core.datamodel.Mask;
@@ -25,7 +24,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.SampleCoding;
 import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.datamodel.VirtualBand;
-import org.esa.snap.core.gpf.Operator;
+import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.annotations.OperatorMetadata;
@@ -148,7 +147,7 @@ public class BiophysicalOp extends PixelOperator {
         }
     }
 
-    private List<String> getS2BandList() {
+    private String[] getS2Bands() {
         final Set<String> bandNames = new LinkedHashSet<>() {{
             add("B3"); add("B4"); add("B5"); add("B6"); add("B7"); add("B8A"); add("B11"); add("B12");
         }};
@@ -165,7 +164,7 @@ public class BiophysicalOp extends PixelOperator {
         bands.add("sun_zenith");
         bands.add("sun_azimuth");
         bands.add("view_azimuth_mean");
-        return bands;
+        return bands.toArray(new String[0]);
     }
 
     /**
@@ -221,17 +220,14 @@ public class BiophysicalOp extends PixelOperator {
     protected void configureTargetProduct(ProductConfigurer productConfigurer) {
         Product tp;
         if (needsResample) {
-            OperatorSpi spi = new S2ResamplingOp.Spi();
             HashMap<String, Product> sourceProducts = new HashMap<>();
-            sourceProducts.put(this.sourceProduct.getName(), this.sourceProduct);
+            sourceProducts.put("sourceProduct", this.sourceProduct);
             final HashMap<String, Object> params = new HashMap<>();
-            params.put("targetResolution", targetResolution);
-            S2ResamplingOp operator = (S2ResamplingOp) spi.createOperator(params, sourceProducts);
             // Only resample selected bands
-            operator.setBandFilter(getS2BandList());
-            operator.setSourceProduct(this.sourceProduct);
+            params.put("bands", getS2Bands());
+            params.put("targetResolution", targetResolution);
             // The new source product is the resampled one, we need to reset references
-            this.sourceProduct = operator.getTargetProduct();
+            this.sourceProduct = GPF.createProduct("S2Resampling", params, sourceProducts);
             // Dirty hack, but no other way to clear productList and productMap from OperatorContext
             setSourceProducts();
             setSourceProduct("source", this.sourceProduct);
