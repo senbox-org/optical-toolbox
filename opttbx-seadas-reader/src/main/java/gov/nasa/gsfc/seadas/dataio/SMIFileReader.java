@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import static java.lang.String.*;
 
@@ -206,6 +207,8 @@ public class SMIFileReader extends SeadasFileReader {
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
                 }
+            } else if (variableRank == 3) {
+                add3DNewBands(product, variable, bandToVariableMap);
             } else if (variableRank == 4) {
                 final int[] dimensions = variable.getShape();
                 final int height = dimensions[2];
