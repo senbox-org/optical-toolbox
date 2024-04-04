@@ -1724,6 +1724,9 @@ public abstract class SeadasFileReader {
                 if (wvl == null) {
                     wvl = ncFile.findVariable("wavelength_3d");
                 }
+                if (wvl == null) {
+                    wvl = ncFile.findVariable("wavelength");
+                }
             } else {
                 wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
             }
