@@ -1,0 +1,270 @@
+{
+  "id": "ECOSTRESS_L1B_GEO_32259_019_20240314T235129_0601_01_h5",
+  "decodeQualification": "SUITABLE",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "14-MAR-2024 23:51:30.406857",
+    "endTime": "14-MAR-2024 23:52:22.376114",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 11.931546747851034,
+          "lon": 61.31662095925651
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 12.409059417682952,
+          "lon": 62.366695870643575
+        }
+      ],
+      "reverseAccuracy": 0.5
+    },
+    "bands": [
+      {
+        "name": "Geolocation_height",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "m",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": -55.573406
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": -65.44578
+          }
+        ]
+      },
+      {
+        "name": "Geolocation_land_fraction",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "percentage",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1570,
+            "y": 1446,
+            "value": 0.0
+          },
+          {
+            "x": 3296,
+            "y": 2057,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Geolocation_latitude",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2970,
+            "y": 4197,
+            "value": 11.676064
+          },
+          {
+            "x": 3285,
+            "y": 5229,
+            "value": 11.338469
+          }
+        ]
+      },
+      {
+        "name": "Geolocation_line_start_time_j2000",
+        "description": "J2000 time of first pixel in line",
+        "bandWidth": 1,
+        "bandHeight": 5632,
+        "geophysicalUnit": "second",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3751,
+            "value": 7.6373242E8
+          },
+          {
+            "x": 0,
+            "y": 5144,
+            "value": 7.6373242E8
+          }
+        ]
+      },
+      {
+        "name": "Geolocation_longitude",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4083,
+            "y": 2729,
+            "value": 62.079975
+          },
+          {
+            "x": 5134,
+            "y": 2736,
+            "value": 62.67324
+          }
+        ]
+      },
+      {
+        "name": "Geolocation_solar_azimuth",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1838,
+            "y": 5065,
+            "value": 265.58167
+          },
+          {
+            "x": 53,
+            "y": 2651,
+            "value": 264.98068
+          }
+        ]
+      },
+      {
+        "name": "Geolocation_solar_zenith",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1768,
+            "y": 1110,
+            "value": 123.5286
+          },
+          {
+            "x": 1475,
+            "y": 243,
+            "value": 123.9675
+          }
+        ]
+      },
+      {
+        "name": "Geolocation_view_azimuth",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 5245,
+            "y": 3405,
+            "value": 37.18256
+          },
+          {
+            "x": 3090,
+            "y": 4036,
+            "value": 0.43550235
+          }
+        ]
+      },
+      {
+        "name": "Geolocation_view_zenith",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1252,
+            "y": 2802,
+            "value": 15.028825
+          },
+          {
+            "x": 1733,
+            "y": 4069,
+            "value": 10.431451
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/PlatformLongName",
+        "value": "ISS"
+      },
+      {
+        "path": "StandardMetadata/PGEName",
+        "value": "L1B_GEO"
+      },
+      {
+        "path": "L1GEOMetadata/AncillaryFiles",
+        "value": "0"
+      },
+      {
+        "path": "L1GEOMetadata/AncillaryFiles",
+        "value": "0"
+      },
+      {
+        "path": "L1GEOMetadata/AverageSolarZenith",
+        "value": "122.47182644241805"
+      },
+      {
+        "path": "L1GEOMetadata/OverAllLandFraction",
+        "value": "0.0"
+      },
+      {
+        "path": "StandardMetadata/PGEName",
+        "value": "L1B_GEO"
+      },
+      {
+        "path": "L1GEOMetadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "L1GEOMetadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "StandardMetadata/ProcessingLevelDescription",
+        "value": "Level 1B Geolocation Parameters"
+      }
+    ]
+  }
+}

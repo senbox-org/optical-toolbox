@@ -1,0 +1,15 @@
+package eu.esa.opt.dataio.ecostress.l1b.rad;
+
+/**
+ * Constants for ECOSTRESS L1B RAD products
+ *
+ * @author adraghici
+ */
+class EcostressL1bRadConstants {
+
+    static final String ECOSTRESS_L1B_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_RADIANCE = "/Radiance";
+    static final String ECOSTRESS_L1B_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_SWIR = "/SWIR";
+    static final String ECOSTRESS_L1B_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_FPIE_ENCODER = "/FPIEencoder";
+    static final String ECOSTRESS_L1B_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_TIME = "/Time";
+    static final String ECOSTRESS_L1B_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_L1B_RAD_METADATA = "/L1B_RADMetadata";
+}

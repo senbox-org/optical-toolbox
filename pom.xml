@@ -86,6 +86,7 @@
         <module>opttbx-avhrr-reader</module>
         <module>opttbx-c2rcc</module>
         <module>opttbx-dos</module>
+        <module>opttbx-ecostress-reader</module>
         <module>opttbx-flhmci</module>
         <module>opttbx-flhmci-ui</module>
         <module>opttbx-fub-wew</module>

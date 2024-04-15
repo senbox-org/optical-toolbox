@@ -1,0 +1,12 @@
+eu.esa.opt.dataio.ecostress.l1b.att.EcostressL1bAttProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l1b.geo.EcostressL1bGeoProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l1b.rad.EcostressL1bRadProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l1b.rad.map.EcostressL1bMapRadProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l2.cloud.EcostressL2CloudProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l2.lste.EcostressL2LsteProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l3.et.alexi.EcostressL3AlexiProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l3.et.pt_jpl.EcostressL3EtPtJplProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l3.l4qa.EcostressL3L4QaProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l4.esi.alexi.EcostressL4EsiAlexiProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l4.esi.pt_jpl.EcostressL4EsiPtJplProductReaderPlugIn
+eu.esa.opt.dataio.ecostress.l4.wue.EcostressL4WueProductReaderPlugIn

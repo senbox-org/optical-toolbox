@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "ECOSTRESS_L4_ESI_PT-JPL_26313_001_20230225T154024_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L4_ESI_PT-JPL_26313_001_20230225T154024_0601_01.h5",
+      "description": "ECOSTRESS L4 ESI PT JPL product"
+    }
+  ]
+}

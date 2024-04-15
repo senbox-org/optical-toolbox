@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01.h5",
+      "description": "ECOSTRESS L1B RAD product"
+    }
+  ]
+}

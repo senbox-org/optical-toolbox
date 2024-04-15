@@ -1,0 +1,12 @@
+package eu.esa.opt.dataio.ecostress.l3.et.alexi;
+
+/**
+ * Constants for ECOSTRESS L3 ET ALEXI products
+ *
+ * @author adraghici
+ */
+class EcostressL3AlexiConstants {
+
+    static final String ECOSTRESS_L3_ET_ALEXI_PRODUCT_DATA_DEFINITIONS_GROUP_L3_ET_ALEXI_METADATA = "/L3_ET_ALEXI Metadata";
+    static final String ECOSTRESS_L3_ET_ALEXI_PRODUCT_DATA_DEFINITIONS_GROUP_EVAPOTRANSPIRATION_ALEXI = "/EVAPOTRANSPIRATION ALEXI";
+}
