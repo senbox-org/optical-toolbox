@@ -1729,6 +1729,9 @@ public abstract class SeadasFileReader {
                 }
             } else {
                 wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+                if (wvl == null) {
+                    wvl = ncFile.findVariable("wavelength");
+                }
             }
             // wavenlengths for modis L2 files
             if (wvl == null) {
