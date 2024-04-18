@@ -24,7 +24,7 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
 
     private static final String DEFAULT_FILE_EXTENSION = ".nc";
 
-    public static final String READER_DESCRIPTION = "PACE OCIS L1B Products";
+    public static final String READER_DESCRIPTION = "PACE OCI L1B Products";
     public static final String FORMAT_NAME = "PACE-L1B";
 
 
@@ -59,7 +59,8 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
                 Attribute scene_title = ncfile.findGlobalAttribute("title");
 
                 if (scene_title != null) {
-                    if (scene_title.toString().contains("PACE OCIS Level-1B Data")) {
+                    if (scene_title.toString().contains("PACE OCIS Level-1B Data") ||
+                            scene_title.toString().contains("PACE OCI Level-1B Data")) {
                         if (DEBUG) {
                             System.out.println(file);
                         }

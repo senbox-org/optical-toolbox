@@ -7,6 +7,7 @@ import com.bc.ceres.binding.ValidationException;
 import com.bc.ceres.binding.ValueSet;
 import com.bc.ceres.swing.binding.BindingContext;
 import com.bc.ceres.swing.binding.PropertyPane;
+import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.graphbuilder.gpf.ui.BaseOperatorUI;
 import org.esa.snap.graphbuilder.gpf.ui.OperatorUIUtils;
@@ -81,6 +82,18 @@ public class GenericRegionMergingUI extends BaseOperatorUI {
         String[] referenceBands = propertySet.getProperty(SOURCE_BAND_NAMES_PROPERTY_NAME).getValue();
         if (referenceBands == null || referenceBands.length < 1) {
             return new UIValidation(UIValidation.State.WARNING, "Please select at least one band.");
+        }
+        if (hasSourceProducts()) {
+            final Product sourceProduct = this.sourceProducts[0];
+            final Band firstSelectedSourceBand = sourceProduct.getBand(referenceBands[0]);
+            final int targetWidth = firstSelectedSourceBand.getRasterWidth();
+            final int targetHeight = firstSelectedSourceBand.getRasterHeight();
+            for (int i = 1; i < referenceBands.length; i++) {
+                final Band band = sourceProduct.getBand(referenceBands[i]);
+                if (targetWidth != band.getRasterWidth() || targetHeight != band.getRasterHeight()) {
+                    return new UIValidation(UIValidation.State.WARNING, "Please select the bands with the same resolution.");
+                }
+            }
         }
         return new UIValidation(UIValidation.State.OK, "");
     }
