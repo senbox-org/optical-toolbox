@@ -22,48 +22,26 @@ import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.iosp.hdf5.H5iosp;
+import ucar.nc2.util.DebugFlags;
+import ucar.nc2.util.DebugFlagsImpl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
-public class L1ProductReaderPlugIn implements ProductReaderPlugIn {
+public class NSIDCProductReaderPlugIn implements ProductReaderPlugIn {
 
     // Set to "true" to output debugging information.
     // Don't forget to setback to "false" in production code!
     //
     private static final boolean DEBUG = false;
 
-    private static final String DEFAULT_FILE_EXTENSION = ".hdf";
+    private static final String DEFAULT_FILE_EXTENSION = ".nc";
 
-    private static final String DEFAULT_FILE_EXTENSION_L1A_GAC = ".L1A_GAC";
-    private static final String DEFAULT_FILE_EXTENSION_L1A_LAC = ".L1A_LAC";
-    private static final String DEFAULT_FILE_EXTENSION_L1B_GAC = ".L1B_GAC";
-    private static final String DEFAULT_FILE_EXTENSION_L1B_LAC = ".L1B_LAC";
-    private static final String DEFAULT_FILE_EXTENSION_L1A_MLAC = ".L1A_MLAC";
-    private static final String DEFAULT_FILE_EXTENSION_L1A_HRPT = ".L1A_H*";
-    private static final String DEFAULT_FILE_EXTENSION_L1A_NC = ".L1A.nc";
+    public static final String READER_DESCRIPTION = "NSIDC CDR file";
+    public static final String FORMAT_NAME = "Level3_NSIDC_CDR";
 
-
-    public static final String READER_DESCRIPTION = "SeaDAS-Supported Level 1 Products";
-    public static final String FORMAT_NAME = "SeaDAS-L1";
-
-    private static final String[] supportedProductTypes = {
-            "CZCS Level-1A Data",
-            "CZCS Level-1B",
-            "MOS Level-1B",
-            "OSMI Level-1A Data",
-            "OSMI Level-1B",
-            "OCTS Level-1A GAC Data",
-            "SeaWiFS Level-1B",
-            "SeaWiFS Level-1A Data",
-            "Hawkeye Level-1A Data",
-//            "PACE OCI Level-1B Data",
-    };
-    private static final Set<String> supportedProductTypeSet = new HashSet<>(Arrays.asList(supportedProductTypes));
 
     /**
      * Checks whether the given object is an acceptable input for this product reader and if so, the method checks if it
@@ -71,7 +49,7 @@ public class L1ProductReaderPlugIn implements ProductReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File file = getInputFile(input);
+        final File file = SeadasProductReader.getInputFile(input);
         if (file == null) {
             return DecodeQualification.UNABLE;
         }
@@ -88,32 +66,31 @@ public class L1ProductReaderPlugIn implements ProductReaderPlugIn {
             return DecodeQualification.UNABLE;
         }
         NetcdfFile ncfile = null;
+        H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
+
         try {
             ncfile = NetcdfFileOpener.open(file.getPath());
             if (ncfile != null) {
+                Attribute sensor = ncfile.findGlobalAttribute("sensor");
 
-                Attribute titleAttribute = ncfile.findGlobalAttributeIgnoreCase("title");
-
-                if (titleAttribute != null) {
-
-                    String title = titleAttribute.getStringValue();
-
-                    if (title != null) {
-                        if (supportedProductTypeSet.contains(title.trim())) {
-                            if (DEBUG) {
-                                System.out.println(file);
-                            }
-                            ncfile.close();
-                            return DecodeQualification.INTENDED;
-                        } else {
-                            if (DEBUG) {
-                                System.out.println("# Unrecognized attribute Title=[" + title + "]: " + file);
-                            }
+                if (sensor != null) {
+                    if (sensor.toString().contains("Special Sensor Microwave Imager/Sounder")) {
+                        if (DEBUG) {
+                            System.out.println(file);
+                        }
+                        ncfile.close();
+                        DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
+                        debugFlags.set("HdfEos/turnOff",false);
+                        H5iosp.setDebugFlags(debugFlags);
+                        return DecodeQualification.INTENDED;
+                    } else {
+                        if (DEBUG) {
+                            System.out.println("# Unrecognized sensor =[" + sensor + "]: " + file);
                         }
                     }
                 } else {
                     if (DEBUG) {
-                        System.out.println("# Missing attribute 'Title': " + file);
+                        System.out.println("# Missing scene title attribute': " + file);
                     }
                 }
             } else {
@@ -126,6 +103,9 @@ public class L1ProductReaderPlugIn implements ProductReaderPlugIn {
                 System.out.println("# I/O exception caught: " + file);
             }
         } finally {
+            DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
+            debugFlags.set("HdfEos/turnOff",false);
+            H5iosp.setDebugFlags(debugFlags);
             if (ncfile != null) {
                 try {
                     ncfile.close();
@@ -182,14 +162,7 @@ public class L1ProductReaderPlugIn implements ProductReaderPlugIn {
     public String[] getDefaultFileExtensions() {
         // todo: return regular expression to clean up the extensions.
         return new String[]{
-                DEFAULT_FILE_EXTENSION,
-                DEFAULT_FILE_EXTENSION_L1A_GAC,
-                DEFAULT_FILE_EXTENSION_L1A_LAC,
-                DEFAULT_FILE_EXTENSION_L1B_GAC,
-                DEFAULT_FILE_EXTENSION_L1B_LAC,
-                DEFAULT_FILE_EXTENSION_L1A_MLAC,
-                DEFAULT_FILE_EXTENSION_L1A_HRPT,
-                DEFAULT_FILE_EXTENSION_L1A_NC
+                DEFAULT_FILE_EXTENSION
         };
     }
 
@@ -216,18 +189,5 @@ public class L1ProductReaderPlugIn implements ProductReaderPlugIn {
     public String[] getFormatNames() {
         return new String[]{FORMAT_NAME};
     }
-
-    public File getInputFile(Object input) {
-        File inputFile;
-        if (input instanceof File) {
-            inputFile = (File) input;
-        } else if (input instanceof String) {
-            inputFile = new File((String) input);
-        } else {
-            return null;
-        }
-        return inputFile;
-    }
-
 
 }
