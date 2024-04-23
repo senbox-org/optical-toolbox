@@ -19,4 +19,11 @@ public class EcostressL4EsiAlexiUsdaProductReader extends EcostressL4EsiAlexiPro
         super(readerPlugIn);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    protected String getRemotePlatformName() {
+        return EcostressL4EsiAlexiUsdaConstants.ECOSTRESS_L4_ESI_ALEXI_USDA_REMOTE_PLATFORM_NAME;
+    }
+
 }

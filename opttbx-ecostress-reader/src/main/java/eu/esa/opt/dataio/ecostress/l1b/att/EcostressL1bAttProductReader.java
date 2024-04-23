@@ -50,4 +50,13 @@ class EcostressL1bAttProductReader extends EcostressAbstractProductReader {
     protected List<Band> getBandsList(EcostressFile ecostressFile) {
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL1bAttConstants.ECOSTRESS_L1B_ATT_PRODUCT_DATA_DEFINITIONS_GROUP_EPHEMERIS, EcostressL1bAttConstants.ECOSTRESS_L1B_ATT_PRODUCT_DATA_DEFINITIONS_GROUP_ATTITUDE, EcostressL1bAttConstants.ECOSTRESS_L1B_ATT_PRODUCT_DATA_DEFINITIONS_GROUP_UNCORRECTED_EPHEMERIS, EcostressL1bAttConstants.ECOSTRESS_L1B_ATT_PRODUCT_DATA_DEFINITIONS_GROUP_UNCORRECTED_ATTITUDE);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL1bAttConstants.ECOSTRESS_L1B_ATT_REMOTE_PLATFORM_NAME;
+    }
+
 }

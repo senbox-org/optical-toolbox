@@ -48,4 +48,12 @@ public class EcostressL4EsiPtJplProductReader extends EcostressAbstractProductRe
     protected List<Band> getBandsList(EcostressFile ecostressFile) {
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL4EsiPtJplConstants.ECOSTRESS_L4_ESI_PT_JPL_PRODUCT_DATA_DEFINITIONS_GROUP_EVAPORATIVE_STRESS_INDEX_PT_JPL);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL4EsiPtJplConstants.ECOSTRESS_L4_ESI_PT_JPL_REMOTE_PLATFORM_NAME;
+    }
 }

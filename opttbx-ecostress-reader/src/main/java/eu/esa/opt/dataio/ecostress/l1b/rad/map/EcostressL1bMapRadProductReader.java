@@ -49,5 +49,11 @@ public class EcostressL1bMapRadProductReader extends EcostressAbstractProductRea
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL1bMapRadConstants.ECOSTRESS_L1B_MAP_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_MAPPED);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL1bMapRadConstants.ECOSTRESS_L1B_MAP_RAD_REMOTE_PLATFORM_NAME;
+    }
 }

@@ -48,4 +48,12 @@ public class EcostressL4WueProductReader extends EcostressAbstractProductReader 
     protected List<Band> getBandsList(EcostressFile ecostressFile) {
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL4WueConstants.ECOSTRESS_L4_WUE_PRODUCT_DATA_DEFINITIONS_GROUP_WATER_USE_EFFICIENCY);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL4WueConstants.ECOSTRESS_L4_WUE_REMOTE_PLATFORM_NAME;
+    }
 }

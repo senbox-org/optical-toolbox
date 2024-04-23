@@ -50,5 +50,12 @@ public class EcostressL1bGeoProductReader extends EcostressAbstractProductReader
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL1bGeoConstants.ECOSTRESS_L1B_GEO_PRODUCT_DATA_DEFINITIONS_GROUP_GEOLOCATION);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL1bGeoConstants.ECOSTRESS_L1B_GEO_REMOTE_PLATFORM_NAME;
+    }
 
 }

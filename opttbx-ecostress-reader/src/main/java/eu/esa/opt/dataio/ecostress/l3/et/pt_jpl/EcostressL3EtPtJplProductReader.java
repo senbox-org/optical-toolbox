@@ -49,5 +49,11 @@ public class EcostressL3EtPtJplProductReader extends EcostressAbstractProductRea
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL3EtPtJplConstants.ECOSTRESS_L3_ET_PT_JPL_PRODUCT_DATA_DEFINITIONS_GROUP_EVAPOTRANSPIRATION_PT_JPL);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL3EtPtJplConstants.ECOSTRESS_L3_ET_PT_JPL_REMOTE_PLATFORM_NAME;
+    }
 }

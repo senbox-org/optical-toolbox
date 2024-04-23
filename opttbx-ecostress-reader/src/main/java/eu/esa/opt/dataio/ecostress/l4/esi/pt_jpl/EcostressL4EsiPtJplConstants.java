@@ -9,4 +9,5 @@ class EcostressL4EsiPtJplConstants {
 
     static final String ECOSTRESS_L4_ESI_PT_JPL_PRODUCT_DATA_DEFINITIONS_GROUP_L4_ESI_PT_JPL_METADATA = "/L4_ESI_PT-JPL Metadata";
     static final String ECOSTRESS_L4_ESI_PT_JPL_PRODUCT_DATA_DEFINITIONS_GROUP_EVAPORATIVE_STRESS_INDEX_PT_JPL = "/Evaporative Stress Index PT-JPL";
+    static final String ECOSTRESS_L4_ESI_PT_JPL_REMOTE_PLATFORM_NAME = "ecostress_eco4esiptjpl";
 }

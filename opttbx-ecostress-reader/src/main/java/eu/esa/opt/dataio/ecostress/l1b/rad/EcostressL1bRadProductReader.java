@@ -49,5 +49,11 @@ public class EcostressL1bRadProductReader extends EcostressAbstractProductReader
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL1bRadConstants.ECOSTRESS_L1B_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_RADIANCE, EcostressL1bRadConstants.ECOSTRESS_L1B_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_SWIR, EcostressL1bRadConstants.ECOSTRESS_L1B_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_FPIE_ENCODER, EcostressL1bRadConstants.ECOSTRESS_L1B_RAD_PRODUCT_DATA_DEFINITIONS_GROUP_TIME);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL1bRadConstants.ECOSTRESS_L1B_RAD_REMOTE_PLATFORM_NAME;
+    }
 }

@@ -36,6 +36,16 @@
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-gpf</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-product-library-v2</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-remote-products-repository</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>ncsa.hdf</groupId>

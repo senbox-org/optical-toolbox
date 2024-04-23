@@ -49,5 +49,11 @@ public class EcostressL3AlexiProductReader extends EcostressAbstractProductReade
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL3AlexiConstants.ECOSTRESS_L3_ET_ALEXI_PRODUCT_DATA_DEFINITIONS_GROUP_EVAPOTRANSPIRATION_ALEXI);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL3AlexiConstants.ECOSTRESS_L3_ET_ALEXI_REMOTE_PLATFORM_NAME;
+    }
 }

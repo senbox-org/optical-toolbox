@@ -49,5 +49,11 @@ public class EcostressL2LsteProductReader extends EcostressAbstractProductReader
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL2LsteConstants.ECOSTRESS_L2_LSTE_PRODUCT_DATA_DEFINITIONS_GROUP_SDS);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL2LsteConstants.ECOSTRESS_L2_LSTE_REMOTE_PLATFORM_NAME;
+    }
 }

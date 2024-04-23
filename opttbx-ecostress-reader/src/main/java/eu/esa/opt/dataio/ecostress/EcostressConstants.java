@@ -23,4 +23,7 @@ public class EcostressConstants {
     public static final String ECOSTRESS_LONGITUDE_BAND_NAME = "longitude";
 
     public static final String ECOSTRESS_DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String REMOTE_REPOSITORY_NAME = "USGS";
+    public static final String REMOTE_MISSION_NAME = "ECOSTRESS";
 }

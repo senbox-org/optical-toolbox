@@ -49,5 +49,11 @@ public class EcostressL4EsiAlexiProductReader extends EcostressAbstractProductRe
         return EcostressUtils.extractBandsObjects(ecostressFile, EcostressL4EsiAlexiConstants.ECOSTRESS_L4_ESI_ALEXI_PRODUCT_DATA_DEFINITIONS_GROUP_X);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getRemotePlatformName() {
+        return EcostressL4EsiAlexiConstants.ECOSTRESS_L4_ESI_ALEXI_REMOTE_PLATFORM_NAME;
+    }
 }
