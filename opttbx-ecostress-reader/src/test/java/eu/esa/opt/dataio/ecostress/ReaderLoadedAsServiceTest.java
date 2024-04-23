@@ -42,7 +42,7 @@ public class ReaderLoadedAsServiceTest {
             System.out.println("readerPlugIn.Descr = " + plugIn.getDescription(null));
         }
 
-        assertEquals(12, readerCount);
+        assertEquals(14, readerCount);
     }
 
 }
