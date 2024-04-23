@@ -122,12 +122,11 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
      * @param targetHeight  the height of region to be read given in the band's raster co-ordinates
      * @param targetBuffer  the destination buffer which receives the sample values to be read
      * @param pm            a monitor to inform the user about progress
-     * @throws IOException if an I/O error occurs
      * @see #readBandRasterData
      * @see #getSubsetDef
      */
     @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band targetBand, int targetOffsetX, int targetOffsetY, int targetWidth, int targetHeight, ProductData targetBuffer, ProgressMonitor pm) throws IOException {
+    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band targetBand, int targetOffsetX, int targetOffsetY, int targetWidth, int targetHeight, ProductData targetBuffer, ProgressMonitor pm) {
 
         Assert.state(sourceOffsetX == targetOffsetX, "sourceOffsetX != targetOffsetX");
         Assert.state(sourceOffsetY == targetOffsetY, "sourceOffsetY != targetOffsetY");
@@ -142,6 +141,7 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
 
     /**
      * Gets the ECOSTRESS product file object from the reader input
+     *
      * @return the ECOSTRESS product file object
      */
     protected EcostressFile getEcostressFile() {
@@ -154,6 +154,7 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
 
     /**
      * Gets the ECOSTRESS product common metadata from ECOSTRESS product file
+     *
      * @param ecostressFile the ECOSTRESS product file object
      * @return the ECOSTRESS product common metadata
      */
@@ -163,6 +164,7 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
 
     /**
      * Reads the pixel Geocoding from ECOSTRESS product which contains 'latitude' and 'longitude' bands
+     *
      * @param ecostressFile the ECOSTRESS product file object
      * @param product the ECOSTRESS product object
      * @return the pixel Geocoding
@@ -204,7 +206,8 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
 
     /**
      * Finds a band in the product by name suffix
-     * @param product the product
+     *
+     * @param product        the product
      * @param bandNameSuffix the band name suffix
      * @return the band
      */
