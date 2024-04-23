@@ -15,15 +15,18 @@ import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
 import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.CrsGeoCoding;
 import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.runtime.Config;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
 
@@ -33,6 +36,8 @@ import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP
  * @author adraghici
  */
 public abstract class EcostressAbstractProductReader extends AbstractProductReader {
+
+    private static final Logger logger = Logger.getLogger(EcostressAbstractProductReader.class.getName());
 
     /**
      * the ECOSTRESS product file object
@@ -82,7 +87,7 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
     @Override
     protected Product readProductNodesImpl() throws IOException {
         final EcostressFile ecostressFile = getEcostressFile();
-        final Dimension productSize = EcostressUtils.extractEcostressProductDimension(ecostressFile,EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
+        final Dimension productSize = EcostressUtils.extractEcostressProductDimension(ecostressFile, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
         final Product product = new Product(ecostressFile.getName(), "ECOSTRESS L1B ATT ", productSize.width, productSize.height, this);
         final MetadataElement productMetadataRoot = product.getMetadataRoot();
         for (MetadataElement commonMetadataElement : getCommonMetadataElementsList(ecostressFile)) {
@@ -99,7 +104,7 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
         product.setStartTime(EcostressUtils.extractStartTime(ecostressFile));
         product.setEndTime(EcostressUtils.extractEndTime(ecostressFile));
         product.setFileLocation(ecostressFile);
-        final GeoCoding geoCoding = readPixelBasedGeoCoding(ecostressFile, product);
+        final GeoCoding geoCoding = buildGeoCoding(ecostressFile, product);
         if (geoCoding != null) {
             product.setSceneGeoCoding(geoCoding);
         }
@@ -163,10 +168,25 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
     }
 
     /**
+     * Builds the Geocoding using available methods
+     *
+     * @param ecostressFile the ECOSTRESS product file object
+     * @param product       the ECOSTRESS product object
+     * @return the Geocoding
+     */
+    private static GeoCoding buildGeoCoding(EcostressFile ecostressFile, Product product) {
+        GeoCoding productGeoCoding = readPixelBasedGeoCoding(ecostressFile, product);
+        if (productGeoCoding != null) {
+            return productGeoCoding;
+        }
+        return buildCrsGeoCodingUsingProductMetadata(product);
+    }
+
+    /**
      * Reads the pixel Geocoding from ECOSTRESS product which contains 'latitude' and 'longitude' bands
      *
      * @param ecostressFile the ECOSTRESS product file object
-     * @param product the ECOSTRESS product object
+     * @param product       the ECOSTRESS product object
      * @return the pixel Geocoding
      */
     private static GeoCoding readPixelBasedGeoCoding(EcostressFile ecostressFile, Product product) {
@@ -202,6 +222,45 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
         final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.ANTIMERIDIAN);
         geoCoding.initialize();
         return geoCoding;
+    }
+
+    /**
+     * Builds the CrsGeoCoding using the geographic coordinates information from the product metadata.
+     *
+     * @param product the ECOSTRESS product object
+     * @return the CrsGeoCoding
+     */
+    private static GeoCoding buildCrsGeoCodingUsingProductMetadata(Product product) {
+        final MetadataElement productMetadata = product.getMetadataRoot().getElementAt(0);
+        final double topLeftLon = productMetadata.getAttributeDouble(EcostressConstants.ECOSTRESS_STANDARD_METADATA_WEST_BOUNDING_COORDINATE);
+        final double topRightLon = productMetadata.getAttributeDouble(EcostressConstants.ECOSTRESS_STANDARD_METADATA_EAST_BOUNDING_COORDINATE);
+        final double topLeftLat = productMetadata.getAttributeDouble(EcostressConstants.ECOSTRESS_STANDARD_METADATA_NORTH_BOUNDING_COORDINATE);
+        final double bottomLeftLat = productMetadata.getAttributeDouble(EcostressConstants.ECOSTRESS_STANDARD_METADATA_SOUTH_BOUNDING_COORDINATE);
+        return buildCrsGeoCoding(product, topLeftLon, topRightLon, topLeftLat, bottomLeftLat);
+    }
+
+    /**
+     * Builds the CrsGeoCoding using the provided geographic coordinates information.
+     *
+     * @param product       the ECOSTRESS product object
+     * @param topLeftLon    the top left longitude coordinate
+     * @param topRightLon   the top right longitude coordinate
+     * @param topLeftLat    the top left latitude coordinate
+     * @param bottomLeftLat the bottom left latitude coordinate
+     * @return the CrsGeoCoding
+     */
+    private static GeoCoding buildCrsGeoCoding(Product product, double topLeftLon, double topRightLon, double topLeftLat, double bottomLeftLat) {
+        final int productWidth = product.getSceneRasterWidth();
+        final int productHeight = product.getSceneRasterHeight();
+        final double pixelSizeX = Math.abs(topRightLon - topLeftLon) / (productWidth - 1);
+        final double pixelSizeY = (topLeftLat - bottomLeftLat) / (productHeight - 1);
+
+        try {
+            return new CrsGeoCoding(DefaultGeographicCRS.WGS84, productWidth, productHeight, topLeftLon, topLeftLat, pixelSizeX, pixelSizeY);
+        } catch (Exception e) {
+            logger.warning("Cannot build CRS geocoding for product '" + product.getName() + "': " + e.getMessage());
+        }
+        return null;
     }
 
     /**
