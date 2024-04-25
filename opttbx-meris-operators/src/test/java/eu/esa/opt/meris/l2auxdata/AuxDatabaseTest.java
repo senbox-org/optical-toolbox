@@ -79,5 +79,21 @@ public class AuxDatabaseTest {
         assertEquals(1, variableInfo.getEditType());
         assertEquals(1, variableInfo.getDisplayType());
         assertEquals("Number of Data Set Records", variableInfo.getComment());
+
+
+        variableInfo = auxDatabase.getVariableInfo("P11Q");
+        assertNotNull(variableInfo);
+
+        assertEquals("P11Q", variableInfo.getId());
+        assertEquals(2265, variableInfo.getOffset());
+        assertEquals(1.0, variableInfo.getScale(), 1e-8);
+        assertEquals(41, variableInfo.getDataType());
+        assertEquals(11, variableInfo.getDim1());
+        assertEquals(0, variableInfo.getDim2());
+        assertEquals(0, variableInfo.getDim3());
+        assertEquals(0, variableInfo.getEditFlag());
+        assertEquals(0, variableInfo.getEditType());
+        assertEquals(0, variableInfo.getDisplayType());
+        assertEquals("Number of Data Set Records", variableInfo.getComment());
     }
 }
