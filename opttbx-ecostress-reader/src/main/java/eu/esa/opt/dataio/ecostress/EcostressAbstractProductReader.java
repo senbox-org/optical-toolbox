@@ -106,7 +106,11 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
     @Override
     protected Product readProductNodesImpl() throws IOException {
         final EcostressFile ecostressFile = getEcostressFile();
-        final Dimension productSize = EcostressUtils.extractEcostressProductDimension(ecostressFile, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
+        final List<Band> bandsList = getBandsList(ecostressFile);
+        Dimension productSize = EcostressUtils.extractEcostressProductDimension(ecostressFile, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
+        if (productSize.height < 1 || productSize.width < 1) {
+            productSize = computeProductDimensionUsingBandsDimensions(bandsList);
+        }
         final Product product = new Product(ecostressFile.getName(), "ECOSTRESS L1B ATT ", productSize.width, productSize.height, this);
         final MetadataElement productMetadataRoot = product.getMetadataRoot();
         for (MetadataElement commonMetadataElement : getCommonMetadataElementsList(ecostressFile)) {
@@ -115,7 +119,7 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
         for (MetadataElement metadataElement : getMetadataElementsList(ecostressFile)) {
             productMetadataRoot.addElement(metadataElement);
         }
-        for (Band band : getBandsList(ecostressFile)) {
+        for (Band band : bandsList) {
             product.addBand(band);
         }
         product.setAutoGrouping(getGroupingPattern());
@@ -197,6 +201,23 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
         }
         final String remotePlatformName = getRemotePlatformName();
         return buildCrsGeoCodingUsingRemoteRepository(product, remotePlatformName);
+    }
+
+    /**
+     * Computes the product dimension by choosing the size of the biggest band
+     *
+     * @param bandList the product bands list
+     * @return the computed product dimension
+     */
+    private static Dimension computeProductDimensionUsingBandsDimensions(List<Band> bandList) {
+        final Dimension productDimension = new Dimension(0, 0);
+        for (Band band : bandList) {
+            final Dimension bandDimension = band.getRasterSize();
+            if (bandDimension.width > productDimension.width || bandDimension.height > productDimension.height) {
+                productDimension.setSize(bandDimension);
+            }
+        }
+        return productDimension;
     }
 
     /**
