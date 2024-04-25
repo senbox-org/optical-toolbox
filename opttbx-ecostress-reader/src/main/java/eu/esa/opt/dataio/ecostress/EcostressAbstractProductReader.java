@@ -241,7 +241,7 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
         final double[] latitudes = (double[]) EcostressUtils.readAndGetEcostressBandData(ecostressFile, latBand);
 
         final double resolutionInKm = RasterUtils.computeResolutionInKm(longitudes, latitudes, width, height);
-        final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, EcostressConstants.ECOSTRESS_LONGITUDE_BAND_NAME, EcostressConstants.ECOSTRESS_LATITUDE_BAND_NAME, width, height, resolutionInKm);
+        final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonBand.getName(), latBand.getName(), width, height, resolutionInKm);
 
         final boolean fractionalAccuracy = Config.instance().preferences().getBoolean(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY, false);
         final ForwardCoding forward;
@@ -293,7 +293,7 @@ public abstract class EcostressAbstractProductReader extends AbstractProductRead
                     if (remoteProduct.getName().equals(productName)) {
                         final Polygon2D remoteProductCoordinates = (Polygon2D) remoteProduct.getPolygon();
                         if (remoteProductCoordinates != null && remoteProductCoordinates.getPathCount() > 0) {
-                            final List<Point2D> coordinatePoints=extractPolygon2DCoordinates(remoteProductCoordinates);
+                            final List<Point2D> coordinatePoints = extractPolygon2DCoordinates(remoteProductCoordinates);
                             final double topLeftLon = coordinatePoints.get(0).getX();
                             final double topRightLon = coordinatePoints.get(1).getX();
                             final double topLeftLat = coordinatePoints.get(2).getY();
