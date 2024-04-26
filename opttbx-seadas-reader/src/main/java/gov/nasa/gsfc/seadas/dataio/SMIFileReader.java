@@ -258,6 +258,7 @@ public class SMIFileReader extends SeadasFileReader {
                 }
             }
         }
+        setSpectralBand(product);
         return bandToVariableMap;
     }
 
