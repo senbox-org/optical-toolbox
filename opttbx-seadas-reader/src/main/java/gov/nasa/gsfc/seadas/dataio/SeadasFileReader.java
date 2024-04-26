@@ -392,10 +392,6 @@ public abstract class SeadasFileReader {
             boolean containsGEOREGION = false;
 //            String flagMeanings = null;
             try {
-
-//                containsGEOREGION = product.getMetadataRoot().getElement("Global_Attributes").containsAttribute("processing_control_flag_percentages_GEO_REGION");
-//                String flagMeanings = product.getMetadataRoot().getElement("Band_Attributes").getElement("l2_flags").getAttribute("FLAG_MEANINGS").getData().getElemString();
-
                 MetadataElement metadataElementBand = product.getMetadataRoot().getElement("Band_Attributes");
                 if (metadataElementBand != null) {
                     MetadataElement metadataElementL2Flags = metadataElementBand.getElement("l2_flags");
@@ -421,47 +417,11 @@ public abstract class SeadasFileReader {
             Band QFBand = product.getBand("l2_flags");
             if (QFBand != null) {
 
-                String ATMFAIL_Description = "Atmospheric correction failure";
-                String LAND_Description = "Land";
-                String PRODWARN_Description = "One (or more) product algorithms generated a warning";
-                String HIGLINT_Description = "High glint determined";
-                String HILT_Description = "High (or saturating) TOA radiance";
-                String HISATZEN_Description = "Large satellite zenith angle";
-                String COASTZ_Description = "Shallow water (<30m)";
-                String SPARE8_Description = "Unused";
-                String STRAYLIGHT_Description = "Straylight determined";
-                String CLDICE_Description = "Cloud/Ice determined";
-                String COCCOLITH_Description = "Coccolithophores detected";
-                String TURBIDW_Description = "Turbid water determined";
-                String HISOLZEN_Description = "High solar zenith angle";
-                String SPARE14_Description = "Unused";
-                String LOWLW_Description = "Low Lw @ 555nm (possible cloud shadow)";
-                String CHLFAIL_Description = "Chlorophyll algorithm failure";
-                String NAVWARN_Description = "Navigation suspect";
-                String ABSAER_Description = "Absorbing Aerosols determined";
-                String SPARE19_Description = "Unused";
-                String MAXAERITER_Description = "Maximum iterations reached for NIR iteration";
-                String MODGLINT_Description = "Moderate glint determined";
-                String CHLWARN_Description = "Chlorophyll out-of-bounds (<0.01 or >100 mg m^-3)";
-                String ATMWARN_Description = "Atmospheric correction warning; Epsilon out-of-bounds";
-                String SPARE24_Description = "Unused";
-                String SEAICE_Description = "Sea ice determined";
-                String NAVFAIL_Description = "Navigation failure";
-                String FILTER_Description = "Insufficient data for smoothing filter";
-                String SPARE28_Description = "Unused";
-                String BOWTIEDEL_Description = "Bowtie deleted pixels (VIIRS)";
-                String HIPOL_Description = "High degree of polariztion determined";
-                String PRODFAIL_Description = "One (or more) product algorithms produced a failure";
-                String SPARE32_Description = "Unused";
-
-                String GEOREGION_Description = "User supplied geolocation region";
-
                 String composite1Description = "Composite1 Mask (see preferences to set)";
                 String composite2Description = "Composite2 Mask (see preferences to set)";
                 String composite3Description = "Composite3 Mask (see preferences to set)";
                 String Water_Description = "Not land (l2_flags.LAND)";
-                
-                
+
                 
                 FlagCoding flagCoding = new FlagCoding("L2Flags");
                 int flagBits[] = {0x01,0x02,0x04,0x08,0x010,0x020,0x040,0x080,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}; //todo finish this list
@@ -481,58 +441,8 @@ public abstract class SeadasFileReader {
                         flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
                     }
 
-//                    switch (flagNames[bit]) {
-//                        case "ATMFAIL":
-//                            flagCoding.addFlag(flagNames[bit], flagBits[bit], ATMFAIL_Description);
-//                            break;
-//                        case "LAND":
-//                            flagCoding.addFlag(flagNames[bit], flagBits[bit], LAND_Description);
-//                            break;
-////                        default:
-////                            flagCoding.addFlag(flagNames[bit], flagBits[bit], flagNames[bit]);
-////                            break;
-//                    }
                 }
 
-
-//                flagCoding.addFlag("ATMFAIL", 0x01, ATMFAIL_Description);
-//                flagCoding.addFlag("LAND", 0x02, LAND_Description);
-//                flagCoding.addFlag("PRODWARN", 0x04, PRODWARN_Description);
-//                flagCoding.addFlag("HIGLINT", 0x08, HIGLINT_Description);
-//                flagCoding.addFlag("HILT", 0x10, HILT_Description);
-//                flagCoding.addFlag("HISATZEN", 0x20, HISATZEN_Description);
-//                flagCoding.addFlag("COASTZ", 0x40, COASTZ_Description);
-//                if (containsGEOREGION) {
-//                    flagCoding.addFlag("GEOREGION", 0x80, SPARE8_Description);
-//                } else {
-//                    flagCoding.addFlag("SPARE8", 0x80, SPARE8_Description);
-//                }
-//                flagCoding.addFlag("STRAYLIGHT", 0x100, STRAYLIGHT_Description);
-//                flagCoding.addFlag("CLDICE", 0x200, CLDICE_Description);
-//                flagCoding.addFlag("COCCOLITH", 0x400, COCCOLITH_Description);
-//                flagCoding.addFlag("TURBIDW", 0x800, TURBIDW_Description);
-//                flagCoding.addFlag("HISOLZEN", 0x1000, HISOLZEN_Description);
-//                flagCoding.addFlag("SPARE14", 0x2000, SPARE14_Description);
-//                flagCoding.addFlag("LOWLW", 0x4000, LOWLW_Description);
-//                flagCoding.addFlag("CHLFAIL", 0x8000, CHLFAIL_Description);
-//                flagCoding.addFlag("NAVWARN", 0x10000, NAVWARN_Description);
-//                flagCoding.addFlag("ABSAER", 0x20000, ABSAER_Description);
-//                flagCoding.addFlag("SPARE19", 0x40000, SPARE19_Description);
-//                flagCoding.addFlag("MAXAERITER", 0x80000, MAXAERITER_Description);
-//                flagCoding.addFlag("MODGLINT", 0x100000, MODGLINT_Description);
-//                flagCoding.addFlag("CHLWARN", 0x200000, CHLWARN_Description);
-//                flagCoding.addFlag("ATMWARN", 0x400000, ATMWARN_Description);
-//                flagCoding.addFlag("SPARE24", 0x800000, SPARE24_Description);
-//                flagCoding.addFlag("SEAICE", 0x1000000, SEAICE_Description);
-//                flagCoding.addFlag("NAVFAIL", 0x2000000, NAVFAIL_Description);
-//                flagCoding.addFlag("FILTER", 0x4000000, FILTER_Description);
-//                flagCoding.addFlag("SPARE28", 0x8000000, SPARE28_Description);
-//                flagCoding.addFlag("BOWTIEDEL", 0x10000000, BOWTIEDEL_Description);
-//                flagCoding.addFlag("HIPOL", 0x20000000, HIPOL_Description);
-//                flagCoding.addFlag("PRODFAIL", 0x40000000, PRODFAIL_Description);
-//                flagCoding.addFlag("SPARE32", 0x80000000, SPARE32_Description);
-                
-                
                 product.getFlagCodingGroup().add(flagCoding);
                 QFBand.setSampleCoding(flagCoding);
 
@@ -572,14 +482,6 @@ public abstract class SeadasFileReader {
 
 
                 Mask GEOREGION_Mask = null;
-
-                Mask SPARE8_Mask = null;
-                Mask SPARE14_Mask = null;
-                Mask SPARE19_Mask = null;
-                Mask SPARE24_Mask = null;
-                Mask SPARE28_Mask = null;
-                Mask SPARE32_Mask = null;
-
 
 
 
@@ -753,30 +655,6 @@ public abstract class SeadasFileReader {
                             continue;
                         }
 
-//                        if (is_SPARE_MaskInclude()) {
-//                            if (flagCoding.getFlag(flagName) != null && !product.getMaskGroup().contains(flagName)) {
-//                                createSPAREMask(product, flagName);
-//                            }
-//
-////                                if (SPARE8_Mask == null && flagName.equals("SPARE8") && !containsGEOREGION) {
-////                                SPARE8_Mask = createSPARE8Mask(product, SPARE8_Description);
-////                            }
-////                            if (SPARE14_Mask == null && flagName.equals("SPARE14")) {
-////                                SPARE14_Mask = createSPARE14Mask(product, SPARE14_Description);
-////                            }
-////                            if (SPARE19_Mask == null && flagName.equals("SPARE19")) {
-////                                SPARE19_Mask = createSPARE19Mask(product, SPARE19_Description);
-////                            }
-////                            if (SPARE24_Mask == null && flagName.equals("SPARE24")) {
-////                                SPARE24_Mask = createSPARE24Mask(product, SPARE24_Description);
-////                            }
-////                            if (SPARE28_Mask == null && flagName.equals("SPARE28")) {
-////                                SPARE28_Mask = createSPARE28Mask(product, SPARE28_Description);
-////                            }
-////                            if (SPARE32_Mask == null && flagName.equals("SPARE32")) {
-////                                SPARE32_Mask = createSPARE32Mask(product, SPARE32_Description);
-////                            }
-//                        }
                     }
                 }
 
@@ -937,120 +815,8 @@ public abstract class SeadasFileReader {
                     }
                 }
 
-//                System.out.println("Looping on nodeNames");
-//                for (String nodeName : product.getFlagCodingGroup().getNodeNames()) {
-//                    System.out.println("nodeName=" + nodeName);
-//                }
-//
-//
-//
-//                if (product.getFlagCodingGroup().contains("ATMFAIL") && !product.getMaskGroup().contains("ATMFAIL")) {
-//                   ATMFAIL_Mask = createMaskATMFAIL(product);
-//                }
-//
-//                if (ATMFAIL_Mask == null) {
-//                    ATMFAIL_Mask = createMaskATMFAIL(product);
-//                }
-//
-//                if (LAND_Mask == null) {
-//                    LAND_Mask = createMaskLAND(product);
-//                }
-//
-//                if (PRODWARN_Mask == null) {
-//                    PRODWARN_Mask = createMaskPRODWARN(product);
-//                }
-//
-//                if (HIGLINT_Mask == null) {
-//                    HIGLINT_Mask = createMaskHIGLINT(product);
-//                }
-//
-//                if (HILT_Mask == null) {
-//                    HILT_Mask = createMaskHILT(product);
-//                }
-//
-//                if (HISATZEN_Mask == null) {
-//                    HISATZEN_Mask = createMaskHISATZEN(product);
-//                }
-//
-//                if (COASTZ_Mask == null) {
-//                    COASTZ_Mask = createMaskCOASTZ(product);
-//                }
-//
-//                if (STRAYLIGHT_Mask == null) {
-//                    STRAYLIGHT_Mask = createMaskSTRAYLIGHT(product);
-//                }
-//
-//                if (CLDICE_Mask == null) {
-//                    CLDICE_Mask = createMaskCLDICE(product);
-//                }
-//
-//                if (COCCOLITH_Mask == null) {
-//                    COCCOLITH_Mask = createMaskCOCCOLITH(product);
-//                }
-//
-//                if (TURBIDW_Mask == null) {
-//                    TURBIDW_Mask = createMaskTURBIDW(product);
-//                }
-//
-//                if (HISOLZEN_Mask == null) {
-//                    HISOLZEN_Mask = createMaskHISOLZEN(product);
-//                }
-//
-//                if (LOWLW_Mask == null) {
-//                    LOWLW_Mask = createMaskLOWLW(product);
-//                }
-//
-//                if (CHLFAIL_Mask == null) {
-//                    CHLFAIL_Mask = createMaskCHLFAIL(product);
-//                }
-//
-//                if (NAVWARN_Mask == null) {
-//                    NAVWARN_Mask = createMaskNAVWARN(product);
-//                }
-//
-//                if (ABSAER_Mask == null) {
-//                    ABSAER_Mask = createMaskABSAER(product);
-//                }
-//
-//                if (MAXAERITER_Mask == null) {
-//                    MAXAERITER_Mask = createMaskMAXAERITER(product);
-//                }
-//
-//                if (MODGLINT_Mask == null) {
-//                    MODGLINT_Mask = createMaskMODGLINT(product);
-//                }
-//
-//                if (CHLWARN_Mask == null) {
-//                    CHLWARN_Mask = createMaskCHLWARN(product);
-//                }
-//
-//                if (ATMWARN_Mask == null) {
-//                    ATMWARN_Mask = createMaskATMWARN(product);
-//                }
-//
-//                if (SEAICE_Mask == null) {
-//                    SEAICE_Mask = createMaskSEAICE(product);
-//                }
-//
-//                if (NAVFAIL_Mask == null) {
-//                    NAVFAIL_Mask = createMaskNAVFAIL(product);
-//                }
-//
-//                if (FILTER_Mask == null) {
-//                    FILTER_Mask = createMaskFILTER(product);
-//                }
-//
-//                if (BOWTIEDEL_Mask == null) {
-//                    BOWTIEDEL_Mask = createMaskBOWTIEDEL(product);
-//                }
-//
-//                if (HIPOL_Mask == null) {
-//                    HIPOL_Mask = createMaskHIPOL(product);
-//                }
-//
-//                if (PRODFAIL_Mask == null) {
-//                    PRODFAIL_Mask = createMaskPRODFAIL(product);
-//                }
+
+
 
                 if (isComposite1MaskInclude() && composite1Mask == null) {
                     composite1Mask = createMaskComposite1(product, composite1Description);
@@ -1069,40 +835,20 @@ public abstract class SeadasFileReader {
                 }
 
 
-//                if (GEOREGION_Mask == null && containsGEOREGION) {
-//                    GEOREGION_Mask = createMaskGEOREGION(product);
-//                }
-//
-//                if (is_SPARE_MaskInclude()) {
-//                    if (SPARE8_Mask == null && !containsGEOREGION) {
-//                        SPARE8_Mask = createSPARE8Mask(product, SPARE8_Description);
-//                    }
-//                    if (SPARE14_Mask == null) {
-//                        SPARE14_Mask = createSPARE14Mask(product, SPARE14_Description);
-//                    }
-//                    if (SPARE19_Mask == null) {
-//                        SPARE19_Mask = createSPARE19Mask(product, SPARE19_Description);
-//                    }
-//                    if (SPARE24_Mask == null) {
-//                        SPARE24_Mask = createSPARE24Mask(product, SPARE24_Description);
-//                    }
-//                    if (SPARE28_Mask == null) {
-//                        SPARE28_Mask = createSPARE28Mask(product, SPARE28_Description);
-//                    }
-//                    if (SPARE32_Mask == null) {
-//                        SPARE32_Mask = createSPARE32Mask(product, SPARE32_Description);
-//                    }
-//                }
-//
-
-
                 
 
                 String[] bandNames = product.getBandNames();
                 for (String bandName : bandNames) {
                     RasterDataNode raster = product.getRasterDataNode(bandName);
                     if (is_ATMFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(ATMFAIL_Mask);}
-                    if (is_LAND_MaskEnabled()) {raster.getOverlayMaskGroup().add(LAND_Mask);}
+
+
+                    if (is_LAND_MaskEnabled() && product.getMaskGroup().contains("LAND")) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get("LAND"));
+                    }
+
+
+//                    if (is_LAND_MaskEnabled()) {raster.getOverlayMaskGroup().add(LAND_Mask);}
                     if (is_PRODWARN_MaskEnabled()) {raster.getOverlayMaskGroup().add(PRODWARN_Mask);}
                     if (is_HIGLINT_MaskEnabled()) {raster.getOverlayMaskGroup().add(HIGLINT_Mask);}
                     if (is_HILT_MaskEnabled()) {raster.getOverlayMaskGroup().add(HILT_Mask);}
