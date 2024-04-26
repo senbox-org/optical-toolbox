@@ -24,7 +24,7 @@
     <parent>
         <artifactId>optical-toolbox</artifactId>
         <groupId>eu.esa.opt</groupId>
-        <version>10.0.0</version>
+        <version>10.0.1</version>
     </parent>
 
     <artifactId>opttbx-rapideye-reader</artifactId>
@@ -111,7 +111,7 @@
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-runtime</artifactId>
-            <version>${opttbx.version}</version>
+            <version>${snap.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
