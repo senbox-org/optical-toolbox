@@ -22,7 +22,7 @@
     <parent>
         <artifactId>optical-toolbox</artifactId>
         <groupId>eu.esa.opt</groupId>
-        <version>10.0.1</version>
+        <version>10.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>opttbx-deimos-reader</artifactId>
