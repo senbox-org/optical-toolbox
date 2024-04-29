@@ -17,13 +17,15 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.ProductIOException;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Variable;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,8 +84,13 @@ public class L1ASeawifsFileReader extends SeadasFileReader {
         latBand.setData(lats);
         ProductData lons = ProductData.createInstance(longitudes);
         lonBand.setData(lons);
-        product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, null, 10));
-        
+        try {
+            final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+            product.setSceneGeoCoding(geoCoding);
+        } catch (IOException e) {
+            throw new ProductIOException(e.getMessage());
+        }
+
         addFlagsAndMasks(product);
 
         return product;

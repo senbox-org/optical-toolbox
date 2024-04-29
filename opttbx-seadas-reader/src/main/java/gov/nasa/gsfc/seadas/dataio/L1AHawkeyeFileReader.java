@@ -1,8 +1,8 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.ProductIOException;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
@@ -131,7 +131,7 @@ public class L1AHawkeyeFileReader extends SeadasFileReader {
                 latBand.setData(lattitudes);
                 ProductData longitudes = ProductData.createInstance(lonTiePoints);
                 lonBand.setData(longitudes);
-                product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, null, 10));
+                product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand));
                 geoNcFile.close();
 
             }
