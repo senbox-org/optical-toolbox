@@ -273,7 +273,7 @@ public abstract class SeadasFileReader {
             case "ATMFAIL":
                 flagDescription = ATMFAIL_Description;
                 break;
-            case "LAND":
+            case SeadasReaderDefaults.PROPERTY_MASK_LAND_NAME:
                 flagDescription = LAND_Description;
                 break;
             case "PRODWARN":
@@ -368,6 +368,186 @@ public abstract class SeadasFileReader {
 
     }
 
+    private void addFlagMask(Product product, String flagName, FlagCoding flagCoding) {
+        switch (flagName) {
+            case SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_NAME, get_ATMFAIL_MaskColor(), get_ATMFAIL_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_LAND_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_LAND_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_LAND_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_LAND_NAME, get_LAND_MaskColor(), get_LAND_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_NAME, get_PRODWARN_MaskColor(), get_PRODWARN_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_NAME, get_HIGLINT_MaskColor(), get_HIGLINT_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_HILT_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_HILT_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HILT_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_HILT_NAME, get_HILT_MaskColor(), get_HILT_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_NAME, get_HISATZEN_MaskColor(), get_HISATZEN_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_COASTZ_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_COASTZ_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_COASTZ_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_COASTZ_NAME, get_COASTZ_MaskColor(), get_COASTZ_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_NAME, get_STRAYLIGHT_MaskColor(), get_STRAYLIGHT_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_CLDICE_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_CLDICE_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CLDICE_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_CLDICE_NAME, get_CLDICE_MaskColor(), get_CLDICE_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_NAME, get_COCCOLITH_MaskColor(), get_COCCOLITH_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_NAME, get_TURBIDW_MaskColor(), get_TURBIDW_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_NAME, get_HISOLZEN_MaskColor(), get_HISOLZEN_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_LOWLW_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_LOWLW_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_LOWLW_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_LOWLW_NAME, get_LOWLW_MaskColor(), get_LOWLW_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_NAME, get_CHLFAIL_MaskColor(), get_CHLFAIL_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_NAME, get_NAVWARN_MaskColor(), get_NAVWARN_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_ABSAER_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_ABSAER_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_ABSAER_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_ABSAER_NAME, get_ABSAER_MaskColor(), get_ABSAER_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_NAME, get_MAXAERITER_MaskColor(), get_MAXAERITER_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_NAME, get_MODGLINT_MaskColor(), get_MODGLINT_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_NAME, get_CHLWARN_MaskColor(), get_CHLWARN_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_NAME, get_ATMWARN_MaskColor(), get_ATMWARN_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_SEAICE_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_SEAICE_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_SEAICE_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_SEAICE_NAME, get_SEAICE_MaskColor(), get_SEAICE_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_NAME, get_NAVFAIL_MaskColor(), get_NAVFAIL_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_FILTER_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_FILTER_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_FILTER_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_FILTER_NAME, get_FILTER_MaskColor(), get_FILTER_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_NAME, get_BOWTIEDEL_MaskColor(), get_BOWTIEDEL_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_HIPOL_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_HIPOL_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HIPOL_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_HIPOL_NAME, get_HIPOL_MaskColor(), get_HIPOL_MaskTransparency());
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_NAME, get_PRODFAIL_MaskColor(), get_PRODFAIL_MaskTransparency());
+                }
+                break;
+
+
+            case SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME, get_GEOREGION_MaskColor(), get_GEOREGION_MaskTransparency());
+                }
+                break;
+
+            default:
+                if (flagName.startsWith("SPARE")) {
+                    if (is_SPARE_MaskInclude()) {
+                        if (flagCoding.getFlag(flagName) != null && !product.getMaskGroup().contains(flagName)) {
+                            createSPAREMask(product, flagName);
+                        }
+                    }
+                } else {
+                    if (flagCoding.getFlag(flagName) != null && !product.getMaskGroup().contains(flagName)) {
+                        createMaskMisc(product, flagName);
+                    }
+                }
+        }
+
+    }
 
     protected void addFlagsAndMasks(Product product) {
 
@@ -389,8 +569,7 @@ public abstract class SeadasFileReader {
                 }
             }
 
-            boolean containsGEOREGION = false;
-//            String flagMeanings = null;
+
             try {
                 MetadataElement metadataElementBand = product.getMetadataRoot().getElement("Band_Attributes");
                 if (metadataElementBand != null) {
@@ -400,17 +579,9 @@ public abstract class SeadasFileReader {
                         if (flagMeanings != null) {
                             flagNames = flagMeanings.split(" ");
                         }
-
-                        for (String flagname : flagNames) {
-                            if ("GEOREGION".equals(flagname)) {
-                                containsGEOREGION = true;
-                            }
-                        }
                     }
                 }
-
             } catch (Exception ignore) {
-
             }
 
 
@@ -431,13 +602,13 @@ public abstract class SeadasFileReader {
                     if (flagName.startsWith("SPARE")) {
                         flagName = flagName + Integer.toString(bit+1);
                     }
-                    System.out.println("flag=" + flagName);
+//                    System.out.println("flag=" + flagName);
                     if (!flagCoding.containsAttribute(flagName)) {
-                        System.out.println("Adding flag=" + flagName);
+//                        System.out.println("Adding flag=" + flagName);
                         flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
                     } else {
                         flagName = flagName + Integer.toString(bit+1);
-                        System.out.println("Adding flag=" + flagName);
+//                        System.out.println("Adding flag=" + flagName);
                         flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
                     }
 
@@ -447,43 +618,10 @@ public abstract class SeadasFileReader {
                 QFBand.setSampleCoding(flagCoding);
 
 
-
-                Mask ATMFAIL_Mask = null;
-                Mask LAND_Mask = null;
-                Mask PRODWARN_Mask = null;
-                Mask HIGLINT_Mask = null;
-                Mask HILT_Mask = null;
-                Mask HISATZEN_Mask = null;
-                Mask COASTZ_Mask = null;
-                Mask STRAYLIGHT_Mask = null;
-                Mask CLDICE_Mask = null;
-                Mask COCCOLITH_Mask = null;
-                Mask TURBIDW_Mask = null;
-                Mask HISOLZEN_Mask = null;
-                Mask LOWLW_Mask = null;
-                Mask CHLFAIL_Mask = null;
-                Mask NAVWARN_Mask = null;
-                Mask ABSAER_Mask = null;
-                Mask MAXAERITER_Mask = null;
-                Mask MODGLINT_Mask = null;
-                Mask CHLWARN_Mask = null;
-                Mask ATMWARN_Mask = null;
-                Mask SEAICE_Mask = null;
-                Mask NAVFAIL_Mask = null;
-                Mask FILTER_Mask = null;
-                Mask BOWTIEDEL_Mask = null;
-                Mask HIPOL_Mask = null;
-                Mask PRODFAIL_Mask = null;
-
                 Mask composite1Mask = null;
                 Mask composite2Mask = null;
                 Mask composite3Mask = null;
                 Mask Water_Mask = null;
-
-
-                Mask GEOREGION_Mask = null;
-
-
 
 
 
@@ -492,151 +630,6 @@ public abstract class SeadasFileReader {
                     String flagNamesOrdered = getMaskSort();
                     String[] flagNamesOrderedArray = flagNamesOrdered.split("\\s+|,");
                     for (String flagName : flagNamesOrderedArray) {
-                        switch (flagName) {
-                            case "ATMFAIL":
-                                if (flagCoding.getFlag("ATMFAIL") != null && !product.getMaskGroup().contains("ATMFAIL")) {
-                                    ATMFAIL_Mask = createMaskATMFAIL(product);
-                                }
-                                break;
-                            case "LAND":
-                                if (flagCoding.getFlag("LAND") != null && !product.getMaskGroup().contains("LAND")) {
-                                    LAND_Mask = createMaskLAND(product);
-                                }
-                                break;
-                            case "PRODWARN":
-                                if (flagCoding.getFlag("PRODWARN") != null && !product.getMaskGroup().contains("PRODWARN")) {
-                                    PRODWARN_Mask = createMaskPRODWARN(product);
-                                }
-                                break;
-                            case "HIGLINT":
-                                if (flagCoding.getFlag("HIGLINT") != null && !product.getMaskGroup().contains("HIGLINT")) {
-                                    HIGLINT_Mask = createMaskHIGLINT(product);
-                                }
-                                break;
-                            case "HILT":
-                                if (flagCoding.getFlag("HILT") != null && !product.getMaskGroup().contains("HILT")) {
-                                    HILT_Mask = createMaskHILT(product);
-                                }
-                                break;
-                            case "HISATZEN":
-                                if (flagCoding.getFlag("HISATZEN") != null && !product.getMaskGroup().contains("HISATZEN")) {
-                                    HISATZEN_Mask = createMaskHISATZEN(product);
-                                }
-                                break;
-                            case "COASTZ":
-                                if (flagCoding.getFlag("COASTZ") != null && !product.getMaskGroup().contains("COASTZ")) {
-                                    COASTZ_Mask = createMaskCOASTZ(product);
-                                }
-                                break;
-                            case "STRAYLIGHT":
-                                if (flagCoding.getFlag("STRAYLIGHT") != null && !product.getMaskGroup().contains("STRAYLIGHT")) {
-                                    STRAYLIGHT_Mask = createMaskSTRAYLIGHT(product);
-                                }
-                                break;
-                            case "CLDICE":
-                                if (flagCoding.getFlag("CLDICE") != null && !product.getMaskGroup().contains("CLDICE")) {
-                                    CLDICE_Mask = createMaskCLDICE(product);
-                                }
-                                break;
-                            case "COCCOLITH":
-                                if (flagCoding.getFlag("COCCOLITH") != null && !product.getMaskGroup().contains("COCCOLITH")) {
-                                    COCCOLITH_Mask = createMaskCOCCOLITH(product);
-                                }
-                                break;
-                            case "TURBIDW":
-                                if (flagCoding.getFlag("TURBIDW") != null && !product.getMaskGroup().contains("TURBIDW")) {
-                                    TURBIDW_Mask = createMaskTURBIDW(product);
-                                }
-                                break;
-                            case "HISOLZEN":
-                                if (flagCoding.getFlag("HISOLZEN") != null && !product.getMaskGroup().contains("HISOLZEN")) {
-                                    HISOLZEN_Mask = createMaskHISOLZEN(product);
-                                }
-                                break;
-                            case "LOWLW":
-                                if (flagCoding.getFlag("LOWLW") != null && !product.getMaskGroup().contains("LOWLW")) {
-                                    LOWLW_Mask = createMaskLOWLW(product);
-                                }
-                                break;
-                            case "CHLFAIL":
-                                if (flagCoding.getFlag("CHLFAIL") != null && !product.getMaskGroup().contains("CHLFAIL")) {
-                                    CHLFAIL_Mask = createMaskCHLFAIL(product);
-                                }
-                                break;
-                            case "NAVWARN":
-                                if (flagCoding.getFlag("NAVWARN") != null && !product.getMaskGroup().contains("NAVWARN")) {
-                                    NAVWARN_Mask = createMaskNAVWARN(product);
-                                }
-                                break;
-                            case "ABSAER":
-                                if (flagCoding.getFlag("ABSAER") != null && !product.getMaskGroup().contains("ABSAER")) {
-                                    ABSAER_Mask = createMaskABSAER(product);
-                                }
-                                break;
-                            case "MAXAERITER":
-                                if (flagCoding.getFlag("MAXAERITER") != null && !product.getMaskGroup().contains("MAXAERITER")) {
-                                    MAXAERITER_Mask = createMaskMAXAERITER(product);
-                                }
-                                break;
-                            case "MODGLINT":
-                                if (flagCoding.getFlag("MODGLINT") != null && !product.getMaskGroup().contains("MODGLINT")) {
-                                    MODGLINT_Mask = createMaskMODGLINT(product);
-                                }
-                                break;
-                            case "CHLWARN":
-                                if (flagCoding.getFlag("CHLWARN") != null && !product.getMaskGroup().contains("CHLWARN")) {
-                                    CHLWARN_Mask = createMaskCHLWARN(product);
-                                }
-                                break;
-                            case "ATMWARN":
-                                if (flagCoding.getFlag("ATMWARN") != null && !product.getMaskGroup().contains("ATMWARN")) {
-                                    ATMWARN_Mask = createMaskATMWARN(product);
-                                }
-                                break;
-                            case "SEAICE":
-                                if (flagCoding.getFlag("SEAICE") != null && !product.getMaskGroup().contains("SEAICE")) {
-                                    SEAICE_Mask = createMaskSEAICE(product);
-                                }
-                                break;
-                            case "NAVFAIL":
-                                if (flagCoding.getFlag("NAVFAIL") != null && !product.getMaskGroup().contains("NAVFAIL")) {
-                                    NAVFAIL_Mask = createMaskNAVFAIL(product);
-                                }
-                                break;
-                            case "FILTER":
-                                if (flagCoding.getFlag("FILTER") != null && !product.getMaskGroup().contains("FILTER")) {
-                                    FILTER_Mask = createMaskFILTER(product);
-                                }
-                                break;
-                            case "BOWTIEDEL":
-                                if (flagCoding.getFlag("BOWTIEDEL") != null && !product.getMaskGroup().contains("BOWTIEDEL")) {
-                                    BOWTIEDEL_Mask = createMaskBOWTIEDEL(product);
-                                }
-                                break;
-                            case "HIPOL":
-                                if (flagCoding.getFlag("HIPOL") != null && !product.getMaskGroup().contains("HIPOL")) {
-                                    HIPOL_Mask = createMaskHIPOL(product);
-                                }
-                                break;
-                            case "PRODFAIL":
-                                if (flagCoding.getFlag("PRODFAIL") != null && !product.getMaskGroup().contains("PRODFAIL")) {
-                                    PRODFAIL_Mask = createMaskPRODFAIL(product);
-                                }
-                                break;
-                            case "GEOREGION":
-                                if (flagCoding.getFlag("GEOREGION") != null && !product.getMaskGroup().contains("GEOREGION")) {
-                                    GEOREGION_Mask = createMaskGEOREGION(product);
-                                }
-                                break;
-                            default:
-                                if (flagName.startsWith("SPARE")) {
-                                    if (is_SPARE_MaskInclude()) {
-                                        if (flagCoding.getFlag(flagName) != null && !product.getMaskGroup().contains(flagName)) {
-                                            createSPAREMask(product, flagName);
-                                        }
-                                    }
-                                }
-                        }
 
                         if (isComposite1MaskInclude() && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
                             composite1Mask = createMaskComposite1(product, composite1Description);
@@ -655,167 +648,17 @@ public abstract class SeadasFileReader {
                             continue;
                         }
 
+                        addFlagMask(product, flagName, flagCoding);
                     }
                 }
 
 
-                System.out.println("Looping on flagNames");
+//                System.out.println("Looping on flagNames");
                 for (String flagName : flagCoding.getFlagNames()) {
-                    System.out.println("flagName=" + flagName);
+//                    System.out.println("flagName=" + flagName);
 
-                    switch (flagName) {
-                        case "ATMFAIL":
-                            if (flagCoding.getFlag("ATMFAIL") != null && !product.getMaskGroup().contains("ATMFAIL")) {
-                                ATMFAIL_Mask = createMaskATMFAIL(product);
-                            }
-                            break;
-                        case "LAND":
-                            if (flagCoding.getFlag("LAND") != null && !product.getMaskGroup().contains("LAND")) {
-                                LAND_Mask = createMaskLAND(product);
-                            }
-                            break;
-                        case "PRODWARN":
-                            if (flagCoding.getFlag("PRODWARN") != null && !product.getMaskGroup().contains("PRODWARN")) {
-                                PRODWARN_Mask = createMaskPRODWARN(product);
-                            }
-                            break;
-                        case "HIGLINT":
-                            if (flagCoding.getFlag("HIGLINT") != null && !product.getMaskGroup().contains("HIGLINT")) {
-                                HIGLINT_Mask = createMaskHIGLINT(product);
-                            }
-                            break;
-                        case "HILT":
-                            if (flagCoding.getFlag("HILT") != null && !product.getMaskGroup().contains("HILT")) {
-                                HILT_Mask = createMaskHILT(product);
-                            }
-                            break;
-                        case "HISATZEN":
-                            if (flagCoding.getFlag("HISATZEN") != null && !product.getMaskGroup().contains("HISATZEN")) {
-                                HISATZEN_Mask = createMaskHISATZEN(product);
-                            }
-                            break;
-                        case "COASTZ":
-                            if (flagCoding.getFlag("COASTZ") != null && !product.getMaskGroup().contains("COASTZ")) {
-                                COASTZ_Mask = createMaskCOASTZ(product);
-                            }
-                            break;
-                        case "STRAYLIGHT":
-                            if (flagCoding.getFlag("STRAYLIGHT") != null && !product.getMaskGroup().contains("STRAYLIGHT")) {
-                                STRAYLIGHT_Mask = createMaskSTRAYLIGHT(product);
-                            }
-                            break;
-                        case "CLDICE":
-                            if (flagCoding.getFlag("CLDICE") != null && !product.getMaskGroup().contains("CLDICE")) {
-                                CLDICE_Mask = createMaskCLDICE(product);
-                            }
-                            break;
-                        case "COCCOLITH":
-                            if (flagCoding.getFlag("COCCOLITH") != null && !product.getMaskGroup().contains("COCCOLITH")) {
-                                COCCOLITH_Mask = createMaskCOCCOLITH(product);
-                            }
-                            break;
-                        case "TURBIDW":
-                            if (flagCoding.getFlag("TURBIDW") != null && !product.getMaskGroup().contains("TURBIDW")) {
-                                TURBIDW_Mask = createMaskTURBIDW(product);
-                            }
-                            break;
-                        case "HISOLZEN":
-                            if (flagCoding.getFlag("HISOLZEN") != null && !product.getMaskGroup().contains("HISOLZEN")) {
-                                HISOLZEN_Mask = createMaskHISOLZEN(product);
-                            }
-                            break;
-                        case "LOWLW":
-                            if (flagCoding.getFlag("LOWLW") != null && !product.getMaskGroup().contains("LOWLW")) {
-                                LOWLW_Mask = createMaskLOWLW(product);
-                            }
-                            break;
-                        case "CHLFAIL":
-                            if (flagCoding.getFlag("CHLFAIL") != null && !product.getMaskGroup().contains("CHLFAIL")) {
-                                CHLFAIL_Mask = createMaskCHLFAIL(product);
-                            }
-                            break;
-                        case "NAVWARN":
-                            if (flagCoding.getFlag("NAVWARN") != null && !product.getMaskGroup().contains("NAVWARN")) {
-                                NAVWARN_Mask = createMaskNAVWARN(product);
-                            }
-                            break;
-                        case "ABSAER":
-                            if (flagCoding.getFlag("ABSAER") != null && !product.getMaskGroup().contains("ABSAER")) {
-                                ABSAER_Mask = createMaskABSAER(product);
-                            }
-                            break;
-                        case "MAXAERITER":
-                            if (flagCoding.getFlag("MAXAERITER") != null && !product.getMaskGroup().contains("MAXAERITER")) {
-                                MAXAERITER_Mask = createMaskMAXAERITER(product);
-                            }
-                            break;
-                        case "MODGLINT":
-                            if (flagCoding.getFlag("MODGLINT") != null && !product.getMaskGroup().contains("MODGLINT")) {
-                                MODGLINT_Mask = createMaskMODGLINT(product);
-                            }
-                            break;
-                        case "CHLWARN":
-                            if (flagCoding.getFlag("CHLWARN") != null && !product.getMaskGroup().contains("CHLWARN")) {
-                                CHLWARN_Mask = createMaskCHLWARN(product);
-                            }
-                            break;
-                        case "ATMWARN":
-                            if (flagCoding.getFlag("ATMWARN") != null && !product.getMaskGroup().contains("ATMWARN")) {
-                                ATMWARN_Mask = createMaskATMWARN(product);
-                            }
-                            break;
-                        case "SEAICE":
-                            if (flagCoding.getFlag("SEAICE") != null && !product.getMaskGroup().contains("SEAICE")) {
-                                SEAICE_Mask = createMaskSEAICE(product);
-                            }
-                            break;
-                        case "NAVFAIL":
-                            if (flagCoding.getFlag("NAVFAIL") != null && !product.getMaskGroup().contains("NAVFAIL")) {
-                                NAVFAIL_Mask = createMaskNAVFAIL(product);
-                            }
-                            break;
-                        case "FILTER":
-                            if (flagCoding.getFlag("FILTER") != null && !product.getMaskGroup().contains("FILTER")) {
-                                FILTER_Mask = createMaskFILTER(product);
-                            }
-                            break;
-                        case "BOWTIEDEL":
-                            if (flagCoding.getFlag("BOWTIEDEL") != null && !product.getMaskGroup().contains("BOWTIEDEL")) {
-                                BOWTIEDEL_Mask = createMaskBOWTIEDEL(product);
-                            }
-                            break;
-                        case "HIPOL":
-                            if (flagCoding.getFlag("HIPOL") != null && !product.getMaskGroup().contains("HIPOL")) {
-                                HIPOL_Mask = createMaskHIPOL(product);
-                            }
-                            break;
-                        case "PRODFAIL":
-                            if (flagCoding.getFlag("PRODFAIL") != null && !product.getMaskGroup().contains("PRODFAIL")) {
-                                PRODFAIL_Mask = createMaskPRODFAIL(product);
-                            }
-                            break;
-                        case "GEOREGION":
-                            if (flagCoding.getFlag("GEOREGION") != null && !product.getMaskGroup().contains("GEOREGION")) {
-                                GEOREGION_Mask = createMaskGEOREGION(product);
-                            }
-                            break;
-                        default:
-                            if (flagName.startsWith("SPARE")) {
-                                if (is_SPARE_MaskInclude()) {
-                                    if (flagCoding.getFlag(flagName) != null && !product.getMaskGroup().contains(flagName)) {
-                                        createSPAREMask(product, flagName);
-                                    }
-                                }
-                            } else {
-                                if (flagCoding.getFlag(flagName) != null && !product.getMaskGroup().contains(flagName)) {
-                                    createMaskMisc(product, flagName);
-                                }
-                            }
-                            break;
-                    }
+                    addFlagMask(product, flagName, flagCoding);
                 }
-
-
 
 
                 if (isComposite1MaskInclude() && composite1Mask == null) {
@@ -840,40 +683,116 @@ public abstract class SeadasFileReader {
                 String[] bandNames = product.getBandNames();
                 for (String bandName : bandNames) {
                     RasterDataNode raster = product.getRasterDataNode(bandName);
-                    if (is_ATMFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(ATMFAIL_Mask);}
 
+                    if (is_ATMFAIL_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_NAME));
+                    }
+                    
+                    if (is_LAND_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_LAND_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_LAND_NAME));
+                    }
 
-                    if (is_LAND_MaskEnabled() && product.getMaskGroup().contains("LAND")) {
-                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get("LAND"));
+                    if (is_PRODWARN_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_NAME));
+                    }
+
+                    if (is_HIGLINT_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_NAME));
+                    }
+
+                    if (is_HILT_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HILT_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_HILT_NAME));
+                    }
+
+                    if (is_HISATZEN_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_NAME));
+                    }
+
+                    if (is_COASTZ_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_COASTZ_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_COASTZ_NAME));
+                    }
+
+                    if (is_STRAYLIGHT_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_NAME));
+                    }
+
+                    if (is_CLDICE_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CLDICE_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_CLDICE_NAME));
+                    }
+
+                    if (is_COCCOLITH_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_NAME));
+                    }
+
+                    if (is_TURBIDW_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_NAME));
+                    }
+
+                    if (is_HISOLZEN_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_NAME));
+                    }
+
+                    if (is_LOWLW_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_LOWLW_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_LOWLW_NAME));
+                    }
+
+                    if (is_CHLFAIL_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_NAME));
+                    }
+
+                    if (is_NAVWARN_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_NAME));
+                    }
+
+                    if (is_ABSAER_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_ABSAER_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_ABSAER_NAME));
+                    }
+
+                    if (is_MAXAERITER_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_NAME));
+                    }
+
+                    if (is_MODGLINT_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_NAME));
+                    }
+
+                    if (is_CHLWARN_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_NAME));
+                    }
+
+                    if (is_ATMWARN_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_NAME));
+                    }
+
+                    if (is_SEAICE_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_SEAICE_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_SEAICE_NAME));
+                    }
+
+                    if (is_NAVFAIL_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_NAME));
+                    }
+
+                    if (is_FILTER_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_FILTER_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_FILTER_NAME));
+                    }
+
+                    if (is_BOWTIEDEL_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_NAME));
+                    }
+
+                    if (is_HIPOL_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_HIPOL_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_HIPOL_NAME));
+                    }
+                    
+                    if (is_PRODFAIL_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_NAME));
+                    }
+
+                    if (is_GEOREGION_MaskEnabled() && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME));
                     }
 
 
-//                    if (is_LAND_MaskEnabled()) {raster.getOverlayMaskGroup().add(LAND_Mask);}
-                    if (is_PRODWARN_MaskEnabled()) {raster.getOverlayMaskGroup().add(PRODWARN_Mask);}
-                    if (is_HIGLINT_MaskEnabled()) {raster.getOverlayMaskGroup().add(HIGLINT_Mask);}
-                    if (is_HILT_MaskEnabled()) {raster.getOverlayMaskGroup().add(HILT_Mask);}
-                    if (is_HISATZEN_MaskEnabled()) {raster.getOverlayMaskGroup().add(HISATZEN_Mask);}
-                    if (is_COASTZ_MaskEnabled()) {raster.getOverlayMaskGroup().add(COASTZ_Mask);}
-                    if (is_STRAYLIGHT_MaskEnabled()) {raster.getOverlayMaskGroup().add(STRAYLIGHT_Mask);}
-                    if (is_CLDICE_MaskEnabled()) {raster.getOverlayMaskGroup().add(CLDICE_Mask);}
-                    if (is_COCCOLITH_MaskEnabled()) {raster.getOverlayMaskGroup().add(COCCOLITH_Mask);}
-                    if (is_TURBIDW_MaskEnabled()) {raster.getOverlayMaskGroup().add(TURBIDW_Mask);}
-                    if (is_HISOLZEN_MaskEnabled()) {raster.getOverlayMaskGroup().add(HISOLZEN_Mask);}
-                    if (is_LOWLW_MaskEnabled()) {raster.getOverlayMaskGroup().add(LOWLW_Mask);}
-                    if (is_CHLFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(CHLFAIL_Mask);}
-                    if (is_NAVWARN_MaskEnabled()) {raster.getOverlayMaskGroup().add(NAVWARN_Mask);}
-                    if (is_ABSAER_MaskEnabled()) {raster.getOverlayMaskGroup().add(ABSAER_Mask);}
-                    if (is_MAXAERITER_MaskEnabled()) {raster.getOverlayMaskGroup().add(MAXAERITER_Mask);}
-                    if (is_MODGLINT_MaskEnabled()) {raster.getOverlayMaskGroup().add(MODGLINT_Mask);}
-                    if (is_CHLWARN_MaskEnabled()) {raster.getOverlayMaskGroup().add(CHLWARN_Mask);}
-                    if (is_ATMWARN_MaskEnabled()) {raster.getOverlayMaskGroup().add(ATMWARN_Mask);}
-                    if (is_SEAICE_MaskEnabled()) {raster.getOverlayMaskGroup().add(SEAICE_Mask);}
-                    if (is_NAVFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(NAVFAIL_Mask);}
-                    if (is_FILTER_MaskEnabled()) {raster.getOverlayMaskGroup().add(FILTER_Mask);}
-                    if (is_BOWTIEDEL_MaskEnabled()) {raster.getOverlayMaskGroup().add(BOWTIEDEL_Mask);}
-                    if (is_HIPOL_MaskEnabled()) {raster.getOverlayMaskGroup().add(HIPOL_Mask);}
-                    if (is_PRODFAIL_MaskEnabled()) {raster.getOverlayMaskGroup().add(PRODFAIL_Mask);}
-                    if (is_GEOREGION_MaskEnabled() && containsGEOREGION) {raster.getOverlayMaskGroup().add(GEOREGION_Mask);}
                     if (composite1Mask != null && isComposite1MaskEnabled()) {raster.getOverlayMaskGroup().add(composite1Mask);}
                     if (composite2Mask != null && isComposite2MaskEnabled()) {raster.getOverlayMaskGroup().add(composite2Mask);}
                     if (composite3Mask != null && isComposite3MaskEnabled()) {raster.getOverlayMaskGroup().add(composite3Mask);}
@@ -1250,339 +1169,30 @@ public abstract class SeadasFileReader {
         }
     }
 
-    
-    
-
-
-
-    private Mask createMaskATMFAIL(Product product) {
-        Mask ATMFAIL_Mask = Mask.BandMathsType.create("ATMFAIL", getFlagDescription("ATMFAIL"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.ATMFAIL",
-                get_ATMFAIL_MaskColor(), get_ATMFAIL_MaskTransparency());
-        product.getMaskGroup().add(ATMFAIL_Mask);
-
-        return ATMFAIL_Mask;
-    }
-
-
-    private Mask createMaskLAND(Product product) {
-        Mask LAND_Mask = Mask.BandMathsType.create("LAND", getFlagDescription("LAND"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.LAND",
-                get_LAND_MaskColor(), get_LAND_MaskTransparency());
-        product.getMaskGroup().add(LAND_Mask);
-
-        return LAND_Mask;
-    }
-
-
-
-    private Mask createMaskPRODWARN(Product product) {
-        Mask PRODWARN_Mask = Mask.BandMathsType.create("PRODWARN", getFlagDescription("PRODWARN"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.PRODWARN",
-                get_PRODWARN_MaskColor(), get_PRODWARN_MaskTransparency());
-        product.getMaskGroup().add(PRODWARN_Mask);
-
-        return PRODWARN_Mask;
-    }
-
-
-
-
-    private Mask createMaskHIGLINT(Product product) {
-        Mask HIGLINT_Mask = Mask.BandMathsType.create("HIGLINT", getFlagDescription("HIGLINT"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.HIGLINT",
-                get_HIGLINT_MaskColor(), get_HIGLINT_MaskTransparency());
-        product.getMaskGroup().add(HIGLINT_Mask);
-
-        return HIGLINT_Mask;
-    }
-
-    
-    
-
-    private Mask createMaskHILT(Product product) {
-        Mask HILT_Mask = Mask.BandMathsType.create("HILT", getFlagDescription("HILT"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.HILT",
-                get_HILT_MaskColor(), get_HILT_MaskTransparency());
-        product.getMaskGroup().add(HILT_Mask);
-
-        return HILT_Mask;
-    }
-
-    
-    
-    
-
-    private Mask createMaskHISATZEN(Product product) {
-        Mask HISATZEN_Mask = Mask.BandMathsType.create("HISATZEN", getFlagDescription("HISATZEN"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.HISATZEN",
-                get_HISATZEN_MaskColor(), get_HISATZEN_MaskTransparency());
-        product.getMaskGroup().add(HISATZEN_Mask);
-
-        return HISATZEN_Mask;
-    }
 
 
 
 
 
-    private Mask createMaskCOASTZ(Product product) {
-        Mask COASTZ_Mask = Mask.BandMathsType.create("COASTZ", getFlagDescription("COASTZ"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.COASTZ",
-                get_COASTZ_MaskColor(), get_COASTZ_MaskTransparency());
-        product.getMaskGroup().add(COASTZ_Mask);
 
-        return COASTZ_Mask;
+
+    private Mask createMask(Product product, String maskName, Color maskColor, double maskTransparency) {
+
+        Mask mask = null;
+        if (maskName != null && maskName.length() > 0 && maskColor != null) {
+            mask = Mask.BandMathsType.create(maskName, getFlagDescription(maskName),
+                    product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                    "l2_flags." + maskName,
+                    maskColor, maskTransparency);
+            product.getMaskGroup().add(mask);
+        }
+
+        return mask;
     }
     
 
     
-    private Mask createMaskSTRAYLIGHT(Product product) {
-        Mask STRAYLIGHT_Mask = Mask.BandMathsType.create("STRAYLIGHT", getFlagDescription("STRAYLIGHT"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.STRAYLIGHT",
-                get_STRAYLIGHT_MaskColor(), get_STRAYLIGHT_MaskTransparency());
-        product.getMaskGroup().add(STRAYLIGHT_Mask);
 
-        return STRAYLIGHT_Mask;
-    }
-
-    
-    
-    private Mask createMaskCLDICE(Product product) {
-        Mask CLDICE_Mask = Mask.BandMathsType.create("CLDICE", getFlagDescription("CLDICE"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.CLDICE",
-                get_CLDICE_MaskColor(), get_CLDICE_MaskTransparency());
-        product.getMaskGroup().add(CLDICE_Mask);
-
-        return CLDICE_Mask;
-    }
-
-    
-    
-    private Mask createMaskCOCCOLITH(Product product) {
-        Mask COCCOLITH_Mask = Mask.BandMathsType.create("COCCOLITH", getFlagDescription("COCCOLITH"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.COCCOLITH",
-                get_COCCOLITH_MaskColor(), get_COCCOLITH_MaskTransparency());
-        product.getMaskGroup().add(COCCOLITH_Mask);
-
-        return COCCOLITH_Mask;
-    }
-
-    
-    
-    private Mask createMaskTURBIDW(Product product) {
-        Mask TURBIDW_Mask = Mask.BandMathsType.create("TURBIDW", getFlagDescription("TURBIDW"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.TURBIDW",
-                get_TURBIDW_MaskColor(), get_TURBIDW_MaskTransparency());
-        product.getMaskGroup().add(TURBIDW_Mask);
-
-        return TURBIDW_Mask;
-    }
-
-    
-    
-    private Mask createMaskHISOLZEN(Product product) {
-        Mask HISOLZEN_Mask = Mask.BandMathsType.create("HISOLZEN", getFlagDescription("HISOLZEN"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.HISOLZEN",
-                get_HISOLZEN_MaskColor(), get_HISOLZEN_MaskTransparency());
-        product.getMaskGroup().add(HISOLZEN_Mask);
-
-        return HISOLZEN_Mask;
-    }
-
-    
-    
-    private Mask createMaskLOWLW(Product product) {
-        Mask LOWLW_Mask = Mask.BandMathsType.create("LOWLW", getFlagDescription("LOWLW"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.LOWLW",
-                get_LOWLW_MaskColor(), get_LOWLW_MaskTransparency());
-        product.getMaskGroup().add(LOWLW_Mask);
-
-        return LOWLW_Mask;
-    }
-
-    
-    
-
-    private Mask createMaskCHLFAIL(Product product) {
-        Mask CHLFAIL_Mask = Mask.BandMathsType.create("CHLFAIL", getFlagDescription("CHLFAIL"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.CHLFAIL",
-                get_CHLFAIL_MaskColor(), get_CHLFAIL_MaskTransparency());
-        product.getMaskGroup().add(CHLFAIL_Mask);
-
-        return CHLFAIL_Mask;
-    }
-
-    
-    
-    private Mask createMaskNAVWARN(Product product) {
-        Mask NAVWARN_Mask = Mask.BandMathsType.create("NAVWARN", getFlagDescription("NAVWARN"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.NAVWARN",
-                get_NAVWARN_MaskColor(), get_NAVWARN_MaskTransparency());
-        product.getMaskGroup().add(NAVWARN_Mask);
-
-        return NAVWARN_Mask;
-    }
-
-    
-    
-    private Mask createMaskABSAER(Product product) {
-        Mask ABSAER_Mask = Mask.BandMathsType.create("ABSAER", getFlagDescription("ABSAER"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.ABSAER",
-                get_ABSAER_MaskColor(), get_ABSAER_MaskTransparency());
-        product.getMaskGroup().add(ABSAER_Mask);
-
-        return ABSAER_Mask;
-    }
-
-    
-    
-    private Mask createMaskMAXAERITER(Product product) {
-        Mask MAXAERITER_Mask = Mask.BandMathsType.create("MAXAERITER", getFlagDescription("MAXAERITER"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.MAXAERITER",
-                get_MAXAERITER_MaskColor(), get_MAXAERITER_MaskTransparency());
-        product.getMaskGroup().add(MAXAERITER_Mask);
-
-        return MAXAERITER_Mask;
-    }
-
-    
-    
-
-    private Mask createMaskMODGLINT(Product product) {
-        Mask MODGLINT_Mask = Mask.BandMathsType.create("MODGLINT", getFlagDescription("MODGLINT"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.MODGLINT",
-                get_MODGLINT_MaskColor(), get_MODGLINT_MaskTransparency());
-        product.getMaskGroup().add(MODGLINT_Mask);
-
-        return MODGLINT_Mask;
-    }
-
-    
-    
-    private Mask createMaskCHLWARN(Product product) {
-        Mask CHLWARN_Mask = Mask.BandMathsType.create("CHLWARN", getFlagDescription("CHLWARN"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.CHLWARN",
-                get_CHLWARN_MaskColor(), get_CHLWARN_MaskTransparency());
-        product.getMaskGroup().add(CHLWARN_Mask);
-
-        return CHLWARN_Mask;
-    }
-
-    
-    
-
-    private Mask createMaskATMWARN(Product product) {
-        Mask ATMWARN_Mask = Mask.BandMathsType.create("ATMWARN", getFlagDescription("ATMWARN"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.ATMWARN",
-                get_ATMWARN_MaskColor(), get_ATMWARN_MaskTransparency());
-        product.getMaskGroup().add(ATMWARN_Mask);
-
-        return ATMWARN_Mask;
-    }
-
-    
-    
-    private Mask createMaskSEAICE(Product product) {
-        Mask SEAICE_Mask = Mask.BandMathsType.create("SEAICE", getFlagDescription("SEAICE"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SEAICE",
-                get_SEAICE_MaskColor(), get_SEAICE_MaskTransparency());
-        product.getMaskGroup().add(SEAICE_Mask);
-
-        return SEAICE_Mask;
-    }
-
-    
-
-    private Mask createMaskNAVFAIL(Product product) {
-        Mask NAVFAIL_Mask = Mask.BandMathsType.create("NAVFAIL", getFlagDescription("NAVFAIL"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.NAVFAIL",
-                get_NAVFAIL_MaskColor(), get_NAVFAIL_MaskTransparency());
-        product.getMaskGroup().add(NAVFAIL_Mask);
-
-        return NAVFAIL_Mask;
-    }
-
-    
-    
-    private Mask createMaskFILTER(Product product) {
-        Mask FILTER_Mask = Mask.BandMathsType.create("FILTER", getFlagDescription("FILTER"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.FILTER",
-                get_FILTER_MaskColor(), get_FILTER_MaskTransparency());
-        product.getMaskGroup().add(FILTER_Mask);
-
-        return FILTER_Mask;
-    }
-
-    
-
-    private Mask createMaskBOWTIEDEL(Product product) {
-        Mask BOWTIEDEL_Mask = Mask.BandMathsType.create("BOWTIEDEL", getFlagDescription("BOWTIEDEL"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.BOWTIEDEL",
-                get_BOWTIEDEL_MaskColor(), get_BOWTIEDEL_MaskTransparency());
-        product.getMaskGroup().add(BOWTIEDEL_Mask);
-
-        return BOWTIEDEL_Mask;
-    }
-
-    
-    
-    private Mask createMaskHIPOL(Product product) {
-        Mask HIPOL_Mask = Mask.BandMathsType.create("HIPOL", getFlagDescription("HIPOL"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.HIPOL",
-                get_HIPOL_MaskColor(), get_HIPOL_MaskTransparency());
-        product.getMaskGroup().add(HIPOL_Mask);
-
-        return HIPOL_Mask;
-    }
-
-    
-    
-    private Mask createMaskPRODFAIL(Product product) {
-        Mask PRODFAIL_Mask = Mask.BandMathsType.create("PRODFAIL", getFlagDescription("PRODFAIL"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.PRODFAIL",
-                get_PRODFAIL_MaskColor(), get_PRODFAIL_MaskTransparency());
-        product.getMaskGroup().add(PRODFAIL_Mask);
-
-        return PRODFAIL_Mask;
-    }
-
-
-    private Mask createMaskGEOREGION(Product product) {
-        Mask GEOREGION_Mask = Mask.BandMathsType.create("GEOREGION", getFlagDescription("GEOREGION"),
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.GEOREGION",
-                get_GEOREGION_MaskColor(), get_GEOREGION_MaskTransparency());
-        product.getMaskGroup().add(GEOREGION_Mask);
-
-        return GEOREGION_Mask;
-    }
 
     private Mask createMaskMisc(Product product, String flagName) {
         String flag = "l2_flags." + flagName;
@@ -2574,7 +2184,8 @@ public abstract class SeadasFileReader {
 
 
     // ATMFAIL
-
+    
+    
     private boolean is_ATMFAIL_MaskEnabled() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_ENABLED_DEFAULT);
@@ -2593,7 +2204,7 @@ public abstract class SeadasFileReader {
     
     
     // LAND
-
+    
     private Color get_LAND_MaskColor() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyColor(SeadasReaderDefaults.PROPERTY_MASK_LAND_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_LAND_COLOR_DEFAULT);
@@ -3376,64 +2987,9 @@ public abstract class SeadasFileReader {
         return validFlagComposite;
     }
 
-    private boolean isValidFlag(String flagMask) {
-        
-        if (flagMask == null) {
-            return false;
-        }
-
-        flagMask = flagMask.trim();
-        
-        for (String validFlag : flagNames) {
-            if (validFlag != null) {
-                if (flagMask.equals(validFlag)) {
-                    return true;
-                }
-            }
-        }
-        
-        return false;
-    }
 
     
-    private ArrayList<String> validFlags() {
-        ArrayList<String> validFlags = new ArrayList();
-        validFlags.add("ATMFAIL");
-        validFlags.add("LAND");
-        validFlags.add("PRODWARN");
-        validFlags.add("HIGLINT");
-        validFlags.add("HILT");
-        validFlags.add("HISATZEN");
-        validFlags.add("COASTZ");
-        validFlags.add("SPARE8");
-        validFlags.add("STRAYLIGHT");
-        validFlags.add("CLDICE");
-        validFlags.add("COCCOLITH");
-        validFlags.add("TURBIDW");
-        validFlags.add("HISOLZEN");
-        validFlags.add("SPARE14");
-        validFlags.add("LOWLW");
-        validFlags.add("CHLFAIL");
-        validFlags.add("NAVWARN");
-        validFlags.add("ABSAER");
-        validFlags.add("SPARE19");
-        validFlags.add("MAXAERITER");
-        validFlags.add("MODGLINT");
-        validFlags.add("CHLWARN");
-        validFlags.add("ATMWARN");
-        validFlags.add("SPARE24");
-        validFlags.add("SEAICE");
-        validFlags.add("NAVFAIL");
-        validFlags.add("FILTER");
-        validFlags.add("SPARE28");
-        validFlags.add("BOWTIEDEL");
-        validFlags.add("HIPOL");
-        validFlags.add("PRODFAIL");
-        validFlags.add("SPARE32");
-        validFlags.add("GEOREGION");
 
-        return validFlags;
-    }
 
     
 
