@@ -56,6 +56,8 @@ public class SeadasReaderDefaults {
 
     // ATMFAIL
 
+    public static final String PROPERTY_MASK_ATMFAIL_NAME = "ATMFAIL";
+    
     public static final String PROPERTY_MASK_ATMFAIL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.ATMFAIL";
 
     public static final String PROPERTY_MASK_ATMFAIL_SECTION_KEY = PROPERTY_MASK_ATMFAIL_ROOT_KEY + ".section";
@@ -84,6 +86,9 @@ public class SeadasReaderDefaults {
 
     // LAND
 
+
+    public static final String PROPERTY_MASK_LAND_NAME = "LAND";
+
     public static final String PROPERTY_MASK_LAND_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.LAND";
 
     public static final String PROPERTY_MASK_LAND_SECTION_KEY = PROPERTY_MASK_LAND_ROOT_KEY + ".section";
@@ -111,6 +116,8 @@ public class SeadasReaderDefaults {
     
     // PRODWARN
 
+    public static final String PROPERTY_MASK_PRODWARN_NAME = "PRODWARN";
+
     public static final String PROPERTY_MASK_PRODWARN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.PRODWARN";
     
     public static final String PROPERTY_MASK_PRODWARN_SECTION_KEY = PROPERTY_MASK_PRODWARN_ROOT_KEY + ".section";
@@ -137,6 +144,8 @@ public class SeadasReaderDefaults {
 
     // HIGLINT
 
+    public static final String PROPERTY_MASK_HIGLINT_NAME = "HIGLINT";
+
     public static final String PROPERTY_MASK_HIGLINT_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HIGLINT";
 
     public static final String PROPERTY_MASK_HIGLINT_SECTION_KEY = PROPERTY_MASK_HIGLINT_ROOT_KEY + ".section";
@@ -162,6 +171,8 @@ public class SeadasReaderDefaults {
     
 
     // HILT
+
+    public static final String PROPERTY_MASK_HILT_NAME = "HILT";
 
     public static final String PROPERTY_MASK_HILT_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HILT";
 
@@ -190,6 +201,8 @@ public class SeadasReaderDefaults {
 
     // HISATZEN
 
+    public static final String PROPERTY_MASK_HISATZEN_NAME = "HISATZEN";
+
     public static final String PROPERTY_MASK_HISATZEN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HISATZEN";
 
     public static final String PROPERTY_MASK_HISATZEN_SECTION_KEY = PROPERTY_MASK_HISATZEN_ROOT_KEY + ".section";
@@ -215,6 +228,8 @@ public class SeadasReaderDefaults {
     
     
     // COASTZ
+
+    public static final String PROPERTY_MASK_COASTZ_NAME = "COASTZ";
 
     public static final String PROPERTY_MASK_COASTZ_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.COASTZ";
 
@@ -243,6 +258,8 @@ public class SeadasReaderDefaults {
 
     // STRAYLIGHT
 
+    public static final String PROPERTY_MASK_STRAYLIGHT_NAME = "STRAYLIGHT";
+
     public static final String PROPERTY_MASK_STRAYLIGHT_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.STRAYLIGHT";
 
     public static final String PROPERTY_MASK_STRAYLIGHT_SECTION_KEY = PROPERTY_MASK_STRAYLIGHT_ROOT_KEY + ".section";
@@ -268,6 +285,8 @@ public class SeadasReaderDefaults {
 
 
     // CLDICE
+
+    public static final String PROPERTY_MASK_CLDICE_NAME = "CLDICE";
 
     public static final String PROPERTY_MASK_CLDICE_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.CLDICE";
 
@@ -296,6 +315,8 @@ public class SeadasReaderDefaults {
 
     // COCCOLITH
 
+    public static final String PROPERTY_MASK_COCCOLITH_NAME = "COCCOLITH";
+
     public static final String PROPERTY_MASK_COCCOLITH_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.COCCOLITH";
 
     public static final String PROPERTY_MASK_COCCOLITH_SECTION_KEY = PROPERTY_MASK_COCCOLITH_ROOT_KEY + ".section";
@@ -321,6 +342,8 @@ public class SeadasReaderDefaults {
     
     
     // TURBIDW
+
+    public static final String PROPERTY_MASK_TURBIDW_NAME = "TURBIDW";
 
     public static final String PROPERTY_MASK_TURBIDW_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.TURBIDW";
 
@@ -348,6 +371,8 @@ public class SeadasReaderDefaults {
     
     // HISOLZEN
 
+    public static final String PROPERTY_MASK_HISOLZEN_NAME = "HISOLZEN";
+
     public static final String PROPERTY_MASK_HISOLZEN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HISOLZEN";
 
     public static final String PROPERTY_MASK_HISOLZEN_SECTION_KEY = PROPERTY_MASK_HISOLZEN_ROOT_KEY + ".section";
@@ -373,6 +398,8 @@ public class SeadasReaderDefaults {
     
     
     // LOWLW
+
+    public static final String PROPERTY_MASK_LOWLW_NAME = "LOWLW";
 
     public static final String PROPERTY_MASK_LOWLW_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.LOWLW";
 
@@ -400,6 +427,8 @@ public class SeadasReaderDefaults {
     
     // CHLFAIL
 
+    public static final String PROPERTY_MASK_CHLFAIL_NAME = "CHLFAIL";
+
     public static final String PROPERTY_MASK_CHLFAIL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.CHLFAIL";
 
     public static final String PROPERTY_MASK_CHLFAIL_SECTION_KEY = PROPERTY_MASK_CHLFAIL_ROOT_KEY + ".section";
@@ -425,6 +454,8 @@ public class SeadasReaderDefaults {
 
 
     // NAVWARN
+
+    public static final String PROPERTY_MASK_NAVWARN_NAME = "NAVWARN";
 
     public static final String PROPERTY_MASK_NAVWARN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.NAVWARN";
 
@@ -453,6 +484,8 @@ public class SeadasReaderDefaults {
 
     // ABSAER
 
+    public static final String PROPERTY_MASK_ABSAER_NAME = "ABSAER";
+
     public static final String PROPERTY_MASK_ABSAER_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.ABSAER";
 
     public static final String PROPERTY_MASK_ABSAER_SECTION_KEY = PROPERTY_MASK_ABSAER_ROOT_KEY + ".section";
@@ -479,6 +512,8 @@ public class SeadasReaderDefaults {
 
 
     // MAXAERITER
+
+    public static final String PROPERTY_MASK_MAXAERITER_NAME = "MAXAERITER";
 
     public static final String PROPERTY_MASK_MAXAERITER_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.MAXAERITER";
 
@@ -507,6 +542,8 @@ public class SeadasReaderDefaults {
 
     // MODGLINT
 
+    public static final String PROPERTY_MASK_MODGLINT_NAME = "MODGLINT";
+
     public static final String PROPERTY_MASK_MODGLINT_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.MODGLINT";
 
     public static final String PROPERTY_MASK_MODGLINT_SECTION_KEY = PROPERTY_MASK_MODGLINT_ROOT_KEY + ".section";
@@ -534,6 +571,8 @@ public class SeadasReaderDefaults {
 
     // CHLWARN
 
+    public static final String PROPERTY_MASK_CHLWARN_NAME = "CHLWARN";
+
     public static final String PROPERTY_MASK_CHLWARN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.CHLWARN";
 
     public static final String PROPERTY_MASK_CHLWARN_SECTION_KEY = PROPERTY_MASK_CHLWARN_ROOT_KEY + ".section";
@@ -559,6 +598,8 @@ public class SeadasReaderDefaults {
 
 
     // ATMWARN
+
+    public static final String PROPERTY_MASK_ATMWARN_NAME = "ATMWARN";
 
     public static final String PROPERTY_MASK_ATMWARN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.ATMWARN";
 
@@ -587,6 +628,8 @@ public class SeadasReaderDefaults {
 
     // SEAICE
 
+    public static final String PROPERTY_MASK_SEAICE_NAME = "SEAICE";
+
     public static final String PROPERTY_MASK_SEAICE_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.SEAICE";
 
     public static final String PROPERTY_MASK_SEAICE_SECTION_KEY = PROPERTY_MASK_SEAICE_ROOT_KEY + ".section";
@@ -612,6 +655,8 @@ public class SeadasReaderDefaults {
 
 
     // NAVFAIL
+
+    public static final String PROPERTY_MASK_NAVFAIL_NAME = "NAVFAIL";
 
     public static final String PROPERTY_MASK_NAVFAIL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.NAVFAIL";
 
@@ -639,6 +684,8 @@ public class SeadasReaderDefaults {
 
     // FILTER
 
+    public static final String PROPERTY_MASK_FILTER_NAME = "FILTER";
+
     public static final String PROPERTY_MASK_FILTER_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.FILTER";
 
     public static final String PROPERTY_MASK_FILTER_SECTION_KEY = PROPERTY_MASK_FILTER_ROOT_KEY + ".section";
@@ -665,6 +712,8 @@ public class SeadasReaderDefaults {
 
     // BOWTIEDEL
 
+    public static final String PROPERTY_MASK_BOWTIEDEL_NAME = "BOWTIEDEL";
+
     public static final String PROPERTY_MASK_BOWTIEDEL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.BOWTIEDEL";
 
     public static final String PROPERTY_MASK_BOWTIEDEL_SECTION_KEY = PROPERTY_MASK_BOWTIEDEL_ROOT_KEY + ".section";
@@ -690,6 +739,8 @@ public class SeadasReaderDefaults {
 
 
     // HIPOL
+
+    public static final String PROPERTY_MASK_HIPOL_NAME = "HIPOL";
 
     public static final String PROPERTY_MASK_HIPOL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HIPOL";
 
@@ -718,6 +769,8 @@ public class SeadasReaderDefaults {
 
     // PRODFAIL
 
+    public static final String PROPERTY_MASK_PRODFAIL_NAME = "PRODFAIL";
+
     public static final String PROPERTY_MASK_PRODFAIL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.PRODFAIL";
 
     public static final String PROPERTY_MASK_PRODFAIL_SECTION_KEY = PROPERTY_MASK_PRODFAIL_ROOT_KEY + ".section";
@@ -743,6 +796,8 @@ public class SeadasReaderDefaults {
 
 
     // GEOREGION
+
+    public static final String PROPERTY_MASK_GEOREGION_NAME = "GEOREGION";
 
     public static final String PROPERTY_MASK_GEOREGION_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.GEOREGION";
 
