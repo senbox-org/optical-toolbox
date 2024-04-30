@@ -2,6 +2,8 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.dataio.ProductIOException;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.FactoryException;
@@ -123,11 +125,10 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         lonBand.setNoDataValueUsed(true);
 
         try {
-
-            product.setSceneGeoCoding(new PixelGeoCoding(latBand, lonBand, null, 5, ProgressMonitor.NULL));
-
+            final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+            product.setSceneGeoCoding(geoCoding);
         } catch (IOException e) {
-            throw new ProductIOException(e.getMessage(), e);
+            throw new ProductIOException(e.getMessage());
         }
     }
 
