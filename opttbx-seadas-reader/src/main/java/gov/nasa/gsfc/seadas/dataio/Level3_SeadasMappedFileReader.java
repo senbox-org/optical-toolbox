@@ -118,7 +118,14 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         Band lonBand;
 
         latBand = product.getBand(latitude);
+        if (latBand == null) {
+            latBand = product.getBand("lat");
+        }
         lonBand = product.getBand(longitude);
+        if (lonBand == null) {
+            lonBand = product.getBand("lon");
+        }
+
         latBand.setNoDataValue(-999.);
         lonBand.setNoDataValue(-999.);
         latBand.setNoDataValueUsed(true);
