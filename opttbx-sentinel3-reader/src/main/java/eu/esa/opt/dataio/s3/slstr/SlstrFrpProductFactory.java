@@ -5,24 +5,12 @@ import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
 import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
-import org.esa.snap.core.dataio.geocoding.ComponentFactory;
-import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
-import org.esa.snap.core.dataio.geocoding.ForwardCoding;
-import org.esa.snap.core.dataio.geocoding.GeoChecks;
-import org.esa.snap.core.dataio.geocoding.GeoRaster;
-import org.esa.snap.core.dataio.geocoding.InverseCoding;
+import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.GeoCoding;
-import org.esa.snap.core.datamodel.Mask;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductNodeGroup;
-import org.esa.snap.core.datamodel.RasterDataNode;
-import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.runtime.Config;
 
@@ -40,7 +28,7 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
     private final static String SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE = "opttbx.reader.slstr.frp.pixelGeoCoding.inverse";
     private final static String SYSPROP_SLSTR_FRP_TIE_POINT_CODING_FORWARD = "opttbx.reader.slstr.frp.tiePointGeoCoding.forward";
 
-    private Map<String, GeoCoding> geoCodingMap;
+    private final Map<String, GeoCoding> geoCodingMap;
     private final Map<String, Double> gridIndexToTrackOffset;
     private final Map<String, Double> gridIndexToStartOffset;
 
@@ -55,22 +43,41 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
     }
 
     protected void addProductSpecificMetadata(Product targetProduct) {
-        super.addProductSpecificMetadata(targetProduct);
-        List<Product> openProductList = getOpenProductList();
-        for (final Product p : openProductList) {
-            String identifier = getGridIndex(p.getName());
-            MetadataElement globalAttributes = p.getMetadataRoot().getElement("Global_Attributes");
-            if (!gridIndexToStartOffset.containsKey(identifier)) {
-                gridIndexToStartOffset.put(identifier, globalAttributes.getAttributeDouble("start_offset"));
+        final List<Product> openProductList = getOpenProductList();
+        for (final Product sourceProduct : openProductList) {
+            final String sourceProductName = sourceProduct.getName();
+
+            updateOffsetsAndResolutions(sourceProduct, sourceProductName);
+
+            final MetadataElement[] variableAttributes = sourceProduct.getMetadataRoot().getElement("Variable_Attributes").getElements();
+            if (variableAttributes.length == 0) {
+                continue;
             }
-            if (!gridIndexToTrackOffset.containsKey(identifier)) {
-                gridIndexToTrackOffset.put(identifier, globalAttributes.getAttributeDouble("track_offset"));
+
+            final MetadataElement metadataRoot = targetProduct.getMetadataRoot();
+            final MetadataElement frpElement = new MetadataElement(sourceProductName);
+            for (final MetadataElement element : variableAttributes) {
+                if (!frpElement.containsElement(element.getDisplayName())) {
+                    frpElement.addElement(element.createDeepClone());
+                }
             }
-            if (identifier.equals("in")) {
-                setReferenceStartOffset(getStartOffset(identifier));
-                setReferenceTrackOffset(getTrackOffset(identifier));
-                setReferenceResolutions(getResolutions(identifier));
-            }
+            metadataRoot.addElement(frpElement);
+        }
+    }
+
+    private void updateOffsetsAndResolutions(Product sourceProduct, String sourceProductName) {
+        final String identifier = getGridIndex(sourceProductName);
+        final MetadataElement globalAttributes = sourceProduct.getMetadataRoot().getElement("Global_Attributes");
+        if (!gridIndexToStartOffset.containsKey(identifier)) {
+            gridIndexToStartOffset.put(identifier, globalAttributes.getAttributeDouble("start_offset"));
+        }
+        if (!gridIndexToTrackOffset.containsKey(identifier)) {
+            gridIndexToTrackOffset.put(identifier, globalAttributes.getAttributeDouble("track_offset"));
+        }
+        if ("in".equals(identifier)) {
+            setReferenceStartOffset(getStartOffset(identifier));
+            setReferenceTrackOffset(getTrackOffset(identifier));
+            setReferenceResolutions(getResolutions(identifier));
         }
     }
 
@@ -132,9 +139,9 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
                         targetNode = addSpecialNode(gridIndex, sourceBand, targetProduct);
                     } else {
                         final String targetBandName =
-                            sourceBand.getName().endsWith("_"+gridIndex)
-                            ? sourceBand.getName()
-                            : sourceBand.getName() + "_" + gridIndex;
+                                sourceBand.getName().endsWith("_" + gridIndex)
+                                        ? sourceBand.getName()
+                                        : sourceBand.getName() + "_" + gridIndex;
                         targetNode = ProductUtils.copyBand(sourceBand.getName(), sourceProduct, targetBandName, targetProduct, true);
                     }
                     if (targetNode != null) {
@@ -151,17 +158,17 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
         // todo wait for name change. If this happens, we can merge this with the method from SlstrLevel1ProductFactory
         String bandName = band.getName();
         String bandNameStart = bandName.split("_")[0];
-        if (bandNameStart.equals("flags")) {
-            return  "in";
+        if ("flags".equals(bandNameStart)) {
+            return "in";
         }
         return getGridIndex(bandName);
     }
 
     protected RasterDataNode addSpecialNode(String gridIndex, Band sourceBand, Product targetProduct) {
         final String targetBandName =
-                sourceBand.getName().endsWith("_"+gridIndex)
-                ? sourceBand.getName()
-                : sourceBand.getName() + "_" + gridIndex;
+                sourceBand.getName().endsWith("_" + gridIndex)
+                        ? sourceBand.getName()
+                        : sourceBand.getName() + "_" + gridIndex;
         //String gridIndex = getFrpGridIndex(sourceBand);
         final Double sourceStartOffset = getStartOffset(gridIndex);
         final Double sourceTrackOffset = getTrackOffset(gridIndex);
@@ -184,8 +191,8 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
                 final float[] offsets = getOffsets(sourceStartOffset, sourceTrackOffset, sourceResolutions);
                 imageToModelTransform.translate(offsets[0], offsets[1]);
                 final short[] referenceResolutions = getReferenceResolutions();
-                final double subSamplingX = ((double)sourceResolutions[0]) / referenceResolutions[0];
-                final double subSamplingY = ((double)sourceResolutions[1]) / referenceResolutions[1];
+                final double subSamplingX = ((double) sourceResolutions[0]) / referenceResolutions[0];
+                final double subSamplingY = ((double) sourceResolutions[1]) / referenceResolutions[1];
                 imageToModelTransform.scale(subSamplingX, subSamplingY);
                 final DefaultMultiLevelModel targetModel =
                         new DefaultMultiLevelModel(imageToModelTransform,

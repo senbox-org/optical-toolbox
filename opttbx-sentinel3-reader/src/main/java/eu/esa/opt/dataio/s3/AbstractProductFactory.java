@@ -245,9 +245,9 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
     protected void addProductSpecificMetadata(Product targetProduct) {
-        for (final Product p : openProductList) {
+        for (final Product sourceProduct : openProductList) {
             MetadataElement root = targetProduct.getMetadataRoot();
-            for (final MetadataElement element : p.getMetadataRoot().getElement("Variable_Attributes").getElements()) {
+            for (final MetadataElement element : sourceProduct.getMetadataRoot().getElement("Variable_Attributes").getElements()) {
                 if (!root.containsElement(element.getDisplayName())) {
                     root.addElement(element.createDeepClone());
                 }
