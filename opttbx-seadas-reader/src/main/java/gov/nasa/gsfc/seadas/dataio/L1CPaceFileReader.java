@@ -17,6 +17,8 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.ProductIOException;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
 import ucar.ma2.Array;
 import ucar.ma2.InvalidRangeException;
@@ -1592,7 +1594,13 @@ public class L1CPaceFileReader extends SeadasFileReader {
             latBand.setData(latRawData);
             lonBand.setData(lonRawData);
 
-            product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, null, 5));
+//            product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, null, 5));
+            try {
+                final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+                product.setSceneGeoCoding(geoCoding);
+            } catch (IOException e) {
+                throw new ProductIOException(e.getMessage());
+            }
 
         }
     }
