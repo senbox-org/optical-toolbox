@@ -74,6 +74,7 @@ public class SeadasProductReader extends AbstractProductReader {
         OISST("Daily-OI"),
         SeadasMapped("SeaDAS Mapped"),
         SMI("Level 3 Mapped"),
+        Level3_SeadasMapped("Level 3 Mapped"),
         VIIRS_IP("VIIRS IP"),
         VIIRS_SDR("VIIRS SDR"),
         VIIRS_EDR("VIIRS EDR"),
@@ -178,6 +179,9 @@ public class SeadasProductReader extends AbstractProductReader {
                 case Bathy:
                 case MEaSUREs:
                     seadasFileReader = new SMIFileReader(this);
+                    break;
+                case Level3_SeadasMapped:
+                    seadasFileReader = new Level3_SeadasMappedFileReader(this);
                     break;
                 case SeadasMapped:
                     seadasFileReader = new SeadasMappedFileReader(this);
@@ -397,6 +401,8 @@ public class SeadasProductReader extends AbstractProductReader {
                 return ProductType.ANCCLIM;
             } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
                 return ProductType.SMI;
+            } else if (title.contains("Level-3") && title.contains("Mapped Image")) {
+                return ProductType.Level3_SeadasMapped;
             } else if (title.contains("Level-3 Binned Data") || title.contains("level-3_binned_data")) {
                 return ProductType.Level3_Bin;
             } else if (title.contains("GSM") && (tmp = checkMEaSUREs()) != ProductType.UNKNOWN) {
