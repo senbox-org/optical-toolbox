@@ -85,7 +85,7 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
     protected Product findMasterProduct() {
         List<Product> openProductList = getOpenProductList();
         for (final Product p : openProductList) {
-            if (p.getName().endsWith("in")) {
+            if (p.getName().contains("FRP_in")) {
                 return p;
             }
         }
@@ -133,21 +133,22 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
             String gridIndex = getGridIndex(sourceProduct.getName());  // one of fn, an, bn, in, tn, tx
             final Map<String, String> mapping = new HashMap<>();
             for (final Band sourceBand : sourceProduct.getBands()) {
-                if (!sourceBand.getName().contains("orphan")) {
-                    RasterDataNode targetNode;
-                    if (isNodeSpecial(sourceBand, targetProduct)) {
-                        targetNode = addSpecialNode(gridIndex, sourceBand, targetProduct);
-                    } else {
-                        final String targetBandName =
-                                sourceBand.getName().endsWith("_" + gridIndex)
-                                        ? sourceBand.getName()
-                                        : sourceBand.getName() + "_" + gridIndex;
-                        targetNode = ProductUtils.copyBand(sourceBand.getName(), sourceProduct, targetBandName, targetProduct, true);
-                    }
-                    if (targetNode != null) {
-                        configureTargetNode(sourceBand, targetNode);
-                        mapping.put(sourceBand.getName(), targetNode.getName());
-                    }
+                final String sourceBandName = sourceBand.getName();
+                if (sourceBandName.contains("orphan")) {
+                    continue;
+                }
+
+                RasterDataNode targetNode;
+                if (isNodeSpecial(sourceBand, targetProduct)) {
+                    targetNode = addSpecialNode(gridIndex, sourceBand, targetProduct);
+                } else {
+                    final String targetBandName =
+                            getTargetBandName(gridIndex, sourceBandName);
+                    targetNode = ProductUtils.copyBand(sourceBandName, sourceProduct, targetBandName, targetProduct, true);
+                }
+                if (targetNode != null) {
+                    configureTargetNode(sourceBand, targetNode);
+                    mapping.put(sourceBandName, targetNode.getName());
                 }
             }
             copyMasks(sourceProduct, targetProduct, mapping);
@@ -165,47 +166,69 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
     }
 
     protected RasterDataNode addSpecialNode(String gridIndex, Band sourceBand, Product targetProduct) {
-        final String targetBandName =
-                sourceBand.getName().endsWith("_" + gridIndex)
-                        ? sourceBand.getName()
-                        : sourceBand.getName() + "_" + gridIndex;
-        //String gridIndex = getFrpGridIndex(sourceBand);
+        final String sourceBandName = sourceBand.getName();
+        final String targetBandName = getTargetBandName(gridIndex, sourceBandName);
+
         final Double sourceStartOffset = getStartOffset(gridIndex);
         final Double sourceTrackOffset = getTrackOffset(gridIndex);
-        if (sourceStartOffset != null && sourceTrackOffset != null) {
-            final short[] sourceResolutions = getResolutions(gridIndex);
-            if (gridIndex.startsWith("t")) {
-                return copyTiePointGrid(sourceBand, targetProduct, sourceStartOffset, sourceTrackOffset, sourceResolutions);
-            } else {
-                final Band targetBand = new Band(targetBandName, sourceBand.getDataType(),
-                        sourceBand.getRasterWidth(), sourceBand.getRasterHeight());
-                targetProduct.addBand(targetBand);
-                ProductUtils.copyRasterDataNodeProperties(sourceBand, targetBand);
-                final RenderedImage sourceRenderedImage = sourceBand.getSourceImage().getImage(0);
-                //todo remove commented lines when resampling works with scenetransforms
-                //if pixel band geo-codings are used, scenetransforms are set
-//                if (Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, false)) {
-//                    targetBand.setSourceImage(sourceRenderedImage);
-//                } else {
-                final AffineTransform imageToModelTransform = new AffineTransform();
-                final float[] offsets = getOffsets(sourceStartOffset, sourceTrackOffset, sourceResolutions);
-                imageToModelTransform.translate(offsets[0], offsets[1]);
-                final short[] referenceResolutions = getReferenceResolutions();
-                final double subSamplingX = ((double) sourceResolutions[0]) / referenceResolutions[0];
-                final double subSamplingY = ((double) sourceResolutions[1]) / referenceResolutions[1];
-                imageToModelTransform.scale(subSamplingX, subSamplingY);
-                final DefaultMultiLevelModel targetModel =
-                        new DefaultMultiLevelModel(imageToModelTransform,
-                                sourceRenderedImage.getWidth(), sourceRenderedImage.getHeight());
-                final DefaultMultiLevelSource targetMultiLevelSource =
-                        new DefaultMultiLevelSource(sourceRenderedImage, targetModel);
-                targetBand.setSourceImage(new DefaultMultiLevelImage(targetMultiLevelSource));
-//                }
-                return targetBand;
-            }
-        } else {
-            return ProductUtils.copyBand(sourceBand.getName(), sourceBand.getProduct(), targetBandName, targetProduct, true);
+        if (sourceStartOffset == null || sourceTrackOffset == null) {
+            return ProductUtils.copyBand(sourceBandName, sourceBand.getProduct(), targetBandName, targetProduct, true);
         }
+
+        final short[] sourceResolutions = getResolutions(gridIndex);
+        if (gridIndex.startsWith("t")) {
+            return copyTiePointGrid(sourceBand, targetProduct, sourceStartOffset, sourceTrackOffset, sourceResolutions);
+        }
+
+        final Band targetBand = new Band(targetBandName, sourceBand.getDataType(),
+                sourceBand.getRasterWidth(), sourceBand.getRasterHeight());
+        targetProduct.addBand(targetBand);
+
+        updateFlagCodingNamesFRP(sourceBand);   // to ensure that flag codings named "flag" don't overwrite each other tb 2024-05-03
+        ProductUtils.copyRasterDataNodeProperties(sourceBand, targetBand);
+
+        final AffineTransform imageToModelTransform = new AffineTransform();
+        final float[] offsets = getOffsets(sourceStartOffset, sourceTrackOffset, sourceResolutions);
+        imageToModelTransform.translate(offsets[0], offsets[1]);
+
+        final short[] referenceResolutions = getReferenceResolutions();
+        final double subSamplingX = ((double) sourceResolutions[0]) / referenceResolutions[0];
+        final double subSamplingY = ((double) sourceResolutions[1]) / referenceResolutions[1];
+        imageToModelTransform.scale(subSamplingX, subSamplingY);
+
+        final RenderedImage sourceRenderedImage = sourceBand.getSourceImage().getImage(0);
+        final DefaultMultiLevelModel targetModel =
+                new DefaultMultiLevelModel(imageToModelTransform,
+                        sourceRenderedImage.getWidth(), sourceRenderedImage.getHeight());
+        final DefaultMultiLevelSource targetMultiLevelSource =
+                new DefaultMultiLevelSource(sourceRenderedImage, targetModel);
+        targetBand.setSourceImage(new DefaultMultiLevelImage(targetMultiLevelSource));
+
+        return targetBand;
+    }
+
+    // package access for testing only tb 2024-05-03
+    static void updateFlagCodingNamesFRP(Band sourceBand) {
+        final String sourceProductname = sourceBand.getProduct().getName();
+        final String flagCodingName;
+
+        if (sourceProductname.contains("FRP_in")) {
+            flagCodingName = "flags_in";
+        } else if (sourceProductname.contains("FRP_an") || sourceProductname.contains("FRP_bn")) {
+            flagCodingName = "flags_an_bn";
+        } else {
+            return; // no need to rename something tb 2024-05-03
+        }
+
+        final FlagCoding flagCoding = sourceBand.getFlagCoding();
+        flagCoding.setName(flagCodingName);
+    }
+
+    // package access for testing only tb 2024-05-03
+    static String getTargetBandName(String gridIndex, String sourceBandName) {
+        return sourceBandName.endsWith("_" + gridIndex)
+                ? sourceBandName
+                : sourceBandName + "_" + gridIndex;
     }
 
     @Override
@@ -288,5 +311,4 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
     protected void setAutoGrouping(Product[] sourceProducts, Product targetProduct) {
         targetProduct.setAutoGrouping("temperature_profile:specific_humidity:time");
     }
-
 }
