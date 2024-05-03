@@ -8,6 +8,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SlstrFrpProductFactoryTest {
 
@@ -48,7 +49,21 @@ public class SlstrFrpProductFactoryTest {
 
         SlstrFrpProductFactory.updateFlagCodingNamesFRP(flags);
         assertEquals("flags", flags.getFlagCoding().getName());
+    }
 
+    @Test
+    @STTM("SNAP-1684")
+    public void testGetLonLatNames() {
+        SlstrFrpProductFactory.LonLatNames names = SlstrFrpProductFactory.getLonLatNames("in");
+        assertEquals("longitude_in", names.lonVariableName);
+        assertEquals("latitude_in", names.latVariableName);
+
+        names = SlstrFrpProductFactory.getLonLatNames("fn");
+        assertEquals("longitude_fn", names.lonVariableName);
+        assertEquals("latitude_fn", names.latVariableName);
+
+        names = SlstrFrpProductFactory.getLonLatNames("invalid");
+        assertNull(names);
     }
 
     private static Band createFlagsBand() {

@@ -260,51 +260,68 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
         targetProduct.setSceneGeoCoding(geoCoding);
     }
 
-    private GeoCoding getBandGeoCoding(Product product, String end) throws IOException {
-        if (geoCodingMap.containsKey(end)) {
-            return geoCodingMap.get(end);
-        } else {
-            // @todo 1 tb/tb extract method for switch and test 2020-02-14
-            String lonVariableName;
-            String latVariableName;
-            switch (end) {
-                case "in":
-                    lonVariableName = "longitude_in";
-                    latVariableName = "latitude_in";
-                    break;
-                case "fn":
-                    lonVariableName = "longitude_fn";
-                    latVariableName = "latitude_fn";
-                    break;
-                default:
-                    return null;
-            }
+    private GeoCoding getBandGeoCoding(Product product, String ending) throws IOException {
+        if (geoCodingMap.containsKey(ending)) {
+            return geoCodingMap.get(ending);
+        }
+        final LonLatNames result = getLonLatNames(ending);
+        if (result == null) {
+            return null;
+        }
 
-            final Band lonBand = product.getBand(lonVariableName);
-            final Band latBand = product.getBand(latVariableName);
+        final Band lonBand = product.getBand(result.lonVariableName);
+        final Band latBand = product.getBand(result.latVariableName);
 
-            if (latBand != null && lonBand != null) {
-                final double[] longitudes = RasterUtils.loadGeoData(lonBand);
-                final double[] latitudes = RasterUtils.loadGeoData(latBand);
+        if (latBand != null && lonBand != null) {
+            final double[] longitudes = RasterUtils.loadGeoData(lonBand);
+            final double[] latitudes = RasterUtils.loadGeoData(latBand);
 
-                final int sceneRasterWidth = product.getSceneRasterWidth();
-                final int sceneRasterHeight = product.getSceneRasterHeight();
-                final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
-                        sceneRasterWidth, sceneRasterHeight, RESOLUTION_IN_KM);
+            final int sceneRasterWidth = product.getSceneRasterWidth();
+            final int sceneRasterHeight = product.getSceneRasterHeight();
+            final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, result.lonVariableName, result.latVariableName,
+                    sceneRasterWidth, sceneRasterHeight, RESOLUTION_IN_KM);
 
-                final Preferences preferences = Config.instance("opttbx").preferences();
-                final String inverseKey = preferences.get(SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE, PixelQuadTreeInverse.KEY);
-                final String[] keys = getForwardAndInverseKeys_pixelCoding(inverseKey);
-                final ForwardCoding forward = ComponentFactory.getForward(keys[0]);
-                final InverseCoding inverse = ComponentFactory.getInverse(keys[1]);
+            final Preferences preferences = Config.instance("opttbx").preferences();
+            final String inverseKey = preferences.get(SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE, PixelQuadTreeInverse.KEY);
+            final String[] keys = getForwardAndInverseKeys_pixelCoding(inverseKey);
+            final ForwardCoding forward = ComponentFactory.getForward(keys[0]);
+            final InverseCoding inverse = ComponentFactory.getInverse(keys[1]);
 
-                final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
-                geoCoding.initialize();
-                geoCodingMap.put(end, geoCoding);
-                return geoCoding;
-            }
+            final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
+            geoCoding.initialize();
+            geoCodingMap.put(ending, geoCoding);
+            return geoCoding;
         }
         return null;
+    }
+
+    // package access for testing only tb 2024-05-03
+     static LonLatNames getLonLatNames(String end) {
+        String lonVariableName;
+        String latVariableName;
+        switch (end) {
+            case "in":
+                lonVariableName = "longitude_in";
+                latVariableName = "latitude_in";
+                break;
+            case "fn":
+                lonVariableName = "longitude_fn";
+                latVariableName = "latitude_fn";
+                break;
+            default:
+                return null;
+        }
+        return new LonLatNames(lonVariableName, latVariableName);
+    }
+
+    static class LonLatNames {
+        public final String lonVariableName;
+        public final String latVariableName;
+
+        LonLatNames(String lonVariableName, String latVariableName) {
+            this.lonVariableName = lonVariableName;
+            this.latVariableName = latVariableName;
+        }
     }
 
     @Override
