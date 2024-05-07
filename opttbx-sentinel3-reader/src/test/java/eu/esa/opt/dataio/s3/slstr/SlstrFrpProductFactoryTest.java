@@ -58,6 +58,14 @@ public class SlstrFrpProductFactoryTest {
         assertEquals("longitude_in", names.lonVariableName);
         assertEquals("latitude_in", names.latVariableName);
 
+        names = SlstrFrpProductFactory.getLonLatNames("an");
+        assertEquals("longitude_in", names.lonVariableName);
+        assertEquals("latitude_in", names.latVariableName);
+
+        names = SlstrFrpProductFactory.getLonLatNames("bn");
+        assertEquals("longitude_in", names.lonVariableName);
+        assertEquals("latitude_in", names.latVariableName);
+
         names = SlstrFrpProductFactory.getLonLatNames("fn");
         assertEquals("longitude_fn", names.lonVariableName);
         assertEquals("latitude_fn", names.latVariableName);

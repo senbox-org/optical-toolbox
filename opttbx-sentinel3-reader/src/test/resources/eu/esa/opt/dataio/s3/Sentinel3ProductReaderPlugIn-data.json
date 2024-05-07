@@ -142,6 +142,16 @@
       "id": "S3B_OL_1_EFR____20231214T092214",
       "relativePath": "sensors_platforms/SENTINEL-3/olci/L1/S3B_OL_1_EFR____20231214T092214_20231214T092514_20231214T204604_0179_087_207_2340_PS2_O_NT_003.SEN3",
       "description": "S3B_OL_1_EFR v4"
+    },
+    {
+      "id": "S3B_SL_2_FRP____20240325T213812",
+      "relativePath": "sensors_platforms/SENTINEL-3/slstr/L2/S3B_SL_2_FRP____20240325T213812_20240325T214112_20240327T003545_0179_091_129_0720_PS2_O_NT_004.SEN3",
+      "description": "S3B_SL2_FRP v4"
+    },
+    {
+      "id": "S3A_SL_2_FRP____20160513T051504",
+      "relativePath": "sensors_platforms/SENTINEL-3/slstr/L2/S3A_SL_2_FRP____20160513T051504_20160513T051804_20190909T081834_0179_004_105______LR1_D_NT_002.SEN3",
+      "description": "S3B_SL2_FRP v2"
     }
   ]
 }

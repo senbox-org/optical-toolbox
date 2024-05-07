@@ -26,14 +26,10 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
 
     private static final double RESOLUTION_IN_KM = 1.0;
     private final static String SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE = "opttbx.reader.slstr.frp.pixelGeoCoding.inverse";
-    private final static String SYSPROP_SLSTR_FRP_TIE_POINT_CODING_FORWARD = "opttbx.reader.slstr.frp.tiePointGeoCoding.forward";
 
     private final Map<String, GeoCoding> geoCodingMap;
     private final Map<String, Double> gridIndexToTrackOffset;
     private final Map<String, Double> gridIndexToStartOffset;
-
-    private final static String LATITUDE_TPG_NAME = "latitude_tx";
-    private final static String LONGITUDE_TPG_NAME = "longitude_tx";
 
     public SlstrFrpProductFactory(Sentinel3ProductReader productReader) {
         super(productReader);
@@ -117,13 +113,13 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
     protected void setBandGeoCodings(Product targetProduct) throws IOException {
         final Band[] bands = targetProduct.getBands();
         for (Band band : bands) {
-            final GeoCoding bandGeoCoding = getBandGeoCoding(targetProduct, getFrpGridIndex(band));
+            final GeoCoding bandGeoCoding = getBandGeoCoding(targetProduct, getGridIndex(band.getName()));
             band.setGeoCoding(bandGeoCoding);
         }
         final ProductNodeGroup<Mask> maskGroup = targetProduct.getMaskGroup();
         for (int i = 0; i < maskGroup.getNodeCount(); i++) {
             final Mask mask = maskGroup.get(i);
-            final GeoCoding bandGeoCoding = getBandGeoCoding(targetProduct, getFrpGridIndex(mask));
+            final GeoCoding bandGeoCoding = getBandGeoCoding(targetProduct, getGridIndex(mask.getName()));
             mask.setGeoCoding(bandGeoCoding);
         }
     }
@@ -153,16 +149,6 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
             }
             copyMasks(sourceProduct, targetProduct, mapping);
         }
-    }
-
-    private static String getFrpGridIndex(Band band) {
-        // todo wait for name change. If this happens, we can merge this with the method from SlstrLevel1ProductFactory
-        String bandName = band.getName();
-        String bandNameStart = bandName.split("_")[0];
-        if ("flags".equals(bandNameStart)) {
-            return "in";
-        }
-        return getGridIndex(bandName);
     }
 
     protected RasterDataNode addSpecialNode(String gridIndex, Band sourceBand, Product targetProduct) {
@@ -232,67 +218,84 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
     }
 
     @Override
-    protected void setGeoCoding(Product targetProduct) {
-        final TiePointGrid lonGrid = targetProduct.getTiePointGrid(LONGITUDE_TPG_NAME);
-        final TiePointGrid latGrid = targetProduct.getTiePointGrid(LATITUDE_TPG_NAME);
-
-        if (latGrid == null || lonGrid == null) {
-            return;
+    protected void setGeoCoding(Product targetProduct) throws IOException {
+        final LonLatNames result = getLonLatNames("in");
+        if (result == null) {
+            return ;
         }
 
-        final double[] longitudes = loadTiePointData(LONGITUDE_TPG_NAME);
-        final double[] latitudes = loadTiePointData(LATITUDE_TPG_NAME);
+        final Band lonBand = targetProduct.getBand(result.lonVariableName);
+        final Band latBand = targetProduct.getBand(result.latVariableName);
 
-        final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, LONGITUDE_TPG_NAME, LATITUDE_TPG_NAME,
-                lonGrid.getGridWidth(), lonGrid.getGridHeight(),
-                targetProduct.getSceneRasterWidth(), targetProduct.getSceneRasterHeight(), RESOLUTION_IN_KM,
-                lonGrid.getOffsetX(), lonGrid.getOffsetY(),
-                lonGrid.getSubSamplingX(), lonGrid.getSubSamplingY());
-
-        final Preferences preferences = Config.instance("opttbx").preferences();
-        final String forwardKey = preferences.get(SYSPROP_SLSTR_FRP_TIE_POINT_CODING_FORWARD, TiePointBilinearForward.KEY);
-        final ForwardCoding forward = ComponentFactory.getForward(forwardKey);
-        final InverseCoding inverse = ComponentFactory.getInverse(TiePointInverse.KEY);
-
-        final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
-        geoCoding.initialize();
-
-        targetProduct.setSceneGeoCoding(geoCoding);
+        if (latBand != null && lonBand != null) {
+            final ComponentGeoCoding geoCoding = createPixelGeoCoding(targetProduct, lonBand, latBand, result);
+            geoCodingMap.put("in", geoCoding);
+            targetProduct.setSceneGeoCoding(geoCoding);
+        }
     }
 
     private GeoCoding getBandGeoCoding(Product product, String ending) throws IOException {
         if (geoCodingMap.containsKey(ending)) {
             return geoCodingMap.get(ending);
         }
+
         final LonLatNames result = getLonLatNames(ending);
         if (result == null) {
             return null;
+        }
+
+        // for the an/bn rasters, there is no geo-coding supplied with the data. As discussed with OPTMPC, we interpolate
+        // the 500m data geo-location from the 1 km in raster. tb 2024-06-06
+        if ("an".equals(ending) || "bn".equals(ending)) {
+            // which we can safely call, because it is added first as the reference geo-coding for the product tb 2024-05-06
+            final ComponentGeoCoding inGeoCoding = (ComponentGeoCoding) geoCodingMap.get("in");
+            final GeoRaster inGeoRaster = inGeoCoding.getGeoRaster();
+            final int sceneRasterWidth = product.getSceneRasterWidth();
+            final int sceneRasterHeight = product.getSceneRasterHeight();
+            final GeoRaster geoRaster = new GeoRaster(inGeoRaster.getLongitudes(), inGeoRaster.getLatitudes(),
+                    result.lonVariableName, result.latVariableName,
+                    sceneRasterWidth, sceneRasterHeight,
+                    sceneRasterWidth * 2, sceneRasterHeight * 2, RESOLUTION_IN_KM * 0.5,
+                    -0.25, -0.25,
+                    2, 2);
+            final ForwardCoding forward = ComponentFactory.getForward(TiePointBilinearForward.KEY);
+            final InverseCoding inverse = ComponentFactory.getInverse(TiePointInverse.KEY);
+            final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
+            geoCoding.initialize();
+            geoCodingMap.put("an", geoCoding);
+            geoCodingMap.put("bn", geoCoding);
+            return geoCoding;
         }
 
         final Band lonBand = product.getBand(result.lonVariableName);
         final Band latBand = product.getBand(result.latVariableName);
 
         if (latBand != null && lonBand != null) {
-            final double[] longitudes = RasterUtils.loadGeoData(lonBand);
-            final double[] latitudes = RasterUtils.loadGeoData(latBand);
-
-            final int sceneRasterWidth = product.getSceneRasterWidth();
-            final int sceneRasterHeight = product.getSceneRasterHeight();
-            final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, result.lonVariableName, result.latVariableName,
-                    sceneRasterWidth, sceneRasterHeight, RESOLUTION_IN_KM);
-
-            final Preferences preferences = Config.instance("opttbx").preferences();
-            final String inverseKey = preferences.get(SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE, PixelQuadTreeInverse.KEY);
-            final String[] keys = getForwardAndInverseKeys_pixelCoding(inverseKey);
-            final ForwardCoding forward = ComponentFactory.getForward(keys[0]);
-            final InverseCoding inverse = ComponentFactory.getInverse(keys[1]);
-
-            final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
-            geoCoding.initialize();
+            final ComponentGeoCoding geoCoding = createPixelGeoCoding(product, lonBand, latBand, result);
             geoCodingMap.put(ending, geoCoding);
             return geoCoding;
         }
         return null;
+    }
+
+    private static ComponentGeoCoding createPixelGeoCoding(Product product, Band lonBand, Band latBand, LonLatNames result) throws IOException {
+        final double[] longitudes = RasterUtils.loadGeoData(lonBand);
+        final double[] latitudes = RasterUtils.loadGeoData(latBand);
+
+        final int sceneRasterWidth = product.getSceneRasterWidth();
+        final int sceneRasterHeight = product.getSceneRasterHeight();
+        final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, result.lonVariableName, result.latVariableName,
+                sceneRasterWidth, sceneRasterHeight, RESOLUTION_IN_KM);
+
+        final Preferences preferences = Config.instance("opttbx").preferences();
+        final String inverseKey = preferences.get(SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE, PixelQuadTreeInverse.KEY);
+        final String[] keys = getForwardAndInverseKeys_pixelCoding(inverseKey);
+        final ForwardCoding forward = ComponentFactory.getForward(keys[0]);
+        final InverseCoding inverse = ComponentFactory.getInverse(keys[1]);
+
+        final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
+        geoCoding.initialize();
+        return geoCoding;
     }
 
     // package access for testing only tb 2024-05-03
@@ -301,6 +304,8 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
         String latVariableName;
         switch (end) {
             case "in":
+            case "an":
+            case "bn":
                 lonVariableName = "longitude_in";
                 latVariableName = "latitude_in";
                 break;
