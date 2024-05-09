@@ -9,7 +9,7 @@
                 <attr name="displayName"
                       stringvalue="ECOSTRESS L1/L2/L3/L4"/>
                 <attr name="formatName"
-                      stringvalue="ECOSTRESS-L1A/L2A/L1/L3/L4"/>
+                      stringvalue="ECOSTRESS-L1B/L2/L3/L4"/>
                 <attr name="useAllFileFilter"
                       boolvalue="true"/>
                 <attr name="helpId"
