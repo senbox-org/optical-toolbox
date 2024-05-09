@@ -369,7 +369,7 @@ public class SeadasProductReader extends AbstractProductReader {
                 }
             } else if (title.equals("OCIS Level-2 Data")) {
                 return ProductType.Level2_PaceOCIS;
-            } else if (title.equals("OCI Level-2 Data")) {
+            } else if (title.contains("OCI Level-2 Data")) {
                 return ProductType.Level2_PaceOCI;
             } else if (title.contains("Level-1B")) {
                 return ProductType.Level1B;
