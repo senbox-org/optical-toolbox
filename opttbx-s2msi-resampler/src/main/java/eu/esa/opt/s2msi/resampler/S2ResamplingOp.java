@@ -1,7 +1,6 @@
 package eu.esa.opt.s2msi.resampler;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.glevel.MultiLevelImage;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.Operator;
@@ -94,10 +93,10 @@ public class S2ResamplingOp extends Operator {
 
         targetProduct = s2Resampler.resample(sourceProduct);
         if (this.targetProduct.getBandIndex("view_zenith_mean") >= 0) {
-            this.targetProduct.getBand("view_zenith_mean").setSourceImage((MultiLevelImage) null);
+            this.targetProduct.getBand("view_zenith_mean").setSourceImage(null);
         }
         if (this.targetProduct.getBandIndex("view_azimuth_mean") >= 0) {
-            this.targetProduct.getBand("view_azimuth_mean").setSourceImage((MultiLevelImage) null);
+            this.targetProduct.getBand("view_azimuth_mean").setSourceImage(null);
         }
     }
 
