@@ -2,6 +2,7 @@ package eu.esa.opt.s2msi.resampler;
 
 import com.bc.ceres.binding.Property;
 import com.bc.ceres.binding.PropertySet;
+import com.bc.ceres.binding.ValueSet;
 import com.bc.ceres.swing.binding.BindingContext;
 import com.bc.ceres.swing.selection.SelectionChangeEvent;
 import com.bc.ceres.swing.selection.SelectionChangeListener;
@@ -83,6 +84,8 @@ public class S2ResamplingDialog extends DefaultSingleTargetProductDialog {
             BindingContext bindingContext = getBindingContext();
             PropertySet propertySet = bindingContext.getPropertySet();
             propertySet.setDefaultValues();
+            final Property property = propertySet.getProperty(this.bandsField.getName());
+            property.getDescriptor().setValueSet(new ValueSet(selectedProduct.getBandNames()));
             propertySet.setValue(this.bandsField.getName(), null);
         }
     }

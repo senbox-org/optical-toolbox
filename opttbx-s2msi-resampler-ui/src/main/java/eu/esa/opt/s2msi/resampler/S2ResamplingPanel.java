@@ -3,20 +3,32 @@ package eu.esa.opt.s2msi.resampler;
 import com.bc.ceres.binding.*;
 import com.bc.ceres.swing.binding.BindingContext;
 import com.bc.ceres.swing.binding.PropertyPane;
+import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.datamodel.ProductNode;
 import org.esa.snap.core.datamodel.RasterDataNode;
 import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.annotations.Parameter;
 import org.esa.snap.core.gpf.descriptor.OperatorDescriptor;
 import org.esa.snap.core.gpf.internal.RasterDataNodeValues;
+import org.esa.snap.core.util.StringUtils;
+import org.esa.snap.ui.GridBagUtils;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 class S2ResamplingPanel {
+
+    private static final Font SMALL_PLAIN_FONT = new Font("SansSerif", Font.PLAIN, 10);
+    private static final Font SMALL_ITALIC_FONT = SMALL_PLAIN_FONT.deriveFont(Font.ITALIC);
+
     private final OperatorDescriptor operatorDescriptor;
     private final PropertySet propertySet;
 
@@ -24,6 +36,7 @@ class S2ResamplingPanel {
     private final BindingContext bindingContext;
     private Product currentProduct;
     private final JScrollPane operatorPanel;
+    private BandPane bandsPane;
     private final Callable<Product> sourceProductAccessor;
 
     S2ResamplingPanel(String operatorName, PropertySet propertySet, BindingContext bindingContext, Callable<Product> productAccessor) {
@@ -40,6 +53,7 @@ class S2ResamplingPanel {
         this.sourceProductAccessor = productAccessor;
         PropertyPane parametersPane = new PropertyPane(this.bindingContext);
         this.operatorPanel = new JScrollPane(parametersPane.createPanel());
+        this.bandsPane = new BandPane(getSourceProduct().getBands(), false);
     }
 
     JComponent createPanel() {
@@ -113,5 +127,150 @@ class S2ResamplingPanel {
 
     private void setEnabled(String propertyName, boolean value) {
         this.bindingContext.setComponentsEnabled(propertyName, value);
+    }
+
+    private void updateNameList() {
+        final Property property = this.propertySet.getProperty(bandsField.getName());
+        try {
+            property.setValue(bandsPane.getSubsetNames());
+        } catch (ValidationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private class BandPane extends JPanel {
+
+        private final Band[] bands;
+        private List<JCheckBox> checkers;
+        private JCheckBox allCheck;
+        private JCheckBox noneCheck;
+        private final boolean selected;
+
+        private void setComponentName(JComponent component, String name) {
+            if (component != null) {
+                Container parent = component.getParent();
+                if (parent != null) {
+                    component.setName(parent.getName() + "." + name);
+                } else {
+                    component.setName(name);
+                }
+            }
+        }
+
+        private BandPane(Band[] bands, boolean selected) {
+            this.bands = bands;
+            this.selected = selected;
+            createUI();
+        }
+
+        private void createUI() {
+
+            ActionListener productNodeCheckListener = e -> updateUIState();
+
+            checkers = new ArrayList<>(10);
+            JPanel checkersPane = GridBagUtils.createPanel();
+            setComponentName(checkersPane, "CheckersPane");
+
+            GridBagConstraints gbc = GridBagUtils.createConstraints("insets.left=4,anchor=WEST,fill=HORIZONTAL");
+            for (int i = 0; i < bands.length; i++) {
+                Band band = bands[i];
+
+                String name = band.getName();
+                JCheckBox productNodeCheck = new JCheckBox(name);
+                productNodeCheck.setSelected(selected);
+                productNodeCheck.setFont(SMALL_PLAIN_FONT);
+                productNodeCheck.addActionListener(productNodeCheckListener);
+
+                checkers.add(productNodeCheck);
+
+                String description = band.getDescription();
+                JLabel productNodeLabel = new JLabel(description != null ? description : " ");
+                productNodeLabel.setFont(SMALL_ITALIC_FONT);
+
+                GridBagUtils.addToPanel(checkersPane, productNodeCheck, gbc, "weightx=0,gridx=0,gridy=" + i);
+                GridBagUtils.addToPanel(checkersPane, productNodeLabel, gbc, "weightx=1,gridx=1,gridy=" + i);
+            }
+            // Add a last 'filler' row
+            GridBagUtils.addToPanel(checkersPane, new JLabel(" "), gbc,
+                                    "gridwidth=2,weightx=1,weighty=1,gridx=0,gridy=" + bands.length);
+
+            ActionListener allCheckListener = e -> {
+                if (e.getSource() == allCheck) {
+                    checkAllProductNodes(true);
+                } else if (e.getSource() == noneCheck) {
+                    checkAllProductNodes(false);
+                }
+                updateUIState();
+            };
+
+            allCheck = new JCheckBox("Select all");
+            allCheck.setName("selectAll");
+            allCheck.setMnemonic('a');
+            allCheck.addActionListener(allCheckListener);
+
+            noneCheck = new JCheckBox("Select none");
+            noneCheck.setName("SelectNone");
+            noneCheck.setMnemonic('n');
+            noneCheck.addActionListener(allCheckListener);
+
+            JScrollPane scrollPane = new JScrollPane(checkersPane);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+            scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
+
+            JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 4));
+            buttonRow.add(allCheck);
+            buttonRow.add(noneCheck);
+
+            setLayout(new BorderLayout());
+            add(scrollPane, BorderLayout.CENTER);
+            add(buttonRow, BorderLayout.SOUTH);
+            setBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7));
+
+            updateUIState();
+        }
+
+        void updateUIState() {
+            allCheck.setSelected(areAllProductNodesChecked(true));
+            noneCheck.setSelected(areAllProductNodesChecked(false));
+            updateNameList();
+        }
+
+        String[] getSubsetNames() {
+            String[] names = new String[countChecked(true)];
+            int pos = 0;
+            for (int i = 0; i < checkers.size(); i++) {
+                JCheckBox checker = checkers.get(i);
+                if (checker.isSelected()) {
+                    ProductNode productNode = bands[i];
+                    names[pos] = productNode.getName();
+                    pos++;
+                }
+            }
+            return names;
+        }
+
+        void checkAllProductNodes(boolean checked) {
+            for (JCheckBox checker : checkers) {
+                if (checker.isEnabled()) {
+                    checker.setSelected(checked);
+                }
+            }
+        }
+
+        boolean areAllProductNodesChecked(boolean checked) {
+            return countChecked(checked) == checkers.size();
+        }
+
+        int countChecked(boolean checked) {
+            int counter = 0;
+            for (JCheckBox checker : checkers) {
+                if (checker.isSelected() == checked) {
+                    counter++;
+                }
+            }
+            return counter;
+        }
     }
 }
