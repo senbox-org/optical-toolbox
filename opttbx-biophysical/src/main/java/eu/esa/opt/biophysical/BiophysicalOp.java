@@ -41,6 +41,7 @@ import org.esa.snap.core.util.math.MathUtils;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * TODO
@@ -56,7 +57,7 @@ import java.util.regex.Pattern;
         copyright = "CS Group (foss-contact@c-s.fr)")
 public class BiophysicalOp extends PixelOperator {
 
-    private Map<BiophysicalVariable, BiophysicalAlgo> algos = new HashMap<>();
+    private final Map<BiophysicalVariable, BiophysicalAlgo> algos = new HashMap<>();
 
     @SourceProduct(alias = "source", description = "The source product.")
     private Product sourceProduct;
@@ -87,9 +88,11 @@ public class BiophysicalOp extends PixelOperator {
     @Parameter(defaultValue = "true", label = "Compute CWC", description = "Compute Cw (Canopy Water Content)")
     private boolean computeCw;
 
-    private final Pattern S2Pattern = Pattern.compile("S2[A-B]_MSIL2A_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
+    private final Pattern S2L2APattern = Pattern.compile("S2[A-B]_MSIL2A_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
+    private final Pattern S2L1CPattern = Pattern.compile("S2[A-B]_MSIL1C_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
 
     private boolean needsResample = false;
+    private List<BiophysicalVariable> biophysicalVariables;
 
     /**
      * Configures all source samples that this operator requires for the computation of target samples.
@@ -122,8 +125,10 @@ public class BiophysicalOp extends PixelOperator {
             super.prepareInputs();
         } catch (OperatorException e) {
             // multi-size
-            if (S2Pattern.matcher(this.sourceProduct.getName()).find()) {
+            if (S2L2APattern.matcher(this.sourceProduct.getName()).find()) {
                 needsResample = true;
+            } else if (S2L1CPattern.matcher(this.sourceProduct.getName()).find()) {
+                throw new OperatorException("The operator requires an atmospherically corrected product");
             } else {
                 throw e;
             }
@@ -178,15 +183,10 @@ public class BiophysicalOp extends PixelOperator {
      */
     @Override
     protected void configureTargetSamples(TargetSampleConfigurer sampleConfigurer) throws OperatorException {
-
         int sampleIndex = 0;
-        for (BiophysicalVariable biophysicalVariable : BiophysicalVariable.values()) {
-            if (BiophysicalModel.S2A.computesVariable(biophysicalVariable) && isComputed(biophysicalVariable)) {
-                sampleConfigurer.defineSample(sampleIndex, biophysicalVariable.getSampleName());
-                sampleIndex++;
-                sampleConfigurer.defineSample(sampleIndex, biophysicalVariable.getSampleName() + "_flags");
-                sampleIndex++;
-            }
+        for (BiophysicalVariable biophysicalVariable : this.biophysicalVariables) {
+            sampleConfigurer.defineSample(sampleIndex++, biophysicalVariable.getSampleName());
+            sampleConfigurer.defineSample(sampleIndex++, biophysicalVariable.getSampleName() + "_flags");
         }
     }
 
@@ -219,13 +219,19 @@ public class BiophysicalOp extends PixelOperator {
     @Override
     protected void configureTargetProduct(ProductConfigurer productConfigurer) {
         Product tp;
+        double noDataValue;
+        biophysicalVariables = Arrays.stream(BiophysicalVariable.values())
+                                     .filter(v -> BiophysicalModel.S2A.computesVariable(v) && isComputed(v))
+                                     .collect(Collectors.toList());
         if (needsResample) {
             HashMap<String, Product> sourceProducts = new HashMap<>();
             sourceProducts.put("sourceProduct", this.sourceProduct);
             final HashMap<String, Object> params = new HashMap<>();
             // Only resample selected bands
-            params.put("bands", getS2Bands());
+            final String[] s2Bands = getS2Bands();
+            params.put("bands", s2Bands);
             params.put("targetResolution", targetResolution);
+            noDataValue = this.sourceProduct.getBand(s2Bands[0]).getNoDataValue();
             // The new source product is the resampled one, we need to reset references
             this.sourceProduct = GPF.createProduct("S2Resampling", params, sourceProducts);
             // Dirty hack, but no other way to clear productList and productMap from OperatorContext
@@ -238,44 +244,42 @@ public class BiophysicalOp extends PixelOperator {
             needsResample = false;
         } else {
             tp = productConfigurer.getTargetProduct();
+            noDataValue = tp.getBand(tp.getBandNames()[0]).getNoDataValue();
         }
         super.configureTargetProduct(productConfigurer);
         productConfigurer.copyMetadata();
         productConfigurer.copyMasks();
 
         final List<String> description = new ArrayList<>();
-        for (BiophysicalVariable biophysicalVariable : BiophysicalVariable.values()) {
-            if (BiophysicalModel.S2A.computesVariable(biophysicalVariable) && isComputed(biophysicalVariable)) {
-                // Add biophysical variable band
-                final Band biophysicalVariableBand = tp.addBand(biophysicalVariable.getBandName(), ProductData.TYPE_FLOAT32);
-                biophysicalVariableBand.setDescription(biophysicalVariable.getDescription());
-                biophysicalVariableBand.setUnit(biophysicalVariable.getUnit());
-                // todo better setDescription
-                // todo setValidPixelExpression
-                // todo setNoDataValueUsed (see flhmci)
-                // todo setNoDataValue (see flhmci)
+        for (BiophysicalVariable biophysicalVariable : this.biophysicalVariables) {
+            // Add biophysical variable band
+            final Band biophysicalVariableBand = tp.addBand(biophysicalVariable.getBandName(), ProductData.TYPE_FLOAT32);
+            biophysicalVariableBand.setDescription(biophysicalVariable.getDescription());
+            biophysicalVariableBand.setUnit(biophysicalVariable.getUnit());
+            // todo better setDescription
+            // todo setValidPixelExpression
+            biophysicalVariableBand.setNoDataValue(noDataValue);
+            biophysicalVariableBand.setNoDataValueUsed(true);
 
-
-                // Add corresponding flag band
-                String flagBandName = String.format("%s_flags", biophysicalVariable.getBandName());
-                final Band biophysicalVariableFlagBand = tp.addBand(flagBandName, ProductData.TYPE_UINT8);
-                final FlagCoding biophysicalVariableFlagCoding = new FlagCoding(flagBandName);
-                for (BiophysicalFlag flagDef : BiophysicalFlag.values()) {
-                    biophysicalVariableFlagCoding.addFlag(flagDef.getName(), flagDef.getFlagValue(), flagDef.getDescription());
-                }
-                tp.getFlagCodingGroup().add(biophysicalVariableFlagCoding);
-                biophysicalVariableFlagBand.setSampleCoding(biophysicalVariableFlagCoding);
-
-                // Add a mask for each flag
-                for (BiophysicalFlag flagDef : BiophysicalFlag.values()) {
-                    String maskName = String.format("%s_%s", biophysicalVariable.getBandName(), flagDef.getName().toLowerCase());
-                    tp.addMask(maskName,
-                               String.format("%s.%s", flagBandName, flagDef.getName()),
-                               flagDef.getDescription(),
-                               flagDef.getColor(), flagDef.getTransparency());
-                }
-                description.add(biophysicalVariable.getDescription());
+            // Add corresponding flag band
+            String flagBandName = String.format("%s_flags", biophysicalVariable.getBandName());
+            final Band biophysicalVariableFlagBand = tp.addBand(flagBandName, ProductData.TYPE_UINT8);
+            final FlagCoding biophysicalVariableFlagCoding = new FlagCoding(flagBandName);
+            for (BiophysicalFlag flagDef : BiophysicalFlag.values()) {
+                biophysicalVariableFlagCoding.addFlag(flagDef.getName(), flagDef.getFlagValue(), flagDef.getDescription());
             }
+            tp.getFlagCodingGroup().add(biophysicalVariableFlagCoding);
+            biophysicalVariableFlagBand.setSampleCoding(biophysicalVariableFlagCoding);
+
+            // Add a mask for each flag
+            for (BiophysicalFlag flagDef : BiophysicalFlag.values()) {
+                String maskName = String.format("%s_%s", biophysicalVariable.getBandName(), flagDef.getName().toLowerCase());
+                tp.addMask(maskName,
+                           String.format("%s.%s", flagBandName, flagDef.getName()),
+                           flagDef.getDescription(),
+                           flagDef.getColor(), flagDef.getTransparency());
+            }
+            description.add(biophysicalVariable.getDescription());
         }
         tp.setDescription("Biophysical variables (" + String.join(",", description));
     }
@@ -299,9 +303,9 @@ public class BiophysicalOp extends PixelOperator {
     protected void computePixel(int x, int y, Sample[] sourceSamples, WritableSample[] targetSamples) {
 
         double[] input = new double[11];
-        for (int i = 0; i < 10; ++i) {
+        /*for (int i = 0; i < 10; ++i) {
             input[i] = sourceSamples[i].getDouble();
-        }
+        }*/
 
         input[L2BInput.B3.getIndex()] = sourceSamples[L2BInput.B3.getIndex()].getDouble();
         input[L2BInput.B4.getIndex()] = sourceSamples[L2BInput.B4.getIndex()].getDouble();
@@ -320,20 +324,16 @@ public class BiophysicalOp extends PixelOperator {
         input[10] = Math.cos(MathUtils.DTOR * (sourceSamples[L2BInput.SUN_AZIMUTH.getIndex()].getDouble() - sourceSamples[L2BInput.VIEW_AZIMUTH.getIndex()].getDouble()));
 
         int targetIndex = 0;
-        for (BiophysicalVariable biophysicalVariable : BiophysicalVariable.values()) {
-            if (BiophysicalModel.S2A.computesVariable(biophysicalVariable) && isComputed(biophysicalVariable)) {
-                BiophysicalAlgo algo = algos.get(biophysicalVariable);
-                BiophysicalAlgo.Result result = algo.process(input);
-                targetSamples[targetIndex].set(result.getOutputValue());
-                targetIndex++;
+        for (BiophysicalVariable biophysicalVariable : this.biophysicalVariables) {
+            BiophysicalAlgo algo = algos.get(biophysicalVariable);
+            BiophysicalAlgo.Result result = algo.process(input);
+            targetSamples[targetIndex++].set(result.getOutputValue());
 
-                targetSamples[targetIndex].set(BiophysicalFlag.INPUT_OUT_OF_RANGE.getBitIndex(), result.isInputOutOfRange());
-                targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_THRESHOLDED_TO_MIN_OUTPUT.getBitIndex(), result.isOutputThresholdedToMinOutput());
-                targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_THRESHOLDED_TO_MAX_OUTPUT.getBitIndex(), result.isOutputThresholdedToMaxOutput());
-                targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_TOO_LOW.getBitIndex(), result.isOutputTooLow());
-                targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_TOO_HIGH.getBitIndex(), result.isOutputTooHigh());
-                targetIndex++;
-            }
+            targetSamples[targetIndex].set(BiophysicalFlag.INPUT_OUT_OF_RANGE.getBitIndex(), result.isInputOutOfRange());
+            targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_THRESHOLDED_TO_MIN_OUTPUT.getBitIndex(), result.isOutputThresholdedToMinOutput());
+            targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_THRESHOLDED_TO_MAX_OUTPUT.getBitIndex(), result.isOutputThresholdedToMaxOutput());
+            targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_TOO_LOW.getBitIndex(), result.isOutputTooLow());
+            targetSamples[targetIndex++].set(BiophysicalFlag.OUTPUT_TOO_HIGH.getBitIndex(), result.isOutputTooHigh());
         }
     }
 
