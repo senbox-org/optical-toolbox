@@ -523,6 +523,11 @@
             <artifactId>opttbx-seadas-reader-ui</artifactId>
             <version>${seadas.reader.ui.version}</version>
         </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-prisma</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -122,13 +122,15 @@ public class PrismaProductReader extends AbstractProductReader {
         for (Node child : children.values()) {
             final String childName = child.getName();
             final MetadataElement nestedElement = new MetadataElement(childName);
-            element.addElement(nestedElement);
             final Map<String, Attribute> attributes = child.getAttributes();
             if (attributes != null && !attributes.isEmpty()) {
                 addAttributesTo(nestedElement, attributes);
             }
             if (child instanceof Group) {
                 addAttributeTreeTo(nestedElement, ((Group) child).getChildren());
+            }
+            if (nestedElement.getNumAttributes() > 0 || nestedElement.getNumElements() > 0) {
+                element.addElement(nestedElement);
             }
         }
     }
@@ -158,8 +160,13 @@ public class PrismaProductReader extends AbstractProductReader {
                 } else {
                     throw new IllegalFileFormatException("Unsupported data type: " + data.getClass().getCanonicalName());
                 }
+                if (pd != null) {
+                    final MetadataAttribute ma = new MetadataAttribute(attName, pd, true);
+                    element.addAttribute(ma);
+                }
             } else {
                 final int[] dimensions = att.getDimensions();
+                final MetadataElement arrayAttElem = new MetadataElement(attName);
                 if (dimensions.length == 1) {
                     if (data instanceof Integer) {
                         pd = ProductData.createInstance(ProductData.TYPE_INT32, att.getDimensions()[0]);
@@ -175,8 +182,9 @@ public class PrismaProductReader extends AbstractProductReader {
                         for (int i = 0; i < strings.length; i++) {
                             String string = strings[i];
                             final ProductData stringData = ProductData.createInstance(string);
-                            element.addAttribute(new MetadataAttribute(attName + "[" + i + "]", stringData, true));
+                            arrayAttElem.addAttribute(new MetadataAttribute(attName + "." + (i + 1), stringData, true));
                         }
+                        element.addElement(arrayAttElem);
                     } else {
                         throw new IllegalFileFormatException("Unsupported data type: " + data.getClass().getCanonicalName());
                     }
@@ -184,20 +192,23 @@ public class PrismaProductReader extends AbstractProductReader {
                     if (data instanceof int[][]) {
                         final int[][] ints = (int[][]) data;
                         for (int i = 0; i < ints.length; i++) {
-                            final String metaName = String.format("%s[%d]", attName, i);
-                            element.addAttribute(new MetadataAttribute(metaName, ProductData.createInstance(ints[i]), true));
+                            final String metaName = String.format("%s.%d", attName, i + 1);
+                            arrayAttElem.addAttribute(new MetadataAttribute(metaName, ProductData.createInstance(ints[i]), true));
+                        }
+                        if (arrayAttElem.getNumAttributes() > 0) {
+                            element.addElement(arrayAttElem);
                         }
                     } else {
                         throw new IllegalFileFormatException("Unsupported dimensions: " + Arrays.toString(dimensions));
                     }
                 }
-            }
-            if (pd != null) {
-                final MetadataAttribute ma = new MetadataAttribute(attName, pd, true);
-                element.addAttribute(ma);
+                if (pd != null) {
+                    final MetadataAttribute ma = new MetadataAttribute(attName, pd, true);
+                    arrayAttElem.addAttribute(ma);
+                    element.addElement(arrayAttElem);
+                }
             }
         }
-        return;
     }
 
     @Override
