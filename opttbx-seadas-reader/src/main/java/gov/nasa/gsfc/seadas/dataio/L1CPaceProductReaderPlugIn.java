@@ -2,6 +2,7 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
+import org.esa.snap.core.util.Debug;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.dataio.netcdf.GenericNetCdfReaderPlugIn;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
@@ -16,11 +17,6 @@ import java.io.IOException;
 import java.util.Locale;
 
 public class L1CPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
-
-    // Set to "true" to output debugging information.
-    // Don't forget to setback to "false" in production code!
-    //
-    private static final boolean DEBUG = false;
 
     private static final String DEFAULT_FILE_EXTENSION = ".nc";
 
@@ -39,15 +35,11 @@ public class L1CPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
             return DecodeQualification.UNABLE;
         }
         if (!file.exists()) {
-            if (DEBUG) {
-                System.out.println("# File not found: " + file);
-            }
+            Debug.trace("# File not found: " + file);
             return DecodeQualification.UNABLE;
         }
         if (!file.isFile()) {
-            if (DEBUG) {
-                System.out.println("# Not a file: " + file);
-            }
+            Debug.trace("# Not a file: " + file);
             return DecodeQualification.UNABLE;
         }
         NetcdfFile ncfile = null;
@@ -64,33 +56,23 @@ public class L1CPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
                             (instrument.toString().toUpperCase().contains("OCI")
                                     || instrument.toString().toUpperCase().contains("HARP")
                                     || instrument.toString().toUpperCase().contains("SPEXONE"))){
-                        if (DEBUG) {
-                            System.out.println(file);
-                        }
+                        Debug.trace(file.toString());
                         ncfile.close();
                         DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
                         debugFlags.set("HdfEos/turnOff", false);
                         H5iosp.setDebugFlags(debugFlags);
                         return DecodeQualification.INTENDED;
                     } else {
-                        if (DEBUG) {
-                            System.out.println("# Unrecognized instrument =[" + instrument + "]: " + file);
-                        }
+                        Debug.trace("# Unrecognized instrument =[" + instrument + "]: " + file);
                     }
                 } else {
-                    if (DEBUG) {
-                        System.out.println("# Missing processing_level or instrument attribute': " + file);
-                    }
+                    Debug.trace("# Missing processing_level or instrument attribute': " + file);
                 }
             } else {
-                if (DEBUG) {
-                    System.out.println("# Can't open as NetCDF: " + file);
-                }
+                Debug.trace("# Can't open as NetCDF: " + file);
             }
         } catch (Exception ignore) {
-            if (DEBUG) {
-                System.out.println("# I/O exception caught: " + file);
-            }
+            Debug.trace("# I/O exception caught: " + file);
         } finally {
             DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
             debugFlags.set("HdfEos/turnOff", false);
@@ -107,7 +89,6 @@ public class L1CPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
 
     /**
      * Returns an array containing the classes that represent valid input types for this reader.
-     * <p/>
      * <p> Intances of the classes returned in this array are valid objects for the <code>setInput</code> method of the
      * <code>ProductReader</code> interface (the method will not throw an <code>InvalidArgumentException</code> in this
      * case).

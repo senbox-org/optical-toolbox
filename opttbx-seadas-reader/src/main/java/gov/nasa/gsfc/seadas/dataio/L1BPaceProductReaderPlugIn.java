@@ -2,6 +2,7 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
+import org.esa.snap.core.util.Debug;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.dataio.netcdf.GenericNetCdfReaderPlugIn;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
@@ -16,11 +17,6 @@ import java.io.IOException;
 import java.util.Locale;
 
 public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
-
-    // Set to "true" to output debugging information.
-    // Don't forget to setback to "false" in production code!
-    //
-    private static final boolean DEBUG = false;
 
     private static final String DEFAULT_FILE_EXTENSION = ".nc";
 
@@ -39,15 +35,11 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
             return DecodeQualification.UNABLE;
         }
         if (!file.exists()) {
-            if (DEBUG) {
-                System.out.println("# File not found: " + file);
-            }
+            Debug.trace("# File not found: " + file);
             return DecodeQualification.UNABLE;
         }
         if (!file.isFile()) {
-            if (DEBUG) {
-                System.out.println("# Not a file: " + file);
-            }
+            Debug.trace("# Not a file: " + file);
             return DecodeQualification.UNABLE;
         }
         NetcdfFile ncfile = null;
@@ -61,33 +53,23 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
                 if (scene_title != null) {
                     if (scene_title.toString().contains("PACE OCIS Level-1B Data") ||
                             scene_title.toString().contains("PACE OCI Level-1B Data")) {
-                        if (DEBUG) {
-                            System.out.println(file);
-                        }
+                        Debug.trace(file.toString());
                         ncfile.close();
                         DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
                         debugFlags.set("HdfEos/turnOff", false);
                         H5iosp.setDebugFlags(debugFlags);
                         return DecodeQualification.INTENDED;
                     } else {
-                        if (DEBUG) {
-                            System.out.println("# Unrecognized scene title =[" + scene_title + "]: " + file);
-                        }
+                        Debug.trace("# Unrecognized scene title =[" + scene_title + "]: " + file);
                     }
                 } else {
-                    if (DEBUG) {
-                        System.out.println("# Missing scene title attribute': " + file);
-                    }
+                    Debug.trace("# Missing scene title attribute': " + file);
                 }
             } else {
-                if (DEBUG) {
-                    System.out.println("# Can't open as NetCDF: " + file);
-                }
+                Debug.trace("# Can't open as NetCDF: " + file);
             }
         } catch (Exception ignore) {
-            if (DEBUG) {
-                System.out.println("# I/O exception caught: " + file);
-            }
+            Debug.trace("# I/O exception caught: " + file);
         } finally {
             DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
             debugFlags.set("HdfEos/turnOff", false);
@@ -104,12 +86,11 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
 
     /**
      * Returns an array containing the classes that represent valid input types for this reader.
-     * <p/>
-     * <p> Intances of the classes returned in this array are valid objects for the <code>setInput</code> method of the
-     * <code>ProductReader</code> interface (the method will not throw an <code>InvalidArgumentException</code> in this
+     * <p> Intances of the classes returned in this array are valid objects for the {@code setInput} method of the
+     * <code>ProductReader</code> interface (the method will not throw an {@code InvalidArgumentException} in this
      * case).
      *
-     * @return an array containing valid input types, never <code>null</code>
+     * @return an array containing valid input types, never {@code null}
      */
     @Override
     public Class[] getInputTypes() {
@@ -117,9 +98,9 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
     }
 
     /**
-     * Creates an instance of the actual product reader class. This method should never return <code>null</code>.
+     * Creates an instance of the actual product reader class. This method should never return {@code null}.
      *
-     * @return a new reader instance, never <code>null</code>
+     * @return a new reader instance, never {@code null}
      */
     @Override
     public ProductReader createReaderInstance() {
@@ -140,9 +121,9 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
      * Gets the default file extensions associated with each of the format names returned by the <code>{@link
      * #getFormatNames}</code> method. <p>The string array returned shall always have the same length as the array
      * returned by the <code>{@link #getFormatNames}</code> method. <p>The extensions returned in the string array shall
-     * always include a leading colon ('.') character, e.g. <code>".hdf"</code>
+     * always include a leading colon ('.') character, e.g. {@code ".hdf"}
      *
-     * @return the default file extensions for this product I/O plug-in, never <code>null</code>
+     * @return the default file extensions for this product I/O plug-in, never {@code null}
      */
     @Override
     public String[] getDefaultFileExtensions() {
@@ -153,12 +134,11 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
     }
 
     /**
-     * Gets a short description of this plug-in. If the given locale is set to <code>null</code> the default locale is
+     * Gets a short description of this plug-in. If the given locale is set to {@code null} the default locale is
      * used.
-     * <p/>
      * <p> In a GUI, the description returned could be used as tool-tip text.
      *
-     * @param locale the local for the given decription string, if <code>null</code> the default locale is used
+     * @param locale the local for the given decription string, if {@code null} the default locale is used
      * @return a textual description of this product reader/writer
      */
     @Override
@@ -169,11 +149,10 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
     /**
      * Gets the names of the product formats handled by this product I/O plug-in.
      *
-     * @return the names of the product formats handled by this product I/O plug-in, never <code>null</code>
+     * @return the names of the product formats handled by this product I/O plug-in, never {@code null}
      */
     @Override
     public String[] getFormatNames() {
         return new String[]{FORMAT_NAME};
     }
-
 }

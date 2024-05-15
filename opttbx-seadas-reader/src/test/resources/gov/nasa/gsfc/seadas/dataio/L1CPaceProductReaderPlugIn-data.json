@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "PACE_OCI_20240514T080849_L1C",
+      "relativePath": "sensors_platforms/PACE/OCI/PACE_OCI.20240514T080849.L1C.5km.nc",
+      "description": "PACE OCI L1C 5km"
+    }
+  ]
+}

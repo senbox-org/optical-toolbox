@@ -1,0 +1,2407 @@
+{
+  "id": "PACE_OCI_20240514T074349_L2_OC_IOP",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 1272,
+    "sceneHeight": 1709,
+    "startTime": "14-MAY-2024 07:48:48.882000",
+    "endTime": "14-MAY-2024 07:43:49.175000",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 548.0,
+          "y": 918.0,
+          "lat": -44.22322082519531,
+          "lon": 85.11863708496094
+        },
+        {
+          "x": 944.0,
+          "y": 1108.0,
+          "lat": -45.041908264160156,
+          "lon": 91.9054183959961
+        }
+      ],
+      "reverseAccuracy": 0.5
+    },
+    "flagCodings": [
+      {
+        "name": "L2Flags",
+        "samples": [
+          {
+            "name": "ATMFAIL",
+            "value": 1,
+            "description": "Atmospheric correction failure"
+          },
+          {
+            "name": "LAND",
+            "value": 2,
+            "description": "Land"
+          },
+          {
+            "name": "PRODWARN",
+            "value": 4,
+            "description": "One (or more) product algorithms generated a warning"
+          },
+          {
+            "name": "HIGLINT",
+            "value": 8,
+            "description": "High glint determined"
+          },
+          {
+            "name": "HILT",
+            "value": 16,
+            "description": "High (or saturating) TOA radiance"
+          },
+          {
+            "name": "HISATZEN",
+            "value": 32,
+            "description": "Large satellite zenith angle"
+          },
+          {
+            "name": "COASTZ",
+            "value": 64,
+            "description": "Shallow water (<30m)"
+          },
+          {
+            "name": "SPARE8",
+            "value": 128,
+            "description": "Unused spare flag"
+          },
+          {
+            "name": "STRAYLIGHT",
+            "value": 256,
+            "description": "Straylight determined"
+          },
+          {
+            "name": "CLDICE",
+            "value": 512,
+            "description": "Cloud/Ice determined"
+          },
+          {
+            "name": "COCCOLITH",
+            "value": 1024,
+            "description": "Coccolithophores detected"
+          },
+          {
+            "name": "TURBIDW",
+            "value": 2048,
+            "description": "Turbid water determined"
+          },
+          {
+            "name": "HISOLZEN",
+            "value": 4096,
+            "description": "High solar zenith angle"
+          },
+          {
+            "name": "SPARE14",
+            "value": 8192,
+            "description": "Unused spare flag"
+          },
+          {
+            "name": "LOWLW",
+            "value": 16384,
+            "description": "Low Lw @ 555nm (possible cloud shadow)"
+          },
+          {
+            "name": "CHLFAIL",
+            "value": 32768,
+            "description": "Chlorophyll algorithm failure"
+          },
+          {
+            "name": "NAVWARN",
+            "value": 65536,
+            "description": "Navigation suspect"
+          },
+          {
+            "name": "ABSAER",
+            "value": 131072,
+            "description": "Absorbing Aerosols determined"
+          },
+          {
+            "name": "SPARE19",
+            "value": 262144,
+            "description": "Unused spare flag"
+          },
+          {
+            "name": "MAXAERITER",
+            "value": 524288,
+            "description": "Maximum iterations reached for NIR iteration"
+          },
+          {
+            "name": "MODGLINT",
+            "value": 1048576,
+            "description": "Moderate glint determined"
+          },
+          {
+            "name": "CHLWARN",
+            "value": 2097152,
+            "description": "Chlorophyll out-of-bounds (<0.01 or >100 mg m^-3)"
+          },
+          {
+            "name": "ATMWARN",
+            "value": 4194304,
+            "description": "Atmospheric correction warning; Epsilon out-of-bounds"
+          },
+          {
+            "name": "SPARE24",
+            "value": 8388608,
+            "description": "Unused spare flag"
+          },
+          {
+            "name": "SEAICE",
+            "value": 16777216,
+            "description": "Sea ice determined"
+          },
+          {
+            "name": "NAVFAIL",
+            "value": 33554432,
+            "description": "Navigation failure"
+          },
+          {
+            "name": "FILTER",
+            "value": 67108864,
+            "description": "Insufficient data for smoothing filter"
+          },
+          {
+            "name": "SPARE28",
+            "value": 134217728,
+            "description": "Unused spare flag"
+          },
+          {
+            "name": "BOWTIEDEL",
+            "value": 268435456,
+            "description": "Bowtie deleted pixels (VIIRS)"
+          },
+          {
+            "name": "HIPOL",
+            "value": 536870912,
+            "description": "High degree of polariztion determined"
+          },
+          {
+            "name": "PRODFAIL",
+            "value": 1073741824,
+            "description": "One (or more) product algorithms produced a failure"
+          },
+          {
+            "name": "SPARE32",
+            "value": 2147483648,
+            "description": "Unused spare flag"
+          }
+        ]
+      }
+    ],
+    "bands": [
+      {
+        "name": "a_351",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "351.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 66,
+            "y": 304,
+            "value": "NaN"
+          },
+          {
+            "x": 871,
+            "y": 1453,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_361",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "361.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 370,
+            "y": 438,
+            "value": "NaN"
+          },
+          {
+            "x": 776,
+            "y": 624,
+            "value": 0.09810006
+          }
+        ]
+      },
+      {
+        "name": "a_385",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "385.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 699,
+            "y": 1273,
+            "value": "NaN"
+          },
+          {
+            "x": 773,
+            "y": 1586,
+            "value": 0.10250006
+          }
+        ]
+      },
+      {
+        "name": "a_413",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "413.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 201,
+            "y": 1138,
+            "value": 0.039100062
+          },
+          {
+            "x": 660,
+            "y": 1561,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_425",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "425.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 961,
+            "y": 828,
+            "value": "NaN"
+          },
+          {
+            "x": 1209,
+            "y": 830,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_442",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 433,
+            "y": 1537,
+            "value": "NaN"
+          },
+          {
+            "x": 12,
+            "y": 804,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_460",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "460.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 416,
+            "y": 336,
+            "value": "NaN"
+          },
+          {
+            "x": 347,
+            "y": 73,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_475",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "475.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1235,
+            "y": 1033,
+            "value": "NaN"
+          },
+          {
+            "x": 728,
+            "y": 1224,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_490",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "490.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 295,
+            "y": 850,
+            "value": "NaN"
+          },
+          {
+            "x": 408,
+            "y": 1234,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_510",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "510.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 455,
+            "y": 851,
+            "value": "NaN"
+          },
+          {
+            "x": 512,
+            "y": 755,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_532",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "532.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 730,
+            "y": 156,
+            "value": 0.05030006
+          },
+          {
+            "x": 820,
+            "y": 27,
+            "value": 0.04850006
+          }
+        ]
+      },
+      {
+        "name": "a_555",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "555.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1240,
+            "y": 627,
+            "value": 0.06470006
+          },
+          {
+            "x": 1208,
+            "y": 1617,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_583",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "583.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 141,
+            "y": 772,
+            "value": "NaN"
+          },
+          {
+            "x": 726,
+            "y": 961,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_618",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "618.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 643,
+            "y": 891,
+            "value": "NaN"
+          },
+          {
+            "x": 573,
+            "y": 992,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_640",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "640.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 18,
+            "y": 725,
+            "value": "NaN"
+          },
+          {
+            "x": 89,
+            "y": 1696,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_655",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "655.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 377,
+            "y": 1273,
+            "value": 0.37330005
+          },
+          {
+            "x": 1022,
+            "y": 1258,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_665",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "665.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1061,
+            "y": 1615,
+            "value": "NaN"
+          },
+          {
+            "x": 316,
+            "y": 908,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "a_678",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "678.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 777,
+            "y": 444,
+            "value": 0.47280005
+          },
+          {
+            "x": 703,
+            "y": 258,
+            "value": 0.46870005
+          }
+        ]
+      },
+      {
+        "name": "a_711",
+        "description": "Total absorption at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "711.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 604,
+            "y": 955,
+            "value": "NaN"
+          },
+          {
+            "x": 121,
+            "y": 1452,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_351",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "351.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 122,
+            "y": 132,
+            "value": "NaN"
+          },
+          {
+            "x": 578,
+            "y": 1155,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_361",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "361.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 591,
+            "y": 1529,
+            "value": "NaN"
+          },
+          {
+            "x": 1103,
+            "y": 1025,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_385",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "385.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1223,
+            "y": 651,
+            "value": "NaN"
+          },
+          {
+            "x": 111,
+            "y": 910,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_413",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "413.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 935,
+            "y": 1016,
+            "value": "NaN"
+          },
+          {
+            "x": 1241,
+            "y": 317,
+            "value": 0.005540004
+          }
+        ]
+      },
+      {
+        "name": "bb_425",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "425.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 585,
+            "y": 446,
+            "value": 0.005420004
+          },
+          {
+            "x": 291,
+            "y": 1106,
+            "value": 0.003775004
+          }
+        ]
+      },
+      {
+        "name": "bb_442",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 813,
+            "y": 747,
+            "value": "NaN"
+          },
+          {
+            "x": 676,
+            "y": 969,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_460",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "460.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 503,
+            "y": 365,
+            "value": 0.004000004
+          },
+          {
+            "x": 354,
+            "y": 1518,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_475",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "475.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1202,
+            "y": 991,
+            "value": "NaN"
+          },
+          {
+            "x": 964,
+            "y": 560,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_490",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "490.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 713,
+            "y": 497,
+            "value": 0.003515004
+          },
+          {
+            "x": 1054,
+            "y": 1488,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_510",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "510.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 137,
+            "y": 1516,
+            "value": "NaN"
+          },
+          {
+            "x": 437,
+            "y": 1391,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_532",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "532.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 231,
+            "y": 1183,
+            "value": "NaN"
+          },
+          {
+            "x": 753,
+            "y": 938,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_555",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "555.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 261,
+            "y": 523,
+            "value": "NaN"
+          },
+          {
+            "x": 521,
+            "y": 1475,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_583",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "583.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 892,
+            "y": 1533,
+            "value": "NaN"
+          },
+          {
+            "x": 378,
+            "y": 1696,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_618",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "618.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 696,
+            "y": 199,
+            "value": 0.0011600041
+          },
+          {
+            "x": 247,
+            "y": 958,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_640",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "640.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 582,
+            "y": 220,
+            "value": "NaN"
+          },
+          {
+            "x": 1054,
+            "y": 978,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_655",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "655.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 130,
+            "y": 1156,
+            "value": "NaN"
+          },
+          {
+            "x": 929,
+            "y": 806,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bb_665",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "665.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 182,
+            "y": 113,
+            "value": 0.0010950041
+          },
+          {
+            "x": 1070,
+            "y": 512,
+            "value": 0.001875004
+          }
+        ]
+      },
+      {
+        "name": "bb_678",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "678.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 753,
+            "y": 1660,
+            "value": "NaN"
+          },
+          {
+            "x": 988,
+            "y": 46,
+            "value": 8.500041E-4
+          }
+        ]
+      },
+      {
+        "name": "bb_711",
+        "description": "Total backscattering at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "711.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 275,
+            "y": 421,
+            "value": "NaN"
+          },
+          {
+            "x": 406,
+            "y": 331,
+            "value": 0.001495004
+          }
+        ]
+      },
+      {
+        "name": "aph_351",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "351.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 359,
+            "y": 1509,
+            "value": "NaN"
+          },
+          {
+            "x": 1268,
+            "y": 129,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_361",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "361.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1041,
+            "y": 857,
+            "value": "NaN"
+          },
+          {
+            "x": 79,
+            "y": 658,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_385",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "385.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 352,
+            "y": 994,
+            "value": "NaN"
+          },
+          {
+            "x": 1181,
+            "y": 237,
+            "value": 0.007000063
+          }
+        ]
+      },
+      {
+        "name": "aph_413",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "413.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 133,
+            "y": 248,
+            "value": "NaN"
+          },
+          {
+            "x": 1124,
+            "y": 182,
+            "value": 0.012400063
+          }
+        ]
+      },
+      {
+        "name": "aph_425",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "425.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 470,
+            "y": 1506,
+            "value": "NaN"
+          },
+          {
+            "x": 744,
+            "y": 983,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_442",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 429,
+            "y": 556,
+            "value": "NaN"
+          },
+          {
+            "x": 475,
+            "y": 1463,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_460",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "460.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 414,
+            "y": 1170,
+            "value": "NaN"
+          },
+          {
+            "x": 818,
+            "y": 1154,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_475",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "475.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 674,
+            "y": 222,
+            "value": "NaN"
+          },
+          {
+            "x": 589,
+            "y": 1368,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_490",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "490.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1020,
+            "y": 1541,
+            "value": "NaN"
+          },
+          {
+            "x": 32,
+            "y": 1193,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_510",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "510.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1131,
+            "y": 984,
+            "value": "NaN"
+          },
+          {
+            "x": 811,
+            "y": 1551,
+            "value": 0.05660006
+          }
+        ]
+      },
+      {
+        "name": "aph_532",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "532.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1249,
+            "y": 551,
+            "value": 0.007800063
+          },
+          {
+            "x": 456,
+            "y": 9,
+            "value": 0.002400063
+          }
+        ]
+      },
+      {
+        "name": "aph_555",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "555.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1067,
+            "y": 972,
+            "value": "NaN"
+          },
+          {
+            "x": 751,
+            "y": 680,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_583",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "583.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 501,
+            "y": 1689,
+            "value": "NaN"
+          },
+          {
+            "x": 292,
+            "y": 1225,
+            "value": 0.003600063
+          }
+        ]
+      },
+      {
+        "name": "aph_618",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "618.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1194,
+            "y": 492,
+            "value": 0.007700063
+          },
+          {
+            "x": 400,
+            "y": 1456,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_640",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "640.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 416,
+            "y": 903,
+            "value": "NaN"
+          },
+          {
+            "x": 455,
+            "y": 1366,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_655",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "655.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 712,
+            "y": 372,
+            "value": 0.005900063
+          },
+          {
+            "x": 121,
+            "y": 1204,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_665",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "665.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 893,
+            "y": 1358,
+            "value": "NaN"
+          },
+          {
+            "x": 1073,
+            "y": 116,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_678",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "678.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1063,
+            "y": 387,
+            "value": 0.016000062
+          },
+          {
+            "x": 830,
+            "y": 1589,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_711",
+        "description": "Absorption due to phytoplankton at %d nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "711.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 341,
+            "y": 1472,
+            "value": "NaN"
+          },
+          {
+            "x": 491,
+            "y": 633,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_351",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "351.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1236,
+            "y": 1163,
+            "value": "NaN"
+          },
+          {
+            "x": 921,
+            "y": 730,
+            "value": 0.2276
+          }
+        ]
+      },
+      {
+        "name": "Kd_361",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "361.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 634,
+            "y": 237,
+            "value": 0.114
+          },
+          {
+            "x": 1232,
+            "y": 232,
+            "value": 0.088
+          }
+        ]
+      },
+      {
+        "name": "Kd_385",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "385.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 917,
+            "y": 950,
+            "value": "NaN"
+          },
+          {
+            "x": 897,
+            "y": 1691,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_413",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "413.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 815,
+            "y": 1548,
+            "value": 0.088
+          },
+          {
+            "x": 1062,
+            "y": 907,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_425",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "425.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 635,
+            "y": 1589,
+            "value": "NaN"
+          },
+          {
+            "x": 727,
+            "y": 1320,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_442",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1182,
+            "y": 67,
+            "value": "NaN"
+          },
+          {
+            "x": 895,
+            "y": 1235,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_460",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "460.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 441,
+            "y": 11,
+            "value": 0.044
+          },
+          {
+            "x": 275,
+            "y": 1470,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_475",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "475.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 159,
+            "y": 173,
+            "value": "NaN"
+          },
+          {
+            "x": 109,
+            "y": 195,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_490",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "490.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 885,
+            "y": 119,
+            "value": 0.052199997
+          },
+          {
+            "x": 612,
+            "y": 1483,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_510",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "510.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 212,
+            "y": 404,
+            "value": "NaN"
+          },
+          {
+            "x": 319,
+            "y": 1659,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_532",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "532.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 910,
+            "y": 580,
+            "value": "NaN"
+          },
+          {
+            "x": 819,
+            "y": 872,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_555",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "555.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1153,
+            "y": 869,
+            "value": "NaN"
+          },
+          {
+            "x": 1095,
+            "y": 954,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_583",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "583.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1018,
+            "y": 1301,
+            "value": "NaN"
+          },
+          {
+            "x": 1062,
+            "y": 1257,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_618",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "618.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 800,
+            "y": 728,
+            "value": "NaN"
+          },
+          {
+            "x": 687,
+            "y": 1304,
+            "value": 0.38439998
+          }
+        ]
+      },
+      {
+        "name": "Kd_640",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "640.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 806,
+            "y": 259,
+            "value": "NaN"
+          },
+          {
+            "x": 1122,
+            "y": 538,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_655",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "655.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 347,
+            "y": 657,
+            "value": "NaN"
+          },
+          {
+            "x": 867,
+            "y": 318,
+            "value": 0.49179998
+          }
+        ]
+      },
+      {
+        "name": "Kd_665",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "665.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 184,
+            "y": 1686,
+            "value": 0.5936
+          },
+          {
+            "x": 499,
+            "y": 1288,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Kd_678",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "678.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 89,
+            "y": 1191,
+            "value": "NaN"
+          },
+          {
+            "x": 773,
+            "y": 1474,
+            "value": 0.6394
+          }
+        ]
+      },
+      {
+        "name": "Kd_711",
+        "description": "Diffuse attenuation coefficient at %d nm, Lee Algorithm",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-6.553399834447191",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "711.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 745,
+            "y": 567,
+            "value": 1.1112
+          },
+          {
+            "x": 556,
+            "y": 29,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "adg_442",
+        "description": "Absorption due to gelbstoff and detrital material at 442 nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 764,
+            "y": 1141,
+            "value": "NaN"
+          },
+          {
+            "x": 998,
+            "y": 152,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "adg_s",
+        "description": "detrital and gelbstoff absorption spectral parameter for GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1 nm^-1",
+        "noDataValue": "-32767.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1145,
+            "y": 141,
+            "value": 0.018
+          },
+          {
+            "x": 98,
+            "y": 1408,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bbp_442",
+        "description": "Particulate backscattering at 442 nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 162,
+            "y": 1561,
+            "value": "NaN"
+          },
+          {
+            "x": 246,
+            "y": 550,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bbp_s",
+        "description": "backscattering spectral parameter for GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1 nm^-1",
+        "noDataValue": "-32767.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 693,
+            "y": 1219,
+            "value": "NaN"
+          },
+          {
+            "x": 149,
+            "y": 373,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rrsdiff",
+        "description": "Fractional mean Rrs difference, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "noDataValue": "-32767.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 519,
+            "y": 1286,
+            "value": "NaN"
+          },
+          {
+            "x": 103,
+            "y": 1278,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "aph_unc_442",
+        "description": "Uncertainty in absorption due to phytoplankton at 442 nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1167,
+            "y": 363,
+            "value": "NaN"
+          },
+          {
+            "x": 1120,
+            "y": 1200,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "adg_unc_442",
+        "description": "Uncertainty in absorption due to gelbstoff and detrital material at 442 nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.7766999172235955",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 154,
+            "y": 46,
+            "value": "NaN"
+          },
+          {
+            "x": 362,
+            "y": 1570,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "bbp_unc_442",
+        "description": "Uncertainty in particulate backscatter at 442 nm, GIOP model",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "m^-1",
+        "noDataValue": "-0.02383499526513333",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 761,
+            "y": 1237,
+            "value": "NaN"
+          },
+          {
+            "x": 648,
+            "y": 808,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "l2_flags",
+        "description": "Level-2 Processing Flags",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 541,
+            "y": 261,
+            "value": 4.0
+          },
+          {
+            "x": 32,
+            "y": 1358,
+            "value": 1.07374234E9
+          }
+        ]
+      },
+      {
+        "name": "longitude",
+        "description": "Longitude",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "degrees_east",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 858,
+            "y": 1208,
+            "value": 90.85137
+          },
+          {
+            "x": 375,
+            "y": 336,
+            "value": 80.82274
+          }
+        ]
+      },
+      {
+        "name": "latitude",
+        "description": "Latitude",
+        "bandWidth": 1272,
+        "bandHeight": 1709,
+        "geophysicalUnit": "degrees_north",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 242,
+            "y": 956,
+            "value": -45.49214
+          },
+          {
+            "x": 731,
+            "y": 1110,
+            "value": -45.758495
+          }
+        ]
+      }
+    ],
+    "masks": [
+      {
+        "name": "LAND",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "80,60,0",
+        "description": "Land"
+      },
+      {
+        "name": "ABSAER",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,200,0",
+        "description": "Absorbing Aerosols determined"
+      },
+      {
+        "name": "ATMFAIL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,26",
+        "description": "Atmospheric correction failure"
+      },
+      {
+        "name": "ATMWARN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,255",
+        "description": "Atmospheric correction warning; Epsilon out-of-bounds"
+      },
+      {
+        "name": "BOWTIEDEL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,26",
+        "description": "Bowtie deleted pixels (VIIRS)"
+      },
+      {
+        "name": "CHLFAIL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,26",
+        "description": "Chlorophyll algorithm failure"
+      },
+      {
+        "name": "CHLWARN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "192,192,192",
+        "description": "Chlorophyll out-of-bounds (<0.01 or >100 mg m^-3)"
+      },
+      {
+        "name": "CLDICE",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,255",
+        "description": "Cloud/Ice determined"
+      },
+      {
+        "name": "COASTZ",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "165,0,11",
+        "description": "Shallow water (<30m)"
+      },
+      {
+        "name": "COCCOLITH",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,255",
+        "description": "Coccolithophores detected"
+      },
+      {
+        "name": "FILTER",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "192,192,192",
+        "description": "Insufficient data for smoothing filter"
+      },
+      {
+        "name": "HIGLINT",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,61,245",
+        "description": "High glint determined"
+      },
+      {
+        "name": "HILT",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "128,128,128",
+        "description": "High (or saturating) TOA radiance"
+      },
+      {
+        "name": "HIPOL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,175,175",
+        "description": "High degree of polariztion determined"
+      },
+      {
+        "name": "HISATZEN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "193,255,254",
+        "description": "Large satellite zenith angle"
+      },
+      {
+        "name": "HISOLZEN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "141,11,134",
+        "description": "High solar zenith angle"
+      },
+      {
+        "name": "LOWLW",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "38,115,245",
+        "description": "Low Lw @ 555nm (possible cloud shadow)"
+      },
+      {
+        "name": "MAXAERITER",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "160,160,160",
+        "description": "Maximum iterations reached for NIR iteration"
+      },
+      {
+        "name": "MODGLINT",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "191,143,247",
+        "description": "Moderate glint determined"
+      },
+      {
+        "name": "NAVFAIL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,26",
+        "description": "Navigation failure"
+      },
+      {
+        "name": "NAVWARN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,255",
+        "description": "Navigation suspect"
+      },
+      {
+        "name": "PRODFAIL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,26",
+        "description": "One (or more) product algorithms produced a failure"
+      },
+      {
+        "name": "PRODWARN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,16,143",
+        "description": "One (or more) product algorithms generated a warning"
+      },
+      {
+        "name": "SEAICE",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "64,64,64",
+        "description": "Sea ice determined"
+      },
+      {
+        "name": "STRAYLIGHT",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,0",
+        "description": "Straylight determined"
+      },
+      {
+        "name": "TURBIDW",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "137,99,31",
+        "description": "Turbid water determined"
+      },
+      {
+        "name": "Composite1",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "200,200,200",
+        "description": "Composite1 Mask (see preferences to set)"
+      },
+      {
+        "name": "Water",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,16,143",
+        "description": "Not land (l2_flags.LAND)"
+      }
+    ],
+    "metadata": [
+      {
+        "path": "Scan_Line_Attributes/day/valid_max",
+        "value": "366"
+      },
+      {
+        "path": "Band_Attributes/bbp_unc_442/_ChunkSizes",
+        "value": "256,1272"
+      },
+      {
+        "path": "Band_Attributes/bbp_s/valid_max",
+        "value": "3.0"
+      },
+      {
+        "path": "Sensor_Band_Parameters/Tau_r/_FillValue",
+        "value": "-32767.0"
+      },
+      {
+        "path": "Global_Attributes/processing_control_input_parameters_xbox",
+        "value": "-1"
+      },
+      {
+        "path": "Global_Attributes/processing_control_input_parameters_alphafile",
+        "value": "$OCDATAROOT/common/alpha510_climatology.hdf"
+      },
+      {
+        "path": "Scan_Line_Attributes/elat/valid_min",
+        "value": "-90.0"
+      },
+      {
+        "path": "Sensor_Band_Parameters/vcal_offset/_ChunkSizes",
+        "value": "32"
+      },
+      {
+        "path": "Sensor_Band_Parameters/vcal_gain/data",
+        "value": "1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0"
+      },
+      {
+        "path": "Scan_Line_Attributes/msec/valid_max",
+        "value": "86400000"
+      }
+    ]
+  }
+}
