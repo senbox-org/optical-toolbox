@@ -5,4 +5,4 @@ OpenIDE-Module-Java-Dependencies: Java > 11
 OpenIDE-Module-Display-Category: SNAP Toolboxes
 OpenIDE-Module-Specification-Version: ${project.nbmSpecVersion}
 OpenIDE-Module-Implementation-Version: ${project.nbmImplVersion}
-OpenIDE-Module-Layer: layer.xml
+OpenIDE-Module-Layer: eu/esa/opt/dataio/prisma/layer.xml

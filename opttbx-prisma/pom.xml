@@ -26,12 +26,26 @@
     <dependencies>
         <dependency>
             <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
             <artifactId>snap-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.jhdf</groupId>
             <artifactId>jhdf</artifactId>
             <version>0.6.10</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.ning</groupId>
+                    <artifactId>compress-lzf</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.lz4</groupId>
+                    <artifactId>lz4-java</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
        <!-- Tests -->
@@ -42,9 +56,9 @@
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-engine-utilities</artifactId>
-            <version>${snap-version}</version>
+<!--            <version>${snap-version}</version>-->
             <!--<type>test-jar</type>-->
-            <scope>test</scope>
+<!--            <scope>test</scope>-->
         </dependency>
     </dependencies>
 
