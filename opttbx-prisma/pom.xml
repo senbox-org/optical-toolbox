@@ -10,6 +10,11 @@
     </parent>
 
     <artifactId>opttbx-prisma</artifactId>
+    <packaging>nbm</packaging>
+    <name>Optical Toolbox Prisma Reader</name>
+    <description>
+        This module enables the Optical Toolbox to read Prisma ASI (Agenzia Spaziale Italiana) products
+    </description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -24,19 +29,53 @@
             <artifactId>snap-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.esa.snap</groupId>
-            <artifactId>snap-engine-utilities</artifactId>
-            <version>${snap-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>io.jhdf</groupId>
             <artifactId>jhdf</artifactId>
             <version>0.6.10</version>
         </dependency>
+
+       <!-- Tests -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-engine-utilities</artifactId>
+            <version>${snap-version}</version>
+            <!--<type>test-jar</type>-->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.netbeans.utilities</groupId>-->
+<!--                <artifactId>nbm-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <publicPackages>-->
+<!--                        <publicPackage>eu.esa.opt.dataio.prisma</publicPackage>-->
+<!--                    </publicPackages>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.netbeans.utilities</groupId>
+                <artifactId>nbm-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
