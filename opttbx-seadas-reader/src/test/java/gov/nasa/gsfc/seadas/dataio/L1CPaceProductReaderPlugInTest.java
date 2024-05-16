@@ -46,7 +46,7 @@ public class L1CPaceProductReaderPlugInTest {
 
         assertEquals("PACE-L1C", productFileFilter.getFormatName());
         assertEquals(".nc", productFileFilter.getDefaultExtension());
-        assertEquals("PACE OCIS L1C Products (*.nc)", productFileFilter.getDescription());
+        assertEquals("PACE OCI L1C Products (*.nc)", productFileFilter.getDescription());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class L1CPaceProductReaderPlugInTest {
     public void testGetDescription() {
         final String description = plugIn.getDescription(null);// no locale requires here tb 2024-05-15
 
-        assertEquals("PACE OCIS L1C Products", description);
+        assertEquals("PACE OCI L1C Products", description);
     }
 
     @Test

@@ -20,7 +20,7 @@ public class L1CPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
 
     private static final String DEFAULT_FILE_EXTENSION = ".nc";
 
-    public static final String READER_DESCRIPTION = "PACE OCIS L1C Products";
+    public static final String READER_DESCRIPTION = "PACE OCI L1C Products";
     public static final String FORMAT_NAME = "PACE-L1C";
 
 
