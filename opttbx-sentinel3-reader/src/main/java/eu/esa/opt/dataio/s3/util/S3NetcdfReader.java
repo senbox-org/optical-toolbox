@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.opt.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
@@ -71,7 +72,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         addBands(product);
         addGeoCoding(product);
         for (final Band band : product.getBands()) {
-            if (band instanceof VirtualBand) {
+            if (band instanceof VirtualBand || band instanceof SparseDataBand) {
                 continue;
             }
             RenderedImage sourceImage = createSourceImage(band);

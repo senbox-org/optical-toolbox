@@ -5,6 +5,7 @@ import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
 import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
+import eu.esa.opt.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
@@ -134,12 +135,18 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
                     continue;
                 }
 
+                if (sourceBand instanceof SparseDataBand) {
+                    final String targetBandName = getTargetBandName(gridIndex, sourceBandName);
+                    sourceBand.setName(targetBandName);
+                    targetProduct.addBand(sourceBand);
+                    continue;
+                }
+
                 RasterDataNode targetNode;
                 if (isNodeSpecial(sourceBand, targetProduct)) {
                     targetNode = addSpecialNode(gridIndex, sourceBand, targetProduct);
                 } else {
-                    final String targetBandName =
-                            getTargetBandName(gridIndex, sourceBandName);
+                    final String targetBandName = getTargetBandName(gridIndex, sourceBandName);
                     targetNode = ProductUtils.copyBand(sourceBandName, sourceProduct, targetBandName, targetProduct, true);
                 }
                 if (targetNode != null) {
