@@ -83,7 +83,7 @@ public class PrismaProductReader extends AbstractProductReader {
         }
         final int[] dimensions = longitude.getDimensions();
         final Product product = new Product(fileName, "ASI Prisma", dimensions[0], dimensions[1]);
-        readMetadata(product);
+        MetadataReader.readMetadata(_hdfFile, product);
 
         final Node swirCube = findNode(prs_l2d_hco, "SWIR_Cube");
         if (swirCube != null) {
@@ -104,111 +104,6 @@ public class PrismaProductReader extends AbstractProductReader {
 //            store = new FileSystemStore(rootPath);
 //        }
 //        rootGroup = ZarrGroup.open(store);
-    }
-
-    private void readMetadata(Product product) throws IllegalFileFormatException {
-        final MetadataElement root = product.getMetadataRoot();
-        final MetadataElement globalAttributes = new MetadataElement("GlobalAttributes");
-        root.addElement(globalAttributes);
-        final Map<String, Attribute> attributes = _hdfFile.getAttributes();
-        addAttributesTo(globalAttributes, attributes);
-        final Map<String, Node> children = _hdfFile.getChildren();
-        addAttributeTreeTo(root, children);
-
-
-    }
-
-    private void addAttributeTreeTo(MetadataElement element, Map<String, Node> children) throws IllegalFileFormatException {
-        for (Node child : children.values()) {
-            final String childName = child.getName();
-            final MetadataElement nestedElement = new MetadataElement(childName);
-            final Map<String, Attribute> attributes = child.getAttributes();
-            if (attributes != null && !attributes.isEmpty()) {
-                addAttributesTo(nestedElement, attributes);
-            }
-            if (child instanceof Group) {
-                addAttributeTreeTo(nestedElement, ((Group) child).getChildren());
-            }
-            if (nestedElement.getNumAttributes() > 0 || nestedElement.getNumElements() > 0) {
-                element.addElement(nestedElement);
-            }
-        }
-    }
-
-    private static void addAttributesTo(MetadataElement element, Map<String, Attribute> attributes) throws IllegalFileFormatException {
-        for (Attribute att : attributes.values()) {
-            final String attName = att.getName();
-            final boolean scalar = att.isScalar();
-            final Class<?> javaType = att.getJavaType();
-            final Object data = att.getData();
-            ProductData pd = null;
-            if (scalar) {
-                if (data instanceof Short) {
-                    pd = ProductData.createInstance(ProductData.TYPE_INT16, 1);
-                    pd.setElemInt((Short) data);
-                } else if (data instanceof Integer) {
-                    pd = ProductData.createInstance(ProductData.TYPE_INT32, 1);
-                    pd.setElemInt((Integer) data);
-                } else if (data instanceof Long) {
-                    pd = ProductData.createInstance(ProductData.TYPE_INT64, 1);
-                    pd.setElemLong((Long) data);
-                } else if (data instanceof Float) {
-                    pd = ProductData.createInstance(ProductData.TYPE_FLOAT32, 1);
-                    pd.setElemFloat((Float) data);
-                } else if (data instanceof String) {
-                    pd = ProductData.createInstance((String) data);
-                } else {
-                    throw new IllegalFileFormatException("Unsupported data type: " + data.getClass().getCanonicalName());
-                }
-                if (pd != null) {
-                    final MetadataAttribute ma = new MetadataAttribute(attName, pd, true);
-                    element.addAttribute(ma);
-                }
-            } else {
-                final int[] dimensions = att.getDimensions();
-                final MetadataElement arrayAttElem = new MetadataElement(attName);
-                if (dimensions.length == 1) {
-                    if (data instanceof Integer) {
-                        pd = ProductData.createInstance(ProductData.TYPE_INT32, att.getDimensions()[0]);
-                        pd.setElems(data);
-                    } else if (javaType == int.class) {
-                        pd = ProductData.createInstance((int[]) data);
-                    } else if (javaType == long.class) {
-                        pd = ProductData.createInstance((long[]) data);
-                    } else if (javaType == float.class) {
-                        pd = ProductData.createInstance((float[]) data);
-                    } else if (javaType == String.class) {
-                        final String[] strings = (String[]) data;
-                        for (int i = 0; i < strings.length; i++) {
-                            String string = strings[i];
-                            final ProductData stringData = ProductData.createInstance(string);
-                            arrayAttElem.addAttribute(new MetadataAttribute(attName + "." + (i + 1), stringData, true));
-                        }
-                        element.addElement(arrayAttElem);
-                    } else {
-                        throw new IllegalFileFormatException("Unsupported data type: " + data.getClass().getCanonicalName());
-                    }
-                } else {
-                    if (data instanceof int[][]) {
-                        final int[][] ints = (int[][]) data;
-                        for (int i = 0; i < ints.length; i++) {
-                            final String metaName = String.format("%s.%d", attName, i + 1);
-                            arrayAttElem.addAttribute(new MetadataAttribute(metaName, ProductData.createInstance(ints[i]), true));
-                        }
-                        if (arrayAttElem.getNumAttributes() > 0) {
-                            element.addElement(arrayAttElem);
-                        }
-                    } else {
-                        throw new IllegalFileFormatException("Unsupported dimensions: " + Arrays.toString(dimensions));
-                    }
-                }
-                if (pd != null) {
-                    final MetadataAttribute ma = new MetadataAttribute(attName, pd, true);
-                    arrayAttElem.addAttribute(ma);
-                    element.addElement(arrayAttElem);
-                }
-            }
-        }
     }
 
     @Override
