@@ -338,6 +338,6 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
 
     @Override
     protected void setAutoGrouping(Product[] sourceProducts, Product targetProduct) {
-        targetProduct.setAutoGrouping("temperature_profile:specific_humidity:time");
+        targetProduct.setAutoGrouping("in/*_in:an/*_an:bn/*_bn");
     }
 }
