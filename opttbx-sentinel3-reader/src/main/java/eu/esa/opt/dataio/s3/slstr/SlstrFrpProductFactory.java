@@ -142,12 +142,14 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
                     continue;
                 }
 
-                RasterDataNode targetNode;
+                RasterDataNode targetNode = null;
                 if (isNodeSpecial(sourceBand, targetProduct)) {
                     targetNode = addSpecialNode(gridIndex, sourceBand, targetProduct);
                 } else {
                     final String targetBandName = getTargetBandName(gridIndex, sourceBandName);
-                    targetNode = ProductUtils.copyBand(sourceBandName, sourceProduct, targetBandName, targetProduct, true);
+                    if (!targetProduct.containsBand(targetBandName)) {
+                        targetNode = ProductUtils.copyBand(sourceBandName, sourceProduct, targetBandName, targetProduct, true);
+                    }
                 }
                 if (targetNode != null) {
                     configureTargetNode(sourceBand, targetNode);

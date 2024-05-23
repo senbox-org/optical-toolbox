@@ -10,7 +10,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class MetaDataProviderTest {
 
@@ -56,6 +56,7 @@ public class MetaDataProviderTest {
     }
 
     @Test
+    @STTM("SNAP-1691")
     public void testAddBandProperties() {
         final Product product = new Product("test", "test_type");
         final MetadataElement metadataRoot = product.getMetadataRoot();
@@ -74,5 +75,54 @@ public class MetaDataProviderTest {
         metaDataProvider.addBandProperties(band);
         assertEquals("the description", band.getDescription());
         assertEquals("K", band.getUnit());
+    }
+
+    @Test
+    @STTM("SNAP-1691")
+    public void testElementsExist() {
+        final Product product = new Product("test", "test_type");
+        final MetadataElement metadataRoot = product.getMetadataRoot();
+        final MetadataElement metazeugs = new MetadataElement("metazeugs");
+
+        final MetadataElement proppy = new MetadataElement("theElement");
+        metazeugs.addElement(proppy);
+        final MetadataElement iElem = new MetadataElement("i");
+        metazeugs.addElement(iElem);
+        final MetadataElement jElem = new MetadataElement("j");
+        metazeugs.addElement(jElem);
+
+        metadataRoot.addElement(metazeugs);
+
+        final MetaDataProvider metaDataProvider = new MetaDataProvider(product, new String[]{"metazeugs"}, "theElement", "i", "j");
+        assertTrue(metaDataProvider.elementsExist());
+    }
+
+    @Test
+    @STTM("SNAP-1691")
+    public void testElementsExist_missing() {
+        final Product product = new Product("test", "test_type");
+        final MetadataElement metadataRoot = product.getMetadataRoot();
+        final MetadataElement metazeugs = new MetadataElement("metazeugs");
+
+        final MetadataElement theElement = new MetadataElement("theElement");
+        metazeugs.addElement(theElement);
+        final MetadataElement iElem = new MetadataElement("i");
+        metazeugs.addElement(iElem);
+        final MetadataElement jElem = new MetadataElement("j");
+        metazeugs.addElement(jElem);
+
+        metadataRoot.addElement(metazeugs);
+
+        final MetaDataProvider metaDataProvider = new MetaDataProvider(product, new String[]{"metazeugs"}, "theElement", "i", "j");
+        metazeugs.removeElement(theElement);
+        assertFalse(metaDataProvider.elementsExist());
+
+        metazeugs.addElement(theElement);
+        metazeugs.removeElement(iElem);
+        assertFalse(metaDataProvider.elementsExist());
+
+        metazeugs.addElement(iElem);
+        metazeugs.removeElement(jElem);
+        assertFalse(metaDataProvider.elementsExist());
     }
 }

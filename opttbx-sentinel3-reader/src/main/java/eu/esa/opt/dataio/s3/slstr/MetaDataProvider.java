@@ -23,10 +23,7 @@ class MetaDataProvider implements SparseDataProvider {
 
     @Override
     public DataPoint[] get() {
-        MetadataElement targetElement = product.getMetadataRoot();
-        for (String elementName : metaPath) {
-            targetElement = targetElement.getElement(elementName);
-        }
+        MetadataElement targetElement = getTargetElement();
 
         final MetadataElement dataElement = targetElement.getElement(dataElementName);
         MetadataAttribute value = dataElement.getAttribute("value");
@@ -52,11 +49,16 @@ class MetaDataProvider implements SparseDataProvider {
         return dataPoints;
     }
 
-    void addBandProperties(Band band) {
+    private MetadataElement getTargetElement() {
         MetadataElement targetElement = product.getMetadataRoot();
         for (String elementName : metaPath) {
             targetElement = targetElement.getElement(elementName);
         }
+        return targetElement;
+    }
+
+    void addBandProperties(Band band) {
+        MetadataElement targetElement = getTargetElement();
 
         final MetadataElement dataElement = targetElement.getElement(dataElementName);
         final MetadataAttribute longName = dataElement.getAttribute("long_name");
@@ -68,5 +70,27 @@ class MetaDataProvider implements SparseDataProvider {
         if (units != null) {
             band.setUnit(units.getData().getElemString());
         }
+    }
+
+    boolean elementsExist() {
+        final MetadataElement targetElement = getTargetElement();
+        if (targetElement == null) {
+            return false;
+        }
+
+        final MetadataElement dataElement = targetElement.getElement(dataElementName);
+        if (dataElement == null) {
+            return false;
+        }
+        final MetadataElement xElement = targetElement.getElement(xElementName);
+        if (xElement == null) {
+            return false;
+        }
+
+        final MetadataElement yElement = targetElement.getElement(yElementName);
+        if (yElement == null) {
+            return false;
+        }
+        return true;
     }
 }

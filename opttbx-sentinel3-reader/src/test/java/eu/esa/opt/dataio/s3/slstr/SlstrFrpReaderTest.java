@@ -19,9 +19,11 @@ public class SlstrFrpReaderTest {
         final MetadataElement metadataRoot = product.getMetadataRoot();
         final MetadataElement variableAttributes = new MetadataElement("Variable_Attributes");
         variableAttributes.addElement(new MetadataElement("Newband"));
+        variableAttributes.addElement(new MetadataElement("i"));
+        variableAttributes.addElement(new MetadataElement("j"));
         metadataRoot.addElement(variableAttributes);
 
-        SlstrFRPReader.BandInfo bandInfo = new SlstrFRPReader.BandInfo("Newband", ProductData.TYPE_FLOAT32);
+        final SlstrFRPReader.BandInfo bandInfo = new SlstrFRPReader.BandInfo("Newband", ProductData.TYPE_FLOAT32);
 
         SlstrFRPReader.addBandAndDataProvider(product, bandInfo, 250, 600);
         final Band newband = product.getBand("Newband");
@@ -33,6 +35,17 @@ public class SlstrFrpReaderTest {
 
         assertTrue(newband.isNoDataValueSet());
         assertEquals(9.96921E36F, newband.getNoDataValue(), 1e-8);
+    }
+
+    @Test
+    @STTM("SNAP-1691")
+    public void testAddBandAndDataProvider_elementDoesNotExist() {
+        final Product product = new Product("bla", "blub");
+        final SlstrFRPReader.BandInfo bandInfo = new SlstrFRPReader.BandInfo("Newband", ProductData.TYPE_FLOAT32);
+
+        SlstrFRPReader.addBandAndDataProvider(product, bandInfo, 180, 210);
+
+        assertNull(product.getBand("Newband"));
     }
 
     @Test

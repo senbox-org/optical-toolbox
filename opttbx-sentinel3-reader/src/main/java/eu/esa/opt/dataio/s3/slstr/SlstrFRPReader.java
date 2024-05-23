@@ -29,7 +29,13 @@ class SlstrFRPReader extends S3NetcdfReader {
             new BandInfo("n_water", ProductData.TYPE_INT32),
             new BandInfo("n_window", ProductData.TYPE_INT32),
             new BandInfo("transmittance_MWIR", ProductData.TYPE_FLOAT64),
-            new BandInfo("used_channel", ProductData.TYPE_INT32)
+            new BandInfo("used_channel", ProductData.TYPE_INT32),
+            // bands available in older product formats
+            new BandInfo("FRP_SWIR", ProductData.TYPE_FLOAT64),
+            new BandInfo("FRP_uncertainty_SWIR", ProductData.TYPE_FLOAT64),
+            new BandInfo("confidence", ProductData.TYPE_FLOAT64),
+            new BandInfo("n_SWIR_fire", ProductData.TYPE_INT32),
+            new BandInfo("transmittance_SWIR", ProductData.TYPE_FLOAT64),
     };
 
     private static final BandInfo[] FRP_AN_BN_INFOS = {
@@ -81,16 +87,19 @@ class SlstrFRPReader extends S3NetcdfReader {
     // package access for testing only tb 2024-05-22
     static void addBandAndDataProvider(Product product, BandInfo bandInfo, int width, int heigh) {
         final MetaDataProvider metaDataProvider = new MetaDataProvider(product, new String[]{"Variable_Attributes"}, bandInfo.name, "i", "j");
-        final SparseDataBand sparseDataBand = new SparseDataBand(bandInfo.name, bandInfo.dataType, width, heigh, metaDataProvider);
 
-        metaDataProvider.addBandProperties(sparseDataBand);
+        if (metaDataProvider.elementsExist()) {
+            final SparseDataBand sparseDataBand = new SparseDataBand(bandInfo.name, bandInfo.dataType, width, heigh, metaDataProvider);
 
-        // unfortunately, there is no CF conformant fill value attribute provided. Set to CF default here tb 2024-05-22
-        final Number defaultFillValue = getDefaultFillValue(bandInfo.dataType);
-        sparseDataBand.setNoDataValue(defaultFillValue.doubleValue());
+            metaDataProvider.addBandProperties(sparseDataBand);
 
+            // unfortunately, there is no CF conformant fill value attribute provided. Set to CF default here tb 2024-05-22
+            final Number defaultFillValue = getDefaultFillValue(bandInfo.dataType);
+            sparseDataBand.setNoDataValue(defaultFillValue.doubleValue());
+            sparseDataBand.setNoDataValueUsed(true);
 
-        product.addBand(sparseDataBand);
+            product.addBand(sparseDataBand);
+        }
     }
 
     static class BandInfo {
