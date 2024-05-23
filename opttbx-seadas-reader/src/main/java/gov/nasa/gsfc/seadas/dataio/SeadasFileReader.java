@@ -597,21 +597,22 @@ public abstract class SeadasFileReader {
                 FlagCoding flagCoding = new FlagCoding("L2Flags");
                 int flagBits[] = {0x01,0x02,0x04,0x08,0x010,0x020,0x040,0x080,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}; //todo finish this list
 
-                for (int bit = 0; (bit < flagNames.length && bit < flagBits.length); bit++) {
-                    String flagName = flagNames[bit];
-                    if (flagName.startsWith("SPARE")) {
-                        flagName = flagName + Integer.toString(bit+1);
-                    }
+                if (flagNames != null) {
+                    for (int bit = 0; (bit < flagNames.length && bit < flagBits.length); bit++) {
+                        String flagName = flagNames[bit];
+                        if (flagName.startsWith("SPARE")) {
+                            flagName = flagName + Integer.toString(bit + 1);
+                        }
 //                    System.out.println("flag=" + flagName);
-                    if (!flagCoding.containsAttribute(flagName)) {
+                        if (!flagCoding.containsAttribute(flagName)) {
 //                        System.out.println("Adding flag=" + flagName);
-                        flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
-                    } else {
-                        flagName = flagName + Integer.toString(bit+1);
+                            flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
+                        } else {
+                            flagName = flagName + Integer.toString(bit + 1);
 //                        System.out.println("Adding flag=" + flagName);
-                        flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
+                            flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
+                        }
                     }
-
                 }
 
                 product.getFlagCodingGroup().add(flagCoding);
@@ -2886,6 +2887,9 @@ public abstract class SeadasFileReader {
     private String validateCompositeFlagsName(String compositeMaskName, String propertyKey) {
         // don't let composite mask name be same as any of the flags
         if (compositeMaskName != null) {
+            if (flagNames == null) {
+                return null;
+            }
             for (String validFlag : flagNames) {
                 if (compositeMaskName.equals(validFlag)) {
                     return null;
@@ -2957,7 +2961,11 @@ public abstract class SeadasFileReader {
         ArrayList<String> validFlagComposite = null;
 
         if (flagsArray != null) {
-            validFlagComposite = new ArrayList<String>();
+            validFlagComposite = new ArrayList<>();
+
+            if (flagNames == null) {
+                return validFlagComposite;
+            }
 
             for (String flag : flagsArray) {
                 if (flag != null) {

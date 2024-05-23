@@ -82,9 +82,9 @@ public class SeadasProductReader extends AbstractProductReader {
         UNKNOWN("WHATUTALKINBOUTWILLIS");
 
 
-        private String name;
+        private final String name;
 
-        private ProductType(String nm) {
+        ProductType(String nm) {
             name = nm;
         }
 
@@ -97,7 +97,7 @@ public class SeadasProductReader extends AbstractProductReader {
     /**
      * Constructs a new abstract product reader.
      *
-     * @param readerPlugIn the reader plug-in which created this reader, can be <code>null</code> for internal reader
+     * @param readerPlugIn the reader plug-in which created this reader, can be {@code null} for internal reader
      *                     implementations
      */
     protected SeadasProductReader(ProductReaderPlugIn readerPlugIn) {
@@ -210,8 +210,8 @@ public class SeadasProductReader extends AbstractProductReader {
 
     @Override
     public void close() throws IOException {
-        if (getNcfile() != null) {
-            getNcfile().close();
+        if (ncfile != null) {
+            ncfile.close();
         }
     }
 
@@ -224,7 +224,7 @@ public class SeadasProductReader extends AbstractProductReader {
 
         try {
             seadasFileReader.readBandData(destBand, sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
-                    sourceStepX, sourceStepY,destBuffer, pm);
+                    sourceStepX, sourceStepY, destBuffer, pm);
         } catch (Exception e) {
             final ProductIOException exception = new ProductIOException(e.getMessage());
             exception.setStackTrace(e.getStackTrace());
@@ -233,7 +233,7 @@ public class SeadasProductReader extends AbstractProductReader {
     }
 
     public File getInputFile() {
-        return SeadasProductReader.getInputFile(getInput());
+        return getInputFile(getInput());
     }
 
     public NetcdfFile getNcfile() {
@@ -275,7 +275,7 @@ public class SeadasProductReader extends AbstractProductReader {
     public ProductType checkViirsXDR() {
         Attribute platformShortName = ncfile.findGlobalAttribute("Platform_Short_Name");
         try {
-            if (platformShortName.getStringValue().equals("NPP")) {
+            if ("NPP".equals(platformShortName.getStringValue())) {
                 Group dataProduct = ncfile.findGroup("Data_Products");
                 if (dataProduct.getGroups().get(0).getShortName().matches("VIIRS.*IP")) {
                     return ProductType.VIIRS_IP;
@@ -298,19 +298,14 @@ public class SeadasProductReader extends AbstractProductReader {
 
     private boolean checkDscoverEpicL2() {
         Attribute scene_title = ncfile.findGlobalAttribute("HDFEOS_ADDITIONAL_FILE_ATTRIBUTES_LocalGranuleID");
-        if(scene_title != null && scene_title.toString().contains("EPIC-DSCOVR_L2")) {
-            return true;
-        }
-        return false;
+        return scene_title != null && scene_title.toString().contains("EPIC-DSCOVR_L2");
     }
 
     private boolean checkHicoL1B() {
         Attribute hicol1bName = ncfile.findGlobalAttribute("metadata_FGDC_Identification_Information_Platform_and_Instrument_Identification_Instrument_Short_Name");
-        if(hicol1bName != null && hicol1bName.getStringValue(0).equals("hico")) {
+        if (hicol1bName != null && "hico".equals(hicol1bName.getStringValue(0))) {
             Attribute level = ncfile.findGlobalAttribute("metadata_FGDC_Identification_Information_Processing_Level_Processing_Level_Identifier");
-            if(level != null && level.getStringValue(0).equals("Level-1B")) {
-                return true;
-            }
+            return level != null && "Level-1B".equals(level.getStringValue(0));
         }
         return false;
     }
@@ -321,29 +316,30 @@ public class SeadasProductReader extends AbstractProductReader {
 
         if (instrumentName != null) {
             if (processingLevel != null) {
-                if (instrumentName.getStringValue().equals("VIIRS") && processingLevel.getStringValue().equals("L1B")) {
+                if ("VIIRS".equals(instrumentName.getStringValue()) && "L1B".equals(processingLevel.getStringValue())) {
                     return ProductType.VIIRS_L1B;
                 }
             }
         }
         return ProductType.UNKNOWN;
     }
+
     public ProductType findProductType() throws ProductIOException {
         Attribute titleAttr = ncfile.findGlobalAttributeIgnoreCase("Title");
         Attribute processing_levelAttr = ncfile.findGlobalAttributeIgnoreCase("processing_level");
         Attribute instrumentAttr = ncfile.findGlobalAttributeIgnoreCase("instrument");
 
         String title;
-        String processing_level;
+        String processing_level = null;
         String instrument;
         ProductType tmp;
         if (titleAttr != null) {
             title = titleAttr.getStringValue().trim();
-            processing_level = processing_levelAttr.getStringValue().trim();
-            instrument = instrumentAttr.getStringValue().trim();
-            if (title.equals("Oceansat OCM2 Level-1B Data")) {
+            processing_level = getStringAttributeValue(processing_levelAttr);
+            instrument = getStringAttributeValue(instrumentAttr);
+            if ("Oceansat OCM2 Level-1B Data".equals(title)) {
                 return ProductType.Level1B_OCM2;
-            } else if (title.equals("CZCS Level-2 Data")) {
+            } else if ("CZCS Level-2 Data".equals(title)) {
                 return ProductType.Level2_CZCS;
             } else if (title.contains("Aquarius Level 1A Data")) {
                 return ProductType.Level1A_Aquarius;
@@ -355,23 +351,23 @@ public class SeadasProductReader extends AbstractProductReader {
                     || title.contains("PACE SPEXone Level-1C Data")
                     || title.contains("HARP2 Level-1C Data")) {
                 return ProductType.Level1C_Pace;
-            } else if (processing_level !=null && instrument != null && processing_level.toUpperCase().contains("1C")) {
-             if (instrument.toUpperCase().contains("OCI")
-                    || instrument.toUpperCase().contains("HARP")
-                    || instrument.toUpperCase().contains("SPEXONE")) {
+            } else if (processing_level != null && instrument != null && processing_level.toUpperCase().contains("1C")) {
+                if (instrument.toUpperCase().contains("OCI")
+                        || instrument.toUpperCase().contains("HARP")
+                        || instrument.toUpperCase().contains("SPEXONE")) {
                     return ProductType.Level1C_Pace;
                 }
-            } else if (title.equals("OCIS Level-2 Data")) {
+            } else if ("OCIS Level-2 Data".equals(title)) {
                 return ProductType.Level2_PaceOCIS;
             } else if (title.contains("OCI Level-2 Data")) {
                 return ProductType.Level2_PaceOCI;
             } else if (title.contains("Level-1B")) {
                 return ProductType.Level1B;
-            } else if (title.equals("CZCS Level-1A Data")) {
+            } else if ("CZCS Level-1A Data".equals(title)) {
                 return ProductType.Level1A_CZCS;
             } else if (title.contains("Hawkeye Level-1A Data")) {
                 return ProductType.Level1A_Hawkeye;
-            } else if (title.equals("OCTS Level-1A GAC Data")) {
+            } else if ("OCTS Level-1A GAC Data".equals(title)) {
                 return ProductType.Level1A_OCTS;
             } else if (title.contains("Browse")) {
                 return ProductType.BrowseFile;
@@ -379,19 +375,19 @@ public class SeadasProductReader extends AbstractProductReader {
                 return ProductType.Level2;
             } else if (title.contains("Level 2")) {
                 return ProductType.Level2;
-            } else if (title.equals("SeaWiFS Level-1A Data")) {
+            } else if ("SeaWiFS Level-1A Data".equals(title)) {
                 return ProductType.Level1A_Seawifs;
-            } else if (title.equals("NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration Version 4")) {
+            } else if ("NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration Version 4".equals(title)) {
                 return ProductType.Level3_NSIDC_CDR;
             } else if (title.contains("Daily-OI")) {
                 return ProductType.OISST;
             } else if (title.contains("ETOPO")) {
                 return ProductType.Bathy;
-            } else if (title.equals("SeaWiFS Near Real-Time Ancillary Data")) {
+            } else if ("SeaWiFS Near Real-Time Ancillary Data".equals(title)) {
                 return ProductType.ANCNRT;
-            } else if (title.equals("NCEP Reanalysis 2 Ancillary Data")) {
+            } else if ("NCEP Reanalysis 2 Ancillary Data".equals(title)) {
                 return ProductType.ANCNRT2;
-            } else if (title.equals("SeaWiFS Climatological Ancillary Data")) {
+            } else if ("SeaWiFS Climatological Ancillary Data".equals(title)) {
                 return ProductType.ANCCLIM;
             } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
                 return ProductType.SMI;
@@ -408,7 +404,7 @@ public class SeadasProductReader extends AbstractProductReader {
             return ProductType.Level1B_Modis;
         } else if (checkDscoverEpicL2()) {
             return ProductType.Level2_DscovrEpic;
-        }else if (checkHicoL1B()) {
+        } else if (checkHicoL1B()) {
             return ProductType.Level1B_HICO;
         } else if ((tmp = checkViirsXDR()) != ProductType.UNKNOWN) {
             return tmp;
@@ -418,6 +414,16 @@ public class SeadasProductReader extends AbstractProductReader {
 
         throw new ProductIOException("Unrecognized product type");
 
+    }
+
+    private static String getStringAttributeValue(Attribute processing_levelAttr) {
+        if (processing_levelAttr != null) {
+            final String stringValue = processing_levelAttr.getStringValue();
+            if (stringValue != null) {
+                return stringValue.trim();
+            }
+        }
+        return null;
     }
 
     public static File getInputFile(Object input) {
