@@ -1273,6 +1273,300 @@
                 ]
             },
             {
+                "name": "FRP_MWIR_an",
+                "description": "Fire radiative power computed from MWIR channels (S7 and F1, depending on the used_channel) and associated with detected SWIR fires ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1374,
+                        "y": 309,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2486,
+                        "y": 1374,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_SWIR_an",
+                "description": "Fire radiative power computed from SWIR channels (S6 channel) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 307,
+                        "y": 1623,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2193,
+                        "y": 1133,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_uncertainty_SWIR_an",
+                "description": "Fire radiative power total uncertainty computed from SWIR channels ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 429,
+                        "y": 159,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2524,
+                        "y": 719,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "IFOV_area_an",
+                "description": "Projected area of detector IFOV on surface ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "m2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1776,
+                        "y": 2332,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2332,
+                        "y": 65,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Radiance_window_S6_an",
+                "description": "Average S6 background window radiance used in the FRP equation. ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 650,
+                        "y": 591,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 958,
+                        "y": 465,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Ratio_S56_an",
+                "description": "Ratio of the radiances measured in S5 and S6 indicating whether the AF pixel detection is likely to be from a vegetation fire or a gas flare (Values sup. or equal to to 0.9) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 847,
+                        "y": 2119,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2992,
+                        "y": 181,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S5_Fire_pixel_radiance_an",
+                "description": "S5 Fire pixel radiance ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2456,
+                        "y": 1204,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 188,
+                        "y": 924,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S5_confirm_an",
+                "description": "This flag indicates if this fire has been detected using both S6 and S5 radiances (equal to 1) or only using S6 (value = 0) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 832,
+                        "y": 1397,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2785,
+                        "y": 333,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S6_Fire_pixel_radiance_an",
+                "description": "S6 Fire pixel radiance ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 313,
+                        "y": 349,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2651,
+                        "y": 255,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "TCWV_an",
+                "description": "Total column water vapour above fire ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "kg m-2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1110,
+                        "y": 2115,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1755,
+                        "y": 1381,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "classification_an",
+                "description": "Hotspot classification code ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1012,
+                        "y": 782,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1121,
+                        "y": 2054,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "transmittance_SWIR_an",
+                "description": "Transmittance of path to fire computed from SWIR channels (S6 channel) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 977,
+                        "y": 1643,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1930,
+                        "y": 1620,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "used_channel_an",
+                "description": "Boolean flag indicating which channel was used in the FRP calculation, with 0 referring to S7 channel and 1 to F1 channel ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1590,
+                        "y": 312,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1391,
+                        "y": 1921,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
                 "name": "flags_bn",
                 "description": "Fire test summary flags",
                 "bandWidth": 3000,
@@ -1283,14 +1577,308 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1374,
-                        "y": 309,
+                        "x": 2406,
+                        "y": 2164,
                         "value": 4.2949673E9
                     },
                     {
-                        "x": 2486,
-                        "y": 1374,
+                        "x": 76,
+                        "y": 1676,
                         "value": 4.2949673E9
+                    }
+                ]
+            },
+            {
+                "name": "FRP_MWIR_bn",
+                "description": "Fire radiative power computed from MWIR channels (S7 and F1, depending on the used_channel) and associated with detected SWIR fires ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2667,
+                        "y": 1382,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1913,
+                        "y": 2178,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_SWIR_bn",
+                "description": "Fire radiative power computed from SWIR channels (S6 channel) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2946,
+                        "y": 775,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1077,
+                        "y": 12,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_uncertainty_SWIR_bn",
+                "description": "Fire radiative power total uncertainty computed from SWIR channels (S6) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2518,
+                        "y": 1365,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1771,
+                        "y": 955,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "IFOV_area_bn",
+                "description": "Projected area of detector IFOV on surface ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "m2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1183,
+                        "y": 2372,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 688,
+                        "y": 1721,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Radiance_window_S6_bn",
+                "description": "Average S6 background window radiance used in the FRP equation. ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2816,
+                        "y": 692,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 943,
+                        "y": 2044,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Ratio_S56_bn",
+                "description": "Ratio of the radiances measured in S5 and S6 indicating whether the AF pixel detection is likely to be from a vegetation fire or a gas flare (Values sup. or equal to to 0.9) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 982,
+                        "y": 1269,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1074,
+                        "y": 1919,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S5_Fire_pixel_radiance_bn",
+                "description": "S5 Fire pixel radiance ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1681,
+                        "y": 523,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 285,
+                        "y": 1690,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S5_confirm_bn",
+                "description": "This flag indicates if this fire has been detected using both S6 and S5 radiances (equal to 1) or only using S6 (value = 0) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2107,
+                        "y": 1908,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2532,
+                        "y": 163,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S6_Fire_pixel_radiance_bn",
+                "description": "S6 Fire pixel radiance ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2509,
+                        "y": 544,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1957,
+                        "y": 2232,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "TCWV_bn",
+                "description": "Total column water vapour above fire ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "kg m-2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 804,
+                        "y": 2067,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1158,
+                        "y": 890,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "classification_bn",
+                "description": "Hotspot classification code ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2915,
+                        "y": 1633,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2174,
+                        "y": 1026,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "transmittance_SWIR_bn",
+                "description": "Transmittance of path to fire computed from SWIR channels (S6 channel) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1496,
+                        "y": 333,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2906,
+                        "y": 326,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "used_channel_bn",
+                "description": "Boolean flag indicating which channel was used in the FRP calculation, with 0 referring to S7 channel and 1 to F1 channel ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2162,
+                        "y": 1334,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2117,
+                        "y": 2375,
+                        "value": "NaN"
                     }
                 ]
             },
@@ -1305,14 +1893,444 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 153,
-                        "y": 811,
-                        "value": 2097184.0
+                        "x": 961,
+                        "y": 1087,
+                        "value": 34.0
                     },
                     {
-                        "x": 1096,
-                        "y": 566,
+                        "x": 1252,
+                        "y": 637,
                         "value": 34.0
+                    }
+                ]
+            },
+            {
+                "name": "BT_MIR_in",
+                "description": "MIR Brightness Temperature from the fire ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "K ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 749,
+                        "y": 1115,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 858,
+                        "y": 926,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "BT_window_in",
+                "description": "Mean Brightness Temperature of the valid pixels in the background window ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "K ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1394,
+                        "y": 47,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1056,
+                        "y": 867,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Day_night_in",
+                "description": "Daytime or nighttime fire flag set to 1 in case of daytime(i.e. solar zenith angle .lt. 85 degree) ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 520,
+                        "y": 8,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 324,
+                        "y": 1032,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "F1_Fire_pixel_radiance_in",
+                "description": "Fire pixel radiance computed from F1 brightness Temperature ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 188,
+                        "y": 121,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 129,
+                        "y": 137,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_MWIR_in",
+                "description": "Fire radiative power computed from MWIR channels (S7 and F1) ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1044,
+                        "y": 83,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 721,
+                        "y": 1041,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_uncertainty_MWIR_in",
+                "description": "Fire radiative power total uncertainty computed from MWIR channels (S7 and F1) ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 251,
+                        "y": 283,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 376,
+                        "y": 1165,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Glint_angle_in",
+                "description": "Angle between SLSTR viewing direction and the direction of the sun rays specifically reflected from the horizontal surface ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1073,
+                        "y": 407,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 966,
+                        "y": 612,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "IFOV_area_in",
+                "description": "Projected area of detector IFOV on surface ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "m2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1360,
+                        "y": 610,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1291,
+                        "y": 670,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Radiance_window_in",
+                "description": "Average background window radiance used in the FRP equation. This radiance is associated with the channel defined by the used_channel parameter ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1200,
+                        "y": 913,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1252,
+                        "y": 883,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S7_Fire_pixel_radiance_in",
+                "description": "Fire pixel radiance computed from S7 brightness Temperature ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 943,
+                        "y": 511,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 810,
+                        "y": 915,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Satellite_zenith_angle_in",
+                "description": "Satellite View Zenith angle ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 950,
+                        "y": 182,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1323,
+                        "y": 377,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Sun_zenith_angle_in",
+                "description": "Solar Zenith angle ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 410,
+                        "y": 461,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1023,
+                        "y": 223,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "TCWV_in",
+                "description": "Total column water vapour above fire ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "kg m-2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 218,
+                        "y": 1184,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 589,
+                        "y": 904,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "classification_in",
+                "description": "Hotspot classification code ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 105,
+                        "y": 836,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 911,
+                        "y": 1035,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "n_cloud_in",
+                "description": "Number of cloudy pixels in background window ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 879,
+                        "y": 398,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 655,
+                        "y": 20,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "n_water_in",
+                "description": "Number of water pixels in background window ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 901,
+                        "y": 801,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1177,
+                        "y": 107,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "n_window_in",
+                "description": "Background window size ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1350,
+                        "y": 99,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 115,
+                        "y": 988,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "transmittance_MWIR_in",
+                "description": "Transmittance of path to fire computed from MWIR channels (S7 and F1) ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 191,
+                        "y": 1096,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 290,
+                        "y": 386,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "used_channel_in",
+                "description": "Boolean flag indicating which channel was used in the FRP calculation, with 0 referring to S7 channel and 1 to F1 channel ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 817,
+                        "y": 856,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 176,
+                        "y": 261,
+                        "value": "NaN"
                     }
                 ]
             },
@@ -1328,14 +2346,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 214,
-                        "y": 79,
-                        "value": 783782.0
+                        "x": 613,
+                        "y": 903,
+                        "value": 384714.0
                     },
                     {
-                        "x": 1262,
-                        "y": 359,
-                        "value": -263487.0
+                        "x": 121,
+                        "y": 897,
+                        "value": 876897.0
                     }
                 ]
             },
@@ -1351,14 +2369,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 888,
-                        "y": 1166,
-                        "value": 4.6552096E7
+                        "x": 1376,
+                        "y": 255,
+                        "value": 4.5638712E7
                     },
                     {
-                        "x": 1166,
-                        "y": 32,
-                        "value": 4.541504E7
+                        "x": 1320,
+                        "y": 843,
+                        "value": 4.6227936E7
                     }
                 ]
             },
@@ -1374,14 +2392,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 325,
-                        "y": 295,
-                        "value": 673258.0
+                        "x": 181,
+                        "y": 32,
+                        "value": 816650.0
                     },
                     {
-                        "x": 479,
-                        "y": 232,
-                        "value": 518501.0
+                        "x": 427,
+                        "y": 1102,
+                        "value": 570395.0
                     }
                 ]
             },
@@ -1397,14 +2415,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 423,
-                        "y": 1059,
-                        "value": 4.6444624E7
+                        "x": 897,
+                        "y": 868,
+                        "value": 4.6253064E7
                     },
                     {
-                        "x": 1496,
-                        "y": 90,
-                        "value": "NaN"
+                        "x": 764,
+                        "y": 567,
+                        "value": 4.5951336E7
                     }
                 ]
             },
@@ -1418,13 +2436,13 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1228,
-                        "y": 602,
+                        "x": 638,
+                        "y": 183,
                         "value": 0.0
                     },
                     {
-                        "x": 94,
-                        "y": 462,
+                        "x": 38,
+                        "y": 953,
                         "value": 0.0
                     }
                 ]
@@ -1439,14 +2457,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 416,
-                        "y": 698,
-                        "value": 512.0
+                        "x": 1011,
+                        "y": 848,
+                        "value": 6848.0
                     },
                     {
-                        "x": 1392,
-                        "y": 166,
-                        "value": 768.0
+                        "x": 442,
+                        "y": 236,
+                        "value": 896.0
                     }
                 ]
             },
@@ -1460,14 +2478,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 156,
-                        "y": 174,
-                        "value": 16392.0
+                        "x": 285,
+                        "y": 671,
+                        "value": 16648.0
                     },
                     {
-                        "x": 1325,
-                        "y": 127,
-                        "value": 16392.0
+                        "x": 863,
+                        "y": 779,
+                        "value": 16386.0
                     }
                 ]
             },
@@ -1481,13 +2499,13 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 555,
-                        "y": 1057,
+                        "x": 787,
+                        "y": 102,
                         "value": 0.0
                     },
                     {
-                        "x": 877,
-                        "y": 690,
+                        "x": 1165,
+                        "y": 393,
                         "value": 0.0
                     }
                 ]
@@ -1502,13 +2520,13 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 506,
-                        "y": 391,
+                        "x": 1304,
+                        "y": 1104,
                         "value": 0.0
                     },
                     {
-                        "x": 560,
-                        "y": 1027,
+                        "x": 713,
+                        "y": 661,
                         "value": 0.0
                     }
                 ]
@@ -1523,14 +2541,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 488,
-                        "y": 821,
-                        "value": 512.0
+                        "x": 861,
+                        "y": 1138,
+                        "value": 4800.0
                     },
                     {
-                        "x": 965,
-                        "y": 810,
-                        "value": 7104.0
+                        "x": 1394,
+                        "y": 224,
+                        "value": 512.0
                     }
                 ]
             },
@@ -1544,14 +2562,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 795,
-                        "y": 156,
-                        "value": 16392.0
+                        "x": 102,
+                        "y": 887,
+                        "value": 16648.0
                     },
                     {
-                        "x": 695,
-                        "y": 960,
-                        "value": 16648.0
+                        "x": 98,
+                        "y": 651,
+                        "value": 16392.0
                     }
                 ]
             },
@@ -1565,13 +2583,13 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1203,
-                        "y": 1082,
+                        "x": 1039,
+                        "y": 1036,
                         "value": 0.0
                     },
                     {
-                        "x": 38,
-                        "y": 838,
+                        "x": 853,
+                        "y": 1054,
                         "value": 0.0
                     }
                 ]
@@ -1587,13 +2605,13 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1333,
-                        "y": 691,
+                        "x": 548,
+                        "y": 1125,
                         "value": "NaN"
                     },
                     {
-                        "x": 956,
-                        "y": 1089,
+                        "x": 1346,
+                        "y": 295,
                         "value": "NaN"
                     }
                 ]
@@ -1609,13 +2627,13 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1473,
-                        "y": 387,
+                        "x": 158,
+                        "y": 872,
                         "value": "NaN"
                     },
                     {
-                        "x": 538,
-                        "y": 6,
+                        "x": 329,
+                        "y": 816,
                         "value": "NaN"
                     }
                 ]
@@ -1632,14 +2650,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1259,
-                        "y": 682,
-                        "value": 51.0
+                        "x": 109,
+                        "y": 47,
+                        "value": 500.0
                     },
                     {
-                        "x": 885,
-                        "y": 477,
-                        "value": 48.0
+                        "x": 410,
+                        "y": 374,
+                        "value": 313.0
                     }
                 ]
             },
@@ -1655,14 +2673,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 591,
-                        "y": 1186,
-                        "value": 53.608135
+                        "x": 1376,
+                        "y": 506,
+                        "value": 45.81935
                     },
                     {
-                        "x": 344,
-                        "y": 860,
-                        "value": 51.152252
+                        "x": 117,
+                        "y": 821,
+                        "value": 51.092915
                     }
                 ]
             },
@@ -1678,14 +2696,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1408,
-                        "y": 346,
-                        "value": -8.422071
+                        "x": 312,
+                        "y": 537,
+                        "value": 4.860351
                     },
                     {
-                        "x": 471,
-                        "y": 1022,
-                        "value": 1.54094
+                        "x": 771,
+                        "y": 63,
+                        "value": 0.173733
                     }
                 ]
             },
@@ -1701,14 +2719,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 491,
-                        "y": 634,
-                        "value": 89.0
+                        "x": 916,
+                        "y": 276,
+                        "value": 47.0
                     },
                     {
-                        "x": 537,
-                        "y": 959,
-                        "value": 45.0
+                        "x": 594,
+                        "y": 426,
+                        "value": 172.0
                     }
                 ]
             },
@@ -1724,14 +2742,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 840,
-                        "y": 261,
-                        "value": 45.025455
+                        "x": 185,
+                        "y": 113,
+                        "value": 44.812847
                     },
                     {
-                        "x": 142,
-                        "y": 845,
-                        "value": 51.282166
+                        "x": 1174,
+                        "y": 750,
+                        "value": 48.485947
                     }
                 ]
             },
@@ -1747,14 +2765,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1053,
-                        "y": 954,
-                        "value": -6.392815
+                        "x": 224,
+                        "y": 79,
+                        "value": 6.84659
                     },
                     {
-                        "x": 1266,
-                        "y": 81,
-                        "value": -5.745461
+                        "x": 782,
+                        "y": 143,
+                        "value": -0.176846
                     }
                 ]
             },
@@ -1769,13 +2787,13 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1254,
-                        "y": 272,
-                        "value": 1.0
+                        "x": 1353,
+                        "y": 501,
+                        "value": 0.0
                     },
                     {
-                        "x": 978,
-                        "y": 1116,
+                        "x": 368,
+                        "y": 405,
                         "value": 1.0
                     }
                 ]
@@ -1791,14 +2809,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 402,
-                        "y": 1033,
-                        "value": 214.0
+                        "x": 1019,
+                        "y": 147,
+                        "value": 769.0
                     },
                     {
-                        "x": 579,
-                        "y": 445,
-                        "value": 354.0
+                        "x": 182,
+                        "y": 361,
+                        "value": 69.0
                     }
                 ]
             },
@@ -1813,14 +2831,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1457,
-                        "y": 816,
-                        "value": 3713.0
+                        "x": 1279,
+                        "y": 290,
+                        "value": 3413.0
                     },
                     {
-                        "x": 1087,
-                        "y": 513,
-                        "value": 3504.0
+                        "x": 148,
+                        "y": 1,
+                        "value": 3444.0
                     }
                 ]
             },
@@ -1835,13 +2853,13 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 748,
-                        "y": 166,
+                        "x": 187,
+                        "y": 548,
                         "value": 1.0
                     },
                     {
-                        "x": 1453,
-                        "y": 163,
+                        "x": 882,
+                        "y": 585,
                         "value": 1.0
                     }
                 ]
@@ -1857,14 +2875,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 1081,
-                        "y": 667,
-                        "value": 829.0
+                        "x": 259,
+                        "y": 754,
+                        "value": 115.0
                     },
                     {
-                        "x": 1058,
-                        "y": 1187,
-                        "value": 806.0
+                        "x": 802,
+                        "y": 928,
+                        "value": 556.0
                     }
                 ]
             },
@@ -1879,14 +2897,14 @@
                 "spectralBandwidth": "0.0",
                 "expectedPixels": [
                     {
-                        "x": 961,
-                        "y": 1087,
-                        "value": 3789.0
+                        "x": 602,
+                        "y": 422,
+                        "value": 3501.0
                     },
                     {
-                        "x": 1252,
-                        "y": 637,
-                        "value": 3582.0
+                        "x": 666,
+                        "y": 1089,
+                        "value": 3821.0
                     }
                 ]
             }
@@ -2765,44 +3783,44 @@
         ],
         "metadata": [
             {
-                "path": "indices_fn/l0_scan_offset_fn/_ChunkSizes",
-                "value": "1"
+                "path": "FRP_an/IFOV_area/long_name",
+                "value": "Projected area of detector IFOV on surface "
             },
             {
-                "path": "time_an/time_stamp_a/_FillValue",
-                "value": "-9223372036854775808"
+                "path": "met_tx/t_single/_FillValue",
+                "value": "-32768"
             },
             {
-                "path": "time_an/Oblique_Minimal_ts_a/standard_name",
-                "value": "time "
+                "path": "met_tx/t_single/value",
+                "value": "0"
             },
             {
-                "path": "Manifest/metadataSection/qualityInformation/extension/productQuality/onlineQualityCheck",
-                "value": "PASSED"
+                "path": "indices_in/l0_scan_offset_in/_FillValue",
+                "value": "-2147483648"
             },
             {
-                "path": "FRP_an/j/long_name",
-                "value": "Fire pixel along-track image grid index "
+                "path": "Manifest/metadataSection/acquisitionPeriod/startTime",
+                "value": "2024-03-25T21:38:12.023334Z"
+            },
+            {
+                "path": "indices_in/l0_scan_offset_in/_FillValue",
+                "value": "-2147483648"
             },
             {
                 "path": "indices_fn/l0_scan_offset_fn/_FillValue",
                 "value": "-2147483648"
             },
             {
-                "path": "FRP_bn/Radiance_window_S6/value",
-                "value": ""
+                "path": "time_an/SCANSYNC/units",
+                "value": "us "
             },
             {
-                "path": "time_an/Nadir_Minimal_ts_a/units",
-                "value": "microseconds since 2000-01-01T00:00:00Z "
+                "path": "indices_in/l0_scan_offset_in/long_name",
+                "value": "Offset between scan index and corresponding ISP scan count "
             },
             {
-                "path": "indices_in/l0_scan_offset_in/_ChunkSizes",
-                "value": "1"
-            },
-            {
-                "path": "time_bn/Oblique_Last_scan_b/_ChunkSizes",
-                "value": "2400"
+                "path": "met_tx/z_soil/standard_name",
+                "value": "height "
             }
         ]
     }

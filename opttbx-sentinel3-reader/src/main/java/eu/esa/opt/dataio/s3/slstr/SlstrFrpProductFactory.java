@@ -5,6 +5,7 @@ import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
 import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
+import eu.esa.opt.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
@@ -134,13 +135,21 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
                     continue;
                 }
 
-                RasterDataNode targetNode;
+                if (sourceBand instanceof SparseDataBand) {
+                    final String targetBandName = getTargetBandName(gridIndex, sourceBandName);
+                    sourceBand.setName(targetBandName);
+                    targetProduct.addBand(sourceBand);
+                    continue;
+                }
+
+                RasterDataNode targetNode = null;
                 if (isNodeSpecial(sourceBand, targetProduct)) {
                     targetNode = addSpecialNode(gridIndex, sourceBand, targetProduct);
                 } else {
-                    final String targetBandName =
-                            getTargetBandName(gridIndex, sourceBandName);
-                    targetNode = ProductUtils.copyBand(sourceBandName, sourceProduct, targetBandName, targetProduct, true);
+                    final String targetBandName = getTargetBandName(gridIndex, sourceBandName);
+                    if (!targetProduct.containsBand(targetBandName)) {
+                        targetNode = ProductUtils.copyBand(sourceBandName, sourceProduct, targetBandName, targetProduct, true);
+                    }
                 }
                 if (targetNode != null) {
                     configureTargetNode(sourceBand, targetNode);
@@ -331,6 +340,6 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
 
     @Override
     protected void setAutoGrouping(Product[] sourceProducts, Product targetProduct) {
-        targetProduct.setAutoGrouping("temperature_profile:specific_humidity:time");
+        targetProduct.setAutoGrouping("in/*_in:an/*_an:bn/*_bn");
     }
 }
