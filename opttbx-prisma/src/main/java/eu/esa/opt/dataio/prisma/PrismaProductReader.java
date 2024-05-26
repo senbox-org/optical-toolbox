@@ -7,12 +7,9 @@ import io.jhdf.api.Dataset;
 import io.jhdf.api.Group;
 import io.jhdf.api.Node;
 import org.esa.snap.core.dataio.AbstractProductReader;
-import org.esa.snap.core.dataio.IllegalFileFormatException;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.MetadataAttribute;
-import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 
@@ -22,19 +19,25 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
+import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.DATASET_NAME_LONGITUDE;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_PATTERN;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_REGEX;
+import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.GROUP_NAME_PRS_L2D_HCO;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToPath;
 
 public class PrismaProductReader extends AbstractProductReader {
-    private Path inputPath;
     private HdfFile _hdfFile;
+    private int _sceneRasterWidth;
+    private int _sceneRasterHeight;
+    private boolean _swirCubeExist;
+    private Dataset _swirCube;
+    private Dataset _vnirCube;
+    private String _prefix_message;
+    private boolean _vnirCubeExist;
 
     /**
      * Constructs a new abstract product reader.
@@ -46,13 +49,14 @@ public class PrismaProductReader extends AbstractProductReader {
         super(readerPlugIn);
     }
 
-
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        inputPath = convertToPath(getInput());
+        Path inputPath = convertToPath(getInput());
+        assert inputPath != null;
+        _prefix_message = "Unable to open '" + inputPath.toAbsolutePath() + ". ";
         final String fileName = inputPath.getFileName().toString();
         if (!PRISMA_FILENAME_PATTERN.matcher(fileName).matches()) {
-            throw new ProductIOException("The file name: '" + fileName + "' does not match the regular expression: " + PRISMA_FILENAME_REGEX);
+            throw new ProductIOException(_prefix_message + "The file name: '" + fileName + "' does not match the regular expression: " + PRISMA_FILENAME_REGEX);
         }
         final String lowerFileName = fileName.toLowerCase();
         final String justTheName = fileName.substring(0, fileName.lastIndexOf("."));
@@ -74,40 +78,66 @@ public class PrismaProductReader extends AbstractProductReader {
             _hdfFile = new HdfFile(inputPath);
         }
         if (_hdfFile == null) {
-            throw new ProductIOException("Unable to open '" + inputPath.toAbsolutePath());
+            throw new ProductIOException(_prefix_message + "HDF could not be opened.");
         }
-        final Group prs_l2d_hco = (Group) findNode(_hdfFile, "PRS_L2D_HCO");
-        final Dataset longitude = (Dataset) findNode(prs_l2d_hco, "Longitude");
+        final Group prs_l2d_hco = (Group) findNode(_hdfFile, GROUP_NAME_PRS_L2D_HCO);
+        if (prs_l2d_hco == null) {
+            throw new ProductIOException(_prefix_message + "Group '" + GROUP_NAME_PRS_L2D_HCO + "' not found.");
+        }
+        final Dataset longitude = (Dataset) findNode(prs_l2d_hco, DATASET_NAME_LONGITUDE);
         if (longitude == null) {
-            throw new ProductIOException("Could not find dataset \"longitude\" for file " + inputPath);
+            throw new ProductIOException(_prefix_message + "Could not find dataset \"" + DATASET_NAME_LONGITUDE + "\" for file " + inputPath);
         }
         final int[] dimensions = longitude.getDimensions();
-        final Product product = new Product(fileName, "ASI Prisma", dimensions[0], dimensions[1]);
+        _sceneRasterWidth = dimensions[0];
+        _sceneRasterHeight = dimensions[1];
+        final Product product = new Product(fileName, "ASI Prisma", _sceneRasterWidth, _sceneRasterHeight);
         MetadataReader.readMetadata(_hdfFile, product);
 
+        final Node vnirCube = findNode(prs_l2d_hco, "VNIR_Cube");
+        _vnirCubeExist = vnirCube instanceof Dataset;
+        if (_vnirCubeExist) {
+            _vnirCube = (Dataset) vnirCube;
+            final Attribute l2ScaleVnirMin = _hdfFile.getAttribute("L2ScaleVnirMin");
+            if (l2ScaleVnirMin == null) {
+                throw new ProductIOException(_prefix_message + "Global Attribute 'L2ScaleVnirMin' not found.");
+            }
+
+            final int numBands = getNumBands(_vnirCube);
+            for (int i = 0; i < numBands; i++) {
+                final String bandName = String.format("Vnir_Rrs_%02d", i + 1);
+                final Band band = product.addBand(bandName, ProductData.TYPE_INT16);
+                band.setSpectralWavelength();
+                band.setSpectralBandIndex();
+                band.setScalingFactor();
+                band.setScalingOffset();
+            }
+        }
+
         final Node swirCube = findNode(prs_l2d_hco, "SWIR_Cube");
-        if (swirCube != null) {
-            final Dataset cube = (Dataset) swirCube;
+        _swirCubeExist = swirCube instanceof Dataset;
+        if (_swirCubeExist) {
+            _swirCube = (Dataset) swirCube;
         }
 
         return product;
+    }
 
-//        if (lowerName.matches("prs_l.*\\.zip") || lowerName.matches("prs_l.*\\.he5")) {
-//            rootPath = inputPath;
-//        } else {
-//            rootPath = inputPath.getParent();
-//        }
-//        assert rootPath != null;
-//        if (Files.isRegularFile(rootPath)) {
-//            store = new ZipStore(rootPath);
-//        } else {
-//            store = new FileSystemStore(rootPath);
-//        }
-//        rootGroup = ZarrGroup.open(store);
+    private int getNumBands(Dataset cube) {
+        final int[] dim = cube.getDimensions();
+        int numBands= 0;
+        for (int i : dim) {
+            if (i != _sceneRasterHeight && i != _sceneRasterWidth) {
+                numBands = i;
+                break;
+            }
+        }
+        return numBands;
     }
 
     @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
+    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
 
     }
 
@@ -122,14 +152,14 @@ public class PrismaProductReader extends AbstractProductReader {
                 if (found != null) {
                     return found;
                 }
-//            } else if (node instanceof Dataset) {
-//                final Dataset dataset = (Dataset) node;
-//                if (dataset.getName().equalsIgnoreCase(name)) {
-//                    return dataset;
-//                }
             }
         }
         return null;
     }
 
+    @Override
+    public void close() throws IOException {
+        super.close();
+        _hdfFile.close();
+    }
 }
