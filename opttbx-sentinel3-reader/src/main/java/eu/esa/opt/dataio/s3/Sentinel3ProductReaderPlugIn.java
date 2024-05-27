@@ -25,14 +25,14 @@ import java.util.regex.Pattern;
 
 public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
 
-    private static final Class[] SUPPORTED_INPUT_TYPES = new Class[]{String.class, File.class};
+    private static final Class[] SUPPORTED_INPUT_TYPES = {String.class, File.class};
     private static final String FORMAT_NAME = "Sen3";
 
     private final String formatName;
     private final String manifestFileBasename;
     private final String alternativeManifestFileBasename;
     private final String[] fileExtensions;
-    private final Pattern directoryNamePattern;
+    private final Pattern sourceNamePattern;
     private final String description;
     private final String[] formatNames;
 
@@ -42,22 +42,22 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
 
     public Sentinel3ProductReaderPlugIn() {
         this(FORMAT_NAME, "Sentinel-3 products",
-             "S3.?_(OL_1_E[FR]R|OL_2_(L[FR]R|W[FR]R)|ER1_AT_1_RBT|ER2_AT_1_RBT|ENV_AT_1_RBT|SL_1_RBT|" +
-                     "SL_2_(LST|WCT|WST|FRP)|SY_1_SYN|SY_2_(AOD|VGP|SYN|V10)|SY_[23]_VG1)_.*(.SEN3)?",
-             "xfdumanifest", "L1c_Manifest", ".xml");
+                "S3.?_(OL_1_E[FR]R|OL_2_(L[FR]R|W[FR]R)|ER1_AT_1_RBT|ER2_AT_1_RBT|ENV_AT_1_RBT|SL_1_RBT|" +
+                        "SL_2_(LST|WCT|WST|FRP)|SY_1_SYN|SY_2_(AOD|VGP|SYN|V10)|SY_[23]_VG1)_.*(.SEN3)?",
+                "xfdumanifest", "L1c_Manifest", ".xml", ".zip");
     }
 
     protected Sentinel3ProductReaderPlugIn(String formatName,
                                            String description,
-                                           String directoryNamePattern,
+                                           String sourceNamePattern,
                                            String manifestFileBasename,
                                            String alternativeManifestFileBasename,
                                            String... fileExtensions) {
         this.formatName = formatName;
         this.fileExtensions = fileExtensions;
-        this.directoryNamePattern = Pattern.compile(directoryNamePattern);
+        this.sourceNamePattern = Pattern.compile(sourceNamePattern);
         this.description = description;
-        this.formatNames = new String[]{formatName};
+        formatNames = new String[]{formatName};
         this.manifestFileBasename = manifestFileBasename;
         this.alternativeManifestFileBasename = alternativeManifestFileBasename;
     }
@@ -72,7 +72,7 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
     }
 
     @Override
-    public final Class[] getInputTypes() {
+    public Class[] getInputTypes() {
         return SUPPORTED_INPUT_TYPES;
     }
 
@@ -82,22 +82,22 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
     }
 
     @Override
-    public final String[] getFormatNames() {
+    public String[] getFormatNames() {
         return formatNames;
     }
 
     @Override
-    public final String[] getDefaultFileExtensions() {
+    public String[] getDefaultFileExtensions() {
         return fileExtensions;
     }
 
     @Override
-    public final String getDescription(Locale locale) {
+    public String getDescription(Locale locale) {
         return description;
     }
 
     @Override
-    public final SnapFileFilter getProductFileFilter() {
+    public SnapFileFilter getProductFileFilter() {
         return new SnapFileFilter(formatName, fileExtensions, description);
     }
 
@@ -116,13 +116,13 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
         final File inputFile = new File(input.toString());
         final File parentFile = inputFile.getParentFile();
         return parentFile != null &&
-                (isValidDirectoryName(parentFile.getName()) && isValidInputFileName(inputFile.getName())) ||
-                (isValidDirectoryName(inputFile.getName()) && new File(inputFile, XfduManifest.MANIFEST_FILE_NAME).exists()) ||
-                (isValidDirectoryName(inputFile.getName()) && new File(inputFile, EarthExplorerManifest.L1C_MANIFEST_FILE_NAME).exists());
+                (isValidSourceName(parentFile.getName()) && isValidInputFileName(inputFile.getName())) ||
+                (isValidSourceName(inputFile.getName()) && new File(inputFile, XfduManifest.MANIFEST_FILE_NAME).exists()) ||
+                (isValidSourceName(inputFile.getName()) && new File(inputFile, EarthExplorerManifest.L1C_MANIFEST_FILE_NAME).exists());
     }
 
-    protected boolean isValidDirectoryName(String name) {
-        return directoryNamePattern.matcher(name).matches();
+    // public access for testing only 2025-05-27
+    public boolean isValidSourceName(String name) {
+        return sourceNamePattern.matcher(name).matches();
     }
-
 }
