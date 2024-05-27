@@ -6,6 +6,7 @@ import io.jhdf.api.Attribute;
 import io.jhdf.api.Dataset;
 import io.jhdf.api.Group;
 import io.jhdf.api.Node;
+import io.jhdf.dataset.ContiguousDatasetImpl;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -15,12 +16,16 @@ import org.esa.snap.core.datamodel.ProductData;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.DATASET_NAME_LONGITUDE;
@@ -35,9 +40,10 @@ public class PrismaProductReader extends AbstractProductReader {
     private int _sceneRasterHeight;
     private boolean _swirCubeExist;
     private Dataset _swirCube;
-    private Dataset _vnirCube;
+    private ContiguousDatasetImpl _vnirCube;
     private String _prefix_message;
     private boolean _vnirCubeExist;
+    private Map<Band, Integer> cubeIndex = new HashMap<>();
 
     /**
      * Constructs a new abstract product reader.
@@ -89,28 +95,54 @@ public class PrismaProductReader extends AbstractProductReader {
             throw new ProductIOException(_prefix_message + "Could not find dataset \"" + DATASET_NAME_LONGITUDE + "\" for file " + inputPath);
         }
         final int[] dimensions = longitude.getDimensions();
-        _sceneRasterWidth = dimensions[0];
-        _sceneRasterHeight = dimensions[1];
+        _sceneRasterWidth = dimensions[1];
+        _sceneRasterHeight = dimensions[0];
         final Product product = new Product(fileName, "ASI Prisma", _sceneRasterWidth, _sceneRasterHeight);
         MetadataReader.readMetadata(_hdfFile, product);
 
         final Node vnirCube = findNode(prs_l2d_hco, "VNIR_Cube");
         _vnirCubeExist = vnirCube instanceof Dataset;
         if (_vnirCubeExist) {
-            _vnirCube = (Dataset) vnirCube;
+            _vnirCube = (ContiguousDatasetImpl) vnirCube;
             final Attribute l2ScaleVnirMin = _hdfFile.getAttribute("L2ScaleVnirMin");
             if (l2ScaleVnirMin == null) {
                 throw new ProductIOException(_prefix_message + "Global Attribute 'L2ScaleVnirMin' not found.");
             }
+            final Attribute l2ScaleVnirMax = _hdfFile.getAttribute("L2ScaleVnirMax");
+            if (l2ScaleVnirMax == null) {
+                throw new ProductIOException(_prefix_message + "Global Attribute 'L2ScaleVnirMax' not found.");
+            }
+            final float scaleMin = (float) l2ScaleVnirMin.getData();
+            final float scaleMax = (float) l2ScaleVnirMax.getData();
+            final double scalingOffset = scaleMin;
+            final double scalingFactor = (scaleMax - scaleMin) / 65535;
+
+            final Attribute vnirCentralWavelengthsAtt = _hdfFile.getAttribute("List_Cw_Vnir");
+            if (vnirCentralWavelengthsAtt == null) {
+                throw new ProductIOException(_prefix_message + "Global Attribute 'List_Cw_Vnir' not found.");
+            }
+            final float[] vnirWavelengths = (float[]) vnirCentralWavelengthsAtt.getData();
+            final Attribute vnirBandwidthsAtt = _hdfFile.getAttribute("List_Fwhm_Vnir");
+            if (vnirBandwidthsAtt == null) {
+                throw new ProductIOException(_prefix_message + "Global Attribute 'List_Fwhm_Vnir' not found.");
+            }
+            final float[] vnirBandwidths = (float[]) vnirBandwidthsAtt.getData();
 
             final int numBands = getNumBands(_vnirCube);
             for (int i = 0; i < numBands; i++) {
                 final String bandName = String.format("Vnir_Rrs_%02d", i + 1);
-                final Band band = product.addBand(bandName, ProductData.TYPE_INT16);
-                band.setSpectralWavelength();
-                band.setSpectralBandIndex();
-                band.setScalingFactor();
-                band.setScalingOffset();
+                final Band band = new Band(bandName, ProductData.TYPE_UINT16, _sceneRasterWidth, _sceneRasterHeight) {
+                    @Override
+                    public boolean isProductReaderDirectlyUsable() {
+                        return true;
+                    }
+                };
+                product.addBand(band);
+                cubeIndex.put(band, i);
+                band.setSpectralWavelength(vnirWavelengths[i]);
+                band.setSpectralBandwidth(vnirBandwidths[i]);
+                band.setScalingFactor(scalingFactor);
+                band.setScalingOffset(scalingOffset);
             }
         }
 
@@ -125,7 +157,7 @@ public class PrismaProductReader extends AbstractProductReader {
 
     private int getNumBands(Dataset cube) {
         final int[] dim = cube.getDimensions();
-        int numBands= 0;
+        int numBands = 0;
         for (int i : dim) {
             if (i != _sceneRasterHeight && i != _sceneRasterWidth) {
                 numBands = i;
@@ -136,9 +168,18 @@ public class PrismaProductReader extends AbstractProductReader {
     }
 
     @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
-                                          Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
+    protected void readBandRasterDataImpl(
+            int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+            Band destBand,
+            int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
 
+        long[] sliceOffset = {sourceOffsetY, cubeIndex.get(destBand), sourceOffsetX};
+        int[] sliceDimensions = {destHeight, 1, destWidth};
+
+        final ByteBuffer sliceByteBuffer = _vnirCube.getSliceDataBuffer(sliceOffset, sliceDimensions);
+        final ShortBuffer shortBuffer = sliceByteBuffer.asShortBuffer();
+        final short[] shorts = (short[]) destBuffer.getElems();
+        shortBuffer.get(shorts);
     }
 
     private static Node findNode(Group group, String name) {
