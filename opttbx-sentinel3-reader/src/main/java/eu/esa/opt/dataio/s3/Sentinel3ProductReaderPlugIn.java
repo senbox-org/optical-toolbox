@@ -17,6 +17,7 @@ package eu.esa.opt.dataio.s3;/*
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
+import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
 import java.io.File;
@@ -101,24 +102,42 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
         return new SnapFileFilter(formatName, fileExtensions, description);
     }
 
-    private boolean isValidInputFileName(String name) {
+    // public access for testing only 2024-05-28
+    public boolean isValidInputFileName(String name) {
         for (final String fileExtension : fileExtensions) {
             final String manifestFileName = manifestFileBasename + fileExtension;
-            final String alternativeManifestFileName = alternativeManifestFileBasename + fileExtension;
-            if (manifestFileName.equalsIgnoreCase(name) || alternativeManifestFileName.equalsIgnoreCase(name)) {
-                return true;
+            if (".xml".equalsIgnoreCase(fileExtension)) {
+                final String alternativeManifestFileName = alternativeManifestFileBasename + fileExtension;
+                if (manifestFileName.equalsIgnoreCase(name) || alternativeManifestFileName.equalsIgnoreCase(name)) {
+                    return true;
+                }
+            } else if (".zip".equalsIgnoreCase(fileExtension)) {
+                // we assume that a zip with a matching name pattern is a valid product 2024-05-28 tb
+                return ".zip".equalsIgnoreCase(FileUtils.getExtension(name));
+            } else {
+                return false;
             }
         }
         return false;
     }
 
-    protected boolean isInputValid(Object input) {
-        final File inputFile = new File(input.toString());
-        final File parentFile = inputFile.getParentFile();
-        return parentFile != null &&
-                (isValidSourceName(parentFile.getName()) && isValidInputFileName(inputFile.getName())) ||
-                (isValidSourceName(inputFile.getName()) && new File(inputFile, XfduManifest.MANIFEST_FILE_NAME).exists()) ||
-                (isValidSourceName(inputFile.getName()) && new File(inputFile, EarthExplorerManifest.L1C_MANIFEST_FILE_NAME).exists());
+    // public access for testing only 2024-05-28
+    public boolean isInputValid(Object input) {
+        final String inputString = input.toString();
+        final File inputFile = new File(FileUtils.getFilenameFromPath(inputString));
+        final File parentFile = new File(inputString).getParentFile();
+
+        if (!isValidInputFileName(inputFile.getName())) {
+            return false;
+        }
+
+        final String extension = FileUtils.getExtension(inputFile);
+        if (".zip".equalsIgnoreCase(extension)) {
+            return true;
+        }
+
+        // the manifest in directory case 2024-05-28 tb
+        return parentFile != null && (isValidSourceName(parentFile.getName()));
     }
 
     // public access for testing only 2025-05-27

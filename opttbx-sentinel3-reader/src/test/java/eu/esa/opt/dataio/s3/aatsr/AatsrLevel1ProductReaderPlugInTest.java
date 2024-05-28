@@ -73,4 +73,30 @@ public class AatsrLevel1ProductReaderPlugInTest {
         assertFalse(plugIn.isValidSourceName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
         assertFalse(plugIn.isValidSourceName("SM_OPER_MIR_SCLF1C_20221224T220123_20221224T225442_724_001_1.zip"));
     }
+
+    @Test
+    @STTM("SNAP-3666")
+    public void testIsValidInputFileName() {
+        assertTrue(plugIn.isValidInputFileName("xfdumanifest.xml"));
+        assertTrue(plugIn.isValidInputFileName("ENV_AT_1_RBT____20120316T160758_20120316T175312_20210818T165348_6313_112_370______DSI_R_NT_004.SEN3.ZIP"));
+
+        // no alternative manifest name defined 2024-05-28 tb
+        assertFalse(plugIn.isValidInputFileName("L1c_Manifest.xml"));
+        assertFalse(plugIn.isValidInputFileName("manifest.safe"));
+        assertFalse(plugIn.isValidInputFileName("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));
+    }
+
+    @Test
+    @STTM("SNAP-3666")
+    public void testIsValidInput() {
+        final String sep = File.separator;
+
+        assertTrue(plugIn.isInputValid("ENV_AT_1_RBT____20120316T160758_20120316T175312_20210818T165348_6313_112_370______DSI_R_NT_004.SEN3.ZIP" + sep + "xfdumanifest.xml"));
+        assertTrue(plugIn.isInputValid("ENV_AT_1_RBT____20120316T160758_20120316T175312_20210818T165348_6313_112_370______DSI_R_NT_004.SEN3.ZIP"));
+
+        // no alternative manifest name defined 2024-05-28 tb
+        assertFalse(plugIn.isInputValid("ENV_AT_1_RBT____20120316T160758_20120316T175312_20210818T165348_6313_112_370______DSI_R_NT_004.SEN3" + sep + "L1c_Manifest.xml"));
+        assertFalse(plugIn.isInputValid("S3A_SL_1_RBT____20180809T035343_20180809T035643_20180810T124116_0179_034_218_2520_MAR_O_NT_002.SEN3" + sep + "manifest.safe"));
+        assertFalse(plugIn.isInputValid("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));
+    }
 }
