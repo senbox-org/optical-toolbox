@@ -45,6 +45,11 @@
             <artifactId>snap-gdal-reader</artifactId>
             <version>${snap.version}</version>
         </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-commons</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
 
 
 

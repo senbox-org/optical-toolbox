@@ -46,4 +46,8 @@ public class TarUtils {
         }
     }
 
+    public static boolean isTar(Path path) {
+        final String lcFileName = path.getFileName().toString().toLowerCase();
+        return lcFileName.endsWith("tar.gz") || lcFileName.endsWith("tgz") || lcFileName.endsWith("tar");
+    }
 }

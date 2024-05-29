@@ -15,19 +15,12 @@ package eu.esa.opt.dataio.s3;/*
  */
 
 import com.bc.ceres.core.ProgressMonitor;
+import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.glevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.olci.OlciLevel1ProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2WProductFactory;
-import eu.esa.opt.dataio.s3.slstr.SlstrFrpProductFactory;
-import eu.esa.opt.dataio.s3.slstr.SlstrLevel1B1kmProductFactory;
-import eu.esa.opt.dataio.s3.slstr.SlstrLevel1B1kmProductReaderPlugIn;
-import eu.esa.opt.dataio.s3.slstr.SlstrLevel1B500mProductFactory;
-import eu.esa.opt.dataio.s3.slstr.SlstrLevel1B500mProductReaderPlugIn;
-import eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory;
-import eu.esa.opt.dataio.s3.slstr.SlstrLstProductFactory;
-import eu.esa.opt.dataio.s3.slstr.SlstrSstProductFactory;
-import eu.esa.opt.dataio.s3.slstr.SlstrWstProductFactory;
+import eu.esa.opt.dataio.s3.slstr.*;
 import eu.esa.opt.dataio.s3.synergy.AODProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynL1CProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynLevel2ProductFactory;
@@ -39,7 +32,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGrid;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +40,7 @@ import java.io.IOException;
 public class Sentinel3ProductReader extends AbstractProductReader {
 
     private ProductFactory factory;
+    private VirtualDir virtualDir;
 
     public Sentinel3ProductReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
@@ -54,40 +48,62 @@ public class Sentinel3ProductReader extends AbstractProductReader {
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        final String dirName = getInputFileParentDirectory().getName();
+        final File inputFile = getInputFile();
+        ensureVirtualDir(inputFile);
+
+        final String basePath = virtualDir.getBasePath();
+        final File productDir = new File(basePath);
+
+        factory = getProductFactory(productDir.getName());
+
+        // set manifest file - better, open stream to manifest and proagate this. It must be read anyways. tb 2024-05-29
+        return createProduct();
+    }
+
+    protected void ensureVirtualDir(File inputFile) {
+        virtualDir = getVirtualDir(inputFile);
+    }
+
+    public VirtualDir getVirtualDir() {
+        return virtualDir;
+    }
+
+    ProductFactory getProductFactory(String dirName) {
+        ProductFactory factory = null;
         if (dirName.matches("S3.?_OL_1_E[RF]R_.*")) { // OLCI L1b
-            setFactory(new OlciLevel1ProductFactory(this));
-        } else if (dirName.matches("S3.?_OL_2_(L[FR]R)_.*.SEN3")) { // OLCI L2 L -
-            setFactory(new OlciLevel2LProductFactory(this));
-        } else if (dirName.matches("S3.?_OL_2_(W[FR]R)_.*.SEN3")) { // OLCI L2 W -
-            setFactory(new OlciLevel2WProductFactory(this));
-        } else if (dirName.matches("S3.?_SL_1_RBT.*")) { // SLSTR L1b
+            factory = new OlciLevel1ProductFactory(this);
+        } else if (dirName.matches("S3.?_OL_2_(L[FR]R)_.*(.SEN3)?")) { // OLCI L2 L -
+            factory = new OlciLevel2LProductFactory(this);
+        } else if (dirName.matches("S3.?_OL_2_(W[FR]R)_.*(.SEN3)?")) { // OLCI L2 W -
+            factory = new OlciLevel2WProductFactory(this);
+        } else if (dirName.matches("S3.?_SL_1_RBT.*(.SEN3)?")) { // SLSTR L1b
             final ProductReaderPlugIn readerPlugIn = getReaderPlugIn();
             if (readerPlugIn instanceof SlstrLevel1B1kmProductReaderPlugIn) {
-                setFactory(new SlstrLevel1B1kmProductFactory(this));
+                factory = new SlstrLevel1B1kmProductFactory(this);
             } else if (readerPlugIn instanceof SlstrLevel1B500mProductReaderPlugIn) {
-                setFactory(new SlstrLevel1B500mProductFactory(this));
+                factory = new SlstrLevel1B500mProductFactory(this);
             } else {
-                setFactory(new SlstrLevel1ProductFactory(this));
+                factory = new SlstrLevel1ProductFactory(this);
             }
-        } else if (dirName.matches("S3.?_SL_2_LST_.*.SEN3")) { // SLSTR L2 LST
-            setFactory(new SlstrLstProductFactory(this));
-        } else if (dirName.matches("S3.?_SL_2_WST_.*.SEN3")) { // SLSTR L2 WST
-            setFactory(new SlstrWstProductFactory(this));
-        } else if (dirName.matches("S3.?_SL_2_WCT_.*.SEN3")) { // SLSTR L2 WCT
-            setFactory(new SlstrSstProductFactory(this));
-        } else if (dirName.matches("S3.?_SL_2_FRP_.*.SEN3")) { // SLSTR L2 FRP
-            setFactory(new SlstrFrpProductFactory(this));
-        } else if (dirName.matches("S3.?_SY_1_SYN_.*")) { // SYN L1
-            setFactory(new SynL1CProductFactory(this));
-        } else if (dirName.matches("S3.?_SY_2_SYN_.*.SEN3")) { // SYN L2
-            setFactory(new SynLevel2ProductFactory(this));
-        } else if (dirName.matches("S3.?_SY_2_AOD_.*.SEN3")) { // SYN AOD
-            setFactory(new AODProductFactory(this));
-        } else if (dirName.matches("S3.?_SY_(2_VGP|[23]_VG1|2_V10)_.*.SEN3")) { // SYN VGT
-            setFactory(new VgtProductFactory(this));
+        } else if (dirName.matches("S3.?_SL_2_LST_.*(.SEN3)?")) { // SLSTR L2 LST
+            factory = new SlstrLstProductFactory(this);
+        } else if (dirName.matches("S3.?_SL_2_WST_.*(.SEN3)?")) { // SLSTR L2 WST
+            factory = new SlstrWstProductFactory(this);
+        } else if (dirName.matches("S3.?_SL_2_WCT_.*(.SEN3)?")) { // SLSTR L2 WCT
+            factory = new SlstrSstProductFactory(this);
+        } else if (dirName.matches("S3.?_SL_2_FRP_.*(.SEN3)?")) { // SLSTR L2 FRP
+            factory = new SlstrFrpProductFactory(this);
+        } else if (dirName.matches("S3.?_SY_1_SYN_.*(.SEN3)?")) { // SYN L1
+            factory = new SynL1CProductFactory(this);
+        } else if (dirName.matches("S3.?_SY_2_SYN_.*(.SEN3)?")) { // SYN L2
+            factory = new SynLevel2ProductFactory(this);
+        } else if (dirName.matches("S3.?_SY_2_AOD_.*(.SEN3)?")) { // SYN AOD
+            factory = new AODProductFactory(this);
+        } else if (dirName.matches("S3.?_SY_(2_VGP|[23]_VG1|2_V10)_.*(.SEN3)?")) { // SYN VGT
+            factory = new VgtProductFactory(this);
         }
-        return createProduct();
+
+        return factory;
     }
 
     protected void setFactory(ProductFactory factory) {
@@ -99,12 +115,12 @@ public class Sentinel3ProductReader extends AbstractProductReader {
             throw new IOException("Cannot read product file '" + getInputFile() + "'.");
         }
 
-        return factory.createProduct();
+        return factory.createProduct(virtualDir);
     }
 
     protected void setInput(Object input) {
-        if(input instanceof File && ((File)input).isDirectory()) {
-            super.setInput(new File(((File)input), XfduManifest.MANIFEST_FILE_NAME));
+        if (input instanceof File && ((File) input).isDirectory()) {
+            super.setInput(new File(((File) input), XfduManifest.MANIFEST_FILE_NAME));
         } else {
             super.setInput(input);
         }
@@ -130,7 +146,14 @@ public class Sentinel3ProductReader extends AbstractProductReader {
 
     @Override
     public final void close() throws IOException {
-        factory.dispose();
+        if (virtualDir != null) {
+            virtualDir.close();
+            virtualDir = null;
+        }
+        if (factory != null) {
+            factory.dispose();
+            factory = null;
+        }
         super.close();
     }
 
@@ -140,5 +163,24 @@ public class Sentinel3ProductReader extends AbstractProductReader {
 
     public final File getInputFileParentDirectory() {
         return getInputFile().getParentFile();
+    }
+
+    // @todo 3 tb/tb check if we can test this without requiring the file-sysem tb 2024-05-29
+    static VirtualDir getVirtualDir(File inputFile) {
+        VirtualDir virtualDir;
+        if (isZipFile(inputFile)) {
+            virtualDir = VirtualDir.create(inputFile);
+        } else {
+            File productDirectory = inputFile;
+            if (!inputFile.isDirectory()) {
+                productDirectory = productDirectory.getParentFile();
+            }
+            virtualDir = VirtualDir.create(productDirectory);
+        }
+        return virtualDir;
+    }
+
+    private static boolean isZipFile(File inputFile) {
+        return inputFile.getName().toLowerCase().endsWith(".zip");
     }
 }

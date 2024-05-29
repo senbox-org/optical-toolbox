@@ -14,6 +14,7 @@ package eu.esa.opt.dataio.s3;/*
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
+import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.glevel.MultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
@@ -99,9 +100,11 @@ public abstract class AbstractProductFactory implements ProductFactory {
     protected static Band copyBand(Band sourceBand, Product targetProduct, boolean copySourceImage) {
         return ProductUtils.copyBand(sourceBand.getName(), sourceBand.getProduct(), targetProduct, copySourceImage);
     }
+
     @Override
-    public final Product createProduct() throws IOException {
-        manifest = createManifest(getInputFile());
+    public final Product createProduct(VirtualDir virtualDir) throws IOException {
+        final InputStream manifestInputStream = getManifestInputStream(virtualDir);
+        manifest = createManifest(manifestInputStream);
 
         final List<String> fileNames = getFileNames(manifest);
         readProducts(fileNames);
@@ -523,16 +526,16 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
-    private Manifest createManifest(File file) throws IOException {
+    private Manifest createManifest(InputStream inputStream) throws IOException {
         final Document xmlDocument;
-        try (InputStream inputStream = new FileInputStream(file)) {
+        try (inputStream) {
             xmlDocument = createXmlDocument(inputStream);
         }
         // TODO (mp/16.09.2016) - probably not needed anymore
         // according to the documentation SYN L1C should also have a xfdumanifest file
-        if (file.getName().equals(EarthExplorerManifest.L1C_MANIFEST_FILE_NAME)) {
-            return EarthExplorerManifest.createManifest(xmlDocument);
-        }
+        //if (file.getName().equals(EarthExplorerManifest.L1C_MANIFEST_FILE_NAME)) {
+        //    return EarthExplorerManifest.createManifest(xmlDocument);
+        //}
         return XfduManifest.createManifest(xmlDocument);
     }
 
@@ -545,6 +548,17 @@ public abstract class AbstractProductFactory implements ProductFactory {
             getLogger().log(Level.SEVERE, msg, e);
             throw new IOException(msg, e);
         }
+    }
+
+    private InputStream getManifestInputStream(VirtualDir virtualDir) throws IOException {
+        final String[] list = virtualDir.listAllFiles();
+        for (final String entry : list) {
+            if (entry.toLowerCase().endsWith(XfduManifest.MANIFEST_FILE_NAME)) {
+                return virtualDir.getInputStream(entry);
+            }
+        }
+
+        return null;
     }
 
 }

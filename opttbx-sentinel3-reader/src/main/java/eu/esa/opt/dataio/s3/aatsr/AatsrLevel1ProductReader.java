@@ -3,6 +3,7 @@ package eu.esa.opt.dataio.s3.aatsr;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import org.esa.snap.core.datamodel.Product;
 
+import java.io.File;
 import java.io.IOException;
 
 import static eu.esa.opt.dataio.s3.aatsr.AatsrLevel1ProductReaderPlugIn.DIRECTORY_NAME_PATTERN;
@@ -18,8 +19,12 @@ public class AatsrLevel1ProductReader extends Sentinel3ProductReader {
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
+        final File inputFile = getInputFile();
+        ensureVirtualDir(inputFile);
+
+        final String basePath = getVirtualDir().getBasePath();
         final String dirName = getInputFileParentDirectory().getName();
-        if (dirName.matches(DIRECTORY_NAME_PATTERN)) {
+        if (basePath.matches(DIRECTORY_NAME_PATTERN)) {
             setFactory(new AatsrLevel1ProductFactory(this));
         }
 
@@ -28,5 +33,4 @@ public class AatsrLevel1ProductReader extends Sentinel3ProductReader {
 
         return product;
     }
-
 }

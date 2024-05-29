@@ -87,11 +87,6 @@ public class EnmapFileUtils {
         return path.getFileName().toString().toLowerCase().endsWith("zip");
     }
 
-    static boolean isTar(Path path) {
-        final String lcFileName = path.getFileName().toString().toLowerCase();
-        return lcFileName.endsWith("tar.gz") || lcFileName.endsWith("tgz") || lcFileName.endsWith("tar");
-    }
-
     public static InputStream getInputStream(VirtualDir dataDir, String fileName) throws IOException {
         return dataDir.getInputStream(getRelativePath(dataDir, fileName));
     }
