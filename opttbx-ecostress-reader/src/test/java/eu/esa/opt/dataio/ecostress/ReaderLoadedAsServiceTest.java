@@ -33,7 +33,7 @@ public class ReaderLoadedAsServiceTest {
         int readerCount = 0;
 
         ProductIOPlugInManager plugInManager = ProductIOPlugInManager.getInstance();
-        Iterator<ProductReaderPlugIn> readerPlugIns = plugInManager.getReaderPlugIns(EcostressAbstractProductReaderPlugIn.FORMAT_NAME_ECOSTRESS);
+        Iterator<ProductReaderPlugIn> readerPlugIns = plugInManager.getReaderPlugIns(EcostressProductReaderPlugIn.FORMAT_NAME_ECOSTRESS);
 
         while (readerPlugIns.hasNext()) {
             readerCount++;
@@ -42,7 +42,7 @@ public class ReaderLoadedAsServiceTest {
             System.out.println("readerPlugIn.Descr = " + plugIn.getDescription(null));
         }
 
-        assertEquals(14, readerCount);
+        assertEquals(1, readerCount);
     }
 
 }
