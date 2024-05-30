@@ -93,6 +93,20 @@
     </dd>
 </dl>
 
+<h2>Notes to specific data types</h2>
+
+<h3>SLSTR L2 FRP</h3>
+<p>
+The SLTSR Level 2 <b>F</b>ire <b>R</b>adiative <b>P</b>ower product is special in the sense that the measurement data is
+not supplied as raster data, instead it is stored as a vector of measurements. SNAP provides a built-in mechanism to map
+these vector data onto a raster that is generated on-the-fly to allow for a simple view of the spatial distributions.
+</p>
+<p>
+Due to missing geo-location data for the stripe A/B acquisitions, the geolocation for these data is interpolated from the
+"in" geolocation. This incorporates a small error. If you require the exact location of the measurement data, please use
+the values stored in the product metadata.
+</p>
+
 <h2>Import Data</h2>
 <p>The data is usually distributed in a zip archive. This needs to be extracted first. Afterwards the data can be
     imported via the respective entry in the application menu at '<code>File / Import / Optical Sensors /

@@ -1,0 +1,3827 @@
+{
+    "id": "S3B_SL_2_FRP____20240325T213812",
+    "decodeQualification": "INTENDED",
+    "expectedContent": {
+        "sceneWidth": 1500,
+        "sceneHeight": 1200,
+        "startTime": "25-MAR-2024 21:38:12.023334",
+        "endTime": "25-MAR-2024 21:41:12.023334",
+        "geoCoding": {
+            "coordinates": [
+                {
+                    "x": 646.0,
+                    "y": 645.0,
+                    "lat": 48.780792,
+                    "lon": 0.13775199999999999
+                },
+                {
+                    "x": 1113.0,
+                    "y": 778.0,
+                    "lat": 48.881626999999995,
+                    "lon": -6.479705999999999
+                }
+            ],
+            "reverseAccuracy": 0.5
+        },
+        "flagCodings": [
+            {
+                "name": "flags_an_bn",
+                "samples": [
+                    {
+                        "name": "exception",
+                        "value": 1
+                    },
+                    {
+                        "name": "l1b_water",
+                        "value": 2
+                    },
+                    {
+                        "name": "frp_water",
+                        "value": 4
+                    },
+                    {
+                        "name": "l1b_cloud",
+                        "value": 8
+                    },
+                    {
+                        "name": "bayesian_cloud",
+                        "value": 16
+                    },
+                    {
+                        "name": "frp_cloud",
+                        "value": 32
+                    },
+                    {
+                        "name": "night",
+                        "value": 64
+                    },
+                    {
+                        "name": "day",
+                        "value": 64
+                    },
+                    {
+                        "name": "not_fire_pixel",
+                        "value": 128
+                    },
+                    {
+                        "name": "fire_pixel",
+                        "value": 128
+                    },
+                    {
+                        "name": "S6_absolute",
+                        "value": 256
+                    },
+                    {
+                        "name": "S5_absolute",
+                        "value": 512
+                    }
+                ]
+            },
+            {
+                "name": "flags_in",
+                "samples": [
+                    {
+                        "name": "exception",
+                        "value": 1
+                    },
+                    {
+                        "name": "l1b_water",
+                        "value": 2
+                    },
+                    {
+                        "name": "frp_water",
+                        "value": 4
+                    },
+                    {
+                        "name": "l1b_cloud",
+                        "value": 8
+                    },
+                    {
+                        "name": "bayesian_cloud",
+                        "value": 16
+                    },
+                    {
+                        "name": "frp_cloud",
+                        "value": 32
+                    },
+                    {
+                        "name": "night",
+                        "value": 64
+                    },
+                    {
+                        "name": "day",
+                        "value": 64
+                    },
+                    {
+                        "name": "sun_glint",
+                        "value": 128
+                    },
+                    {
+                        "name": "spectral_filter",
+                        "value": 256
+                    },
+                    {
+                        "name": "spatial_filter",
+                        "value": 512
+                    },
+                    {
+                        "name": "absolute_threshold",
+                        "value": 1024
+                    },
+                    {
+                        "name": "background_characterisation",
+                        "value": 2048
+                    },
+                    {
+                        "name": "contextual_threshold",
+                        "value": 4096
+                    },
+                    {
+                        "name": "desert_boundary",
+                        "value": 8192
+                    },
+                    {
+                        "name": "normal_F1_BT",
+                        "value": 16384
+                    },
+                    {
+                        "name": "saturated_F1_BT",
+                        "value": 16384
+                    },
+                    {
+                        "name": "not_fire_pixel",
+                        "value": 32768
+                    },
+                    {
+                        "name": "fire_pixel",
+                        "value": 32768
+                    },
+                    {
+                        "name": "abs_bckg_invalid",
+                        "value": 65536
+                    },
+                    {
+                        "name": "saturated_area",
+                        "value": 131072
+                    },
+                    {
+                        "name": "cloud_edge",
+                        "value": 262144
+                    },
+                    {
+                        "name": "land_water_edge",
+                        "value": 524288
+                    },
+                    {
+                        "name": "F1_downscan",
+                        "value": 1048576
+                    },
+                    {
+                        "name": "BT4_cosmetic",
+                        "value": 2097152
+                    }
+                ]
+            },
+            {
+                "name": "bayes_fn",
+                "samples": [
+                    {
+                        "name": "single_low",
+                        "value": 1
+                    },
+                    {
+                        "name": "single_moderate",
+                        "value": 2
+                    },
+                    {
+                        "name": "dual_low",
+                        "value": 4
+                    },
+                    {
+                        "name": "dual_moderate",
+                        "value": 8
+                    },
+                    {
+                        "name": "spare_1",
+                        "value": 16
+                    },
+                    {
+                        "name": "spare_2",
+                        "value": 32
+                    },
+                    {
+                        "name": "spare_3",
+                        "value": 64
+                    },
+                    {
+                        "name": "spare_4",
+                        "value": 128
+                    }
+                ]
+            },
+            {
+                "name": "cloud_fn",
+                "samples": [
+                    {
+                        "name": "visible",
+                        "value": 1
+                    },
+                    {
+                        "name": "1_37_threshold",
+                        "value": 2
+                    },
+                    {
+                        "name": "1_6_small_histogram",
+                        "value": 4
+                    },
+                    {
+                        "name": "1_6_large_histogram",
+                        "value": 8
+                    },
+                    {
+                        "name": "2_25_small_histogram",
+                        "value": 16
+                    },
+                    {
+                        "name": "2_25_large_histogram",
+                        "value": 32
+                    },
+                    {
+                        "name": "11_spatial_coherence",
+                        "value": 64
+                    },
+                    {
+                        "name": "gross_cloud",
+                        "value": 128
+                    },
+                    {
+                        "name": "thin_cirrus",
+                        "value": 256
+                    },
+                    {
+                        "name": "medium_high",
+                        "value": 512
+                    },
+                    {
+                        "name": "fog_low_stratus",
+                        "value": 1024
+                    },
+                    {
+                        "name": "11_12_view_difference",
+                        "value": 2048
+                    },
+                    {
+                        "name": "3_7_11_view_difference",
+                        "value": 4096
+                    },
+                    {
+                        "name": "thermal_histogram",
+                        "value": 8192
+                    },
+                    {
+                        "name": "spare_1",
+                        "value": 16384
+                    },
+                    {
+                        "name": "spare_2",
+                        "value": 32768
+                    }
+                ]
+            },
+            {
+                "name": "confidence_fn",
+                "samples": [
+                    {
+                        "name": "coastline",
+                        "value": 1
+                    },
+                    {
+                        "name": "ocean",
+                        "value": 2
+                    },
+                    {
+                        "name": "tidal",
+                        "value": 4
+                    },
+                    {
+                        "name": "land",
+                        "value": 8
+                    },
+                    {
+                        "name": "inland_water",
+                        "value": 16
+                    },
+                    {
+                        "name": "unfilled",
+                        "value": 32
+                    },
+                    {
+                        "name": "spare_1",
+                        "value": 64
+                    },
+                    {
+                        "name": "spare_2",
+                        "value": 128
+                    },
+                    {
+                        "name": "cosmetic",
+                        "value": 256
+                    },
+                    {
+                        "name": "duplicate",
+                        "value": 512
+                    },
+                    {
+                        "name": "day",
+                        "value": 1024
+                    },
+                    {
+                        "name": "twilight",
+                        "value": 2048
+                    },
+                    {
+                        "name": "sun_glint",
+                        "value": 4096
+                    },
+                    {
+                        "name": "snow",
+                        "value": 8192
+                    },
+                    {
+                        "name": "summary_cloud",
+                        "value": 16384
+                    },
+                    {
+                        "name": "summary_pointing",
+                        "value": 32768
+                    }
+                ]
+            },
+            {
+                "name": "pointing_fn",
+                "samples": [
+                    {
+                        "name": "FlipMirrorAbsoluteError",
+                        "value": 1
+                    },
+                    {
+                        "name": "FlipMirrorIntegratedError",
+                        "value": 2
+                    },
+                    {
+                        "name": "FlipMirrorRMSError",
+                        "value": 4
+                    },
+                    {
+                        "name": "ScanMirrorAbsoluteError",
+                        "value": 8
+                    },
+                    {
+                        "name": "ScanMirrorIntegratedError",
+                        "value": 16
+                    },
+                    {
+                        "name": "ScanMirrorRMSError",
+                        "value": 32
+                    },
+                    {
+                        "name": "ScanTimeError",
+                        "value": 64
+                    },
+                    {
+                        "name": "Platform_Mode",
+                        "value": 128
+                    }
+                ]
+            },
+            {
+                "name": "bayes_in",
+                "samples": [
+                    {
+                        "name": "single_low",
+                        "value": 1
+                    },
+                    {
+                        "name": "single_moderate",
+                        "value": 2
+                    },
+                    {
+                        "name": "dual_low",
+                        "value": 4
+                    },
+                    {
+                        "name": "dual_moderate",
+                        "value": 8
+                    },
+                    {
+                        "name": "spare_1",
+                        "value": 16
+                    },
+                    {
+                        "name": "spare_2",
+                        "value": 32
+                    },
+                    {
+                        "name": "spare_3",
+                        "value": 64
+                    },
+                    {
+                        "name": "spare_4",
+                        "value": 128
+                    }
+                ]
+            },
+            {
+                "name": "cloud_in",
+                "samples": [
+                    {
+                        "name": "visible",
+                        "value": 1
+                    },
+                    {
+                        "name": "1_37_threshold",
+                        "value": 2
+                    },
+                    {
+                        "name": "1_6_small_histogram",
+                        "value": 4
+                    },
+                    {
+                        "name": "1_6_large_histogram",
+                        "value": 8
+                    },
+                    {
+                        "name": "2_25_small_histogram",
+                        "value": 16
+                    },
+                    {
+                        "name": "2_25_large_histogram",
+                        "value": 32
+                    },
+                    {
+                        "name": "11_spatial_coherence",
+                        "value": 64
+                    },
+                    {
+                        "name": "gross_cloud",
+                        "value": 128
+                    },
+                    {
+                        "name": "thin_cirrus",
+                        "value": 256
+                    },
+                    {
+                        "name": "medium_high",
+                        "value": 512
+                    },
+                    {
+                        "name": "fog_low_stratus",
+                        "value": 1024
+                    },
+                    {
+                        "name": "11_12_view_difference",
+                        "value": 2048
+                    },
+                    {
+                        "name": "3_7_11_view_difference",
+                        "value": 4096
+                    },
+                    {
+                        "name": "thermal_histogram",
+                        "value": 8192
+                    },
+                    {
+                        "name": "spare_1",
+                        "value": 16384
+                    },
+                    {
+                        "name": "spare_2",
+                        "value": 32768
+                    }
+                ]
+            },
+            {
+                "name": "confidence_in",
+                "samples": [
+                    {
+                        "name": "coastline",
+                        "value": 1
+                    },
+                    {
+                        "name": "ocean",
+                        "value": 2
+                    },
+                    {
+                        "name": "tidal",
+                        "value": 4
+                    },
+                    {
+                        "name": "land",
+                        "value": 8
+                    },
+                    {
+                        "name": "inland_water",
+                        "value": 16
+                    },
+                    {
+                        "name": "unfilled",
+                        "value": 32
+                    },
+                    {
+                        "name": "spare_1",
+                        "value": 64
+                    },
+                    {
+                        "name": "spare_2",
+                        "value": 128
+                    },
+                    {
+                        "name": "cosmetic",
+                        "value": 256
+                    },
+                    {
+                        "name": "duplicate",
+                        "value": 512
+                    },
+                    {
+                        "name": "day",
+                        "value": 1024
+                    },
+                    {
+                        "name": "twilight",
+                        "value": 2048
+                    },
+                    {
+                        "name": "sun_glint",
+                        "value": 4096
+                    },
+                    {
+                        "name": "snow",
+                        "value": 8192
+                    },
+                    {
+                        "name": "summary_cloud",
+                        "value": 16384
+                    },
+                    {
+                        "name": "summary_pointing",
+                        "value": 32768
+                    }
+                ]
+            },
+            {
+                "name": "pointing_in",
+                "samples": [
+                    {
+                        "name": "FlipMirrorAbsoluteError",
+                        "value": 1
+                    },
+                    {
+                        "name": "FlipMirrorIntegratedError",
+                        "value": 2
+                    },
+                    {
+                        "name": "FlipMirrorRMSError",
+                        "value": 4
+                    },
+                    {
+                        "name": "ScanMirrorAbsoluteError",
+                        "value": 8
+                    },
+                    {
+                        "name": "ScanMirrorIntegratedError",
+                        "value": 16
+                    },
+                    {
+                        "name": "ScanMirrorRMSError",
+                        "value": 32
+                    },
+                    {
+                        "name": "ScanTimeError",
+                        "value": 64
+                    },
+                    {
+                        "name": "Platform_Mode",
+                        "value": 128
+                    }
+                ]
+            }
+        ],
+        "tiePointGrids": [
+            {
+                "name": "x_tx",
+                "description": "Geolocated x (across track) coordinate of detector FOV centre",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 78,
+                        "y": 213,
+                        "value": 919500.0
+                    },
+                    {
+                        "x": 1027,
+                        "y": 1020,
+                        "value": -29500.0
+                    }
+                ]
+            },
+            {
+                "name": "y_tx",
+                "description": "Geolocated y (along track) coordinate of detector FOV centre",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 436,
+                        "y": 308,
+                        "value": 4.5692128E7
+                    },
+                    {
+                        "x": 915,
+                        "y": 438,
+                        "value": 4.5822584E7
+                    }
+                ]
+            },
+            {
+                "name": "latitude_tx",
+                "description": "Latitude of detector FOV centre on the earth's surface",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 825,
+                        "y": 894,
+                        "value": 50.591602
+                    },
+                    {
+                        "x": 912,
+                        "y": 1114,
+                        "value": 52.30464
+                    }
+                ]
+            },
+            {
+                "name": "longitude_tx",
+                "description": "Longitude of detector FOV centre on the earth's surface",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 237,
+                        "y": 799,
+                        "value": 5.358224
+                    },
+                    {
+                        "x": 778,
+                        "y": 1096,
+                        "value": -3.117757
+                    }
+                ]
+            },
+            {
+                "name": "sat_azimuth_tn",
+                "description": "Satellite azimuth angle",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 1134,
+                        "y": 581,
+                        "value": 100.15188
+                    },
+                    {
+                        "x": 1426,
+                        "y": 583,
+                        "value": 67.30857
+                    }
+                ]
+            },
+            {
+                "name": "sat_path_tn",
+                "description": "Distance from satellite to surface",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 510,
+                        "y": 1079,
+                        "value": 0.0
+                    },
+                    {
+                        "x": 14,
+                        "y": 564,
+                        "value": 0.0
+                    }
+                ]
+            },
+            {
+                "name": "sat_zenith_tn",
+                "description": "Satellite zenith angle",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 491,
+                        "y": 236,
+                        "value": 36.177372
+                    },
+                    {
+                        "x": 409,
+                        "y": 51,
+                        "value": 40.96744
+                    }
+                ]
+            },
+            {
+                "name": "solar_azimuth_tn",
+                "description": "Solar azimuth angle",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 1457,
+                        "y": 725,
+                        "value": 305.86023
+                    },
+                    {
+                        "x": 858,
+                        "y": 860,
+                        "value": 313.91626
+                    }
+                ]
+            },
+            {
+                "name": "solar_path_tn",
+                "description": "Distance from sun to surface",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 347,
+                        "y": 597,
+                        "value": 1.49222916E11
+                    },
+                    {
+                        "x": 481,
+                        "y": 867,
+                        "value": 1.49222916E11
+                    }
+                ]
+            },
+            {
+                "name": "solar_zenith_tn",
+                "description": "Solar zenith angle",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 537,
+                        "y": 597,
+                        "value": 120.86561
+                    },
+                    {
+                        "x": 604,
+                        "y": 530,
+                        "value": 121.10086
+                    }
+                ]
+            },
+            {
+                "name": "cloud_fraction_tx",
+                "description": "Fractional cloud cover",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 862,
+                        "y": 110,
+                        "value": 1.0
+                    },
+                    {
+                        "x": 967,
+                        "y": 19,
+                        "value": 1.0
+                    }
+                ]
+            },
+            {
+                "name": "dew_point_tx",
+                "description": "2m dew point",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 1462,
+                        "y": 440,
+                        "value": 277.18045
+                    },
+                    {
+                        "x": 1425,
+                        "y": 1135,
+                        "value": 277.5124
+                    }
+                ]
+            },
+            {
+                "name": "east_west_stress_tx",
+                "description": "East-west integrated surface wind stress",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 166,
+                        "y": 542,
+                        "value": 574.91315
+                    },
+                    {
+                        "x": 856,
+                        "y": 674,
+                        "value": -856.4799
+                    }
+                ]
+            },
+            {
+                "name": "latent_heat_tx",
+                "description": "Integrated surface latent heat flux",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 758,
+                        "y": 625,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 676,
+                        "y": 697,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "north_south_stress_tx",
+                "description": "North-south integrated surface wind stress",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 21,
+                        "y": 509,
+                        "value": 1907.8159
+                    },
+                    {
+                        "x": 105,
+                        "y": 1191,
+                        "value": -1805.9221
+                    }
+                ]
+            },
+            {
+                "name": "sea_ice_fraction_tx",
+                "description": "Sea ice fraction",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 445,
+                        "y": 894,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1205,
+                        "y": 883,
+                        "value": 0.0
+                    }
+                ]
+            },
+            {
+                "name": "sea_surface_temperature_tx",
+                "description": "Sea surface temperature",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 1251,
+                        "y": 1134,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 372,
+                        "y": 638,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "sensible_heat_tx",
+                "description": "Integrated surface sensible heat flux",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 916,
+                        "y": 312,
+                        "value": -483482.5
+                    },
+                    {
+                        "x": 829,
+                        "y": 181,
+                        "value": 772224.06
+                    }
+                ]
+            },
+            {
+                "name": "skin_temperature_tx",
+                "description": "Skin temperature",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 713,
+                        "y": 670,
+                        "value": 279.92078
+                    },
+                    {
+                        "x": 143,
+                        "y": 1019,
+                        "value": 276.8597
+                    }
+                ]
+            },
+            {
+                "name": "snow_albedo_tx",
+                "description": "Snow albedo",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 144,
+                        "y": 93,
+                        "value": 0.8492027
+                    },
+                    {
+                        "x": 682,
+                        "y": 811,
+                        "value": 0.8496093
+                    }
+                ]
+            },
+            {
+                "name": "snow_depth_tx",
+                "description": "Snow liquid water equivalent depth",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 697,
+                        "y": 1074,
+                        "value": 0.0
+                    },
+                    {
+                        "x": 1301,
+                        "y": 720,
+                        "value": 0.0
+                    }
+                ]
+            },
+            {
+                "name": "soil_wetness_tx",
+                "description": "Volumetric Soil Water Layer 1",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 1443,
+                        "y": 457,
+                        "value": 0.0
+                    },
+                    {
+                        "x": 131,
+                        "y": 639,
+                        "value": 0.38172692
+                    }
+                ]
+            },
+            {
+                "name": "solar_radiation_tx",
+                "description": "Integrated surface solar radiation",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 1103,
+                        "y": 713,
+                        "value": 0.257492
+                    },
+                    {
+                        "x": 1464,
+                        "y": 223,
+                        "value": 0.257492
+                    }
+                ]
+            },
+            {
+                "name": "specific_humidity_tx",
+                "description": "Specific humidity profile (kg/kg)",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 690,
+                        "y": 313,
+                        "value": 4.163229E-6
+                    },
+                    {
+                        "x": 343,
+                        "y": 777,
+                        "value": 4.171805E-6
+                    }
+                ]
+            },
+            {
+                "name": "surface_pressure_tx",
+                "description": "Surface pressure",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 959,
+                        "y": 525,
+                        "value": 991.10706
+                    },
+                    {
+                        "x": 797,
+                        "y": 680,
+                        "value": 989.4677
+                    }
+                ]
+            },
+            {
+                "name": "temperature_profile_tx",
+                "description": "Atmospheric temperature profile",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 593,
+                        "y": 256,
+                        "value": 263.32233
+                    },
+                    {
+                        "x": 418,
+                        "y": 1066,
+                        "value": 258.61697
+                    }
+                ]
+            },
+            {
+                "name": "temperature_tx",
+                "description": "2m air temperature",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 1418,
+                        "y": 695,
+                        "value": 282.95258
+                    },
+                    {
+                        "x": 1137,
+                        "y": 393,
+                        "value": 283.33264
+                    }
+                ]
+            },
+            {
+                "name": "thermal_radiation_tx",
+                "description": "Integrated surface thermal radiation",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 840,
+                        "y": 349,
+                        "value": -1201365.5
+                    },
+                    {
+                        "x": 1243,
+                        "y": 1044,
+                        "value": -597411.94
+                    }
+                ]
+            },
+            {
+                "name": "total_column_ozone_tx",
+                "description": "Total column ozone",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 162,
+                        "y": 1064,
+                        "value": 0.008204977
+                    },
+                    {
+                        "x": 515,
+                        "y": 976,
+                        "value": 0.008178748
+                    }
+                ]
+            },
+            {
+                "name": "total_column_water_vapour_tx",
+                "description": "Total column water vapour",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 273,
+                        "y": 830,
+                        "value": 9.794549
+                    },
+                    {
+                        "x": 888,
+                        "y": 658,
+                        "value": 12.056829
+                    }
+                ]
+            },
+            {
+                "name": "u_wind_tx",
+                "description": "10m U wind component",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 308,
+                        "y": 367,
+                        "value": -1.4204587
+                    },
+                    {
+                        "x": 615,
+                        "y": 1036,
+                        "value": -1.3250796
+                    }
+                ]
+            },
+            {
+                "name": "v_wind_tx",
+                "description": "10m V wind component",
+                "offsetX": "-10.0",
+                "offsetY": "0.0",
+                "subSamplingX": "16.0",
+                "subSamplingY": "1.0",
+                "expectedPixels": [
+                    {
+                        "x": 1052,
+                        "y": 1077,
+                        "value": 8.680507
+                    },
+                    {
+                        "x": 446,
+                        "y": 1191,
+                        "value": 2.930874
+                    }
+                ]
+            }
+        ],
+        "bands": [
+            {
+                "name": "flags_an",
+                "description": "Fire test summary flags",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1641,
+                        "y": 280,
+                        "value": 32.0
+                    },
+                    {
+                        "x": 584,
+                        "y": 1346,
+                        "value": 32.0
+                    }
+                ]
+            },
+            {
+                "name": "FRP_MWIR_an",
+                "description": "Fire radiative power computed from MWIR channels (S7 and F1, depending on the used_channel) and associated with detected SWIR fires ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1374,
+                        "y": 309,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2486,
+                        "y": 1374,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_SWIR_an",
+                "description": "Fire radiative power computed from SWIR channels (S6 channel) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 307,
+                        "y": 1623,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2193,
+                        "y": 1133,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_uncertainty_SWIR_an",
+                "description": "Fire radiative power total uncertainty computed from SWIR channels ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 429,
+                        "y": 159,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2524,
+                        "y": 719,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "IFOV_area_an",
+                "description": "Projected area of detector IFOV on surface ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "m2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1776,
+                        "y": 2332,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2332,
+                        "y": 65,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Radiance_window_S6_an",
+                "description": "Average S6 background window radiance used in the FRP equation. ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 650,
+                        "y": 591,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 958,
+                        "y": 465,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Ratio_S56_an",
+                "description": "Ratio of the radiances measured in S5 and S6 indicating whether the AF pixel detection is likely to be from a vegetation fire or a gas flare (Values sup. or equal to to 0.9) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 847,
+                        "y": 2119,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2992,
+                        "y": 181,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S5_Fire_pixel_radiance_an",
+                "description": "S5 Fire pixel radiance ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2456,
+                        "y": 1204,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 188,
+                        "y": 924,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S5_confirm_an",
+                "description": "This flag indicates if this fire has been detected using both S6 and S5 radiances (equal to 1) or only using S6 (value = 0) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 832,
+                        "y": 1397,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2785,
+                        "y": 333,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S6_Fire_pixel_radiance_an",
+                "description": "S6 Fire pixel radiance ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 313,
+                        "y": 349,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2651,
+                        "y": 255,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "TCWV_an",
+                "description": "Total column water vapour above fire ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "kg m-2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1110,
+                        "y": 2115,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1755,
+                        "y": 1381,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "classification_an",
+                "description": "Hotspot classification code ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1012,
+                        "y": 782,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1121,
+                        "y": 2054,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "transmittance_SWIR_an",
+                "description": "Transmittance of path to fire computed from SWIR channels (S6 channel) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 977,
+                        "y": 1643,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1930,
+                        "y": 1620,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "used_channel_an",
+                "description": "Boolean flag indicating which channel was used in the FRP calculation, with 0 referring to S7 channel and 1 to F1 channel ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1590,
+                        "y": 312,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1391,
+                        "y": 1921,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "flags_bn",
+                "description": "Fire test summary flags",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2406,
+                        "y": 2164,
+                        "value": 4.2949673E9
+                    },
+                    {
+                        "x": 76,
+                        "y": 1676,
+                        "value": 4.2949673E9
+                    }
+                ]
+            },
+            {
+                "name": "FRP_MWIR_bn",
+                "description": "Fire radiative power computed from MWIR channels (S7 and F1, depending on the used_channel) and associated with detected SWIR fires ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2667,
+                        "y": 1382,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1913,
+                        "y": 2178,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_SWIR_bn",
+                "description": "Fire radiative power computed from SWIR channels (S6 channel) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2946,
+                        "y": 775,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1077,
+                        "y": 12,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_uncertainty_SWIR_bn",
+                "description": "Fire radiative power total uncertainty computed from SWIR channels (S6) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2518,
+                        "y": 1365,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1771,
+                        "y": 955,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "IFOV_area_bn",
+                "description": "Projected area of detector IFOV on surface ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "m2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1183,
+                        "y": 2372,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 688,
+                        "y": 1721,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Radiance_window_S6_bn",
+                "description": "Average S6 background window radiance used in the FRP equation. ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2816,
+                        "y": 692,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 943,
+                        "y": 2044,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Ratio_S56_bn",
+                "description": "Ratio of the radiances measured in S5 and S6 indicating whether the AF pixel detection is likely to be from a vegetation fire or a gas flare (Values sup. or equal to to 0.9) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 982,
+                        "y": 1269,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1074,
+                        "y": 1919,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S5_Fire_pixel_radiance_bn",
+                "description": "S5 Fire pixel radiance ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1681,
+                        "y": 523,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 285,
+                        "y": 1690,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S5_confirm_bn",
+                "description": "This flag indicates if this fire has been detected using both S6 and S5 radiances (equal to 1) or only using S6 (value = 0) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2107,
+                        "y": 1908,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2532,
+                        "y": 163,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S6_Fire_pixel_radiance_bn",
+                "description": "S6 Fire pixel radiance ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2509,
+                        "y": 544,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1957,
+                        "y": 2232,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "TCWV_bn",
+                "description": "Total column water vapour above fire ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "geophysicalUnit": "kg m-2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 804,
+                        "y": 2067,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1158,
+                        "y": 890,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "classification_bn",
+                "description": "Hotspot classification code ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2915,
+                        "y": 1633,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2174,
+                        "y": 1026,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "transmittance_SWIR_bn",
+                "description": "Transmittance of path to fire computed from SWIR channels (S6 channel) ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1496,
+                        "y": 333,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2906,
+                        "y": 326,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "used_channel_bn",
+                "description": "Boolean flag indicating which channel was used in the FRP calculation, with 0 referring to S7 channel and 1 to F1 channel ",
+                "bandWidth": 3000,
+                "bandHeight": 2400,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 2162,
+                        "y": 1334,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 2117,
+                        "y": 2375,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "flags_in",
+                "description": "Fire test summary flags",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 961,
+                        "y": 1087,
+                        "value": 34.0
+                    },
+                    {
+                        "x": 1252,
+                        "y": 637,
+                        "value": 34.0
+                    }
+                ]
+            },
+            {
+                "name": "BT_MIR_in",
+                "description": "MIR Brightness Temperature from the fire ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "K ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 749,
+                        "y": 1115,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 858,
+                        "y": 926,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "BT_window_in",
+                "description": "Mean Brightness Temperature of the valid pixels in the background window ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "K ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1394,
+                        "y": 47,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1056,
+                        "y": 867,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Day_night_in",
+                "description": "Daytime or nighttime fire flag set to 1 in case of daytime(i.e. solar zenith angle .lt. 85 degree) ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 520,
+                        "y": 8,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 324,
+                        "y": 1032,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "F1_Fire_pixel_radiance_in",
+                "description": "Fire pixel radiance computed from F1 brightness Temperature ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 188,
+                        "y": 121,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 129,
+                        "y": 137,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_MWIR_in",
+                "description": "Fire radiative power computed from MWIR channels (S7 and F1) ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1044,
+                        "y": 83,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 721,
+                        "y": 1041,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "FRP_uncertainty_MWIR_in",
+                "description": "Fire radiative power total uncertainty computed from MWIR channels (S7 and F1) ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "MW ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 251,
+                        "y": 283,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 376,
+                        "y": 1165,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Glint_angle_in",
+                "description": "Angle between SLSTR viewing direction and the direction of the sun rays specifically reflected from the horizontal surface ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1073,
+                        "y": 407,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 966,
+                        "y": 612,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "IFOV_area_in",
+                "description": "Projected area of detector IFOV on surface ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "m2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1360,
+                        "y": 610,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1291,
+                        "y": 670,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Radiance_window_in",
+                "description": "Average background window radiance used in the FRP equation. This radiance is associated with the channel defined by the used_channel parameter ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1200,
+                        "y": 913,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1252,
+                        "y": 883,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "S7_Fire_pixel_radiance_in",
+                "description": "Fire pixel radiance computed from S7 brightness Temperature ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "W.m-2.sr-1.µm-1 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 943,
+                        "y": 511,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 810,
+                        "y": 915,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Satellite_zenith_angle_in",
+                "description": "Satellite View Zenith angle ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 950,
+                        "y": 182,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1323,
+                        "y": 377,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "Sun_zenith_angle_in",
+                "description": "Solar Zenith angle ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 410,
+                        "y": 461,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1023,
+                        "y": 223,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "TCWV_in",
+                "description": "Total column water vapour above fire ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "kg m-2 ",
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 218,
+                        "y": 1184,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 589,
+                        "y": 904,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "classification_in",
+                "description": "Hotspot classification code ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 105,
+                        "y": 836,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 911,
+                        "y": 1035,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "n_cloud_in",
+                "description": "Number of cloudy pixels in background window ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 879,
+                        "y": 398,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 655,
+                        "y": 20,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "n_water_in",
+                "description": "Number of water pixels in background window ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 901,
+                        "y": 801,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1177,
+                        "y": 107,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "n_window_in",
+                "description": "Background window size ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1350,
+                        "y": 99,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 115,
+                        "y": 988,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "transmittance_MWIR_in",
+                "description": "Transmittance of path to fire computed from MWIR channels (S7 and F1) ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "9.969209968386869E36",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 191,
+                        "y": 1096,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 290,
+                        "y": 386,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "used_channel_in",
+                "description": "Boolean flag indicating which channel was used in the FRP calculation, with 0 referring to S7 channel and 1 to F1 channel ",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-2.147483647E9",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 817,
+                        "y": 856,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 176,
+                        "y": 261,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "x_fn",
+                "description": "Geolocated x (across track) coordinate of detector FOV centre",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "m",
+                "noDataValue": "-1000000.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 613,
+                        "y": 903,
+                        "value": 384714.0
+                    },
+                    {
+                        "x": 121,
+                        "y": 897,
+                        "value": 876897.0
+                    }
+                ]
+            },
+            {
+                "name": "y_fn",
+                "description": "Geolocated y (along track) coordinate of detector FOV centre",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "m",
+                "noDataValue": "-5000000.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1376,
+                        "y": 255,
+                        "value": 4.5638712E7
+                    },
+                    {
+                        "x": 1320,
+                        "y": 843,
+                        "value": 4.6227936E7
+                    }
+                ]
+            },
+            {
+                "name": "x_in",
+                "description": "Geolocated x (across track) coordinate of detector FOV centre",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "m",
+                "noDataValue": "-1000000.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 181,
+                        "y": 32,
+                        "value": 816650.0
+                    },
+                    {
+                        "x": 427,
+                        "y": 1102,
+                        "value": 570395.0
+                    }
+                ]
+            },
+            {
+                "name": "y_in",
+                "description": "Geolocated y (along track) coordinate of detector FOV centre",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "m",
+                "noDataValue": "-5000000.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 897,
+                        "y": 868,
+                        "value": 4.6253064E7
+                    },
+                    {
+                        "x": 764,
+                        "y": 567,
+                        "value": 4.5951336E7
+                    }
+                ]
+            },
+            {
+                "name": "bayes_fn",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 638,
+                        "y": 183,
+                        "value": 0.0
+                    },
+                    {
+                        "x": 38,
+                        "y": 953,
+                        "value": 0.0
+                    }
+                ]
+            },
+            {
+                "name": "cloud_fn",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1011,
+                        "y": 848,
+                        "value": 6848.0
+                    },
+                    {
+                        "x": 442,
+                        "y": 236,
+                        "value": 896.0
+                    }
+                ]
+            },
+            {
+                "name": "confidence_fn",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 285,
+                        "y": 671,
+                        "value": 16648.0
+                    },
+                    {
+                        "x": 863,
+                        "y": 779,
+                        "value": 16386.0
+                    }
+                ]
+            },
+            {
+                "name": "pointing_fn",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 787,
+                        "y": 102,
+                        "value": 0.0
+                    },
+                    {
+                        "x": 1165,
+                        "y": 393,
+                        "value": 0.0
+                    }
+                ]
+            },
+            {
+                "name": "bayes_in",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1304,
+                        "y": 1104,
+                        "value": 0.0
+                    },
+                    {
+                        "x": 713,
+                        "y": 661,
+                        "value": 0.0
+                    }
+                ]
+            },
+            {
+                "name": "cloud_in",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 861,
+                        "y": 1138,
+                        "value": 4800.0
+                    },
+                    {
+                        "x": 1394,
+                        "y": 224,
+                        "value": 512.0
+                    }
+                ]
+            },
+            {
+                "name": "confidence_in",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 102,
+                        "y": 887,
+                        "value": 16648.0
+                    },
+                    {
+                        "x": 98,
+                        "y": 651,
+                        "value": 16392.0
+                    }
+                ]
+            },
+            {
+                "name": "pointing_in",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "0.0",
+                "noDataValueUsed": "false",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1039,
+                        "y": 1036,
+                        "value": 0.0
+                    },
+                    {
+                        "x": 853,
+                        "y": 1054,
+                        "value": 0.0
+                    }
+                ]
+            },
+            {
+                "name": "probability_cloud_dual_in",
+                "description": "Probability of cloud in pixel (dual view)",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-163.34",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 548,
+                        "y": 1125,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 1346,
+                        "y": 295,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "probability_cloud_single_in",
+                "description": "Probability of cloud in pixel (single view)",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "-163.34",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 158,
+                        "y": 872,
+                        "value": "NaN"
+                    },
+                    {
+                        "x": 329,
+                        "y": 816,
+                        "value": "NaN"
+                    }
+                ]
+            },
+            {
+                "name": "elevation_fn",
+                "description": "Surface elevation of detector FOV centre above reference ellipsoid",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "m",
+                "noDataValue": "-32768.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 109,
+                        "y": 47,
+                        "value": 500.0
+                    },
+                    {
+                        "x": 410,
+                        "y": 374,
+                        "value": 313.0
+                    }
+                ]
+            },
+            {
+                "name": "latitude_fn",
+                "description": "Latitude of detector FOV centre on the earth's surface",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees_north",
+                "noDataValue": "-2147.483648",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1376,
+                        "y": 506,
+                        "value": 45.81935
+                    },
+                    {
+                        "x": 117,
+                        "y": 821,
+                        "value": 51.092915
+                    }
+                ]
+            },
+            {
+                "name": "longitude_fn",
+                "description": "Longitude of detector FOV centre on the earth's surface",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees_east",
+                "noDataValue": "-2147.483648",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 312,
+                        "y": 537,
+                        "value": 4.860351
+                    },
+                    {
+                        "x": 771,
+                        "y": 63,
+                        "value": 0.173733
+                    }
+                ]
+            },
+            {
+                "name": "elevation_in",
+                "description": "Surface elevation of detector FOV centre above reference ellipsoid",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "m",
+                "noDataValue": "-32768.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 916,
+                        "y": 276,
+                        "value": 47.0
+                    },
+                    {
+                        "x": 594,
+                        "y": 426,
+                        "value": 172.0
+                    }
+                ]
+            },
+            {
+                "name": "latitude_in",
+                "description": "Latitude of detector FOV centre on the earth's surface",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees_north",
+                "noDataValue": "-2147.483648",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 185,
+                        "y": 113,
+                        "value": 44.812847
+                    },
+                    {
+                        "x": 1174,
+                        "y": 750,
+                        "value": 48.485947
+                    }
+                ]
+            },
+            {
+                "name": "longitude_in",
+                "description": "Longitude of detector FOV centre on the earth's surface",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "geophysicalUnit": "degrees_east",
+                "noDataValue": "-2147.483648",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 224,
+                        "y": 79,
+                        "value": 6.84659
+                    },
+                    {
+                        "x": 782,
+                        "y": 143,
+                        "value": -0.176846
+                    }
+                ]
+            },
+            {
+                "name": "detector_fn",
+                "description": "Gridded pixel detector number",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "255.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1353,
+                        "y": 501,
+                        "value": 0.0
+                    },
+                    {
+                        "x": 368,
+                        "y": 405,
+                        "value": 1.0
+                    }
+                ]
+            },
+            {
+                "name": "pixel_fn",
+                "description": "Gridded pixel number",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "65535.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1019,
+                        "y": 147,
+                        "value": 769.0
+                    },
+                    {
+                        "x": 182,
+                        "y": 361,
+                        "value": 69.0
+                    }
+                ]
+            },
+            {
+                "name": "scan_fn",
+                "description": "Pixel scan number",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "65535.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 1279,
+                        "y": 290,
+                        "value": 3413.0
+                    },
+                    {
+                        "x": 148,
+                        "y": 1,
+                        "value": 3444.0
+                    }
+                ]
+            },
+            {
+                "name": "detector_in",
+                "description": "Gridded pixel detector number",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "255.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 187,
+                        "y": 548,
+                        "value": 1.0
+                    },
+                    {
+                        "x": 882,
+                        "y": 585,
+                        "value": 1.0
+                    }
+                ]
+            },
+            {
+                "name": "pixel_in",
+                "description": "Gridded pixel number",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "65535.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 259,
+                        "y": 754,
+                        "value": 115.0
+                    },
+                    {
+                        "x": 802,
+                        "y": 928,
+                        "value": 556.0
+                    }
+                ]
+            },
+            {
+                "name": "scan_in",
+                "description": "Pixel scan number",
+                "bandWidth": 1500,
+                "bandHeight": 1200,
+                "noDataValue": "65535.0",
+                "noDataValueUsed": "true",
+                "spectralWavelength": "0.0",
+                "spectralBandwidth": "0.0",
+                "expectedPixels": [
+                    {
+                        "x": 602,
+                        "y": 422,
+                        "value": 3501.0
+                    },
+                    {
+                        "x": 666,
+                        "y": 1089,
+                        "value": 3821.0
+                    }
+                ]
+            }
+        ],
+        "masks": [
+            {
+                "name": "flags_an_exception",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,0,255",
+                "description": "flags_an.exception"
+            },
+            {
+                "name": "flags_an_l1b_water",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,255",
+                "description": "flags_an.l1b_water"
+            },
+            {
+                "name": "flags_an_frp_water",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,255",
+                "description": "flags_an.frp_water"
+            },
+            {
+                "name": "flags_an_l1b_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_an.l1b_cloud"
+            },
+            {
+                "name": "flags_an_bayesian_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_an.bayesian_cloud"
+            },
+            {
+                "name": "flags_an_frp_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_an.frp_cloud"
+            },
+            {
+                "name": "flags_an_night",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,255,0",
+                "description": "flags_an.night"
+            },
+            {
+                "name": "flags_an_day",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,255,255",
+                "description": "flags_an.day"
+            },
+            {
+                "name": "flags_an_not_fire_pixel",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,0,255",
+                "description": "flags_an.not_fire_pixel"
+            },
+            {
+                "name": "flags_an_fire_pixel",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,255,0",
+                "description": "flags_an.fire_pixel"
+            },
+            {
+                "name": "flags_an_S6_absolute",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,0,127",
+                "description": "flags_an.S6_absolute"
+            },
+            {
+                "name": "flags_an_S5_absolute",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,127,0",
+                "description": "flags_an.S5_absolute"
+            },
+            {
+                "name": "flags_bn_exception",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,127,127",
+                "description": "flags_bn.exception"
+            },
+            {
+                "name": "flags_bn_l1b_water",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,255",
+                "description": "flags_bn.l1b_water"
+            },
+            {
+                "name": "flags_bn_frp_water",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,255",
+                "description": "flags_bn.frp_water"
+            },
+            {
+                "name": "flags_bn_l1b_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_bn.l1b_cloud"
+            },
+            {
+                "name": "flags_bn_bayesian_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_bn.bayesian_cloud"
+            },
+            {
+                "name": "flags_bn_frp_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_bn.frp_cloud"
+            },
+            {
+                "name": "flags_bn_night",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,255,127",
+                "description": "flags_bn.night"
+            },
+            {
+                "name": "flags_bn_day",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,0,0",
+                "description": "flags_bn.day"
+            },
+            {
+                "name": "flags_bn_not_fire_pixel",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,0,127",
+                "description": "flags_bn.not_fire_pixel"
+            },
+            {
+                "name": "flags_bn_fire_pixel",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,0,255",
+                "description": "flags_bn.fire_pixel"
+            },
+            {
+                "name": "flags_bn_S6_absolute",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,127,0",
+                "description": "flags_bn.S6_absolute"
+            },
+            {
+                "name": "flags_bn_S5_absolute",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,127,127",
+                "description": "flags_bn.S5_absolute"
+            },
+            {
+                "name": "flags_in_exception",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,127,255",
+                "description": "flags_in.exception"
+            },
+            {
+                "name": "flags_in_l1b_water",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,255",
+                "description": "flags_in.l1b_water"
+            },
+            {
+                "name": "flags_in_frp_water",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,255",
+                "description": "flags_in.frp_water"
+            },
+            {
+                "name": "flags_in_l1b_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_in.l1b_cloud"
+            },
+            {
+                "name": "flags_in_bayesian_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_in.bayesian_cloud"
+            },
+            {
+                "name": "flags_in_frp_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_in.frp_cloud"
+            },
+            {
+                "name": "flags_in_night",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,255,0",
+                "description": "flags_in.night"
+            },
+            {
+                "name": "flags_in_day",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,255,127",
+                "description": "flags_in.day"
+            },
+            {
+                "name": "flags_in_sun_glint",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,255,255",
+                "description": "flags_in.sun_glint"
+            },
+            {
+                "name": "flags_in_spectral_filter",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,0,127",
+                "description": "flags_in.spectral_filter"
+            },
+            {
+                "name": "flags_in_spatial_filter",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,127,0",
+                "description": "flags_in.spatial_filter"
+            },
+            {
+                "name": "flags_in_absolute_threshold",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,127,127",
+                "description": "flags_in.absolute_threshold"
+            },
+            {
+                "name": "flags_in_background_characterisation",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,127,255",
+                "description": "flags_in.background_characterisation"
+            },
+            {
+                "name": "flags_in_contextual_threshold",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,255,127",
+                "description": "flags_in.contextual_threshold"
+            },
+            {
+                "name": "flags_in_desert_boundary",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,0,63",
+                "description": "flags_in.desert_boundary"
+            },
+            {
+                "name": "flags_in_normal_F1_BT",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,0",
+                "description": "flags_in.normal_F1_BT"
+            },
+            {
+                "name": "flags_in_saturated_F1_BT",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,63",
+                "description": "flags_in.saturated_F1_BT"
+            },
+            {
+                "name": "flags_in_not_fire_pixel",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,127",
+                "description": "flags_in.not_fire_pixel"
+            },
+            {
+                "name": "flags_in_fire_pixel",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,63,191",
+                "description": "flags_in.fire_pixel"
+            },
+            {
+                "name": "flags_in_abs_bckg_invalid",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,127,191",
+                "description": "flags_in.abs_bckg_invalid"
+            },
+            {
+                "name": "flags_in_saturated_area",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,191,0",
+                "description": "flags_in.saturated_area"
+            },
+            {
+                "name": "flags_in_cloud_edge",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "flags_in.cloud_edge"
+            },
+            {
+                "name": "flags_in_land_water_edge",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,127,63",
+                "description": "flags_in.land_water_edge"
+            },
+            {
+                "name": "flags_in_F1_downscan",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,191,63",
+                "description": "flags_in.F1_downscan"
+            },
+            {
+                "name": "flags_in_BT4_cosmetic",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,191,127",
+                "description": "flags_in.BT4_cosmetic"
+            },
+            {
+                "name": "bayes_fn_single_low",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,191,191",
+                "description": "bayes_fn.single_low"
+            },
+            {
+                "name": "bayes_fn_single_moderate",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,191,255",
+                "description": "bayes_fn.single_moderate"
+            },
+            {
+                "name": "bayes_fn_dual_low",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,255,63",
+                "description": "bayes_fn.dual_low"
+            },
+            {
+                "name": "bayes_fn_dual_moderate",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,255,191",
+                "description": "bayes_fn.dual_moderate"
+            },
+            {
+                "name": "bayes_fn_spare_1",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,0,0",
+                "description": "bayes_fn.spare_1"
+            },
+            {
+                "name": "bayes_fn_spare_2",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,0,63",
+                "description": "bayes_fn.spare_2"
+            },
+            {
+                "name": "bayes_fn_spare_3",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,0,127",
+                "description": "bayes_fn.spare_3"
+            },
+            {
+                "name": "bayes_fn_spare_4",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,0,191",
+                "description": "bayes_fn.spare_4"
+            },
+            {
+                "name": "cloud_fn_visible",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,0,255",
+                "description": "cloud_fn.visible"
+            },
+            {
+                "name": "cloud_fn_1_37_threshold",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,63,0",
+                "description": "cloud_fn.1_37_threshold"
+            },
+            {
+                "name": "cloud_fn_1_6_small_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,63,63",
+                "description": "cloud_fn.1_6_small_histogram"
+            },
+            {
+                "name": "cloud_fn_1_6_large_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,63,127",
+                "description": "cloud_fn.1_6_large_histogram"
+            },
+            {
+                "name": "cloud_fn_2_25_small_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,63,191",
+                "description": "cloud_fn.2_25_small_histogram"
+            },
+            {
+                "name": "cloud_fn_2_25_large_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,63,255",
+                "description": "cloud_fn.2_25_large_histogram"
+            },
+            {
+                "name": "cloud_fn_11_spatial_coherence",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,127,0",
+                "description": "cloud_fn.11_spatial_coherence"
+            },
+            {
+                "name": "cloud_fn_gross_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "cloud_fn.gross_cloud"
+            },
+            {
+                "name": "cloud_fn_thin_cirrus",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,127,63",
+                "description": "cloud_fn.thin_cirrus"
+            },
+            {
+                "name": "cloud_fn_medium_high",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,127,127",
+                "description": "cloud_fn.medium_high"
+            },
+            {
+                "name": "cloud_fn_fog_low_stratus",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,127,191",
+                "description": "cloud_fn.fog_low_stratus"
+            },
+            {
+                "name": "cloud_fn_11_12_view_difference",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,127,255",
+                "description": "cloud_fn.11_12_view_difference"
+            },
+            {
+                "name": "cloud_fn_3_7_11_view_difference",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,191,0",
+                "description": "cloud_fn.3_7_11_view_difference"
+            },
+            {
+                "name": "cloud_fn_thermal_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,191,63",
+                "description": "cloud_fn.thermal_histogram"
+            },
+            {
+                "name": "cloud_fn_spare_1",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,191,127",
+                "description": "cloud_fn.spare_1"
+            },
+            {
+                "name": "cloud_fn_spare_2",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,191,191",
+                "description": "cloud_fn.spare_2"
+            },
+            {
+                "name": "confidence_fn_coastline",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,0,0",
+                "description": "confidence_fn.coastline"
+            },
+            {
+                "name": "confidence_fn_ocean",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,0,191",
+                "description": "confidence_fn.ocean"
+            },
+            {
+                "name": "confidence_fn_tidal",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,191,255",
+                "description": "confidence_fn.tidal"
+            },
+            {
+                "name": "confidence_fn_land",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,127,63",
+                "description": "confidence_fn.land"
+            },
+            {
+                "name": "confidence_fn_inland_water",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,127,63",
+                "description": "confidence_fn.inland_water"
+            },
+            {
+                "name": "confidence_fn_unfilled",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,255,0",
+                "description": "confidence_fn.unfilled"
+            },
+            {
+                "name": "confidence_fn_spare_1",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,255,63",
+                "description": "confidence_fn.spare_1"
+            },
+            {
+                "name": "confidence_fn_spare_2",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,255,127",
+                "description": "confidence_fn.spare_2"
+            },
+            {
+                "name": "confidence_fn_cosmetic",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,255,191",
+                "description": "confidence_fn.cosmetic"
+            },
+            {
+                "name": "confidence_fn_duplicate",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "63,255,255",
+                "description": "confidence_fn.duplicate"
+            },
+            {
+                "name": "confidence_fn_day",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,0,63",
+                "description": "confidence_fn.day"
+            },
+            {
+                "name": "confidence_fn_twilight",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,0,191",
+                "description": "confidence_fn.twilight"
+            },
+            {
+                "name": "confidence_fn_sun_glint",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,63,0",
+                "description": "confidence_fn.sun_glint"
+            },
+            {
+                "name": "confidence_fn_snow",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,255,255",
+                "description": "confidence_fn.snow"
+            },
+            {
+                "name": "confidence_fn_summary_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "confidence_fn.summary_cloud"
+            },
+            {
+                "name": "confidence_fn_summary_pointing",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,63,63",
+                "description": "confidence_fn.summary_pointing"
+            },
+            {
+                "name": "pointing_fn_FlipMirrorAbsoluteError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,63,127",
+                "description": "pointing_fn.FlipMirrorAbsoluteError"
+            },
+            {
+                "name": "pointing_fn_FlipMirrorIntegratedError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,63,191",
+                "description": "pointing_fn.FlipMirrorIntegratedError"
+            },
+            {
+                "name": "pointing_fn_FlipMirrorRMSError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,63,255",
+                "description": "pointing_fn.FlipMirrorRMSError"
+            },
+            {
+                "name": "pointing_fn_ScanMirrorAbsoluteError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,127,63",
+                "description": "pointing_fn.ScanMirrorAbsoluteError"
+            },
+            {
+                "name": "pointing_fn_ScanMirrorIntegratedError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,127,191",
+                "description": "pointing_fn.ScanMirrorIntegratedError"
+            },
+            {
+                "name": "pointing_fn_ScanMirrorRMSError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,191,0",
+                "description": "pointing_fn.ScanMirrorRMSError"
+            },
+            {
+                "name": "pointing_fn_ScanTimeError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,191,63",
+                "description": "pointing_fn.ScanTimeError"
+            },
+            {
+                "name": "pointing_fn_Platform_Mode",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,191,127",
+                "description": "pointing_fn.Platform_Mode"
+            },
+            {
+                "name": "bayes_in_single_low",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,191,191",
+                "description": "bayes_in.single_low"
+            },
+            {
+                "name": "bayes_in_single_moderate",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,191,255",
+                "description": "bayes_in.single_moderate"
+            },
+            {
+                "name": "bayes_in_dual_low",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,255,63",
+                "description": "bayes_in.dual_low"
+            },
+            {
+                "name": "bayes_in_dual_moderate",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "127,255,191",
+                "description": "bayes_in.dual_moderate"
+            },
+            {
+                "name": "bayes_in_spare_1",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,0,0",
+                "description": "bayes_in.spare_1"
+            },
+            {
+                "name": "bayes_in_spare_2",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,0,63",
+                "description": "bayes_in.spare_2"
+            },
+            {
+                "name": "bayes_in_spare_3",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,0,127",
+                "description": "bayes_in.spare_3"
+            },
+            {
+                "name": "bayes_in_spare_4",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,0,191",
+                "description": "bayes_in.spare_4"
+            },
+            {
+                "name": "cloud_in_visible",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,0,255",
+                "description": "cloud_in.visible"
+            },
+            {
+                "name": "cloud_in_1_37_threshold",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,63,0",
+                "description": "cloud_in.1_37_threshold"
+            },
+            {
+                "name": "cloud_in_1_6_small_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,63,63",
+                "description": "cloud_in.1_6_small_histogram"
+            },
+            {
+                "name": "cloud_in_1_6_large_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,63,127",
+                "description": "cloud_in.1_6_large_histogram"
+            },
+            {
+                "name": "cloud_in_2_25_small_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,63,191",
+                "description": "cloud_in.2_25_small_histogram"
+            },
+            {
+                "name": "cloud_in_2_25_large_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,63,255",
+                "description": "cloud_in.2_25_large_histogram"
+            },
+            {
+                "name": "cloud_in_11_spatial_coherence",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,127,0",
+                "description": "cloud_in.11_spatial_coherence"
+            },
+            {
+                "name": "cloud_in_gross_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "cloud_in.gross_cloud"
+            },
+            {
+                "name": "cloud_in_thin_cirrus",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,127,63",
+                "description": "cloud_in.thin_cirrus"
+            },
+            {
+                "name": "cloud_in_medium_high",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,127,127",
+                "description": "cloud_in.medium_high"
+            },
+            {
+                "name": "cloud_in_fog_low_stratus",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,127,191",
+                "description": "cloud_in.fog_low_stratus"
+            },
+            {
+                "name": "cloud_in_11_12_view_difference",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,127,255",
+                "description": "cloud_in.11_12_view_difference"
+            },
+            {
+                "name": "cloud_in_3_7_11_view_difference",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,0",
+                "description": "cloud_in.3_7_11_view_difference"
+            },
+            {
+                "name": "cloud_in_thermal_histogram",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,63",
+                "description": "cloud_in.thermal_histogram"
+            },
+            {
+                "name": "cloud_in_spare_1",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,127",
+                "description": "cloud_in.spare_1"
+            },
+            {
+                "name": "cloud_in_spare_2",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,255",
+                "description": "cloud_in.spare_2"
+            },
+            {
+                "name": "confidence_in_coastline",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,0,0",
+                "description": "confidence_in.coastline"
+            },
+            {
+                "name": "confidence_in_ocean",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,0,191",
+                "description": "confidence_in.ocean"
+            },
+            {
+                "name": "confidence_in_tidal",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,255,0",
+                "description": "confidence_in.tidal"
+            },
+            {
+                "name": "confidence_in_land",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,127,63",
+                "description": "confidence_in.land"
+            },
+            {
+                "name": "confidence_in_inland_water",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "0,127,63",
+                "description": "confidence_in.inland_water"
+            },
+            {
+                "name": "confidence_in_unfilled",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,255,63",
+                "description": "confidence_in.unfilled"
+            },
+            {
+                "name": "confidence_in_spare_1",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,255,127",
+                "description": "confidence_in.spare_1"
+            },
+            {
+                "name": "confidence_in_spare_2",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,255,191",
+                "description": "confidence_in.spare_2"
+            },
+            {
+                "name": "confidence_in_cosmetic",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,0,63",
+                "description": "confidence_in.cosmetic"
+            },
+            {
+                "name": "confidence_in_duplicate",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,0,191",
+                "description": "confidence_in.duplicate"
+            },
+            {
+                "name": "confidence_in_day",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,63,0",
+                "description": "confidence_in.day"
+            },
+            {
+                "name": "confidence_in_twilight",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,63,63",
+                "description": "confidence_in.twilight"
+            },
+            {
+                "name": "confidence_in_sun_glint",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,63,127",
+                "description": "confidence_in.sun_glint"
+            },
+            {
+                "name": "confidence_in_snow",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,255,255",
+                "description": "confidence_in.snow"
+            },
+            {
+                "name": "confidence_in_summary_cloud",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "191,191,191",
+                "description": "confidence_in.summary_cloud"
+            },
+            {
+                "name": "confidence_in_summary_pointing",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,63,191",
+                "description": "confidence_in.summary_pointing"
+            },
+            {
+                "name": "pointing_in_FlipMirrorAbsoluteError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,63,255",
+                "description": "pointing_in.FlipMirrorAbsoluteError"
+            },
+            {
+                "name": "pointing_in_FlipMirrorIntegratedError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,127,63",
+                "description": "pointing_in.FlipMirrorIntegratedError"
+            },
+            {
+                "name": "pointing_in_FlipMirrorRMSError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,127,191",
+                "description": "pointing_in.FlipMirrorRMSError"
+            },
+            {
+                "name": "pointing_in_ScanMirrorAbsoluteError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,191,0",
+                "description": "pointing_in.ScanMirrorAbsoluteError"
+            },
+            {
+                "name": "pointing_in_ScanMirrorIntegratedError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,191,63",
+                "description": "pointing_in.ScanMirrorIntegratedError"
+            },
+            {
+                "name": "pointing_in_ScanMirrorRMSError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,191,127",
+                "description": "pointing_in.ScanMirrorRMSError"
+            },
+            {
+                "name": "pointing_in_ScanTimeError",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,191,191",
+                "description": "pointing_in.ScanTimeError"
+            },
+            {
+                "name": "pointing_in_Platform_Mode",
+                "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+                "color": "255,191,255",
+                "description": "pointing_in.Platform_Mode"
+            }
+        ],
+        "metadata": [
+            {
+                "path": "FRP_an/IFOV_area/long_name",
+                "value": "Projected area of detector IFOV on surface "
+            },
+            {
+                "path": "met_tx/t_single/_FillValue",
+                "value": "-32768"
+            },
+            {
+                "path": "met_tx/t_single/value",
+                "value": "0"
+            },
+            {
+                "path": "indices_in/l0_scan_offset_in/_FillValue",
+                "value": "-2147483648"
+            },
+            {
+                "path": "Manifest/metadataSection/acquisitionPeriod/startTime",
+                "value": "2024-03-25T21:38:12.023334Z"
+            },
+            {
+                "path": "indices_in/l0_scan_offset_in/_FillValue",
+                "value": "-2147483648"
+            },
+            {
+                "path": "indices_fn/l0_scan_offset_fn/_FillValue",
+                "value": "-2147483648"
+            },
+            {
+                "path": "time_an/SCANSYNC/units",
+                "value": "us "
+            },
+            {
+                "path": "indices_in/l0_scan_offset_in/long_name",
+                "value": "Offset between scan index and corresponding ISP scan count "
+            },
+            {
+                "path": "met_tx/z_soil/standard_name",
+                "value": "height "
+            }
+        ]
+    }
+}

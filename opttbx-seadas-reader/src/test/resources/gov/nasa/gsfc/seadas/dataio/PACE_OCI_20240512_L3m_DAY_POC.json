@@ -1,0 +1,94 @@
+{
+  "id": "PACE_OCI_20240512_L3m_DAY_POC",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 8640,
+    "sceneHeight": 4320,
+    "startTime": "12-MAY-2024 00:15:43.000000",
+    "endTime": "13-MAY-2024 02:18:56.000000",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 3726.0,
+          "y": 2322.0,
+          "lat": -6.75,
+          "lon": -24.75000508626303
+        },
+        {
+          "x": 6414.0,
+          "y": 2803.0,
+          "lat": -26.791666666666657,
+          "lon": 87.24999491373697
+        }
+      ],
+      "reverseAccuracy": 9.094947017729282E-13
+    },
+    "bands": [
+      {
+        "name": "poc",
+        "description": "Particulate Organic Carbon, D. Stramski, 2022 (hybrid version)",
+        "bandWidth": 8640,
+        "bandHeight": 4320,
+        "geophysicalUnit": "mg m^-3",
+        "noDataValue": "-153.40009765326977",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 450,
+            "y": 769,
+            "value": "NaN"
+          },
+          {
+            "x": 5919,
+            "y": 3674,
+            "value": "NaN"
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "Global_Attributes/sw_point_longitude",
+        "value": "-179.97917"
+      },
+      {
+        "path": "Band_Attributes/lon/standard_name",
+        "value": "longitude"
+      },
+      {
+        "path": "Band_Attributes/palette/data_type",
+        "value": "0"
+      },
+      {
+        "path": "Global_Attributes/processing_control_input_parameters_product",
+        "value": "poc"
+      },
+      {
+        "path": "Band_Attributes/lat/valid_min",
+        "value": "-90.0"
+      },
+      {
+        "path": "Global_Attributes/processing_control_input_parameters_num_cache",
+        "value": "500"
+      },
+      {
+        "path": "Global_Attributes/suggested_image_scaling_maximum",
+        "value": "1000.0"
+      },
+      {
+        "path": "Band_Attributes/poc/valid_min",
+        "value": "-32000"
+      },
+      {
+        "path": "Global_Attributes/geospatial_lat_max",
+        "value": "90.0"
+      },
+      {
+        "path": "Global_Attributes/source",
+        "value": "satellite observations from OCI-PACE"
+      }
+    ]
+  }
+}

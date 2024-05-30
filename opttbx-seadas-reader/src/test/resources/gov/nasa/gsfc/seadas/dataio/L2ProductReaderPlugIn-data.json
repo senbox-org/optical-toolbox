@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "PACE_OCI_20240514T074349_L2_OC_IOP",
+      "relativePath": "sensors_platforms/PACE/OCI/PACE_OCI.20240514T074349.L2.OC_IOP.V1_0_0.NRT.nc",
+      "description": "PACE OCI L2 IOP"
+    }
+  ]
+}
