@@ -67,6 +67,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
 import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERPOLATING;
 
@@ -107,7 +108,17 @@ public abstract class AbstractProductFactory implements ProductFactory {
         manifest = createManifest(manifestInputStream);
 
         final List<String> fileNames = getFileNames(manifest);
-        readProducts(fileNames);
+        final List<String> ensuredNames = new ArrayList<>();
+        for (String origName : fileNames) {
+            // @todo 2 extract method, prepare for more cases and write tests tb 2024-05-31
+            if (origName.startsWith("./")) {
+                ensuredNames.add(origName.substring(2));
+            } else {
+                ensuredNames.add(origName);
+            }
+        }
+
+        readProducts(ensuredNames, virtualDir);
 
         final String productName = getProductName();
         final String productType = manifest.getProductType();
@@ -389,11 +400,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     }
 
-    protected Product readProduct(String fileName, Manifest manifest) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), fileName);
+    protected Product readProduct(String fileName, Manifest manifest, VirtualDir virtualDir) throws IOException {
+        final File file = getFileFromVirtualDir(fileName, virtualDir);
         if (!file.exists()) {
             return null;
         }
+
         final ProductReader reader = ProductIO.getProductReaderForInput(file);
         if (reader == null) {
             final String msg = MessageFormat.format("Cannot read file ''{0}''. No appropriate reader found.", fileName);
@@ -504,14 +516,14 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
-    private void readProducts(List<String> fileNames) throws IOException {
+    private void readProducts(List<String> fileNames, VirtualDir virtualDir) throws IOException {
         for (final String fileName : fileNames) {
             if ("".equals(fileName)) {  // skip directory
                 continue;
             }
             Product product = null;
             try {
-                product = readProduct(fileName, manifest);
+                product = readProduct(fileName, manifest, virtualDir);
             } catch (IOException ioe) {
                 logger.log(Level.WARNING, ioe.getMessage());
             }
@@ -550,6 +562,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
+    // @todo 3 tb/tb make static and mock test 2024-05-31
     private InputStream getManifestInputStream(VirtualDir virtualDir) throws IOException {
         final String[] list = virtualDir.listAllFiles();
         for (final String entry : list) {
@@ -560,5 +573,4 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         return null;
     }
-
 }

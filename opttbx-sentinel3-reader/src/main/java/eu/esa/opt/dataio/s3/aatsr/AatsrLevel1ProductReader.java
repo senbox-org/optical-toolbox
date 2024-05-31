@@ -22,14 +22,14 @@ public class AatsrLevel1ProductReader extends Sentinel3ProductReader {
         final File inputFile = getInputFile();
         ensureVirtualDir(inputFile);
 
-        final String basePath = getVirtualDir().getBasePath();
-        final String dirName = getInputFileParentDirectory().getName();
-        if (basePath.matches(DIRECTORY_NAME_PATTERN)) {
+        File baseFile = getVirtualDir().getBaseFile();
+        String baseFileName = baseFile.getName();
+        if (baseFileName.matches(DIRECTORY_NAME_PATTERN)) {
             setFactory(new AatsrLevel1ProductFactory(this));
         }
 
         Product product = createProduct();
-        product.setProductType(dirName.substring(0, 12));
+        product.setProductType(baseFileName.substring(0, 12));
 
         return product;
     }

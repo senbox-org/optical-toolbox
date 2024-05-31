@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3.synergy;
 
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
@@ -18,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
+
 public class AODProductFactory extends AbstractProductFactory {
 
     private static final double FILL_VALUE = -999.0;
@@ -35,8 +38,8 @@ public class AODProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected Product readProduct(String fileName, Manifest manifest) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), fileName);
+    protected Product readProduct(String fileName, Manifest manifest, VirtualDir virtualDir) throws IOException {
+        final File file = getFileFromVirtualDir(fileName, virtualDir);
         if (!file.exists()) {
             return null;
         }

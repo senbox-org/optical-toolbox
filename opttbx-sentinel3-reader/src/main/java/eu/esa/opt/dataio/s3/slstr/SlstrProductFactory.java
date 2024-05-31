@@ -14,6 +14,7 @@ package eu.esa.opt.dataio.s3.slstr;/*
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
+import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.glevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
 import eu.esa.opt.dataio.s3.Manifest;
@@ -45,6 +46,8 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
+
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
 
 public abstract class SlstrProductFactory extends AbstractProductFactory {
 
@@ -249,8 +252,8 @@ public abstract class SlstrProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected Product readProduct(String fileName, Manifest manifest) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), fileName);
+    protected Product readProduct(String fileName, Manifest manifest, VirtualDir virtualDir) throws IOException {
+        final File file = getFileFromVirtualDir(fileName, virtualDir);
         if (!file.exists()) {
             return null;
         }
