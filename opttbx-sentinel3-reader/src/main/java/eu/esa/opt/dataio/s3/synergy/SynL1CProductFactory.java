@@ -201,7 +201,7 @@ public class SynL1CProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected void setTimeCoding(Product targetProduct) throws IOException {
-        setTimeCoding(targetProduct, "time.nc", "Time");
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
+        setTimeCoding(targetProduct, virtualDir, "time.nc", "Time");
     }
 }

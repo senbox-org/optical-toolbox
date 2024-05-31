@@ -72,11 +72,13 @@ public class AatsrLevel1ProductReaderPlugInTest {
 
         assertFalse(plugIn.isValidSourceName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
         assertFalse(plugIn.isValidSourceName("SM_OPER_MIR_SCLF1C_20221224T220123_20221224T225442_724_001_1.zip"));
+        assertFalse(plugIn.isValidSourceName("ATS_TOA_1PRBCM20111204_214526_000005093109_00186_51062_0045.N1.zip"));
     }
 
     @Test
     @STTM("SNAP-3666")
     public void testIsValidInputFileName() {
+
         assertTrue(plugIn.isValidInputFileName("xfdumanifest.xml"));
         assertTrue(plugIn.isValidInputFileName("ENV_AT_1_RBT____20120316T160758_20120316T175312_20210818T165348_6313_112_370______DSI_R_NT_004.SEN3.ZIP"));
 
@@ -84,6 +86,8 @@ public class AatsrLevel1ProductReaderPlugInTest {
         assertFalse(plugIn.isValidInputFileName("L1c_Manifest.xml"));
         assertFalse(plugIn.isValidInputFileName("manifest.safe"));
         assertFalse(plugIn.isValidInputFileName("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));
+
+        //assertFalse(plugIn.isValidInputFileName("ATS_TOA_1PRBCM20111204_214526_000005093109_00186_51062_0045.N1.zip"));
     }
 
     @Test

@@ -150,7 +150,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         setBandGeoCodings(targetProduct);
         final Product[] sourceProducts = openProductList.toArray(new Product[0]);
         setAutoGrouping(sourceProducts, targetProduct);
-        setTimeCoding(targetProduct);
+        setTimeCoding(targetProduct, virtualDir);
 
         return targetProduct;
     }
@@ -396,7 +396,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
-    protected void setTimeCoding(Product targetProduct) throws IOException {
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
 
     }
 
@@ -448,8 +448,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     protected abstract List<String> getFileNames(Manifest manifest);
 
-    protected void setTimeCoding(Product targetProduct, String timeDataFileName, String timeVariableName) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), timeDataFileName);
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir, String timeDataFileName, String timeVariableName) throws IOException {
+        final File file = getFileFromVirtualDir(timeDataFileName, virtualDir);
         if (!file.exists()) {
             throw new IOException("Time coordinates file not found: " + timeDataFileName);
         }

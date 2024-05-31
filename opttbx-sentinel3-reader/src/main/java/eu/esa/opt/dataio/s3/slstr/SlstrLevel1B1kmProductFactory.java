@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3.slstr;
 
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import org.esa.snap.core.datamodel.Product;
@@ -65,7 +66,7 @@ public class SlstrLevel1B1kmProductFactory extends SlstrLevel1FixedResolutionPro
     }
 
     @Override
-    protected void setTimeCoding(Product targetProduct) throws IOException {
-        setTimeCoding(targetProduct, "time_in.nc", "time_stamp_i");
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
+        setTimeCoding(targetProduct, virtualDir, "time_in.nc", "time_stamp_i");
     }
 }

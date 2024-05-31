@@ -202,8 +202,8 @@ public class AatsrLevel1ProductFactory extends SlstrLevel1ProductFactory {
     }
 
     @Override
-    protected void setTimeCoding(Product targetProduct) throws IOException {
-        setTimeCoding(targetProduct, "time_in.nc", "time_stamp_i");
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
+        setTimeCoding(targetProduct, virtualDir, "time_in.nc", "time_stamp_i");
     }
 
     protected short[] getResolutions(String gridIndex) {

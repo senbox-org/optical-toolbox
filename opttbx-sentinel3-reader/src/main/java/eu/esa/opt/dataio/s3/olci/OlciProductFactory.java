@@ -253,8 +253,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected void setTimeCoding(Product targetProduct) throws IOException {
-        setTimeCoding(targetProduct, "time_coordinates.nc", "time_stamp");
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
+        setTimeCoding(targetProduct, virtualDir, "time_coordinates.nc", "time_stamp");
 
         final SentinelTimeCoding sceneTimeCoding = (SentinelTimeCoding) targetProduct.getSceneTimeCoding();
         final int maxDelta = sceneTimeCoding.getMaxDelta();

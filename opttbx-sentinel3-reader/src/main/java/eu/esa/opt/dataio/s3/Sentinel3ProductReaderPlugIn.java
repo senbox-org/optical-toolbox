@@ -19,8 +19,11 @@ import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
+import org.joda.time.field.FieldUtils;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -124,20 +127,30 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
     // public access for testing only 2024-05-28
     public boolean isInputValid(Object input) {
         final String inputString = input.toString();
-        final File inputFile = new File(FileUtils.getFilenameFromPath(inputString));
-        final File parentFile = new File(inputString).getParentFile();
+        final String filename = FileUtils.getFilenameFromPath(inputString);
 
-        if (!isValidInputFileName(inputFile.getName())) {
+        if (!isValidInputFileName(filename)) {
             return false;
         }
 
-        final String extension = FileUtils.getExtension(inputFile);
+        final Path path = Paths.get(inputString);
+        Path parentPath = path.getParent();
+        final String parentFileName;
+        if (parentPath == null) {
+            parentFileName = path.getFileName().toString();
+        } else {
+            parentFileName = parentPath.getName(0).toString();
+        }
+        final String extension = FileUtils.getExtension(parentFileName);
         if (".zip".equalsIgnoreCase(extension)) {
-            return true;
+            String zipName = FileUtils.getFilenameWithoutExtension(parentFileName);
+            return isValidSourceName(zipName);
         }
 
         // the manifest in directory case 2024-05-28 tb
-        return parentFile != null && (isValidSourceName(parentFile.getName()));
+
+
+        return isValidSourceName(parentFileName);
     }
 
     // public access for testing only 2025-05-27

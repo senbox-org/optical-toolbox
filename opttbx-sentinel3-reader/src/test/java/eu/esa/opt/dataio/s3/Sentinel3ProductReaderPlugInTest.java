@@ -130,7 +130,7 @@ public class Sentinel3ProductReaderPlugInTest {
 
     @Test
     public void testDecodeQualificationFromXfduManifestOnly_Nonsense() {
-        final String path = Sentinel3ProductReaderPlugInTest.class.getResource("nonsense/xfdumanifest.xml").getFile();
+        final String path = "no_pattern/nonsense/xfdumanifest.xml";
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(path));
     }
 
@@ -225,7 +225,7 @@ public class Sentinel3ProductReaderPlugInTest {
     }
 
     private static String createManifestFilePath(String sensorId, String levelId, String productId, String suffix) {
-        String validParentDirectory = String.format("S3_%s_%s_%s_TTTTTTTTTTTT_.*%s" , sensorId,
+        String validParentDirectory = String.format("S3_%s_%s_%s_TTTTTTTTTTTT_%s" , sensorId,
                 levelId, productId, suffix);
         String manifestFile = "xfdumanifest.xml";
         return validParentDirectory +  File.separator + manifestFile;
