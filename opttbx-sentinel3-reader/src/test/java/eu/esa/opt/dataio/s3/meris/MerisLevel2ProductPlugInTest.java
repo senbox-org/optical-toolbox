@@ -67,7 +67,7 @@ public class MerisLevel2ProductPlugInTest {
     public void testIsValidInputFileName() {
         assertTrue(plugIn.isValidInputFileName("xfdumanifest.xml"));
         assertTrue(plugIn.isValidInputFileName("L1c_Manifest.xml"));
-        assertTrue(plugIn.isValidInputFileName("EN1_MDSI_MER_FRS_1P_20040103T034519_20040103T034859_009634_0061_20180413T122431_0100.zip"));
+        assertTrue(plugIn.isValidInputFileName("ENV_ME_2_RRP____20111230T104804_20111230T105541_________________0456_110_123______ACR_R_NT____.SEN3.zip"));
 
         assertFalse(plugIn.isValidInputFileName("manifest.safe"));
         assertFalse(plugIn.isValidInputFileName("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));

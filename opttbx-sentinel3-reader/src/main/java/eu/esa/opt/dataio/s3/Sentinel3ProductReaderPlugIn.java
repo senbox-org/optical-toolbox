@@ -19,7 +19,6 @@ import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
-import org.joda.time.field.FieldUtils;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -107,39 +106,63 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
 
     // public access for testing only 2024-05-28
     public boolean isValidInputFileName(String name) {
+        if (isManifestFile(name)) {
+            return true;
+        }
+        final String extension = FileUtils.getExtension(name);
+        if (".zip".equalsIgnoreCase(extension)) {
+            final String nameWoExtension = FileUtils.getFilenameWithoutExtension(name);
+            return isValidSourceName(nameWoExtension);
+        }
+
+        return isValidSourceName(name);
+        /*
+        final String extension = FileUtils.getExtension(name);
+        if (!(".zip".equalsIgnoreCase(extension)) {
+
+        }
+
         for (final String fileExtension : fileExtensions) {
-            final String manifestFileName = manifestFileBasename + fileExtension;
             if (".xml".equalsIgnoreCase(fileExtension)) {
-                final String alternativeManifestFileName = alternativeManifestFileBasename + fileExtension;
-                if (manifestFileName.equalsIgnoreCase(name) || alternativeManifestFileName.equalsIgnoreCase(name)) {
-                    return true;
-                }
+                if (isManifestFile(name)) return true;
             } else if (".zip".equalsIgnoreCase(fileExtension)) {
                 // we assume that a zip with a matching name pattern is a valid product 2024-05-28 tb
-                return ".zip".equalsIgnoreCase(FileUtils.getExtension(name));
+                return ".zip".equalsIgnoreCase(extension);
             } else {
-                return false;
+                return isValidSourceName(name);
             }
         }
         return false;
+        */
+    }
+
+    private boolean isManifestFile(String name) {
+        final String manifestFileName = manifestFileBasename + ".xml";
+        final String alternativeManifestFileName = alternativeManifestFileBasename + ".xml";
+        return (manifestFileName.equalsIgnoreCase(name) || alternativeManifestFileName.equalsIgnoreCase(name));
     }
 
     // public access for testing only 2024-05-28
     public boolean isInputValid(Object input) {
-        final String inputString = input.toString();
+        String inputString = input.toString();
         final String filename = FileUtils.getFilenameFromPath(inputString);
+
+        // check if we have a directory name (not ending on xml)
+        if (isDirectory(FileUtils.getExtension(filename))) {
+            inputString = inputString + File.separator + manifestFileBasename + ".xml";
+        }
 
         if (!isValidInputFileName(filename)) {
             return false;
         }
 
         final Path path = Paths.get(inputString);
-        Path parentPath = path.getParent();
         final String parentFileName;
-        if (parentPath == null) {
+        if (path.getParent() == null) {
             parentFileName = path.getFileName().toString();
         } else {
-            parentFileName = parentPath.getName(0).toString();
+            int nameCount = path.getNameCount();
+            parentFileName = path.getName(nameCount - 2).toString();
         }
         final String extension = FileUtils.getExtension(parentFileName);
         if (".zip".equalsIgnoreCase(extension)) {
@@ -147,10 +170,11 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
             return isValidSourceName(zipName);
         }
 
-        // the manifest in directory case 2024-05-28 tb
-
-
         return isValidSourceName(parentFileName);
+    }
+
+    private static boolean isDirectory(String extension) {
+        return !(".zip".equalsIgnoreCase(extension) || ".ZIP".equalsIgnoreCase(extension) || ".xml".equalsIgnoreCase(extension));
     }
 
     // public access for testing only 2025-05-27

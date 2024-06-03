@@ -94,7 +94,10 @@ public class Sentinel3ProductReaderPlugInTest {
 
     @Test
     public void testDecodeQualification_SynergyLevel2() {
-        final String path = createManifestFilePath("SY", "2", "SYN", ".SEN3");
+        String path = createManifestFilePath("SY", "2", "SYN", ".SEN3");
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
+
+        path = "sensors_platforms/SENTINEL-3/synergy/S3A_SY_2_VGP____20160415T110058_20160415T110845_20160502T125459_0466_003_094______LN1_D_NC____.SEN3/xfdumanifest.xml";
         assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
     }
 
@@ -197,6 +200,7 @@ public class Sentinel3ProductReaderPlugInTest {
     public void testIsValidInputFileName() {
         assertTrue(plugIn.isValidInputFileName("xfdumanifest.xml"));
         assertTrue(plugIn.isValidInputFileName("L1c_Manifest.xml"));
+        assertTrue(plugIn.isValidInputFileName("S3A_SY_2_VGP____20160415T110058_20160415T110845_20160502T125459_0466_003_094______LN1_D_NC____.SEN3"));
         assertTrue(plugIn.isValidInputFileName("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.zip"));
 
         assertFalse(plugIn.isValidInputFileName("manifest.safe"));
