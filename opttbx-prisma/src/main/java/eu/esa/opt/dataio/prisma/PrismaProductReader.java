@@ -11,9 +11,15 @@ import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.CrsGeoCoding;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -22,9 +28,11 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.DATASET_NAME_LONGITUDE;
@@ -34,16 +42,19 @@ import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_R
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToPath;
 
 public class PrismaProductReader extends AbstractProductReader {
+
+    private Map<Band, Integer> _cubeIndex = new HashMap<>();
+    private StringBuilder _autoGrouping = new StringBuilder();
+
+    private String _prefixErrorMessage;
     private HdfFile _hdfFile;
     private int _sceneRasterWidth;
     private int _sceneRasterHeight;
+
+    private boolean _vnirCubeExist;
+    private ContiguousDatasetImpl _vnirCube;
     private boolean _swirCubeExist;
     private ContiguousDatasetImpl _swirCube;
-    private ContiguousDatasetImpl _vnirCube;
-    private String _prefix_message;
-    private boolean _vnirCubeExist;
-    private Map<Band, Integer> cubeIndex = new HashMap<>();
-    private StringBuilder autoGrouping = new StringBuilder();
 
     /**
      * Constructs a new abstract product reader.
@@ -59,10 +70,10 @@ public class PrismaProductReader extends AbstractProductReader {
     protected Product readProductNodesImpl() throws IOException {
         Path inputPath = convertToPath(getInput());
         assert inputPath != null;
-        _prefix_message = "Unable to open '" + inputPath.toAbsolutePath() + ". ";
+        _prefixErrorMessage = "Unable to open '" + inputPath.toAbsolutePath() + ". ";
         final String fileName = inputPath.getFileName().toString();
         if (!PRISMA_FILENAME_PATTERN.matcher(fileName).matches()) {
-            throw new ProductIOException(_prefix_message + "The file name: '" + fileName + "' does not match the regular expression: " + PRISMA_FILENAME_REGEX);
+            throw new ProductIOException(_prefixErrorMessage + "The file name: '" + fileName + "' does not match the regular expression: " + PRISMA_FILENAME_REGEX);
         }
         final String lowerFileName = fileName.toLowerCase();
         final String justTheName = fileName.substring(0, fileName.lastIndexOf("."));
@@ -84,15 +95,15 @@ public class PrismaProductReader extends AbstractProductReader {
             _hdfFile = new HdfFile(inputPath);
         }
         if (_hdfFile == null) {
-            throw new ProductIOException(_prefix_message + "HDF could not be opened.");
+            throw new ProductIOException(_prefixErrorMessage + "HDF could not be opened.");
         }
         final Group prs_l2d_hco = (Group) findNode(_hdfFile, GROUP_NAME_PRS_L2D_HCO);
         if (prs_l2d_hco == null) {
-            throw new ProductIOException(_prefix_message + "Group '" + GROUP_NAME_PRS_L2D_HCO + "' not found.");
+            throw new ProductIOException(_prefixErrorMessage + "Group '" + GROUP_NAME_PRS_L2D_HCO + "' not found.");
         }
         final Dataset longitude = (Dataset) findNode(prs_l2d_hco, DATASET_NAME_LONGITUDE);
         if (longitude == null) {
-            throw new ProductIOException(_prefix_message + "Could not find dataset \"" + DATASET_NAME_LONGITUDE + "\" for file " + inputPath);
+            throw new ProductIOException(_prefixErrorMessage + "Could not find dataset \"" + DATASET_NAME_LONGITUDE + "\" for file " + inputPath);
         }
         final int[] dimensions = longitude.getDimensions();
         _sceneRasterWidth = dimensions[1];
@@ -104,13 +115,60 @@ public class PrismaProductReader extends AbstractProductReader {
 
         addGeoCoding(product);
 
-        product.setAutoGrouping(autoGrouping.toString());
+        product.setAutoGrouping(_autoGrouping.toString());
 
         return product;
     }
 
     private void addGeoCoding(Product product) {
+        final Attribute epsgCodeAtt = getGlobalAttribute("Epsg_Code");
+        if (epsgCodeAtt != null) {
+            final long epsgCodeValue = (long) epsgCodeAtt.getData();
 
+            String[] nameParts = {"Product_", "easting"};
+            float minEasting = getComputedGlobalAttValue(nameParts, Float.MAX_VALUE, Math::min);
+            float maxEasting = getComputedGlobalAttValue(nameParts, Float.MIN_VALUE, Math::max);
+
+            nameParts = new String[]{"Product_", "northing"};
+            float minNorthing = getComputedGlobalAttValue(nameParts, Float.MAX_VALUE, Math::min);
+            float maxNorthing = getComputedGlobalAttValue(nameParts, Float.MIN_VALUE, Math::max);
+
+            double scaleX = (maxEasting - minEasting) / (_sceneRasterWidth - 1);
+            double scaleY = (maxNorthing - minNorthing) / (_sceneRasterHeight - 1);
+
+            AffineTransform i2m = new AffineTransform();
+            i2m.translate(minEasting, maxNorthing);
+            i2m.scale(scaleX, -scaleY);
+
+            String epsgCode = "EPSG:" + epsgCodeValue;
+            try {
+                CoordinateReferenceSystem mapCRS = CRS.decode(epsgCode);
+                final CrsGeoCoding geoCoding = new CrsGeoCoding(mapCRS, _sceneRasterWidth, _sceneRasterHeight, minEasting, maxNorthing, scaleX, scaleY);
+                product.setSceneGeoCoding(geoCoding);
+            } catch (FactoryException e) {
+                throw new RuntimeException(_prefixErrorMessage + "Could not decode EPSG code: " + epsgCodeValue, e);
+            } catch (TransformException e) {
+                throw new RuntimeException(_prefixErrorMessage + "Could not create CrsGeoCoding.", e);
+            }
+        } else {
+            final Dataset latitude = (Dataset) findNode(_hdfFile, "Latitude");
+            final Dataset longitude = (Dataset) findNode(_hdfFile, "Longitude");
+            if (latitude != null && longitude != null) {
+                final float[] latitudes = (float[]) latitude.getData();
+                final float[] longitudes = (float[]) longitude.getData();
+//                product.setGeoCoding(PrismaGeoCoding.createGeoCoding(latitudes, longitudes, _sceneRasterWidth, _sceneRasterHeight));
+            }
+        }
+    }
+
+    private float getComputedGlobalAttValue(String[] nameParts, float minEasting, BinaryOperator<Float> mathOperator) {
+        for (Attribute attribute : _hdfFile.getAttributes().values()) {
+            final String name = attribute.getName();
+            if (Arrays.stream(nameParts).allMatch(namePart -> name.contains(namePart))) {
+                minEasting = mathOperator.apply(minEasting, (float) attribute.getData());
+            }
+        }
+        return minEasting;
     }
 
     private void addCubeBands(Group prs_l2d_hco, Product product) throws ProductIOException {
@@ -134,10 +192,10 @@ public class PrismaProductReader extends AbstractProductReader {
     }
 
     private void appendAutoGrouping(String s) {
-        if (autoGrouping.length() > 0) {
-            autoGrouping.append(":");
+        if (_autoGrouping.length() > 0) {
+            _autoGrouping.append(":");
         }
-        autoGrouping.append(s);
+        _autoGrouping.append(s);
     }
 
     private void addCubeBands(String cubeName, Product product, ContiguousDatasetImpl cube) throws ProductIOException {
@@ -161,7 +219,7 @@ public class PrismaProductReader extends AbstractProductReader {
                     return true;
                 }
             };
-            cubeIndex.put(band, i);
+            _cubeIndex.put(band, i);
             band.setSpectralWavelength(wavelength);
             band.setSpectralBandwidth(bandwidths[i]);
             band.setScalingFactor(scalingFactor);
@@ -172,11 +230,15 @@ public class PrismaProductReader extends AbstractProductReader {
     }
 
     private Attribute getGlobalAttributeNotNull(String attributeName) throws ProductIOException {
-        final Attribute attribute = _hdfFile.getAttribute(attributeName);
+        final Attribute attribute = getGlobalAttribute(attributeName);
         if (attribute == null) {
-            throw new ProductIOException(_prefix_message + "Global Attribute '" + attributeName + "' not found.");
+            throw new ProductIOException(_prefixErrorMessage + "Global Attribute '" + attributeName + "' not found.");
         }
         return attribute;
+    }
+
+    private Attribute getGlobalAttribute(String attributeName) {
+        return _hdfFile.getAttribute(attributeName);
     }
 
     private int getNumBands(Dataset cube) {
@@ -197,7 +259,7 @@ public class PrismaProductReader extends AbstractProductReader {
             Band destBand,
             int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
 
-        long[] sliceOffset = {sourceOffsetY, cubeIndex.get(destBand), sourceOffsetX};
+        long[] sliceOffset = {sourceOffsetY, _cubeIndex.get(destBand), sourceOffsetX};
         int[] sliceDimensions = {destHeight, 1, destWidth};
 
         final ByteBuffer sliceByteBuffer;
