@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3.synergy;
 
+import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.glevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
 import eu.esa.opt.dataio.s3.Manifest;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
 
 /**
  * @author Tonio Fincke
@@ -158,8 +161,8 @@ public class SynL1CProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected Product readProduct(String fileName, Manifest manifest) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), fileName);
+    protected Product readProduct(String fileName, Manifest manifest, VirtualDir virtualDir) throws IOException {
+        final File file = getFileFromVirtualDir(fileName, virtualDir);
         if (!file.exists()) {
             return null;
         }
@@ -198,7 +201,7 @@ public class SynL1CProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected void setTimeCoding(Product targetProduct) throws IOException {
-        setTimeCoding(targetProduct, "time.nc", "Time");
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
+        setTimeCoding(targetProduct, virtualDir, "time.nc", "Time");
     }
 }

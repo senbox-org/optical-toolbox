@@ -2,6 +2,7 @@ package eu.esa.opt.dataio.enmap;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
+import eu.esa.opt.dataio.TarUtils;
 import eu.esa.opt.dataio.enmap.imgReader.EnmapImageReader;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductIO;
@@ -113,7 +114,7 @@ class EnmapProductReader extends AbstractProductReader {
     @Override
     protected Product readProductNodesImpl() throws IOException {
         Path path = InputTypes.toPath(getInput());
-        if (isTar(path)) {
+        if (TarUtils.isTar(path)) {
             tgzDataDir = new VirtualDirTgz(path);
             final String[] fileNames = tgzDataDir.listAllFiles();
 

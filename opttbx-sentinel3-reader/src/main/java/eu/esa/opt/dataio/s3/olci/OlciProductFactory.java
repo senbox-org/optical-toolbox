@@ -1,25 +1,17 @@
 package eu.esa.opt.dataio.s3.olci;
 
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.SentinelTimeCoding;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReaderFactory;
-import org.esa.snap.core.dataio.geocoding.ComponentFactory;
-import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
-import org.esa.snap.core.dataio.geocoding.ForwardCoding;
-import org.esa.snap.core.dataio.geocoding.GeoChecks;
-import org.esa.snap.core.dataio.geocoding.GeoRaster;
-import org.esa.snap.core.dataio.geocoding.InverseCoding;
+import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.RasterDataNode;
-import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.runtime.Config;
 
 import java.io.File;
@@ -40,7 +32,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     public final static String OLCI_USE_PIXELGEOCODING = "opttbx.reader.olci.pixelGeoCoding";
     final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "opttbx.reader.olci.tiePointGeoCoding.forward";
     private final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "opttbx.reader.olci.pixelGeoCoding.inverse";
-    private final static String[] excludedIDs = new String[]{"removedPixelsData"};
+    private final static String[] excludedIDs = {"removedPixelsData"};
     private final Map<String, Float> nameToWavelengthMap;
     private final Map<String, Float> nameToBandwidthMap;
     private final Map<String, Integer> nameToIndexMap;
@@ -169,7 +161,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
 
         final double resolutionInKilometers = getResolutionInKm(targetProduct.getProductType());
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
-                                                  lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKilometers);
+                lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKilometers);
 
         final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(SYSPROP_OLCI_PIXEL_CODING_INVERSE);
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
@@ -202,10 +194,10 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         final double resolutionInKilometers = getResolutionInKm(targetProduct.getProductType());
 
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVarName, latVarName,
-                                                  lonGrid.getGridWidth(), lonGrid.getGridHeight(),
-                                                  targetProduct.getSceneRasterWidth(), targetProduct.getSceneRasterHeight(), resolutionInKilometers,
-                                                  lonGrid.getOffsetX(), lonGrid.getOffsetY(),
-                                                  lonGrid.getSubSamplingX(), lonGrid.getSubSamplingY());
+                lonGrid.getGridWidth(), lonGrid.getGridHeight(),
+                targetProduct.getSceneRasterWidth(), targetProduct.getSceneRasterHeight(), resolutionInKilometers,
+                lonGrid.getOffsetX(), lonGrid.getOffsetY(),
+                lonGrid.getSubSamplingX(), lonGrid.getSubSamplingY());
 
         final String[] codingKeys = getForwardAndInverseKeys_tiePointCoding();
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
@@ -261,8 +253,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected void setTimeCoding(Product targetProduct) throws IOException {
-        setTimeCoding(targetProduct, "time_coordinates.nc", "time_stamp");
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
+        setTimeCoding(targetProduct, virtualDir, "time_coordinates.nc", "time_stamp");
 
         final SentinelTimeCoding sceneTimeCoding = (SentinelTimeCoding) targetProduct.getSceneTimeCoding();
         final int maxDelta = sceneTimeCoding.getMaxDelta();
@@ -275,13 +267,22 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     protected abstract String getValidExpression();
 
     @Override
-    protected Product readProduct(String fileName, Manifest manifest) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), fileName);
-        if (!file.exists()) {
-            return null;
-        }
+    protected Product readProduct(String fileName, Manifest manifest, VirtualDir virtualDir) throws IOException {
+        final File file = getFileFromVirtualDir(fileName, virtualDir);
+
         final S3NetcdfReader reader = S3NetcdfReaderFactory.createS3NetcdfProduct(file);
         addSeparatingDimensions(reader.getSuffixesForSeparatingDimensions());
         return reader.readProductNodes(file, null);
+    }
+
+    // @todo 2 test this tb 2024-05-31
+    public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
+        final String[] allFiles = virtualDir.listAllFiles();
+        for (String dirFileName : allFiles) {
+            if (dirFileName.endsWith(fileName)) {
+                return virtualDir.getFile(dirFileName);
+            }
+        }
+        return null;
     }
 }

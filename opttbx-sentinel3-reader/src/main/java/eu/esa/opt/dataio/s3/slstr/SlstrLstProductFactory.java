@@ -14,6 +14,7 @@ package eu.esa.opt.dataio.s3.slstr;/*
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import org.esa.snap.core.dataio.geocoding.ComponentFactory;
@@ -71,8 +72,8 @@ public class SlstrLstProductFactory extends SlstrProductFactory {
     }
 
     @Override
-    protected void setTimeCoding(Product targetProduct) throws IOException {
-        setTimeCoding(targetProduct, "time_in.nc", "time_stamp_i");
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
+        setTimeCoding(targetProduct, virtualDir, "time_in.nc", "time_stamp_i");
     }
 
     @Override

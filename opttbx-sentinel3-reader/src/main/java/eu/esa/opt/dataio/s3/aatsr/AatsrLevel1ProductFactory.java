@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3.aatsr;
 
+import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.glevel.MultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
@@ -26,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
+
 /**
  * @author Sabine Embacher
  * @author Thomas Storm
@@ -46,8 +49,8 @@ public class AatsrLevel1ProductFactory extends SlstrLevel1ProductFactory {
     }
 
     @Override
-    protected Product readProduct(String fileName, Manifest manifest) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), fileName);
+    protected Product readProduct(String fileName, Manifest manifest, VirtualDir virtualDir) throws IOException {
+        final File file = getFileFromVirtualDir(fileName, virtualDir);
         if (!file.exists()) {
             return null;
         }
@@ -199,8 +202,8 @@ public class AatsrLevel1ProductFactory extends SlstrLevel1ProductFactory {
     }
 
     @Override
-    protected void setTimeCoding(Product targetProduct) throws IOException {
-        setTimeCoding(targetProduct, "time_in.nc", "time_stamp_i");
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
+        setTimeCoding(targetProduct, virtualDir, "time_in.nc", "time_stamp_i");
     }
 
     protected short[] getResolutions(String gridIndex) {

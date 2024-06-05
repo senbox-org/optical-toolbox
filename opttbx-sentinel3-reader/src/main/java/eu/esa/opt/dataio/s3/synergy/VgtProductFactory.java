@@ -14,6 +14,7 @@ package eu.esa.opt.dataio.s3.synergy;/*
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
+import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.glevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
 import eu.esa.opt.dataio.s3.Manifest;
@@ -28,6 +29,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
 
 public class VgtProductFactory extends AbstractProductFactory {
 
@@ -82,11 +85,8 @@ public class VgtProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected Product readProduct(String fileName, Manifest manifest) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), fileName);
-        if (!file.exists()) {
-            return null;
-        }
+    protected Product readProduct(String fileName, Manifest manifest, VirtualDir virtualDir) throws IOException {
+        final File file = getFileFromVirtualDir(fileName, virtualDir);
         return new VgtReader().readProductNodes(file, null);
     }
 }

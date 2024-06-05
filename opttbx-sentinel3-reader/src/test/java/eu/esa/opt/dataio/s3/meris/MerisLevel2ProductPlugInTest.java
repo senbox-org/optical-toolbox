@@ -19,7 +19,6 @@
 package eu.esa.opt.dataio.s3.meris;
 
 import com.bc.ceres.annotation.STTM;
-import eu.esa.opt.dataio.s3.meris.MerisLevel1ProductPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,26 +26,17 @@ import org.junit.Test;
 import java.io.File;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Marco Peters
  */
-public class MerisLevel1ProductPlugInTest {
+public class MerisLevel2ProductPlugInTest {
 
-    private MerisLevel1ProductPlugIn plugIn;
+    private MerisLevel2ProductPlugIn plugIn;
 
     @Before
     public void setUp()  {
-        plugIn = new MerisLevel1ProductPlugIn();
-    }
-
-    @Test
-    public void testDirNamePatternMatching() {
-        assertTrue(plugIn.isValidMerisDirectoryName("ENV_ME_1_FRG____20091208T101751_20091208T102057_________________0186_085_008______DSI_R_NT____.SEN3"));
-        assertTrue(plugIn.isValidMerisDirectoryName("ENV_ME_1_RRG____20111230T102706_20111230T111042_________________2616_110_123______DSI_R_NT____.SEN3"));
-        assertTrue(plugIn.isValidMerisDirectoryName("EN1_MDSI_MER_RR__1P_20040103T012931_20040103T021310_009633_0060_20180610T222321_0100"));
-        assertTrue(plugIn.isValidMerisDirectoryName("EN1_MDSI_MER_FRS_1P_20040103T034519_20040103T034859_009634_0061_20180413T122431_0100"));
+        plugIn = new MerisLevel2ProductPlugIn();
     }
 
     @Test
@@ -64,12 +54,12 @@ public class MerisLevel1ProductPlugInTest {
         final SnapFileFilter productFileFilter = plugIn.getProductFileFilter();
         assertNotNull(productFileFilter);
 
-        assertEquals("MER_L1_S3", productFileFilter.getFormatName());
+        assertEquals("MER_L2_S3", productFileFilter.getFormatName());
         final String[] extensions = productFileFilter.getExtensions();
         assertEquals(2, extensions.length);
         assertEquals(".xml", extensions[0]);
         assertEquals(".zip", extensions[1]);
-        assertEquals("MERIS Level 1 in Sentinel-3 product format (*.xml,*.zip)", productFileFilter.getDescription());
+        assertEquals("MERIS Level 2 in Sentinel-3 product format (*.xml,*.zip)", productFileFilter.getDescription());
     }
 
     @Test
@@ -77,7 +67,7 @@ public class MerisLevel1ProductPlugInTest {
     public void testIsValidInputFileName() {
         assertTrue(plugIn.isValidInputFileName("xfdumanifest.xml"));
         assertTrue(plugIn.isValidInputFileName("L1c_Manifest.xml"));
-        assertTrue(plugIn.isValidInputFileName("EN1_MDSI_MER_FRS_1P_20040103T034519_20040103T034859_009634_0061_20180413T122431_0100.zip"));
+        assertTrue(plugIn.isValidInputFileName("ENV_ME_2_RRP____20111230T104804_20111230T105541_________________0456_110_123______ACR_R_NT____.SEN3.zip"));
 
         assertFalse(plugIn.isValidInputFileName("manifest.safe"));
         assertFalse(plugIn.isValidInputFileName("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));
@@ -88,8 +78,8 @@ public class MerisLevel1ProductPlugInTest {
     public void testIsValidInput() {
         final String sep = File.separator;
 
-        assertTrue(plugIn.isInputValid("EN1_MDSI_MER_FRS_1P_20040103T034519_20040103T034859_009634_0061_20180413T122431_0100" + sep + "xfdumanifest.xml"));
-        assertTrue(plugIn.isInputValid("EN1_MDSI_MER_FRS_1P_20040103T034519_20040103T034859_009634_0061_20180413T122431_0100.SEN3.ZIP"));
+        assertTrue(plugIn.isInputValid("ENV_ME_2_RRG____20070512T081345_20070512T081623_________________0157_058_064______ACR_R_NT____.SEN3" + sep + "xfdumanifest.xml"));
+        assertTrue(plugIn.isInputValid("ENV_ME_2_RRG____20070512T081345_20070512T081623_________________0157_058_064______ACR_R_NT____.SEN3.zip"));
 
         // no alternative manifest name defined 2024-05-28 tb
         assertFalse(plugIn.isInputValid("ENV_AT_1_RBT____20120316T160758_20120316T175312_20210818T165348_6313_112_370______DSI_R_NT_004.SEN3" + sep + "L1c_Manifest.xml"));

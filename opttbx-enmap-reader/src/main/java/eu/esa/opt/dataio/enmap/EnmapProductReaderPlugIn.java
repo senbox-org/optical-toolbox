@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.enmap;
 
 import com.bc.ceres.core.VirtualDir;
+import eu.esa.opt.dataio.TarUtils;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -9,7 +10,6 @@ import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.engine_utilities.dataio.VirtualDirTgz;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,8 +20,6 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
 
@@ -59,12 +57,12 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
             }
 
             List<Path> filePaths = new ArrayList<>();
-            if (EnmapFileUtils.isTar(path)) {
+            if (TarUtils.isTar(path)) {
                 // we do not want to extract the whole tar, so just check for naming convention of entries
                 if (isValidTar(path)) {
                     return DecodeQualification.INTENDED;
                 }
-            } else if (EnmapFileUtils.isZip(path)) {
+            } else if (isZip(path)) {
                 filePaths = extractPathsFromZip(path);
             } else {
                 filePaths = extractPathsFromDir(path);
