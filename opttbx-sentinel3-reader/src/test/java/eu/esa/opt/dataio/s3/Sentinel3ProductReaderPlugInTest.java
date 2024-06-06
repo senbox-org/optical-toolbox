@@ -205,6 +205,7 @@ public class Sentinel3ProductReaderPlugInTest {
 
         assertFalse(plugIn.isValidInputFileName("manifest.safe"));
         assertFalse(plugIn.isValidInputFileName("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));
+        assertFalse(plugIn.isValidInputFileName("S3A_OL_1_EFR____20170101T095821_20170101T100021__calimnos.nc"));
     }
 
     @Test

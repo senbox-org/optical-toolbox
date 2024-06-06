@@ -17,6 +17,7 @@ package eu.esa.opt.dataio.s3;/*
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
+import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
@@ -46,7 +47,7 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
     public Sentinel3ProductReaderPlugIn() {
         this(FORMAT_NAME, "Sentinel-3 products",
                 "S3.?_(OL_1_E[FR]R|OL_2_(L[FR]R|W[FR]R)|ER1_AT_1_RBT|ER2_AT_1_RBT|ENV_AT_1_RBT|SL_1_RBT|" +
-                        "SL_2_(LST|WCT|WST|FRP)|SY_1_SYN|SY_2_(AOD|VGP|SYN|V10)|SY_[23]_VG1)_.*(.SEN3)?",
+                        "SL_2_(LST|WCT|WST|FRP)|SY_1_SYN|SY_2_(AOD|VGP|SYN|V10)|SY_[23]_VG1)_.*(.SEN3)?(.zip)?",
                 "xfdumanifest", "L1c_Manifest", ".xml", ".zip");
     }
 
@@ -113,27 +114,11 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
         if (".zip".equalsIgnoreCase(extension)) {
             final String nameWoExtension = FileUtils.getFilenameWithoutExtension(name);
             return isValidSourceName(nameWoExtension);
+        } else if (".SEN3".equalsIgnoreCase(extension) || StringUtils.isNullOrBlank(extension)) {
+            return isValidSourceName(name);
         }
 
-        return isValidSourceName(name);
-        /*
-        final String extension = FileUtils.getExtension(name);
-        if (!(".zip".equalsIgnoreCase(extension)) {
-
-        }
-
-        for (final String fileExtension : fileExtensions) {
-            if (".xml".equalsIgnoreCase(fileExtension)) {
-                if (isManifestFile(name)) return true;
-            } else if (".zip".equalsIgnoreCase(fileExtension)) {
-                // we assume that a zip with a matching name pattern is a valid product 2024-05-28 tb
-                return ".zip".equalsIgnoreCase(extension);
-            } else {
-                return isValidSourceName(name);
-            }
-        }
         return false;
-        */
     }
 
     private boolean isManifestFile(String name) {
