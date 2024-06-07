@@ -31,10 +31,10 @@ final class PrismaConstantsAndUtils {
     static final String PRISMA_HDF_EXTENSION = ".he5";
     static final String PRISMA_ZIP_CONTAINER_EXTENSION = ".zip";
     static final String PRISMA_FILENAME_REGEX
-            = "PRS_L2D_\\w+_\\d{14}_\\d{14}_\\d+\\.(he5|zip)";
+            = "PRS_L(1|2B|2D)_.*_\\d{14}_\\d{14}_\\d+\\.(he5|zip)";
     static final Pattern PRISMA_FILENAME_PATTERN
             = Pattern.compile(PRISMA_FILENAME_REGEX, Pattern.CASE_INSENSITIVE);
-    static final String GROUP_NAME_PRS_L2D_HCO = "PRS_L2D_HCO";
+    static final String GROUP_NAME_PATTERN_HCO = "PRS_.*_HCO";
 
     static final Class<?>[] IO_TYPES = new Class[]{
             Path.class,
