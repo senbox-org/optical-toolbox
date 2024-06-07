@@ -343,8 +343,14 @@ public class SeadasProductReader extends AbstractProductReader {
         ProductType tmp;
         if (titleAttr != null) {
             title = titleAttr.getStringValue().trim();
-            processing_level = processing_levelAttr.getStringValue().trim();
-            instrument = instrumentAttr.getStringValue().trim();
+            processing_level=null;
+            instrument=null;
+            if (processing_levelAttr != null) {
+                processing_level = processing_levelAttr.getStringValue().trim();
+            }
+            if (instrumentAttr != null) {
+                instrument = instrumentAttr.getStringValue().trim();
+            }
             if (title.equals("Oceansat OCM2 Level-1B Data")) {
                 return ProductType.Level1B_OCM2;
             } else if (title.equals("CZCS Level-2 Data")) {
