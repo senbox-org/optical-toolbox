@@ -10,6 +10,7 @@ import io.jhdf.dataset.ContiguousDatasetImpl;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.CrsGeoCoding;
 import org.esa.snap.core.datamodel.Product;
@@ -33,10 +34,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.DATASET_NAME_LONGITUDE;
-import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.GROUP_NAME_PRS_L2D_HCO;
+import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.GROUP_NAME_PATTERN_HCO;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_PATTERN;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_REGEX;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToPath;
@@ -44,17 +46,13 @@ import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToPath;
 public class PrismaProductReader extends AbstractProductReader {
 
     private Map<Band, Integer> _cubeIndex = new HashMap<>();
+    private Map<Band, Dataset> _datasetMapping = new HashMap<>();
     private StringBuilder _autoGrouping = new StringBuilder();
 
     private String _prefixErrorMessage;
     private HdfFile _hdfFile;
     private int _sceneRasterWidth;
     private int _sceneRasterHeight;
-
-    private boolean _vnirCubeExist;
-    private ContiguousDatasetImpl _vnirCube;
-    private boolean _swirCubeExist;
-    private ContiguousDatasetImpl _swirCube;
 
     /**
      * Constructs a new abstract product reader.
@@ -97,11 +95,11 @@ public class PrismaProductReader extends AbstractProductReader {
         if (_hdfFile == null) {
             throw new ProductIOException(_prefixErrorMessage + "HDF could not be opened.");
         }
-        final Group prs_l2d_hco = (Group) findNode(_hdfFile, GROUP_NAME_PRS_L2D_HCO);
-        if (prs_l2d_hco == null) {
-            throw new ProductIOException(_prefixErrorMessage + "Group '" + GROUP_NAME_PRS_L2D_HCO + "' not found.");
+        final Group prs_hco_grp = (Group) findNode(_hdfFile, GROUP_NAME_PATTERN_HCO);
+        if (prs_hco_grp == null) {
+            throw new ProductIOException(_prefixErrorMessage + "Group '" + GROUP_NAME_PATTERN_HCO + "' not found.");
         }
-        final Dataset longitude = (Dataset) findNode(prs_l2d_hco, DATASET_NAME_LONGITUDE);
+        final Dataset longitude = (Dataset) findNode(prs_hco_grp, DATASET_NAME_LONGITUDE);
         if (longitude == null) {
             throw new ProductIOException(_prefixErrorMessage + "Could not find dataset \"" + DATASET_NAME_LONGITUDE + "\" for file " + inputPath);
         }
@@ -111,7 +109,8 @@ public class PrismaProductReader extends AbstractProductReader {
         final Product product = new Product(fileName, "ASI Prisma", _sceneRasterWidth, _sceneRasterHeight);
         MetadataReader.readMetadata(_hdfFile, product);
 
-        addCubeBands(prs_l2d_hco, product);
+        addCubeBands(prs_hco_grp, product);
+        addBands(prs_hco_grp, product);
 
         addGeoCoding(product);
 
@@ -120,7 +119,24 @@ public class PrismaProductReader extends AbstractProductReader {
         return product;
     }
 
-    private void addGeoCoding(Product product) {
+    private void addBands(Group group, Product product) {
+        final Dataset latitude = (Dataset) findNode(group, "Latitude");
+        if (latitude != null) {
+            final Band latitudeBand = new Band("Latitude", ProductData.TYPE_FLOAT32, _sceneRasterWidth, _sceneRasterHeight);
+            latitudeBand.setUnit("degree");
+            product.addBand(latitudeBand);
+            _datasetMapping.put(latitudeBand, latitude);
+        }
+        final Dataset longitude = (Dataset) findNode(group, "Longitude");
+        if (longitude != null) {
+            final Band longitudeBand = new Band("Longitude", ProductData.TYPE_FLOAT32, _sceneRasterWidth, _sceneRasterHeight);
+            longitudeBand.setUnit("degree");
+            product.addBand(longitudeBand);
+            _datasetMapping.put(longitudeBand, longitude);
+        }
+    }
+
+    private void addGeoCoding(Product product) throws IOException {
         final Attribute epsgCodeAtt = getGlobalAttribute("Epsg_Code");
         if (epsgCodeAtt != null) {
             final long epsgCodeValue = (long) epsgCodeAtt.getData();
@@ -151,12 +167,10 @@ public class PrismaProductReader extends AbstractProductReader {
                 throw new RuntimeException(_prefixErrorMessage + "Could not create CrsGeoCoding.", e);
             }
         } else {
-            final Dataset latitude = (Dataset) findNode(_hdfFile, "Latitude");
-            final Dataset longitude = (Dataset) findNode(_hdfFile, "Longitude");
-            if (latitude != null && longitude != null) {
-                final float[] latitudes = (float[]) latitude.getData();
-                final float[] longitudes = (float[]) longitude.getData();
-//                product.setGeoCoding(PrismaGeoCoding.createGeoCoding(latitudes, longitudes, _sceneRasterWidth, _sceneRasterHeight));
+            final Band latBand = product.getBand("Latitude");
+            final Band lonBand = product.getBand("Longitude");
+            if (latBand != null && lonBand != null) {
+                product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand));
             }
         }
     }
@@ -171,22 +185,22 @@ public class PrismaProductReader extends AbstractProductReader {
         return minEasting;
     }
 
-    private void addCubeBands(Group prs_l2d_hco, Product product) throws ProductIOException {
-        final Node vnirCube = findNode(prs_l2d_hco, "VNIR_Cube");
-        _vnirCubeExist = vnirCube instanceof Dataset;
-        if (_vnirCubeExist) {
-            _vnirCube = (ContiguousDatasetImpl) vnirCube;
+    private void addCubeBands(Group group, Product product) throws ProductIOException {
+        final Node vnirCube = findNode(group, "VNIR_Cube");
+        boolean vnirCubeExist = vnirCube instanceof Dataset;
+        if (vnirCubeExist) {
+            ContiguousDatasetImpl cube = (ContiguousDatasetImpl) vnirCube;
             final String cubeName = "Vnir";
-            addCubeBands(cubeName, product, _vnirCube);
+            addCubeBands(cubeName, product, cube);
             appendAutoGrouping(cubeName);
         }
 
-        final Node swirCube = findNode(prs_l2d_hco, "SWIR_Cube");
-        _swirCubeExist = swirCube instanceof Dataset;
-        if (_swirCubeExist) {
-            _swirCube = (ContiguousDatasetImpl) swirCube;
+        final Node swirCube = findNode(group, "SWIR_Cube");
+        boolean swirCubeExist = swirCube instanceof Dataset;
+        if (swirCubeExist) {
+            ContiguousDatasetImpl cube = (ContiguousDatasetImpl) swirCube;
             final String cubeName = "Swir";
-            addCubeBands(cubeName, product, _swirCube);
+            addCubeBands(cubeName, product, cube);
             appendAutoGrouping(cubeName);
         }
     }
@@ -226,6 +240,7 @@ public class PrismaProductReader extends AbstractProductReader {
             band.setScalingOffset(scaleMin);
             band.setUnit("1");
             product.addBand(band);
+            _datasetMapping.put(band, cube);
         }
     }
 
@@ -259,28 +274,112 @@ public class PrismaProductReader extends AbstractProductReader {
             Band destBand,
             int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
 
-        long[] sliceOffset = {sourceOffsetY, _cubeIndex.get(destBand), sourceOffsetX};
-        int[] sliceDimensions = {destHeight, 1, destWidth};
-
-        final ByteBuffer sliceByteBuffer;
-        if (destBand.getName().startsWith("Vnir")) {
-            sliceByteBuffer = _vnirCube.getSliceDataBuffer(sliceOffset, sliceDimensions);
+        if (destBand.getName().startsWith("Vnir") || destBand.getName().startsWith("Swir")) {
+            readFromCube(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
+                         destBand, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer, pm);
         } else {
-            sliceByteBuffer = _swirCube.getSliceDataBuffer(sliceOffset, sliceDimensions);
+            readFromDataset(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
+                            destBand, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer, pm);
         }
-        final ShortBuffer shortBuffer = sliceByteBuffer.asShortBuffer();
+    }
+
+    private void readFromDataset(
+            int srcOffsetX, int srcOffsetY, int srcWidth, int srcHeight, int srcStepX, int srcStepY,
+            Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
+            ProgressMonitor pm) {
+        long[] sliceOffset = {srcOffsetY, srcOffsetX};
+        int[] sliceDimensions = {srcHeight, srcWidth};
+        final ContiguousDatasetImpl dataset = (ContiguousDatasetImpl) _datasetMapping.get(destBand);
+        final ByteBuffer sliceByteBuffer = dataset.getSliceDataBuffer(sliceOffset, sliceDimensions);
+        final int destBufferType = destBuffer.getType();
+        final boolean xStepping = srcStepX > 1;
+        final boolean yStepping = srcStepY > 1;
+        if (destBufferType == ProductData.TYPE_INT8 || destBufferType == ProductData.TYPE_UINT8) {
+            if (xStepping || yStepping) {
+                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
+                              sliceByteBuffer.array(), destBuffer.getElems());
+            } else {
+                final byte[] destBytes = (byte[]) destBuffer.getElems();
+                sliceByteBuffer.get(destBytes);
+            }
+        } else if (destBufferType == ProductData.TYPE_INT16 || destBufferType == ProductData.TYPE_UINT16) {
+            if (xStepping || yStepping) {
+                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
+                              sliceByteBuffer.asShortBuffer().array(), destBuffer.getElems());
+            } else {
+                final short[] shorts = (short[]) destBuffer.getElems();
+                sliceByteBuffer.asShortBuffer().get(shorts);
+            }
+        } else if (destBufferType == ProductData.TYPE_INT32 || destBufferType == ProductData.TYPE_UINT32) {
+            if (xStepping || yStepping) {
+                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
+                              sliceByteBuffer.asIntBuffer().array(), destBuffer.getElems());
+            } else {
+                final int[] ints = (int[]) destBuffer.getElems();
+                sliceByteBuffer.asIntBuffer().get(ints);
+            }
+        } else if (destBufferType == ProductData.TYPE_FLOAT32) {
+            if (xStepping || yStepping) {
+                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
+                              sliceByteBuffer.asFloatBuffer().array(), destBuffer.getElems());
+            } else {
+                final float[] floats = (float[]) destBuffer.getElems();
+                sliceByteBuffer.asFloatBuffer().get(floats);
+            }
+        } else if (destBufferType == ProductData.TYPE_FLOAT64) {
+            if (xStepping || yStepping) {
+                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
+                              sliceByteBuffer.asDoubleBuffer().array(), destBuffer.getElems());
+            } else {
+                final double[] doubles = (double[]) destBuffer.getElems();
+                sliceByteBuffer.asDoubleBuffer().get(doubles);
+            }
+        } else {
+            throw new IllegalArgumentException("Unsupported data type: " + destBufferType);
+        }
+    }
+
+    private static void subsetReading(int srcWidth, int srcStepX, int srcStepY, int destWidth, int destHeight, Object src, Object dest) {
+        for (int y = 0; y < destHeight; y++) {
+            for (int x = 0; x < destWidth; x++) {
+                final int srcIndex = (y * srcStepY) * srcWidth + x * srcStepX;
+                System.arraycopy(src, srcIndex, dest, y * destWidth + x, 1);
+            }
+        }
+    }
+
+    private void readFromCube(
+            int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+            Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
+            ProgressMonitor pm) {
+        long[] sliceOffset = {sourceOffsetY, _cubeIndex.get(destBand), sourceOffsetX};
+        int[] sliceDimensions = {sourceHeight, 1, sourceWidth};
+        final ContiguousDatasetImpl cube = (ContiguousDatasetImpl) _datasetMapping.get(destBand);
+        final ByteBuffer sliceByteBuffer = cube.getSliceDataBuffer(sliceOffset, sliceDimensions);
         final short[] shorts = (short[]) destBuffer.getElems();
-        shortBuffer.get(shorts);
+        final ShortBuffer shortBuffer = sliceByteBuffer.asShortBuffer();
+        if (sourceStepX > 1 || sourceStepY > 1) {
+            subsetReading(sourceWidth, sourceStepX, sourceStepY, destWidth, destHeight,
+                          shortBuffer.array(), shorts);
+        } else {
+            shortBuffer.get(shorts);
+        }
     }
 
     private static Node findNode(Group group, String name) {
+        final Pattern pattern = Pattern.compile(name, Pattern.CASE_INSENSITIVE);
+
+        return findNode(group, pattern);
+    }
+
+    private static Node findNode(Group group, Pattern pattern) {
         for (Node node : group) {
             final String nodeName = node.getName();
-            if (nodeName.equalsIgnoreCase(name)) {
+            if (pattern.matcher(nodeName).matches()) {
                 return node;
             }
             if (node instanceof Group) {
-                final Node found = findNode((Group) node, name);
+                final Node found = findNode((Group) node, pattern);
                 if (found != null) {
                     return found;
                 }

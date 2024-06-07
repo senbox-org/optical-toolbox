@@ -54,8 +54,8 @@ public class PrismaL2DProductReaderTest {
 
     private static void checkL2DProduct(Product product) {
         assertThat(product, is(notNullValue()));
-        assertThat(product.getSceneRasterWidth(), is(1213));
-        assertThat(product.getSceneRasterHeight(), is(1239));
+        assertThat(product.getSceneRasterWidth(), is(1239));
+        assertThat(product.getSceneRasterHeight(), is(1213));
     }
 
     @Test
