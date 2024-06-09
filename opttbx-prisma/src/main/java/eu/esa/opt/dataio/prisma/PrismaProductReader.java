@@ -122,14 +122,14 @@ public class PrismaProductReader extends AbstractProductReader {
     private void addBands(Group group, Product product) {
         final Dataset latitude = (Dataset) findNode(group, "Latitude");
         if (latitude != null) {
-            final Band latitudeBand = new Band("Latitude", ProductData.TYPE_FLOAT32, _sceneRasterWidth, _sceneRasterHeight);
+            final Band latitudeBand = new Band("Latitude", ProductData.TYPE_FLOAT64, _sceneRasterWidth, _sceneRasterHeight);
             latitudeBand.setUnit("degree");
             product.addBand(latitudeBand);
             _datasetMapping.put(latitudeBand, latitude);
         }
         final Dataset longitude = (Dataset) findNode(group, "Longitude");
         if (longitude != null) {
-            final Band longitudeBand = new Band("Longitude", ProductData.TYPE_FLOAT32, _sceneRasterWidth, _sceneRasterHeight);
+            final Band longitudeBand = new Band("Longitude", ProductData.TYPE_FLOAT64, _sceneRasterWidth, _sceneRasterHeight);
             longitudeBand.setUnit("degree");
             product.addBand(longitudeBand);
             _datasetMapping.put(longitudeBand, longitude);
@@ -281,89 +281,34 @@ public class PrismaProductReader extends AbstractProductReader {
             readFromDataset(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
                             destBand, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer, pm);
         }
+        pm.worked(sourceWidth * sourceHeight);
     }
 
     private void readFromDataset(
             int srcOffsetX, int srcOffsetY, int srcWidth, int srcHeight, int srcStepX, int srcStepY,
             Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
             ProgressMonitor pm) {
+        final ContiguousDatasetImpl dataset = (ContiguousDatasetImpl) _datasetMapping.get(destBand);
+
         long[] sliceOffset = {srcOffsetY, srcOffsetX};
         int[] sliceDimensions = {srcHeight, srcWidth};
-        final ContiguousDatasetImpl dataset = (ContiguousDatasetImpl) _datasetMapping.get(destBand);
         final ByteBuffer sliceByteBuffer = dataset.getSliceDataBuffer(sliceOffset, sliceDimensions);
-        final int destBufferType = destBuffer.getType();
-        final boolean xStepping = srcStepX > 1;
-        final boolean yStepping = srcStepY > 1;
-        if (destBufferType == ProductData.TYPE_INT8 || destBufferType == ProductData.TYPE_UINT8) {
-            if (xStepping || yStepping) {
-                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
-                              sliceByteBuffer.array(), destBuffer.getElems());
-            } else {
-                final byte[] destBytes = (byte[]) destBuffer.getElems();
-                sliceByteBuffer.get(destBytes);
-            }
-        } else if (destBufferType == ProductData.TYPE_INT16 || destBufferType == ProductData.TYPE_UINT16) {
-            if (xStepping || yStepping) {
-                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
-                              sliceByteBuffer.asShortBuffer().array(), destBuffer.getElems());
-            } else {
-                final short[] shorts = (short[]) destBuffer.getElems();
-                sliceByteBuffer.asShortBuffer().get(shorts);
-            }
-        } else if (destBufferType == ProductData.TYPE_INT32 || destBufferType == ProductData.TYPE_UINT32) {
-            if (xStepping || yStepping) {
-                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
-                              sliceByteBuffer.asIntBuffer().array(), destBuffer.getElems());
-            } else {
-                final int[] ints = (int[]) destBuffer.getElems();
-                sliceByteBuffer.asIntBuffer().get(ints);
-            }
-        } else if (destBufferType == ProductData.TYPE_FLOAT32) {
-            if (xStepping || yStepping) {
-                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
-                              sliceByteBuffer.asFloatBuffer().array(), destBuffer.getElems());
-            } else {
-                final float[] floats = (float[]) destBuffer.getElems();
-                sliceByteBuffer.asFloatBuffer().get(floats);
-            }
-        } else if (destBufferType == ProductData.TYPE_FLOAT64) {
-            if (xStepping || yStepping) {
-                subsetReading(srcWidth, srcStepX, srcStepY, destWidth, destHeight,
-                              sliceByteBuffer.asDoubleBuffer().array(), destBuffer.getElems());
-            } else {
-                final double[] doubles = (double[]) destBuffer.getElems();
-                sliceByteBuffer.asDoubleBuffer().get(doubles);
-            }
-        } else {
-            throw new IllegalArgumentException("Unsupported data type: " + destBufferType);
-        }
-    }
-
-    private static void subsetReading(int srcWidth, int srcStepX, int srcStepY, int destWidth, int destHeight, Object src, Object dest) {
-        for (int y = 0; y < destHeight; y++) {
-            for (int x = 0; x < destWidth; x++) {
-                final int srcIndex = (y * srcStepY) * srcWidth + x * srcStepX;
-                System.arraycopy(src, srcIndex, dest, y * destWidth + x, 1);
-            }
-        }
+        PrismaConstantsAndUtils.datatypeDependentDataTransfer(
+                sliceByteBuffer, srcWidth, srcHeight, srcStepX, srcStepY,
+                destBuffer, destOffsetX, destOffsetY, destWidth, destHeight);
     }
 
     private void readFromCube(
             int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
             Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
             ProgressMonitor pm) {
+        final ContiguousDatasetImpl cube = (ContiguousDatasetImpl) _datasetMapping.get(destBand);
         long[] sliceOffset = {sourceOffsetY, _cubeIndex.get(destBand), sourceOffsetX};
         int[] sliceDimensions = {sourceHeight, 1, sourceWidth};
-        final ContiguousDatasetImpl cube = (ContiguousDatasetImpl) _datasetMapping.get(destBand);
         final ByteBuffer sliceByteBuffer = cube.getSliceDataBuffer(sliceOffset, sliceDimensions);
-        final short[] shorts = (short[]) destBuffer.getElems();
-        final ShortBuffer shortBuffer = sliceByteBuffer.asShortBuffer();
-        if (sourceStepX > 1 || sourceStepY > 1) {
-            subsetReading(sourceWidth, sourceStepX, sourceStepY, destWidth, destHeight,
-                          shortBuffer.array(), shorts);
-        } else {
-            shortBuffer.get(shorts);
-        }
+        PrismaConstantsAndUtils.datatypeDependentDataTransfer(
+                sliceByteBuffer, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
+                destBuffer, destOffsetX, destOffsetY, destWidth, destHeight);
     }
 
     private static Node findNode(Group group, String name) {
@@ -392,5 +337,7 @@ public class PrismaProductReader extends AbstractProductReader {
     public void close() throws IOException {
         super.close();
         _hdfFile.close();
+        _cubeIndex.clear();
+        _datasetMapping.clear();
     }
 }
