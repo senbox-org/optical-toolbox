@@ -18,7 +18,10 @@
 
 package eu.esa.opt.dataio.prisma;
 
+import org.esa.snap.core.datamodel.ProductData;
+
 import java.io.File;
+import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
@@ -42,7 +45,7 @@ final class PrismaConstantsAndUtils {
             String.class
     };
 
-    private static final OutputConverter[] IO_CONVERTERS = new OutputConverter[]{
+    private static final InputConverter[] INPUT_CONVERTERS = new InputConverter[]{
             output -> (Path) output,
             output -> ((File) output).toPath(),
             output -> Paths.get((String) output)
@@ -52,14 +55,108 @@ final class PrismaConstantsAndUtils {
     static Path convertToPath(final Object object) {
         for (int i = 0; i < IO_TYPES.length; i++) {
             if (IO_TYPES[i].isInstance(object)) {
-                return IO_CONVERTERS[i].convertOutput(object);
+                return INPUT_CONVERTERS[i].convertInput(object);
             }
         }
         return null;
     }
 
-    private interface OutputConverter {
+    static void getDataSubSampled(Object src, int srcWidth, int srcHeight, int srcStepX, int srcStepY, Object dest, int destWidth, int destHeight) {
+        for (int y = 0; y < destHeight; y++) {
+            final int srcY = y * srcStepY;
+//            if (srcY >= srcHeight) {
+//                break;
+//            }
+            for (int x = 0; x < destWidth; x++) {
+                final int srcX = x * srcStepX;
+//                if (srcX >= srcWidth) {
+//                    break;
+//                }
+                final int srcIndex = srcY * srcWidth + srcX;
+                final int destIndex = y * destWidth + x;
+                System.arraycopy(src, srcIndex, dest, destIndex, 1);
+            }
+        }
+    }
 
-        Path convertOutput(Object output);
+    static void datatypeDependentDataTransfer(ByteBuffer sliceByteBuffer, int srcWidth, int srcHeight, int srcStepX, int srcStepY, ProductData destBuffer, int destOffsetX, int destOffsetY, int destWidth, int destHeight) {
+        final int destBufferType = destBuffer.getType();
+        final boolean subSampling = isSubSampling(srcStepX, srcStepY);
+        if (destBufferType == ProductData.TYPE_INT8 || destBufferType == ProductData.TYPE_UINT8) {
+            if (subSampling) {
+                getDataSubSampled(
+                        sliceByteBuffer.array(), srcWidth, srcHeight, srcStepX, srcStepY,
+                        destBuffer.getElems(), destWidth, destHeight);
+            } else {
+                final byte[] destBytes = (byte[]) destBuffer.getElems();
+                sliceByteBuffer.get(destBytes);
+            }
+        } else if (destBufferType == ProductData.TYPE_INT16 || destBufferType == ProductData.TYPE_UINT16) {
+            if (subSampling) {
+                final short[] shorts = new short[srcWidth * srcHeight];
+                sliceByteBuffer.asShortBuffer().get(shorts);
+                getDataSubSampled(
+                        shorts, srcWidth, srcHeight, srcStepX, srcStepY,
+                        destBuffer.getElems(), destWidth, destHeight);
+            } else {
+                final short[] shorts = (short[]) destBuffer.getElems();
+                sliceByteBuffer.asShortBuffer().get(shorts);
+            }
+        } else if (destBufferType == ProductData.TYPE_INT32 || destBufferType == ProductData.TYPE_UINT32) {
+            if (subSampling) {
+                final int[] ints = new int[srcWidth * srcHeight];
+                sliceByteBuffer.asIntBuffer().get(ints);
+                getDataSubSampled(
+                        ints, srcWidth, srcHeight, srcStepX, srcStepY,
+                        destBuffer.getElems(), destWidth, destHeight);
+            } else {
+                final int[] ints = (int[]) destBuffer.getElems();
+                sliceByteBuffer.asIntBuffer().get(ints);
+            }
+        } else if (destBufferType == ProductData.TYPE_INT64 || destBufferType == ProductData.TYPE_UINT64) {
+            if (subSampling) {
+                final long[] longs = new long[srcWidth * srcHeight];
+                sliceByteBuffer.asLongBuffer().get(longs);
+                getDataSubSampled(
+                        longs, srcWidth, srcHeight, srcStepX, srcStepY,
+                        destBuffer.getElems(), destWidth, destHeight);
+            } else {
+                final long[] longs = (long[]) destBuffer.getElems();
+                sliceByteBuffer.asLongBuffer().get(longs);
+            }
+        } else if (destBufferType == ProductData.TYPE_FLOAT32) {
+            if (subSampling) {
+                final float[] floats = new float[srcWidth * srcHeight];
+                sliceByteBuffer.asFloatBuffer().get(floats);
+                getDataSubSampled(
+                        floats, srcWidth, srcHeight, srcStepX, srcStepY,
+                        destBuffer.getElems(), destWidth, destHeight);
+            } else {
+                final float[] floats = (float[]) destBuffer.getElems();
+                sliceByteBuffer.asFloatBuffer().get(floats);
+            }
+        } else if (destBufferType == ProductData.TYPE_FLOAT64) {
+            if (subSampling) {
+                final double[] doubles = new double[srcWidth * srcHeight];
+                sliceByteBuffer.asDoubleBuffer().get(doubles);
+                getDataSubSampled(
+                        doubles, srcWidth, srcHeight, srcStepX, srcStepY,
+                        destBuffer.getElems(), destWidth, destHeight);
+            } else {
+                final double[] doubles = (double[]) destBuffer.getElems();
+                sliceByteBuffer.asDoubleBuffer().get(doubles);
+            }
+        } else {
+            throw new IllegalArgumentException("Unsupported data type: " + destBufferType);
+        }
+    }
+
+    static boolean isSubSampling(int srcStepX, int srcStepY) {
+        return srcStepX != 1 || srcStepY != 1;
+    }
+
+    private interface InputConverter {
+
+        Path convertInput(Object input);
     }
 }
