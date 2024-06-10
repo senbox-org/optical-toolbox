@@ -20,8 +20,11 @@ import static org.hamcrest.MatcherAssert.*;
 
 public class PrismaL2DProductReaderTest {
 
-    private static final String prismaZipFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
-    private static final String prismaFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
+    private static final String prismaZipFilePath = "D:\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
+    private static final String prismaFilePath = "D:\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
+
+//    private static final String prismaZipFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
+//    private static final String prismaFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
 
     private PrismaProductReader ppr;
 

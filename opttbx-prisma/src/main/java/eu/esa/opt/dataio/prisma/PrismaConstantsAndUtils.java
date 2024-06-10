@@ -24,6 +24,8 @@ import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 final class PrismaConstantsAndUtils {
@@ -34,10 +36,22 @@ final class PrismaConstantsAndUtils {
     static final String PRISMA_HDF_EXTENSION = ".he5";
     static final String PRISMA_ZIP_CONTAINER_EXTENSION = ".zip";
     static final String PRISMA_FILENAME_REGEX
-            = "PRS_L(1|2B|2D)_.*_\\d{14}_\\d{14}_\\d+\\.(he5|zip)";
+            = "PRS_L(1|2B|2C|2D)_.*_\\d{14}_\\d{14}_\\d+\\.(he5|zip)";
     static final Pattern PRISMA_FILENAME_PATTERN
             = Pattern.compile(PRISMA_FILENAME_REGEX, Pattern.CASE_INSENSITIVE);
     static final String GROUP_NAME_PATTERN_HCO = "PRS_.*_HCO";
+    static final Map<String, String> LEVEL_DEPENDENT_CUBE_KONTEXT_IDENTIFIER = new HashMap<>(){{
+        put("1", "_Ltoa");
+        put("2B", "_Lboa");
+        put("2C", "_Rrs");
+        put("2D", "_Rrs");
+    }};
+    static final Map<String, String> LEVEL_DEPENDENT_CUBE_UNIT = new HashMap<>(){{
+        put("1", "_Ltoa");
+        put("2B", "_Lboa");
+        put("2C", "1");
+        put("2D", "1");
+    }};
 
     static final Class<?>[] IO_TYPES = new Class[]{
             Path.class,
