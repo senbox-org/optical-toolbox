@@ -5,7 +5,7 @@ import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
 import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
-import eu.esa.opt.snap.core.datamodel.band.SparseDataBand;
+import eu.esa.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
