@@ -7,6 +7,8 @@ import io.jhdf.api.Dataset;
 import io.jhdf.api.Group;
 import io.jhdf.api.Node;
 import io.jhdf.dataset.ContiguousDatasetImpl;
+import io.jhdf.object.datatype.DataType;
+import io.jhdf.object.datatype.FixedPoint;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -24,7 +26,6 @@ import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
-import java.nio.ShortBuffer;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -33,12 +34,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.function.BinaryOperator;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.DATASET_NAME_LONGITUDE;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.GROUP_NAME_PATTERN_HCO;
+import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.LEVEL_DEPENDENT_CUBE_KONTEXT_IDENTIFIER;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_PATTERN;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_REGEX;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToPath;
@@ -53,6 +57,9 @@ public class PrismaProductReader extends AbstractProductReader {
     private HdfFile _hdfFile;
     private int _sceneRasterWidth;
     private int _sceneRasterHeight;
+    private TreeSet<String> dimsSet = new TreeSet<>();
+    private TreeMap<String, Dataset> datasetMap2D = new TreeMap<>();
+    private TreeMap<String, Dataset> datasetMap3D = new TreeMap<>();
 
     /**
      * Constructs a new abstract product reader.
@@ -95,6 +102,7 @@ public class PrismaProductReader extends AbstractProductReader {
         if (_hdfFile == null) {
             throw new ProductIOException(_prefixErrorMessage + "HDF could not be opened.");
         }
+        collectDimensionsAndDatasets(_hdfFile);
         final Group prs_hco_grp = (Group) findNode(_hdfFile, GROUP_NAME_PATTERN_HCO);
         if (prs_hco_grp == null) {
             throw new ProductIOException(_prefixErrorMessage + "Group '" + GROUP_NAME_PATTERN_HCO + "' not found.");
@@ -213,6 +221,8 @@ public class PrismaProductReader extends AbstractProductReader {
     }
 
     private void addCubeBands(String cubeName, Product product, ContiguousDatasetImpl cube) throws ProductIOException {
+        final String processingLevel = (String) getGlobalAttributeNotNull("Processing_Level").getData();
+        final String kontextIdentifier = LEVEL_DEPENDENT_CUBE_KONTEXT_IDENTIFIER.get(processingLevel);
         final float scaleMin = (float) getGlobalAttributeNotNull("L2Scale" + cubeName + "Min").getData();
         final float scaleMax = (float) getGlobalAttributeNotNull("L2Scale" + cubeName + "Max").getData();
         final double scalingFactor = (scaleMax - scaleMin) / 65535;
@@ -220,14 +230,36 @@ public class PrismaProductReader extends AbstractProductReader {
         final float[] wavelengths = (float[]) getGlobalAttributeNotNull("List_Cw_" + cubeName).getData();
         final float[] bandwidths = (float[]) getGlobalAttributeNotNull("List_Fwhm_" + cubeName).getData();
 
+        final int[] dimensions = cube.getDimensions();
+        final int width = dimensions[2];
+        final int height = dimensions[0];
         final int numBands = getNumBands(cube);
+        final int numDigits = ("" + numBands).length();
+        int productDataType = -1;
+        final DataType dataType = cube.getDataType();
+        if (dataType instanceof FixedPoint) {
+            FixedPoint fixedPoint = (FixedPoint) dataType;
+            final boolean signed = fixedPoint.isSigned();
+            final short bitPrecision = fixedPoint.getBitPrecision();
+            if (bitPrecision == 8) {
+                productDataType = signed ? ProductData.TYPE_INT8 : ProductData.TYPE_UINT8;
+            } else if (bitPrecision == 16) {
+                productDataType = signed ? ProductData.TYPE_INT16 : ProductData.TYPE_UINT16;
+            } else if (bitPrecision == 32) {
+                productDataType = signed ? ProductData.TYPE_INT32 : ProductData.TYPE_UINT32;
+            } else if (bitPrecision == 64) {
+                productDataType = signed ? ProductData.TYPE_INT64 : ProductData.TYPE_UINT64;
+            }   else {
+                throw new ProductIOException(_prefixErrorMessage + "Unsupported data type.");
+            }
+        }
         for (int i = 0; i < numBands; i++) {
             final float wavelength = wavelengths[i];
             if (wavelength == 0.0f) {
                 continue;
             }
-            String bandName = String.format(cubeName + "_Rrs_%02d", i + 1);
-            final Band band = new Band(bandName, ProductData.TYPE_UINT16, _sceneRasterWidth, _sceneRasterHeight) {
+            String bandName = String.format(cubeName + kontextIdentifier + "_%0"+ numDigits +"d", i + 1);
+            final Band band = new Band(bandName, productDataType, width, height) {
                 @Override
                 public boolean isProductReaderDirectlyUsable() {
                     return true;
@@ -339,5 +371,37 @@ public class PrismaProductReader extends AbstractProductReader {
         _hdfFile.close();
         _cubeIndex.clear();
         _datasetMapping.clear();
+    }
+
+    private void collectDimensionsAndDatasets(Group group) {
+        group.getChildren().forEach((s, node) -> {
+            if (node.isGroup()) {
+                final Group gn = (Group) node;
+//                writer.println("    " + gn.getPath());
+                collectDimensionsAndDatasets(gn);
+            } else if (!node.isLink() && !node.isAttributeCreationOrderTracked()) {
+                final Dataset dataset = (Dataset) node;
+                final int[] dimensions = dataset.getDimensions();
+                if (dimensions.length > 1 && dimensions[0] > 256 && dimensions[dimensions.length - 1] > 256) {
+                    final String dimString = Arrays.toString(dimensions);
+                    dimsSet.add(dimString);
+                    if (dimensions.length == 2) {
+                        datasetMap2D.put(dataset.getPath(), dataset);
+                    } else {
+                        datasetMap3D.put(dataset.getPath(), dataset);
+                    }
+
+//                    if (dimensions.length >1) {
+//                        final String parentPath = dataset.getParent().getPath();
+//                        if (!parentPath.equals(lastParentPath)) {
+//                            lastParentPath = parentPath;
+//                            printWriter.println("    " + parentPath);
+//                        }
+//                        printWriter.print("        " + node.getName());
+//                        printWriter.println(" --> " + dimString);
+//                    }
+                }
+            }
+        });
     }
 }
