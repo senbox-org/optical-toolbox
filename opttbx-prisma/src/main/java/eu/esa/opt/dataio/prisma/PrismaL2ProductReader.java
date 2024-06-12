@@ -385,17 +385,17 @@ public class PrismaL2ProductReader extends AbstractProductReader {
 
         if (_cubeIndex.containsKey(destBand)) {
             readFromCube(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
-                         destBand, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer, pm);
+                         destBand, destWidth, destHeight, destBuffer, pm);
         } else {
             readFromDataset(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
-                            destBand, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer, pm);
+                            destBand, destWidth, destHeight, destBuffer, pm);
         }
         pm.worked(sourceWidth * sourceHeight);
     }
 
     private void readFromDataset(
             int srcOffsetX, int srcOffsetY, int srcWidth, int srcHeight, int srcStepX, int srcStepY,
-            Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
+            Band destBand, int destWidth, int destHeight, ProductData destBuffer,
             ProgressMonitor pm) {
         final Dataset dataset = _datasetMapping.get(destBand);
 
@@ -409,13 +409,13 @@ public class PrismaL2ProductReader extends AbstractProductReader {
                     ((ContiguousDatasetImpl) dataset).getSliceDataBuffer(sliceOffset, sliceDimensions);
             PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                     sliceByteBuffer, srcWidth, srcHeight, srcStepX, srcStepY,
-                    destBuffer, destOffsetX, destOffsetY, destWidth, destHeight);
+                    destBuffer, destWidth, destHeight);
         }
     }
 
     private void readFromCube(
             int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
-            Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
+            Band destBand, int destWidth, int destHeight, ProductData destBuffer,
             ProgressMonitor pm) {
         final ContiguousDatasetImpl cube = (ContiguousDatasetImpl) _datasetMapping.get(destBand);
         long[] sliceOffset = {sourceOffsetY, _cubeIndex.get(destBand), sourceOffsetX};
@@ -423,7 +423,7 @@ public class PrismaL2ProductReader extends AbstractProductReader {
         final ByteBuffer sliceByteBuffer = cube.getSliceDataBuffer(sliceOffset, sliceDimensions);
         PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                 sliceByteBuffer, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
-                destBuffer, destOffsetX, destOffsetY, destWidth, destHeight);
+                destBuffer, destWidth, destHeight);
     }
 
     @Override

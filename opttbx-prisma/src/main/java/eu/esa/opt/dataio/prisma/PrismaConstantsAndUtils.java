@@ -19,7 +19,6 @@
 package eu.esa.opt.dataio.prisma;
 
 import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.core.transform.GeoCodingMathTransform;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -74,45 +73,7 @@ final class PrismaConstantsAndUtils {
         return null;
     }
 
-/*
-    static void getDataSubSampledByte(byte[] src, int srcWidth, int srcStepX, int srcStepY, byte[] dest, int destWidth, int destHeight) {
-        for (int y = 0; y < destHeight; y++) {
-            final int srcY = y * srcStepY;
-            for (int x = 0; x < destWidth; x++) {
-                final int srcX = x * srcStepX;
-                final int srcIndex = srcY * srcWidth + srcX;
-                final int destIndex = y * destWidth + x;
-                dest[destIndex] = src[srcIndex];
-            }
-        }
-    }
-
-    static void getDataSubSampledShort(short[] src, int srcWidth, int srcStepX, int srcStepY, short[] dest, int destWidth, int destHeight) {
-        for (int y = 0; y < destHeight; y++) {
-            final int srcY = y * srcStepY;
-            for (int x = 0; x < destWidth; x++) {
-                final int srcX = x * srcStepX;
-                final int srcIndex = srcY * srcWidth + srcX;
-                final int destIndex = y * destWidth + x;
-                dest[destIndex] = src[srcIndex];
-            }
-        }
-    }
-
-    static void getDataSubSampledInt(int[] src, int srcWidth, int srcStepX, int srcStepY, int[] dest, int destWidth, int destHeight) {
-        for (int y = 0; y < destHeight; y++) {
-            final int srcY = y * srcStepY;
-            for (int x = 0; x < destWidth; x++) {
-                final int srcX = x * srcStepX;
-                final int srcIndex = srcY * srcWidth + srcX;
-                final int destIndex = y * destWidth + x;
-                dest[destIndex] = src[srcIndex];
-            }
-        }
-    }
-*/
-
-    static void getDataSubSampled(TypedGetter src, int srcWidth, int srcStepX, int srcStepY, TypedSetter dest, int destWidth, int destHeight) {
+    static <T> void getDataSubSampled(TypedGetter<T> src, int srcWidth, int srcStepX, int srcStepY, TypedSetter<T> dest, int destWidth, int destHeight) {
         for (int y = 0; y < destHeight; y++) {
             final int srcY = y * srcStepY;
             for (int x = 0; x < destWidth; x++) {
@@ -132,18 +93,16 @@ final class PrismaConstantsAndUtils {
         void set(int index, T value);
     }
 
-    static void datatypeDependentDataTransfer(ByteBuffer sliceByteBuffer, int srcWidth, int srcHeight, int srcStepX, int srcStepY, ProductData destBuffer, int destOffsetX, int destOffsetY, int destWidth, int destHeight) {
+    static void datatypeDependentDataTransfer(ByteBuffer sliceByteBuffer, int srcWidth, int srcHeight, int srcStepX, int srcStepY, ProductData destBuffer, int destWidth, int destHeight) {
         final int destBufferType = destBuffer.getType();
         final boolean subSampling = isSubSampling(srcStepX, srcStepY);
         if (destBufferType == ProductData.TYPE_INT8 || destBufferType == ProductData.TYPE_UINT8) {
             if (subSampling) {
                 final byte[] src = sliceByteBuffer.array();
                 final byte[] dest = (byte[]) destBuffer.getElems();
-                final TypedGetter<Byte> typedGetter = index -> src[index];
-                final TypedSetter<Byte> typedSetter = (index, value) -> dest[index] = value;
                 getDataSubSampled(
-                        typedGetter, srcWidth, srcStepX, srcStepY,
-                        typedSetter, destWidth, destHeight);
+                        index -> src[index], srcWidth, srcStepX, srcStepY,
+                        (index1, value) -> dest[index1] = value, destWidth, destHeight);
             } else {
                 final byte[] destBytes = (byte[]) destBuffer.getElems();
                 sliceByteBuffer.get(destBytes);
@@ -153,11 +112,9 @@ final class PrismaConstantsAndUtils {
                 final short[] src = new short[srcWidth * srcHeight];
                 sliceByteBuffer.asShortBuffer().get(src);
                 final short[] dest = (short[]) destBuffer.getElems();
-                final TypedGetter<Short> typedGetter = index -> src[index];
-                final TypedSetter<Short> typedSetter = (index, value) -> dest[index] = value;
                 getDataSubSampled(
-                        typedGetter, srcWidth, srcStepX, srcStepY,
-                        typedSetter, destWidth, destHeight);
+                        index -> src[index], srcWidth, srcStepX, srcStepY,
+                        (index1, value) -> dest[index1] = value, destWidth, destHeight);
             } else {
                 final short[] shorts = (short[]) destBuffer.getElems();
                 sliceByteBuffer.asShortBuffer().get(shorts);
@@ -167,11 +124,9 @@ final class PrismaConstantsAndUtils {
                 final int[] src = new int[srcWidth * srcHeight];
                 sliceByteBuffer.asIntBuffer().get(src);
                 final int[] dest = (int[]) destBuffer.getElems();
-                final TypedGetter<Integer> typedGetter = index -> src[index];
-                final TypedSetter<Integer> typedSetter = (index, value) -> dest[index] = value;
                 getDataSubSampled(
-                        typedGetter, srcWidth, srcStepX, srcStepY,
-                        typedSetter, destWidth, destHeight);
+                        index -> src[index], srcWidth, srcStepX, srcStepY,
+                        (index1, value) -> dest[index1] = value, destWidth, destHeight);
             } else {
                 final int[] ints = (int[]) destBuffer.getElems();
                 sliceByteBuffer.asIntBuffer().get(ints);
@@ -181,11 +136,9 @@ final class PrismaConstantsAndUtils {
                 final long[] src = new long[srcWidth * srcHeight];
                 sliceByteBuffer.asLongBuffer().get(src);
                 final long[] dest = (long[]) destBuffer.getElems();
-                final TypedGetter<Long> typedGetter = index -> src[index];
-                final TypedSetter<Long> typedSetter = (index, value) -> dest[index] = value;
                 getDataSubSampled(
-                        typedGetter, srcWidth, srcStepX, srcStepY,
-                        typedSetter, destWidth, destHeight);
+                        index -> src[index], srcWidth, srcStepX, srcStepY,
+                        (index1, value) -> dest[index1] = value, destWidth, destHeight);
             } else {
                 final long[] longs = (long[]) destBuffer.getElems();
                 sliceByteBuffer.asLongBuffer().get(longs);
@@ -195,11 +148,9 @@ final class PrismaConstantsAndUtils {
                 final float[] floats = new float[srcWidth * srcHeight];
                 sliceByteBuffer.asFloatBuffer().get(floats);
                 final float[] dest = (float[]) destBuffer.getElems();
-                final TypedGetter<Float> typedGetter = index -> floats[index];
-                final TypedSetter<Float> typedSetter = (index, value) -> dest[index] = value;
                 getDataSubSampled(
-                        typedGetter, srcWidth, srcStepX, srcStepY,
-                        typedSetter, destWidth, destHeight);
+                        index -> floats[index], srcWidth, srcStepX, srcStepY,
+                        (index1, value) -> dest[index1] = value, destWidth, destHeight);
             } else {
                 final float[] floats = (float[]) destBuffer.getElems();
                 sliceByteBuffer.asFloatBuffer().get(floats);
@@ -209,11 +160,9 @@ final class PrismaConstantsAndUtils {
                 final double[] src = new double[srcWidth * srcHeight];
                 sliceByteBuffer.asDoubleBuffer().get(src);
                 final double[] dest = (double[]) destBuffer.getElems();
-                final TypedGetter<Double> typedGetter = index -> src[index];
-                final TypedSetter<Double> typedSetter = (index, value) -> dest[index] = value;
                 getDataSubSampled(
-                        typedGetter, srcWidth, srcStepX, srcStepY,
-                        typedSetter, destWidth, destHeight);
+                        index -> src[index], srcWidth, srcStepX, srcStepY,
+                        (index1, value) -> dest[index1] = value, destWidth, destHeight);
             } else {
                 final double[] doubles = (double[]) destBuffer.getElems();
                 sliceByteBuffer.asDoubleBuffer().get(doubles);

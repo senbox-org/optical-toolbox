@@ -1,15 +1,10 @@
 package eu.esa.opt.dataio.prisma;
 
 import org.esa.snap.core.datamodel.ProductData;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.nio.ByteBuffer;
 
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertEquals;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
@@ -28,7 +23,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Byte {
         //execution
         PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                 srcBuffer, 3, 3, 1, 1,
-                destBuffer, 0, 0, 3, 3);
+                destBuffer, 3, 3);
 
         //verification
         assertThat(destBuffer.getElems(), is(new byte[]{
@@ -53,7 +48,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Byte {
         //execution
         PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                 srcBuffer, 5, 5, 2, 2,
-                destBuffer, 0, 0, 3, 3);
+                destBuffer, 3, 3);
 
         //verification
         assertThat(destBuffer.getElems(), is(new byte[]{
@@ -76,7 +71,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Byte {
         //execution
         PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                 srcBuffer, 3, 3, 1, 1,
-                destBuffer, 2, 2, 3, 3);
+                destBuffer, 3, 3);
 
         //verification
         assertThat(destBuffer.getElems(), is(new byte[]{
@@ -101,7 +96,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Byte {
         //execution
         PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                 srcBuffer, 5, 5, 2, 2,
-                destBuffer, 2, 2, 3, 3);
+                destBuffer, 3, 3);
 
         //verification
         assertThat(destBuffer.getElems(), is(new byte[]{

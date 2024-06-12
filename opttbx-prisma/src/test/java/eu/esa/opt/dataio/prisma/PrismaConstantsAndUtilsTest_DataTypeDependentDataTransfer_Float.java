@@ -6,7 +6,6 @@ import org.mockito.Mockito;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-import java.nio.LongBuffer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -28,7 +27,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Float {
         //execution
         PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                 sliceBuffer, 3, 3, 1, 1,
-                destBuffer, 0, 0, 3, 3);
+                destBuffer, 3, 3);
 
         //verification
         assertThat(destBuffer.getElems(), is(new float[]{
@@ -55,7 +54,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Float {
         //execution
         PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                 sliceBuffer, 5, 5, 2, 2,
-                destBuffer, 0, 0, 3, 3);
+                destBuffer, 3, 3);
 
         //verification
         assertThat(destBuffer.getElems(), is(new float[]{

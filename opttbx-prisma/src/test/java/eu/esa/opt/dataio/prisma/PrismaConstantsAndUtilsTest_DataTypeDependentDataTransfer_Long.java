@@ -27,7 +27,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Long {
         //execution
         PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                 sliceBuffer, 3, 3, 1, 1,
-                destBuffer, 0, 0, 3, 3);
+                destBuffer, 3, 3);
 
         //verification
         assertThat(destBuffer.getElems(), is(new long[]{
@@ -54,7 +54,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Long {
         //execution
         PrismaConstantsAndUtils.datatypeDependentDataTransfer(
                 sliceBuffer, 5, 5, 2, 2,
-                destBuffer, 0, 0, 3, 3);
+                destBuffer, 3, 3);
 
         //verification
         assertThat(destBuffer.getElems(), is(new long[]{
