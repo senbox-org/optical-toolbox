@@ -2,9 +2,7 @@ package eu.esa.opt.dataio.prisma;
 
 import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.dataio.DecodeQualification;
-import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.util.io.SnapFileFilter;
-import org.hamcrest.Factory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,12 +19,12 @@ public class PrismaProductReaderPluginTest {
     private final Path validZipPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.zip");
     private final Path invalidHdfPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.hdf");
     private final Path invalidZapPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.zap");
-    private PrismaProductReaderPlugin plugin;
+    private PrismaL2ProductReaderPlugin plugin;
 
     @Before
     @STTM("SNAP-3445")
     public void setUp() {
-        plugin = new PrismaProductReaderPlugin();
+        plugin = new PrismaL2ProductReaderPlugin();
     }
 
     @Test
@@ -64,7 +62,7 @@ public class PrismaProductReaderPluginTest {
     @Test
     @STTM("SNAP-3445")
     public void createReaderInstance() {
-        assertThat(plugin.createReaderInstance(), is(instanceOf(PrismaProductReader.class)));
+        assertThat(plugin.createReaderInstance(), is(instanceOf(PrismaL2ProductReader.class)));
     }
 
     @Test

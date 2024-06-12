@@ -7,7 +7,7 @@
             <file name="eu-esa-opt-dataio-prisma-ImportPrismaProduct.instance">
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
                 <attr name="delegate" methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
-                <attr name="displayName" stringvalue="Prisma L2D"/>
+                <attr name="displayName" stringvalue="Prisma L2"/>
                 <attr name="formatName" stringvalue="PRISMA"/>
                 <attr name="useAllFileFilter" boolvalue="false"/>
             </file>

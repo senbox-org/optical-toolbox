@@ -1,5 +1,8 @@
 package eu.esa.opt.dataio.prisma;
 
+import eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.TypedGetter;
+import eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.TypedSetter;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -39,20 +42,20 @@ public class PrismaConstantsAndUtilsTest {
                 0, 0, 0, 0, 0, 0, 0,
                 10, 0, 11, 0, 12, 0, 13};
         final int srcWidth = 7;
-        final int srcHeight = 5;
         final int srcStepX = 2;
         final int srcStepY = 2;
 
         final int[] target = new int[12];
-        final int destOffsetX = 0;
-        final int destOffsetY = 0;
         final int destWidth = 4;
         final int destHeight = 3;
 
+        final TypedGetter<Integer> typedGetter = index -> src[index];
+        final TypedSetter<Integer> typedSetter = (index, value) -> target[index] = value;
+
         //execution
         PrismaConstantsAndUtils.getDataSubSampled(
-                src, srcWidth, srcHeight, srcStepX,
-                srcStepY, target, destWidth, destHeight);
+                typedGetter, srcWidth, srcStepX, srcStepY,
+                typedSetter, destWidth, destHeight);
 
         //verification
         assertThat(target, is(new int[]{
@@ -71,23 +74,20 @@ public class PrismaConstantsAndUtilsTest {
                 0, 0, 0, 0, 0, 0, 0,
                 10, 0, 11, 0, 12, 0, 13};
         final int srcWidth = 7;
-        final int srcHeight = 5;
         final int srcStepX = 2;
         final int srcStepY = 2;
 
         final int[] target = new int[12];
-//        final int[] target = new int[70];
-        final int destOffsetX = 3;
-        final int destOffsetY = 2;
         final int destWidth = 4;
         final int destHeight = 3;
-//        final int destWidth = 10;
-//        final int destHeight = 7;
+
+        final TypedGetter<Integer> typedGetter = index -> src[index];
+        final TypedSetter<Integer> typedSetter = (index, value) -> target[index] = value;
 
         //execution
         PrismaConstantsAndUtils.getDataSubSampled(
-                src, srcWidth, srcHeight, srcStepX,
-                srcStepY, target, destWidth, destHeight);
+                typedGetter, srcWidth, srcStepX, srcStepY,
+                typedSetter, destWidth, destHeight);
 
         //verification
         assertThat(target, is(new int[]{
@@ -95,14 +95,6 @@ public class PrismaConstantsAndUtilsTest {
                 6, 7, 8, 9,
                 10, 11, 12, 13,
         }));
-//        assertThat(target, is(new int[]{
-//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                0, 0, 0, 2, 3, 4, 5, 0, 0, 0,
-//                0, 0, 0, 6, 7, 8, 9, 0, 0, 0,
-//                0, 0, 0, 10, 11, 12, 13, 0, 0, 0,
-//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
     }
 
     @Test
@@ -113,23 +105,20 @@ public class PrismaConstantsAndUtilsTest {
                 6, 7, 8, 9,
                 10, 11, 12, 13};
         final int srcWidth = 4;
-        final int srcHeight = 3;
         final int srcStepX = 1;
         final int srcStepY = 1;
 
         final int[] target = new int[12];
-//        final int[] target = new int[70];
-        final int destOffsetX = 3;
-        final int destOffsetY = 2;
         final int destWidth = 4;
         final int destHeight = 3;
-//        final int destWidth = 10;
-//        final int destHeight = 7;
+
+        final TypedGetter<Integer> typedGetter = index -> src[index];
+        final TypedSetter<Integer> typedSetter = (index, value) -> target[index] = value;
 
         //execution
         PrismaConstantsAndUtils.getDataSubSampled(
-                src, srcWidth, srcHeight, srcStepX,
-                srcStepY, target, destWidth, destHeight);
+                typedGetter, srcWidth, srcStepX, srcStepY,
+                typedSetter, destWidth, destHeight);
 
         //verification
         assertThat(target, is(new int[]{
@@ -137,14 +126,6 @@ public class PrismaConstantsAndUtilsTest {
                 6, 7, 8, 9,
                 10, 11, 12, 13,
         }));
-//        assertThat(target, is(new int[]{
-//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                0, 0, 0, 2, 3, 4, 5, 0, 0, 0,
-//                0, 0, 0, 6, 7, 8, 9, 0, 0, 0,
-//                0, 0, 0, 10, 11, 12, 13, 0, 0, 0,
-//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
     }
 
     @Test

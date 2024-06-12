@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 
 import static org.hamcrest.MatcherAssert.assertThat;

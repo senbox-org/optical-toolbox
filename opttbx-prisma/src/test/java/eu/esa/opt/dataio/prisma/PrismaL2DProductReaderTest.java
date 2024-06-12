@@ -2,8 +2,6 @@ package eu.esa.opt.dataio.prisma;
 
 import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.engine_utilities.util.TestUtils;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -20,18 +18,18 @@ import static org.hamcrest.MatcherAssert.*;
 
 public class PrismaL2DProductReaderTest {
 
-    private static final String prismaZipFilePath = "D:\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
-    private static final String prismaFilePath = "D:\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
+//    private static final String prismaZipFilePath = "D:\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
+//    private static final String prismaFilePath = "D:\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
 
-//    private static final String prismaZipFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
-//    private static final String prismaFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
+    private static final String prismaZipFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
+    private static final String prismaFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
 
-    private PrismaProductReader ppr;
+    private PrismaL2ProductReader ppr;
 
     @Before
     @STTM("SNAP-3445")
     public void setUp() throws Exception {
-        ppr = new PrismaProductReader(new PrismaProductReaderPlugin());
+        ppr = new PrismaL2ProductReader(new PrismaL2ProductReaderPlugin());
 
     }
 
@@ -57,8 +55,8 @@ public class PrismaL2DProductReaderTest {
 
     private static void checkL2DProduct(Product product) {
         assertThat(product, is(notNullValue()));
-        assertThat(product.getSceneRasterWidth(), is(1239));
-        assertThat(product.getSceneRasterHeight(), is(1213));
+        assertThat(product.getSceneRasterWidth(), is(7434));
+        assertThat(product.getSceneRasterHeight(), is(7278));
     }
 
     @Test

@@ -11,12 +11,12 @@ import java.nio.file.Path;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.DESCRIPTION;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.FORMAT_NAME;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.IO_TYPES;
-import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_PATTERN;
+import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_L2_FILENAME_PATTERN;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_HDF_EXTENSION;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_ZIP_CONTAINER_EXTENSION;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToPath;
 
-public class PrismaProductReaderPlugin implements ProductReaderPlugIn {
+public class PrismaL2ProductReaderPlugin implements ProductReaderPlugIn {
 
     @java.lang.Override
     public DecodeQualification getDecodeQualification(java.lang.Object input) {
@@ -25,7 +25,7 @@ public class PrismaProductReaderPlugin implements ProductReaderPlugIn {
             return DecodeQualification.UNABLE;
         }
         final String filename = inputPath.getFileName().toString();
-        final boolean matches = PRISMA_FILENAME_PATTERN.matcher(filename).matches();
+        final boolean matches = PRISMA_L2_FILENAME_PATTERN.matcher(filename).matches();
         if (matches) {
             return DecodeQualification.INTENDED;
         }
@@ -39,7 +39,7 @@ public class PrismaProductReaderPlugin implements ProductReaderPlugIn {
 
     @java.lang.Override
     public ProductReader createReaderInstance() {
-        return new PrismaProductReader(this);
+        return new PrismaL2ProductReader(this);
     }
 
     @java.lang.Override
@@ -62,7 +62,7 @@ public class PrismaProductReaderPlugin implements ProductReaderPlugIn {
                     return true;
                 }
                 String fileName = file.getName();
-                return PRISMA_FILENAME_PATTERN.matcher(fileName).matches();
+                return PRISMA_L2_FILENAME_PATTERN.matcher(fileName).matches();
             }
         };
     }
