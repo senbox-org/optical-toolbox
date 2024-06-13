@@ -21,14 +21,14 @@ public class PrismaProductReaderPluginTest {
     private final Path invalidZapPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.zap");
     private PrismaL2ProductReaderPlugin plugin;
 
-    @Before
     @STTM("SNAP-3445")
+    @Before
     public void setUp() {
         plugin = new PrismaL2ProductReaderPlugin();
     }
 
-    @Test
     @STTM("SNAP-3445")
+    @Test
     public void getDecodeQualification() {
         assertThat(plugin.getDecodeQualification(new Integer(3)), is(DecodeQualification.UNABLE));
         assertThat(plugin.getDecodeQualification("c:\\a\\path\\aFile.name"), is(DecodeQualification.UNABLE));
@@ -52,33 +52,33 @@ public class PrismaProductReaderPluginTest {
         assertThat(plugin.getDecodeQualification(invalidZapPath.toString()), is(DecodeQualification.UNABLE));
     }
 
-    @Test
     @STTM("SNAP-3445")
+    @Test
     public void getInputTypes() {
         final Class[] inputTypes = plugin.getInputTypes();
         assertThat(inputTypes, is(equalTo(new Class[]{Path.class, File.class, String.class})));
     }
 
-    @Test
     @STTM("SNAP-3445")
+    @Test
     public void createReaderInstance() {
         assertThat(plugin.createReaderInstance(), is(instanceOf(PrismaL2ProductReader.class)));
     }
 
-    @Test
     @STTM("SNAP-3445")
+    @Test
     public void getFormatNames() {
         assertThat(plugin.getFormatNames(), is(equalTo(new String[]{"PRISMA"})));
     }
 
-    @Test
     @STTM("SNAP-3445")
+    @Test
     public void getDefaultFileExtensions() {
         assertThat(plugin.getDefaultFileExtensions(), is(equalTo(new String[]{".he5", ".zip"})));
     }
 
-    @Test
     @STTM("SNAP-3445")
+    @Test
     public void getProductFileFilter() {
         final SnapFileFilter pff = plugin.getProductFileFilter();
         assertThat(pff.accept(validHe5Path.toFile()), is(true) );
@@ -87,8 +87,8 @@ public class PrismaProductReaderPluginTest {
         assertThat(pff.accept(invalidZapPath.toFile()), is(false) );
     }
 
-    @Test
     @STTM("SNAP-3445")
+    @Test
     public void getDescription() {
         assertThat(plugin.getDescription(null), is(equalTo("Prisma ASI (Agenzia Spaziale Italiana)")));
     }

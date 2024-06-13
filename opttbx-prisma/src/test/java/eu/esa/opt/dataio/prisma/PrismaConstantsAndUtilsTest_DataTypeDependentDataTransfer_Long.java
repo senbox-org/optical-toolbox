@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.prisma;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -12,6 +13,7 @@ import static org.hamcrest.Matchers.*;
 
 public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Long {
 
+    @STTM("SNAP-3445")
     @Test
     public void datatypeDependentDataTransfer_noShift_noSubsampling() {
         //preparation
@@ -37,6 +39,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Long {
         }));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void datatypeDependentDataTransfer_noShift_Subsampling() {
         //preparation

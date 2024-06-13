@@ -18,8 +18,10 @@ import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.CrsGeoCoding;
 import org.esa.snap.core.datamodel.GeoCoding;
+import org.esa.snap.core.datamodel.Mask;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.SampleCoding;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -138,6 +140,13 @@ public class PrismaL2ProductReader extends AbstractProductReader {
         }
 
         product.setAutoGrouping(_autoGrouping.toString());
+        final Band[] bands = product.getBands();
+        for (Band band : bands) {
+            if (band.getGeoCoding() != null && band.getRasterWidth() == sceneRasterWidth && band.getRasterHeight() == sceneRasterHeight) {
+                product.setSceneGeoCoding(band.getGeoCoding());
+                break;
+            }
+        }
 
         return product;
     }
@@ -149,6 +158,7 @@ public class PrismaL2ProductReader extends AbstractProductReader {
         if (existingBand != null) {
             return existingBand;
         }
+
         final int[] dimensions = dataset.getDimensions();
         final int width = dimensions[1];
         final int height = dimensions[0];
@@ -162,6 +172,18 @@ public class PrismaL2ProductReader extends AbstractProductReader {
         };
         if (geoCoding != null) {
             band.setGeoCoding(geoCoding);
+        }
+        final SampleCoding sampleCoding = PrismaConstantsAndUtils.createSampleCoding(product, datasetName);
+        if (sampleCoding != null) {
+            band.setSampleCoding(sampleCoding);
+        }
+        final boolean measurementCube = datasetName.toLowerCase().contains("cube");
+        if (measurementCube) {
+            final float scaleMin = (float) getGlobalAttributeNotNull("L2ScalePanMin").getData();
+            final float scaleMax = (float) getGlobalAttributeNotNull("L2ScalePanMax").getData();
+            final double scalingFactor = (scaleMax - scaleMin) / 65535;
+            band.setScalingFactor(scalingFactor);
+            band.setScalingOffset(scaleMin);
         }
         product.addBand(band);
         _datasetMapping.put(band, dataset);
@@ -249,11 +271,12 @@ public class PrismaL2ProductReader extends AbstractProductReader {
 
     private void addCubeBands(String dataGroupName, Product product, GeoCoding geoCoding, ContiguousDatasetImpl cube) throws ProductIOException {
         final String datasetName = cube.getName();
-        final boolean measurementCube = datasetName.toLowerCase().contains("cube");
+        final String datastNameLC = datasetName.toLowerCase();
+        final boolean measurementCube = datastNameLC.contains("cube");
         if (measurementCube) {
             final String measurementName = LEVEL_DEPENDENT_CUBE_MEASUREMENT_NAME.get(_productLevel);
             final String cubeUnit = LEVEL_DEPENDENT_CUBE_UNIT.get(_productLevel);
-            final String cubeName = datasetName.toLowerCase().contains("vnir") ? "Vnir" : "Swir";
+            final String cubeName = datastNameLC.contains("vnir") ? "Vnir" : "Swir";
             final float scaleMin = (float) getGlobalAttributeNotNull("L2Scale" + cubeName + "Min").getData();
             final float scaleMax = (float) getGlobalAttributeNotNull("L2Scale" + cubeName + "Max").getData();
             final float[] wavelengths = (float[]) getGlobalAttributeNotNull("List_Cw_" + cubeName).getData();
@@ -300,6 +323,15 @@ public class PrismaL2ProductReader extends AbstractProductReader {
             }
         } else {
             final int[] dimensions = cube.getDimensions();
+            final String cubeName = datastNameLC.contains("vnir") ? "Vnir" :
+                    datastNameLC.contains("swir") ? "Swir" : null;
+            final float[] wavelengths;
+            if (cubeName != null) {
+                wavelengths = (float[]) getGlobalAttributeNotNull("List_Cw_" + cubeName).getData();
+            } else {
+                wavelengths = null;
+            }
+
             final int width = dimensions[2];
             final int height = dimensions[0];
             final int numBands = dimensions[1];
@@ -309,7 +341,11 @@ public class PrismaL2ProductReader extends AbstractProductReader {
             final String bandNameFormatExpression = autogrouping + "_%0" + numDigits + "d";
             final DataType dataType = cube.getDataType();
             final int productDataType = getProductDataType(dataType);
+            final SampleCoding sampleCoding = PrismaConstantsAndUtils.createSampleCoding(product, datasetName);
             for (int i = 0; i < numBands; i++) {
+                if (wavelengths != null && wavelengths[i] == 0.0f) {
+                    continue;
+                }
                 String bandName = String.format(bandNameFormatExpression, i + 1);
                 final Band band = new Band(bandName, productDataType, width, height) {
                     @Override
@@ -318,13 +354,11 @@ public class PrismaL2ProductReader extends AbstractProductReader {
                     }
                 };
                 _cubeIndex.put(band, i);
-//                band.setSpectralWavelength(wavelength);
-//                band.setSpectralBandwidth(bandwidths[i]);
-//                band.setScalingFactor(scalingFactor);
-//                band.setScalingOffset(scaleMin);
-//                band.setUnit(cubeUnit);
                 if (geoCoding != null) {
                     band.setGeoCoding(geoCoding);
+                }
+                if (sampleCoding != null) {
+                    band.setSampleCoding(sampleCoding);
                 }
                 product.addBand(band);
                 _datasetMapping.put(band, cube);

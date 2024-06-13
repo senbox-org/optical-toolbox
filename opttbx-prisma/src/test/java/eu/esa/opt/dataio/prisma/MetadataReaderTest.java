@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.prisma;
 
+import com.bc.ceres.annotation.STTM;
 import io.jhdf.api.Attribute;
 import io.jhdf.api.Node;
 
@@ -17,8 +18,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+
 public class MetadataReaderTest {
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromString() {
         // given
@@ -35,6 +38,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(2).getData().getElemString(), is("Test3"));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromFloat() throws IllegalFileFormatException {
         // given
@@ -49,6 +53,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(0).getData().getElems(), is(data));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromFloat_forMultidimensionalData() throws IllegalFileFormatException {
         // given
@@ -64,6 +69,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(1).getData().getElems(), is(data[1]));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromFloat_illegalNumberOfDimensions() {
         // given
@@ -80,6 +86,7 @@ public class MetadataReaderTest {
         }
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromLong() throws IllegalFileFormatException {
         // given
@@ -95,6 +102,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(0).getData().getElems(), is(data));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromLong_forMultidimensionalData() throws IllegalFileFormatException {
         // given
@@ -111,6 +119,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(1).getData().getElems(), is(data[1]));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromLong_illegalNumberOfDimensions() {
         // given
@@ -127,6 +136,7 @@ public class MetadataReaderTest {
         }
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromInt() throws IllegalFileFormatException {
         // given
@@ -142,6 +152,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(0).getData().getElems(), is(data));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromInt_forMultidimensionalData() throws IllegalFileFormatException {
         // given
@@ -158,6 +169,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(1).getData().getElems(), is(data[1]));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateArrayDataFromInt_illegalNumberOfDimensions() {
         // given
@@ -174,6 +186,7 @@ public class MetadataReaderTest {
         }
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testHandleArrayDataForInt() throws Exception {
         // given
@@ -191,6 +204,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(0).getData().getElems(), is(data));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testHandleArrayDataForLong() throws Exception {
         // given
@@ -208,6 +222,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(0).getData().getElems(), is(data));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testHandleArrayDataForMultidimensionalFloat() throws Exception {
         // given
@@ -226,6 +241,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(1).getData().getElems(), is(data[1]));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testHandleArrayDataForScalarString() throws Exception {
         // given
@@ -245,6 +261,7 @@ public class MetadataReaderTest {
         assertThat(arrayAttElem.getAttributeAt(2).getData().getElemString(), is("Test3"));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testHandleArrayData_UnsupportedDataType() {
         // given
@@ -262,6 +279,7 @@ public class MetadataReaderTest {
         }
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testCreateProductDataInstanceForScalar() throws IllegalFileFormatException {
         ProductData pd;
@@ -294,6 +312,7 @@ public class MetadataReaderTest {
         }
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testHandleScalarData() throws IllegalFileFormatException {
         final MetadataElement elem = new MetadataElement("elem");
@@ -315,6 +334,7 @@ public class MetadataReaderTest {
         assertThat(attr.getData().getElems(), is(new float[]{23.4f}));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testHandleAttributeData_scalar() throws IllegalFileFormatException {
         final MetadataElement elem = new MetadataElement("elem");
@@ -329,6 +349,7 @@ public class MetadataReaderTest {
         assertThat(attrAt0.getData().getElems(), is(new int[]{6}));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void testHandleAttributeData_arrayData() throws IllegalFileFormatException {
         final MetadataElement elem = new MetadataElement("elem");

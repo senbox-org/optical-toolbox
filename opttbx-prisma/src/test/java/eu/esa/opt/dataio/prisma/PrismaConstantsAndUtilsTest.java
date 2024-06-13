@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.prisma;
 
+import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.TypedGetter;
 import eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.TypedSetter;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,7 @@ import static org.hamcrest.Matchers.*;
 
 public class PrismaConstantsAndUtilsTest {
 
+    @STTM("SNAP-3445")
     @Test
     public void convertToPath() {
         Path path;
@@ -32,6 +34,7 @@ public class PrismaConstantsAndUtilsTest {
         assertThat(path, is(Paths.get("test")));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void test_GetDataSubSampled_JustSubsampling_TypeIndependent() {
         //preparation
@@ -64,6 +67,7 @@ public class PrismaConstantsAndUtilsTest {
                 10, 11, 12, 13}));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void test_GetDataSubSampledAndShifted_SubSampled_TypeIndependent() {
         //preparation
@@ -97,6 +101,7 @@ public class PrismaConstantsAndUtilsTest {
         }));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void test_GetDataSubSampled_TypeIndependent() {
         //preparation
@@ -128,6 +133,7 @@ public class PrismaConstantsAndUtilsTest {
         }));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void isSubSampling() {
         assertThat(PrismaConstantsAndUtils.isSubSampling(1, 1), is(false));

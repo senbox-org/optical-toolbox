@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.prisma;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Test;
 
@@ -10,6 +11,7 @@ import static org.hamcrest.MatcherAssert.*;
 
 public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Byte {
 
+    @STTM("SNAP-3445")
     @Test
     public void datatypeDependentDataTransfer_noShift_noSubsampling() {
         //preparation
@@ -33,6 +35,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Byte {
         }));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void datatypeDependentDataTransfer_noShift_Subsampling() {
         //preparation
@@ -58,6 +61,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Byte {
         }));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void datatypeDependentDataTransfer_Shift_noSubsampling() {
         //preparation
@@ -81,6 +85,7 @@ public class PrismaConstantsAndUtilsTest_DataTypeDependentDataTransfer_Byte {
         }));
     }
 
+    @STTM("SNAP-3445")
     @Test
     public void datatypeDependentDataTransfer_Shift_AND_Subsampling() {
         //preparation

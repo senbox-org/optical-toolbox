@@ -18,7 +18,11 @@
 
 package eu.esa.opt.dataio.prisma;
 
+import org.esa.snap.core.datamodel.FlagCoding;
+import org.esa.snap.core.datamodel.IndexCoding;
+import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.SampleCoding;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -83,6 +87,33 @@ final class PrismaConstantsAndUtils {
                 dest.set(destIndex, src.get(srcIndex));
             }
         }
+    }
+
+    static SampleCoding createSampleCoding(Product product, String datasetName) {
+        if ("SWIR_PIXEL_L2_ERR_MATRIX".equalsIgnoreCase(datasetName)
+            || "VNIR_PIXEL_L2_ERR_MATRIX".equalsIgnoreCase(datasetName)) {
+            final IndexCoding coding = new IndexCoding(datasetName);
+            coding.addIndex("ok", 0, "pixel ok");
+            coding.addIndex("inv", 1, "Invalid pixel from L1 product");
+            coding.addIndex("neg", 2, "Negative value after atmospheric correction");
+            coding.addIndex("sat", 3, "Saturated value after atmospheric correction");
+            product.getIndexCodingGroup().add(coding);
+            return coding;
+        } else if ("MAPS_PIXEL_L2_ERR_MATRIX".equalsIgnoreCase(datasetName)) {
+            final FlagCoding coding = new FlagCoding(datasetName);
+//            coding.addFlag("ok", 0, "pixel ok");
+            coding.addFlag("WVM_inv", 1, "Invalid pixel in WVM evaluation");
+            coding.addFlag("WVM>max", 2, "Full - scale pixel in WVM evaluation (> max)");
+            coding.addFlag("WVM<min", 4, "Full - scale pixel in WVM evaluation (< min)");
+            coding.addFlag("AOD_!ev", 8, "AOD map not evaluated (not Dark-Dense Vegetation pixel or invalid pixel)");
+            coding.addFlag("AOD>max", 16, "Full - scale pixel in AOD evaluation (> max)");
+            coding.addFlag("AOD<min", 32, "Full - scale pixel in AOD evaluation (< min)");
+            coding.addFlag("AEX_inv", 64, "Invalid pixel in AEX evaluation");
+            coding.addFlag("COT_inv", 128, "Invalid pixel in COT evaluation");
+            product.getFlagCodingGroup().add(coding);
+            return coding;
+        }
+        return null;
     }
 
     interface TypedGetter<T> {
