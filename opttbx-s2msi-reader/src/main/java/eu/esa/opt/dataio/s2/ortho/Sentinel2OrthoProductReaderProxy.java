@@ -15,6 +15,7 @@ import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 
@@ -91,9 +92,16 @@ public class Sentinel2OrthoProductReaderProxy implements ProductReader {
     }
 
     @Override
-    public void readBandRasterData(Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm)
-                                   throws IOException {
-        // so nothing
+    public void readBandRasterData(Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) {
+        // do nothing
+    }
+
+    @Override
+    public GeoCoding readGeoCoding(Product product) throws IOException {
+        if (this.reader == null) {
+            return null;
+        }
+        return reader.readGeoCoding(product);
     }
 
     @Override

@@ -17,8 +17,9 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.ProductIOException;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGrid;
@@ -52,21 +53,20 @@ public class L2FileReader extends SeadasFileReader {
         int sceneWidth = 0;
 
         List<Dimension> dims = ncFile.getDimensions();
-        for (Dimension d: dims){
-            if ((d.getShortName().equalsIgnoreCase("number_of_lines"))
-                    ||(d.getShortName().equalsIgnoreCase("Number_of_Scan_Lines")))
-            {
+        for (Dimension d : dims) {
+            if (("number_of_lines".equalsIgnoreCase(d.getShortName()))
+                    || ("Number_of_Scan_Lines".equalsIgnoreCase(d.getShortName()))) {
                 sceneHeight = d.getLength();
             }
-            if ((d.getShortName().equalsIgnoreCase("pixels_per_line"))
-                    || (d.getShortName().equalsIgnoreCase("Pixels_per_Scan_Line"))){
+            if (("pixels_per_line".equalsIgnoreCase(d.getShortName()))
+                    || ("Pixels_per_Scan_Line".equalsIgnoreCase(d.getShortName()))) {
                 sceneWidth = d.getLength();
             }
         }
-        if (sceneWidth == 0){
+        if (sceneWidth == 0) {
             sceneWidth = getIntAttribute("Pixels_per_Scan_Line");
         }
-        if (sceneHeight == 0){
+        if (sceneHeight == 0) {
             sceneHeight = getIntAttribute("Number_of_Scan_Lines");
         }
         try {
@@ -82,6 +82,16 @@ public class L2FileReader extends SeadasFileReader {
                     navGroup = "navigation_data";
                 }
             }
+            if (ncFile.findGroup(navGroup) == null) {
+                if (ncFile.findGroup("geolocation_data") != null) {
+                    navGroup = "geolocation_data";
+                }
+            }
+            if (ncFile.findGroup(navGroup) == null) {
+                if (ncFile.findGroup("geolocation") != null) {
+                    navGroup = "geolocation";
+                }
+            }
             final Variable variable = ncFile.findVariable(navGroup + "/" + latitude);
             if (!keepBadNavLines) {
                 invalidateLines(LAT_SKIP_BAD_NAV, variable);
@@ -94,7 +104,9 @@ public class L2FileReader extends SeadasFileReader {
 
         }
         String productName = getStringAttribute("Product_Name");
-
+        if (productName == null) {
+            productName = productReader.getInputFile().getName();
+        }
         mustFlipX = mustFlipY = getDefaultFlip();
         SeadasProductReader.ProductType productType = productReader.getProductType();
         if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
@@ -118,8 +130,9 @@ public class L2FileReader extends SeadasFileReader {
             utcEnd = getUTCAttribute("time_coverage_stop");
         }
 
+        //todo Investigate why this inversion is required
         if (utcStart != null) {
-            if (mustFlipY){
+            if (mustFlipY) {
                 product.setEndTime(utcStart);
             } else {
                 product.setStartTime(utcStart);
@@ -147,7 +160,7 @@ public class L2FileReader extends SeadasFileReader {
         addGeocoding(product);
 
         addFlagsAndMasks(product);
-        product.setAutoGrouping("Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:vgain:BT:tg_sol:tg_sen");
+        product.setAutoGrouping("Rrs_unc:Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph:bbp:bb:vgain:BT:tg_sol:tg_sen");
 
         return product;
     }
@@ -159,29 +172,31 @@ public class L2FileReader extends SeadasFileReader {
         try {
             sensor = product.getMetadataRoot().getElement("Global_Attributes").getAttribute("instrument").getData().getElemString();
         } catch (Exception ignore) {
-            try{
+            try {
                 sensor = product.getMetadataRoot().getElement("Global_Attributes").getAttribute("Sensor_Name").getData().getElemString();
-            } catch(Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
         try {
             res = product.getMetadataRoot().getElement("Global_Attributes").getAttribute("spatialResolution").getData().getElemString();
         } catch (Exception ignore) {
-            try{
+            try {
                 res = product.getMetadataRoot().getElement("Input_Parameters").getAttribute("RESOLUTION").getData().getElemString();
-            } catch(Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
-        if(sensor != null) {
+        if (sensor != null) {
             sensor = sensor.toLowerCase();
-            if(sensor.contains("viirs")) {
+            if (sensor.contains("viirs")) {
                 addBowtieGeocoding(product, 16);
                 return;
-            } else if(sensor.contains("modis")) {
+            } else if (sensor.contains("modis")) {
                 int scanHeight = 10;
-                if(res != null) {
-                    if(res.equals("500 m") || res.equals("500")) {
+                if (res != null) {
+                    if ("500 m".equals(res) || "500".equals(res)) {
                         scanHeight = 20;
-                    } else if(res.equals("250 m") || res.equals("250")) {
+                    } else if ("250 m".equals(res) || "250".equals(res)) {
                         scanHeight = 40;
                     }
                 }
@@ -271,7 +286,7 @@ public class L2FileReader extends SeadasFileReader {
         }
     }
 
-    public void addPixelGeocoding(final Product product) throws ProductIOException {
+    private void addPixelGeocoding(final Product product) throws ProductIOException {
         String navGroup = "navigation_data";
         final String longitude = "longitude";
         final String latitude = "latitude";
@@ -308,17 +323,17 @@ public class L2FileReader extends SeadasFileReader {
                     lonRaw = lonVar.read();
                     latRaw = latVar.read();
                     if (mustFlipX && mustFlipY) {
-                        latRawData= (float[]) latRaw.flip(0).flip(1).copyTo1DJavaArray();
-                        lonRawData= (float[]) lonRaw.flip(0).flip(1).copyTo1DJavaArray();
+                        latRawData = (float[]) latRaw.flip(0).flip(1).copyTo1DJavaArray();
+                        lonRawData = (float[]) lonRaw.flip(0).flip(1).copyTo1DJavaArray();
                     } else if (!mustFlipX && mustFlipY) {
-                        latRawData= (float[]) latRaw.flip(0).copyTo1DJavaArray();
-                        lonRawData= (float[]) lonRaw.flip(0).copyTo1DJavaArray();
+                        latRawData = (float[]) latRaw.flip(0).copyTo1DJavaArray();
+                        lonRawData = (float[]) lonRaw.flip(0).copyTo1DJavaArray();
                     } else if (mustFlipX && !mustFlipY) {
-                        latRawData= (float[]) latRaw.flip(1).copyTo1DJavaArray();
-                        lonRawData= (float[]) lonRaw.flip(1).copyTo1DJavaArray();
+                        latRawData = (float[]) latRaw.flip(1).copyTo1DJavaArray();
+                        lonRawData = (float[]) lonRaw.flip(1).copyTo1DJavaArray();
                     } else {
-                        latRawData= (float[]) latRaw.copyTo1DJavaArray();
-                        lonRawData= (float[]) lonRaw.copyTo1DJavaArray();
+                        latRawData = (float[]) latRaw.copyTo1DJavaArray();
+                        lonRawData = (float[]) lonRaw.copyTo1DJavaArray();
                     }
                 } catch (IOException e) {
                     throw new ProductIOException(e.getMessage(), e);
@@ -336,7 +351,7 @@ public class L2FileReader extends SeadasFileReader {
                 try {
                     cntArray = cntlPointVar.read();
                     int[] colPoints = (int[]) cntArray.getStorage();
-                    computeLatLonBandData(product.getSceneRasterHeight(),product.getSceneRasterWidth(),latBand, lonBand,
+                    computeLatLonBandData(product.getSceneRasterHeight(), product.getSceneRasterWidth(), latBand, lonBand,
                             latRawData, lonRawData, colPoints);
 
                 } catch (IOException e) {
@@ -345,7 +360,12 @@ public class L2FileReader extends SeadasFileReader {
             }
         }
         if (latBand != null) {
-            product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, null, 5));
+            try {
+                final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+                product.setSceneGeoCoding(geoCoding);
+            } catch (IOException e) {
+                throw new ProductIOException(e.getMessage());
+            }
         }
     }
 }

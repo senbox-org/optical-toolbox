@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.getRelativePath;
 
-class GdalGeoTiffImageReader implements EnmapImageReader {
+class GdalGeoTiffImageReader extends EnmapImageReader {
     public static final String GDAL_FORMAT_NAME = "GDAL-GTiff-READER";
     private final Product product;
 

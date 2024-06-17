@@ -1,10 +1,13 @@
 package eu.esa.opt.dataio.s3.synergy;
 
+import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.glevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.transform.MathTransform2D;
 import org.esa.snap.core.util.ProductUtils;
@@ -15,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
 
 /**
  * @author Tonio Fincke
@@ -156,8 +161,8 @@ public class SynL1CProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected Product readProduct(String fileName, Manifest manifest) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), fileName);
+    protected Product readProduct(String fileName, Manifest manifest, VirtualDir virtualDir) throws IOException {
+        final File file = getFileFromVirtualDir(fileName, virtualDir);
         if (!file.exists()) {
             return null;
         }
@@ -166,13 +171,12 @@ public class SynL1CProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected void setGeoCoding(Product targetProduct) {
-        // @todo 1 tb/tb replace this with the new implementation 2020-01-27
+    protected void setGeoCoding(Product targetProduct) throws IOException {
         final ProductNodeGroup<Band> bandGroup = targetProduct.getBandGroup();
         if (bandGroup.contains("GEOLOCATION_REF_latitude") && bandGroup.contains("GEOLOCATION_REF_longitude")) {
-            final BasicPixelGeoCoding pixelGeoCoding =
-                    GeoCodingFactory.createPixelGeoCoding(bandGroup.get("GEOLOCATION_REF_latitude"),
-                            bandGroup.get("GEOLOCATION_REF_longitude"), "", 5);
+            final Band latBand = bandGroup.get("GEOLOCATION_REF_latitude");
+            final Band lonBand = bandGroup.get("GEOLOCATION_REF_longitude");
+            final ComponentGeoCoding pixelGeoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
             targetProduct.setSceneGeoCoding(pixelGeoCoding);
         }
     }
@@ -197,7 +201,7 @@ public class SynL1CProductFactory extends AbstractProductFactory {
     }
 
     @Override
-    protected void setTimeCoding(Product targetProduct) throws IOException {
-        setTimeCoding(targetProduct, "time.nc", "Time");
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
+        setTimeCoding(targetProduct, virtualDir, "time.nc", "Time");
     }
 }

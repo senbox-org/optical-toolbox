@@ -1,6 +1,7 @@
 package eu.esa.opt.grm;
 
 import com.bc.ceres.core.ProgressMonitor;
+import com.bc.ceres.test.LongTestRunner;
 import eu.esa.opt.grm.segmentation.AbstractSegmenter;
 import eu.esa.opt.grm.segmentation.BoundingBox;
 import eu.esa.opt.grm.segmentation.Graph;
@@ -13,6 +14,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.internal.OperatorExecutor;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assume.assumeTrue;
 
 /**
  * @author Jean Coravu.
@@ -32,10 +33,8 @@ import static org.junit.Assume.assumeTrue;
  * Note: Nodes order is not guaranteed to be identical on different platforms,
  * therefore the tests should be done by node area and nod perimeter.
  */
+@RunWith(LongTestRunner.class)
 public class GenericRegionMergingOpTest {
-
-    public GenericRegionMergingOpTest() {
-    }
 
     @Test
     public void testFullLambdaScheduleTileSmallSegmenter() throws IOException, IllegalAccessException, URISyntaxException {

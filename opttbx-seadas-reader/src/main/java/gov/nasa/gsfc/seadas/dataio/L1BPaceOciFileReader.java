@@ -17,6 +17,8 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.ProductIOException;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
@@ -87,7 +89,8 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             throw new ProductIOException(e.getMessage(), e);
         }
 //        mustFlipX = mustFlipY = getDefaultFlip();
-        mustFlipY = getDefaultFlip();
+//        mustFlipY = getDefaultFlip();
+        mustFlipY = true;
         mustFlipX = false;
         SeadasProductReader.ProductType productType = productReader.getProductType();
 
@@ -116,7 +119,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         addMetadata(product, "products", "Band_Metadata");
         addMetadata(product, "navigation", "Navigation_Metadata");
 
-        product.setAutoGrouping("Lt");
+        product.setAutoGrouping("rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR");
 
         return product;
     }
@@ -266,11 +269,11 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     private WvlType getWvlType(String productName) {
         WvlType wvltype = null;
-        if (productName.equals("Lt_blue")) {
+        if (productName.equals("Lt_blue") || productName.equals("rhot_blue") || productName.equals("qual_blue")) {
             wvltype = WvlType.BLUE;
-        } else if (productName.equals("Lt_red")) {
+        } else if (productName.equals("Lt_red") || productName.equals("rhot_red") || productName.equals("qual_red")) {
             wvltype = WvlType.RED;
-        } else if (productName.equals("Lt_SWIR")) {
+        } else if (productName.equals("Lt_SWIR") || productName.equals("rhot_SWIR") || productName.equals("qual_SWIR")) {
             wvltype = WvlType.SWIR;
         }
         return wvltype;
@@ -307,7 +310,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         return ProductData.createInstance(dataType, storage);
     }
 
-    public void addGeocoding(final Product product) throws ProductIOException {
+    private void addGeocoding(final Product product) throws ProductIOException {
         final String longitude = "longitude";
         final String latitude = "latitude";
         String navGroup = "geolocation_data";
@@ -335,8 +338,12 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             latBand.setData(latRawData);
             lonBand.setData(lonRawData);
 
-            product.setSceneGeoCoding(GeoCodingFactory.createPixelGeoCoding(latBand, lonBand, null, 5));
-
+            try {
+                final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+                product.setSceneGeoCoding(geoCoding);
+            } catch (IOException e) {
+                throw new ProductIOException(e.getMessage());
+            }
         }
     }
 }

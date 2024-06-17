@@ -75,6 +75,11 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-netcdf</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

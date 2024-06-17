@@ -2,6 +2,10 @@
 include:
   - 'https://gitlab.com/senbox-org/snap-engine/raw/master/.gitlab-ci.yml'
 
+windows:
+  variables:
+    MAVEN_CFG_DIR: .m2
+
 .add_libs: &add_libs
   - apt-get -qq update && apt-get -qq -y install libgfortran5
 

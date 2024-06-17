@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "PACE_OCI_20240512_L3m_DAY_POC",
+      "relativePath": "sensors_platforms/PACE/OCI/PACE_OCI.20240512.L3m.DAY.POC.V1_0_0.poc.4km.NRT.nc",
+      "description": "PACE OCI L3 POC"
+    }
+  ]
+}

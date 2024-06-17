@@ -15,6 +15,4 @@ public enum ProductFormat {
     public String asEnmapFormatName() {
         return name().replace("_", "+");
     }
-
-
 }

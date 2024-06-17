@@ -156,7 +156,7 @@ public class S2ReaderPanel extends javax.swing.JPanel {
         CAMSData.setSelected(
                 preferences.getBoolean("opttbx.dataio.s2msi.CAMSData", true));
         addNegativeOffset.setSelected(
-                preferences.getBoolean("opttbx.dataio.s2msi.negativeRadiometricOffset", false));
+                preferences.getBoolean("opttbx.dataio.s2msi.negativeRadiometricOffset", true));
     }
 
     void store() {
