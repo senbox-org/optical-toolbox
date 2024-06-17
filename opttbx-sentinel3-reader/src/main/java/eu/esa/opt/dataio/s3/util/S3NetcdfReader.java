@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.opt.snap.core.datamodel.band.SparseDataBand;
+import eu.esa.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
