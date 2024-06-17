@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.s3.slstr;
 
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
-import eu.esa.opt.snap.core.datamodel.band.SparseDataBand;
+import eu.esa.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 

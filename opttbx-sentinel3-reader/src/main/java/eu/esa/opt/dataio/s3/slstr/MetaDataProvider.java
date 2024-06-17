@@ -1,8 +1,7 @@
 package eu.esa.opt.dataio.s3.slstr;
 
-import eu.esa.opt.snap.core.datamodel.band.DataPoint;
-import eu.esa.opt.snap.core.datamodel.band.SparseDataBand;
-import eu.esa.opt.snap.core.datamodel.band.SparseDataProvider;
+import eu.esa.snap.core.datamodel.band.DataPoint;
+import eu.esa.snap.core.datamodel.band.SparseDataProvider;
 import org.esa.snap.core.datamodel.*;
 
 class MetaDataProvider implements SparseDataProvider {
