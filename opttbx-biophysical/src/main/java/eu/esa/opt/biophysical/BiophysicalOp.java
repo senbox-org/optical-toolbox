@@ -244,7 +244,7 @@ public class BiophysicalOp extends PixelOperator {
             needsResample = false;
         } else {
             tp = productConfigurer.getTargetProduct();
-            noDataValue = tp.getBand(tp.getBandNames()[0]).getNoDataValue();
+            noDataValue = this.sourceProduct.getBand(getS2Bands()[0]).getNoDataValue();
         }
         super.configureTargetProduct(productConfigurer);
         productConfigurer.copyMetadata();
