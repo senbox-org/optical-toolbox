@@ -114,6 +114,7 @@
 
         <module>opttbx-unmix-ui</module>
         <module>opttbx-unmix</module>
+        <module>optical-toolbox-coverage</module>
 
     </modules>
 
