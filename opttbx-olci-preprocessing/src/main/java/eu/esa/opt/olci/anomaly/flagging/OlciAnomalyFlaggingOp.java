@@ -17,7 +17,7 @@
 package eu.esa.opt.olci.anomaly.flagging;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.snap.core.datamodel.group.BandGroup;
+import eu.esa.snap.core.datamodel.group.BandGrouping;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
 import org.esa.snap.core.datamodel.Mask;
@@ -150,7 +150,7 @@ public class OlciAnomalyFlaggingOp extends Operator {
         ProductUtils.copyMetadata(input, outputProduct);
         ProductUtils.copyMasks(input, outputProduct);
 
-        BandGroup autoGrouping = input.getAutoGrouping();
+        BandGrouping autoGrouping = input.getAutoGrouping();
         outputProduct.setAutoGrouping(autoGrouping);
 
         final Band anomalyFlags = outputProduct.addBand("anomaly_flags", ProductData.TYPE_INT8);

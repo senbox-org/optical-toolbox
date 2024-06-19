@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.s3.olci;
 
 import com.bc.ceres.annotation.STTM;
-import eu.esa.snap.core.datamodel.group.BandGroup;
+import eu.esa.snap.core.datamodel.group.BandGrouping;
 import org.esa.snap.core.datamodel.Product;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class OlciLevel1ProductFactoryTest {
         String bandGroupingPattern = OlciLevel1ProductFactory.BAND_GROUPING_PATTERN;
         Product dummy = new Product("name", "type", 10, 10);
         dummy.setAutoGrouping(bandGroupingPattern);
-        BandGroup autoGrouping = dummy.getAutoGrouping();
+        BandGrouping autoGrouping = dummy.getAutoGrouping();
 
         assertNotEquals(-1, autoGrouping.indexOf("Oa02_radiance"));
         assertNotEquals(-1, autoGrouping.indexOf("Oa20_radiance"));
