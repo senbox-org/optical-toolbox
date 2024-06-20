@@ -36,6 +36,7 @@ import org.esa.snap.core.gpf.pointop.Sample;
 import org.esa.snap.core.gpf.pointop.SourceSampleConfigurer;
 import org.esa.snap.core.gpf.pointop.TargetSampleConfigurer;
 import org.esa.snap.core.gpf.pointop.WritableSample;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.math.MathUtils;
 
 import java.io.IOException;
@@ -239,6 +240,8 @@ public class BiophysicalOp extends PixelOperator {
             setSourceProduct("source", this.sourceProduct);
             // We need to recreate the target product since scene dimensions may have changed from the initial one
             tp = createTargetProduct();
+            ProductUtils.copyGeoCoding(sourceProduct, tp);
+            ProductUtils.copyTimeInformation(sourceProduct, tp);
             setTargetProduct(tp);
             productConfigurer.setSourceProduct(this.sourceProduct);
             needsResample = false;

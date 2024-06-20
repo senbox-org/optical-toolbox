@@ -122,22 +122,25 @@ public class S2ResamplingOp extends Operator {
 
                 Tile[] sourceTiles = new Tile[s2Resampler.getListUpdatedBands().size()];
 
-                for (int i = 0; i < sourceTiles.length; i++) {
-                    String name = "view_" + bandName + "_" + s2Resampler.getListUpdatedBands().get(i).getPhysicalName();
-                    Band sourceBand = this.targetProduct.getBand(name);
-                    sourceTiles[i] = getSourceTile(sourceBand, rectangle);
-                }
+                if (sourceTiles.length > 0) {
+                    for (int i = 0; i < sourceTiles.length; i++) {
+                        String name = "view_" + bandName + "_" + s2Resampler.getListUpdatedBands().get(i).getPhysicalName();
+                        Band sourceBand = this.targetProduct.getBand(name);
+                        sourceTiles[i] = getSourceTile(sourceBand, rectangle);
+                    }
 
-                for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
-                    for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
-                        float value = sourceTiles[0].getSampleFloat(x, y);
-                        for (int i = 1; i < sourceTiles.length; i++) {
-                            value += sourceTiles[i].getSampleFloat(x, y);
+                    for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
+                        for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
+                            float value = sourceTiles[0].getSampleFloat(x, y);
+                            for (int i = 1; i < sourceTiles.length; i++) {
+                                value += sourceTiles[i].getSampleFloat(x, y);
+                            }
+
+                            targetTile.setSample(x, y, value / sourceTiles.length);
                         }
-
-                        targetTile.setSample(x, y, value / sourceTiles.length);
                     }
                 }
+
                 pm.worked(1);
             }
         } finally {
