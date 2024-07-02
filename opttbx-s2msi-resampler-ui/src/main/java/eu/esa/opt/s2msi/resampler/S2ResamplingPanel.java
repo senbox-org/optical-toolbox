@@ -3,16 +3,12 @@ package eu.esa.opt.s2msi.resampler;
 import com.bc.ceres.binding.*;
 import com.bc.ceres.swing.binding.BindingContext;
 import com.bc.ceres.swing.binding.PropertyPane;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductNode;
-import org.esa.snap.core.datamodel.RasterDataNode;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.annotations.Parameter;
 import org.esa.snap.core.gpf.descriptor.OperatorDescriptor;
 import org.esa.snap.core.gpf.internal.RasterDataNodeValues;
-import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.ui.GridBagUtils;
 
 import javax.swing.*;
@@ -33,10 +29,12 @@ class S2ResamplingPanel {
     private final PropertySet propertySet;
 
     private Field bandsField;
+    private Field masksField;
     private final BindingContext bindingContext;
     private Product currentProduct;
     private final JScrollPane operatorPanel;
     private BandPane bandsPane;
+    private BandPane masksPane;
     private final Callable<Product> sourceProductAccessor;
 
     S2ResamplingPanel(String operatorName, PropertySet propertySet, BindingContext bindingContext, Callable<Product> productAccessor) {
@@ -52,16 +50,24 @@ class S2ResamplingPanel {
         this.bindingContext = bindingContext == null ? new BindingContext(propertySet) : bindingContext;
         this.sourceProductAccessor = productAccessor;
         PropertyPane parametersPane = new PropertyPane(this.bindingContext);
+        this.bandsPane = new BandPane(getSourceProduct() == null ? new Band[0] : getSourceProduct().getBands(), false);
+        this.masksPane = new BandPane(getSourceProduct() == null ? new Mask[0] : getSourceProduct().getMaskGroup().toArray(new Mask[0]), false);
         this.operatorPanel = new JScrollPane(parametersPane.createPanel());
-        this.bandsPane = new BandPane(getSourceProduct().getBands(), false);
     }
 
     JComponent createPanel() {
         this.bandsField = Arrays.stream(operatorDescriptor.getOperatorClass().getDeclaredFields())
                                 .filter(f -> f.getAnnotation(Parameter.class) != null && f.getName().equals("bands"))
                                 .findFirst().get();
-        final Property property = this.propertySet.getProperty(bandsField.getName());
-        property.addPropertyChangeListener(evt -> { });
+        final Property bandProperty = this.propertySet.getProperty(bandsField.getName());
+        bandProperty.addPropertyChangeListener(evt -> { });
+
+        this.masksField = Arrays.stream(operatorDescriptor.getOperatorClass().getDeclaredFields())
+                .filter(f -> f.getAnnotation(Parameter.class) != null && f.getName().equals("masks"))
+                .findFirst().get();
+        final Property masksProperty = this.propertySet.getProperty(masksField.getName());
+        masksProperty.addPropertyChangeListener(evt -> { });
+
         return this.operatorPanel;
     }
 
@@ -76,15 +82,19 @@ class S2ResamplingPanel {
         if (isInputProductChanged()) {
             if (this.currentProduct != null) {
                 PropertySet propertySet = this.bindingContext.getPropertySet();
-                Property property = propertySet.getProperty(this.bandsField.getName());
-                updateValueSet(property, this.currentProduct);
-                if (property.getValue() == null) {
-                    try {
-                        property.setValue(null);
-                    } catch (ValidationException e) {
-                        e.printStackTrace();
-                    }
-                }
+                updateProperty(propertySet.getProperty(this.bandsField.getName()));
+                updateProperty(propertySet.getProperty(this.masksField.getName()));
+            }
+        }
+    }
+
+    private void updateProperty(Property property){
+        updateValueSet(property, this.currentProduct);
+        if (property.getValue() == null) {
+            try {
+                property.setValue(null);
+            } catch (ValidationException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -130,11 +140,15 @@ class S2ResamplingPanel {
     }
 
     private void updateNameList() {
-        final Property property = this.propertySet.getProperty(bandsField.getName());
-        try {
-            property.setValue(bandsPane.getSubsetNames());
-        } catch (ValidationException e) {
-            throw new RuntimeException(e);
+        if (this.currentProduct != null) {
+            final Property propertyBands = this.propertySet.getProperty(bandsField.getName());
+            final Property propertyMasks = this.propertySet.getProperty(masksField.getName());
+            try {
+                propertyBands.setValue(bandsPane.getSubsetNames());
+                propertyMasks.setValue(masksPane.getSubsetNames());
+            } catch (ValidationException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

@@ -22,6 +22,7 @@ import java.util.List;
 public class S2ResamplingDialog extends DefaultSingleTargetProductDialog {
 
     private final Field bandsField;
+    private final Field masksField;
 
     public S2ResamplingDialog(String operatorName, AppContext appContext, String title, String helpID) {
         this(operatorName, appContext, title, helpID, true);
@@ -34,6 +35,9 @@ public class S2ResamplingDialog extends DefaultSingleTargetProductDialog {
         bandsField = Arrays.stream(descriptor.getOperatorClass().getDeclaredFields())
                            .filter(f -> f.getAnnotation(Parameter.class) != null && f.getName().equals("bands"))
                            .findFirst().get();
+        masksField = Arrays.stream(descriptor.getOperatorClass().getDeclaredFields())
+                .filter(f -> f.getAnnotation(Parameter.class) != null && f.getName().equals("masks"))
+                .findFirst().get();
         DefaultIOParametersPanel ioParametersPanel = getDefaultIOParametersPanel();
 
         List<SourceProductSelector> sourceProductSelectorList = ioParametersPanel.getSourceProductSelectorList();
@@ -51,8 +55,10 @@ public class S2ResamplingDialog extends DefaultSingleTargetProductDialog {
 
         BindingContext bindingContext = getBindingContext();
         PropertySet propertySet = bindingContext.getPropertySet();
-        final Property prop = propertySet.getProperty(this.bandsField.getName());
-        prop.addPropertyChangeListener(evt-> { });
+        final Property propBands = propertySet.getProperty(this.bandsField.getName());
+        propBands.addPropertyChangeListener(evt-> { });
+        final Property propMasks = propertySet.getProperty(this.masksField.getName());
+        propMasks.addPropertyChangeListener(evt-> { });
     }
 
     @Override
@@ -84,9 +90,13 @@ public class S2ResamplingDialog extends DefaultSingleTargetProductDialog {
             BindingContext bindingContext = getBindingContext();
             PropertySet propertySet = bindingContext.getPropertySet();
             propertySet.setDefaultValues();
-            final Property property = propertySet.getProperty(this.bandsField.getName());
-            property.getDescriptor().setValueSet(new ValueSet(selectedProduct.getBandNames()));
+            final Property propertyBands = propertySet.getProperty(this.bandsField.getName());
+            propertyBands.getDescriptor().setValueSet(new ValueSet(selectedProduct.getBandNames()));
             propertySet.setValue(this.bandsField.getName(), null);
+
+            final Property propertyMasks = propertySet.getProperty(this.masksField.getName());
+            propertyMasks.getDescriptor().setValueSet(new ValueSet(selectedProduct.getMaskGroup().getNodeNames()));
+            propertySet.setValue(this.masksField.getName(), null);
         }
     }
 

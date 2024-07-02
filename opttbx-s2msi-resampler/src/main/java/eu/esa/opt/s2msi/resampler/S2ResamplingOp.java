@@ -2,6 +2,7 @@ package eu.esa.opt.s2msi.resampler;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.Mask;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.core.gpf.OperatorException;
@@ -72,8 +73,15 @@ public class S2ResamplingOp extends Operator {
 
     @Parameter(alias = "bands",
             label = "Resample only bands", defaultValue = "",
-            description = "Resample only the selected bands.")
+            description = "Resample only the selected bands.",
+            rasterDataNodeType = Band.class)
     private String[] bands;
+
+    @Parameter(alias = "masks",
+            label = "Copy only masks", defaultValue = "",
+            description = "Copy only the selected masks.",
+            rasterDataNodeType = Mask.class)
+    private String[] masks;
 
     private S2Resampler s2Resampler;
 
@@ -90,6 +98,8 @@ public class S2ResamplingOp extends Operator {
         }
 
         s2Resampler.setBandFilter(this.bands);
+
+        s2Resampler.setMaskFilter(this.masks);
 
         targetProduct = s2Resampler.resample(sourceProduct);
         if (this.targetProduct.getBandIndex("view_zenith_mean") >= 0) {

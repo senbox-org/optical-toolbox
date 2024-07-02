@@ -9,10 +9,7 @@ import eu.esa.opt.dataio.s2.S2BandAnglesGrid;
 import eu.esa.opt.dataio.s2.S2BandAnglesGridByDetector;
 import eu.esa.opt.dataio.s2.S2BandConstants;
 import eu.esa.opt.dataio.s2.ortho.S2AnglesGeometry;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.GeoCoding;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.Resampler;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.common.SubsetOp;
@@ -62,6 +59,8 @@ public class S2Resampler implements Resampler {
     private boolean resampleOnPyramidLevels = true;
 
     private String[] bandFilter;
+
+    private String[] maskFilter;
 
     private final ArrayList<S2BandConstants> listUpdatedBands = new ArrayList<>(17);
 
@@ -119,6 +118,10 @@ public class S2Resampler implements Resampler {
         this.bandFilter = bandFilter;
     }
 
+    public void setMaskFilter(String[]maskFilter) {
+        this.maskFilter = maskFilter;
+    }
+
     @Override
     public String getName() {
         return S2RESAMPLER_NAME;
@@ -171,21 +174,46 @@ public class S2Resampler implements Resampler {
         OperatorSpi spi;
         Operator operator;
         Product subsetProduct = null;
-        if (this.bandFilter != null && this.bandFilter.length > 0) {
+        if ((this.bandFilter != null && this.bandFilter.length > 0) || (this.maskFilter != null && this.maskFilter.length > 0)) {
             //Use SubsetOp
             spi = new SubsetOp.Spi();
             parameters.put("copyMetadata", true);
-            parameters.put("bandNames", this.bandFilter);
+            if(this.bandFilter != null && this.bandFilter.length > 0) {
+                parameters.put("bandNames", this.bandFilter);
+            }
             operator = spi.createOperator(parameters, sourceProducts);
             operator.setSourceProduct(multiSizeProduct);
             subsetProduct = operator.getTargetProduct();
+
+            //initialize subset from source product
+            ProductUtils.copyFlagCodings(multiSizeProduct, subsetProduct);
+            ProductUtils.copyIndexCodings(multiSizeProduct, subsetProduct);
+
+            //filter masks
+            if (this.maskFilter != null && this.maskFilter.length > 0) {
+                Mask[] sourceMasks = subsetProduct.getMaskGroup().toArray(new Mask[0]);
+                subsetProduct.getMaskGroup().removeAll();
+                List<String> targetMaskNames = Arrays.asList(this.maskFilter);
+                //check if the removed masks are vector masks and remove them from the vector data too.
+                for (Mask mask : sourceMasks) {
+                    if(targetMaskNames.contains(mask.getName())){
+                        subsetProduct.getMaskGroup().add(mask);
+                    } else if (mask.getImageType().getName().equals(Mask.VectorDataType.TYPE_NAME)) {
+                        VectorDataNode vectorMask = subsetProduct.getVectorDataGroup().get(mask.getName());
+                        if(vectorMask != null) {
+                            subsetProduct.getVectorDataGroup().remove(vectorMask);
+                        }
+                    }
+                }
+            }
+
             sourceProducts.clear();
             sourceProducts.put(subsetProduct.getName(), subsetProduct);
             parameters.clear();
         }
+
         //Use ResamplingOp
         spi = new ResamplingOp.Spi();
-
 
         if (referenceBandName == null && targetWidth == 0 && targetHeight == 0 && targetResolution == 0) {
             referenceBandName = subsetProduct != null ?  subsetProduct.getBandNames()[0] : multiSizeProduct.getBandNames()[0];
@@ -214,6 +242,13 @@ public class S2Resampler implements Resampler {
             if(updateAngleBands(multiSizeProduct, targetProduct, bandConstants)) {
                 listUpdatedBands.add(bandConstants);
             }
+        }
+        //if no angle band selected, remove the mean angles
+        if (listUpdatedBands.size() < 1 && targetProduct.getBandIndex("view_zenith_mean") >= 0){
+            targetProduct.removeBand(targetProduct.getBand("view_zenith_mean"));
+        }
+        if (listUpdatedBands.size() < 1 && targetProduct.getBandIndex("view_azimuth_mean") >= 0){
+            targetProduct.removeBand(targetProduct.getBand("view_azimuth_mean"));
         }
 
         //mean angles, computed only with the updated bands
