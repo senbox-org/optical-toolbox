@@ -1,0 +1,36 @@
+<filesystem>
+    <folder name="Actions">
+        <folder name="Readers">
+            <file name="eu-esa-opt-dataio-ecostress-ImportECOSTRESSProduct.instance">
+                <attr name="instanceCreate"
+                      methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate"
+                      methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
+                <attr name="displayName"
+                      stringvalue="ECOSTRESS L1/L2/L3/L4"/>
+                <attr name="formatName"
+                      stringvalue="ECOSTRESS-L1A/L2A/L1/L3/L4"/>
+                <attr name="useAllFileFilter"
+                      boolvalue="true"/>
+                <attr name="helpId"
+                      stringvalue="importEcostressProduct"/>
+                <attr name="ShortDescription"
+                      stringvalue="Import an ECOSTRESS L1/L2/L3/L4 data product."/>
+            </file>
+        </folder>
+    </folder>
+
+    <folder name="Menu">
+        <folder name="File">
+            <folder name="Import">
+                <folder name="Optical Sensors">
+                    <file name="eu-esa-opt-dataio-ecostress-ImportECOSTRESSProduct.shadow">
+                        <attr name="originalFile"
+                              stringvalue="Actions/Readers/eu-esa-opt-dataio-ecostress-ImportECOSTRESSProduct.instance"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+
+</filesystem>

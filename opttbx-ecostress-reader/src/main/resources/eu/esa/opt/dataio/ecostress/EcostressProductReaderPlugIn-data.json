@@ -1,0 +1,74 @@
+{
+  "testProducts": [
+    {
+      "id": "ECOSTRESS_L1B_ATT_32259_20240314T231351_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L1B_ATT_32259_20240314T231351_0601_01.h5",
+      "description": "ECOSTRESS L1B ATT product"
+    },
+    {
+      "id": "ECOSTRESS_L1B_GEO_32259_019_20240314T235129_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L1B_GEO_32259_019_20240314T235129_0601_01.h5",
+      "description": "ECOSTRESS L1B GEO product"
+    },
+    {
+      "id": "ECOSTRESS_L1B_MAP_RAD_32259_019_20240314T235129_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L1B_MAP_RAD_32259_019_20240314T235129_0601_01.h5",
+      "description": "ECOSTRESS L1B MAP RAD product"
+    },
+    {
+      "id": "ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01.h5",
+      "description": "ECOSTRESS L1B RAD product"
+    },
+    {
+      "id": "ECOSTRESS_L2_CLOUD_32257_019_20240314T205642_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L2_CLOUD_32257_019_20240314T205642_0601_01.h5",
+      "description": "ECOSTRESS L2 Cloud product"
+    },
+    {
+      "id": "ECOSTRESS_L2_LSTE_32257_019_20240314T205642_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L2_LSTE_32257_019_20240314T205642_0601_01.h5",
+      "description": "ECOSTRESS L2 LSTE product"
+    },
+    {
+      "id": "ECOSTRESS_L3_ET_ALEXI_USDA_00544_008_20180810T192504_0503_02_ames_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L3_ET_ALEXI_USDA_00544_008_20180810T192504_0503_02.ames.h5",
+      "description": "ECOSTRESS L3 ET ALEXI USDA product"
+    },
+    {
+      "id": "ECOSTRESS_L3_ET_ALEXI_22306_005_20220612T161701_0601_02_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L3_ET_ALEXI_22306_005_20220612T161701_0601_02.h5",
+      "description": "ECOSTRESS L3 ET ALEXI product"
+    },
+    {
+      "id": "ECOSTRESS_L3_ET_PT-JPL_26313_001_20230225T154024_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L3_ET_PT-JPL_26313_001_20230225T154024_0601_01.h5",
+      "description": "ECOSTRESS L3 ET PT JPL product"
+    },
+    {
+      "id": "ECOSTRESS_L3_L4_QA_26313_001_20230225T154024_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L3_L4_QA_26313_001_20230225T154024_0601_01.h5",
+      "description": "ECOSTRESS L3 L4 QA product"
+    },
+    {
+      "id": "ECOSTRESS_L4_ESI_ALEXI_USDA_05562_006_20190629T163154_0600_01_bondville_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L4_ESI_ALEXI_USDA_05562_006_20190629T163154_0600_01.bondville.h5",
+      "description": "ECOSTRESS L4 ESI ALEXI USDA product"
+    },
+    {
+      "id": "ECOSTRESS_L4_ESI_ALEXI_22387_012_20220617T215911_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L4_ESI_ALEXI_22387_012_20220617T215911_0601_01.h5",
+      "description": "ECOSTRESS L4 ESI ALEXI product"
+    },
+    {
+      "id": "ECOSTRESS_L4_ESI_PT-JPL_26313_001_20230225T154024_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L4_ESI_PT-JPL_26313_001_20230225T154024_0601_01.h5",
+      "description": "ECOSTRESS L4 ESI PT JPL product"
+    },
+    {
+      "id": "ECOSTRESS_L4_WUE_26313_001_20230225T154024_0601_01_h5",
+      "relativePath": "_ecostress/ECOSTRESS_L4_WUE_26313_001_20230225T154024_0601_01.h5",
+      "description": "ECOSTRESS L4 WUE product"
+    }
+  ]
+}
