@@ -38,12 +38,12 @@ public enum S2BandConstants {
     B11("B11", "B11", 11, 1565, 1655, 1610),
     B12("B12", "B12", 12, 2100, 2280, 2190);
 
-    private String physicalName;
-    private String filenameBandId;
-    private int bandIndex;
-    private double wavelengthMin;
-    private double wavelengthMax;
-    private double wavelengthCentral;
+    private final String physicalName;
+    private final String filenameBandId;
+    private final int bandIndex;
+    private final double wavelengthMin;
+    private final double wavelengthMax;
+    private final double wavelengthCentral;
 
     S2BandConstants(String physicalName,
                     String filenameBandId,

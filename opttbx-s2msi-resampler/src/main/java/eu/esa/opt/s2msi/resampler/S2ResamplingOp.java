@@ -2,6 +2,7 @@ package eu.esa.opt.s2msi.resampler;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.Mask;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.core.gpf.OperatorException;
@@ -13,7 +14,6 @@ import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 
 import java.awt.*;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -71,6 +71,18 @@ public class S2ResamplingOp extends Operator {
                     "are only retrieved when zooming in on a pixel.")
     private boolean resampleOnPyramidLevels;
 
+    @Parameter(alias = "bands",
+            label = "Resample only bands", defaultValue = "",
+            description = "Resample only the selected bands.",
+            rasterDataNodeType = Band.class)
+    private String[] bands;
+
+    @Parameter(alias = "masks",
+            label = "Copy only masks", defaultValue = "",
+            description = "Copy only the selected masks.",
+            rasterDataNodeType = Mask.class)
+    private String[] masks;
+
     private S2Resampler s2Resampler;
 
     @Override
@@ -85,9 +97,17 @@ public class S2ResamplingOp extends Operator {
             throw new OperatorException("Invalid S2 source product.");
         }
 
+        s2Resampler.setBandFilter(this.bands);
+
+        s2Resampler.setMaskFilter(this.masks);
+
         targetProduct = s2Resampler.resample(sourceProduct);
-        this.targetProduct.getBand("view_zenith_mean").setSourceImage(null);
-        this.targetProduct.getBand("view_azimuth_mean").setSourceImage(null);
+        if (this.targetProduct.getBandIndex("view_zenith_mean") >= 0) {
+            this.targetProduct.getBand("view_zenith_mean").setSourceImage(null);
+        }
+        if (this.targetProduct.getBandIndex("view_azimuth_mean") >= 0) {
+            this.targetProduct.getBand("view_azimuth_mean").setSourceImage(null);
+        }
     }
 
 
@@ -104,33 +124,34 @@ public class S2ResamplingOp extends Operator {
     @Override
     public void computeTileStack(Map<Band, Tile> targetTiles, Rectangle rectangle, ProgressMonitor pm) throws OperatorException {
         try {
-            Iterator<Map.Entry<Band, Tile>> it = targetTiles.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<Band, Tile> entry = it.next();
+            for (Map.Entry<Band, Tile> entry : targetTiles.entrySet()) {
                 Band targetBand = entry.getKey();
                 Tile targetTile = entry.getValue();
                 int length = targetBand.getName().length();
-                String bandName = targetBand.getName().substring(5, length-5);
-                
+                String bandName = targetBand.getName().substring(5, length - 5);
+
                 Tile[] sourceTiles = new Tile[s2Resampler.getListUpdatedBands().size()];
 
-                for(int i = 0; i < sourceTiles.length; i++) {
-                    String name = "view_"+ bandName + "_" + s2Resampler.getListUpdatedBands().get(i).getPhysicalName();
-                    Band sourceBand = this.targetProduct.getBand(name);
-                    sourceTiles[i] = getSourceTile(sourceBand, rectangle);
-                }
+                if (sourceTiles.length > 0) {
+                    for (int i = 0; i < sourceTiles.length; i++) {
+                        String name = "view_" + bandName + "_" + s2Resampler.getListUpdatedBands().get(i).getPhysicalName();
+                        Band sourceBand = this.targetProduct.getBand(name);
+                        sourceTiles[i] = getSourceTile(sourceBand, rectangle);
+                    }
 
-                for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
-                    for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
-                        float value = sourceTiles[0].getSampleFloat(x, y);
-                        for (int i = 1; i < sourceTiles.length; i++){
-                            value += sourceTiles[i].getSampleFloat(x, y);
+                    for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
+                        for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
+                            float value = sourceTiles[0].getSampleFloat(x, y);
+                            for (int i = 1; i < sourceTiles.length; i++) {
+                                value += sourceTiles[i].getSampleFloat(x, y);
+                            }
+
+                            targetTile.setSample(x, y, value / sourceTiles.length);
                         }
-
-                        targetTile.setSample(x, y, value / sourceTiles.length);
                     }
                 }
-                
+
+                pm.worked(1);
             }
         } finally {
             pm.done();
