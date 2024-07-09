@@ -11,12 +11,12 @@ public enum BiophysicalModel {
     S2B_10m("S2B_10m", true, false, false, true, true),
     LANDSAT8("LANDSAT8", true, false, false, true, true);
 
-    private String description;
-    private boolean lai;
-    private boolean cab;
-    private boolean cw;
-    private boolean fapar;
-    private boolean fcover;
+    private final String description;
+    private final boolean lai;
+    private final boolean cab;
+    private final boolean cw;
+    private final boolean fapar;
+    private final boolean fcover;
 
     BiophysicalModel(String description, boolean lai, boolean cab, boolean cw, boolean fapar, boolean fcover) {
         this.description = description;
