@@ -125,7 +125,7 @@ public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
      */
     public DecodeQualification getDecodeQualification(Object input) {
         if (isInputValid(input)) {
-            return DecodeQualification.SUITABLE;
+            return DecodeQualification.INTENDED;
         }
         return DecodeQualification.UNABLE;
     }
