@@ -187,6 +187,9 @@ public class EcostressProductReader extends AbstractProductReader {
             return productGeoCoding;
         }
         final String remotePlatformName = ecostressMetadata.getRemotePlatformName();
+        if (remotePlatformName == null) {
+            return null;
+        }
         return buildCrsGeoCodingUsingRemoteRepository(product, remotePlatformName);
     }
 
