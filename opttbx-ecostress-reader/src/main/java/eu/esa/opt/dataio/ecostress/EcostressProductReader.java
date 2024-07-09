@@ -98,7 +98,7 @@ public class EcostressProductReader extends AbstractProductReader {
         if (productSize.height < 1 || productSize.width < 1) {
             productSize = computeProductDimensionUsingBandsDimensions(bandsList);
         }
-        final Product product = new Product(ecostressFile.getName(), "ECOSTRESS L1B ATT ", productSize.width, productSize.height, this);
+        final Product product = new Product(ecostressFile.getName(), ecostressMetadata.getFormatName(), productSize.width, productSize.height, this);
         final MetadataElement productMetadataRoot = product.getMetadataRoot();
         for (MetadataElement commonMetadataElement : getCommonMetadataElementsList(ecostressFile)) {
             productMetadataRoot.addElement(commonMetadataElement);
