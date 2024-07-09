@@ -210,9 +210,12 @@ public class EcostressUtils {
         try (ecostressFile) {
             final H5ScalarDS width = getEcostressH5ScalarDS(ecostressFile, widthElementPath);
             final H5ScalarDS height = getEcostressH5ScalarDS(ecostressFile, heightElementPath);
-            final int widthValue = getEcostressH5ScalarDSValue(width).getElemInt();
-            final int heightValue = getEcostressH5ScalarDSValue(height).getElemInt();
-            return new Dimension(widthValue, heightValue);
+            if (width != null && height != null) {
+                final int widthValue = getEcostressH5ScalarDSValue(width).getElemInt();
+                final int heightValue = getEcostressH5ScalarDSValue(height).getElemInt();
+                return new Dimension(widthValue, heightValue);
+            }
+            return new Dimension(-1, -1);
         } catch (Exception e) {
             logger.severe("Failed to extract the dimension from ECOSTRESS product '" + ecostressFile.getName() + "' Reason: " + e.getMessage());
             throw new IllegalStateException(e);
