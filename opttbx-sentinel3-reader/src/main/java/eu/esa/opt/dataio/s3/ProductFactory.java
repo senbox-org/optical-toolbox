@@ -14,6 +14,7 @@ package eu.esa.opt.dataio.s3;/*
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
+import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.glevel.MultiLevelImage;
 import org.esa.snap.core.datamodel.Product;
 
@@ -21,7 +22,7 @@ import java.io.IOException;
 
 public interface ProductFactory {
 
-    Product createProduct() throws IOException;
+    Product createProduct(VirtualDir virtualDir) throws IOException;
 
     void dispose() throws IOException;
 

@@ -12,7 +12,7 @@ public class SlstrLevel1B500mProductReaderPlugIn extends Sentinel3ProductReaderP
 
     public SlstrLevel1B500mProductReaderPlugIn() {
         super(format_name, "Sentinel-3 SLSTR L1B products in 500 m resolution",
-              "(S3.?_SL_1_RBT_.*(.SEN3)?)", "xfdumanifest", "L1c_Manifest", ".xml");
+              "(S3.?_SL_1_RBT_.*(.SEN3)?)", "xfdumanifest", "L1c_Manifest", ".xml", ".zip");
     }
 
     @Override

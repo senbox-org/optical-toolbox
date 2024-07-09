@@ -22,7 +22,7 @@
     Because of the discontinuity of the angles when the detector changes,
     the result of the resampling of the azimuth angle bands is not good from the
     physics point of view, since it blurs the border between detectors when we use
-    a bilinear method. It is needed an specific processor to carry out the resampling
+    a bilinear method. It is needed a specific processor to carry out the resampling
     of these bands in a "special" way.
 </p>
 
@@ -90,6 +90,12 @@
         <td><strong>Resample on pyramid levels</strong></td>
         <td>This setting will increase performance when viewing the image, but accurate
             resamplings are only retrieved when zooming in on a pixel.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Resample only bands</strong></td>
+        <td>Resample only a subset of the product bands. Many times there is no need to resample all the bands,
+            because only a few will be used. By selecting a subset of bands, the resample time significantly decreases.
         </td>
     </tr>
     </tbody>

@@ -29,25 +29,24 @@ public class OlciLevel2LProductFactory extends OlciProductFactory {
     protected void setMasks(Product targetProduct) {
         super.setMasks(targetProduct);
         String generalMaskName = "LQSF_GENERAL_RECOM";
-        targetProduct.addMask(generalMaskName, "LQSF.CLOUD or LQSF.CLOUD_AMBIGUOUS or LQSF.CLOUD_MARGIN or " +
-                                      "LQSF.SNOW_ICE",
+        targetProduct.addMask(generalMaskName, "LQSF.CLOUD or LQSF.SNOW_ICE",
                               "Excluding pixels that are deemed unreliable. Flag recommended by QWG.",
                               getColorProvider().getMaskColor(generalMaskName), 0.5);
         String otciMaskName = "LQSF_OTCI_RECOM";
-        targetProduct.addMask(otciMaskName, "LQSF.CLOUD or LQSF.CLOUD_AMBIGUOUS or LQSF.CLOUD_MARGIN or " +
+        targetProduct.addMask(otciMaskName, "LQSF.CLOUD or " +
                                       "LQSF.SNOW_ICE or LQSF.OTCI_FAIL or LQSF.OTCI_CLASS_CLSN",
                               "Excluding pixels that are deemed unreliable for OTCI. Flag recommended by QWG.",
                               getColorProvider().getMaskColor(otciMaskName), 0.5);
 
         final String vegVariable = getVegetationVariable(targetProduct);
         String gifaparMaskName = "LQSF_" + vegVariable + "_RECOM";
-        targetProduct.addMask(gifaparMaskName, "LQSF.CLOUD or LQSF.CLOUD_AMBIGUOUS or LQSF.CLOUD_MARGIN or " +
+        targetProduct.addMask(gifaparMaskName, "LQSF.CLOUD or " +
                                       "LQSF.SNOW_ICE or LQSF." + vegVariable + "_FAIL",
                               "Excluding pixels that are deemed unreliable for " + vegVariable + ". Flag recommended by QWG.",
                               getColorProvider().getMaskColor(gifaparMaskName), 0.5);
 
         String iwvMaskName = "LQSF_IWV_RECOM";
-        targetProduct.addMask(iwvMaskName, "LQSF.CLOUD or LQSF.CLOUD_AMBIGUOUS or LQSF.CLOUD_MARGIN or " +
+        targetProduct.addMask(iwvMaskName, "LQSF.CLOUD or " +
                                       "LQSF.SNOW_ICE or LQSF.WV_FAIL",
                               "Excluding pixels that are deemed unreliable for IWV. Flag recommended by QWG.",
                               getColorProvider().getMaskColor(iwvMaskName), 0.5);

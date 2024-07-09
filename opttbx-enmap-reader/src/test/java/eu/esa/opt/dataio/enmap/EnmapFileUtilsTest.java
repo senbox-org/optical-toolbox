@@ -15,15 +15,4 @@ public class EnmapFileUtilsTest {
         assertTrue(EnmapFileUtils.isZip(Paths.get("matokaman.zip")));
         assertFalse(EnmapFileUtils.isZip(Paths.get("firlefanz.xml")));
     }
-
-    @Test
-    @STTM("SNAP-3627")
-    public void testIsTar() {
-        assertTrue(EnmapFileUtils.isTar(Paths.get("matokaman.tar.gz")));
-        assertTrue(EnmapFileUtils.isTar(Paths.get("matokaman.tgz")));
-        assertTrue(EnmapFileUtils.isTar(Paths.get("matokaman.tar")));
-
-        assertFalse(EnmapFileUtils.isTar(Paths.get("firlefanz.zip")));
-        assertFalse(EnmapFileUtils.isTar(Paths.get("firlefanz.json")));
-    }
 }

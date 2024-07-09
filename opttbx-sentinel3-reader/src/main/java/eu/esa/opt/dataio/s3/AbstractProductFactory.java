@@ -14,6 +14,7 @@ package eu.esa.opt.dataio.s3;/*
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
+import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.glevel.MultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
@@ -66,6 +67,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
 import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERPOLATING;
 
@@ -99,12 +101,24 @@ public abstract class AbstractProductFactory implements ProductFactory {
     protected static Band copyBand(Band sourceBand, Product targetProduct, boolean copySourceImage) {
         return ProductUtils.copyBand(sourceBand.getName(), sourceBand.getProduct(), targetProduct, copySourceImage);
     }
+
     @Override
-    public final Product createProduct() throws IOException {
-        manifest = createManifest(getInputFile());
+    public final Product createProduct(VirtualDir virtualDir) throws IOException {
+        final InputStream manifestInputStream = getManifestInputStream(virtualDir);
+        manifest = createManifest(manifestInputStream);
 
         final List<String> fileNames = getFileNames(manifest);
-        readProducts(fileNames);
+        final List<String> ensuredNames = new ArrayList<>();
+        for (String origName : fileNames) {
+            // @todo 2 extract method, prepare for more cases and write tests tb 2024-05-31
+            if (origName.startsWith("./")) {
+                ensuredNames.add(origName.substring(2));
+            } else {
+                ensuredNames.add(origName);
+            }
+        }
+
+        readProducts(ensuredNames, virtualDir);
 
         final String productName = getProductName();
         final String productType = manifest.getProductType();
@@ -136,7 +150,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         setBandGeoCodings(targetProduct);
         final Product[] sourceProducts = openProductList.toArray(new Product[0]);
         setAutoGrouping(sourceProducts, targetProduct);
-        setTimeCoding(targetProduct);
+        setTimeCoding(targetProduct, virtualDir);
 
         return targetProduct;
     }
@@ -382,15 +396,16 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
-    protected void setTimeCoding(Product targetProduct) throws IOException {
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
 
     }
 
-    protected Product readProduct(String fileName, Manifest manifest) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), fileName);
+    protected Product readProduct(String fileName, Manifest manifest, VirtualDir virtualDir) throws IOException {
+        final File file = getFileFromVirtualDir(fileName, virtualDir);
         if (!file.exists()) {
             return null;
         }
+
         final ProductReader reader = ProductIO.getProductReaderForInput(file);
         if (reader == null) {
             final String msg = MessageFormat.format("Cannot read file ''{0}''. No appropriate reader found.", fileName);
@@ -433,8 +448,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     protected abstract List<String> getFileNames(Manifest manifest);
 
-    protected void setTimeCoding(Product targetProduct, String timeDataFileName, String timeVariableName) throws IOException {
-        final File file = new File(getInputFileParentDirectory(), timeDataFileName);
+    protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir, String timeDataFileName, String timeVariableName) throws IOException {
+        final File file = getFileFromVirtualDir(timeDataFileName, virtualDir);
         if (!file.exists()) {
             throw new IOException("Time coordinates file not found: " + timeDataFileName);
         }
@@ -501,14 +516,14 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
-    private void readProducts(List<String> fileNames) throws IOException {
+    private void readProducts(List<String> fileNames, VirtualDir virtualDir) throws IOException {
         for (final String fileName : fileNames) {
             if ("".equals(fileName)) {  // skip directory
                 continue;
             }
             Product product = null;
             try {
-                product = readProduct(fileName, manifest);
+                product = readProduct(fileName, manifest, virtualDir);
             } catch (IOException ioe) {
                 logger.log(Level.WARNING, ioe.getMessage());
             }
@@ -523,16 +538,16 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
-    private Manifest createManifest(File file) throws IOException {
+    private Manifest createManifest(InputStream inputStream) throws IOException {
         final Document xmlDocument;
-        try (InputStream inputStream = new FileInputStream(file)) {
+        try (inputStream) {
             xmlDocument = createXmlDocument(inputStream);
         }
         // TODO (mp/16.09.2016) - probably not needed anymore
         // according to the documentation SYN L1C should also have a xfdumanifest file
-        if (file.getName().equals(EarthExplorerManifest.L1C_MANIFEST_FILE_NAME)) {
-            return EarthExplorerManifest.createManifest(xmlDocument);
-        }
+        //if (file.getName().equals(EarthExplorerManifest.L1C_MANIFEST_FILE_NAME)) {
+        //    return EarthExplorerManifest.createManifest(xmlDocument);
+        //}
         return XfduManifest.createManifest(xmlDocument);
     }
 
@@ -547,4 +562,15 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
+    // @todo 3 tb/tb make static and mock test 2024-05-31
+    private InputStream getManifestInputStream(VirtualDir virtualDir) throws IOException {
+        final String[] list = virtualDir.listAllFiles();
+        for (final String entry : list) {
+            if (entry.toLowerCase().endsWith(XfduManifest.MANIFEST_FILE_NAME)) {
+                return virtualDir.getInputStream(entry);
+            }
+        }
+
+        return null;
+    }
 }
