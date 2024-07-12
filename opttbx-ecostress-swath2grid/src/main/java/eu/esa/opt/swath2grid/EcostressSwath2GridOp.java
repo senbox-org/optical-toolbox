@@ -508,7 +508,7 @@ public class EcostressSwath2GridOp extends Operator {
             throw new IllegalArgumentException("Ecostress Brightness Temperature Product not found, download the table at https://git.earthdata.nasa.gov/projects/LPDUR/repos/ecostress_swath2grid/browse");
         }
         final Path ecostressBrightnessTemperatureProductResourcePath = Path.of(ecostressBrightnessTemperatureProductFileURI.toURI());
-        final Path ecostressBrightnessTemperatureProductPath = ecostressSwath2gridOpAuxdataDir.resolve(ecostressBrightnessTemperatureProductResourcePath.getFileName());
+        final Path ecostressBrightnessTemperatureProductPath = ecostressSwath2gridOpAuxdataDir.resolve(ecostressBrightnessTemperatureProductResourcePath.getFileName().toString());
         if (!Files.exists(ecostressBrightnessTemperatureProductPath)) {
             Files.copy(ecostressBrightnessTemperatureProductResourcePath, ecostressBrightnessTemperatureProductPath);
         }
