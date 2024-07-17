@@ -26,7 +26,6 @@ import org.esa.snap.core.datamodel.SampleCoding;
 
 import java.io.File;
 import java.nio.ByteBuffer;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,10 +38,10 @@ final class PrismaConstantsAndUtils {
     static final String DESCRIPTION = "Prisma ASI (Agenzia Spaziale Italiana)";
     static final String PRISMA_HDF_EXTENSION = ".he5";
     static final String PRISMA_ZIP_CONTAINER_EXTENSION = ".zip";
-    static final String PRISMA_L2_FILENAME_REGEX
-            = "PRS_L(2B|2C|2D)_.*_\\d{14}_\\d{14}_\\d+\\.(he5|zip)";
-    static final Pattern PRISMA_L2_FILENAME_PATTERN
-            = Pattern.compile(PRISMA_L2_FILENAME_REGEX, Pattern.CASE_INSENSITIVE);
+    static final String PRISMA_FILENAME_REGEX
+            = "PRS_L(1|2B|2C|2D)_.*_\\d{14}_\\d{14}_\\d+\\.(he5|zip)";
+    static final Pattern PRISMA_FILENAME_PATTERN
+            = Pattern.compile(PRISMA_FILENAME_REGEX, Pattern.CASE_INSENSITIVE);
     static final Map<String, String> LEVEL_DEPENDENT_CUBE_MEASUREMENT_NAME = new HashMap<>() {{
         put("1", "_Ltoa");
         put("2B", "_Lboa");
@@ -55,20 +54,39 @@ final class PrismaConstantsAndUtils {
         put("2C", "1");
         put("2D", "1");
     }};
+    static final Map<String, String> VARIABLE_UNIT = new HashMap<>() {{
+        put("AOT_Map", "1");
+        put("AEX_Map", "1");
+        put("WVM_Map", "g/cm2");
+        put("COT_Map", "1");
+    }};
+    static final Map<String, String> VARIABLE_DESCRIPTION = new HashMap<>() {{
+        put("AOT_Map", "Aerosol optical thickness");
+        put("AEX_Map", "Angstrom exponent of the aerosol");
+        put("WVM_Map", "Water Vapour columnar amount");
+        put("COT_Map", "Clouds optical thickness");
+    }};
+
+    static final Map<String, String> LEVEL_DEPENDENT_AUTO_GROUPING = new HashMap<>() {{
+        put("1",
+            "HCO_Vnir:HCO_Swir:HCO:HCO_VNIR_PIXEL_SAT_ERR_MATRIX:HCO_SWIR_PIXEL_SAT_ERR_MATRIX:PCO:" +
+            "HRC_Vnir:HRC_Swir:HRC:HRC_VNIR_PIXEL_SAT_ERR_MATRIX:HRC_SWIR_PIXEL_SAT_ERR_MATRIX:PRC");
+        put("2B", "HCO_Vnir:HCO_Swir:HCO:HCO_VNIR_PIXEL_L2_ERR_MATRIX:HCO_SWIR_PIXEL_L2_ERR_MATRIX:PCO");
+        put("2C", "HCO_Vnir:HCO_Swir:HCO:HCO_VNIR_PIXEL_L2_ERR_MATRIX:HCO_SWIR_PIXEL_L2_ERR_MATRIX:PCO");
+        put("2D", "HCO_Vnir:HCO_Swir:HCO:HCO_VNIR_PIXEL_L2_ERR_MATRIX:HCO_SWIR_PIXEL_L2_ERR_MATRIX:PCO");
+    }};
 
     static final Class<?>[] IO_TYPES = new Class[]{
-            Path.class,
             File.class,
             String.class
     };
 
     private static final InputConverter[] INPUT_CONVERTERS = new InputConverter[]{
-            output -> (Path) output,
-            output -> ((File) output).toPath(),
-            output -> Paths.get((String) output)
+            output -> (File) output,
+            output -> Paths.get((String) output).toFile()
     };
 
-    static Path convertToPath(final Object object) {
+    static File convertToFile(final Object object) {
         for (int i = 0; i < IO_TYPES.length; i++) {
             if (IO_TYPES[i].isInstance(object)) {
                 return INPUT_CONVERTERS[i].convertInput(object);
@@ -209,6 +227,6 @@ final class PrismaConstantsAndUtils {
 
     private interface InputConverter {
 
-        Path convertInput(Object input);
+        File convertInput(Object input);
     }
 }

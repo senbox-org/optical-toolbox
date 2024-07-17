@@ -3,9 +3,7 @@ package eu.esa.opt.dataio.prisma;
 import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.test.LongTestRunner;
 import org.esa.snap.core.datamodel.Product;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -27,12 +25,12 @@ public class PrismaL2DProductReaderTest {
     private static final String prismaZipFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
     private static final String prismaFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
 
-    private PrismaL2ProductReader ppr;
+    private PrismaProductReader ppr;
 
     @STTM("SNAP-3445")
     @Before
     public void setUp() throws Exception {
-        ppr = new PrismaL2ProductReader(new PrismaL2ProductReaderPlugin());
+        ppr = new PrismaProductReader(new PrismaProductReaderPlugin());
     }
 
     @STTM("SNAP-3445")

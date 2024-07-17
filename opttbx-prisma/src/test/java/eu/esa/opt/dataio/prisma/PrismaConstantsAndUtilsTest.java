@@ -18,20 +18,16 @@ public class PrismaConstantsAndUtilsTest {
     @STTM("SNAP-3445")
     @Test
     public void convertToPath() {
-        Path path;
+        File file;
         Object o;
 
         o = "Test";
-        path = PrismaConstantsAndUtils.convertToPath(o);
-        assertThat(path, is(Paths.get("test")));
+        file = PrismaConstantsAndUtils.convertToFile(o);
+        assertThat(file, is(Paths.get("Test").toFile()));
 
         o = new File("test");
-        path = PrismaConstantsAndUtils.convertToPath(o);
-        assertThat(path, is(Paths.get("test")));
-
-        o = Paths.get("test");
-        path = PrismaConstantsAndUtils.convertToPath(o);
-        assertThat(path, is(Paths.get("test")));
+        file = PrismaConstantsAndUtils.convertToFile(o);
+        assertThat(file, is(Paths.get("test").toFile()));
     }
 
     @STTM("SNAP-3445")

@@ -1,18 +1,27 @@
 package eu.esa.opt.dataio.prisma;
 
 import com.bc.ceres.annotation.STTM;
-import io.jhdf.api.Attribute;
-import io.jhdf.api.Node;
 
 import org.esa.snap.core.dataio.IllegalFileFormatException;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Test;
+import org.mockito.Mockito;
+import ucar.ma2.Array;
+import ucar.ma2.ArrayFloat;
+import ucar.ma2.DataType;
+import ucar.ma2.InvalidRangeException;
+import ucar.ma2.Section;
+import ucar.nc2.Attribute;
+import ucar.nc2.Group;
+import ucar.nc2.ProxyReader;
+import ucar.nc2.Variable;
+import ucar.nc2.dataset.VariableDS;
+import ucar.nc2.util.CancelTask;
 
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -23,13 +32,13 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromString() {
+    public void testAddMetaAttributesFromString() {
         // given
         String[] data = {"Test1", "Test2", "Test3"};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
 
         // when
-        MetadataReader.createArrayDataFromString(arrayAttElem, "Test", data);
+        MetadataReader.addMetaAttributesFromString(arrayAttElem, "Test", data);
 
         // then
         assertThat(arrayAttElem.getNumAttributes(), is(3));
@@ -40,13 +49,13 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromFloat() throws IllegalFileFormatException {
+    public void testAddMetaAttributesFromFloat() throws IllegalFileFormatException {
         // given
         float[] data = {1.1f, 2.2f, 3.3f};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
 
         // when
-        MetadataReader.createArrayDataFromFloat(arrayAttElem, "Test", data);
+        MetadataReader.addMetaAttributesFromFloat(arrayAttElem, "Test", data);
 
         // then
         assertThat(arrayAttElem.getNumAttributes(), is(1));
@@ -55,13 +64,13 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromFloat_forMultidimensionalData() throws IllegalFileFormatException {
+    public void testAddMetaAttributes_forMultidimensionslData() throws IllegalFileFormatException {
         // given
         float[][] data = {{1.1f, 2.2f}, {3.3f, 4.4f}};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
 
         // when
-        MetadataReader.createArrayDataFromFloat(arrayAttElem, "Test", data);
+        MetadataReader.addMetaAttributesFromFloat(arrayAttElem, "Test", data);
 
         // then
         assertThat(arrayAttElem.getNumAttributes(), is(2));
@@ -71,14 +80,14 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromFloat_illegalNumberOfDimensions() {
+    public void testAddMetaAttributesFromFloat_illegalNumberOfDimensions() {
         // given
         float[][][] data = {{{1.1f, 2.2f}, {3.3f, 4.4f}}};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
 
         try {
             // when
-            MetadataReader.createArrayDataFromFloat(arrayAttElem, "Test", data);
+            MetadataReader.addMetaAttributesFromFloat(arrayAttElem, "Test", data);
             fail("IllegalFileFormatException expected");
         } catch (IllegalFileFormatException expected) {
             // then
@@ -88,14 +97,14 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromLong() throws IllegalFileFormatException {
+    public void testAddMetaAttributesFromLong() throws IllegalFileFormatException {
         // given
         long[] data = {1L, 2L, 3L};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
-        int[] dimensions = {data.length};
+        final boolean unsigned = false;
 
         // when
-        MetadataReader.createArrayDataFromLong(arrayAttElem, "Test", data);
+        MetadataReader.addMetaAttributesFromLong(arrayAttElem, "Test", data, unsigned);
 
         // then
         assertThat(arrayAttElem.getNumAttributes(), is(1));
@@ -104,14 +113,14 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromLong_forMultidimensionalData() throws IllegalFileFormatException {
+    public void testAddMetaAttributes_forMultidimensionalDataFromLong() throws IllegalFileFormatException {
         // given
         long[][] data = {{1L, 2L}, {3L, 4L}};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
-        int[] dimensions = {data.length, data[0].length};
+        final boolean unsigned = false;
 
         // when
-        MetadataReader.createArrayDataFromLong(arrayAttElem, "Test", data);
+        MetadataReader.addMetaAttributesFromLong(arrayAttElem, "Test", data, unsigned);
 
         // then
         assertThat(arrayAttElem.getNumAttributes(), is(2));
@@ -121,14 +130,15 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromLong_illegalNumberOfDimensions() {
+    public void testAddMetaAttributesFromLong_illegalNumberOfDimensions() {
         // given
         long[][][][] data = {{{{1L, 2L}, {3L, 4L}}}};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
+        final boolean unsigned = false;
 
         try {
             // when
-            MetadataReader.createArrayDataFromLong(arrayAttElem, "Test", data);
+            MetadataReader.addMetaAttributesFromLong(arrayAttElem, "Test", data, unsigned);
             fail("IllegalFileFormatException expected");
         } catch (IllegalFileFormatException expected) {
             // then
@@ -138,14 +148,14 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromInt() throws IllegalFileFormatException {
+    public void testAddMetaAttributesFromInt() throws IllegalFileFormatException {
         // given
         int[] data = {1, 2, 3};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
-        int[] dimensions = {data.length};
+        final boolean unsigned = false;
 
         // when
-        MetadataReader.createArrayDataFromInt(arrayAttElem, "Test", data);
+        MetadataReader.addMetaAttributesFromInt(arrayAttElem, "Test", data, unsigned);
 
         // then
         assertThat(arrayAttElem.getNumAttributes(), is(1));
@@ -154,14 +164,34 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromInt_forMultidimensionalData() throws IllegalFileFormatException {
+    public void testAddMetaAttributesFromInt_Unsigned() throws IllegalFileFormatException {
+        // given
+        int[] data = {-1, -2, -3};
+        MetadataElement arrayAttElem = new MetadataElement("Leaf");
+        final boolean unsigned = true;
+
+        // when
+        MetadataReader.addMetaAttributesFromInt(arrayAttElem, "Test", data, unsigned);
+
+        // then
+        assertThat(arrayAttElem.getNumAttributes(), is(1));
+        final MetadataAttribute attribute = arrayAttElem.getAttributeAt(0);
+        assertNotNull(attribute);
+        assertThat(attribute.getDataType(), is(ProductData.TYPE_UINT32));
+        assertThat(attribute.getData().getElems(), is(data));
+        assertThat(attribute.getData().getElemUIntAt(0) , is(data[0]& 0xffffffffL));
+    }
+
+    @STTM("SNAP-3445")
+    @Test
+    public void testAddMetaAttributes_forMultidimensionalDataFromInt() throws IllegalFileFormatException {
         // given
         int[][] data = {{1, 2}, {3, 4}};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
-        int[] dimensions = {data.length, data[0].length};
+        final boolean unsigned = false;
 
         // when
-        MetadataReader.createArrayDataFromInt(arrayAttElem, "Test", data);
+        MetadataReader.addMetaAttributesFromInt(arrayAttElem, "Test", data, unsigned);
 
         // then
         assertThat(arrayAttElem.getNumAttributes(), is(2));
@@ -171,14 +201,15 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testCreateArrayDataFromInt_illegalNumberOfDimensions() {
+    public void testAddMetaAttributesFromInt_illegalNumberOfDimensions() {
         // given
         int[][][][][] data = {{{{{1, 2}, {3, 4}}}}};
         MetadataElement arrayAttElem = new MetadataElement("Leaf");
+        final boolean unsigned = false;
 
         try {
             // when
-            MetadataReader.createArrayDataFromInt(arrayAttElem, "Test", data);
+            MetadataReader.addMetaAttributesFromInt(arrayAttElem, "Test", data, unsigned);
             fail("IllegalFileFormatException expected");
         } catch (IllegalFileFormatException expected) {
             // then
@@ -188,14 +219,16 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testHandleArrayDataForInt() throws Exception {
+    public void testHandleArrayDataOfAttributesForInt() throws Exception {
         // given
+        String attName = "Test";
         final int[] data = {1, 2, 3};
-        final Attribute mockedAtt = new JHdfMockAttribute(false, int.class, data);
+        final boolean isUnsigned = false;
+        Array array = Array.makeFromJavaArray(data, isUnsigned);
+        final Attribute mockedAtt = new Attribute(attName, array);
         MetadataElement element = new MetadataElement("Leaf");
-        String attName = "Test";
         // when
-        MetadataReader.handleArrayData(element, attName, mockedAtt);
+        MetadataReader.handleArrayDataOfAttributes(element, attName, mockedAtt);
         // then
         assertThat(element.getNumElements(), is(1));
         MetadataElement arrayAttElem = element.getElementAt(0);
@@ -206,14 +239,16 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testHandleArrayDataForLong() throws Exception {
+    public void testHandleArrayDataOfAttributesForLong() throws Exception {
         // given
+        String attName = "Test";
         final long[] data = {10, 20, 30};
-        final Attribute mockedAtt = new JHdfMockAttribute(false, long.class, data);
+        final boolean isUnsigned = false;
+        Array dataArray = Array.makeFromJavaArray(data, isUnsigned);
+        final Attribute mockedAtt = new Attribute(attName, dataArray);
         MetadataElement element = new MetadataElement("Leaf");
-        String attName = "Test";
         // when
-        MetadataReader.handleArrayData(element, attName, mockedAtt);
+        MetadataReader.handleArrayDataOfAttributes(element, attName, mockedAtt);
         // then
         assertThat(element.getNumElements(), is(1));
         MetadataElement arrayAttElem = element.getElementAt(0);
@@ -224,18 +259,23 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testHandleArrayDataForMultidimensionalFloat() throws Exception {
+    public void testHandleArrayDataOfVariableForMultidimensionalFloat() throws Exception {
         // given
+        String varName = "Test";
         final float[][] data = {{1.1f, 2.2f}, {3.3f, 4.4f}};
-        final JHdfMockAttribute mockedAtt = new JHdfMockAttribute(false, float.class, data);
+        final Array array = Array.makeFromJavaArray(data).reshape(new int[]{2, 2});
+        final VariableDS variable = Mockito.mock(VariableDS.class);
+        Mockito.when(variable.getShortName()).thenReturn(varName);
+        Mockito.when(variable.getDataType()).thenReturn(DataType.FLOAT);
+        Mockito.when(variable.getShape()).thenReturn(new int[]{2,2});
+        Mockito.when(variable.read()).thenReturn(array);
         MetadataElement element = new MetadataElement("Leaf");
-        String attName = "Test";
         // when
-        MetadataReader.handleArrayData(element, attName, mockedAtt);
+        MetadataReader.handleArrayDataOfVariable(element, variable);
         // then
         assertThat(element.getNumElements(), is(1));
         MetadataElement arrayAttElem = element.getElementAt(0);
-        assertThat(arrayAttElem.getName(), is(attName));
+        assertThat(arrayAttElem.getName(), is(varName));
         assertThat(arrayAttElem.getNumAttributes(), is(2));
         assertThat(arrayAttElem.getAttributeAt(0).getData().getElems(), is(data[0]));
         assertThat(arrayAttElem.getAttributeAt(1).getData().getElems(), is(data[1]));
@@ -243,39 +283,47 @@ public class MetadataReaderTest {
 
     @STTM("SNAP-3445")
     @Test
-    public void testHandleArrayDataForScalarString() throws Exception {
+    public void testHandleArrayDataOfAttributesForScalarString() throws Exception {
         // given
-        final String[] data = {"Test1", "Test2", "Test3"};
-        Attribute mockedAtt = new JHdfMockAttribute(false, String.class, data);
-        MetadataElement element = new MetadataElement("Leaf");
         String attName = "Test";
+        final String[] data = {"Test1", "Test2", "Test3"};
+        final Attribute mockedAtt = new Attribute(attName, List.of(data));
+        MetadataElement element = new MetadataElement("Leaf");
         // when
-        MetadataReader.handleArrayData(element, attName, mockedAtt);
+        MetadataReader.handleArrayDataOfAttributes(element, attName, mockedAtt);
         // then
         assertThat(element.getNumElements(), is(1));
         MetadataElement arrayAttElem = element.getElementAt(0);
         assertThat(arrayAttElem.getName(), is(attName));
         assertThat(arrayAttElem.getNumAttributes(), is(3));
-        assertThat(arrayAttElem.getAttributeAt(0).getData().getElemString(), is("Test1"));
+        final String[] expectedAttNames = {"Test.1", "Test.2", "Test.3"};
+        final String[] expectedValues = data.clone();
+        for (int i = 0; i < arrayAttElem.getNumAttributes(); i++) {
+            final MetadataAttribute att = arrayAttElem.getAttributeAt(i);
+            assertThat("Invalid name at pos " + i, att.getName(), is(expectedAttNames[i]));
+            assertThat("Invalid value at pos " + i, att.getData().getElemString(), is(expectedValues[i]));
+        }
         assertThat(arrayAttElem.getAttributeAt(1).getData().getElemString(), is("Test2"));
         assertThat(arrayAttElem.getAttributeAt(2).getData().getElemString(), is("Test3"));
     }
 
     @STTM("SNAP-3445")
     @Test
-    public void testHandleArrayData_UnsupportedDataType() {
+    public void testHandleArrayData_UnsupportedDataOfAttributesType() {
         // given
-        final Double[] data = {3.3, 4.4, 5.5};
-        Attribute mockedAtt = new JHdfMockAttribute(false, Double.class, data);
-        MetadataElement element = new MetadataElement("Leaf");
         String attName = "Test";
+        final boolean[] data = {true, false, true};
+        final boolean isUnsigned = false;
+        final Array array = Array.makeFromJavaArray(data, isUnsigned);
+        final Attribute mockedAtt = new Attribute(attName, array);
+        MetadataElement element = new MetadataElement("Leaf");
         try {
             // when
-            MetadataReader.handleArrayData(element, attName, mockedAtt);
+            MetadataReader.handleArrayDataOfAttributes(element, attName, mockedAtt);
             fail("IllegalFileFormatException expected");
         } catch (IllegalFileFormatException expected) {
             // then
-            assertThat(expected.getMessage(), is("Unsupported data type: java.lang.Double[]"));
+            assertThat(expected.getMessage(), is("Unsupported data type: boolean"));
         }
     }
 
@@ -284,31 +332,55 @@ public class MetadataReaderTest {
     public void testCreateProductDataInstanceForScalar() throws IllegalFileFormatException {
         ProductData pd;
 
-        pd = MetadataReader.createProductDataInstanceForScalarData((short) 11);
-        assertThat(pd, is(instanceOf(ProductData.Short.class)));
-        assertThat(pd.getElems(), is(new short[]{11}));
+        boolean isUnsigned = true;
+        Attribute att = new Attribute("n", Array.makeFromJavaArray(new short[]{-1}, isUnsigned));
+        pd = MetadataReader.createProductDataInstanceForScalarData(att);
+        assertThat(pd, is(instanceOf(ProductData.UShort.class)));
+        assertThat(pd.getElems(), is(new short[]{-1}));
+        assertThat(pd.isUnsigned(), is(true));
+        assertThat(pd.getElemInt(), is(65535));
 
-        pd = MetadataReader.createProductDataInstanceForScalarData((int) 42);
+        isUnsigned = false;
+        att = new Attribute("n", Array.makeFromJavaArray(new short[]{-1}, isUnsigned));
+        pd = MetadataReader.createProductDataInstanceForScalarData(att);
+        assertThat(pd, is(instanceOf(ProductData.Short.class)));
+        assertThat(pd.getElems(), is(new short[]{-1}));
+        assertThat(pd.isUnsigned(), is(false));
+        assertThat(pd.getElemInt(), is(-1));
+
+        isUnsigned = false;
+        att = new Attribute("n", Array.makeFromJavaArray(new int[]{42}, isUnsigned));
+        pd = MetadataReader.createProductDataInstanceForScalarData(att);
         assertThat(pd, is(instanceOf(ProductData.Int.class)));
         assertThat(pd.getElems(), is(new int[]{42}));
 
-        pd = MetadataReader.createProductDataInstanceForScalarData((long) 82);
+        isUnsigned = false;
+        att = new Attribute("n", Array.makeFromJavaArray(new long[]{82}, isUnsigned));
+        pd = MetadataReader.createProductDataInstanceForScalarData(att);
         assertThat(pd, is(instanceOf(ProductData.Long.class)));
         assertThat(pd.getElems(), is(new long[]{82}));
 
-        pd = MetadataReader.createProductDataInstanceForScalarData((float) 4.2);
+        att = new Attribute("n", Array.makeFromJavaArray(new float[]{4.2f}));
+        pd = MetadataReader.createProductDataInstanceForScalarData(att);
         assertThat(pd, is(instanceOf(ProductData.Float.class)));
         assertThat(pd.getElems(), is(new float[]{4.2f}));
 
-        pd = MetadataReader.createProductDataInstanceForScalarData("What?");
+        att = new Attribute("n", Array.makeFromJavaArray(new double[]{8.2}));
+        pd = MetadataReader.createProductDataInstanceForScalarData(att);
+        assertThat(pd, is(instanceOf(ProductData.Double.class)));
+        assertThat(pd.getElems(), is(new double[]{8.2}));
+
+        att = new Attribute("n", Array.makeArray(DataType.STRING, new String[]{"What?"}));
+        pd = MetadataReader.createProductDataInstanceForScalarData(att);
         assertThat(pd, is(instanceOf(ProductData.ASCII.class)));
         assertThat(pd.getElemString(), is("What?"));
 
         try {
-            MetadataReader.createProductDataInstanceForScalarData(new HashMap());
+            att = new Attribute("n", Array.makeFromJavaArray(new boolean[]{false}));
+            MetadataReader.createProductDataInstanceForScalarData(att);
             fail("IllegalFileFormatException expected");
         } catch (IllegalFileFormatException expected) {
-            assertThat(expected.getMessage(), is("Unsupported data type: java.util.HashMap"));
+            assertThat(expected.getMessage(), is("Unsupported data type: boolean"));
         }
     }
 
@@ -316,17 +388,20 @@ public class MetadataReaderTest {
     @Test
     public void testHandleScalarData() throws IllegalFileFormatException {
         final MetadataElement elem = new MetadataElement("elem");
+        Attribute att;
 
         try {
-            MetadataReader.handleScalarData(elem, "AttName", new ArrayList());
+            att = new Attribute("n", Array.factory(DataType.BOOLEAN, new int[]{1}, new boolean[]{false}));
+            MetadataReader.handleScalarData(elem, "AttName", att);
             fail("IllegalFileFormatException expected");
         } catch (IllegalFileFormatException expected) {
-            assertThat(expected.getMessage(), is("Unsupported data type: java.util.ArrayList"));
+            assertThat(expected.getMessage(), is("Unsupported data type: boolean"));
         }
         assertThat(elem.getNumElements(), is(0));
         assertThat(elem.getNumAttributes(), is(0));
 
-        MetadataReader.handleScalarData(elem, "AttName", 23.4f);
+        att = new Attribute("n", Array.makeFromJavaArray(new float[]{23.4f}));
+        MetadataReader.handleScalarData(elem, "AttName", att);
         assertThat(elem.getNumElements(), is(0));
         assertThat(elem.getNumAttributes(), is(1));
         final MetadataAttribute attr = elem.getAttributeAt(0);
@@ -339,8 +414,7 @@ public class MetadataReaderTest {
     public void testHandleAttributeData_scalar() throws IllegalFileFormatException {
         final MetadataElement elem = new MetadataElement("elem");
         MetadataReader.handleAttributeData(
-                elem,
-                new JHdfMockAttribute("SomeName", true, int.class, 6));
+                elem, new Attribute("SomeName", Array.makeFromJavaArray(new int[]{6})));
 
         assertThat(elem.getNumElements(), is(0));
         assertThat(elem.getNumAttributes(), is(1));
@@ -355,7 +429,7 @@ public class MetadataReaderTest {
         final MetadataElement elem = new MetadataElement("elem");
         MetadataReader.handleAttributeData(
                 elem,
-                new JHdfMockAttribute("SomeOtherName", false, long.class, new long[]{4, 5, 6, 7}));
+                new Attribute("SomeOtherName", Array.makeFromJavaArray(new long[]{4, 5, 6, 7})));
 
         assertThat(elem.getNumElements(), is(1));
         assertThat(elem.getNumAttributes(), is(0));
@@ -366,73 +440,5 @@ public class MetadataReaderTest {
         final MetadataAttribute attrAt0 = elemAt0.getAttributeAt(0);
         assertThat(attrAt0.getName(), is("SomeOtherName"));
         assertThat(attrAt0.getData().getElems(), is(new long[]{4, 5, 6, 7}));
-    }
-
-    private static class JHdfMockAttribute implements Attribute {
-        private final String name;
-        private final boolean scalar;
-        private final Class<?> aClass;
-        private final Object data;
-
-        public JHdfMockAttribute(boolean scalar, Class<?> aClass, Object data) {
-            this("attName", scalar, aClass, data);
-        }
-
-        public JHdfMockAttribute(String name, boolean scalar, Class<?> aClass, Object data) {
-            this.name = name;
-            this.scalar = scalar;
-            this.aClass = aClass;
-            this.data = data;
-        }
-
-        @Override
-        public Node getNode() {
-            return null;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public long getSize() {
-            return 0;
-        }
-
-        @Override
-        public long getSizeInBytes() {
-            return 0;
-        }
-
-        @Override
-        public int[] getDimensions() {
-            return null;
-        }
-
-        @Override
-        public Object getData() {
-            return data;
-        }
-
-        @Override
-        public Class<?> getJavaType() {
-            return aClass;
-        }
-
-        @Override
-        public boolean isScalar() {
-            return scalar;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public ByteBuffer getBuffer() {
-            return null;
-        }
     }
 }

@@ -33,19 +33,8 @@
             <artifactId>snap-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.jhdf</groupId>
-            <artifactId>jhdf</artifactId>
-            <version>0.6.10</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.ning</groupId>
-                    <artifactId>compress-lzf</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.lz4</groupId>
-                    <artifactId>lz4-java</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-netcdf</artifactId>
         </dependency>
 
         <!-- Tests -->

@@ -19,12 +19,12 @@ public class PrismaProductReaderPluginTest {
     private final Path validZipPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.zip");
     private final Path invalidHdfPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.hdf");
     private final Path invalidZapPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.zap");
-    private PrismaL2ProductReaderPlugin plugin;
+    private PrismaProductReaderPlugin plugin;
 
     @STTM("SNAP-3445")
     @Before
     public void setUp() {
-        plugin = new PrismaL2ProductReaderPlugin();
+        plugin = new PrismaProductReaderPlugin();
     }
 
     @STTM("SNAP-3445")
@@ -32,12 +32,6 @@ public class PrismaProductReaderPluginTest {
     public void getDecodeQualification() {
         assertThat(plugin.getDecodeQualification(new Integer(3)), is(DecodeQualification.UNABLE));
         assertThat(plugin.getDecodeQualification("c:\\a\\path\\aFile.name"), is(DecodeQualification.UNABLE));
-
-        // Path objects are allowed. See PrismaProductReaderPlugin.getInputTypes()
-        assertThat(plugin.getDecodeQualification(validHe5Path), is(DecodeQualification.INTENDED));
-        assertThat(plugin.getDecodeQualification(invalidHdfPath), is(DecodeQualification.UNABLE));
-        assertThat(plugin.getDecodeQualification(validZipPath), is(DecodeQualification.INTENDED));
-        assertThat(plugin.getDecodeQualification(invalidZapPath), is(DecodeQualification.UNABLE));
 
         // File objects are allowed. See PrismaProductReaderPlugin.getInputTypes()
         assertThat(plugin.getDecodeQualification(validHe5Path.toFile()), is(DecodeQualification.INTENDED));
@@ -56,13 +50,13 @@ public class PrismaProductReaderPluginTest {
     @Test
     public void getInputTypes() {
         final Class[] inputTypes = plugin.getInputTypes();
-        assertThat(inputTypes, is(equalTo(new Class[]{Path.class, File.class, String.class})));
+        assertThat(inputTypes, is(equalTo(new Class[]{File.class, String.class})));
     }
 
     @STTM("SNAP-3445")
     @Test
     public void createReaderInstance() {
-        assertThat(plugin.createReaderInstance(), is(instanceOf(PrismaL2ProductReader.class)));
+        assertThat(plugin.createReaderInstance(), is(instanceOf(PrismaProductReader.class)));
     }
 
     @STTM("SNAP-3445")
