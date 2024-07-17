@@ -296,6 +296,12 @@
 
         <dependency>
             <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-s2msi-resampler-ui</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-kompsat2-reader</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
