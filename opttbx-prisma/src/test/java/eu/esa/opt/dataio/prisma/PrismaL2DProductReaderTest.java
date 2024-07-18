@@ -21,9 +21,9 @@ public class PrismaL2DProductReaderTest {
 
     // TODO: 13.06.2024 SE -- change this 4 lines to a solution which runs on any computer
 //    private static final String prismaZipFilePath = "D:\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
-//    private static final String prismaFilePath = "D:\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
-    private static final String prismaZipFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
-    private static final String prismaFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
+    private static final String prismaFilePath = "D:\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
+//    private static final String prismaZipFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.zip";
+//    private static final String prismaFilePath = "D:\\Arbeit_BC\\Projekte\\aaaaaaa_GIT\\SNAP11\\PRS_L2D_STD_20240402102837_20240402102842_0001.he5";
 
     private PrismaProductReader ppr;
 
@@ -40,17 +40,10 @@ public class PrismaL2DProductReaderTest {
         checkL2DProduct(product);
     }
 
-    @STTM("SNAP-3445")
-    @Test
-    public void readProductNodes_zip_inputObjectString() throws IOException {
-        final Product product = ppr.readProductNodes(prismaZipFilePath, null);
-        checkL2DProduct(product);
-    }
-
     private static void checkL2DProduct(Product product) {
         assertThat(product, is(notNullValue()));
-        assertThat(product.getSceneRasterWidth(), is(7434));
-        assertThat(product.getSceneRasterHeight(), is(7278));
+        assertThat(product.getSceneRasterWidth(), is(1239));
+        assertThat(product.getSceneRasterHeight(), is(1213));
     }
 
     @STTM("SNAP-3445")

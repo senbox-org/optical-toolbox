@@ -14,7 +14,6 @@ import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.FORMAT_NAME;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.IO_TYPES;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_PATTERN;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_HDF_EXTENSION;
-import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_ZIP_CONTAINER_EXTENSION;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToFile;
 
 public class PrismaProductReaderPlugin implements ProductReaderPlugIn {
@@ -53,7 +52,7 @@ public class PrismaProductReaderPlugin implements ProductReaderPlugIn {
 
     @java.lang.Override
     public java.lang.String[] getDefaultFileExtensions() {
-        return new java.lang.String[]{PRISMA_HDF_EXTENSION, PRISMA_ZIP_CONTAINER_EXTENSION};
+        return new java.lang.String[]{PRISMA_HDF_EXTENSION};
     }
 
     @java.lang.Override

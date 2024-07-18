@@ -37,9 +37,8 @@ final class PrismaConstantsAndUtils {
     static final String FORMAT_NAME = "PRISMA";
     static final String DESCRIPTION = "Prisma ASI (Agenzia Spaziale Italiana)";
     static final String PRISMA_HDF_EXTENSION = ".he5";
-    static final String PRISMA_ZIP_CONTAINER_EXTENSION = ".zip";
     static final String PRISMA_FILENAME_REGEX
-            = "PRS_L(1|2B|2C|2D)_.*_\\d{14}_\\d{14}_\\d+\\.(he5|zip)";
+            = "PRS_L(1|2B|2C|2D)_.*_\\d{14}_\\d{14}_\\d+\\.he5";
     static final Pattern PRISMA_FILENAME_PATTERN
             = Pattern.compile(PRISMA_FILENAME_REGEX, Pattern.CASE_INSENSITIVE);
     static final Map<String, String> LEVEL_DEPENDENT_CUBE_MEASUREMENT_NAME = new HashMap<>() {{

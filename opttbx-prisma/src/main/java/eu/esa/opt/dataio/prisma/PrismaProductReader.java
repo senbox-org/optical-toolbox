@@ -52,8 +52,6 @@ import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToFile;
 
 public class PrismaProductReader extends AbstractProductReader {
 
-    private final Map<Band, Integer> _cubeIndex = new HashMap<>();
-    private final Map<Band, Variable> _variableMapping = new HashMap<>();
     private final Map<Variable, Array> _cubeCache = new HashMap<>();
     private final Map<ComparableIntArray, GeoCoding> _geoCodingLookUp = new HashMap<>();
     private final TreeSet<ComparableIntArray> _dimsSet = new TreeSet<>();
@@ -234,12 +232,7 @@ public class PrismaProductReader extends AbstractProductReader {
         final int height = dimensions[0];
         final DataType dataType = dataset.getDataType();
         final int productDataType = getProductDataType(dataType);
-        final Band band = new Band(bandName, productDataType, width, height) {
-            @Override
-            public boolean isProductReaderDirectlyUsable() {
-                return true;
-            }
-        };
+        final Band band = new PrismaBand(bandName, productDataType, width, height, dataset);
         if (geoCoding != null) {
             band.setGeoCoding(geoCoding);
         }
@@ -265,7 +258,6 @@ public class PrismaProductReader extends AbstractProductReader {
         }
         setUnitAndDescription(new DataNode[]{band});
         product.addBand(band);
-        _variableMapping.put(band, dataset);
         return band;
     }
 
@@ -395,13 +387,7 @@ public class PrismaProductReader extends AbstractProductReader {
                     continue;
                 }
                 String bandName = String.format(bandNameFormatExpression, i + 1);
-                final Band band = new Band(bandName, productDataType, width, height) {
-                    @Override
-                    public boolean isProductReaderDirectlyUsable() {
-                        return true;
-                    }
-                };
-                _cubeIndex.put(band, i);
+                final Band band = new PrismaBand(bandName, productDataType, width, height, cubeVar, i);
                 band.setSpectralWavelength(wavelength);
                 band.setSpectralBandwidth(bandwidths.getFloat(i));
                 band.setScalingFactor(scalingFactor);
@@ -411,7 +397,6 @@ public class PrismaProductReader extends AbstractProductReader {
                     band.setGeoCoding(geoCoding);
                 }
                 product.addBand(band);
-                _variableMapping.put(band, cubeVar);
             }
         } else {
             final int[] dimensions = cubeVar.getShape();
@@ -438,13 +423,12 @@ public class PrismaProductReader extends AbstractProductReader {
                     continue;
                 }
                 String bandName = String.format(bandNameFormatExpression, i + 1);
-                final Band band = new Band(bandName, productDataType, width, height) {
+                final Band band = new PrismaBand(bandName, productDataType, width, height, cubeVar, i) {
                     @Override
                     public boolean isProductReaderDirectlyUsable() {
                         return true;
                     }
                 };
-                _cubeIndex.put(band, i);
                 if (geoCoding != null) {
                     band.setGeoCoding(geoCoding);
                 }
@@ -452,7 +436,6 @@ public class PrismaProductReader extends AbstractProductReader {
                     band.setSampleCoding(sampleCoding);
                 }
                 product.addBand(band);
-                _variableMapping.put(band, cubeVar);
             }
         }
     }
@@ -506,34 +489,35 @@ public class PrismaProductReader extends AbstractProductReader {
             Band destBand,
             int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
 
-        if (_cubeIndex.containsKey(destBand)) {
+        final PrismaBand prismaBand = (PrismaBand) destBand;
+        if (prismaBand.cubeIndex > -1) {
             readFromCubeVariable(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
-                                 destBand, destWidth, destHeight, destBuffer, pm);
+                                 prismaBand, destWidth, destHeight, destBuffer, pm);
         } else {
             readFromVariable(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
-                             destBand, destWidth, destHeight, destBuffer, pm);
+                             prismaBand, destWidth, destHeight, destBuffer, pm);
         }
         pm.worked(sourceWidth * sourceHeight);
     }
 
     private void readFromVariable(
             int srcOffsetX, int srcOffsetY, int srcWidth, int srcHeight, int srcStepX, int srcStepY,
-            Band destBand, int destWidth, int destHeight, ProductData destBuffer,
+            PrismaBand destBand, int destWidth, int destHeight, ProductData destBuffer,
             ProgressMonitor pm) throws IOException {
-        final Variable variable = _variableMapping.get(destBand);
+        final Variable variable = destBand.variable;
 
         int[] sliceOffset = {srcOffsetY, srcOffsetX};
         int[] sliceDimensions = {srcHeight, srcWidth};
         if (srcOffsetX == 0 && srcOffsetY == 0 && srcWidth == destBand.getRasterWidth() && srcHeight == destBand.getRasterHeight()) {
             final Object src;
-            synchronized (variable) {
+            synchronized (_hdfFile) {
                 src = variable.read().copyTo1DJavaArray();
             }
             destBuffer.setElems(src);
         } else {
             try {
                 final Section section = new Section(sliceOffset, sliceDimensions, new int[]{srcStepY, srcStepX});
-                synchronized (destBand) {
+                synchronized (_hdfFile) {
                     destBuffer.setElems(variable.read(section).copyTo1DJavaArray());
                 }
             } catch (InvalidRangeException e) {
@@ -544,15 +528,16 @@ public class PrismaProductReader extends AbstractProductReader {
 
     private void readFromCubeVariable(
             int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
-            Band destBand, int destWidth, int destHeight, ProductData destBuffer,
+            PrismaBand destBand, int destWidth, int destHeight, ProductData destBuffer,
             ProgressMonitor pm) throws IOException {
-        final Variable cubeVar = _variableMapping.get(destBand);
+        final Variable cubeVar = destBand.variable;
+        final int cubeIndex = destBand.cubeIndex;
         if ("1".equals(_productLevel) && cubeVar.getShortName().contains("Cube") && !_cubeCache.containsKey(cubeVar)) {
-            synchronized (cubeVar) {
+            synchronized (_hdfFile) {
                 _cubeCache.put(cubeVar, cubeVar.read());
             }
         }
-        final int[] sliceOffset = new int[]{sourceOffsetY, _cubeIndex.get(destBand), sourceOffsetX};
+        final int[] sliceOffset = new int[]{sourceOffsetY, cubeIndex, sourceOffsetX};
         final int[] sliceDimensions = new int[]{sourceHeight, 1, sourceWidth};
         final int[] stride = new int[]{sourceStepY, 1, sourceStepX};
         try {
@@ -561,7 +546,7 @@ public class PrismaProductReader extends AbstractProductReader {
                 sliceData = _cubeCache.get(cubeVar).section(sliceOffset, sliceDimensions, stride).copyTo1DJavaArray();
             } else {
                 final Section sect = new Section(sliceOffset, sliceDimensions, stride);
-                synchronized (cubeVar) {
+                synchronized (_hdfFile) {
                     sliceData = cubeVar.read(sect).copyTo1DJavaArray();
                 }
             }
@@ -580,8 +565,6 @@ public class PrismaProductReader extends AbstractProductReader {
             _zipFileSystem.close();
             _zipFileSystem = null;
         }
-        _cubeIndex.clear();
-        _variableMapping.clear();
         _dimsSet.clear();
     }
 
@@ -659,6 +642,26 @@ public class PrismaProductReader extends AbstractProductReader {
         public int hashCode() {
             return Arrays.hashCode(array);
         }
+
     }
 
+    private static class PrismaBand extends Band {
+        public final Variable variable;
+        public final int cubeIndex;
+
+        public PrismaBand(String bandName, int productDataType, int width, int height, Variable variable) {
+            this(bandName, productDataType, width, height, variable, -1);
+        }
+
+        public PrismaBand(String bandName, int productDataType, int width, int height, Variable variable, int cubeIndex) {
+            super(bandName, productDataType, width, height);
+            this.variable = variable;
+            this.cubeIndex = cubeIndex;
+        }
+
+        @Override
+        public boolean isProductReaderDirectlyUsable() {
+            return true;
+        }
+    }
 }

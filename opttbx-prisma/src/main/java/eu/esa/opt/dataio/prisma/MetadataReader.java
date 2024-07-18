@@ -5,14 +5,12 @@ import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
-import org.geotools.xml.xsi.XSISimpleTypes;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.Group;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
-import ucar.nc2.dataset.VariableDS;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,7 +59,7 @@ public class MetadataReader {
             if (variables != null && !variables.isEmpty()) {
                 for (Variable variable : variables) {
                     final int rank = variable.getRank();
-                    if (!isHdfeosPath || rank == 1 || (rank == 2 && variable.getShape()[1] ==1)) {
+                    if (!isHdfeosPath || rank == 1 || (rank == 2 && variable.getShape()[1] == 1)) {
                         handleArrayDataOfVariable(nestedElement, variable);
                     }
                 }
@@ -191,9 +189,6 @@ public class MetadataReader {
                 break;
             case CHAR:
                 final String entireString = new String((char[]) data);
-                ProductData stringData = ProductData.createInstance(entireString);
-                varElement.addAttribute(new MetadataAttribute(varName + "_entire_string", stringData, true));
-
                 final String replaced = entireString.replaceAll("\\t", "    ");
                 final String[] lines = replaced.split("(\\r\\n|\\n\\r|\\n|\\r)");
                 addMetaAttributesFromString(varElement, varName, lines);

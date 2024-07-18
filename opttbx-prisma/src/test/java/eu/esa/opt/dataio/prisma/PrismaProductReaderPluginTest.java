@@ -16,9 +16,7 @@ import static org.junit.Assert.*;
 public class PrismaProductReaderPluginTest {
 
     private final Path validHe5Path = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.he5");
-    private final Path validZipPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.zip");
     private final Path invalidHdfPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.hdf");
-    private final Path invalidZapPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.zap");
     private PrismaProductReaderPlugin plugin;
 
     @STTM("SNAP-3445")
@@ -36,14 +34,10 @@ public class PrismaProductReaderPluginTest {
         // File objects are allowed. See PrismaProductReaderPlugin.getInputTypes()
         assertThat(plugin.getDecodeQualification(validHe5Path.toFile()), is(DecodeQualification.INTENDED));
         assertThat(plugin.getDecodeQualification(invalidHdfPath.toFile()), is(DecodeQualification.UNABLE));
-        assertThat(plugin.getDecodeQualification(validZipPath.toFile()), is(DecodeQualification.INTENDED));
-        assertThat(plugin.getDecodeQualification(invalidZapPath.toFile()), is(DecodeQualification.UNABLE));
 
         // String objects are allowed. See PrismaProductReaderPlugin.getInputTypes()
         assertThat(plugin.getDecodeQualification(validHe5Path.toString()), is(DecodeQualification.INTENDED));
         assertThat(plugin.getDecodeQualification(invalidHdfPath.toString()), is(DecodeQualification.UNABLE));
-        assertThat(plugin.getDecodeQualification(validZipPath.toString()), is(DecodeQualification.INTENDED));
-        assertThat(plugin.getDecodeQualification(invalidZapPath.toString()), is(DecodeQualification.UNABLE));
     }
 
     @STTM("SNAP-3445")
@@ -68,7 +62,7 @@ public class PrismaProductReaderPluginTest {
     @STTM("SNAP-3445")
     @Test
     public void getDefaultFileExtensions() {
-        assertThat(plugin.getDefaultFileExtensions(), is(equalTo(new String[]{".he5", ".zip"})));
+        assertThat(plugin.getDefaultFileExtensions(), is(equalTo(new String[]{".he5"})));
     }
 
     @STTM("SNAP-3445")
@@ -76,9 +70,9 @@ public class PrismaProductReaderPluginTest {
     public void getProductFileFilter() {
         final SnapFileFilter pff = plugin.getProductFileFilter();
         assertThat(pff.accept(validHe5Path.toFile()), is(true) );
-        assertThat(pff.accept(validZipPath.toFile()), is(true) );
+//        assertThat(pff.accept(validZipPath.toFile()), is(true) );
         assertThat(pff.accept(invalidHdfPath.toFile()), is(false) );
-        assertThat(pff.accept(invalidZapPath.toFile()), is(false) );
+//        assertThat(pff.accept(invalidZapPath.toFile()), is(false) );
     }
 
     @STTM("SNAP-3445")
