@@ -1,0 +1,112 @@
+<!--
+  ~ Copyright (C) 2012 Brockmann Consult GmbH (info@brockmann-consult.de)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<html>
+<head>
+    <title>ECOSTRESS Data Product Reader</title>
+    <link href="../style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<table class="header">
+    <tr class="header">
+        <td class="header">ECOSTRESS Data Product Reader</td>
+        <td align="right" class="header"><a
+                href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html"><img
+                border=0 src="../images/snap_header.jpg"></a>
+        </td>
+    </tr>
+</table>
+<hr>
+
+<h3>ECOSTRESS Mission Overview</h3>
+
+<p>
+    The ECOSTRESS instrument measures the temperature of plants and uses that information to better understand how much
+    water plants need and how they respond to stress.
+</p>
+<p>
+    ECOSTRESS addresses three overarching science questions:
+</p>
+<ul>
+    <li>How is the terrestrial biosphere responding to changes in water availability?</li>
+    <li>How do changes in diurnal vegetation water stress impact the global carbon cycle?</li>
+    <li>Can agricultural vulnerability be reduced through advanced monitoring of agricultural water consumptive use and
+        improved drought estimation?
+    </li>
+</ul>
+<p>
+    The ECOSTRESS mission answers these questions by accurately measuring the temperature
+    of plants. Plants regulate their temperature by releasing water through tiny pores on their
+    leaves called stomata. If they have sufficient water, they can maintain their temperature. However, if there is
+    insufficient water, their temperatures rise. This temperature rise can
+    be measured with a sensor in space. ECOSTRESS uses a multispectral thermal infrared (TIR)
+    radiometer to measure the surface temperature, deployed on the International Space Station. The instrument will
+    measure radiances at 5 spectral bands in the 8-12.5 m range with approximately 38 meter by 57 meter of spatial
+    resolution on the ground.
+</p>
+
+<h3>ECOSTRESS Data Products</h3>
+
+<p>
+    The ECOSTRESS mission will generate 13 different distributable data products. The products represent four levels of
+    data processing, with data granules defined as an image scene. Each image scene consists of 44 scans of the
+    instrument mirror, each scan taking approximately 1.181 seconds, and each image scene taking approximately 52
+    seconds. Each image scene starts at the beginning of the first target area encountered during each orbit. Each orbit
+    is defined as the equatorial crossing of an ascending International Space Station (ISS) orbit.
+</p>
+<p>
+    ECOSTRESS Level 0 data include spacecraft packets that have been pre-processed by the Ground Data System (GDS).
+    Level 1 products include spacecraft engineering data, the time-tagged raw sensor pixels appended with their
+    radiometric calibration coefficients, the blackbody pixels used to generate the calibration coefficients, geolocated
+    and radiometrically calibrated at-sensor radiances of each image pixel, the geolocation tags of each pixel, and the
+    corrected spacecraft attitude data. Level 2 products include the land surface temperature and emissivity for each
+    spectral band retrieved from the at-sensor radiance data, and a cloud mask. Level 2 products also appear in image
+    scene granules. Level 3 products include evapotranspiration data derived from Level 2 products. Level 4 products
+    include evaporative stress index and water use efficiency derived from Level 3 data.
+</p>
+
+<h3>ECOSTRESS Reader</h3>
+
+<p>The reader supports ECOSTRESS L1B/L2/L3/L4 data products in HDF5 data format.
+</p><br/>
+<p>Supported ECOSTRESS product types:</p>
+<ul>
+    <li>L1B ATT - Corrected spacecraft ephemeris and attitude data</li>
+    <li>L1B GEO - Geolocation tags, sun angles, and look angles, and calibrated, resampled at-sensor radiances</li>
+    <li>L1B RAD - Radiometrically corrected, band-aligned, squared at-sensor radiance pixels</li>
+    <li>L1B MAP RAD - L1B_RAD data map projected to fixed 70 meter pixels</li>
+    <li>L2 CLOUD - Cloud mask</li>
+    <li>L2 LSTE - Land Surface temperature and emissivity</li>
+    <li>L3 ET ALEXI USDA - Evapotranspiration generated at USDA with the ALEXI/DisALEXI Algorithm over specific
+        calibration sites
+    </li>
+    <li>L3 ET PT JPL - Evaporative Stress Index generated with PT-JPL</li>
+    <li>L3 L4QA - Quality Assessment fields for all ancillary data used in L3 and L4 products</li>
+    <li>L4 ESI ALEXI USDA - Evaporative Stress Index generated at USDA with the ALEXI/DisALEXI over specific calibration
+        sites
+    </li>
+    <li>L4 ESI PT JPL - Evaporative Stress Index generated with PT-JPL</li>
+    <li>L4 WUE - Water Use efficiency</li>
+</ul>
+
+<hr/>
+<p><i>Copyright &copy; 2024 by CS Group Romania. All rights reserved.</i></p>
+
+</body>
+</html>
+

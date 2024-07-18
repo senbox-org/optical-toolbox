@@ -1,0 +1,285 @@
+{
+  "id": "ECOSTRESS_L3_L4_QA_26313_001_20230225T154024_0601_01_h5",
+  "decodeQualification": "SUITABLE",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "25-FEB-2023 15:40:24.483400",
+    "endTime": "25-FEB-2023 15:45:24.483400",
+    "bands": [
+      {
+        "name": "L3_L4_QA_ECOSTRESS_L2_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2329,
+            "y": 3027,
+            "value": 15.0
+          },
+          {
+            "x": 4009,
+            "y": 3654,
+            "value": 31.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_Landsat8_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": -10484.0
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": 1.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MCD12Q1_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1570,
+            "y": 1446,
+            "value": 0.0
+          },
+          {
+            "x": 3296,
+            "y": 2057,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MCD43A3_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2970,
+            "y": 4197,
+            "value": -1.0
+          },
+          {
+            "x": 3285,
+            "y": 5229,
+            "value": -1.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD04_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 854,
+            "y": 3751,
+            "value": 0.0
+          },
+          {
+            "x": 2803,
+            "y": 5144,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD06_1km_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4083,
+            "y": 2729,
+            "value": -9.0
+          },
+          {
+            "x": 5134,
+            "y": 2736,
+            "value": -25.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD06_5km_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1838,
+            "y": 5065,
+            "value": 119.0
+          },
+          {
+            "x": 53,
+            "y": 2651,
+            "value": 119.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD07_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1768,
+            "y": 1110,
+            "value": 0.0
+          },
+          {
+            "x": 1475,
+            "y": 243,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD13Q1_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 5245,
+            "y": 3405,
+            "value": 2189.0
+          },
+          {
+            "x": 3090,
+            "y": 4036,
+            "value": -14111.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD17A2H_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1252,
+            "y": 2802,
+            "value": 105.0
+          },
+          {
+            "x": 1733,
+            "y": 4069,
+            "value": 8.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD44W_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1933,
+            "y": 2805,
+            "value": 1.0
+          },
+          {
+            "x": 2175,
+            "y": 2491,
+            "value": 1.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_Landsat8_QC",
+        "value": "['LC08_L1GT_047024_20230212_20230218_02_T2_B2.tif', 'LC08_L1GT_047024_20230212_20230218_02_T2_B3.tif', 'LC08_L1GT_047024_20230212_20230218_02_T2_B4.tif', 'LC08_L1GT_047024_20230212_20230218_02_T2_B5.tif', 'LC08_L1GT_047024_20230212_20230218_02_T2_B6.tif', 'LC08_L1GT_047024_20230212_20230218_02_T2_MTL.txt', 'LC08_L1GT_047024_20230212_20230218_02_T2_MTL.xml', 'LC08_L1GT_047024_20230212_20230218_02_T2_QA_PIXEL.tif', 'LC08_L1GT_047025_20230212_20230218_02_T2_B2.tif', 'LC08_L1GT_047025_20230212_20230218_02_T2_B3.tif', 'LC08_L1GT_047025_20230212_20230218_02_T2_B4.tif', 'LC08_L1GT_047025_20230212_20230218_02_T2_B5.tif', 'LC08_L1GT_047025_20230212_20230218_02_T2_B6.tif', 'LC08_L1GT_047025_20230212_20230218_02_T2_MTL.txt', 'LC08_L1GT_047025_20230212_20230218_02_T2_MTL.xml', 'LC08_L1GT_047025_20230212_20230218_02_T2_QA_PIXEL.tif', 'LC08_L1GT_049024_20230210_20230217_02_T2_B2.tif', 'LC08_L1GT_049024_20230210_20230217_02_T2_B3.tif', 'LC08_L1GT_049024_20230210_20230217_02_T2_B4.tif', 'LC08_L1GT_049024_20230210_20230217_02_T2_B5.tif', 'LC08_L1GT_049024_20230210_20230217_02_T2_B6.tif', 'LC08_L1GT_049024_20230210_20230217_02_T2_MTL.txt', 'LC08_L1GT_049024_20230210_20230217_02_T2_MTL.xml', 'LC08_L1GT_049024_20230210_20230217_02_T2_QA_PIXEL.tif', 'LC08_L1GT_049026_20230210_20230217_02_T2_B2.tif', 'LC08_L1GT_049026_20230210_20230217_02_T2_B3.tif', 'LC08_L1GT_049026_20230210_20230217_02_T2_B4.tif', 'LC08_L1GT_049026_20230210_20230217_02_T2_B5.tif', 'LC08_L1GT_049026_20230210_20230217_02_T2_B6.tif', 'LC08_L1GT_049026_20230210_20230217_02_T2_MTL.txt', 'LC08_L1GT_049026_20230210_20230217_02_T2_MTL.xml', 'LC08_L1GT_049026_20230210_20230217_02_T2_QA_PIXEL.tif', 'LC08_L1TP_047026_20230212_20230218_02_T1_B2.tif', 'LC08_L1TP_047026_20230212_20230218_02_T1_B3.tif', 'LC08_L1TP_047026_20230212_20230218_02_T1_B4.tif', 'LC08_L1TP_047026_20230212_20230218_02_T1_B5.tif', 'LC08_L1TP_047026_20230212_20230218_02_T1_B6.tif', 'LC08_L1TP_047026_20230212_20230218_02_T1_MTL.txt', 'LC08_L1TP_047026_20230212_20230218_02_T1_MTL.xml', 'LC08_L1TP_047026_20230212_20230218_02_T1_QA_PIXEL.tif', 'LC08_L1TP_049023_20230210_20230217_02_T1_B2.tif', 'LC08_L1TP_049023_20230210_20230217_02_T1_B3.tif', 'LC08_L1TP_049023_20230210_20230217_02_T1_B4.tif', 'LC08_L1TP_049023_20230210_20230217_02_T1_B5.tif', 'LC08_L1TP_049023_20230210_20230217_02_T1_B6.tif', 'LC08_L1TP_049023_20230210_20230217_02_T1_MTL.txt', 'LC08_L1TP_049023_20230210_20230217_02_T1_MTL.xml', 'LC08_L1TP_049023_20230210_20230217_02_T1_QA_PIXEL.tif', 'LC08_L1TP_049025_20230210_20230217_02_T1_B2.tif', 'LC08_L1TP_049025_20230210_20230217_02_T1_B3.tif', 'LC08_L1TP_049025_20230210_20230217_02_T1_B4.tif', 'LC08_L1TP_049025_20230210_20230217_02_T1_B5.tif', 'LC08_L1TP_049025_20230210_20230217_02_T1_B6.tif', 'LC08_L1TP_049025_20230210_20230217_02_T1_MTL.txt', 'LC08_L1TP_049025_20230210_20230217_02_T1_MTL.xml', 'LC08_L1TP_049025_20230210_20230217_02_T1_QA_PIXEL.tif']"
+      },
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_ECOSTRESS_L2_QC",
+        "value": "[]"
+      },
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_MOD04_QC",
+        "value": "['MOD04_L2.A2023056.1835.061.2023057174804.hdf', 'MOD04_L2.A2023056.2010.061.2023057174540.hdf', 'MOD04_L2.A2023056.2015.061.2023057174025.hdf']"
+      },
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_MOD44W_QC",
+        "value": "['MOD44W.A2015001.h09v03.006.2018033145926.hdf', 'MOD44W.A2015001.h09v04.006.2018033145949.hdf', 'MOD44W.A2015001.h10v03.006.2018033150221.hdf', 'MOD44W.A2015001.h10v04.006.2018033150244.hdf']"
+      },
+      {
+        "path": "StandardMetadata/PGEName",
+        "value": "L3_L4_PP_PGE"
+      },
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_MOD06_5km_QC",
+        "value": "['MOD06_L2.A2023056.1835.061.2023057175914.hdf', 'MOD06_L2.A2023056.2010.061.2023057175553.hdf', 'MOD06_L2.A2023056.2015.061.2023057175813.hdf']"
+      },
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_MOD06_1km_QC",
+        "value": "['MOD06_L2.A2023056.1835.061.2023057175914.hdf', 'MOD06_L2.A2023056.2010.061.2023057175553.hdf', 'MOD06_L2.A2023056.2015.061.2023057175813.hdf']"
+      },
+      {
+        "path": "StandardMetadata/ProcessingLevelDescription",
+        "value": "L3-L4 Ancillary Data Quality Assessment Fields"
+      },
+      {
+        "path": "StandardMetadata/NorthBoundingCoordinate",
+        "value": "52.68545457713107"
+      },
+      {
+        "path": "StandardMetadata/WestBoundingCoordinate",
+        "value": "-124.97455682519612"
+      }
+    ]
+  }
+}
