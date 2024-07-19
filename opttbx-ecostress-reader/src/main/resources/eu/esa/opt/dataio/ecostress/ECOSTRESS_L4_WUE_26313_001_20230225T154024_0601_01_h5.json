@@ -1,0 +1,76 @@
+{
+  "id": "ECOSTRESS_L4_WUE_26313_001_20230225T154024_0601_01_h5",
+  "decodeQualification": "SUITABLE",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "25-FEB-2023 15:40:24.483400",
+    "endTime": "25-FEB-2023 15:45:24.483400",
+    "bands": [
+      {
+        "name": "Water__Use__Efficiency_WUEavg",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "ratio GPP/ET",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2329,
+            "y": 3027,
+            "value": "NaN"
+          },
+          {
+            "x": 4009,
+            "y": 3654,
+            "value": "NaN"
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/EastBoundingCoordinate",
+        "value": "-119.061264"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "StandardMetadata/ImageLines",
+        "value": "5632"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFileGPP",
+        "value": "MOD17A2H.A2023041.h09v03.006.2023050164012.hdf,MOD17A2H.A2023041.h09v04.006.2023050165049.hdf,MOD17A2H.A2023041.h10v03.006.2023050163936.hdf,MOD17A2H.A2023041.h10v04.006.2023050164932.hdf"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2023-03-06T08:12:01.429Z"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFileGPP",
+        "value": "MOD17A2H.A2023041.h09v03.006.2023050164012.hdf,MOD17A2H.A2023041.h09v04.006.2023050165049.hdf,MOD17A2H.A2023041.h10v03.006.2023050163936.hdf,MOD17A2H.A2023041.h10v04.006.2023050164932.hdf"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFileGPP",
+        "value": "MOD17A2H.A2023041.h09v03.006.2023050164012.hdf,MOD17A2H.A2023041.h09v04.006.2023050165049.hdf,MOD17A2H.A2023041.h10v03.006.2023050163936.hdf,MOD17A2H.A2023041.h10v04.006.2023050164932.hdf"
+      }
+    ]
+  }
+}

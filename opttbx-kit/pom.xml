@@ -396,6 +396,11 @@
         </dependency>
         <dependency>
             <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-ecostress-reader</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-fub-wew</artifactId>
             <version>${opttbx.version}</version>
         </dependency>

@@ -1,0 +1,186 @@
+{
+  "id": "ECOSTRESS_L3_ET_PT-JPL_26313_001_20230225T154024_0601_01_h5",
+  "decodeQualification": "SUITABLE",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "25-FEB-2023 15:40:24.483400",
+    "endTime": "25-FEB-2023 15:45:24.483400",
+    "bands": [
+      {
+        "name": "EVAPOTRANSPIRATION__PT-JPL_ETcanopy",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "%",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2329,
+            "y": 3027,
+            "value": "NaN"
+          },
+          {
+            "x": 4009,
+            "y": 3654,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "EVAPOTRANSPIRATION__PT-JPL_ETdaily",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "W/m^2",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": "NaN"
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "EVAPOTRANSPIRATION__PT-JPL_ETinst",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "W/m^2",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1570,
+            "y": 1446,
+            "value": "NaN"
+          },
+          {
+            "x": 3296,
+            "y": 2057,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "EVAPOTRANSPIRATION__PT-JPL_ETinstUncertainty",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "W/m^2",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2970,
+            "y": 4197,
+            "value": "NaN"
+          },
+          {
+            "x": 3285,
+            "y": 5229,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "EVAPOTRANSPIRATION__PT-JPL_ETinterception",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "%",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 854,
+            "y": 3751,
+            "value": "NaN"
+          },
+          {
+            "x": 2803,
+            "y": 5144,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "EVAPOTRANSPIRATION__PT-JPL_ETsoil",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "%",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4083,
+            "y": 2729,
+            "value": "NaN"
+          },
+          {
+            "x": 5134,
+            "y": 2736,
+            "value": "NaN"
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO3ETPTJPL"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "1.2.0"
+      },
+      {
+        "path": "StandardMetadata/HDFVersionId",
+        "value": "1.8.16"
+      },
+      {
+        "path": "StandardMetadata/AutomaticQualityFlag",
+        "value": "PASS"
+      },
+      {
+        "path": "L3_ET_PT-JPL Metadata/AncillaryFileNDVI",
+        "value": "MOD13Q1.A2023033.h09v03.006.2023050035325.hdf,MOD13Q1.A2023033.h09v04.006.2023050042040.hdf,MOD13Q1.A2023033.h10v03.006.2023050045504.hdf,MOD13Q1.A2023033.h10v04.006.2023050032504.hdf"
+      },
+      {
+        "path": "L3_ET_PT-JPL Metadata/AncillaryFileTemperatureProfile",
+        "value": "MOD07_L2.A2023042.1850.061.2023043194859.hdf,MOD07_L2.A2023042.2025.061.2023043193516.hdf,MOD07_L2.A2023043.1750.061.2023044022048.hdf,MOD07_L2.A2023043.1755.061.2023044022052.hdf,MOD07_L2.A2023043.1930.061.2023044073017.hdf,MOD07_L2.A2023044.1835.061.2023045134306.hdf,MOD07_L2.A2023044.2010.061.2023045134014.hdf,MOD07_L2.A2023045.1735.061.2023046024521.hdf,MOD07_L2.A2023045.1915.061.2023046111204.hdf,MOD07_L2.A2023046.1815.061.2023047122812.hdf,MOD07_L2.A2023046.1820.061.2023047143126.hdf,MOD07_L2.A2023046.1955.061.2023047123500.hdf,MOD07_L2.A2023047.1900.061.2023048155044.hdf,MOD07_L2.A2023048.1800.061.2023049185438.hdf,MOD07_L2.A2023048.1805.061.2023049180556.hdf,MOD07_L2.A2023048.1940.061.2023049184817.hdf,MOD07_L2.A2023049.1840.061.2023050143913.hdf,MOD07_L2.A2023049.1845.061.2023050144931.hdf,MOD07_L2.A2023049.2020.061.2023050172150.hdf,MOD07_L2.A2023050.1745.061.2023052113109.hdf,MOD07_L2.A2023050.1925.061.2023052104230.hdf,MOD07_L2.A2023051.1825.061.2023052101343.hdf,MOD07_L2.A2023051.1830.061.2023052100504.hdf,MOD07_L2.A2023051.2005.061.2023052111612.hdf,MOD07_L2.A2023052.1905.061.2023053222814.hdf,MOD07_L2.A2023052.1910.061.2023053223406.hdf,MOD07_L2.A2023053.1810.061.2023054201007.hdf,MOD07_L2.A2023053.1945.061.2023054201602.hdf,MOD07_L2.A2023053.1950.061.2023054201044.hdf,MOD07_L2.A2023054.1850.061.2023055075512.hdf,MOD07_L2.A2023054.2030.061.2023055075238.hdf,MOD07_L2.A2023055.1755.061.2023056105755.hdf,MOD07_L2.A2023055.1930.061.2023056125652.hdf,MOD07_L2.A2023055.1935.061.2023056120000.hdf,MOD07_L2.A2023056.1835.061.2023057124247.hdf,MOD07_L2.A2023056.2010.061.2023057124315.hdf,MOD07_L2.A2023056.2015.061.2023057124935.hdf,air.sig995.2023.nc"
+      },
+      {
+        "path": "StandardMetadata/PlatformLongName",
+        "value": "ISS"
+      },
+      {
+        "path": "StandardMetadata/RangeBeginningDate",
+        "value": "2023-02-25"
+      },
+      {
+        "path": "StandardMetadata/PlatformLongName",
+        "value": "ISS"
+      },
+      {
+        "path": "StandardMetadata/PGEName",
+        "value": "L3_PT-JPL_PGE"
+      }
+    ]
+  }
+}

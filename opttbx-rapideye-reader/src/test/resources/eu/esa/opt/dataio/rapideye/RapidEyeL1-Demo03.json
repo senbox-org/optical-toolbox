@@ -128,11 +128,11 @@
                 "value": "4326"
             },
             {
-                "path": "NITF Metadata/File Header/FHDR",
-                "value": "NITF"
+                "path": "NITF Metadata/Image info/NITF_FHDR",
+                "value": "NITF02.00"
             },
             {
-                "path": "NITF Metadata/File Header/ONAME",
+                "path": "NITF Metadata/Image info/NITF_ONAME",
                 "value": "~~~RapidEye"
             }
         ]
