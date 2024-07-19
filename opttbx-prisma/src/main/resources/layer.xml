@@ -30,7 +30,7 @@
     <folder name="Services">
         <folder name="JavaHelp">
             <file name="eu-esa-opt-dataio-prisma-helpset.xml" url="helpset.xml">
-                <attr name="position" intvalue="4602"/>
+                <attr name="position" intvalue="4600"/>
             </file>
         </folder>
     </folder>
