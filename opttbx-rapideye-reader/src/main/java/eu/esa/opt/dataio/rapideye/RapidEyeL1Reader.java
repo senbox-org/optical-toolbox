@@ -18,12 +18,11 @@
 package eu.esa.opt.dataio.rapideye;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
+import eu.esa.opt.dataio.nitf.GDALNITFReaderWrapper;
 import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import eu.esa.opt.dataio.ColorPaletteBand;
 import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.nitf.NITFMetadata;
-import eu.esa.opt.dataio.nitf.NITFReaderWrapper;
 import eu.esa.opt.dataio.rapideye.metadata.RapidEyeConstants;
 import eu.esa.opt.dataio.rapideye.metadata.RapidEyeMetadata;
 import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
@@ -42,7 +41,6 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGeoCoding;
 import org.esa.snap.core.datamodel.TiePointGrid;
-import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
@@ -54,7 +52,6 @@ import org.esa.snap.engine_utilities.file.AbstractFile;
 import org.xml.sax.SAXException;
 
 import javax.imageio.spi.ImageInputStreamSpi;
-import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
@@ -91,7 +88,7 @@ public class RapidEyeL1Reader extends AbstractProductReader {
 
     private VirtualDirEx productDirectory;
     private ImageInputStreamSpi imageInputStreamSpi;
-    private List<NITFReaderWrapper> bandImageReaders;
+    private List<GDALNITFReaderWrapper> bandImageReaders;
     private GeoTiffImageReader geoTiffImageReader;
 
     RapidEyeL1Reader(ProductReaderPlugIn readerPlugIn, Path colorPaletteFilePath) {
@@ -147,7 +144,6 @@ public class RapidEyeL1Reader extends AbstractProductReader {
             product.setEndTime(metadata.getProductEndTime());
             product.setFileLocation(productPath.toFile());
 
-            Dimension defaultJAIReadTileSize = JAI.getDefaultTileSize();
             //Dimension preferredTileSize = defaultJAIReadTileSize; // new Dimension(defaultJAIReadTileSize.width * 2, defaultJAIReadTileSize.height *2); // multiple mosaic tile size
             Dimension preferredTileSize = new Dimension(defaultProductWidth, defaultProductHeight);
 
@@ -158,82 +154,15 @@ public class RapidEyeL1Reader extends AbstractProductReader {
             }
 
             if (logger.isLoggable(Level.FINE)) {
-                String logMessage = "Use the NITF API to read the RapidEye L1 product from input '" + productPath + "'.";
+                String logMessage = "Use the GDAL NITF to read the RapidEye L1 product from input '" + productPath + "'.";
                 logger.log(Level.FINE, logMessage);
             }
 
-            this.bandImageReaders = new ArrayList<>();
-            String[] nitfFiles = metadata.getRasterFileNames();
-            if (nitfFiles != null && nitfFiles.length > 0) {
-                GeoCoding bandGeoCoding = product.getSceneGeoCoding();
-                boolean addMetadataFromNitfAPI = false;
-                for (int i = 0; i < nitfFiles.length; i++) {
-                    String bandName = getBandName(i);
-                    if (subsetDef == null || subsetDef.isNodeAccepted(bandName)) {
-                        File localFile = this.productDirectory.getFile(nitfFiles[i]);
-                        Band targetBand;
-                        NITFReaderWrapper nitfReader = new NITFReaderWrapper(localFile);
-                        this.bandImageReaders.add(nitfReader);
-
-                        if (subsetDef == null || !subsetDef.isIgnoreMetadata()) {
-                            NITFMetadata nitfMetadata = nitfReader.getMetadata();
-                            if (nitfMetadata != null && !addMetadataFromNitfAPI) {
-                                product.getMetadataRoot().addElement(nitfMetadata.getMetadataRoot());
-                                addMetadataFromNitfAPI = true;
-                            }
-                        }
-                        targetBand = new ColorPaletteBand(bandName, metadata.getPixelFormat(), productBounds.width, productBounds.height, this.colorPaletteFilePath);
-                        if (bandGeoCoding != null) {
-                            targetBand.setGeoCoding(bandGeoCoding);
-                        }
-                        int dataBufferType = ImageManager.getDataBufferType(targetBand.getDataType());
-                        RapidEyeL1MultiLevelSource multiLevelSource = new RapidEyeL1MultiLevelSource(nitfReader, dataBufferType, productBounds, preferredTileSize,
-                                                                                                     targetBand.getGeoCoding(), defaultJAIReadTileSize);
-                        // compute the tile size of the image layout object based on the tile size from the tileOpImage used to read the data
-                        ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
-                        targetBand.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
-                        targetBand.setSpectralWavelength(RapidEyeConstants.WAVELENGTHS[i]);
-                        targetBand.setUnit("cW/m\u00B2 sr \u03bcm");
-                        targetBand.setSpectralBandwidth(RapidEyeConstants.BANDWIDTHS[i]);
-                        targetBand.setSpectralBandIndex(i);
-                        targetBand.setScalingFactor(metadata.getScaleFactor(i));
-
-                        product.addBand(targetBand);
-                    }
-                }
-            }
+            // add bands
+            addBands(metadata, product, productBounds);
 
             // add masks
-            String maskFileName = metadata.getMaskFileName();
-            if (maskFileName != null) {
-                FlagCoding flagCoding = createFlagCoding();
-
-                if (subsetDef == null || subsetDef.isNodeAccepted(UNUSABLE_DATA_BAND_NAME)) {
-                    File file = this.productDirectory.getFile(maskFileName);
-                    this.geoTiffImageReader = GeoTiffImageReader.buildGeoTiffImageReader(file.toPath());
-
-                    GeoTiffProductReader geoTiffProductReader = new GeoTiffProductReader(getReaderPlugIn());
-                    Product udmGeoTiffProduct = geoTiffProductReader.readProduct(this.geoTiffImageReader, null);
-                    Band geoTiffBand = udmGeoTiffProduct.getBandAt(0);
-                    float scaleX = metadata.getRasterWidth() / (float) udmGeoTiffProduct.getSceneRasterWidth();
-                    float scaleY = metadata.getRasterHeight() / (float) udmGeoTiffProduct.getSceneRasterHeight();
-                    RenderedOp renderedOp = ScaleDescriptor.create(geoTiffBand.getSourceImage(), scaleX, scaleY, 0.0f, 0.0f, Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
-                    Band unusableDataBand = product.addBand(UNUSABLE_DATA_BAND_NAME, geoTiffBand.getDataType());
-                    unusableDataBand.setSourceImage(renderedOp);
-                    unusableDataBand.setSampleCoding(flagCoding);
-
-                    product.getFlagCodingGroup().add(flagCoding);
-                }
-
-                String flagCodingName = flagCoding.getName();
-                for (String flagName : flagCoding.getFlagNames()) {
-                    if (subsetDef == null || subsetDef.isNodeAccepted(flagName)) {
-                        MetadataAttribute flag = flagCoding.getFlag(flagName);
-                        Mask mask = Mask.BandMathsType.create(flagName, flag.getDescription(), product.getSceneRasterWidth(), product.getSceneRasterHeight(), flagCodingName + "." + flagName, ColorIterator.next(), 0.5);
-                        product.getMaskGroup().add(mask);
-                    }
-                }
-            }
+            addMasks (metadata, product);
 
             TiePointGeoCoding productGeoCoding = buildTiePointGridGeoCoding(metadata, defaultProductWidth, defaultProductHeight, subsetDef);
             product.addTiePointGrid(productGeoCoding.getLatGrid());
@@ -254,10 +183,89 @@ public class RapidEyeL1Reader extends AbstractProductReader {
         }
     }
 
+    private void addBands(RapidEyeMetadata metadata, final Product product, Rectangle productBounds) throws IOException {
+
+        ProductSubsetDef subsetDef = getSubsetDef();
+
+        this.bandImageReaders = new ArrayList<>();
+        String[] nitfFiles = metadata.getRasterFileNames();
+        if (nitfFiles != null && nitfFiles.length > 0) {
+            GeoCoding bandGeoCoding = product.getSceneGeoCoding();
+            boolean addMetadataFromNitfAPI = false;
+            for (int i = 0; i < nitfFiles.length; i++) {
+                String bandName = getBandName(i);
+                if (subsetDef == null || subsetDef.isNodeAccepted(bandName)) {
+                    File localFile = this.productDirectory.getFile(nitfFiles[i]);
+                    Band targetBand;
+                    GDALNITFReaderWrapper nitfReader = new GDALNITFReaderWrapper(localFile);
+                    this.bandImageReaders.add(nitfReader);
+
+                    if (subsetDef == null || !subsetDef.isIgnoreMetadata()) {
+                        NITFMetadata nitfMetadata = nitfReader.getMetadata();
+                        if (nitfMetadata != null && !addMetadataFromNitfAPI) {
+                            product.getMetadataRoot().addElement(nitfMetadata.getMetadataRoot());
+                            addMetadataFromNitfAPI = true;
+                        }
+                    }
+                    targetBand = new ColorPaletteBand(bandName, metadata.getPixelFormat(), productBounds.width, productBounds.height, this.colorPaletteFilePath);
+                    if (bandGeoCoding != null) {
+                        targetBand.setGeoCoding(bandGeoCoding);
+                    }
+                    
+                    Band band = nitfReader.getBandProduct().getBandAt(0);
+                    targetBand.setSourceImage(band.getSourceImage());
+                    targetBand.setSpectralWavelength(RapidEyeConstants.WAVELENGTHS[i]);
+                    targetBand.setUnit("cW/m\u00B2 sr \u03bcm");
+                    targetBand.setSpectralBandwidth(RapidEyeConstants.BANDWIDTHS[i]);
+                    targetBand.setSpectralBandIndex(i);
+                    targetBand.setScalingFactor(metadata.getScaleFactor(i));
+                    targetBand.setNoDataValueUsed(band.isNoDataValueUsed());
+                    targetBand.setNoDataValue(band.getNoDataValue());
+                    product.addBand(targetBand);
+
+                }
+            }
+        }
+    }
+
+    private void addMasks (RapidEyeMetadata metadata, final Product product) throws Exception {
+        ProductSubsetDef subsetDef = getSubsetDef();
+        String maskFileName = metadata.getMaskFileName();
+        if (maskFileName != null) {
+            FlagCoding flagCoding = createFlagCoding();
+
+            if (subsetDef == null || subsetDef.isNodeAccepted(UNUSABLE_DATA_BAND_NAME)) {
+                File file = this.productDirectory.getFile(maskFileName);
+                this.geoTiffImageReader = GeoTiffImageReader.buildGeoTiffImageReader(file.toPath());
+
+                GeoTiffProductReader geoTiffProductReader = new GeoTiffProductReader(getReaderPlugIn());
+                Product udmGeoTiffProduct = geoTiffProductReader.readProduct(this.geoTiffImageReader, null);
+                Band geoTiffBand = udmGeoTiffProduct.getBandAt(0);
+                float scaleX = metadata.getRasterWidth() / (float) udmGeoTiffProduct.getSceneRasterWidth();
+                float scaleY = metadata.getRasterHeight() / (float) udmGeoTiffProduct.getSceneRasterHeight();
+                RenderedOp renderedOp = ScaleDescriptor.create(geoTiffBand.getSourceImage(), scaleX, scaleY, 0.0f, 0.0f, Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
+                Band unusableDataBand = product.addBand(UNUSABLE_DATA_BAND_NAME, geoTiffBand.getDataType());
+                unusableDataBand.setSourceImage(renderedOp);
+                unusableDataBand.setSampleCoding(flagCoding);
+
+                product.getFlagCodingGroup().add(flagCoding);
+            }
+
+            String flagCodingName = flagCoding.getName();
+            for (String flagName : flagCoding.getFlagNames()) {
+                if (subsetDef == null || subsetDef.isNodeAccepted(flagName)) {
+                    MetadataAttribute flag = flagCoding.getFlag(flagName);
+                    Mask mask = Mask.BandMathsType.create(flagName, flag.getDescription(), product.getSceneRasterWidth(), product.getSceneRasterHeight(), flagCodingName + "." + flagName, ColorIterator.next(), 0.5);
+                    product.getMaskGroup().add(mask);
+                }
+            }
+        }
+    }
+
     private void closeResources() {
         try {
             if (this.bandImageReaders != null) {
-                for (NITFReaderWrapper nitfReader : this.bandImageReaders) {
+                for (GDALNITFReaderWrapper nitfReader : this.bandImageReaders) {
                     try {
                         nitfReader.close();
                     } catch (Exception ignore) {
@@ -422,19 +430,19 @@ public class RapidEyeL1Reader extends AbstractProductReader {
         for (String fileName : metadataRelativeFilePaths) {
             try {
                 logger.info(String.format("Reading metadata file %s", fileName));
-                RapidEyeMetadata slaveMetadata;
+                RapidEyeMetadata secondaryMetadata;
                 try (FilePathInputStream metadataInputStream = productDirectory.getInputStream(fileName)) {
-                    slaveMetadata = (RapidEyeMetadata) XmlMetadataParserFactory.getParser(RapidEyeMetadata.class).parse(metadataInputStream);
-                    slaveMetadata.setPath(metadataInputStream.getPath());
-                    slaveMetadata.setFileName(metadataInputStream.getPath().getFileName().toString());
+                    secondaryMetadata = (RapidEyeMetadata) XmlMetadataParserFactory.getParser(RapidEyeMetadata.class).parse(metadataInputStream);
+                    secondaryMetadata.setPath(metadataInputStream.getPath());
+                    secondaryMetadata.setFileName(metadataInputStream.getPath().getFileName().toString());
                 }
                 MetadataElement newNode = null;
                 if (fileName.endsWith("_rpc.xml")) {
                     newNode = new MetadataElement("Rational Polynomial Coefficients");
-                    XmlMetadata.CopyChildElements(slaveMetadata.getRootElement(), newNode);
+                    XmlMetadata.CopyChildElements(secondaryMetadata.getRootElement(), newNode);
                 } else if (fileName.endsWith("_sci.xml")) {
                     newNode = new MetadataElement("Spacecraft Information");
-                    XmlMetadata.CopyChildElements(slaveMetadata.getRootElement(), newNode);
+                    XmlMetadata.CopyChildElements(secondaryMetadata.getRootElement(), newNode);
                 }
                 if (newNode != null) {
                     productMetadata.getRootElement().addElement(newNode);

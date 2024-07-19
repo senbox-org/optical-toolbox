@@ -44,7 +44,7 @@ public class NITFMetadata {
 
     public ProductData.UTC getFileDate() {
         ProductData.UTC fileDate = null;
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_FILE_HEADER);
+        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_INFO);
         if (currentElement != null) {
             try {
                 fileDate = DateTimeUtils.parseDate(currentElement.getAttributeString(NITFFields.FDT, ""), "ddHHmmss'Z'MMMyy");
@@ -57,7 +57,7 @@ public class NITFMetadata {
 
     public String getFileTitle() {
         String ret = "";
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_FILE_HEADER);
+        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_INFO);
         if (currentElement != null) {
             ret = currentElement.getAttributeString(NITFFields.FTITLE, "");
         }
@@ -66,55 +66,10 @@ public class NITFMetadata {
 
     public boolean isEncrypted() {
         boolean ret = false;
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_FILE_HEADER);
+        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_INFO);
         if (currentElement != null) {
             int val = Integer.parseInt(currentElement.getAttributeString(NITFFields.ENCRYP, "0"));
             ret = (val == 1);
-        }
-        return ret;
-    }
-
-    /**
-     * Returns the number of images contained in the NITF file.
-     *
-     * @return the number of images, or 0 if something goes wrong in reading the value.
-     */
-    public int getNumImages() {
-        int ret = 0;
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_FILE_HEADER);
-        if (currentElement != null) {
-            ret = Integer.parseInt(currentElement.getAttributeString(NITFFields.NUMI, "0"));
-        }
-        return ret;
-    }
-
-    /**
-     * Returns the number of bands of the first image contained in the NITF file.
-     * This is a comodity method for files that contain only one image.
-     *
-     * @return the number of bands, or 0 if the read failed.
-     */
-    public int getNumBands() {
-        return getNumBands(FIRST_IMAGE);
-    }
-
-    /**
-     * Returns the number of bands of the imageIndex-th image contained in the NITF file.
-     * If the imageIndex is not in the range 0..number of images - 1, an exception is thrown.
-     *
-     * @param imageIndex The number (0-based) of the image
-     * @return the number of bands, or 0 if the read failed
-     */
-    public int getNumBands(int imageIndex) {
-        int ret = 0;
-        if (imageIndex < 0)
-            throw new IllegalArgumentException("Invalid image index");
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_SUBHEADERS);
-        if (currentElement != null) {
-            MetadataElement[] imageSubheaders = currentElement.getElements();
-            if (imageIndex >= imageSubheaders.length)
-                throw new IllegalArgumentException("Invalid image index");
-            ret = Integer.parseInt(imageSubheaders[imageIndex].getAttributeString(NITFFields.NBANDS, "0"));
         }
         return ret;
     }
@@ -138,12 +93,9 @@ public class NITFMetadata {
         int ret = 0;
         if (imageIndex < 0)
             throw new IllegalArgumentException("Invalid image index");
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_SUBHEADERS);
+        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_INFO);
         if (currentElement != null) {
-            MetadataElement[] imageSubheaders = currentElement.getElements();
-            if (imageIndex >= imageSubheaders.length)
-                throw new IllegalArgumentException("Invalid image index");
-            ret = Integer.parseInt(imageSubheaders[imageIndex].getAttributeString(NITFFields.NCOLS, "0"));
+            ret = Integer.parseInt(currentElement.getAttributeString(NITFFields.WIDTH, "0"));
         }
         return ret;
     }
@@ -167,12 +119,9 @@ public class NITFMetadata {
         int ret = 0;
         if (imageIndex < 0)
             throw new IllegalArgumentException("Invalid image index");
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_SUBHEADERS);
+        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_INFO);
         if (currentElement != null) {
-            MetadataElement[] imageSubheaders = currentElement.getElements();
-            if (imageIndex >= imageSubheaders.length)
-                throw new IllegalArgumentException("Invalid image index");
-            ret = Integer.parseInt(imageSubheaders[imageIndex].getAttributeString(NITFFields.NROWS, "0"));
+            ret = Integer.parseInt(currentElement.getAttributeString(NITFFields.HEIGHT, "0"));
         }
         return ret;
     }
@@ -197,16 +146,14 @@ public class NITFMetadata {
         int ret = ProductData.TYPE_UNDEFINED;
         if (imageIndex < 0)
             throw new IllegalArgumentException("Invalid image index");
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_SUBHEADERS);
+        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_INFO);
         if (currentElement != null) {
-            MetadataElement[] imageSubheaders = currentElement.getElements();
-            if (imageIndex >= imageSubheaders.length)
-                throw new IllegalArgumentException("Invalid image index");
-            String valString = imageSubheaders[imageIndex].getAttributeString(NITFFields.PVTYPE);
-            int abpp = Integer.parseInt(imageSubheaders[imageIndex].getAttributeString(NITFFields.ABPP));
-            int nbpp = Integer.parseInt(imageSubheaders[imageIndex].getAttributeString(NITFFields.NBPP));
-            if (abpp <= nbpp) {
-                switch (nbpp) {
+            String valString = currentElement.getAttributeString(NITFFields.PVTYPE);
+            int abpp = Integer.parseInt(currentElement.getAttributeString(NITFFields.ABPP));
+           // int nbpp = Integer.parseInt(currentElement.getAttributeString(NITFFields.NBPP)); //TODO -> find a solution to get NBPP attribute which is not returned by GDAL
+           // if (abpp <= nbpp) {
+           //     switch (nbpp) {
+                 switch (abpp) {
                     case 1:
                         if ("B".equals(valString)) {
                             ret = ProductData.TYPE_UNDEFINED; // support for bit type ??
@@ -255,7 +202,7 @@ public class NITFMetadata {
                         ret = ProductData.TYPE_UNDEFINED;
                         break;
                 }
-            }
+            //}
         }
         return ret;
     }
@@ -268,40 +215,15 @@ public class NITFMetadata {
         String ret = null;
         if (imageIndex < 0)
             throw new IllegalArgumentException("Invalid image index");
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_SUBHEADERS);
+        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_INFO);
         if (currentElement != null) {
-            currentElement = currentElement.getElement(NITFFields.TAG_IMAGE_SUBHEADER + imageIndex);
-            if (currentElement != null) {
-                String value = currentElement.getAttributeString(NITFFields.ICAT, null);
-                if (value != null) {
-                    if ("MS".equals(value) || "HS".equals(value) || "IR".equals(value)) {
-                        ret = "nm";
-                    }
+            String value = currentElement.getAttributeString(NITFFields.ICAT, null);
+            if (value != null) {
+                if ("MS".equals(value) || "HS".equals(value) || "IR".equals(value)) {
+                    ret = "nm";
                 }
             }
         }
         return ret;
     }
-
-    public float getWavelength() {
-        return getWavelength(FIRST_IMAGE);
-    }
-
-    public float getWavelength(int imageIndex) {
-        float ret = -1f;
-        if (imageIndex < 0)
-            throw new IllegalArgumentException("Invalid image index");
-        MetadataElement currentElement = root.getElement(NITFFields.TAG_IMAGE_SUBHEADERS);
-        if (((currentElement = currentElement.getElement("Bands")) != null) &&
-                ((currentElement = currentElement.getElement("BAND" + (imageIndex + 1))) != null)) {
-            String value = currentElement.getAttributeString(NITFFields.ISUBCAT, null);
-            String unit = getUnit(imageIndex);
-            if (value != null && unit != null) {
-                ret = Float.parseFloat(value);
-            }
-        }
-        return ret;
-    }
-
-
 }

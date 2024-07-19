@@ -16,5 +16,3 @@
 
 eu.esa.opt.dataio.rapideye.RapidEyeL1ReaderPlugin
 eu.esa.opt.dataio.rapideye.RapidEyeL3ReaderPlugin
-# Leaving out for now the NITF plugin
-# eu.esa.opt.dataio.nitf.NITFReaderPlugin
