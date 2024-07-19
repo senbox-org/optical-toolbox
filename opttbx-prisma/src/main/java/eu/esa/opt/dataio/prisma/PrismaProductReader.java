@@ -10,11 +10,14 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.CrsGeoCoding;
 import org.esa.snap.core.datamodel.DataNode;
 import org.esa.snap.core.datamodel.GeoCoding;
+import org.esa.snap.core.datamodel.LineTimeCoding;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.SampleCoding;
 import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.TimeCoding;
 import org.esa.snap.core.datamodel.VirtualBand;
+import org.esa.snap.core.util.DateTimeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
@@ -32,7 +35,6 @@ import ucar.nc2.Variable;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -52,14 +54,14 @@ import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToFile;
 
 public class PrismaProductReader extends AbstractProductReader {
 
-    private final Map<Variable, Array> _cubeCache = new HashMap<>();
+    private final Map<Variable, Array> _varCache = new HashMap<>();
     private final Map<ComparableIntArray, GeoCoding> _geoCodingLookUp = new HashMap<>();
+    private final Map<ComparableIntArray, TimeCoding> _timeCodingLookUp = new HashMap<>();
     private final TreeSet<ComparableIntArray> _dimsSet = new TreeSet<>();
 
     private String _prefixErrorMessage;
     private NetcdfFile _hdfFile;
     private String _productLevel;
-    private FileSystem _zipFileSystem;
 
     /**
      * Constructs a new abstract product reader.
@@ -97,7 +99,7 @@ public class PrismaProductReader extends AbstractProductReader {
         MetadataReader.readMetadata(_hdfFile, product);
 
         final Group swathsGroup = _hdfFile.findGroup("/HDFEOS/SWATHS");
-        createGeocodings(swathsGroup, product);
+        createGeoAndTimeCodings(swathsGroup, product);
         for (Group group : swathsGroup.getGroups()) {
             String key = group.getShortName();
             if (!key.startsWith("PRS_")) {
@@ -110,21 +112,22 @@ public class PrismaProductReader extends AbstractProductReader {
             final HashMap<String, Variable> datasetMap2D = new HashMap<>();
             final HashMap<String, Variable> datasetMap3D = new HashMap<>();
             collectDimensionsAndDatasets(group, dimensionsSet, datasetMap1D, tinyDatasetMap2D, datasetMap2D, datasetMap3D);
-            GeoCoding geoCoding = getOrCreateGeoCoding(dataGroupName, datasetMap2D, product);
+            final TimeCoding timeCoding = getOrCreateTimeCoding(dataGroupName, datasetMap1D, product);
+            final GeoCoding geoCoding = getOrCreateGeoCoding(dataGroupName, datasetMap2D, product, timeCoding);
             for (Variable variable : tinyDatasetMap2D.values()) {
-                addSubsampledBand(dataGroupName, product, geoCoding, variable);
+                addSubsampledBand(dataGroupName, product, geoCoding, timeCoding, variable);
             }
             for (Variable variable : datasetMap2D.values()) {
                 if (isRedundantLatLon(dataGroupName, variable.getShortName())) {
                     continue;
                 }
-                addBand(dataGroupName, product, geoCoding, variable);
+                addBand(dataGroupName, product, geoCoding, timeCoding, variable);
             }
             for (Variable variable : datasetMap3D.values()) {
                 if (isRedundantLatLon(dataGroupName, variable.getShortName())) {
                     continue;
                 }
-                addCubeBands(dataGroupName, product, geoCoding, variable);
+                addCubeBands(dataGroupName, product, geoCoding, timeCoding, variable);
             }
         }
 
@@ -136,11 +139,17 @@ public class PrismaProductReader extends AbstractProductReader {
                 break;
             }
         }
+        final String startTime = getGlobalAttributeNotNull("Product_StartTime").getStringValue();
+        final String stopTime = getGlobalAttributeNotNull("Product_StopTime").getStringValue();
+        final ProductData.UTC startTimeUtc = DateTimeUtils.parseDate(startTime, "yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        final ProductData.UTC endTimeUtc = DateTimeUtils.parseDate(stopTime, "yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        product.setStartTime(startTimeUtc);
+        product.setEndTime(endTimeUtc);
 
         return product;
     }
 
-    private void createGeocodings(Group swathsGroup, Product product) throws IOException {
+    private void createGeoAndTimeCodings(Group swathsGroup, Product product) throws IOException {
         for (Group group : swathsGroup.getGroups()) {
             String key = group.getShortName();
             if (!key.startsWith("PRS_")) {
@@ -156,7 +165,8 @@ public class PrismaProductReader extends AbstractProductReader {
             final HashMap<String, Variable> datasetMap2D = new HashMap<>();
             final HashMap<String, Variable> datasetMap3D = new HashMap<>();
             collectDimensionsAndDatasets(group, dimensionsSet, datasetMap1D, tinyDatasetMap2D, datasetMap2D, datasetMap3D);
-            getOrCreateGeoCoding(dataGroupName, datasetMap2D, product);
+            final TimeCoding timeCoding = getOrCreateTimeCoding(dataGroupName, datasetMap1D, product);
+            getOrCreateGeoCoding(dataGroupName, datasetMap2D, product, timeCoding);
         }
     }
 
@@ -165,7 +175,7 @@ public class PrismaProductReader extends AbstractProductReader {
                && !dataGroupName.equals("HCO") && !dataGroupName.equals("PCO");
     }
 
-    private Band addSubsampledBand(String dataGroupName, Product product, GeoCoding geoCoding, Variable variable) throws IOException {
+    private Band addSubsampledBand(String dataGroupName, Product product, GeoCoding geoCoding, TimeCoding timeCoding, Variable variable) throws IOException {
         final String datasetName = variable.getShortName();
         final String bandName = createBandname(dataGroupName, datasetName);
         final Band existingBand = product.getBand(bandName);
@@ -202,6 +212,10 @@ public class PrismaProductReader extends AbstractProductReader {
             band.setGeoCoding(geoCoding);
             tiePointGrid.setGeoCoding(geoCoding);
         }
+        if (timeCoding != null) {
+            band.setTimeCoding(timeCoding);
+            tiePointGrid.setTimeCoding(timeCoding);
+        }
         setUnitAndDescription(new DataNode[]{band, tiePointGrid});
         product.addBand(band);
         return band;
@@ -210,6 +224,14 @@ public class PrismaProductReader extends AbstractProductReader {
     private static void setUnitAndDescription(DataNode[] dataNodes) {
         final String name = dataNodes[0].getName();
         for (DataNode dataNode : dataNodes) {
+            if (dataNode instanceof PrismaBand) {
+                final PrismaBand prismaBand = (PrismaBand) dataNode;
+                final Variable variable = prismaBand.variable;
+                final String attValue = variable.findAttValueIgnoreCase("units", "");
+                if (attValue.length() > 0) {
+                    prismaBand.setUnit(attValue);
+                }
+            }
             if (VARIABLE_UNIT.containsKey(name)) {
                 dataNode.setUnit(VARIABLE_UNIT.get(name));
             }
@@ -219,28 +241,34 @@ public class PrismaProductReader extends AbstractProductReader {
         }
     }
 
-    private Band addBand(String dataGroupName, Product product, GeoCoding geoCoding, Variable dataset) throws ProductIOException {
-        final String datasetName = dataset.getShortName();
-        final String bandName = createBandname(dataGroupName, datasetName);
+    private Band addBand(String dataGroupName, Product product, GeoCoding geoCoding, TimeCoding timeCoding, Variable variable) throws ProductIOException {
+        final String varName = variable.getShortName();
+        final String bandName = createBandname(dataGroupName, varName);
         final Band existingBand = product.getBand(bandName);
         if (existingBand != null) {
             return existingBand;
         }
 
-        final int[] dimensions = dataset.getShape();
+        final int[] dimensions = variable.getShape();
         final int width = dimensions[1];
         final int height = dimensions[0];
-        final DataType dataType = dataset.getDataType();
+        final DataType dataType = variable.getDataType();
         final int productDataType = getProductDataType(dataType);
-        final Band band = new PrismaBand(bandName, productDataType, width, height, dataset);
+        final Band band = new PrismaBand(bandName, productDataType, width, height, variable);
         if (geoCoding != null) {
             band.setGeoCoding(geoCoding);
         }
-        final SampleCoding sampleCoding = PrismaConstantsAndUtils.createSampleCoding(product, datasetName);
+
+        final SampleCoding sampleCoding;
+        if (product.getIndexCodingGroup().contains(varName)) {
+            sampleCoding = product.getIndexCodingGroup().get(varName);
+        } else {
+            sampleCoding = PrismaConstantsAndUtils.createSampleCoding(product, varName);
+        }
         if (sampleCoding != null) {
             band.setSampleCoding(sampleCoding);
         }
-        final boolean measurementCube = datasetName.toLowerCase().contains("cube");
+        final boolean measurementCube = varName.toLowerCase().contains("cube");
         if (measurementCube) {
             final double scalingFactor;
             final double scalingOffset;
@@ -255,6 +283,7 @@ public class PrismaProductReader extends AbstractProductReader {
             }
             band.setScalingFactor(scalingFactor);
             band.setScalingOffset(scalingOffset);
+            band.setUnit("1");
         }
         setUnitAndDescription(new DataNode[]{band});
         product.addBand(band);
@@ -271,7 +300,7 @@ public class PrismaProductReader extends AbstractProductReader {
         return bandName;
     }
 
-    private GeoCoding getOrCreateGeoCoding(String dataGroupName, HashMap<String, Variable> datasetMap2D, Product product) throws IOException {
+    private GeoCoding getOrCreateGeoCoding(String dataGroupName, HashMap<String, Variable> datasetMap2D, Product product, TimeCoding timeCoding) throws IOException {
         final Attribute epsgCodeAtt = getGlobalAttribute("Epsg_Code");
         final Variable latDS;
         final Variable lonDS;
@@ -325,13 +354,32 @@ public class PrismaProductReader extends AbstractProductReader {
                 throw new RuntimeException(_prefixErrorMessage + "Could not create CrsGeoCoding.", e);
             }
         }
-        final Band latBand = addBand(dataGroupName, product, null, latDS);
-        final Band lonBand = addBand(dataGroupName, product, null, lonDS);
+        final Band latBand = addBand(dataGroupName, product, null, timeCoding, latDS);
+        final Band lonBand = addBand(dataGroupName, product, null, timeCoding, lonDS);
         final ComponentGeoCoding pixelGeoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
         latBand.setGeoCoding(pixelGeoCoding);
         lonBand.setGeoCoding(pixelGeoCoding);
         _geoCodingLookUp.put(lookUpKey, pixelGeoCoding);
         return pixelGeoCoding;
+    }
+
+    private TimeCoding getOrCreateTimeCoding(String dataGroupName, HashMap<String, Variable> datasetMap1D, Product product) throws IOException {
+        if (!datasetMap1D.containsKey("Time")) {
+            return null;
+        }
+        final Variable time = datasetMap1D.get("Time");
+        final int[] dimensions = time.getShape();
+        final ComparableIntArray lookUpKey = new ComparableIntArray(dimensions);
+        if (_timeCodingLookUp.containsKey(lookUpKey)) {
+            return _timeCodingLookUp.get(lookUpKey);
+        }
+        final double[] doubles;
+        synchronized (_hdfFile) {
+            doubles = (double[]) time.read().copyTo1DJavaArray();
+        }
+        final LineTimeCoding timeCoding = new LineTimeCoding(doubles);
+        _timeCodingLookUp.put(lookUpKey, timeCoding);
+        return timeCoding;
     }
 
     private float getComputedGlobalAttValue(String[] nameParts, float compareValue, BinaryOperator<Float> mathOperator) {
@@ -344,7 +392,7 @@ public class PrismaProductReader extends AbstractProductReader {
         return compareValue;
     }
 
-    private void addCubeBands(String dataGroupName, Product product, GeoCoding geoCoding, Variable cubeVar) throws ProductIOException {
+    private void addCubeBands(String dataGroupName, Product product, GeoCoding geoCoding, TimeCoding timeCoding, Variable cubeVar) throws ProductIOException {
         final String varName = cubeVar.getShortName();
         final String varNameLC = varName.toLowerCase();
         final boolean measurementCube = varNameLC.contains("cube");
@@ -396,6 +444,9 @@ public class PrismaProductReader extends AbstractProductReader {
                 if (geoCoding != null) {
                     band.setGeoCoding(geoCoding);
                 }
+                if (timeCoding != null) {
+                    band.setTimeCoding(timeCoding);
+                }
                 product.addBand(band);
             }
         } else {
@@ -417,7 +468,12 @@ public class PrismaProductReader extends AbstractProductReader {
             final String bandNameFormatExpression = autogrouping + "_%0" + numDigits + "d";
             final DataType dataType = cubeVar.getDataType();
             final int productDataType = getProductDataType(dataType);
-            final SampleCoding sampleCoding = PrismaConstantsAndUtils.createSampleCoding(product, varName);
+            final SampleCoding sampleCoding;
+            if (product.getIndexCodingGroup().contains(varName)) {
+                sampleCoding = product.getIndexCodingGroup().get(varName);
+            } else {
+                sampleCoding = PrismaConstantsAndUtils.createSampleCoding(product, varName);
+            }
             for (int i = 0; i < numBands; i++) {
                 if (wavelengths != null && wavelengths.getFloat(i) == 0.0f) {
                     continue;
@@ -431,6 +487,9 @@ public class PrismaProductReader extends AbstractProductReader {
                 };
                 if (geoCoding != null) {
                     band.setGeoCoding(geoCoding);
+                }
+                if (timeCoding != null) {
+                    band.setTimeCoding(timeCoding);
                 }
                 if (sampleCoding != null) {
                     band.setSampleCoding(sampleCoding);
@@ -505,24 +564,28 @@ public class PrismaProductReader extends AbstractProductReader {
             PrismaBand destBand, int destWidth, int destHeight, ProductData destBuffer,
             ProgressMonitor pm) throws IOException {
         final Variable variable = destBand.variable;
-
-        int[] sliceOffset = {srcOffsetY, srcOffsetX};
-        int[] sliceDimensions = {srcHeight, srcWidth};
-        if (srcOffsetX == 0 && srcOffsetY == 0 && srcWidth == destBand.getRasterWidth() && srcHeight == destBand.getRasterHeight()) {
-            final Object src;
+        if ("1".equals(_productLevel) && !_varCache.containsKey(variable)) {
             synchronized (_hdfFile) {
-                src = variable.read().copyTo1DJavaArray();
+                _varCache.put(variable, variable.read());
             }
-            destBuffer.setElems(src);
-        } else {
-            try {
-                final Section section = new Section(sliceOffset, sliceDimensions, new int[]{srcStepY, srcStepX});
+        }
+
+        final int[] sliceOffset = {srcOffsetY, srcOffsetX};
+        final int[] sliceDimensions = {srcHeight, srcWidth};
+        final int[] stride = {srcStepY, srcStepX};
+        try {
+            final Object sliceData;
+            if (_varCache.containsKey(variable)) {
+                sliceData = _varCache.get(variable).section(sliceOffset, sliceDimensions, stride).copyTo1DJavaArray();
+            } else {
+                final Section sect = new Section(sliceOffset, sliceDimensions, stride);
                 synchronized (_hdfFile) {
-                    destBuffer.setElems(variable.read(section).copyTo1DJavaArray());
+                    sliceData = variable.read(sect).copyTo1DJavaArray();
                 }
-            } catch (InvalidRangeException e) {
-                throw new IOException(e);
             }
+            destBuffer.setElems(sliceData);
+        } catch (InvalidRangeException e) {
+            throw new IOException(e);
         }
     }
 
@@ -532,9 +595,9 @@ public class PrismaProductReader extends AbstractProductReader {
             ProgressMonitor pm) throws IOException {
         final Variable cubeVar = destBand.variable;
         final int cubeIndex = destBand.cubeIndex;
-        if ("1".equals(_productLevel) && cubeVar.getShortName().contains("Cube") && !_cubeCache.containsKey(cubeVar)) {
+        if ("1".equals(_productLevel) && cubeVar.getShortName().contains("Cube") && !_varCache.containsKey(cubeVar)) {
             synchronized (_hdfFile) {
-                _cubeCache.put(cubeVar, cubeVar.read());
+                _varCache.put(cubeVar, cubeVar.read());
             }
         }
         final int[] sliceOffset = new int[]{sourceOffsetY, cubeIndex, sourceOffsetX};
@@ -542,8 +605,8 @@ public class PrismaProductReader extends AbstractProductReader {
         final int[] stride = new int[]{sourceStepY, 1, sourceStepX};
         try {
             final Object sliceData;
-            if (_cubeCache.containsKey(cubeVar)) {
-                sliceData = _cubeCache.get(cubeVar).section(sliceOffset, sliceDimensions, stride).copyTo1DJavaArray();
+            if (_varCache.containsKey(cubeVar)) {
+                sliceData = _varCache.get(cubeVar).section(sliceOffset, sliceDimensions, stride).copyTo1DJavaArray();
             } else {
                 final Section sect = new Section(sliceOffset, sliceDimensions, stride);
                 synchronized (_hdfFile) {
@@ -559,13 +622,11 @@ public class PrismaProductReader extends AbstractProductReader {
     @Override
     public void close() throws IOException {
         super.close();
+        _dimsSet.clear();
+        _geoCodingLookUp.clear();
+        _varCache.clear();
         _hdfFile.close();
         _hdfFile = null;
-        if (_zipFileSystem != null) {
-            _zipFileSystem.close();
-            _zipFileSystem = null;
-        }
-        _dimsSet.clear();
     }
 
     private static void collectDimensionsAndDatasets(Group group, TreeSet<ComparableIntArray> dimensionsSet,

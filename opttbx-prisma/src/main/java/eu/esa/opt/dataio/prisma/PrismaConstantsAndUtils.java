@@ -48,22 +48,40 @@ final class PrismaConstantsAndUtils {
         put("2D", "_Rrs");
     }};
     static final Map<String, String> LEVEL_DEPENDENT_CUBE_UNIT = new HashMap<>() {{
-        put("1", "W/(str*um*m2)");
-        put("2B", "W/(str*um*m2)");
+        put("1", "W/(str*um*m^2)");
+        put("2B", "W/(str*um*m^2)");
         put("2C", "1");
         put("2D", "1");
     }};
     static final Map<String, String> VARIABLE_UNIT = new HashMap<>() {{
         put("AOT_Map", "1");
         put("AEX_Map", "1");
-        put("WVM_Map", "g/cm2");
+        put("WVM_Map", "g/cm^2");
         put("COT_Map", "1");
+        put("HCO_Solar_Zenith_Angle", "Deg");
+        put("HCO_Observing_Angle", "Deg");
+        put("HCO_Rel_Azimuth_Angle", "Deg");
+
+        put("PCO_Latitude", "degrees_north");
+        put("HCO_Latitude", "degrees_north");
+        put("HCO_Latitude_VNIR", "degrees_north");
+        put("HCO_Latitude_SWIR", "degrees_north");
+
+        put("PCO_Longitude", "degrees_east");
+        put("HCO_Longitude", "degrees_east");
+        put("HCO_Longitude_VNIR", "degrees_east");
+        put("HCO_Longitude_SWIR", "degrees_east");
     }};
     static final Map<String, String> VARIABLE_DESCRIPTION = new HashMap<>() {{
         put("AOT_Map", "Aerosol optical thickness");
         put("AEX_Map", "Angstrom exponent of the aerosol");
         put("WVM_Map", "Water Vapour columnar amount");
         put("COT_Map", "Clouds optical thickness");
+        put("HCO_Solar_Zenith_Angle", "Solar Zenith Angle");
+        put("HCO_Observing_Angle", "Angle between the local zenith and the satellite viewing direction");
+        put("HCO_Rel_Azimuth_Angle", "Relative Azimuth Angle computed as difference between the satellite" +
+                                   " and sun azimuth angle (i.e between observing direction and sun" +
+                                   " illumination direction) normalized in [0,180]");
     }};
 
     static final Map<String, String> LEVEL_DEPENDENT_AUTO_GROUPING = new HashMap<>() {{
@@ -107,8 +125,46 @@ final class PrismaConstantsAndUtils {
     }
 
     static SampleCoding createSampleCoding(Product product, String datasetName) {
-        if ("SWIR_PIXEL_L2_ERR_MATRIX".equalsIgnoreCase(datasetName)
-            || "VNIR_PIXEL_L2_ERR_MATRIX".equalsIgnoreCase(datasetName)) {
+        if ("Cloud_Mask".equalsIgnoreCase(datasetName)) {
+            final IndexCoding coding = new IndexCoding(datasetName);
+            coding.addIndex("!cloudy", 0, "not cloudy pixel");
+            coding.addIndex("cloudy", 1, "cloudy pixel");
+            coding.addIndex("!previous", 10, "not of all previous classification");
+            coding.addIndex("error", 255, "error pixel");
+            return coding;
+        } else if ("SunGlint_MASK".equalsIgnoreCase(datasetName)) {
+            final IndexCoding coding = new IndexCoding(datasetName);
+            coding.addIndex("!sglint", 0, "not sun glint pixel");
+            coding.addIndex("sglint", 1, "sun glint pixel");
+            coding.addIndex("!previous", 10, "not of all previous classification");
+            coding.addIndex("error", 255, "error pixel");
+            return coding;
+        } else if ("LandCover_MASK".equalsIgnoreCase(datasetName)) {
+            final IndexCoding coding = new IndexCoding(datasetName);
+            coding.addIndex("water", 0, "water pixel");
+            coding.addIndex("snow", 1, "snow pixel (and ice)");
+            coding.addIndex("!veg_bare_soil", 2, "not-vegetated land pixel :bare soil)");
+            coding.addIndex("cp_rl", 3, "crop and rangeland pixel");
+            coding.addIndex("forst", 4, "forst pixel");
+            coding.addIndex("wet", 5, "wetland pixel");
+            coding.addIndex("!veg_urban", 6, "not-vegetated land pixel :urban");
+            coding.addIndex("!previous", 10, "not of all previous classification");
+            coding.addIndex("error", 255, "error pixel");
+            return coding;
+        } else if ("VNIR_PIXEL_SAT_ERR_MATRIX".equalsIgnoreCase(datasetName)
+                   || "SWIR_PIXEL_SAT_ERR_MATRIX".equalsIgnoreCase(datasetName)
+                   || "PIXEL_SAT_ERR_MATRIX".equalsIgnoreCase(datasetName)) {
+            final IndexCoding coding = new IndexCoding(datasetName);
+            coding.addIndex("ok", 0, "pixel ok");
+            coding.addIndex("defect", 1, "DEFECTIVE PIXEL from KDP");
+            coding.addIndex("saturation", 2, "pixel in saturation");
+            coding.addIndex("low_rad", 3, "lower radiometric confidence");
+            coding.addIndex("NaN|Inf", 4, "NaN or Inf");
+            product.getIndexCodingGroup().add(coding);
+            return coding;
+        } else if ("VNIR_PIXEL_L2_ERR_MATRIX".equalsIgnoreCase(datasetName)
+                   || "SWIR_PIXEL_L2_ERR_MATRIX".equalsIgnoreCase(datasetName)
+                   || "PIXEL_L2_ERR_MATRIX".equalsIgnoreCase(datasetName)) {
             final IndexCoding coding = new IndexCoding(datasetName);
             coding.addIndex("ok", 0, "pixel ok");
             coding.addIndex("inv", 1, "Invalid pixel from L1 product");
