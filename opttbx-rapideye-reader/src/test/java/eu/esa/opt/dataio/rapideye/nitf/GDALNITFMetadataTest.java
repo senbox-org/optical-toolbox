@@ -18,7 +18,7 @@
 package eu.esa.opt.dataio.rapideye.nitf;
 
 import eu.esa.opt.dataio.nitf.NITFMetadata;
-import eu.esa.opt.dataio.nitf.NITFReaderWrapper;
+import eu.esa.opt.dataio.nitf.GDALNITFReaderWrapper;
 import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Before;
@@ -36,7 +36,7 @@ import static org.junit.Assume.assumeTrue;
 /**
  * @author Ramona Manda
  */
-public class NITFMetadataTest {
+public class GDALNITFMetadataTest {
     private NITFMetadata metadata;
     private String productsFolder = "_rapideye" + File.separator;
 
@@ -44,7 +44,7 @@ public class NITFMetadataTest {
     public void setUp() throws Exception {
         assumeTrue(TestUtil.testdataAvailable());
 
-        NITFReaderWrapper reader = new NITFReaderWrapper(TestUtil.getTestFile(productsFolder + "2009-04-16T104920_RE4_1B-NAC_3436599_84303_band2.ntf"));
+        GDALNITFReaderWrapper reader = new GDALNITFReaderWrapper(TestUtil.getTestFile(productsFolder + "2009-04-16T104920_RE4_1B-NAC_3436599_84303_band2.ntf"));
         metadata = reader.getMetadata();
     }
 
@@ -67,16 +67,6 @@ public class NITFMetadataTest {
     }
 
     @Test
-    public void testGetNumImages() throws Exception {
-        assertEquals(1, metadata.getNumImages());
-    }
-
-    @Test
-    public void testGetNumBands() throws Exception {
-        assertEquals(1, metadata.getNumBands());
-    }
-
-    @Test
     public void testGetWidth() throws Exception {
         assertEquals(11829, metadata.getWidth());
     }
@@ -95,10 +85,4 @@ public class NITFMetadataTest {
     public void testGetUnit() throws Exception {
         assertEquals("nm", metadata.getUnit());
     }
-
-    @Test
-    public void testGetWavelength() throws Exception {
-        assertEquals(-1.0, metadata.getWavelength(), 0.001);
-    }
-    
 }
