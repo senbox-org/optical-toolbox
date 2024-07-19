@@ -10,6 +10,7 @@
                 <attr name="displayName" stringvalue="Prisma ASI (L1 L2B L2C L2D)"/>
                 <attr name="formatName" stringvalue="PRISMA"/>
                 <attr name="useAllFileFilter" boolvalue="false"/>
+                <attr name="helpId" stringvalue="importPrismaProduct"/>
             </file>
         </folder>
     </folder>
@@ -29,7 +30,7 @@
 
     <folder name="Services">
         <folder name="JavaHelp">
-            <file name="eu-esa-opt-dataio-prisma-helpset.xml" url="helpset.xml">
+            <file name="eu-esa-opt-opttbx-prisma-helpset.xml" url="helpset.xml">
                 <attr name="position" intvalue="4600"/>
             </file>
         </folder>
