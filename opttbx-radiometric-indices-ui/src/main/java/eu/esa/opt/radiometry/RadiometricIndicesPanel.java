@@ -178,7 +178,7 @@ class RadiometricIndicesPanel {
 
     private boolean isResampleNeeded(Product product) {
         boolean needsResampling = false;
-        if (product != null) {
+        if (product != null && product.getNumBands() > 0) {
             int sceneWidth = 0;
             PropertySet propertySet = this.bindingContext.getPropertySet();
 
