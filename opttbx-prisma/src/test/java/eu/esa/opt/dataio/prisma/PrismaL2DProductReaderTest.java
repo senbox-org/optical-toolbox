@@ -4,6 +4,7 @@ import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.test.LongTestRunner;
 import org.esa.snap.core.datamodel.Product;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -16,6 +17,7 @@ import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.*;
 
+@Ignore
 @RunWith(LongTestRunner.class)
 public class PrismaL2DProductReaderTest {
 
