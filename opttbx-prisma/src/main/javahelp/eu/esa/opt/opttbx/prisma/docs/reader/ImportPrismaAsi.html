@@ -1,0 +1,77 @@
+<!--
+  ~ Copyright (c) 2021.  Brockmann Consult GmbH (info@brockmann-consult.de)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program; if not, see http://www.gnu.org/licenses/
+  ~
+  ~
+  -->
+
+<html>
+<head>
+    <title>Optical Toolbox Help - Import Sentinel-3</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<table class="header">
+    <tr class="header">
+        <td class="header">Import Prisma ASI</td>
+        <td class="header" align="right">
+            <a href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html">
+                <img src="../images/snap_header.jpg" border=0></a>
+        </td>
+    </tr>
+</table>
+
+<h1>Prisma ASI</h1>
+
+<p>
+    Prisma is a hyperspectral satellite, capable of observing from the optical to the near infrared produced by the Italian Space Agency.<br>
+    ASI (Agenzia Spaziale Italiana)
+</p>
+<p>
+    Data products computed by ASI ground segment, can be imported by this product reader.<br>
+    Additional information regarding the dataproducts, can be found here:<br>
+    <a href="https://prisma.asi.it/missionselect/docs/PRISMA%20Product%20Specifications_Is2_3.pdf">
+        PRISMA Products Specification Document
+    </a>
+</p>
+
+<h2>Import Data</h2>
+<p>
+    The data is usually distributed in a zip archive. This needs to be extracted first. Afterwards the data can be
+    imported via the respective entry in the application menu at '<code>File / Import / Optical Sensors /
+        Prisma ASI (L1 L2B L2C L2D)</code>'.
+</p>
+<p>
+    Of course it is also possible to simply use the open dialog from the menu '<code>File / Open Product...</code>'
+    or the toolbar. Here by default the generic reader is used. <br><br>
+</p>
+<p>
+    Another option to open Prisma data is to drag'n'drop the extracted <code>*.he5</code> files onto the
+    Product Explorer in SNAP.
+</p>
+
+<h2>Data Access</h2>
+<p>
+    A description of how and where you can obtain Prisma data can be found on the website of the Italian Space Agency
+    under the heading:<br>
+    <a href="https://www.asi.it/en/earth-science/prisma/">
+        <b>Prisma data access</b>
+    </a>
+</p>
+
+<hr>
+</body>
+</html>
