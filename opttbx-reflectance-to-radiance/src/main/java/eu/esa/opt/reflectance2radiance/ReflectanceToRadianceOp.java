@@ -292,7 +292,8 @@ public class ReflectanceToRadianceOp extends Operator {
     }
 
     private boolean isSentinelProduct(Product product) {
-        return StringUtils.startsWithIgnoreCase(product.getProductType(), "S2_MSI_Level");
+        return StringUtils.startsWithIgnoreCase(product.getProductType(), "S2_MSI_Level")
+                || StringUtils.startsWithIgnoreCase(product.getProductType(), "Derived from (S2_MSI_Level");
     }
 
     private boolean isSpotProduct(Product product) {
