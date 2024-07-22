@@ -187,6 +187,9 @@ public class EcostressProductReader extends AbstractProductReader {
             return productGeoCoding;
         }
         final String remotePlatformName = ecostressMetadata.getRemotePlatformName();
+        if (remotePlatformName == null) {
+            return null;
+        }
         return buildCrsGeoCodingUsingRemoteRepository(product, remotePlatformName);
     }
 
@@ -256,6 +259,9 @@ public class EcostressProductReader extends AbstractProductReader {
      * @return the CrsGeoCoding
      */
     private static GeoCoding buildCrsGeoCodingUsingProductMetadata(Product product) {
+        if (product.getMetadataRoot().getNumElements() < 1) {
+            return null;
+        }
         final MetadataElement productMetadata = product.getMetadataRoot().getElementAt(0);
         try {
             final double topLeftLon = productMetadata.getAttributeDouble(EcostressConstants.ECOSTRESS_STANDARD_METADATA_WEST_BOUNDING_COORDINATE);

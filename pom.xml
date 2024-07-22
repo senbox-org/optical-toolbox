@@ -87,6 +87,8 @@
         <module>opttbx-c2rcc</module>
         <module>opttbx-dos</module>
         <module>opttbx-ecostress-reader</module>
+        <module>opttbx-ecostress-swath2grid</module>
+        <module>opttbx-ecostress-swath2grid-ui</module>
         <module>opttbx-flhmci</module>
         <module>opttbx-flhmci-ui</module>
         <module>opttbx-fub-wew</module>
@@ -693,7 +695,7 @@
                         <!--<skip>true</skip>-->
                         <printSummary>true</printSummary>
                         <useFile>false</useFile>
-                        <argLine>-Xmx1024M -Dfile.encoding=UTF-8 @{argLine}</argLine>
+                        <argLine>-Dfile.encoding=UTF-8 @{argLine}</argLine>
                     </configuration>
                 </plugin>
 
