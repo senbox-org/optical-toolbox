@@ -15,8 +15,8 @@ import static org.junit.Assert.*;
 
 public class PrismaProductReaderPluginTest {
 
-    private final Path validHe5Path = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.he5");
-    private final Path invalidHdfPath = Paths.get("\\a\\path\\PRS_L2D_STD_20230815104500_20230815104504_0001.hdf");
+    private final Path validHe5Path = Paths.get("/a/path/PRS_L2D_STD_20230815104500_20230815104504_0001.he5");
+    private final Path invalidHdfPath = Paths.get("/a/path/PRS_L2D_STD_20230815104500_20230815104504_0001.hdf");
     private PrismaProductReaderPlugin plugin;
 
     @STTM("SNAP-3445")
@@ -29,7 +29,7 @@ public class PrismaProductReaderPluginTest {
     @Test
     public void getDecodeQualification() {
         assertThat(plugin.getDecodeQualification(new Integer(3)), is(DecodeQualification.UNABLE));
-        assertThat(plugin.getDecodeQualification("c:\\a\\path\\aFile.name"), is(DecodeQualification.UNABLE));
+        assertThat(plugin.getDecodeQualification("c:/a/path/aFile.name"), is(DecodeQualification.UNABLE));
 
         // File objects are allowed. See PrismaProductReaderPlugin.getInputTypes()
         assertThat(plugin.getDecodeQualification(validHe5Path.toFile()), is(DecodeQualification.INTENDED));
