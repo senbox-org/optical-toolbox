@@ -279,7 +279,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
         final String[] allFiles = virtualDir.listAllFiles();
         for (String dirFileName : allFiles) {
-            if (dirFileName.equalsIgnoreCase(fileName)) {
+            if (dirFileName.contains(fileName)) {
                 return virtualDir.getFile(dirFileName);
             }
         }
