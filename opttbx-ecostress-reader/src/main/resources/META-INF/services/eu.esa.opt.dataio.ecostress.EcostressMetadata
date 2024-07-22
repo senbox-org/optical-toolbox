@@ -1,3 +1,4 @@
+eu.esa.opt.dataio.ecostress.bt.EcostressBTMetadata
 eu.esa.opt.dataio.ecostress.l1b.att.EcostressL1bAttMetadata
 eu.esa.opt.dataio.ecostress.l1b.geo.EcostressL1bGeoMetadata
 eu.esa.opt.dataio.ecostress.l1b.rad.EcostressL1bRadMetadata
