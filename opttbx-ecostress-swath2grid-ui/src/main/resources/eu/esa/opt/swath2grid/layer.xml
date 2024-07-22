@@ -1,0 +1,24 @@
+<filesystem>
+
+    <folder name="Actions">
+        <folder name="Operators">
+            <file name="eu-esa-opt-swath2grid-Action.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="eu.esa.opt.swath2grid.EcostressSwath2GridOpAction.create"/>
+                <attr name="displayName" stringvalue="ECOSTRESS Swath to Grid"/>
+                <attr name="dialogTitle" stringvalue="ECOSTRESS Swath to Grid"/>
+                <attr name="operatorName" stringvalue="EcostressSwath2GridOp"/>
+                <attr name="helpId" stringvalue="EcostressSwath2Grid"/>
+            </file>
+        </folder>
+    </folder>
+
+    <folder name="Menu">
+        <folder name="Raster">
+            <file name="eu-esa-opt-swath2grid-Action.shadow">
+                <attr name="originalFile" stringvalue="Actions/Operators/eu-esa-opt-swath2grid-Action.instance"/>
+            </file>
+        </folder>
+    </folder>
+
+</filesystem>

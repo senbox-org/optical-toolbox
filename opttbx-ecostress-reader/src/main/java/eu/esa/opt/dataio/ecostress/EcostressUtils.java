@@ -12,6 +12,8 @@ import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
 
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -185,9 +187,12 @@ public class EcostressUtils {
         try (ecostressFile) {
             final H5ScalarDS date = getEcostressH5ScalarDS(ecostressFile, dateElementPath);
             final H5ScalarDS time = getEcostressH5ScalarDS(ecostressFile, timeElementPath);
-            final String dateValue = getEcostressH5ScalarDSValue(date).getElemString().trim();
-            final String timeValue = getEcostressH5ScalarDSValue(time).getElemString().trim();
-            return ProductData.UTC.parse(dateValue + " " + timeValue, EcostressConstants.ECOSTRESS_DATE_FORMAT_PATTERN);
+            if (date != null && time != null) {
+                final String dateValue = getEcostressH5ScalarDSValue(date).getElemString().trim();
+                final String timeValue = getEcostressH5ScalarDSValue(time).getElemString().trim();
+                return ProductData.UTC.parse(dateValue + " " + timeValue, EcostressConstants.ECOSTRESS_DATE_FORMAT_PATTERN);
+            }
+            return ProductData.UTC.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern(EcostressConstants.ECOSTRESS_DATE_FORMAT_PATTERN)), EcostressConstants.ECOSTRESS_DATE_FORMAT_PATTERN);
         } catch (Exception e) {
             logger.severe("Failed to extract product date-time from ECOSTRESS product '" + ecostressFile.getName() + "'. Reason: " + e.getMessage());
             throw new IllegalStateException(e);
@@ -205,9 +210,12 @@ public class EcostressUtils {
         try (ecostressFile) {
             final H5ScalarDS width = getEcostressH5ScalarDS(ecostressFile, widthElementPath);
             final H5ScalarDS height = getEcostressH5ScalarDS(ecostressFile, heightElementPath);
-            final int widthValue = getEcostressH5ScalarDSValue(width).getElemInt();
-            final int heightValue = getEcostressH5ScalarDSValue(height).getElemInt();
-            return new Dimension(widthValue, heightValue);
+            if (width != null && height != null) {
+                final int widthValue = getEcostressH5ScalarDSValue(width).getElemInt();
+                final int heightValue = getEcostressH5ScalarDSValue(height).getElemInt();
+                return new Dimension(widthValue, heightValue);
+            }
+            return new Dimension(-1, -1);
         } catch (Exception e) {
             logger.severe("Failed to extract the dimension from ECOSTRESS product '" + ecostressFile.getName() + "' Reason: " + e.getMessage());
             throw new IllegalStateException(e);
