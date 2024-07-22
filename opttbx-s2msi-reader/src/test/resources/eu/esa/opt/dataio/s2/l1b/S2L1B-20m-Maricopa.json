@@ -293,7 +293,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "1610.0",
-                "spectralBandwidth": "172.0",
+                "spectralBandwidth": "90.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -365,7 +365,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "2190.0",
-                "spectralBandwidth": "276.0",
+                "spectralBandwidth": "180.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -437,7 +437,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "705.0",
-                "spectralBandwidth": "97.0",
+                "spectralBandwidth": "15.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -509,7 +509,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "740.0",
-                "spectralBandwidth": "40.0",
+                "spectralBandwidth": "15.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -581,7 +581,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "783.0",
-                "spectralBandwidth": "71.0",
+                "spectralBandwidth": "20.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -653,7 +653,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "865.0",
-                "spectralBandwidth": "79.0",
+                "spectralBandwidth": "20.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -725,7 +725,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "1610.0",
-                "spectralBandwidth": "172.0",
+                "spectralBandwidth": "90.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -797,7 +797,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "2190.0",
-                "spectralBandwidth": "276.0",
+                "spectralBandwidth": "180.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -869,7 +869,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "705.0",
-                "spectralBandwidth": "97.0",
+                "spectralBandwidth": "15.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -941,7 +941,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "740.0",
-                "spectralBandwidth": "40.0",
+                "spectralBandwidth": "15.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -1013,7 +1013,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "783.0",
-                "spectralBandwidth": "71.0",
+                "spectralBandwidth": "20.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -1085,7 +1085,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "865.0",
-                "spectralBandwidth": "79.0",
+                "spectralBandwidth": "20.0",
                 "expectedPixels": [
                     {
                         "x": 21,
