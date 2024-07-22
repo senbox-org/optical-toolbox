@@ -179,7 +179,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "443.0",
-                "spectralBandwidth": 20.0",
+                "spectralBandwidth": "20.0",
                 "expectedPixels": [
                     {
                         "x": 30,
