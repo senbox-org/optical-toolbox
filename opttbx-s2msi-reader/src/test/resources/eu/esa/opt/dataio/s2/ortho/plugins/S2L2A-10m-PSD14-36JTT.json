@@ -110,7 +110,7 @@
       ],
       "tiePointGrids": [
         {
-            "name": "tco3",
+            "name": "tcwv",
             "description": "Total column water vapour at surface level provided by ECMWF",
             "offsetX": "0.5",
             "offsetY": "0.5",
@@ -140,7 +140,7 @@
               ]
           },
           {
-            "name": "tcwv",
+            "name": "tco3",
             "description": "Total column ozone at surface level provided by ECMWF",
             "offsetX": "0.5",
             "offsetY": "0.5",
