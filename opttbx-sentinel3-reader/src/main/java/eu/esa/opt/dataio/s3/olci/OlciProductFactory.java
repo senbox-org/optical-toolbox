@@ -275,11 +275,10 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         return reader.readProductNodes(file, null);
     }
 
-    // @todo 2 test this tb 2024-05-31
     public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
         final String[] allFiles = virtualDir.listAllFiles();
         for (String dirFileName : allFiles) {
-            if (dirFileName.contains(fileName)) {
+            if (dirFileName.equalsIgnoreCase(fileName)) {
                 return virtualDir.getFile(dirFileName);
             }
         }
