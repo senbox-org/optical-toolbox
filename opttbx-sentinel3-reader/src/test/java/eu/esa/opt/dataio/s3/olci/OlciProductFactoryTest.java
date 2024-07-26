@@ -1,13 +1,18 @@
 package eu.esa.opt.dataio.s3.olci;
 
-import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
+import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.VirtualDir;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.SYSPROP_OLCI_TIE_POINT_CODING_FORWARD;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class OlciProductFactoryTest {
 
@@ -96,5 +101,23 @@ public class OlciProductFactoryTest {
                 System.setProperty(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD, forwardKey);
             }
         }
+    }
+
+    @Test
+    @STTM("SNAP-3755")
+    public void testGetFileFromVirtualDir() throws IOException {
+        final VirtualDir virtualDir = mock(VirtualDir.class);
+        when(virtualDir.listAllFiles()).thenReturn(new String[]{"one", "be_two", "two", "three"});
+        when(virtualDir.getFile("be_two")).thenReturn(new File("be_two"));
+
+        final File notExisting = OlciProductFactory.getFileFromVirtualDir("not_existing", virtualDir);
+        assertNull(notExisting);
+
+        final File beTwo = OlciProductFactory.getFileFromVirtualDir("be_two", virtualDir);
+        assertNotNull(beTwo);
+        assertEquals("be_two", beTwo.getName());
+
+        final File eTwo = OlciProductFactory.getFileFromVirtualDir("e_two", virtualDir);
+        assertNull(eTwo);
     }
 }

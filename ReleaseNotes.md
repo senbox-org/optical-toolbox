@@ -4,6 +4,7 @@ Optical Toolbox Release Notes
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
 # New in SNAP 11.0.0
+    [SNAP-3755] OLCI L2 LRR/LFR error on Linux
     [SNAP-3684] Support PACE OCI L1C data
     [SNAP-3683] Support PACE OCI L1B data
     [SNAP-3680] Update MERIS auxdata module.

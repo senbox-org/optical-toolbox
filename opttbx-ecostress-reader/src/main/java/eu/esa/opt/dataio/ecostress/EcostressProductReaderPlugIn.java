@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
 
-    static final String FORMAT_NAME_ECOSTRESS = "ECOSTRESS-L1A/L2A/L1/L3/L4";
+    static final String FORMAT_NAME_ECOSTRESS = "ECOSTRESS-L1B/L2/L3/L4";
     private static final String _H5_CLASS_NAME = "ncsa.hdf.hdf5lib.H5";
     private static final Class<?>[] SUPPORTED_INPUT_TYPES = new Class[]{String.class, File.class};
     private static final String DESCRIPTION = "ECOSTRESS Format";

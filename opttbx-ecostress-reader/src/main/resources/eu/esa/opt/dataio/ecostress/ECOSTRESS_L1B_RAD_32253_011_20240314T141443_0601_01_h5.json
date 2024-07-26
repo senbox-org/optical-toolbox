@@ -1,6 +1,6 @@
 {
   "id": "ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01_h5",
-  "decodeQualification": "SUITABLE",
+  "decodeQualification": "INTENDED",
   "expectedContent": {
     "sceneWidth": 5400,
     "sceneHeight": 5632,
