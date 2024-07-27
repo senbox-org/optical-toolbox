@@ -19,8 +19,13 @@ import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.PropertyMap;
+import org.esa.snap.core.util.ResourceInstaller;
+import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.CsvReader;
 import org.esa.snap.rcp.SnapApp;
+import org.esa.snap.ui.GridBagUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
@@ -28,9 +33,8 @@ import ucar.ma2.Section;
 import ucar.nc2.*;
 
 import java.awt.Color;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
@@ -1412,12 +1416,60 @@ public abstract class SeadasFileReader {
             }
 
         }
+
+
+
         setSpectralBand(product);
 
         return bandToVariableMap;
     }
 
+
+
     protected void setSpectralBand(Product product) {
+
+        HashMap<String, String> ociWavelengths = new HashMap<String, String>();
+
+        if (productReader.getProductType() == SeadasProductReader.ProductType.Level2_PaceOCI) {
+            File sensorInfoAuxDir = SystemUtils.getAuxDataPath().resolve("sensor_info").toFile();
+
+            try {
+                Path auxdataDir = SystemUtils.getAuxDataPath().resolve("sensor_info");
+
+                Path sourceBasePath = ResourceInstaller.findModuleCodeBasePath(SeadasFileReader.class);
+                Path auxdirSource = sourceBasePath.resolve("auxdata");
+                Path sourceDirPath = auxdirSource.resolve("sensor_info");
+
+                final ResourceInstaller resourceInstaller = new ResourceInstaller(sourceDirPath, auxdataDir);
+
+                resourceInstaller.install(".*." + "oci_bandpass.csv", ProgressMonitor.NULL);
+
+            } catch (IOException e) {
+                SnapApp.getDefault().handleError("Unable to install auxdata/sensor_info/oci_bandpass.csv", e);
+            }
+
+
+            File ociBandPassFile = new File(sensorInfoAuxDir, "oci_bandpass.csv");
+
+            if (sensorInfoAuxDir != null && sensorInfoAuxDir.exists()) {
+
+                if (ociBandPassFile != null && ociBandPassFile.exists()) {
+
+                    try (BufferedReader br = new BufferedReader(new FileReader(ociBandPassFile))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            String[] values = line.split(",");
+                            if (values != null && values.length > 3) {
+                                ociWavelengths.put(values[1].trim(), values[2].trim());
+                            }
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+        }
+
         int spectralBandIndex = 0;
         for (String name : product.getBandNames()) {
             Band band = product.getBandAt(product.getBandIndex(name));
@@ -1428,11 +1480,26 @@ public abstract class SeadasFileReader {
                 if (!wvlstr.matches("^\\d{3,}")) {
                     wvlstr = parts[parts.length - 2].trim();
                 }
+
+                if (productReader.getProductType() == SeadasProductReader.ProductType.Level2_PaceOCI) {
+                    wvlstr = getPaceOCIWavelengths(wvlstr, ociWavelengths);
+                }
+
                 final float wavelength = Float.parseFloat(wvlstr);
                 band.setSpectralWavelength(wavelength);
                 band.setSpectralBandIndex(spectralBandIndex++);
             }
         }
+    }
+
+    protected String getPaceOCIWavelengths(String wvlstr, HashMap<String, String> ociWavelengths) {
+        String wvlstr_oci = ociWavelengths.get(wvlstr);
+
+        if (wvlstr_oci != null && wvlstr_oci.length() > 0) {
+            wvlstr = wvlstr_oci;
+        }
+
+        return wvlstr;
     }
 
     protected Map<Band, Variable> add3DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
