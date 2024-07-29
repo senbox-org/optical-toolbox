@@ -41,6 +41,33 @@ public class SeadasProductReader extends AbstractProductReader {
     private ProductType productType;
     private SeadasFileReader seadasFileReader;
 
+    enum Mission {
+        OCI("OCI");
+
+        private String name;
+        private Mission(String nm) {
+            name = nm;
+        }
+        public String toString() {
+            return name;
+        }
+    }
+
+    enum ProcessingLevel {
+        L2("L2"),
+        L3b("L3 Binned"),
+        L3m("L3 Mapped");
+
+        private String name;
+        private ProcessingLevel(String nm) {
+            name = nm;
+        }
+        public String toString() {
+            return name;
+        }
+    }
+
+
 
     enum ProductType {
         ANCNRT("SeaWiFS Near Real-Time Ancillary Data"),
