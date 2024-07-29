@@ -18,14 +18,12 @@ package gov.nasa.gsfc.seadas.dataio;
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.PropertyMap;
 import org.esa.snap.core.util.ResourceInstaller;
 import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.CsvReader;
 import org.esa.snap.rcp.SnapApp;
-import org.esa.snap.ui.GridBagUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
@@ -1430,26 +1428,35 @@ public abstract class SeadasFileReader {
 
         HashMap<String, String> ociWavelengths = new HashMap<String, String>();
 
-        if (productReader.getProductType() == SeadasProductReader.ProductType.Level2_PaceOCI) {
-            File sensorInfoAuxDir = SystemUtils.getAuxDataPath().resolve("sensor_info").toFile();
+        String sensor = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
+        String platform = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
+        String processing_level = ProductUtils.getMetaData(product, "processing_level");
 
-            try {
-                Path auxdataDir = SystemUtils.getAuxDataPath().resolve("sensor_info");
+        String SENSOR_INFO = "sensor_info";
+        String AUXDATA = "auxdata";
+        String OCI_BANDPASS_CSV = "oci_bandpass.csv";
 
-                Path sourceBasePath = ResourceInstaller.findModuleCodeBasePath(SeadasFileReader.class);
-                Path auxdirSource = sourceBasePath.resolve("auxdata");
-                Path sourceDirPath = auxdirSource.resolve("sensor_info");
+        if (SeadasProductReader.Mission.OCI.toString().equals(sensor)) {
 
-                final ResourceInstaller resourceInstaller = new ResourceInstaller(sourceDirPath, auxdataDir);
+            File sensorInfoAuxDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO).toFile();
+            File ociBandPassFile = new File(sensorInfoAuxDir, OCI_BANDPASS_CSV);
 
-                resourceInstaller.install(".*." + "oci_bandpass.csv", ProgressMonitor.NULL);
+            if (ociBandPassFile == null ||  !ociBandPassFile.exists()) {
+                try {
+                    Path auxdataDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO);
 
-            } catch (IOException e) {
-                SnapApp.getDefault().handleError("Unable to install auxdata/sensor_info/oci_bandpass.csv", e);
+                    Path sourceBasePath = ResourceInstaller.findModuleCodeBasePath(SeadasFileReader.class);
+                    Path auxdirSource = sourceBasePath.resolve(AUXDATA);
+                    Path sourceDirPath = auxdirSource.resolve(SENSOR_INFO);
+
+                    final ResourceInstaller resourceInstaller = new ResourceInstaller(sourceDirPath, auxdataDir);
+
+                    resourceInstaller.install(".*." + OCI_BANDPASS_CSV, ProgressMonitor.NULL);
+
+                } catch (IOException e) {
+                    SnapApp.getDefault().handleError("Unable to install " + AUXDATA + "/" + SENSOR_INFO + "/" + OCI_BANDPASS_CSV, e);
+                }
             }
-
-
-            File ociBandPassFile = new File(sensorInfoAuxDir, "oci_bandpass.csv");
 
             if (sensorInfoAuxDir != null && sensorInfoAuxDir.exists()) {
 
@@ -1481,7 +1488,7 @@ public abstract class SeadasFileReader {
                     wvlstr = parts[parts.length - 2].trim();
                 }
 
-                if (productReader.getProductType() == SeadasProductReader.ProductType.Level2_PaceOCI) {
+                if (SeadasProductReader.Mission.OCI.toString().equals(sensor)) {
                     wvlstr = getPaceOCIWavelengths(wvlstr, ociWavelengths);
                 }
 
