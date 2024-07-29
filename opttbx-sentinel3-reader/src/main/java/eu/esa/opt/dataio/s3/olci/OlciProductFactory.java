@@ -12,7 +12,9 @@ import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.runtime.Config;
+import org.joda.time.field.FieldUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -278,7 +280,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
         final String[] allFiles = virtualDir.listAllFiles();
         for (String dirFileName : allFiles) {
-            if (dirFileName.equalsIgnoreCase(fileName)) {
+            final String filenameFromVirtualDir = FileUtils.getFilenameFromPath(dirFileName);
+            if (filenameFromVirtualDir.equalsIgnoreCase(fileName)) {
                 return virtualDir.getFile(dirFileName);
             }
         }
