@@ -9,6 +9,8 @@ public class EnmapProductReaderTest {
 
     @Test
     public void testGetEPSGCode() throws Exception {
+        assertEquals("EPSG:32608", EnmapProductReader.getEPSGCode("UTM_Zone8_North"));
+        assertEquals("EPSG:32708", EnmapProductReader.getEPSGCode("UTM_Zone08_South"));
         assertEquals("EPSG:32632", EnmapProductReader.getEPSGCode("UTM_Zone32_North"));
         assertEquals("EPSG:32714", EnmapProductReader.getEPSGCode("UTM_Zone14_South"));
         assertEquals("EPSG:3035", EnmapProductReader.getEPSGCode("LAEA-ETRS89"));
