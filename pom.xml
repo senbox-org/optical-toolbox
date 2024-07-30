@@ -21,7 +21,7 @@
 
     <groupId>eu.esa.opt</groupId>
     <artifactId>optical-toolbox</artifactId>
-    <version>10.0.2</version>
+    <version>10.0.3-SNAPSHOT</version>
     <name>SNAP Optical Toolbox</name>
     <description>Tools for optical Satellites</description>
     <url>https://sentinel.esa.int/web/sentinel/toolboxes/optical</url>
@@ -121,9 +121,9 @@
 
     <properties>
         <snap.version>10.0.0</snap.version>
-        <opttbx.version>10.0.2</opttbx.version>
-        <seadas.reader.version>1.10.1</seadas.reader.version>
-        <seadas.reader.ui.version>1.10.1</seadas.reader.ui.version>
+        <opttbx.version>10.0.3-SNAPSHOT</opttbx.version>
+        <seadas.reader.version>1.10.2-SNAPSHOT</seadas.reader.version>
+        <seadas.reader.ui.version>1.10.2-SNAPSHOT</seadas.reader.ui.version>
         <snap-help-system.version>1.0.0</snap-help-system.version>
         <netbeans.version>RELEASE113</netbeans.version>
         <geotools.version>28.2</geotools.version>
