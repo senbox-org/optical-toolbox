@@ -1488,7 +1488,9 @@ public abstract class SeadasFileReader {
                     wvlstr = parts[parts.length - 2].trim();
                 }
 
-                if (SeadasProductReader.Mission.OCI.toString().equals(sensor)) {
+                if (SeadasProductReader.Mission.OCI.toString().equals(sensor) &&
+                        (SeadasProductReader.ProcessingLevel.L2.toString().equals(processing_level) ||
+                                SeadasProductReader.ProcessingLevel.L3m.toString().equals(processing_level))) {
                     wvlstr = getPaceOCIWavelengths(wvlstr, ociWavelengths);
                 }
 
