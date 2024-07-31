@@ -54,6 +54,9 @@ public class SeadasProductReader extends AbstractProductReader {
     }
 
     enum ProcessingLevel {
+        L1A("L1A"),
+        L1B("L1B"),
+        L1C("L1C"),
         L2("L2"),
         L3b("L3 Binned"),
         L3m("L3 Mapped");
