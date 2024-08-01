@@ -237,7 +237,7 @@ public class L2aGranuleMetadataGenericPSD extends GenericXmlMetadata implements 
         }
         for (String maskFilename : maskFilenames) {
             //To be sure that it is not a relative path and finish with .gml
-            String filenameProcessed = Paths.get(maskFilename).getFileName().toString();
+            String filenameProcessed = Paths.get(maskFilename.replaceAll("\\\\","/")).getFileName().toString();
             if(gmlMaskFormat){
                 if(!filenameProcessed.endsWith(".gml")) {
                     filenameProcessed = filenameProcessed + ".gml";
