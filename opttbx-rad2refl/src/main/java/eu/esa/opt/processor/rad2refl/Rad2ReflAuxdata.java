@@ -28,9 +28,10 @@ public class Rad2ReflAuxdata {
     public static Rad2ReflAuxdata loadMERISAuxdata(String productType) throws IOException {
         final Path auxdataDir = installAuxdata();
 
-        if (productType.startsWith("MER_F")) {
+        final ResolutionType resolutionType = getResolutionType(productType);
+        if (resolutionType == ResolutionType.FULL) {
             return loadFRAuxdata(auxdataDir);
-        } else if (productType.startsWith("MER_R")) {
+        } else if (resolutionType == ResolutionType.REDUCED) {
             return loadRRAuxdata(auxdataDir);
         } else {
             throw new IOException(String.format("No auxillary data found for input product of type '%s'", productType));

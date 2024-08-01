@@ -13,6 +13,7 @@ public class Rad2ReflAuxdataTest {
 
         assertEquals(ResolutionType.FULL, Rad2ReflAuxdata.getResolutionType("MER_FR__1P"));
         assertEquals(ResolutionType.FULL, Rad2ReflAuxdata.getResolutionType("Derived from(MER_FRS_1P)"));
+        assertEquals(ResolutionType.FULL, Rad2ReflAuxdata.getResolutionType("Derived from (MER_FRS_1P)"));
 
         assertEquals(ResolutionType.UNKNOWN, Rad2ReflAuxdata.getResolutionType("STRANGE-TYPE"));
     }
