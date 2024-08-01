@@ -16,13 +16,12 @@
 package eu.esa.opt.meris.smac;
 
 import org.esa.snap.core.util.Guardian;
-import org.esa.snap.dataio.envisat.EnvisatConstants;
+import org.esa.snap.core.util.StringUtils;
 
-import java.util.regex.Pattern;
+import static org.esa.snap.dataio.envisat.EnvisatConstants.AATSR_L1B_TOA_PRODUCT_TYPE_NAME;
+import static org.esa.snap.dataio.envisat.EnvisatConstants.MERIS_L1_TYPE_PATTERN;
 
 class SmacUtils {
-
-    private static Pattern AATSR_L1_TOA_TYPE_PATTERN = Pattern.compile("ATS_TOA_1P");
 
     /**
      * Converts the sensor type given by the request to a string that can be understood by the
@@ -42,11 +41,28 @@ class SmacUtils {
     }
 
     public static boolean isSupportedMerisProductType(String productType) {
-        return EnvisatConstants.MERIS_L1_TYPE_PATTERN.matcher(productType).matches();
+        final String pattern = extractMerisPattern(productType);
+        if (StringUtils.isNullOrEmpty(pattern)) {
+            return false;
+        }
+        return MERIS_L1_TYPE_PATTERN.matcher(pattern).matches();
+    }
+
+    static String extractMerisPattern(String productType) {
+        if (StringUtils.isNullOrEmpty(productType)) {
+            return null;
+        }
+
+        final int patternIndex = productType.indexOf("MER_");
+        if (patternIndex < 0) {
+            return null;
+        }
+
+        return productType.substring(patternIndex, patternIndex + 10);
     }
 
     public static boolean isSupportedAatsrProductType(String productType) {
-        return AATSR_L1_TOA_TYPE_PATTERN.matcher(productType).matches();
+        return productType.contains(AATSR_L1B_TOA_PRODUCT_TYPE_NAME);
     }
 
     public static boolean isSupportedProductType(String productType) {
