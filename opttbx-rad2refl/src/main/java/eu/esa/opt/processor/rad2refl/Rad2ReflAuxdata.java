@@ -45,6 +45,15 @@ public class Rad2ReflAuxdata {
         loadDetectorData(detectorSunSpectralFluxesFilename, numRows, numCols);
     }
 
+    static ResolutionType getResolutionType(String productType) {
+        if(productType.contains("MER_R")) {
+            return ResolutionType.REDUCED;
+        } else if (productType.contains("MER_F")) {
+            return ResolutionType.FULL;
+        }
+        return ResolutionType.UNKNOWN;
+    }
+
     public double[][] getDetectorSunSpectralFluxes() {
         return detectorSunSpectralFluxes;
     }
