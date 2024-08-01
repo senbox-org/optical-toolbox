@@ -38,7 +38,13 @@ public class SmacUtilsTest {
         type = SmacUtils.getSensorType(EnvisatConstants.AATSR_L1B_TOA_PRODUCT_TYPE_NAME);
         assertEquals(SensorCoefficientManager.AATSR_NAME, type);
 
+        type = SmacUtils.getSensorType("Derived from (" + EnvisatConstants.AATSR_L1B_TOA_PRODUCT_TYPE_NAME + ")");
+        assertEquals(SensorCoefficientManager.AATSR_NAME, type);
+
         type = SmacUtils.getSensorType(EnvisatConstants.MERIS_FR_L1B_PRODUCT_TYPE_NAME);
+        assertEquals(SensorCoefficientManager.MERIS_NAME, type);
+
+        type = SmacUtils.getSensorType("Derived from (" + EnvisatConstants.MERIS_FR_L1B_PRODUCT_TYPE_NAME + ")");
         assertEquals(SensorCoefficientManager.MERIS_NAME, type);
 
         type = SmacUtils.getSensorType(EnvisatConstants.MERIS_RR_L1B_PRODUCT_TYPE_NAME);
@@ -66,5 +72,18 @@ public class SmacUtilsTest {
 
         assertFalse(SmacUtils.isSupportedProductType("TomType"));
         assertFalse(SmacUtils.isSupportedProductType("NonExistingType"));
+    }
+
+    @Test
+    public void testExtractMerisPattern() {
+        assertNull(SmacUtils.extractMerisPattern(null));
+        assertNull(SmacUtils.extractMerisPattern(""));
+        assertNull(SmacUtils.extractMerisPattern("UnfugTyp"));
+
+        assertEquals("MER_FR__1P", SmacUtils.extractMerisPattern(EnvisatConstants.MERIS_FR_L1B_PRODUCT_TYPE_NAME));
+        assertEquals("MER_FR__1P", SmacUtils.extractMerisPattern("Derived from(" + EnvisatConstants.MERIS_FR_L1B_PRODUCT_TYPE_NAME + ")"));
+
+        assertEquals("MER_RR__1P", SmacUtils.extractMerisPattern(EnvisatConstants.MERIS_RR_L1B_PRODUCT_TYPE_NAME));
+        assertEquals("MER_RR__1P", SmacUtils.extractMerisPattern("Derived from (" + EnvisatConstants.MERIS_RR_L1B_PRODUCT_TYPE_NAME + ")"));
     }
 }
