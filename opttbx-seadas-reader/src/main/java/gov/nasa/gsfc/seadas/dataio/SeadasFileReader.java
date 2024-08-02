@@ -575,10 +575,7 @@ public abstract class SeadasFileReader {
                 if (metadataElementBand != null) {
                     MetadataElement metadataElementL2Flags = metadataElementBand.getElement("l2_flags");
                     if (metadataElementL2Flags != null) {
-                        flagMeanings =metadataElementL2Flags.getAttribute("FLAG_MEANINGS").getData().getElemString();
-                        if (flagMeanings != null) {
-                            flagNames = flagMeanings.split(" ");
-                        }
+                        setFlagMeaningsAndNames(product, metadataElementL2Flags);
                     }
                 }
             } catch (Exception ignore) {
@@ -1170,11 +1167,24 @@ public abstract class SeadasFileReader {
         }
     }
 
-
-
-
-
-
+    private void setFlagMeaningsAndNames(Product product, MetadataElement metadataElementL2Flags) {
+        final MetadataAttribute flagMeaningsAttribute = metadataElementL2Flags.getAttribute("FLAG_MEANINGS");
+        if (flagMeaningsAttribute != null) {
+            flagMeanings = flagMeaningsAttribute.getData().getElemString();
+            flagNames = flagMeanings.split(" ");
+        } else {
+            final MetadataElement global = product.getMetadataRoot().getElement("Global_Attributes");
+            if (global != null) {
+                final MetadataAttribute maskNamesAttribute = global.getAttribute("Mask_Names");
+                if (maskNamesAttribute != null) {
+                    flagMeanings = maskNamesAttribute.getData().getElemString();
+                    if (flagMeanings != null) {
+                        flagNames = flagMeanings.split(",");
+                    }
+                }
+            }
+        }
+    }
 
 
     private Mask createMask(Product product, String maskName, Color maskColor, double maskTransparency) {
