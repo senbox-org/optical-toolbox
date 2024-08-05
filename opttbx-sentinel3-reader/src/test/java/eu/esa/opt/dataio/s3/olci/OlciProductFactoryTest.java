@@ -138,4 +138,24 @@ public class OlciProductFactoryTest {
         final File eTwo = OlciProductFactory.getFileFromVirtualDir("e_two", virtualDir);
         assertNull(eTwo);
     }
+
+    @Test
+    @STTM("SNAP-3755")
+    public void testIsUncertaintyBand() {
+        assertTrue(OlciProductFactory.isUncertaintyBand("Oa03_radiance_unc"));
+        assertTrue(OlciProductFactory.isUncertaintyBand("Oa11_radiance_unc"));
+
+        assertFalse(OlciProductFactory.isUncertaintyBand("Oa11_radiance"));
+        assertFalse(OlciProductFactory.isUncertaintyBand("atmospheric_temperature_profile"));
+    }
+
+    @Test
+    @STTM("SNAP-3755")
+    public void testIsLogScaledUnit() {
+        assertTrue(OlciProductFactory.isLogScaledUnit("lg(firlefanz)"));
+        assertTrue(OlciProductFactory.isLogScaledUnit("lg(re mW.m-2.sr-1.nm-1)"));
+
+        assertFalse(OlciProductFactory.isLogScaledUnit("mW.m-2.sr-1.nm-1"));
+        assertFalse(OlciProductFactory.isLogScaledUnit("K"));
+    }
 }
