@@ -23,7 +23,7 @@
     <parent>
         <artifactId>optical-toolbox</artifactId>
         <groupId>eu.esa.opt</groupId>
-        <version>10.0.3-SNAPSHOT</version>
+        <version>10.0.3</version>
     </parent>
 
     <artifactId>opttbx-spot-reader</artifactId>
