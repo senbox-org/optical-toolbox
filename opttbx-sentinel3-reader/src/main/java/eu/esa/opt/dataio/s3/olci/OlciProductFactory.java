@@ -35,6 +35,10 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "opttbx.reader.olci.tiePointGeoCoding.forward";
     private final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "opttbx.reader.olci.pixelGeoCoding.inverse";
     private final static String[] excludedIDs = {"removedPixelsData"};
+    private static final String UNCERTAINTY_REGEX = ".*_unc";
+    private static final String LOG10_REGEX = "lg(.*)";
+    private static Pattern uncertaintyRegEx = Pattern.compile(UNCERTAINTY_REGEX);
+    private static Pattern log10RegEx = Pattern.compile(LOG10_REGEX);
     private final Map<String, Float> nameToWavelengthMap;
     private final Map<String, Float> nameToBandwidthMap;
     private final Map<String, Integer> nameToIndexMap;
@@ -90,6 +94,17 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         codingNames[1] = TiePointInverse.KEY;
 
         return codingNames;
+    }
+
+    public static boolean isUncertaintyBand(String bandName) {
+        final Matcher matcher = uncertaintyRegEx.matcher(bandName);
+
+        return matcher.matches();
+    }
+
+    public static boolean isLogScaledUnit(String units) {
+        final Matcher matcher = log10RegEx.matcher(units);
+        return matcher.matches();
     }
 
     @Override
@@ -213,7 +228,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
 
     @Override
     protected void configureTargetNode(Band sourceBand, RasterDataNode targetNode) {
-        if (targetNode.getName().matches("Oa[0-2][0-9].*")) {
+        final String targetNodeName = targetNode.getName();
+        if (targetNodeName.matches("Oa[0-2][0-9].*")) {
             if (targetNode instanceof Band) {
                 final Band targetBand = (Band) targetNode;
                 String cutName = targetBand.getName().substring(0, 4);
@@ -226,11 +242,11 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         // convert log10 scaled variables int concentrations and also their error bands
         // the unit string follows the CF conventions.
         // See: http://www.unidata.ucar.edu/software/udunits/udunits-2.0.4/udunits2lib.html#Syntax
-        if (targetNode.getName().startsWith("ADG443_NN") ||
-                targetNode.getName().startsWith("CHL_NN") ||
-                targetNode.getName().startsWith("CHL_OC4ME") ||
-                targetNode.getName().startsWith("KD490_M07") ||
-                targetNode.getName().startsWith("TSM_NN")) {
+        if (targetNodeName.startsWith("ADG443_NN") ||
+                targetNodeName.startsWith("CHL_NN") ||
+                targetNodeName.startsWith("CHL_OC4ME") ||
+                targetNodeName.startsWith("KD490_M07") ||
+                targetNodeName.startsWith("TSM_NN")) {
             if (targetNode instanceof Band) {
                 final Band targetBand = (Band) targetNode;
                 String unit = targetBand.getUnit();
@@ -243,9 +259,16 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
                     description = description.replace("log10 scaled ", "");
                     targetBand.setDescription(description);
                 } else {
-                    getLogger().log(Level.WARNING, "Unit extraction not working for band " + targetNode.getName());
+                    getLogger().log(Level.WARNING, "Unit extraction not working for band " + targetNodeName);
                 }
                 targetNode.setValidPixelExpression(getValidExpression());
+            }
+        }
+
+        if (isUncertaintyBand(targetNodeName)) {
+            final String unit = sourceBand.getUnit();
+            if (isLogScaledUnit(unit)) {
+                targetNode.setLog10Scaled(true);
             }
         }
     }
