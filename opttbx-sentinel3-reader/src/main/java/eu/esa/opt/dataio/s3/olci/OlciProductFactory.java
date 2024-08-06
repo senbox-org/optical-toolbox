@@ -12,6 +12,7 @@ import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.runtime.Config;
 import org.joda.time.field.FieldUtils;
@@ -103,6 +104,9 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     }
 
     public static boolean isLogScaledUnit(String units) {
+        if (StringUtils.isNullOrEmpty(units)) {
+            return false;
+        }
         final Matcher matcher = log10RegEx.matcher(units);
         return matcher.matches();
     }

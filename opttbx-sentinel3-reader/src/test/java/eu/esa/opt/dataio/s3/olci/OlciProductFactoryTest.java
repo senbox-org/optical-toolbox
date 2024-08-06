@@ -158,4 +158,11 @@ public class OlciProductFactoryTest {
         assertFalse(OlciProductFactory.isLogScaledUnit("mW.m-2.sr-1.nm-1"));
         assertFalse(OlciProductFactory.isLogScaledUnit("K"));
     }
+
+    @Test
+    @STTM("SNAP-3728")
+    public void testIsLogScaledUnit_handleNullOrEmpty() {
+        assertFalse(OlciProductFactory.isLogScaledUnit(""));
+        assertFalse(OlciProductFactory.isLogScaledUnit(null));
+    }
 }
