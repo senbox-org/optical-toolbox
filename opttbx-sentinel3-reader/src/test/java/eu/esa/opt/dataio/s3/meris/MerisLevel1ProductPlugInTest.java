@@ -96,4 +96,10 @@ public class MerisLevel1ProductPlugInTest {
         assertFalse(plugIn.isInputValid("S3A_SL_1_RBT____20180809T035343_20180809T035643_20180810T124116_0179_034_218_2520_MAR_O_NT_002.SEN3" + sep + "manifest.safe"));
         assertFalse(plugIn.isInputValid("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));
     }
+
+    @Test
+    @STTM("SNAP-3783")
+    public void testSourcePattern()  {
+        assertEquals("EN(1|V).*_ME(R|_)1?_(F|R)R(G|P|S|_)_(1P)?_.*", plugIn.getSourcePattern());
+    }
 }
