@@ -98,6 +98,7 @@ public class MerisLevel1ProductPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-3783")
     public void testSourcePattern()  {
         assertEquals("EN(1|V).*_ME(R|_)1?_(F|R)R(G|P|S|_)_(1P)?_.*", plugIn.getSourcePattern());
     }
