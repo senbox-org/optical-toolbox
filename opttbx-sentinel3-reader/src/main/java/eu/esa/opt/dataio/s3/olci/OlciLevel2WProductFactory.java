@@ -1,6 +1,8 @@
 package eu.esa.opt.dataio.s3.olci;
 
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
+import eu.esa.snap.core.datamodel.group.BandGroupImpl;
+import eu.esa.snap.core.datamodel.group.BandGroupingPath;
 import org.esa.snap.core.datamodel.Product;
 
 /**
@@ -19,8 +21,29 @@ public class OlciLevel2WProductFactory extends OlciProductFactory {
 
     @Override
     protected void setAutoGrouping(Product[] sourceProducts, Product targetProduct) {
-        targetProduct.setAutoGrouping("Oa*_reflectance:Oa*_reflectance_err:A865:ADG:CHL:IWV:KD490:PAR:T865:TSM:" +
-                "atmospheric_temperature_profile:lambda0:FWHM:solar_flux");
+        final String[][] inputPaths = {{"Oa*_reflectance"},
+                {"Oa*_reflectance_err"},
+                {"Oa*_reflectance_unc"},
+                {"A865"},
+                {"CHL"},
+                {"IWV"},
+                {"PAR"},
+                {"T865"},
+                {"TSM"},
+                {"atmospheric_temperature_profile"},
+                {"lambda0"},
+                {"FWHM"},
+                {"solar_flux"},
+                {"IOP#anw_443,acdm_443,aphy_443,acdom_443,bbp_443,kd_490,bbp_slope,OWC,ADG443_NN,ADG443_NN_unc,KD490_M07,KD490_M07_unc"}};
+
+        final BandGroupImpl bandGroup = new BandGroupImpl(inputPaths);
+        targetProduct.setAutoGrouping(bandGroup);
+
+        /*
+        targetProduct.setAutoGrouping("Oa*_reflectance:Oa*_reflectance_err::Oa*_reflectance_unc:A865:ADG:CHL:IWV:KD490:PAR:T865:TSM:" +
+                "atmospheric_temperature_profile:lambda0:FWHM:solar_flux:IOP");
+                *
+         */
     }
 
     @Override
