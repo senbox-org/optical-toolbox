@@ -38,12 +38,6 @@ public class OlciLevel2WProductFactory extends OlciProductFactory {
 
         final BandGroupImpl bandGroup = new BandGroupImpl(inputPaths);
         targetProduct.setAutoGrouping(bandGroup);
-
-        /*
-        targetProduct.setAutoGrouping("Oa*_reflectance:Oa*_reflectance_err::Oa*_reflectance_unc:A865:ADG:CHL:IWV:KD490:PAR:T865:TSM:" +
-                "atmospheric_temperature_profile:lambda0:FWHM:solar_flux:IOP");
-                *
-         */
     }
 
     @Override
