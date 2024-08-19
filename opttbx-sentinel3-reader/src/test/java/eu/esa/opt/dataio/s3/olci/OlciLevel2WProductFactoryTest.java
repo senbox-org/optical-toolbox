@@ -2,6 +2,8 @@ package eu.esa.opt.dataio.s3.olci;
 
 import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.binding.PropertyContainer;
+import eu.esa.snap.core.datamodel.group.BandGroup;
+import eu.esa.snap.core.datamodel.group.BandGroupImpl;
 import org.esa.snap.core.datamodel.Mask;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductNodeGroup;
@@ -80,5 +82,21 @@ public class OlciLevel2WProductFactoryTest {
         imageConfig = mask.getImageConfig();
         assertEquals("WQSF_lsb.MEGLINT or WQSF_lsb.WV_FAIL", imageConfig.getValue(PROPERTY_NAME_EXPRESSION));
         assertEquals("Excluding pixels that are deemed unreliable for Integrated Water Vapour Column. Flag recommended by QWG.", mask.getDescription());
+    }
+
+    @Test
+    @STTM("SNAP-3728")
+    public void testSetAutogrouping() {
+        final OlciLevel2WProductFactory factory = new OlciLevel2WProductFactory(null);
+        final Product product = new Product("test", "me", 2, 2);
+
+        factory.setAutoGrouping(null, product);
+
+        final BandGroupImpl autoGrouping = (BandGroupImpl) product.getAutoGrouping();
+        assertEquals(14, autoGrouping.size());
+
+        final String[] iopGrouping = autoGrouping.get(13);
+        assertEquals(1, iopGrouping.length);
+        assertEquals("IOP", iopGrouping[0]);
     }
 }

@@ -158,4 +158,49 @@ public class OlciProductFactoryTest {
         assertFalse(OlciProductFactory.isLogScaledUnit("mW.m-2.sr-1.nm-1"));
         assertFalse(OlciProductFactory.isLogScaledUnit("K"));
     }
+
+    @Test
+    @STTM("SNAP-3728")
+    public void testIsLogScaledUnit_handleNullOrEmpty() {
+        assertFalse(OlciProductFactory.isLogScaledUnit(""));
+        assertFalse(OlciProductFactory.isLogScaledUnit(null));
+    }
+
+    @Test
+    @STTM("SNAP-3728")
+    public void testIsLogScaledGeophysicalData() {
+        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("anw_443"));
+        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("aphy_443"));
+        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("bbp_443"));
+        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("bbp_slope"));
+        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("ADG443_NN"));
+        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("CHL_OC4ME_unc"));
+        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("KD490_M07"));
+        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("TSM_NN_unc"));
+
+        assertFalse(OlciProductFactory.isLogScaledGeophysicalData("Oa03_radiance_unc"));
+        assertFalse(OlciProductFactory.isLogScaledGeophysicalData("Oa11_radiance"));
+    }
+
+    @Test
+    @STTM("SNAP-3728")
+    public void testStripLogFromUnit() {
+        assertEquals("kgm-3", OlciProductFactory.stripLogFromUnit("lg(kgm-3)"));
+        assertEquals("m-1", OlciProductFactory.stripLogFromUnit("lg(re m-1)"));
+        assertEquals("g.m-3", OlciProductFactory.stripLogFromUnit("lg(re g.m-3)\n"));
+        assertEquals("", OlciProductFactory.stripLogFromUnit("lg"));
+        assertEquals("", OlciProductFactory.stripLogFromUnit(""));
+        assertEquals("", OlciProductFactory.stripLogFromUnit(null));
+
+        assertEquals("degrees_north", OlciProductFactory.stripLogFromUnit("degrees_north"));
+    }
+
+    @Test
+    @STTM("SNAP-3728")
+    public void testStripLogFromDescription() {
+        assertEquals("(Neural Net) Total suspended matter concentration", OlciProductFactory.stripLogFromDescription("log10 scaled (Neural Net) Total suspended matter concentration"));
+        assertEquals("Reflectance for OLCI acquisition band Oa10", OlciProductFactory.stripLogFromDescription("Reflectance for OLCI acquisition band Oa10\n"));
+        assertEquals("", OlciProductFactory.stripLogFromDescription(""));
+        assertEquals("", OlciProductFactory.stripLogFromDescription(null));
+    }
 }

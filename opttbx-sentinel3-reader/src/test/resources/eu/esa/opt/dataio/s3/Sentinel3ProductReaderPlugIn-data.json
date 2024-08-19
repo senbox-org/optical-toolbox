@@ -132,6 +132,10 @@
       "id": "S3A_OL_2_WFR____20180707T081143",
       "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_WFR____20180707T081143_20180707T081443_20180708T142606_0179_033_135_2520_MAR_O_NT_002.SEN3/xfdumanifest.xml",
       "description": "S3A_OL_2_WFR v2"
+    },{
+      "id": "S3B_OL_2_WFR____20240806T055947",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3B_OL_2_WFR____20240806T055947_20240806T060247_20240806T074819_0179_096_105_3420_MAR_O_NR_003.SEN3/xfdumanifest.xml",
+      "description": "OL__L2M.003.05.00"
     },
     {
       "id": "S3B_OL_1_EFR____20190420T120914",
