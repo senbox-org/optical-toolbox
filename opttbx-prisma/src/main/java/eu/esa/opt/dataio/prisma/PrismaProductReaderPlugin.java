@@ -76,7 +76,12 @@ public class PrismaProductReaderPlugin implements ProductReaderPlugIn {
     }
 
     private static void registerRGBProfiles() {
-        final String[] rgbExpressionsL1L2b = {
+        final String[] rgbExpressionsL1 = {
+                "HCO_Vnir_Ltoa_33",  // red channel band-maths expression
+                "HCO_Vnir_Ltoa_46",  // green channel band-maths expression
+                "HCO_Vnir_Ltoa_62"   // blue channel band-maths expression
+        };
+        final String[] rgbExpressionsL2b = {
                 "HCO_Vnir_Lboa_33",  // red channel band-maths expression
                 "HCO_Vnir_Lboa_46",  // green channel band-maths expression
                 "HCO_Vnir_Lboa_62"   // blue channel band-maths expression
