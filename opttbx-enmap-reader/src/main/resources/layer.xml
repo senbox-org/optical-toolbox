@@ -5,7 +5,7 @@
             <file name="org-esa-snap-ImportEnmapProduct.instance">
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
                 <attr name="delegate" methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
-                <attr name="displayName" stringvalue="EnMAP data"/>
+                <attr name="displayName" stringvalue="EnMAP (L1B/L1C/L2A)"/>
                 <attr name="formatName" stringvalue="EnMAP L1B/L1C/L2A"/>
                 <attr name="useAllFileFilter" boolvalue="false"/>
                 <attr name="helpId" stringvalue="ImportEnMAP"/>
