@@ -93,14 +93,14 @@ public class PrismaProductReaderPlugin implements ProductReaderPlugIn {
         };
         final RGBImageProfileManager manager = RGBImageProfileManager.getInstance();
         manager.addProfile(new RGBImageProfile("PRISMA_L1_RGB_674_560_439", // display name
-                                               rgbExpressionsL1L2b,
+                                               rgbExpressionsL1,
                                                new String[]{
                                                        "*L1*",
                                                        "PRS_L1_*",
                                                        ""
                                                }));
         manager.addProfile(new RGBImageProfile("PRISMA_L2B_RGB_674_560_439", // display name
-                                               rgbExpressionsL1L2b,
+                                               rgbExpressionsL2b,
                                                new String[]{
                                                        "*L2B*",
                                                        "PRS_L2B_*",
