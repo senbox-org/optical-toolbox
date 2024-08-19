@@ -4,6 +4,11 @@ Optical Toolbox Release Notes
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
 # New in SNAP 11.0.0
+    [SNAP-3806] PRISMA Name in display of RGB tool 
+    [SNAP-3803] PRISMA RGB & HSV tools not working well (2)
+    [SNAP-3802] PRISMA RGB & HSV tools not working well 
+    [SNAP-3799] Rename PRISMA reader
+    [SNAP-3790] RGB profiles - issues with default parameters in visualisation  
     [SNAP-3783] MERIS name pattern incorrect for SAFE format
     [SNAP-3755] OLCI L2 LRR/LFR error on Linux
     [SNAP-3684] Support PACE OCI L1C data
