@@ -24,10 +24,11 @@ public class MerisLevel1ProductReader extends Sentinel3ProductReader {
 
         File baseFile = virtualDir.getBaseFile();
         String baseFileName = baseFile.getName();
-        if (baseFileName.matches("EN.*_(F|R)R(G|P|S).*")) {
+        final MerisLevel1ProductPlugIn readerPlugIn = (MerisLevel1ProductPlugIn) getReaderPlugIn();
+        final String sourcePattern = readerPlugIn.getSourcePattern();
+        if (baseFileName.matches(sourcePattern)) {
             setFactory(new MerisLevel1ProductFactory(this));
         }
         return createProduct();
     }
-
 }
