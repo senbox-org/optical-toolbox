@@ -92,28 +92,28 @@ public class PrismaProductReaderPlugin implements ProductReaderPlugIn {
                 "HCO_Vnir_Rrs_62",  // blue channel band-maths expression
         };
         final RGBImageProfileManager manager = RGBImageProfileManager.getInstance();
-        manager.addProfile(new RGBImageProfile("PRISMA_L1_RGB_674_560_439", // display name
+        manager.addProfile(new RGBImageProfile("PRISMA_L1", // display name
                                                rgbExpressionsL1,
                                                new String[]{
                                                        "*L1*",
                                                        "PRS_L1_*",
                                                        ""
                                                }));
-        manager.addProfile(new RGBImageProfile("PRISMA_L2B_RGB_674_560_439", // display name
+        manager.addProfile(new RGBImageProfile("PRISMA_L2B", // display name
                                                rgbExpressionsL2b,
                                                new String[]{
                                                        "*L2B*",
                                                        "PRS_L2B_*",
                                                        ""
                                                }));
-        manager.addProfile(new RGBImageProfile("PRISMA_L2C_RGB_674_560_439", // display name
+        manager.addProfile(new RGBImageProfile("PRISMA_L2C", // display name
                                                rgbExpressionsL2cL2d,
                                                new String[]{
                                                        "*L2C*",
                                                        "PRS_L2C_*",
                                                        ""
                                                }));
-        manager.addProfile(new RGBImageProfile("PRISMA_L2D_RGB_674_560_439", // display name
+        manager.addProfile(new RGBImageProfile("PRISMA_L2D", // display name
                                                rgbExpressionsL2cL2d,
                                                new String[]{
                                                        "*L2D*",
