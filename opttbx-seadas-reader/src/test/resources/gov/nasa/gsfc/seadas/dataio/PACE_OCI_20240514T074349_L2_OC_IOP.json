@@ -199,7 +199,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "351.0",
+        "spectralWavelength": "350.9119873046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -222,7 +222,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "361.0",
+        "spectralWavelength": "360.69500732421875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -245,7 +245,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "385.0",
+        "spectralWavelength": "385.3590087890625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -268,7 +268,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "413.0",
+        "spectralWavelength": "412.5570068359375413",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -291,7 +291,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "425.0",
+        "spectralWavelength": "424.94000244140625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -314,7 +314,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "442.0",
+        "spectralWavelength": "442.3269958496094",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -337,7 +337,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "460.0",
+        "spectralWavelength": "459.7569885253906",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -360,7 +360,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "475.0",
+        "spectralWavelength": "474.70001220703125",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -383,7 +383,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "490.0",
+        "spectralWavelength": "489.67401123046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -406,7 +406,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "510.0",
+        "spectralWavelength": "509.7200012207031",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -429,7 +429,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "532.0",
+        "spectralWavelength": "532.3140258789062",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -452,7 +452,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "555.0",
+        "spectralWavelength": "555.0440063476562",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -475,7 +475,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "583.0",
+        "spectralWavelength": "582.9959716796875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -498,7 +498,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "618.0",
+        "spectralWavelength": "617.60498046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -521,7 +521,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "640.0",
+        "spectralWavelength": "639.791015625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -544,7 +544,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "655.0",
+        "spectralWavelength": "654.6220092773438",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -567,7 +567,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "665.0",
+        "spectralWavelength": "664.5640258789062",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -590,7 +590,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "678.0",
+        "spectralWavelength": "678.2080078125",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -613,7 +613,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "711.0",
+        "spectralWavelength": "710.5809936523438",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -636,7 +636,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "351.0",
+        "spectralWavelength": "350.9119873046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -659,7 +659,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "361.0",
+        "spectralWavelength": "360.69500732421875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -682,7 +682,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "385.0",
+        "spectralWavelength": "385.3590087890625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -705,7 +705,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "413.0",
+        "spectralWavelength": "412.5570068359375",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -728,7 +728,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "425.0",
+        "spectralWavelength": "424.94000244140625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -751,7 +751,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "442.0",
+        "spectralWavelength": "442.3269958496094",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -774,7 +774,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "460.0",
+        "spectralWavelength": "459.7569885253906",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -797,7 +797,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "475.0",
+        "spectralWavelength": "474.70001220703125",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -820,7 +820,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "490.0",
+        "spectralWavelength": "489.67401123046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -843,7 +843,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "510.0",
+        "spectralWavelength": "509.7200012207031",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -866,7 +866,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "532.0",
+        "spectralWavelength": "532.3140258789062",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -889,7 +889,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "555.0",
+        "spectralWavelength": "555.0440063476562",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -912,7 +912,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "583.0",
+        "spectralWavelength": "582.9959716796875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -935,7 +935,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "618.0",
+        "spectralWavelength": "617.60498046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -958,7 +958,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "640.0",
+        "spectralWavelength": "639.791015625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -981,7 +981,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "655.0",
+        "spectralWavelength": "654.6220092773438",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1004,7 +1004,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "665.0",
+        "spectralWavelength": "664.5640258789062",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1027,7 +1027,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "678.0",
+        "spectralWavelength": "678.2080078125",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1050,7 +1050,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "711.0",
+        "spectralWavelength": "710.5809936523438",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1073,7 +1073,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "351.0",
+        "spectralWavelength": "350.9119873046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1096,7 +1096,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "361.0",
+        "spectralWavelength": "360.69500732421875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1119,7 +1119,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "385.0",
+        "spectralWavelength": "385.3590087890625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1142,7 +1142,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "413.0",
+        "spectralWavelength": "412.5570068359375",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1165,7 +1165,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "425.0",
+        "spectralWavelength": "424.94000244140625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1188,7 +1188,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "442.0",
+        "spectralWavelength": "442.3269958496094",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1211,7 +1211,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "460.0",
+        "spectralWavelength": "459.7569885253906",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1234,7 +1234,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "475.0",
+        "spectralWavelength": "474.70001220703125",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1257,7 +1257,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "490.0",
+        "spectralWavelength": "489.67401123046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1280,7 +1280,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "510.0",
+        "spectralWavelength": "509.7200012207031",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1303,7 +1303,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "532.0",
+        "spectralWavelength": "532.3140258789062",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1326,7 +1326,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "555.0",
+        "spectralWavelength": "555.0440063476562",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1349,7 +1349,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "583.0",
+        "spectralWavelength": "582.9959716796875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1372,7 +1372,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "618.0",
+        "spectralWavelength": "617.60498046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1395,7 +1395,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "640.0",
+        "spectralWavelength": "639.791015625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1418,7 +1418,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "655.0",
+        "spectralWavelength": "654.6220092773438",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1441,7 +1441,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "665.0",
+        "spectralWavelength": "664.5640258789062",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1464,7 +1464,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "678.0",
+        "spectralWavelength": "678.2080078125",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1487,7 +1487,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "711.0",
+        "spectralWavelength": "710.5809936523438",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1510,7 +1510,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "351.0",
+        "spectralWavelength": "350.9119873046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1533,7 +1533,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "361.0",
+        "spectralWavelength": "360.69500732421875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1556,7 +1556,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "385.0",
+        "spectralWavelength": "385.3590087890625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1579,7 +1579,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "413.0",
+        "spectralWavelength": "412.5570068359375",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1602,7 +1602,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "425.0",
+        "spectralWavelength": "424.94000244140625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1625,7 +1625,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "442.0",
+        "spectralWavelength": "442.3269958496094",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1648,7 +1648,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "460.0",
+        "spectralWavelength": "459.7569885253906",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1671,7 +1671,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "475.0",
+        "spectralWavelength": "474.70001220703125",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1694,7 +1694,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "490.0",
+        "spectralWavelength": "489.67401123046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1717,7 +1717,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "510.0",
+        "spectralWavelength": "509.7200012207031",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1740,7 +1740,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "532.0",
+        "spectralWavelength": "532.3140258789062",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1763,7 +1763,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "555.0",
+        "spectralWavelength": "555.0440063476562",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1786,7 +1786,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "583.0",
+        "spectralWavelength": "582.9959716796875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1809,7 +1809,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "618.0",
+        "spectralWavelength": "617.60498046875",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1832,7 +1832,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "640.0",
+        "spectralWavelength": "639.791015625",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1855,7 +1855,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "655.0",
+        "spectralWavelength": "654.6220092773438",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1878,7 +1878,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "665.0",
+        "spectralWavelength": "664.5640258789062",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1901,7 +1901,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "678.0",
+        "spectralWavelength": "678.2080078125",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1924,7 +1924,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-6.553399834447191",
         "noDataValueUsed": "true",
-        "spectralWavelength": "711.0",
+        "spectralWavelength": "710.5809936523438",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1947,7 +1947,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "442.0",
+        "spectralWavelength": "442.3269958496094",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -1993,7 +1993,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "442.0",
+        "spectralWavelength": "442.3269958496094",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -2061,7 +2061,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "442.0",
+        "spectralWavelength": "442.3269958496094",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -2084,7 +2084,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.7766999172235955",
         "noDataValueUsed": "true",
-        "spectralWavelength": "442.0",
+        "spectralWavelength": "442.3269958496094",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -2107,7 +2107,7 @@
         "geophysicalUnit": "m^-1",
         "noDataValue": "-0.02383499526513333",
         "noDataValueUsed": "true",
-        "spectralWavelength": "442.0",
+        "spectralWavelength": "442.3269958496094",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
