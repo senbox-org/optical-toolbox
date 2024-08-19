@@ -10,6 +10,7 @@ import org.esa.snap.core.datamodel.RGBImageProfileManager;
  */
 public class MerisLevel1ProductPlugIn extends Sentinel3ProductReaderPlugIn {
 
+    private static final String SOURCE_NAME_PATTERN = "EN(1|V).*_ME(R|_)1?_(F|R)R(G|P|S|_)_(1P)?_.*";
     private static final String format_name = "MER_L1_S3";
     static {
         registerRGBProfiles();
@@ -17,7 +18,7 @@ public class MerisLevel1ProductPlugIn extends Sentinel3ProductReaderPlugIn {
 
     public MerisLevel1ProductPlugIn() {
         super(format_name, "MERIS Level 1 in Sentinel-3 product format",
-              "EN(1|V).*_ME(R|_)1?_(F|R)R(G|P|S|_)_(1P)?_.*", "xfdumanifest", "L1c_Manifest", ".xml", ".zip");
+                SOURCE_NAME_PATTERN, "xfdumanifest", "L1c_Manifest", ".xml", ".zip");
     }
 
     @Override
@@ -57,6 +58,10 @@ public class MerisLevel1ProductPlugIn extends Sentinel3ProductReaderPlugIn {
 
     boolean isValidMerisDirectoryName(String name) {
         return isValidSourceName(name);
+    }
+
+    String getSourcePattern() {
+        return SOURCE_NAME_PATTERN;
     }
 
 }
