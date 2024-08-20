@@ -4,6 +4,7 @@ Optical Toolbox Release Notes
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
 # New in SNAP 11.0.0
+    [SNAP-3807] Rename SeaDAS reader
     [SNAP-3806] PRISMA Name in display of RGB tool 
     [SNAP-3803] PRISMA RGB & HSV tools not working well (2)
     [SNAP-3802] PRISMA RGB & HSV tools not working well 
