@@ -94,7 +94,7 @@
         <folder name="File">
             <folder name="Import">
                 <folder name="Optical Sensors">
-                    <folder name="Seadas">
+                    <folder name="SeaDAS">
                         <file name="gov-nasa-gsfc-seadas-dataio-ImportSeadasL1Product.shadow">
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportSeadasL1Product.instance"/>
