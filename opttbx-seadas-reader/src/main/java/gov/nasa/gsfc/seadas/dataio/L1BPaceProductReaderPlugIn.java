@@ -21,7 +21,7 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
     private static final String DEFAULT_FILE_EXTENSION = ".nc";
 
     public static final String READER_DESCRIPTION = "PACE OCI L1B Products";
-    public static final String FORMAT_NAME = "PACE-L1B";
+    public static final String FORMAT_NAME = "PaceOCI_L1B";
 
     static {
         L1BPaceRgbProfiles.registerRGBProfiles();
