@@ -87,6 +87,24 @@
                 <attr name="helpId" stringvalue="importSeadasBrowseProduct"/>
                 <attr name="ShortDescription" stringvalue="Import a SeaDAS Browse (L1, L2) data product."/>
             </file>
+            <file name="gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1bProduct.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
+                <attr name="displayName" stringvalue="Pace OCI L1B"/>
+                <attr name="formatName" stringvalue="PaceOCI_L1B"/>
+                <attr name="useAllFileFilter" boolvalue="true"/>
+                <attr name="helpId" stringvalue="importSeadasL1Product"/>
+                <attr name="ShortDescription" stringvalue="Import a Pace OCI L1B product"/>
+            </file>
+            <file name="gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1cProduct.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
+                <attr name="displayName" stringvalue="Pace OCI L1C"/>
+                <attr name="formatName" stringvalue="PaceOCI_L1C"/>
+                <attr name="useAllFileFilter" boolvalue="true"/>
+                <attr name="helpId" stringvalue="importSeadasL1Product"/>
+                <attr name="ShortDescription" stringvalue="Import a Pace OCI L1C product"/>
+            </file>
         </folder>
     </folder>
 
@@ -132,6 +150,14 @@
                     <file name="gov-nasa-gsfc-seadas-dataio-ImportViirsProduct.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportViirsProduct.instance"/>
+                    </file>
+                    <file name="gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1bProduct.shadow">
+                        <attr name="originalFile"
+                              stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1bProduct.instance"/>
+                    </file>
+                    <file name="gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1cProduct.shadow">
+                        <attr name="originalFile"
+                              stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1cProduct.instance"/>
                     </file>
                 </folder>
             </folder>
