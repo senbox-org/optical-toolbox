@@ -7,6 +7,16 @@ The release notes are provided on the STEP website at https://step.esa.int/main/
     [SNAP-3767] CZCS reading crashes
 
 # New in SNAP 11.0.0
+    [SNAP-3811] Update Band Grouping Help
+    [SNAP-3810] PACE Issues with default bands in RGB & HSV visualisations
+    [SNAP-3808] SeaDAS reader does not see *.nc files
+    [SNAP-3807] Rename SeaDAS reader
+    [SNAP-3806] PRISMA Name in display of RGB tool 
+    [SNAP-3803] PRISMA RGB & HSV tools not working well (2)
+    [SNAP-3802] PRISMA RGB & HSV tools not working well 
+    [SNAP-3799] Rename PRISMA reader
+    [SNAP-3790] RGB profiles - issues with default parameters in visualisation  
+    [SNAP-3783] MERIS name pattern incorrect for SAFE format
     [SNAP-3755] OLCI L2 LRR/LFR error on Linux
     [SNAP-3684] Support PACE OCI L1C data
     [SNAP-3683] Support PACE OCI L1B data
