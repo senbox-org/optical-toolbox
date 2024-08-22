@@ -4,6 +4,9 @@ Optical Toolbox Release Notes
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
 # New in SNAP 11.0.0
+    [SNAP-3811] Update Band Grouping Help
+    [SNAP-3810] PACE Issues with default bands in RGB & HSV visualisations
+    [SNAP-3808] SeaDAS reader does not see *.nc files
     [SNAP-3807] Rename SeaDAS reader
     [SNAP-3806] PRISMA Name in display of RGB tool 
     [SNAP-3803] PRISMA RGB & HSV tools not working well (2)
