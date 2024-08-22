@@ -23,6 +23,10 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
     public static final String READER_DESCRIPTION = "PACE OCI L1B Products";
     public static final String FORMAT_NAME = "PaceOCI_L1B";
 
+    static {
+        L1BPaceRgbProfiles.registerRGBProfiles();
+    }
+
     /**
      * Checks whether the given object is an acceptable input for this product reader and if so, the method checks if it
      * is capable of decoding the input's content.
