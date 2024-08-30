@@ -1,15 +1,18 @@
 package eu.esa.opt.c2rcc.meris;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.test.LongTestRunner;
 import eu.esa.opt.c2rcc.util.TestSample;
 import org.esa.snap.core.datamodel.GeoPos;
 import org.esa.snap.core.dataop.dem.ElevationModel;
 import org.esa.snap.core.gpf.pointop.Sample;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
+@RunWith(LongTestRunner.class)
 public class C2rccMerisDEMTest {
 
     final C2rccMerisOperator operator = initOperator();

@@ -1,12 +1,15 @@
 package eu.esa.opt.c2rcc.landsat;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.test.LongTestRunner;
 import org.esa.snap.core.datamodel.GeoPos;
 import org.esa.snap.core.dataop.dem.ElevationModel;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
+@RunWith(LongTestRunner.class)
 public class C2rccLandsat7DEMTest {
 
     final C2rccLandsat7Operator operator = initOperator();
