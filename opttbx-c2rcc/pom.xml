@@ -85,6 +85,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-dem</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-getasse30-dem</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.13</version>

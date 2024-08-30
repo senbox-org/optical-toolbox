@@ -144,6 +144,10 @@ public class C2rccLandsat7Operator extends PixelOperator implements C2rccConfigu
     private static final int DEBUG_SUN_AZI_IX = OOS_RTOSA_IX + 22;
     private static final int DEBUG_SUN_ZEN_IX = OOS_RTOSA_IX + 23;
 
+    static final String DEFAULT_DEM_NAME = "Copernicus 90m Global DEM";
+    static final String DEM_NAME_COPERNICUS30 = "Copernicus 30m Global DEM";
+    static final String DEM_NAME_GETASSE30 = "GETASSE30";
+
     private static final String PRODUCT_TYPE = "C2RCC_LANDSAT-7";
 
     private static final String STANDARD_NETS = "C2RCC-Nets";
@@ -217,7 +221,7 @@ public class C2rccLandsat7Operator extends PixelOperator implements C2rccConfigu
     private double press;
 
     @Parameter(defaultValue = "0", unit = "m", interval = "(0, 8500)", label = "Elevation",
-            description = "Used as fallback if elevation could not be taken from GETASSE30 DEM.")
+            description = "Used as fallback if elevation could not be taken from DEM.")
     private double elevation;
 
     @Parameter(alias = "TSMfac", defaultValue = "1.72", description = "TSM factor (TSM = TSMfac * iop_btot^TSMexp).", label = "TSM factor")
@@ -259,6 +263,12 @@ public class C2rccLandsat7Operator extends PixelOperator implements C2rccConfigu
     @Parameter(defaultValue = "false", description = "Alternative way of calculating water reflectance. Still experimental.",
             label = "Derive water reflectance from path radiance and transmittance")
     private boolean deriveRwFromPathAndTransmittance;
+
+    @Parameter(valueSet = {DEFAULT_DEM_NAME, DEM_NAME_COPERNICUS30, DEM_NAME_GETASSE30},
+            description = "The digital elevation model.",
+            defaultValue = DEFAULT_DEM_NAME,
+            label = "Digital Elevation Model")
+    private String demName;
 
     @Parameter(defaultValue = "true", label = "Output TOA reflectances")
     private boolean outputRtoa;
@@ -436,17 +446,8 @@ public class C2rccLandsat7Operator extends PixelOperator implements C2rccConfigu
         double lon = geoPos.getLon();
         double atmPress = C2rccCommons.fetchSurfacePressure(atmosphericAuxdata, mjd, x, y, lat, lon);
         double ozone = C2rccCommons.fetchOzone(atmosphericAuxdata, mjd, x, y, lat, lon);
-        final double altitude;
-        if (elevationModel != null) {
-            try {
-                altitude = elevationModel.getElevation(geoPos);
-            } catch (Exception e) {
-                throw new OperatorException("Unable to compute altitude.", e);
-            }
-        } else {
-            // in case elevationModel could not be initialised
-            altitude = elevation;
-        }
+
+        final double altitude = getAltitude(geoPos);
 
         GeometryAngles geometryAngles = geometryAnglesBuilder.getGeometryAngles(x, lat);
         Result result = algorithm.processPixel(x, y, lat, lon,
@@ -995,11 +996,6 @@ public class C2rccLandsat7Operator extends PixelOperator implements C2rccConfigu
             throw new OperatorException("The source product must be geo-coded.");
         }
 
-        ElevationModelDescriptor getasse30 = ElevationModelRegistry.getInstance().getDescriptor("GETASSE30");
-        if (getasse30 != null) {
-            // if elevation model cannot be initialised the fallback height will be used
-            elevationModel = getasse30.createDem(Resampling.BILINEAR_INTERPOLATION);
-        }
         timeCoding = C2rccCommons.getTimeCoding(sourceProduct);
         if (sourceProduct.isMultiSize()) {
             HashMap<String, Object> parameters = new HashMap<>();
@@ -1023,6 +1019,11 @@ public class C2rccLandsat7Operator extends PixelOperator implements C2rccConfigu
             reflectance_offset = metadata.getReflectanceScalingOffsets(L7_BAND_COUNT);
             reflectance_scale = metadata.getReflectanceScalingValues(L7_BAND_COUNT);
             pm.worked(1);
+
+            pm.setSubTaskName("Creating DEM");
+            initialiseElevationModel();
+            pm.worked(1);
+
             pm.setSubTaskName("Defining algorithm");
             if (StringUtils.isNotNullAndNotEmpty(alternativeNNPath)) {
                 String[] nnFilePaths = NNUtils.getNNFilePaths(Paths.get(alternativeNNPath), NNUtils.ALTERNATIVE_NET_DIR_NAMES);
@@ -1113,5 +1114,32 @@ public class C2rccLandsat7Operator extends PixelOperator implements C2rccConfigu
         public Spi() {
             super(C2rccLandsat7Operator.class);
         }
+    }
+
+    public ElevationModel getElevationModel() {
+        return this.elevationModel;
+    }
+
+    public void initialiseElevationModel() {
+        ElevationModelDescriptor elevModelDesc = ElevationModelRegistry.getInstance().getDescriptor(this.demName);
+        if (elevModelDesc != null) {
+            // if elevation model cannot be initialised the fallback height will be used
+            this.elevationModel = elevModelDesc.createDem(Resampling.BILINEAR_INTERPOLATION);
+        }
+    }
+
+    public double getAltitude(GeoPos geoPos) {
+        double altitude;
+        if (this.elevationModel != null) {
+            try {
+                altitude = this.elevationModel.getElevation(geoPos);
+            } catch (Exception e) {
+                throw new OperatorException("Unable to compute altitude.", e);
+            }
+        } else {
+            // in case elevationModel could not be initialised
+            altitude = this.elevation;
+        }
+        return altitude;
     }
 }

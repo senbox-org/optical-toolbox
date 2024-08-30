@@ -46,12 +46,12 @@ public class MsiOperatorTest {
         operator.setSourceProduct(MsiTestProduct.createInput());
         final Product target = operator.getTargetProduct();
 
-        assertEquals(14.441857f, getSampleFloat(target, EXPECTED_CONC_CHL, 0, 0), 1.0e-6);
-        assertEquals(5.062996f, getSampleFloat(target, EXPECTED_CONC_TSM, 0, 0), 1.0e-6);
-        assertEquals(0.6976819f, getSampleFloat(target, EXPECTED_IOP_APIG, 0, 0), 1.0e-6);
-        assertEquals(4.0867243f, getSampleFloat(target, EXPECTED_IOP_BWIT, 0, 0), 1.0e-6);
+        assertEquals(12.029993f, getSampleFloat(target, EXPECTED_CONC_CHL, 0, 0), 1.0e-6);
+        assertEquals(5.572476f, getSampleFloat(target, EXPECTED_CONC_TSM, 0, 0), 1.0e-6);
+        assertEquals(0.585264f, getSampleFloat(target, EXPECTED_IOP_APIG, 0, 0), 1.0e-6);
+        assertEquals(4.568540f, getSampleFloat(target, EXPECTED_IOP_BWIT, 0, 0), 1.0e-6);
 
-        float[] EXPECTED_RHOW_VALUES = new float[]{0.003311f, 0.004983f, 0.010308f, 0.007630f, 0.006501f, 0.002323f, 0.002366f, 0.000986f};
+        float[] EXPECTED_RHOW_VALUES = new float[]{0.003817f, 0.005736f, 0.011709f, 0.008642f, 0.007270f, 0.002554f, 0.002591f, 0.001073f};
         for (int i = 0; i < EXPECTED_RHOW_BANDS.length; i++) {
             assertEquals(EXPECTED_RHOW_VALUES[i], getSampleFloat(target, EXPECTED_RHOW_BANDS[i], 0, 0), 1.0e-6);
         }
@@ -69,12 +69,12 @@ public class MsiOperatorTest {
         final Product target = operator.getTargetProduct();
 
         // values should be the same as in testWithDefaults
-        assertEquals(14.441857f, getSampleFloat(target, EXPECTED_CONC_CHL, 0, 0), 1.0e-6);
-        assertEquals(5.062996f, getSampleFloat(target, EXPECTED_CONC_TSM, 0, 0), 1.0e-6);
-        assertEquals(0.6976819f, getSampleFloat(target, EXPECTED_IOP_APIG, 0, 0), 1.0e-6);
-        assertEquals(4.0867243f, getSampleFloat(target, EXPECTED_IOP_BWIT, 0, 0), 1.0e-6);
+        assertEquals(12.029993f, getSampleFloat(target, EXPECTED_CONC_CHL, 0, 0), 1.0e-6);
+        assertEquals(5.572476f, getSampleFloat(target, EXPECTED_CONC_TSM, 0, 0), 1.0e-6);
+        assertEquals(0.585264f, getSampleFloat(target, EXPECTED_IOP_APIG, 0, 0), 1.0e-6);
+        assertEquals(4.568540f, getSampleFloat(target, EXPECTED_IOP_BWIT, 0, 0), 1.0e-6);
 
-        float[] EXPECTED_RHOW_VALUES = new float[]{0.003311f, 0.004983f, 0.010308f, 0.007630f, 0.006501f, 0.002323f, 0.002366f, 0.000986f};
+        float[] EXPECTED_RHOW_VALUES = new float[]{0.003817f, 0.005736f, 0.011709f, 0.008642f, 0.007270f, 0.002554f, 0.002591f, 0.001073f};
         for (int i = 0; i < EXPECTED_RHOW_BANDS.length; i++) {
             assertEquals(EXPECTED_RHOW_VALUES[i], getSampleFloat(target, EXPECTED_RHOW_BANDS[i], 0, 0), 1.0e-6);
         }
@@ -90,12 +90,12 @@ public class MsiOperatorTest {
         final Product target = operator.getTargetProduct();
 
         // values should be the same as in testWithDefaults
-        assertEquals(14.657781f, getSampleFloat(target, EXPECTED_CONC_CHL, 0, 0), 1.0e-6);
-        assertEquals(4.911448f, getSampleFloat(target, EXPECTED_CONC_TSM, 0, 0), 1.0e-6);
-        assertEquals(0.7077091f, getSampleFloat(target, EXPECTED_IOP_APIG, 0, 0), 1.0e-6);
-        assertEquals(4.0339804f, getSampleFloat(target, EXPECTED_IOP_BWIT, 0, 0), 1.0e-6);
+        assertEquals(12.617269f, getSampleFloat(target, EXPECTED_CONC_CHL, 0, 0), 1.0e-6);
+        assertEquals(5.383925f, getSampleFloat(target, EXPECTED_CONC_TSM, 0, 0), 1.0e-6);
+        assertEquals(0.612711f, getSampleFloat(target, EXPECTED_IOP_APIG, 0, 0), 1.0e-6);
+        assertEquals(4.493466f, getSampleFloat(target, EXPECTED_IOP_BWIT, 0, 0), 1.0e-6);
 
-        float[] EXPECTED_RHOW_VALUES = new float[]{0.003032f, 0.004516f, 0.009282f, 0.007060f, 0.006061f, 0.002194f, 0.002237f, 0.000937f};
+        float[] EXPECTED_RHOW_VALUES = new float[]{0.003418f, 0.005088f, 0.010344f, 0.007879f, 0.006699f, 0.002393f, 0.002434f, 0.001014f};
 
         for (int i = 0; i < EXPECTED_RHOW_BANDS.length; i++) {
             assertEquals(EXPECTED_RHOW_VALUES[i], getSampleFloat(target, EXPECTED_RHOW_BANDS[i], 0, 0), 1.0e-6);
@@ -117,12 +117,12 @@ public class MsiOperatorTest {
         final Product target = operator.getTargetProduct();
 
         // values should be the same as in testWithInternalECMWFAuxdata, because the swap in data is considered and corrected
-        assertEquals(14.657781f, getSampleFloat(target, EXPECTED_CONC_CHL, 0, 0), 1.0e-6);
-        assertEquals(4.911448f, getSampleFloat(target, EXPECTED_CONC_TSM, 0, 0), 1.0e-6);
-        assertEquals(0.7077091f, getSampleFloat(target, EXPECTED_IOP_APIG, 0, 0), 1.0e-6);
-        assertEquals(4.0339804f, getSampleFloat(target, EXPECTED_IOP_BWIT, 0, 0), 1.0e-6);
+        assertEquals(12.617269f, getSampleFloat(target, EXPECTED_CONC_CHL, 0, 0), 1.0e-6);
+        assertEquals(5.383925f, getSampleFloat(target, EXPECTED_CONC_TSM, 0, 0), 1.0e-6);
+        assertEquals(0.612711f, getSampleFloat(target, EXPECTED_IOP_APIG, 0, 0), 1.0e-6);
+        assertEquals(4.4934663f, getSampleFloat(target, EXPECTED_IOP_BWIT, 0, 0), 1.0e-6);
 
-        float[] EXPECTED_RHOW_VALUES = new float[]{0.003032f, 0.004516f, 0.009282f, 0.007060f, 0.006061f, 0.002194f, 0.002237f, 0.000937f};
+        float[] EXPECTED_RHOW_VALUES = new float[]{0.003418f, 0.005088f, 0.010344f, 0.007879f, 0.006699f, 0.002393f, 0.002434f, 0.001014f};
 
         for (int i = 0; i < EXPECTED_RHOW_BANDS.length; i++) {
             assertEquals(EXPECTED_RHOW_VALUES[i], getSampleFloat(target, EXPECTED_RHOW_BANDS[i], 0, 0), 1.0e-6);
