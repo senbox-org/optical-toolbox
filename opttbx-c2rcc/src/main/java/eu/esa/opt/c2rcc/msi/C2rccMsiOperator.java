@@ -281,7 +281,7 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
             description = "The digital elevation model.",
             defaultValue = DEFAULT_DEM_NAME,
             label = "Digital Elevation Model")
-    private String demName;
+    private String demName = DEFAULT_DEM_NAME;
 
     @Parameter(defaultValue = "true", label = "Output TOA reflectances")
     private boolean outputRtoa;

@@ -36,8 +36,6 @@ public class C2rccOlciDEMTest {
     @Test
     @STTM("SNAP-1699")
     public void testUseAltitudeBand() {
-        operator.setParameter("demName", C2rccOlciOperator.DEFAULT_ALTITUDE);
-
         operator.initialiseUseSnapDEM();
         operator.initialiseElevationModel();
 

@@ -295,7 +295,7 @@ public class C2rccMeris4Operator extends PixelOperator implements C2rccConfigura
             description = "The digital elevation model. Default uses product's 'dem_alt' band",
             defaultValue = DEFAULT_ALTITUDE,
             label = "Digital Elevation Model")
-    private String demName;
+    private String demName = DEFAULT_ALTITUDE;
 
     @Parameter(defaultValue = "true", label = "Output TOA reflectances")
     private boolean outputRtoa;

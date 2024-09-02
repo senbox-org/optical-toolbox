@@ -38,8 +38,6 @@ public class C2rccMeris4DEMTest {
     @Test
     @STTM("SNAP-1699")
     public void testUseAltitudeBand() {
-        operator.setParameter("demName", C2rccMeris4Operator.DEFAULT_ALTITUDE);
-
         operator.initialiseUseSnapDEM();
         operator.initialiseElevationModel();
 

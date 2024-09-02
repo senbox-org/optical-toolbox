@@ -166,7 +166,7 @@ public class C2rccViirsOperator extends PixelOperator implements C2rccConfigurab
             description = "The digital elevation model.",
             defaultValue = DEFAULT_DEM_NAME,
             label = "Digital Elevation Model")
-    private String demName;
+    private String demName = DEFAULT_DEM_NAME;
 
 
     private C2rccViirsAlgorithm algorithm;

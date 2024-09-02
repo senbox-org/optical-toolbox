@@ -289,7 +289,7 @@ public class C2rccLandsat8Operator extends PixelOperator implements C2rccConfigu
             description = "The digital elevation model.",
             defaultValue = DEFAULT_DEM_NAME,
             label = "Digital Elevation Model")
-    private String demName;
+    private String demName = DEFAULT_DEM_NAME;
 
     @Parameter(defaultValue = "true", label = "Output TOA reflectances")
     private boolean outputRtoa;
