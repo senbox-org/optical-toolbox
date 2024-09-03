@@ -169,7 +169,7 @@ public class C2rccSeaWiFSOperator extends PixelOperator implements C2rccConfigur
             description = "The digital elevation model.",
             defaultValue = DEFAULT_DEM_NAME,
             label = "Digital Elevation Model")
-    private String demName;
+    private String demName = DEFAULT_DEM_NAME;
 
 
     private C2rccSeaWiFSAlgorithm algorithm;

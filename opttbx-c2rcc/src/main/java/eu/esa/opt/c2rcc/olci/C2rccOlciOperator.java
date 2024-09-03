@@ -287,7 +287,7 @@ public class C2rccOlciOperator extends PixelOperator implements C2rccConfigurabl
             description = "The digital elevation model. Default uses product's 'altitude' band",
             defaultValue = DEFAULT_ALTITUDE,
             label = "Digital Elevation Model")
-    private String demName;
+    private String demName = DEFAULT_ALTITUDE;
 
     @Parameter(defaultValue = "true", label = "Output TOA reflectances")
     private boolean outputRtoa;
