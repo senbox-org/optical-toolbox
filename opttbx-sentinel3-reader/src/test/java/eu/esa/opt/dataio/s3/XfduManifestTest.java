@@ -20,49 +20,54 @@ import static org.junit.Assert.*;
 public class XfduManifestTest {
 
 
-    private static Manifest manifestTest;
+    private static Manifest manifest;
 
     @BeforeClass
     public static void setUp() throws ParserConfigurationException, IOException, SAXException {
         try (InputStream stream = XfduManifestTest.class.getResourceAsStream("xfdumanifest.xml")) {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
-            manifestTest = XfduManifest.createManifest(doc);
+            manifest = XfduManifest.createManifest(doc);
         }
     }
 
     @Test
     public void testGetProductname() throws Exception {
-        assertEquals("S3A_SL_1_RBT____20160820T201637_20160820T201937_20160820T222707_0179_007_370_4500_MAR_O_NR_001.SEN3", manifestTest.getProductName());
+        assertEquals("S3A_SL_1_RBT____20160820T201637_20160820T201937_20160820T222707_0179_007_370_4500_MAR_O_NR_001.SEN3", manifest.getProductName());
     }
 
     @Test
     public void testGetProductType() throws Exception {
-        assertEquals("SL_1_RBT", manifestTest.getProductType());
+        assertEquals("SL_1_RBT", manifest.getProductType());
+    }
+
+    @Test
+    public void testGetProcessingVersion() {
+        assertEquals("FRP_NRT.002.01.01", manifest.getProcessingVersion());
     }
 
     @Test
     public void testGetDescription() throws Exception {
-        assertEquals("Sentinel 3 SYN Level 2", manifestTest.getDescription());
+        assertEquals("Sentinel 3 SYN Level 2", manifest.getDescription());
     }
 
     @Test
     public void testGetStartTime() throws Exception {
         ProductData.UTC expected = ProductData.UTC.parse("2013-06-21T10:09:20.646463", "yyyy-MM-dd'T'HH:mm:ss");
-        final ProductData.UTC startTime = manifestTest.getStartTime();
+        final ProductData.UTC startTime = manifest.getStartTime();
         assertTrue(expected.equalElems(startTime));
     }
 
     @Test
     public void testGetStopTime() throws Exception {
         ProductData.UTC expected = ProductData.UTC.parse("2013-06-21T10:14:13.646463", "yyyy-MM-dd'T'HH:mm:ss");
-        final ProductData.UTC stopTime = manifestTest.getStopTime();
+        final ProductData.UTC stopTime = manifest.getStopTime();
         assertTrue(expected.equalElems(stopTime));
     }
 
     @Test
     public void testGetFileNames() {
         String[] excluded = new String[0];
-        List<String> fileNames = manifestTest.getFileNames(excluded);
+        List<String> fileNames = manifest.getFileNames(excluded);
         assertEquals(67, fileNames.size());
         assertEquals("r0400.nc", fileNames.get(0));
         assertEquals("r0560.nc", fileNames.get(5));
@@ -74,7 +79,7 @@ public class XfduManifestTest {
     @Test
     public void testGetFileNames_Exclusions() {
         String[] excluded = new String[]{"aerosolModelIndex", "pixelStatusFlags"};
-        List<String> fileNames = manifestTest.getFileNames(excluded);
+        List<String> fileNames = manifest.getFileNames(excluded);
         assertEquals(65, fileNames.size());
         assertEquals(false, fileNames.contains("amin.nc"));
         assertEquals(false, fileNames.contains("flags.nc"));

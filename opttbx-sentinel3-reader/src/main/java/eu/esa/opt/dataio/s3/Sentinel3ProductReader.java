@@ -91,8 +91,10 @@ public class Sentinel3ProductReader extends AbstractProductReader {
             factory = new SlstrWstProductFactory(this);
         } else if (dirName.matches("S3.?_SL_2_WCT_.*(.SEN3)?")) { // SLSTR L2 WCT
             factory = new SlstrSstProductFactory(this);
-        } else if (dirName.matches("S3.?_SL_2_FRP_.*(.SEN3)?")) { // SLSTR L2 FRP
+        } else if (dirName.matches("S3.?_SL_2_FRP_.*_PS\\d_.*(.SEN3)?")) { // SLSTR L2 FRP
             factory = new SlstrFrpProductFactory(this);
+        } else if (dirName.matches("S3.?_SL_2_FRP_.*_MAR_.*(.SEN3)?")) { // SLSTR L2 FRP EUMETSAT
+            factory = new SlstrFrpEumProductFactory(this);
         } else if (dirName.matches("S3.?_SY_1_SYN_.*(.SEN3)?")) { // SYN L1
             factory = new SynL1CProductFactory(this);
         } else if (dirName.matches("S3.?_SY_2_SYN_.*(.SEN3)?")) { // SYN L2

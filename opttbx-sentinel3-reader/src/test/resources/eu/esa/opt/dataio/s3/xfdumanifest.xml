@@ -792,6 +792,7 @@ This document is a manifest file of a SAFE archive. -->
                         <productType>SL_1_RBT___</productType>
                         <timeliness>NR</timeliness>
                         <baselineCollection>001</baselineCollection>
+                        <processingBaseline>FRP_NRT.002.01.01</processingBaseline>
                         <creationTime>20160820T222707</creationTime>
                         <productSize>411941891</productSize>
                         <dumpInformation>

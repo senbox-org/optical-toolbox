@@ -25,6 +25,8 @@ public interface Manifest {
 
     String getProductType();
 
+    String getProcessingVersion();
+
     String getDescription();
 
     ProductData.UTC getStartTime();

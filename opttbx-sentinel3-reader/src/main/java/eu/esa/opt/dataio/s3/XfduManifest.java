@@ -49,6 +49,13 @@ public class XfduManifest implements Manifest {
     }
 
     @Override
+    public String getProcessingVersion() {
+        final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
+        String processingVersionString = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/processingBaseline", gpi);
+        return processingVersionString.trim();
+    }
+
+    @Override
     public String getDescription() {
         return xPathHelper.getString("/XFDU/informationPackageMap/contentUnit/@textInfo", doc);
     }

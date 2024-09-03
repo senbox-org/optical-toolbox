@@ -103,7 +103,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
     @Override
-    public final Product createProduct(VirtualDir virtualDir) throws IOException {
+    public Product createProduct(VirtualDir virtualDir) throws IOException {
         final InputStream manifestInputStream = getManifestInputStream(virtualDir);
         manifest = createManifest(manifestInputStream);
 
@@ -538,7 +538,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
-    private Manifest createManifest(InputStream inputStream) throws IOException {
+    public Manifest createManifest(InputStream inputStream) throws IOException {
         final Document xmlDocument;
         try (inputStream) {
             xmlDocument = createXmlDocument(inputStream);
@@ -562,8 +562,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
-    // @todo 3 tb/tb make static and mock test 2024-05-31
-    private InputStream getManifestInputStream(VirtualDir virtualDir) throws IOException {
+    // @todo 3 tb/tb mock test 2024-05-31/2024-09-03
+   public static InputStream getManifestInputStream(VirtualDir virtualDir) throws IOException {
         final String[] list = virtualDir.listAllFiles();
         for (final String entry : list) {
             if (entry.toLowerCase().endsWith(XfduManifest.MANIFEST_FILE_NAME)) {

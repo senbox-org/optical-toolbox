@@ -53,6 +53,11 @@ public class EarthExplorerManifestTest {
     }
 
     @Test
+    public void testGetProcessingVersion() {
+        assertEquals("1.0", manifest.getProcessingVersion());
+    }
+
+    @Test
     public void testGetDescription() {
         assertEquals("Sentinel 3 Level 1B Product", manifest.getDescription());
     }

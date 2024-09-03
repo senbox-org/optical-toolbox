@@ -1,0 +1,8 @@
+{
+  "product_files" : [
+    "geodetic_in.nc",
+    "flags_in.nc",
+    "xfdumanifest.xml",
+    "FRP_in.nc"
+  ]
+}
