@@ -1,0 +1,7 @@
+{
+  "name": "bayes_in",
+  "data_type": "UINT8",
+  "width": "columns",
+  "height": "rows",
+  "source_file": "flags_in.nc"
+}

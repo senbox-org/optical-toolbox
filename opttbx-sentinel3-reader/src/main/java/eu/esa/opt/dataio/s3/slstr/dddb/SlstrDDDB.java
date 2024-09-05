@@ -1,21 +1,29 @@
 package eu.esa.opt.dataio.s3.slstr.dddb;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class SlstrDDDB {
 
     private static SlstrDDDB instance = null;
+    private final ObjectMapper objectMapper;
 
     private ProductFiles productFiles = null;
+    private VariableInformation[] variableInformations = null;
 
     public static SlstrDDDB instance() {
         if (instance == null) {
             instance = new SlstrDDDB();
         }
         return instance;
+    }
+
+    private SlstrDDDB() {
+        objectMapper = new ObjectMapper();
     }
 
     // retrieves the component file names required for this product
@@ -27,14 +35,11 @@ public class SlstrDDDB {
             // get local resource URL for dddb resources
             try (InputStream resourceStream = SlstrDDDB.class.getResourceAsStream("product_files.json")) {
                 if (resourceStream == null) {
-                    return new String[0];
+                    throw new IOException("Unable to load resource: product_files.json");
                 }
 
                 final String content = readToString(resourceStream);
-
-                // @todo 3 refactor this tb 2024-09-03
-                final ObjectMapper mapper = new ObjectMapper();
-                productFiles = mapper.readValue(content, ProductFiles.class);
+                productFiles = objectMapper.readValue(content, ProductFiles.class);
             }
         }
         return productFiles.getProductFileNames();
@@ -44,5 +49,22 @@ public class SlstrDDDB {
     private static String readToString(InputStream resourceStream) throws IOException {
         final byte[] bytes = resourceStream.readAllBytes();
         return new String(bytes);
+    }
+
+    public VariableInformation[] getVariableInformations(String type, String processingVersion) throws IOException {
+        if (variableInformations == null) {
+            try (InputStream resourceStream = SlstrDDDB.class.getResourceAsStream("variables.json")) {
+                if (resourceStream == null) {
+                    throw new IOException("Unable to load resource: variables.json");
+                }
+
+                final String content = readToString(resourceStream);
+                final List<VariableInformation> varInfoList = objectMapper.readValue(content, new TypeReference<>() {
+                });
+
+                variableInformations = varInfoList.toArray(new VariableInformation[0]);
+            }
+        }
+        return variableInformations;
     }
 }

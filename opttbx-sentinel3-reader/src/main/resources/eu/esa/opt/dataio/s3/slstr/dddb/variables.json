@@ -1,0 +1,72 @@
+[
+  {
+    "name": "bayes_in",
+    "data_type": "UINT8",
+    "width": "columns",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  },
+  {
+    "name": "bayes_orphan_in",
+    "data_type": "UINT8",
+    "width": "orphan_pixels",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  },
+  {
+    "name": "cloud_in",
+    "data_type": "UINT16",
+    "width": "columns",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  },
+  {
+    "name": "cloud_orphan_in",
+    "data_type": "UINT16",
+    "width": "orphan_pixels",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  },
+  {
+    "name": "confidence_in",
+    "data_type": "UINT16",
+    "width": "columns",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  },
+  {
+    "name": "confidence_orphan_in",
+    "data_type": "UINT16",
+    "width": "orphan_pixels",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  },
+  {
+    "name": "pointing_in",
+    "data_type": "UINT8",
+    "width": "columns",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  },
+  {
+    "name": "pointing_orphan_in",
+    "data_type": "UINT8",
+    "width": "orphan_pixels",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  },
+  {
+    "name": "probability_cloud_dual_in",
+    "data_type": "FLOAT32",
+    "width": "columns",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  },
+  {
+    "name": "probability_cloud_single_in",
+    "data_type": "FLOAT32",
+    "width": "columns",
+    "height": "rows",
+    "source_file": "flags_in.nc"
+  }
+]
