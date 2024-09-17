@@ -30,7 +30,6 @@ public class EcostressUtilsTest {
     }
 
     @Test
-    @Ignore("SNAP-3729, Temporarily ignored, due to issues with hdf native library loading")
     public void ecostressNodesExistsTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
@@ -44,7 +43,6 @@ public class EcostressUtilsTest {
     }
 
     @Test
-    @Ignore("SNAP-3729, Temporarily ignored, due to issues with hdf native library loading")
     public void extractMetadataElementsTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
@@ -63,7 +61,6 @@ public class EcostressUtilsTest {
     }
 
     @Test
-    @Ignore("SNAP-3729, Temporarily ignored, due to issues with hdf native library loading")
     public void extractStartTimeTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
@@ -76,7 +73,6 @@ public class EcostressUtilsTest {
     }
 
     @Test
-    @Ignore("SNAP-3729, Temporarily ignored, due to issues with hdf native library loading")
     public void extractEndTimeTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
@@ -89,7 +85,6 @@ public class EcostressUtilsTest {
     }
 
     @Test
-    @Ignore("SNAP-3729, Temporarily ignored, due to issues with hdf native library loading")
     public void extractEcostressProductDimensionTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
@@ -104,7 +99,6 @@ public class EcostressUtilsTest {
     }
 
     @Test
-    @Ignore("SNAP-3729, Temporarily ignored, due to issues with hdf native library loading")
     public void extractBandsObjectsTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
@@ -125,7 +119,6 @@ public class EcostressUtilsTest {
     }
 
     @Test
-    @Ignore("SNAP-3729, Temporarily ignored, due to issues with hdf native library loading")
     public void readEcostressBandDataTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
