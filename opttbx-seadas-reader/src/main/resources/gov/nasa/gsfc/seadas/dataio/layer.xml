@@ -11,7 +11,8 @@
                 <attr name="formatName" stringvalue="SeaDAS-L1"/>
                 <attr name="useAllFileFilter" boolvalue="true"/>
                 <attr name="helpId" stringvalue="importSeadasL1Product"/>
-                <attr name="ShortDescription" stringvalue="Import a SeaDAS-supported Level 1 (OCTS, CZCS, SeaWiFS) data product."/>
+                <attr name="ShortDescription"
+                      stringvalue="Import a SeaDAS-supported Level 1 (OCTS, CZCS, SeaWiFS) data product."/>
             </file>
             <file name="gov-nasa-gsfc-seadas-dataio-ImportSeadasL2Product.instance">
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
@@ -131,17 +132,34 @@
                         </file>
                     </folder>
 
+                    <folder name="Modis">
+                        <file name="gov-nasa-gsfc-seadas-dataio-ImportModisL1BProduct.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportModisL1BProduct.instance"/>
+                        </file>
+                    </folder>
+
+                    <folder name="Hico">
+                        <file name="gov-nasa-gsfc-seadas-dataio-ImportHICOL1BProduct.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportHICOL1BProduct.instance"/>
+                        </file>
+                    </folder>
+
+                    <folder name="Pace">
+                        <file name="gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1bProduct.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1bProduct.instance"/>
+                        </file>
+                        <file name="gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1cProduct.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1cProduct.instance"/>
+                        </file>
+                    </folder>
+
                     <file name="gov-nasa-gsfc-seadas-dataio-ImportAquariusProduct.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportAquariusProduct.instance"/>
-                    </file>
-                    <file name="gov-nasa-gsfc-seadas-dataio-ImportHICOL1BProduct.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportHICOL1BProduct.instance"/>
-                    </file>
-                    <file name="gov-nasa-gsfc-seadas-dataio-ImportModisL1BProduct.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportModisL1BProduct.instance"/>
                     </file>
                     <file name="gov-nasa-gsfc-seadas-dataio-ImportOCM2L1BProduct.shadow">
                         <attr name="originalFile"
@@ -150,14 +168,6 @@
                     <file name="gov-nasa-gsfc-seadas-dataio-ImportViirsProduct.shadow">
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportViirsProduct.instance"/>
-                    </file>
-                    <file name="gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1bProduct.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1bProduct.instance"/>
-                    </file>
-                    <file name="gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1cProduct.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Readers/gov-nasa-gsfc-seadas-dataio-ImportPaceOciL1cProduct.instance"/>
                     </file>
                 </folder>
             </folder>
