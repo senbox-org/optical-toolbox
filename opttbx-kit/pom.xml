@@ -60,48 +60,40 @@
                         <phase>install</phase>
                         <configuration>
                             <target>
-                                <!-- Ant copy task to collect JARs -->
-<!--                                <copy todir="${project.build.directory}/final-jars" flatten="true">-->
+                                <!-- Ant copy task to collect JARs that are needed to run snap-desktop and copy them into kit module-->
 
                                 <copy todir="${project.build.directory}/netbeans_clusters/opttbx/modules/" flatten="true">
-                                <!-- Select JARs from all submodules -->
                                     <fileset dir="${project.build.directory}/../../">
                                         <include name="**/target/nbm/clusters/opttbx/modules/*.jar"/>
                                     </fileset>
                                 </copy>
 
                                 <copy todir="${project.build.directory}/netbeans_clusters/opttbx/config/Modules/" flatten="true">
-                                    <!-- Select JARs from all submodules -->
                                     <fileset dir="${project.build.directory}/../../">
                                         <include name="**/target/nbm/clusters/opttbx/config/Modules/*.xml"/>
                                     </fileset>
                                 </copy>
 
                                 <copy todir="${project.build.directory}/netbeans_clusters/opttbx/update_tracking/" flatten="true">
-                                    <!-- Select JARs from all submodules -->
                                     <fileset dir="${project.build.directory}/../../">
                                         <include name="**/target/nbm/clusters/opttbx/update_tracking/*.xml"/>
                                     </fileset>
                                 </copy>
 
-
                                 <mkdir dir="${project.build.directory}/netbeans_clusters/opttbx/modules/docs" />
-                                <mkdir dir="${project.build.directory}/netbeans_clusters/opttbx/modules/ext" />
-
                                 <copy todir="${project.build.directory}/netbeans_clusters/opttbx/modules/docs/" flatten="true">
-                                    <!-- Select JARs from all submodules -->
                                     <fileset dir="${project.build.directory}/../../">
                                         <include name="**/target/nbm/clusters/opttbx/modules/docs/*.jar"/>
                                     </fileset>
                                 </copy>
+
+                                <mkdir dir="${project.build.directory}/netbeans_clusters/opttbx/modules/ext" />
                                 <copy todir="${project.build.directory}/netbeans_clusters/opttbx/modules/ext/">
-                                    <!-- Select JARs from all submodules -->
                                     <fileset dir="${project.build.directory}/../../">
                                         <include name="**/target/nbm/clusters/opttbx/modules/ext/**"/>
                                     </fileset>
                                     <cutdirsmapper dirs="7"/>
                                 </copy>
-<!--                                </copy>-->
                             </target>
                         </configuration>
                         <goals>
