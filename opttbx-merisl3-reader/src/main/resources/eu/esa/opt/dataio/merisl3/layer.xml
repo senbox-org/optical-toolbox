@@ -25,10 +25,12 @@
         <folder name="File">
             <folder name="Import">
                 <folder name="Optical Sensors">
-                    <file name="eu-esa-opt-dataio-merisl3-ImportMerisBinnedL3Product.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Readers/eu-esa-opt-dataio-merisl3-ImportMerisBinnedL3Product.instance"/>
-                    </file>
+                    <folder name="Envisat">
+                        <file name="eu-esa-opt-dataio-merisl3-ImportMerisBinnedL3Product.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/eu-esa-opt-dataio-merisl3-ImportMerisBinnedL3Product.instance"/>
+                        </file>
+                    </folder>
                 </folder>
             </folder>
         </folder>

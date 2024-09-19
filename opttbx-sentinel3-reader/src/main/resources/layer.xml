@@ -96,18 +96,21 @@
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-slstr-ImportSlstrL1B1kmProduct.instance"/>
                         </file>
                     </folder>
-                    <file name="eu-esa-opt-dataio-s3-meris-ImportMerisL1InS3FormatProduct.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-meris-ImportMerisL1InS3FormatProduct.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-dataio-s3-meris-ImportMerisL2InS3FormatProduct.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-meris-ImportMerisL2InS3FormatProduct.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-dataio-s3-aatsr-ImportAatsrL1InS3FormatProduct.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-aatsr-ImportAatsrL1InS3FormatProduct.instance"/>
-                    </file>
+
+                    <folder name="Envisat">
+                        <file name="eu-esa-opt-dataio-s3-meris-ImportMerisL1InS3FormatProduct.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-meris-ImportMerisL1InS3FormatProduct.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-dataio-s3-meris-ImportMerisL2InS3FormatProduct.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-meris-ImportMerisL2InS3FormatProduct.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-dataio-s3-aatsr-ImportAatsrL1InS3FormatProduct.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-aatsr-ImportAatsrL1InS3FormatProduct.instance"/>
+                        </file>
+                    </folder>
                 </folder>
             </folder>
         </folder>
