@@ -50,6 +50,8 @@ public class LandsatGeotiffColl2L2ReaderPlugin implements ProductReaderPlugIn {
     public LandsatGeotiffColl2L2ReaderPlugin() {
         RGBImageProfileManager manager = RGBImageProfileManager.getInstance();
         manager.addProfile(new RGBImageProfile("Landsat-8/9 L2 RGB", new String[]{"sr_b4", "sr_b3", "sr_b2"}));
+        manager.addProfile(new RGBImageProfile("Landsat-7 L2 RGB", new String[]{"sr_b3", "sr_b2", "sr_b1"}));
+        manager.addProfile(new RGBImageProfile("Landsat-5 L2 RGB", new String[]{"sr_b3", "sr_b2", "sr_b1"}));
     }
 
     @Override
