@@ -41,6 +41,36 @@ public class SeadasProductReader extends AbstractProductReader {
     private ProductType productType;
     private SeadasFileReader seadasFileReader;
 
+    enum Mission {
+        OCI("OCI");
+
+        private String name;
+        private Mission(String nm) {
+            name = nm;
+        }
+        public String toString() {
+            return name;
+        }
+    }
+
+    enum ProcessingLevel {
+        L1A("L1A"),
+        L1B("L1B"),
+        L1C("L1C"),
+        L2("L2"),
+        L3b("L3 Binned"),
+        L3m("L3 Mapped");
+
+        private String name;
+        private ProcessingLevel(String nm) {
+            name = nm;
+        }
+        public String toString() {
+            return name;
+        }
+    }
+
+
 
     enum ProductType {
         ANCNRT("SeaWiFS Near Real-Time Ancillary Data"),
@@ -343,8 +373,14 @@ public class SeadasProductReader extends AbstractProductReader {
         ProductType tmp;
         if (titleAttr != null) {
             title = titleAttr.getStringValue().trim();
-            processing_level = processing_levelAttr.getStringValue().trim();
-            instrument = instrumentAttr.getStringValue().trim();
+            processing_level=null;
+            instrument=null;
+            if (processing_levelAttr != null) {
+                processing_level = processing_levelAttr.getStringValue().trim();
+            }
+            if (instrumentAttr != null) {
+                instrument = instrumentAttr.getStringValue().trim();
+            }
             if (title.equals("Oceansat OCM2 Level-1B Data")) {
                 return ProductType.Level1B_OCM2;
             } else if (title.equals("CZCS Level-2 Data")) {
