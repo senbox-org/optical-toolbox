@@ -31,7 +31,12 @@ import ucar.ma2.Section;
 import ucar.nc2.*;
 
 import java.awt.Color;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
@@ -49,6 +54,7 @@ import static java.lang.System.arraycopy;
  * @since
  */
 //APR2021 - Bing Yang - added capability to read 3d products
+    //AUG 2024 - Daniel Knowles - added PACE OCI actual center wavelengths lookup in resources
 
 
 public abstract class SeadasFileReader {
@@ -577,10 +583,7 @@ public abstract class SeadasFileReader {
                 if (metadataElementBand != null) {
                     MetadataElement metadataElementL2Flags = metadataElementBand.getElement("l2_flags");
                     if (metadataElementL2Flags != null) {
-                        flagMeanings =metadataElementL2Flags.getAttribute("FLAG_MEANINGS").getData().getElemString();
-                        if (flagMeanings != null) {
-                            flagNames = flagMeanings.split(" ");
-                        }
+                        setFlagMeaningsAndNames(product, metadataElementL2Flags);
                     }
                 }
             } catch (Exception ignore) {
@@ -599,21 +602,22 @@ public abstract class SeadasFileReader {
                 FlagCoding flagCoding = new FlagCoding("L2Flags");
                 int flagBits[] = {0x01,0x02,0x04,0x08,0x010,0x020,0x040,0x080,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}; //todo finish this list
 
-                for (int bit = 0; (bit < flagNames.length && bit < flagBits.length); bit++) {
-                    String flagName = flagNames[bit];
-                    if (flagName.startsWith("SPARE")) {
-                        flagName = flagName + Integer.toString(bit+1);
-                    }
+                if (flagNames != null) {
+                    for (int bit = 0; (bit < flagNames.length && bit < flagBits.length); bit++) {
+                        String flagName = flagNames[bit];
+                        if (flagName.startsWith("SPARE")) {
+                            flagName = flagName + Integer.toString(bit + 1);
+                        }
 //                    System.out.println("flag=" + flagName);
-                    if (!flagCoding.containsAttribute(flagName)) {
+                        if (!flagCoding.containsAttribute(flagName)) {
 //                        System.out.println("Adding flag=" + flagName);
-                        flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
-                    } else {
-                        flagName = flagName + Integer.toString(bit+1);
+                            flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
+                        } else {
+                            flagName = flagName + Integer.toString(bit + 1);
 //                        System.out.println("Adding flag=" + flagName);
-                        flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
+                            flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
+                        }
                     }
-
                 }
 
                 product.getFlagCodingGroup().add(flagCoding);
@@ -1171,11 +1175,24 @@ public abstract class SeadasFileReader {
         }
     }
 
-
-
-
-
-
+    private void setFlagMeaningsAndNames(Product product, MetadataElement metadataElementL2Flags) {
+        final MetadataAttribute flagMeaningsAttribute = metadataElementL2Flags.getAttribute("FLAG_MEANINGS");
+        if (flagMeaningsAttribute != null) {
+            flagMeanings = flagMeaningsAttribute.getData().getElemString();
+            flagNames = flagMeanings.split(" ");
+        } else {
+            final MetadataElement global = product.getMetadataRoot().getElement("Global_Attributes");
+            if (global != null) {
+                final MetadataAttribute maskNamesAttribute = global.getAttribute("Mask_Names");
+                if (maskNamesAttribute != null) {
+                    flagMeanings = maskNamesAttribute.getData().getElemString();
+                    if (flagMeanings != null) {
+                        flagNames = flagMeanings.split(",");
+                    }
+                }
+            }
+        }
+    }
 
 
     private Mask createMask(Product product, String maskName, Color maskColor, double maskTransparency) {
@@ -1414,15 +1431,10 @@ public abstract class SeadasFileReader {
             }
 
         }
-
-
-
         setSpectralBand(product);
 
         return bandToVariableMap;
     }
-
-
 
     protected void setSpectralBand(Product product) {
 
@@ -2962,6 +2974,9 @@ public abstract class SeadasFileReader {
     private String validateCompositeFlagsName(String compositeMaskName, String propertyKey) {
         // don't let composite mask name be same as any of the flags
         if (compositeMaskName != null) {
+            if (flagNames == null) {
+                return null;
+            }
             for (String validFlag : flagNames) {
                 if (compositeMaskName.equals(validFlag)) {
                     return null;
@@ -3033,7 +3048,11 @@ public abstract class SeadasFileReader {
         ArrayList<String> validFlagComposite = null;
 
         if (flagsArray != null) {
-            validFlagComposite = new ArrayList<String>();
+            validFlagComposite = new ArrayList<>();
+
+            if (flagNames == null) {
+                return validFlagComposite;
+            }
 
             for (String flag : flagsArray) {
                 if (flag != null) {
