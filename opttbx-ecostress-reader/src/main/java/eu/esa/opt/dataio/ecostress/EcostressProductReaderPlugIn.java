@@ -124,6 +124,10 @@ public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
      * @return the decode qualification
      */
     public DecodeQualification getDecodeQualification(Object input) {
+        String arch = System.getProperty("os.arch");
+        if (arch.contains("aarch") || arch.contains("arm64")) {
+            return DecodeQualification.UNABLE;
+        }
         if (isInputValid(input)) {
             return DecodeQualification.INTENDED;
         }
