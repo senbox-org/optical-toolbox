@@ -31,7 +31,7 @@ public class MetadataReader {
     static void addAttributeTreeTo(MetadataElement element, Group group) throws IllegalFileFormatException {
         final List<Group> groups = group.getGroups();
         for (Group childGroup : groups) {
-            final String childName = childGroup.getName();
+            final String childName = childGroup.getShortName();
             final MetadataElement nestedElement = new MetadataElement(childName);
             final List<Attribute> attributes = childGroup.getAttributes();
             if (attributes != null && !attributes.isEmpty()) {
@@ -48,6 +48,7 @@ public class MetadataReader {
         final List<Group> groups = group.getGroups();
         for (Group childGroup : groups) {
             final String childName = childGroup.getShortName();
+            final boolean isHdfeos = isHdfeosPath || "HDFEOS".equals(childName);
             final boolean alreadyContainsElement = element.containsElement(childName);
             final MetadataElement nestedElement;
             if (alreadyContainsElement) {
@@ -59,12 +60,14 @@ public class MetadataReader {
             if (variables != null && !variables.isEmpty()) {
                 for (Variable variable : variables) {
                     final int rank = variable.getRank();
-                    if (!isHdfeosPath || rank == 1 || (rank == 2 && variable.getShape()[1] == 1)) {
+                    if (!isHdfeos) {
+                        handleArrayDataOfVariable(nestedElement, variable);
+                    } else if (rank == 1 || (rank == 2 && variable.getShape()[1] == 1)) {
                         handleArrayDataOfVariable(nestedElement, variable);
                     }
                 }
             }
-            addAuxVariableTreeTo(nestedElement, childGroup, isHdfeosPath || "HDFEOS".equals(childName));
+            addAuxVariableTreeTo(nestedElement, childGroup, isHdfeos);
             if (!alreadyContainsElement) {
                 if (nestedElement.getNumAttributes() > 0 || nestedElement.getNumElements() > 0) {
                     element.addElement(nestedElement);
@@ -140,12 +143,8 @@ public class MetadataReader {
                 pd = ProductData.createInstance(ProductData.TYPE_INT32, 1);
             }
             pd.setElemLong(number.longValue());
-        } else if (numberSimpleName.equals("Long")) {
-            if (unsigned) {
-                throw new IllegalFileFormatException("Unsupported data type: " + dataType);
-            } else {
-                pd = ProductData.createInstance(ProductData.TYPE_INT64, 1);
-            }
+        } else if (numberSimpleName.equals("Long") && !unsigned) {
+            pd = ProductData.createInstance(ProductData.TYPE_INT64, 1);
             pd.setElemLong(number.longValue());
         } else if (numberSimpleName.equals("Float")) {
             pd = ProductData.createInstance(ProductData.TYPE_FLOAT32, 1);
@@ -223,6 +222,9 @@ public class MetadataReader {
                 break;
             case "float":
                 addMetaAttributesFromFloat(attElement, attName, data);
+                break;
+            case "double":
+                addMetaAttributesFromDouble(attElement, attName, data);
                 break;
             case "String":
                 final String[] strings = new String[att.getLength()];
