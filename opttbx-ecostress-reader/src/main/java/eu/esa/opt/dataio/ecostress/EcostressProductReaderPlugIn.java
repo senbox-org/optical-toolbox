@@ -124,14 +124,21 @@ public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
      * @return the decode qualification
      */
     public DecodeQualification getDecodeQualification(Object input) {
-        String arch = System.getProperty("os.arch");
-        if (arch.contains("aarch") || arch.contains("arm64")) {
-            return DecodeQualification.UNABLE;
-        }
-        if (isInputValid(input)) {
+        // Ecostress reader is not intended on mac arm systems -> no hdf
+        if (!isArmArchitecture() && isInputValid(input)) {
             return DecodeQualification.INTENDED;
         }
         return DecodeQualification.UNABLE;
+    }
+
+    /**
+     * Checks whether the system is running on an ARM architecture.
+     *
+     * @return {@code true} if the system uses an ARM architecture, otherwise {@code false}.
+     */
+    protected boolean isArmArchitecture() {
+        String arch = System.getProperty("os.arch");
+        return arch.contains("aarch") || arch.contains("arm64");
     }
 
     /**
