@@ -41,10 +41,7 @@ import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.image.ResolutionLevel;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.dataio.netcdf.metadata.profiles.cf.CfBandPart;
-import org.esa.snap.dataio.netcdf.util.AbstractNetcdfMultiLevelImage;
-import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
-import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
-import org.esa.snap.dataio.netcdf.util.NetcdfOpImage;
+import org.esa.snap.dataio.netcdf.util.*;
 import org.esa.snap.runtime.Config;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import ucar.ma2.DataType;
@@ -533,15 +530,15 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
                     Band band = new Band(shortName, getDataType(variable), width, height);
                     targetProduct.addBand(band);
                     CfBandPart.readCfBandAttributes(variable, band);
-                    band.setSourceImage(new AbstractNetcdfMultiLevelImage(band) {
+                    band.setSourceImage(new DefaultMultiLevelImage(new LazyMultiLevelSource(band) {
                         @Override
                         protected RenderedImage createImage(int level) {
                             RasterDataNode rdn = getRasterDataNode();
                             ResolutionLevel resolutionLevel = ResolutionLevel.create(getModel(), level);
-                            Dimension imageTileSize = new Dimension(getTileWidth(), getTileHeight());
+                            Dimension imageTileSize = getImageTileSize();
                             return new SlstrOrphanOpImage(variable, netcdfFile, rdn, imageTileSize, resolutionLevel);
                         }
-                    });
+                    }));
                     foundOrphan = true;
                 }
             }
