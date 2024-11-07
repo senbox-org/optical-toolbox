@@ -57,25 +57,14 @@ public class L1BModisProductReaderPlugIn implements ProductReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File file = SeadasProductReader.getInputFile(input);
-        if (file == null) {
-            return DecodeQualification.UNABLE;
+        final File inputFile = SeadasHelper.getInputFile(input);
+
+        final DecodeQualification decodeQualification = SeadasHelper.checkInputObject(inputFile);
+        if (decodeQualification == DecodeQualification.UNABLE) {
+            return decodeQualification;
         }
-        if (!file.exists()) {
-            if (DEBUG) {
-                System.out.println("# File not found: " + file);
-            }
-            return DecodeQualification.UNABLE;
-        }
-        if (!file.isFile()) {
-            if (DEBUG) {
-                System.out.println("# Not a file: " + file);
-            }
-            return DecodeQualification.UNABLE;
-        }
-        NetcdfFile ncfile = null;
-        try {
-            ncfile = NetcdfFileOpener.open(file.getPath());
+
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
             if (ncfile != null) {
                 Group modisl1bGroup = ncfile.findGroup("MODIS_SWATH_Type_L1B");
 
@@ -84,36 +73,29 @@ public class L1BModisProductReaderPlugIn implements ProductReaderPlugIn {
                     if (shortname != null) {
                         if (supportedProductTypeSet.contains(shortname.trim())) {
                             if (DEBUG) {
-                                System.out.println(file);
+                                System.out.println(inputFile);
                             }
                             ncfile.close();
                             return DecodeQualification.INTENDED;
                         } else {
                             if (DEBUG) {
-                                System.out.println("# Unrecognized attribute group=[" + shortname + "]: " + file);
+                                System.out.println("# Unrecognized attribute group=[" + shortname + "]: " + inputFile);
                             }
                         }
                     }
                 } else {
                     if (DEBUG) {
-                        System.out.println("# Missing MODIS_Swath_Type_L1B Group': " + file);
+                        System.out.println("# Missing MODIS_Swath_Type_L1B Group': " + inputFile);
                     }
                 }
             } else {
                 if (DEBUG) {
-                    System.out.println("# Can't open as NetCDF: " + file);
+                    System.out.println("# Can't open as NetCDF: " + inputFile);
                 }
             }
         } catch (Exception ignore) {
             if (DEBUG) {
-                System.out.println("# I/O exception caught: " + file);
-            }
-        } finally {
-            if (ncfile != null) {
-                try {
-                    ncfile.close();
-                } catch (IOException ignore) {
-                }
+                System.out.println("# I/O exception caught: " + inputFile);
             }
         }
         return DecodeQualification.UNABLE;

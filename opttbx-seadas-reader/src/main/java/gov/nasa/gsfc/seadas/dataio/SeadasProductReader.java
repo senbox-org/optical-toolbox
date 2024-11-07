@@ -109,7 +109,7 @@ public class SeadasProductReader extends AbstractProductReader {
 
         try {
 //            Product product;
-            final File inFile = getInputFile(getInput());
+            final File inFile = SeadasHelper.getInputFile(getInput());
             final String path = inFile.getPath();
 
             ncfile = NetcdfFileOpener.open(path);
@@ -233,7 +233,7 @@ public class SeadasProductReader extends AbstractProductReader {
     }
 
     public File getInputFile() {
-        return getInputFile(getInput());
+        return SeadasHelper.getInputFile(getInput());
     }
 
     public NetcdfFile getNcfile() {
@@ -425,17 +425,4 @@ public class SeadasProductReader extends AbstractProductReader {
         }
         return null;
     }
-
-    public static File getInputFile(Object input) {
-        File inputFile;
-        if (input instanceof File) {
-            inputFile = (File) input;
-        } else if (input instanceof String) {
-            inputFile = new File((String) input);
-        } else {
-            return null;
-        }
-        return inputFile;
-    }
-
 }

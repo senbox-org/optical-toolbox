@@ -49,69 +49,52 @@ public class L2DscovrEpicProductReaderPlugIn implements ProductReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File file = SeadasProductReader.getInputFile(input);
-        if (file == null) {
-            return DecodeQualification.UNABLE;
+        final File inputFile = SeadasHelper.getInputFile(input);
+
+        final DecodeQualification decodeQualification = SeadasHelper.checkInputObject(inputFile);
+        if (decodeQualification == DecodeQualification.UNABLE) {
+            return decodeQualification;
         }
-        if (!file.exists()) {
-            if (DEBUG) {
-                System.out.println("# File not found: " + file);
-            }
-            return DecodeQualification.UNABLE;
-        }
-        if (!file.isFile()) {
-            if (DEBUG) {
-                System.out.println("# Not a file: " + file);
-            }
-            return DecodeQualification.UNABLE;
-        }
-        NetcdfFile ncfile = null;
+
         H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
 
-        try {
-            ncfile = NetcdfFileOpener.open(file.getPath());
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
             if (ncfile != null) {
                 Attribute scene_title = ncfile.findGlobalAttribute("HDFEOS_ADDITIONAL_FILE_ATTRIBUTES_LocalGranuleID");
 
                 if (scene_title != null) {
                     if (scene_title.toString().contains("EPIC-DSCOVR_L2")) {
                         if (DEBUG) {
-                            System.out.println(file);
+                            System.out.println(inputFile);
                         }
                         ncfile.close();
                         DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
-                        debugFlags.set("HdfEos/turnOff",false);
+                        debugFlags.set("HdfEos/turnOff", false);
                         H5iosp.setDebugFlags(debugFlags);
                         return DecodeQualification.INTENDED;
                     } else {
                         if (DEBUG) {
-                            System.out.println("# Unrecognized scene title =[" + scene_title + "]: " + file);
+                            System.out.println("# Unrecognized scene title =[" + scene_title + "]: " + inputFile);
                         }
                     }
                 } else {
                     if (DEBUG) {
-                        System.out.println("# Missing scene title attribute': " + file);
+                        System.out.println("# Missing scene title attribute': " + inputFile);
                     }
                 }
             } else {
                 if (DEBUG) {
-                    System.out.println("# Can't open as NetCDF: " + file);
+                    System.out.println("# Can't open as NetCDF: " + inputFile);
                 }
             }
         } catch (Exception ignore) {
             if (DEBUG) {
-                System.out.println("# I/O exception caught: " + file);
+                System.out.println("# I/O exception caught: " + inputFile);
             }
         } finally {
             DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
-            debugFlags.set("HdfEos/turnOff",false);
+            debugFlags.set("HdfEos/turnOff", false);
             H5iosp.setDebugFlags(debugFlags);
-            if (ncfile != null) {
-                try {
-                    ncfile.close();
-                } catch (IOException ignore) {
-                }
-            }
         }
         return DecodeQualification.UNABLE;
     }

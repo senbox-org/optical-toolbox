@@ -47,64 +47,45 @@ public class BrowseProductReaderPlugIn implements ProductReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File file = SeadasProductReader.getInputFile(input);
-        if (file == null) {
-            return DecodeQualification.UNABLE;
+        final File inputFile = SeadasHelper.getInputFile(input);
+
+        final DecodeQualification decodeQualification = SeadasHelper.checkInputObject(inputFile);
+        if (decodeQualification == DecodeQualification.UNABLE) {
+            return decodeQualification;
         }
-        if (!file.exists()) {
-            if (DEBUG) {
-                System.out.println("# File not found: " + file);
-            }
-            return DecodeQualification.UNABLE;
-        }
-        if (!file.isFile()) {
-            if (DEBUG) {
-                System.out.println("# Not a file: " + file);
-            }
-            return DecodeQualification.UNABLE;
-        }
-        NetcdfFile ncfile = null;
-        try {
-            ncfile = NetcdfFileOpener.open(file.getPath());
+
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
             if (ncfile != null) {
                 Attribute titleAttribute = ncfile.findGlobalAttribute("Title");
-
 
                 if (titleAttribute != null) {
                     final String title = titleAttribute.getStringValue();
                     if (title != null) {
                         if (title.contains("Browse Data")) {
                             if (DEBUG) {
-                                System.out.println(file);
+                                System.out.println(inputFile);
                             }
                             ncfile.close();
                             return DecodeQualification.INTENDED;
                         } else {
                             if (DEBUG) {
-                                System.out.println("# Unrecognized attribute Title=[" + title + "]: " + file);
+                                System.out.println("# Unrecognized attribute Title=[" + title + "]: " + inputFile);
                             }
                         }
                     }
                 } else {
                     if (DEBUG) {
-                        System.out.println("# Missing attribute 'Title': " + file);
+                        System.out.println("# Missing attribute 'Title': " + inputFile);
                     }
                 }
             } else {
                 if (DEBUG) {
-                    System.out.println("# Can't open as NetCDF: " + file);
+                    System.out.println("# Can't open as NetCDF: " + inputFile);
                 }
             }
         } catch (Exception ignore) {
             if (DEBUG) {
-                System.out.println("# I/O exception caught: " + file);
-            }
-        } finally {
-            if (ncfile != null) {
-                try {
-                    ncfile.close();
-                } catch (IOException ignore) {
-                }
+                System.out.println("# I/O exception caught: " + inputFile);
             }
         }
         return DecodeQualification.UNABLE;
