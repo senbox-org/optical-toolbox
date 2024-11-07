@@ -73,25 +73,14 @@ public class L3ProductReaderPlugIn implements ProductReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File file = SeadasProductReader.getInputFile(input);
-        if (file == null) {
-            return DecodeQualification.UNABLE;
+        final File inputFile = SeadasHelper.getInputFile(input);
+
+        final DecodeQualification decodeQualification = SeadasHelper.checkInputObject(inputFile);
+        if (decodeQualification == DecodeQualification.UNABLE) {
+            return decodeQualification;
         }
-        if (!file.exists()) {
-            if (DEBUG) {
-                System.out.println("# File not found: " + file);
-            }
-            return DecodeQualification.UNABLE;
-        }
-        if (!file.isFile()) {
-            if (DEBUG) {
-                System.out.println("# Not a file: " + file);
-            }
-            return DecodeQualification.UNABLE;
-        }
-        NetcdfFile ncfile = null;
-        try {
-            ncfile = NetcdfFileOpener.open(file.getPath());
+
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
             if (ncfile != null) {
                 Attribute titleAttribute = ncfile.findGlobalAttributeIgnoreCase("Title");
 
@@ -102,24 +91,24 @@ public class L3ProductReaderPlugIn implements ProductReaderPlugIn {
                 } catch (Exception ignored) {
                 }
 
-                if (titleAttribute != null ) {
+                if (titleAttribute != null) {
                     final String title = titleAttribute.getStringValue();
                     if (title != null) {
-                        if (title.matches(".*Level-3 Binned Data")){
+                        if (title.matches(".*Level-3 Binned Data")) {
                             System.out.println("Support for visualization of L3 bin files has been disabled.");
                             ncfile.close();
                             return DecodeQualification.UNABLE;
                         }
-                        if(title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")
-                                            || (title.contains("Level-3")  && title.contains("Mapped Image"))){
+                        if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")
+                                || (title.contains("Level-3") && title.contains("Mapped Image"))) {
                             if (DEBUG) {
-                                System.out.println(file);
+                                System.out.println(inputFile);
                             }
                             ncfile.close();
                             return DecodeQualification.INTENDED;
                         } else {
                             if (DEBUG) {
-                                System.out.println("# Unrecognized attribute Title=[" + title + "]: " + file);
+                                System.out.println("# Unrecognized attribute Title=[" + title + "]: " + inputFile);
                             }
                         }
                     }
@@ -128,24 +117,17 @@ public class L3ProductReaderPlugIn implements ProductReaderPlugIn {
                     return DecodeQualification.INTENDED;
                 } else {
                     if (DEBUG) {
-                        System.out.println("# Missing attribute 'Title': " + file);
+                        System.out.println("# Missing attribute 'Title': " + inputFile);
                     }
                 }
             } else {
                 if (DEBUG) {
-                    System.out.println("# Can't open as NetCDF: " + file);
+                    System.out.println("# Can't open as NetCDF: " + inputFile);
                 }
             }
         } catch (Exception ignore) {
             if (DEBUG) {
-                System.out.println("# I/O exception caught: " + file);
-            }
-        } finally {
-            if (ncfile != null) {
-                try {
-                    ncfile.close();
-                } catch (IOException ignore) {
-                }
+                System.out.println("# I/O exception caught: " + inputFile);
             }
         }
         return DecodeQualification.UNABLE;
