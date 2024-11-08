@@ -60,6 +60,7 @@ public class RetrieveTileLayoutTest {
          * Run these tests only if Sentinel 2 products test directory exists and is set
          */
         String productPath = System.getProperty(TestUtil.PROPERTYNAME_DATA_DIR);
+        Assume.assumeNotNull(productPath);
         sentinel2TestProductsPath = Paths.get(productPath, SENTINEL2_DIR);
         Assume.assumeTrue(Files.exists(sentinel2TestProductsPath));
 

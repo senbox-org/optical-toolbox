@@ -6,10 +6,7 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.awt.*;
 import java.net.URISyntaxException;

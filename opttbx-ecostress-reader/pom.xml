@@ -75,7 +75,6 @@
         <dependency>
             <groupId>ncsa.hdf</groupId>
             <artifactId>lib-hdf</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

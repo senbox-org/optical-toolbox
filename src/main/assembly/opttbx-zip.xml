@@ -27,7 +27,7 @@
 
     <fileSets>
         <fileSet>
-            <directory>${project.basedir}/target/nbm/netbeans/opttbx</directory>
+            <directory>${project.basedir}/target/nbm/netbeans_clusters/opttbx</directory>
             <outputDirectory>opttbx</outputDirectory>
             <useDefaultExcludes>true</useDefaultExcludes>
         </fileSet>
