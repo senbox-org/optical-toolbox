@@ -76,9 +76,7 @@ import java.util.logging.Level;
 
 import static eu.esa.opt.dataio.s2.S2Metadata.ProductCharacteristics;
 import static eu.esa.opt.dataio.s2.S2Metadata.Tile;
-import static eu.esa.opt.dataio.s2.l1b.CoordinateUtils.convertDoublesToFloats;
-import static eu.esa.opt.dataio.s2.l1b.CoordinateUtils.getLatitudes;
-import static eu.esa.opt.dataio.s2.l1b.CoordinateUtils.getLongitudes;
+import static eu.esa.opt.dataio.s2.l1b.CoordinateUtils.*;
 import static eu.esa.opt.dataio.s2.l1b.metadata.L1bMetadataProc.makeTileInformation;
 import static org.esa.snap.core.util.DateTimeUtils.parseDate;
 
@@ -460,7 +458,7 @@ public class Sentinel2L1BProductReader extends Sentinel2ProductReader {
 
         TileIndexMultiLevelSource multiLevelSource = new TileIndexMultiLevelSource(resolutionCount, mosaicMatrix, bandBounds, preferredTileSize,
                                                                                    imageToModelTransform, mosaicOpSourceThreshold, mosaicOpBackgroundValue);
-        ImageLayout imageLayout = ImageUtils.buildImageLayout(dataBufferType, bandBounds.width, bandBounds.height, 0, preferredTileSize);
+        ImageLayout imageLayout = ImageUtils.buildImageLayout(multiLevelSource.getImage(0), 0, preferredTileSize);
         band.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
 
         return band;
