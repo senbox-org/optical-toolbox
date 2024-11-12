@@ -5,6 +5,7 @@ The release notes are provided on the STEP website at https://step.esa.int/main/
 
 # New in SNAP 12.0.0
     [SNAP-3767] CZCS reading crashes
+    [SNAP-3701] OLCI/SLSTR calibration coefficients support
 
 # New in SNAP 11.0.0
     [SNAP-3811] Update Band Grouping Help
