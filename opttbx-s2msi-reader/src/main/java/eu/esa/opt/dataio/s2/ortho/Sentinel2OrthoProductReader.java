@@ -1253,8 +1253,7 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
             TileIndexMultiLevelSource tileIndex = new TileIndexMultiLevelSource(resolutionCount, mosaicMatrix,
                                                                                 bandBounds, preferredTileSize, imageToModelTransform, mosaicOpSourceThreshold,
                                                                                 mosaicOpBackgroundValue);
-            ImageLayout imageLayout = ImageUtils.buildImageLayout(dataBufferType, bandBounds.width, bandBounds.height,
-                                                                  0, preferredTileSize);
+            ImageLayout imageLayout = ImageUtils.buildImageLayout(tileIndex.getImage(0),0, preferredTileSize);
             band.setSourceImage(new DefaultMultiLevelImage(tileIndex, imageLayout));
 
             product.addBand(band);
