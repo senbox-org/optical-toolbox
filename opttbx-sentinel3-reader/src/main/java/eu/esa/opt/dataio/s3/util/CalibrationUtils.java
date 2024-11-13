@@ -23,6 +23,7 @@ public class CalibrationUtils {
     static {
         OLCI_BAND_RANGES.put("Oa%02d_radiance", new int[]{1,21});
         OLCI_BAND_RANGES.put("Oa%02d_radiance_err", new int[]{1,21});
+        OLCI_BAND_RANGES.put("Oa%02d_radiance_unc", new int[]{1,21});
 
         SLSTR_BAND_RANGES.put("S%d_radiance_bo", new int[]{4, 6});
         SLSTR_BAND_RANGES.put("S%d_radiance_co", new int[]{4, 6});

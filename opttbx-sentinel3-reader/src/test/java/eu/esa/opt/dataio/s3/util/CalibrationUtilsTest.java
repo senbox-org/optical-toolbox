@@ -48,7 +48,7 @@ public class CalibrationUtilsTest {
         Map<String, int[]> olciMap = CalibrationUtils.getBandRanges("olcil1");
         Map<String, int[]> slstrMap = CalibrationUtils.getBandRanges("slstrl1b");
 
-        assertEquals(2, olciMap.size());
+        assertEquals(3, olciMap.size());
         assertEquals(21, olciMap.get("Oa%02d_radiance")[1]);
 
         assertEquals(6, slstrMap.size());
