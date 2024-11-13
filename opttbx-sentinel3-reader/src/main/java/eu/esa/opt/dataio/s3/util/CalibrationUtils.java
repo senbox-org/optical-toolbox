@@ -25,16 +25,49 @@ public class CalibrationUtils {
         OLCI_BAND_RANGES.put("Oa%02d_radiance_err", new int[]{1,21});
         OLCI_BAND_RANGES.put("Oa%02d_radiance_unc", new int[]{1,21});
 
-        SLSTR_BAND_RANGES.put("S%d_radiance_bo", new int[]{4, 6});
-        SLSTR_BAND_RANGES.put("S%d_radiance_co", new int[]{4, 6});
-        SLSTR_BAND_RANGES.put("S%d_radiance_ao", new int[]{1, 6});
-        SLSTR_BAND_RANGES.put("S%d_radiance_cn", new int[]{4, 6});
+        SLSTR_BAND_RANGES.put("F1_BT_fn", new int[]{1, 1});
+        SLSTR_BAND_RANGES.put("F1_BT_orphan_fn", new int[]{1, 1});
+        SLSTR_BAND_RANGES.put("F1_BT_fo", new int[]{1, 1});
+        SLSTR_BAND_RANGES.put("F1_BT_orphan_fo", new int[]{1, 1});
+        SLSTR_BAND_RANGES.put("F1_BT_in", new int[]{1, 1});
+        SLSTR_BAND_RANGES.put("F1_BT_orphan_in", new int[]{1, 1});
+        SLSTR_BAND_RANGES.put("F1_BT_io", new int[]{1, 1});
+        SLSTR_BAND_RANGES.put("F1_BT_orphan_io", new int[]{1, 1});
+
+        SLSTR_BAND_RANGES.put("S%d_exception_an", new int[]{1, 6});
+        SLSTR_BAND_RANGES.put("S%d_exception_orphan_an", new int[]{1, 6});
         SLSTR_BAND_RANGES.put("S%d_radiance_an", new int[]{1, 6});
+        SLSTR_BAND_RANGES.put("S%d_radiance_orphan_an", new int[]{1, 6});
+        SLSTR_BAND_RANGES.put("S%d_exception_ao", new int[]{1, 6});
+        SLSTR_BAND_RANGES.put("S%d_exception_orphan_ao", new int[]{1, 6});
+        SLSTR_BAND_RANGES.put("S%d_radiance_ao", new int[]{1, 6});
+        SLSTR_BAND_RANGES.put("S%d_radiance_orphan_ao", new int[]{1, 6});
+
+        SLSTR_BAND_RANGES.put("S%d_exception_bn", new int[]{4, 6});
+        SLSTR_BAND_RANGES.put("S%d_exception_orphan_bn", new int[]{4, 6});
         SLSTR_BAND_RANGES.put("S%d_radiance_bn", new int[]{4, 6});
+        SLSTR_BAND_RANGES.put("S%d_radiance_orphan_bn", new int[]{4, 6});
+        SLSTR_BAND_RANGES.put("S%d_exception_bo", new int[]{4, 6});
+        SLSTR_BAND_RANGES.put("S%d_exception_orphan_bo", new int[]{4, 6});
+        SLSTR_BAND_RANGES.put("S%d_radiance_bo", new int[]{4, 6});
+        SLSTR_BAND_RANGES.put("S%d_radiance_orphan_bo", new int[]{4, 6});
+
+        SLSTR_BAND_RANGES.put("S%d_BT_in", new int[]{7, 9});
+        SLSTR_BAND_RANGES.put("S%d_BT_orphan_in", new int[]{7, 9});
+        SLSTR_BAND_RANGES.put("S%d_exception_in", new int[]{7, 9});
+        SLSTR_BAND_RANGES.put("S%d_exception_orphan_in", new int[]{7, 9});
+        SLSTR_BAND_RANGES.put("S%d_BT_io", new int[]{7, 9});
+        SLSTR_BAND_RANGES.put("S%d_BT_orphan_io", new int[]{7, 9});
+        SLSTR_BAND_RANGES.put("S%d_exception_io", new int[]{7, 9});
+        SLSTR_BAND_RANGES.put("S%d_exception_orphan_io", new int[]{7, 9});
     }
 
     public static String getBandName(String key, int bandNumber) {
-        return String.format(key, bandNumber);
+        if (key.contains("%")) {
+            return String.format(key, bandNumber);
+        } else {
+            return key;
+        }
     }
 
     public static double getParameterValueFromConfig(String bandName, String param, Preferences preferences, String productType) {

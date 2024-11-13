@@ -13,11 +13,14 @@ public class CalibrationUtilsTest {
     public void getBandName() {
         String key = "Oa%02d_radiance";
         String bandName = CalibrationUtils.getBandName(key, 2);
-        String key2 = "S%d_radiance_bo";
-        String bandName2 = CalibrationUtils.getBandName(key2, 21);
+        String key2 = "S%d_exception_an";
+        String bandName2 = CalibrationUtils.getBandName(key2, 4);
+        String key3 = "F1_BT_orphan_fn";
+        String bandName3 = CalibrationUtils.getBandName(key3, 4);
 
         assertEquals("Oa02_radiance", bandName);
-        assertEquals("S21_radiance_bo", bandName2);
+        assertEquals("S4_exception_an", bandName2);
+        assertEquals("F1_BT_orphan_fn", bandName3);
     }
 
     @Test
@@ -51,7 +54,7 @@ public class CalibrationUtilsTest {
         assertEquals(3, olciMap.size());
         assertEquals(21, olciMap.get("Oa%02d_radiance")[1]);
 
-        assertEquals(6, slstrMap.size());
-        assertEquals(4, slstrMap.get("S%d_radiance_co")[0]);
+        assertEquals(32, slstrMap.size());
+        assertEquals(4, slstrMap.get("S%d_radiance_bn")[0]);
     }
 }
