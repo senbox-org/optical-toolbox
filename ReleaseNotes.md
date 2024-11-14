@@ -9,6 +9,9 @@ The release notes are provided on the STEP website at https://step.esa.int/main/
     [SNAP-1699] C2RCC should make use of Copernicus DEM
     [SNAP-3701] OLCI/SLSTR calibration coefficients support
 
+# New in SNAP 11.0.1
+    [SNAP-3882] NSIDCProductReader conflicts with CCI WV data
+
 # New in SNAP 11.0.0
     [SNAP-3811] Update Band Grouping Help
     [SNAP-3810] PACE Issues with default bands in RGB & HSV visualisations
