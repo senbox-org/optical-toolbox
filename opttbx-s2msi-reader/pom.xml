@@ -134,7 +134,6 @@
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
                     <publicPackages>
-                        <publicPackage>org.apache.commons.*</publicPackage>
                         <publicPackage>eu.esa.opt.dataio.s2.*</publicPackage>
                     </publicPackages>
                 </configuration>
