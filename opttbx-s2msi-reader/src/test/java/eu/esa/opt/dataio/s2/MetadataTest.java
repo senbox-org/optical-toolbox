@@ -19,6 +19,9 @@ package eu.esa.opt.dataio.s2;
 
 
 
+import com.bc.ceres.annotation.STTM;
+import eu.esa.opt.dataio.s2.l2a.metadata.IL2aProductMetadata;
+import eu.esa.opt.dataio.s2.l2a.metadata.L2aMetadataFactory;
 import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.s2.l1c.metadata.IL1cGranuleMetadata;
 import eu.esa.opt.dataio.s2.l1c.metadata.L1cMetadataFactory;
@@ -32,14 +35,13 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import eu.esa.opt.dataio.s2.l1c.metadata.IL1cProductMetadata;
 import org.xml.sax.SAXException;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by opicas-p on 24/06/2014.
@@ -149,7 +151,6 @@ public class MetadataTest {
 
     }
 
-
     @Test
     public void testTileProductsMetadataExistence() throws Exception
     {
@@ -207,6 +208,68 @@ public class MetadataTest {
 
         granule.getSunGrid();
         granule.getViewingAnglesGrid();
+    }
+
+    @Test
+    @STTM("SNAP-3880")
+    public void testGIP_HRTPARMetadataExistence() throws Exception
+    {
+        /**
+         * PSD150 - GIP_HRTPAR added
+         */
+        URL url = getClass().getResource("l1c/metadata/S2C_MTD_MSIL1C.xml");
+        Path psd150RootXmlFileName = null;
+        try {
+            File file = new File(url.toURI());
+            psd150RootXmlFileName = file.toPath();
+            IL1cProductMetadata productMetadata = L1cMetadataFactory.createL1cProductMetadata(new VirtualPath(psd150RootXmlFileName.toString(), VirtualDirEx.build(file.toPath().getParent())));
+            assertNotNull(productMetadata.getMetadataElement());
+            assertEquals( Arrays.stream(productMetadata.getMetadataElement().getElement("Auxiliary_Data_Info").getElement("GIPP_List").getAttributes()).filter(e-> e.getData().getElemString().contains("GIP_HRTPAR")).count(),1);
+        } catch (IOException e) {
+            org.junit.Assert.fail(e.getMessage());
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            org.junit.Assert.fail("Parser Configuration Exception in XML: " + psd150RootXmlFileName.getFileName().toString());
+            e.printStackTrace();
+        } catch (SAXException e) {
+            org.junit.Assert.fail("SAX Exception in XML: " + psd150RootXmlFileName.getFileName().toString());
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            org.junit.Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @STTM("SNAP-3880")
+    public void testCAST_SHADOW_PERCENTAGEMetadataExistence() throws Exception
+    {
+        /**
+         * PSD150 - DARK_FEATURE_PERCENTAGE replaced by CAST_SHADOW_PERCENTAGE
+         */
+        URL url = getClass().getResource("l2a/metadata/S2C_MTD_MSIL2A.xml");
+        Path psd150RootXmlFileName = null;
+        try {
+            File file = new File(url.toURI());
+            psd150RootXmlFileName = file.toPath();
+            IL2aProductMetadata productMetadata = L2aMetadataFactory.createL2aProductMetadata(new VirtualPath(psd150RootXmlFileName.toString(), VirtualDirEx.build(file.toPath().getParent())));
+            assertNotNull(productMetadata.getMetadataElement());
+            assertTrue( productMetadata.getMetadataElement().getElement("Quality_Indicators_Info").getElement("Image_Content_QI").containsAttribute("CAST_SHADOW_PERCENTAGE"));
+            assertFalse( productMetadata.getMetadataElement().getElement("Quality_Indicators_Info").getElement("Image_Content_QI").containsAttribute("DARK_FEATURE_PERCENTAGE"));
+
+        } catch (IOException e) {
+            org.junit.Assert.fail(e.getMessage());
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            org.junit.Assert.fail("Parser Configuration Exception in XML: " + psd150RootXmlFileName.getFileName().toString());
+            e.printStackTrace();
+        } catch (SAXException e) {
+            org.junit.Assert.fail("SAX Exception in XML: " + psd150RootXmlFileName.getFileName().toString());
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            org.junit.Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 }
