@@ -1,10 +1,9 @@
 package eu.esa.opt.dataio.s2.ortho;
 
+import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.s2.S2Config;
 import eu.esa.opt.dataio.s2.ortho.metadata.Sentinel2OrthoMetadataInspector;
-import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM32N_ReaderPlugIn;
-import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM34S_ReaderPlugIn;
-import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM36N_ReaderPlugIn;
+import eu.esa.opt.dataio.s2.ortho.plugins.*;
 import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.runtime.LogUtils4Tests;
@@ -31,6 +30,8 @@ public class Sentinel2OrthoMetadataInspectorTest {
     private static final String L1C_PRODUCT_NAME = "L1C/S2A_MSIL1C_20161206T080312_N0204_R035_T34HFH_20161206T081929.SAFE/MTD_MSIL1C.xml";
     private static final String L2A_PRODUCT_NAME = "L2A/S2B_MSIL2A_20190528T085609_N0212_R007_T36VWK_20190528T121447.zip";
     private static final String L3_PRODUCT_NAME = "L3/Darmstadt/10m/S2A_USER_PRD_MSIL03_PDMC_20150812T193220_R108_V20161231T235959_20161231T235959.SAFE/S2A_USER_MTD_SAFL03_PDMC_20150812T193220_R108_V20150730T103914_20150730T103914.xml";
+    private static final String S2C_L1C_PRODUCT_NAME = "L1C/S2C_MSIL1C_20241031T100831_N9904_R122_T33TTG_20241031T102919.SAFE.zip";
+    private static final String S2C_L2A_PRODUCT_NAME = "L2A/S2C_MSIL2A_20241114T080951_N9904_R035_T38SLG_20241114T091153.SAFE.zip";
 
     @BeforeClass
     public static void setupLogger() throws Exception {
@@ -87,6 +88,47 @@ public class Sentinel2OrthoMetadataInspectorTest {
     }
 
     @Test
+    @STTM("SNAP-3880")
+    public void testSentinel2COrthoMetadataInspectorL1C() throws IOException {
+        File file = TestUtil.getTestFile(SENTINEL2_DIR + File.separator + S2C_L1C_PRODUCT_NAME);
+        assertNotNull(file);
+        S2OrthoProductReaderPlugIn readerPlugIn = new Sentinel2L1CProduct_Multi_UTM33N_ReaderPlugIn();
+        Sentinel2OrthoMetadataInspector metadataInspector = new Sentinel2OrthoMetadataInspector(S2Config.Sentinel2ProductLevel.L1C, readerPlugIn.getEPSG());
+        MetadataInspector.Metadata metadata = metadataInspector.getMetadata(file.toPath());
+        assertNotNull(metadata);
+        assertEquals(10980, metadata.getProductWidth());
+        assertEquals(10980, metadata.getProductHeight());
+
+        assertNotNull(metadata.getGeoCoding());
+
+        assertNotNull(metadata.getBandList());
+        assertEquals(43, metadata.getBandList().size());
+        assertTrue(metadata.getBandList().contains("sun_zenith"));
+        assertTrue(metadata.getBandList().contains("sun_azimuth"));
+        assertTrue(metadata.getBandList().contains("view_zenith_mean"));
+        assertTrue(metadata.getBandList().contains("view_azimuth_mean"));
+        assertTrue(metadata.getBandList().contains("view_zenith_B1"));
+        assertTrue(metadata.getBandList().contains("view_azimuth_B5"));
+        assertTrue(metadata.getBandList().contains("B4"));
+        assertTrue(metadata.getBandList().contains("B8A"));
+        assertTrue(metadata.getBandList().contains("B12"));
+
+        assertNotNull(metadata.getMaskList());
+        assertEquals(263, metadata.getMaskList().size());
+        assertTrue(metadata.getMaskList().contains("nodata_B1"));
+        assertTrue(metadata.getMaskList().contains("partially_corrected_crosstalk_B2"));
+        assertTrue(metadata.getMaskList().contains("saturated_l1a_B3"));
+        assertTrue(metadata.getMaskList().contains("defective_B5"));
+        assertTrue(metadata.getMaskList().contains("ancillary_lost_B6"));
+        assertTrue(metadata.getMaskList().contains("ancillary_degraded_B7"));
+        assertTrue(metadata.getMaskList().contains("msi_lost_B8"));
+        assertTrue(metadata.getMaskList().contains("msi_degraded_B8A"));
+        assertTrue(metadata.getMaskList().contains("opaque_clouds"));
+        assertTrue(metadata.getMaskList().contains("cirrus_clouds"));
+        assertTrue(metadata.getMaskList().contains("detector_footprint-B10-03"));
+    }
+
+    @Test
     public void testSentinel2OrthoMetadataInspectorL2A() throws IOException {
         File file = TestUtil.getTestFile(SENTINEL2_DIR + File.separator + L2A_PRODUCT_NAME);
         assertNotNull(file);
@@ -129,6 +171,52 @@ public class Sentinel2OrthoMetadataInspectorTest {
         assertTrue(metadata.getMaskList().contains("msi_degraded_B8A"));
         assertTrue(metadata.getMaskList().contains("opaque_clouds_10m"));
         assertTrue(metadata.getMaskList().contains("cirrus_clouds_10m"));
+        assertTrue(metadata.getMaskList().contains("detector_footprint-B09-03"));
+    }
+
+    @Test
+    @STTM("SNAP-3880")
+    public void testSentinel2COrthoMetadataInspectorL2A() throws IOException {
+        File file = TestUtil.getTestFile(SENTINEL2_DIR + File.separator + S2C_L2A_PRODUCT_NAME);
+        assertNotNull(file);
+        S2OrthoProductReaderPlugIn readerPlugIn = new Sentinel2L1CProduct_Multi_UTM38N_ReaderPlugIn();
+        Sentinel2OrthoMetadataInspector metadataInspector = new Sentinel2OrthoMetadataInspector(S2Config.Sentinel2ProductLevel.L2A, readerPlugIn.getEPSG());
+        MetadataInspector.Metadata metadata = metadataInspector.getMetadata(file.toPath());
+        assertNotNull(metadata);
+        assertEquals(10980, metadata.getProductWidth());
+        assertEquals(10980, metadata.getProductHeight());
+
+        assertNotNull(metadata.getGeoCoding());
+
+        assertNotNull(metadata.getBandList());
+        assertEquals(47, metadata.getBandList().size());
+        assertTrue(metadata.getBandList().contains("sun_zenith"));
+        assertTrue(metadata.getBandList().contains("sun_azimuth"));
+        assertTrue(metadata.getBandList().contains("view_zenith_mean"));
+        assertTrue(metadata.getBandList().contains("view_azimuth_mean"));
+        assertTrue(metadata.getBandList().contains("quality_aot"));
+        assertTrue(metadata.getBandList().contains("quality_wvp"));
+        assertTrue(metadata.getBandList().contains("quality_cloud_confidence"));
+        assertTrue(metadata.getBandList().contains("quality_snow_confidence"));
+        assertTrue(metadata.getBandList().contains("quality_scene_classification"));
+        assertTrue(metadata.getBandList().contains("B2"));
+        assertTrue(metadata.getBandList().contains("B6"));
+        assertTrue(metadata.getBandList().contains("B11"));
+
+        assertNotNull(metadata.getMaskList());
+        assertEquals(255, metadata.getMaskList().size());
+        assertTrue(metadata.getMaskList().contains("nodata_B1"));
+        assertTrue(metadata.getMaskList().contains("scl_nodata"));
+        assertTrue(metadata.getMaskList().contains("partially_corrected_crosstalk_B2"));
+        assertTrue(metadata.getMaskList().contains("saturated_l1a_B3"));
+        assertTrue(metadata.getMaskList().contains("defective_B5"));
+        assertTrue(metadata.getMaskList().contains("scl_saturated_defective"));
+        assertTrue(metadata.getMaskList().contains("ancillary_lost_B6"));
+        assertTrue(metadata.getMaskList().contains("ancillary_degraded_B7"));
+        assertTrue(metadata.getMaskList().contains("msi_lost_B8"));
+        assertTrue(metadata.getMaskList().contains("msi_degraded_B8A"));
+        assertTrue(metadata.getMaskList().contains("opaque_clouds"));
+        assertTrue(metadata.getMaskList().contains("cirrus_clouds"));
         assertTrue(metadata.getMaskList().contains("detector_footprint-B09-03"));
     }
 
