@@ -19,6 +19,8 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.runtime.Config;
 
+import java.util.prefs.Preferences;
+
 public class OlciLevel1ProductFactory extends OlciProductFactory {
 
     public final static String OLCI_L1_CUSTOM_CALIBRATION = "opttbx.reader.olcil1.applyCustomCalibration";
@@ -44,19 +46,28 @@ public class OlciLevel1ProductFactory extends OlciProductFactory {
     }
 
     private boolean applyCustomCalibration() {
-        return Config.instance("opttbx").load().preferences().getBoolean(OLCI_L1_CUSTOM_CALIBRATION, false);
+        Preferences preferences = loadPreferences();
+        return preferences.getBoolean(OLCI_L1_CUSTOM_CALIBRATION, false);
     }
 
     private double getCalibrationOffset(String bandName) {
-        String calibrationOffsetPropertyName =
-                OLCI_L1_CALIBRATION_PATTERN.replace("ID", bandName.toLowerCase()).replace("TYPE", "offset");
-        return Config.instance("opttbx").load().preferences().getDouble(calibrationOffsetPropertyName, Double.NaN);
+        String calibrationOffsetPropertyName = OLCI_L1_CALIBRATION_PATTERN
+                .replace("ID", bandName.toLowerCase())
+                .replace("TYPE", "offset");
+        Preferences preferences = loadPreferences();
+        return preferences.getDouble(calibrationOffsetPropertyName, Double.NaN);
     }
 
-    private double getCalibrationFactor(String bandName) {
-        String calibrationFactorPropertyName =
-                OLCI_L1_CALIBRATION_PATTERN.replace("ID", bandName.toLowerCase()).replace("TYPE", "factor");
-        return Config.instance("opttbx").load().preferences().getDouble(calibrationFactorPropertyName, Double.NaN);
+    private Preferences loadPreferences() {
+        return Config.instance("opttbx").load().preferences();
+    }
+
+    protected double getCalibrationFactor(String bandName) {
+        String calibrationFactorPropertyName = OLCI_L1_CALIBRATION_PATTERN
+                .replace("ID", bandName.toLowerCase())
+                .replace("TYPE", "factor");
+        Preferences preferences = loadPreferences();
+        return preferences.getDouble(calibrationFactorPropertyName, Double.NaN);
     }
 
     @Override

@@ -4,7 +4,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.RasterDataNode;
 import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.image.ResolutionLevel;
-import org.esa.snap.dataio.netcdf.util.AbstractNetcdfMultiLevelImage;
+import org.esa.snap.dataio.netcdf.util.LazyMultiLevelSource;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.CDM;
@@ -16,7 +16,7 @@ import java.awt.image.RenderedImage;
 /**
  * @author Tonio Fincke
  */
-public class S3MultiLevelOpImage extends AbstractNetcdfMultiLevelImage {
+public class S3MultiLevelOpSource extends LazyMultiLevelSource {
 
     private final Variable variable;
     private final int[] dimensionIndexes;
@@ -27,29 +27,21 @@ public class S3MultiLevelOpImage extends AbstractNetcdfMultiLevelImage {
     private int xIndex;
     private int yIndex;
 
-    public S3MultiLevelOpImage(RasterDataNode rasterDataNode, Variable variable,
-                               String[] dimensionNames, int[] dimensionIndexes,
-                               int xIndex, int yIndex) {
+    public S3MultiLevelOpSource(RasterDataNode rasterDataNode, Variable variable,
+                                String[] dimensionNames, int[] dimensionIndexes,
+                                int xIndex, int yIndex) {
         super(rasterDataNode);
         this.variable = variable;
         this.dimensionNames = dimensionNames;
         this.dimensionIndexes = dimensionIndexes;
         this.xIndex = xIndex;
         this.yIndex = yIndex;
-        Attribute attribChunkSizes = variable.findAttribute(CDM.CHUNK_SIZES);
-        if (attribChunkSizes != null) {
-            int tileHeight = attribChunkSizes.getNumericValue(yIndex).intValue();
-            int tileWidth = attribChunkSizes.getNumericValue(xIndex).intValue();
-            int dataBufferType = ImageManager.getDataBufferType(rasterDataNode.getDataType());
-            setImageLayout(ImageManager.createSingleBandedImageLayout(dataBufferType, rasterDataNode.getRasterWidth(),
-                                                                      rasterDataNode.getRasterHeight(), tileWidth, tileHeight));
-        }
     }
 
-    public S3MultiLevelOpImage(RasterDataNode rasterDataNode, Variable variable,
-                               String[] dimensionNames, int[] dimensionIndexes,
-                               RasterDataNode referencedIndexRasterDataNode,
-                               String nameOfReferencingIndexDimension, String nameOfDisplayedDimension) {
+    public S3MultiLevelOpSource(RasterDataNode rasterDataNode, Variable variable,
+                                String[] dimensionNames, int[] dimensionIndexes,
+                                RasterDataNode referencedIndexRasterDataNode,
+                                String nameOfReferencingIndexDimension, String nameOfDisplayedDimension) {
         super(rasterDataNode);
         this.variable = variable;
         this.dimensionNames = dimensionNames;
@@ -60,13 +52,30 @@ public class S3MultiLevelOpImage extends AbstractNetcdfMultiLevelImage {
     }
 
     @Override
+    public Dimension getImageTileSize() {
+        Dimension tileSize = null;
+        Attribute attribChunkSizes = variable.findAttribute(CDM.CHUNK_SIZES);
+        if (attribChunkSizes != null) {
+            Number tileHeight = attribChunkSizes.getNumericValue(yIndex);
+            Number tileWidth = attribChunkSizes.getNumericValue(xIndex);
+            if (tileWidth != null && tileHeight != null) {
+                tileSize = new Dimension(tileWidth.intValue(), tileHeight.intValue());
+            }
+        }
+        if (tileSize == null) {
+            tileSize = super.getImageTileSize();
+        }
+        return tileSize;
+    }
+
+    @Override
     protected RenderedImage createImage(int level) {
         RasterDataNode rasterDataNode = getRasterDataNode();
         int dataBufferType = ImageManager.getDataBufferType(rasterDataNode.getDataType());
         int sceneRasterWidth = rasterDataNode.getRasterWidth();
         int sceneRasterHeight = rasterDataNode.getRasterHeight();
         ResolutionLevel resolutionLevel = ResolutionLevel.create(getModel(), level);
-        Dimension imageTileSize = new Dimension(getTileWidth(), getTileHeight());
+        Dimension imageTileSize = getImageTileSize();
         if(referencedIndexRasterDataNode  != null && nameOfReferencingIndexDimension != null && nameOfDisplayedDimension != null) {
             return new S3ReferencingVariableOpImage(variable, dataBufferType, sceneRasterWidth, sceneRasterHeight,
                                                     imageTileSize, resolutionLevel, dimensionIndexes,

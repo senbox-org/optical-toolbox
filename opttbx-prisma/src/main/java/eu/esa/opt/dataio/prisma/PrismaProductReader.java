@@ -54,7 +54,7 @@ import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToFile;
 
 public class PrismaProductReader extends AbstractProductReader {
 
-    private final Map<Variable, Array> _varCache = new HashMap<>();
+    private final Map<String, Array> _varCache = new HashMap<>();
     private final Map<ComparableIntArray, GeoCoding> _geoCodingLookUp = new HashMap<>();
     private final Map<ComparableIntArray, TimeCoding> _timeCodingLookUp = new HashMap<>();
     private final TreeSet<ComparableIntArray> _dimsSet = new TreeSet<>();
@@ -564,9 +564,10 @@ public class PrismaProductReader extends AbstractProductReader {
             PrismaBand destBand, int destWidth, int destHeight, ProductData destBuffer,
             ProgressMonitor pm) throws IOException {
         final Variable variable = destBand.variable;
-        if ("1".equals(_productLevel) && !_varCache.containsKey(variable)) {
+        final String variableName = variable.getFullName();
+        if ("1".equals(_productLevel) && !_varCache.containsKey(variableName)) {
             synchronized (_hdfFile) {
-                _varCache.put(variable, variable.read());
+                _varCache.put(variableName, variable.read());
             }
         }
 
@@ -575,8 +576,8 @@ public class PrismaProductReader extends AbstractProductReader {
         final int[] stride = {srcStepY, srcStepX};
         try {
             final Object sliceData;
-            if (_varCache.containsKey(variable)) {
-                sliceData = _varCache.get(variable).section(sliceOffset, sliceDimensions, stride).copyTo1DJavaArray();
+            if (_varCache.containsKey(variableName)) {
+                sliceData = _varCache.get(variableName).section(sliceOffset, sliceDimensions, stride).copyTo1DJavaArray();
             } else {
                 final Section sect = new Section(sliceOffset, sliceDimensions, stride);
                 synchronized (_hdfFile) {
@@ -594,10 +595,12 @@ public class PrismaProductReader extends AbstractProductReader {
             PrismaBand destBand, int destWidth, int destHeight, ProductData destBuffer,
             ProgressMonitor pm) throws IOException {
         final Variable cubeVar = destBand.variable;
+        final String variableName = cubeVar.getFullName();
         final int cubeIndex = destBand.cubeIndex;
-        if ("1".equals(_productLevel) && cubeVar.getShortName().contains("Cube") && !_varCache.containsKey(cubeVar)) {
+        if ("1".equals(_productLevel) && variableName.contains("Cube") && !_varCache.containsKey(variableName)) {
             synchronized (_hdfFile) {
-                _varCache.put(cubeVar, cubeVar.read());
+                final Array dataArray = cubeVar.read();
+                _varCache.put(variableName, dataArray);
             }
         }
         final int[] sliceOffset = new int[]{sourceOffsetY, cubeIndex, sourceOffsetX};
@@ -605,8 +608,8 @@ public class PrismaProductReader extends AbstractProductReader {
         final int[] stride = new int[]{sourceStepY, 1, sourceStepX};
         try {
             final Object sliceData;
-            if (_varCache.containsKey(cubeVar)) {
-                sliceData = _varCache.get(cubeVar).section(sliceOffset, sliceDimensions, stride).copyTo1DJavaArray();
+            if (_varCache.containsKey(variableName)) {
+                sliceData = _varCache.get(variableName).section(sliceOffset, sliceDimensions, stride).copyTo1DJavaArray();
             } else {
                 final Section sect = new Section(sliceOffset, sliceDimensions, stride);
                 synchronized (_hdfFile) {

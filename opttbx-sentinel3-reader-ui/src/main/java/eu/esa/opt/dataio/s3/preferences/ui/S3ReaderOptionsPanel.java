@@ -11,17 +11,17 @@ import eu.esa.opt.dataio.s3.olci.OlciLevel1ProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
 import eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory;
 import eu.esa.opt.dataio.s3.slstr.SlstrSstProductFactory;
+import eu.esa.opt.dataio.s3.util.CalibrationUtils;
 import org.esa.snap.rcp.SnapApp;
 import org.esa.snap.rcp.preferences.PreferenceUtils;
 import org.esa.snap.runtime.Config;
+import org.esa.snap.ui.ModalDialog;
 import org.openide.awt.Mnemonics;
 import org.openide.util.NbBundle;
 
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -83,6 +83,30 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
                                    NbBundle.getMessage(S3ReaderOptionsPanel.class,
                                                        "S3ReaderOptionsPanel.merisPixelGeocodingsCheckBox.text")); // NOI18N
 
+        JButton slstrLevel1bCalibrationEditButton = new JButton("Edit");
+        slstrLevel1bCalibrationEditButton.setName("Sentinel-S3 SLSTR L1B Custom Calibration");
+        slstrLevel1bCalibrationEditButton.addActionListener(e -> {
+            openEditCalibrationDialog(e, CalibrationUtils.PRODUCT_TYPE.SLSTRL1B);
+        });
+
+        JPanel slstrL1BCalibrationPanel = new JPanel();
+        slstrL1BCalibrationPanel.setLayout(new BoxLayout(slstrL1BCalibrationPanel, BoxLayout.X_AXIS));
+        slstrL1BCalibrationPanel.add(slstrL1BCalibrationCheckBox);
+        slstrL1BCalibrationPanel.add(Box.createHorizontalStrut(10));
+        slstrL1BCalibrationPanel.add(slstrLevel1bCalibrationEditButton);
+
+        JButton olciL1CalibrationEditButton = new JButton("Edit");
+        olciL1CalibrationEditButton.setName("Sentinel-S3 OLCI L1 Custom Calibration");
+        olciL1CalibrationEditButton.addActionListener(e -> {
+            openEditCalibrationDialog(e, CalibrationUtils.PRODUCT_TYPE.OLCIL1);
+        });
+
+        JPanel olciL1CalibrationPanel = new JPanel();
+        olciL1CalibrationPanel.setLayout(new BoxLayout(olciL1CalibrationPanel, BoxLayout.X_AXIS));
+        olciL1CalibrationPanel.add(olciL1CalibrationCheckBox);
+        olciL1CalibrationPanel.add(Box.createHorizontalStrut(10));
+        olciL1CalibrationPanel.add(olciL1CalibrationEditButton);
+
         JPanel slstrLabel = PreferenceUtils.createTitleLabel("SLSTR");
         JPanel olciLabel = PreferenceUtils.createTitleLabel("OLCI");
         JPanel merisLabel = PreferenceUtils.createTitleLabel("MERIS");
@@ -100,13 +124,13 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
         add(slstrLabel);
         add(slstrL1BPixelGeocodingsCheckBox);
         add(slstrL1BOrphanPixelsCheckBox);
-        add(slstrL1BCalibrationCheckBox);
+        add(slstrL1BCalibrationPanel);
         add(slstrL1BS3MPCRecommendationCheckBox);
         add(slstrL2SSTPixelGeocodingsCheckBox);
         add(slstrL2SSTPixelGeocodingsCheckBox);
         add(olciLabel);
         add(olciPixelGeocodingsCheckBox);
-        add(olciL1CalibrationCheckBox);
+        add(olciL1CalibrationPanel);
         add(merisLabel);
         add(merisPixelGeocodingsCheckBox);
         add(separator);
@@ -219,4 +243,12 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
         return true;
     }
 
+    private void openEditCalibrationDialog(ActionEvent e, CalibrationUtils.PRODUCT_TYPE productType) {
+        JButton button =(JButton) e.getSource();
+        String title = button.getName();
+        Preferences preferences = Config.instance("opttbx").load().preferences();
+
+        S3CustomCalibrationWindow calibrationWindow = new S3CustomCalibrationWindow(SwingUtilities.getWindowAncestor(this), title, ModalDialog.ID_OK_CANCEL, null, preferences, productType);
+        calibrationWindow.show();
+    }
 }
