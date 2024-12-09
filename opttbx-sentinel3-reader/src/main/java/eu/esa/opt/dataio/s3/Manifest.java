@@ -31,6 +31,8 @@ public interface Manifest {
 
     ProductData.UTC getStopTime();
 
+    int getRasterWidth();
+
     List<String> getFileNames(String schema);
 
     List<String> getFileNames(String[] excluded);

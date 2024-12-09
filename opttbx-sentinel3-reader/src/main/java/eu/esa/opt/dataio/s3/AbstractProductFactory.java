@@ -548,12 +548,11 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
     private Document createXmlDocument(InputStream inputStream) throws IOException {
-        final String msg = "Cannot create document from manifest XML file.";
-
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
         } catch (SAXException | ParserConfigurationException e) {
-            getLogger().log(Level.SEVERE, msg, e);
+            final String msg = "Cannot create document from manifest XML file.";
+            logger.log(Level.SEVERE, msg, e);
             throw new IOException(msg, e);
         }
     }

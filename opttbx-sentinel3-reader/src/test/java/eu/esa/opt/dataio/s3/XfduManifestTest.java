@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,68 +20,114 @@ import static org.junit.Assert.*;
  */
 public class XfduManifestTest {
 
-
-    private static Manifest manifestTest;
+    private static Manifest slstr_manifest = null;
+    private static Manifest olci_manifest = null;
 
     @BeforeClass
     public static void setUp() throws ParserConfigurationException, IOException, SAXException {
-        try (InputStream stream = XfduManifestTest.class.getResourceAsStream("xfdumanifest.xml")) {
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
-            manifestTest = XfduManifest.createManifest(doc);
+        try (final InputStream stream = XfduManifestTest.class.getResourceAsStream("slstr_xfdumanifest.xml")) {
+            final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
+            slstr_manifest = XfduManifest.createManifest(doc);
+        }
+
+        try (final InputStream stream = XfduManifestTest.class.getResourceAsStream("olci_xfdumanifest.xml")) {
+            final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
+            olci_manifest = XfduManifest.createManifest(doc);
         }
     }
 
     @Test
+    @STTM("SNAP-3711")
     public void testGetProductname() throws Exception {
-        assertEquals("S3A_SL_1_RBT____20160820T201637_20160820T201937_20160820T222707_0179_007_370_4500_MAR_O_NR_001.SEN3", manifestTest.getProductName());
+        assertEquals("S3B_SL_1_RBT____20241113T081123_20241113T081423_20241113T095357_0179_099_363_3240_PS2_O_NR_004.SEN3", slstr_manifest.getProductName());
+        assertEquals("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3", olci_manifest.getProductName());
     }
 
     @Test
+    @STTM("SNAP-3711")
     public void testGetProductType() throws Exception {
-        assertEquals("SL_1_RBT", manifestTest.getProductType());
+        assertEquals("SL_1_RBT", slstr_manifest.getProductType());
+        assertEquals("OL_1_EFR", olci_manifest.getProductType());
     }
 
     @Test
+    @STTM("SNAP-3711")
     public void testGetDescription() throws Exception {
-        assertEquals("Sentinel 3 SYN Level 2", manifestTest.getDescription());
+        assertEquals("SENTINEL-3 SLSTR Level 1 package", slstr_manifest.getDescription());
+        assertEquals("SENTINEL-3 OLCI Level 1 Earth Observation Full Resolution Product", olci_manifest.getDescription());
     }
 
     @Test
+    @STTM("SNAP-3711")
     public void testGetStartTime() throws Exception {
-        ProductData.UTC expected = ProductData.UTC.parse("2013-06-21T10:09:20.646463", "yyyy-MM-dd'T'HH:mm:ss");
-        final ProductData.UTC startTime = manifestTest.getStartTime();
-        assertTrue(expected.equalElems(startTime));
+        final ProductData.UTC expected_slstr = ProductData.UTC.parse("2024-11-13T08:11:22.850867", "yyyy-MM-dd'T'HH:mm:ss");
+        ProductData.UTC startTime = slstr_manifest.getStartTime();
+        assertTrue(expected_slstr.equalElems(startTime));
+
+        final ProductData.UTC expected_olci = ProductData.UTC.parse("2024-05-26T15:58:49.283029", "yyyy-MM-dd'T'HH:mm:ss");
+        startTime = olci_manifest.getStartTime();
+        assertTrue(expected_olci.equalElems(startTime));
     }
 
     @Test
+    @STTM("SNAP-3711")
     public void testGetStopTime() throws Exception {
-        ProductData.UTC expected = ProductData.UTC.parse("2013-06-21T10:14:13.646463", "yyyy-MM-dd'T'HH:mm:ss");
-        final ProductData.UTC stopTime = manifestTest.getStopTime();
-        assertTrue(expected.equalElems(stopTime));
+        final ProductData.UTC expected_slstr = ProductData.UTC.parse("2024-11-13T08:14:22.850867", "yyyy-MM-dd'T'HH:mm:ss");
+        ProductData.UTC stopTime = slstr_manifest.getStopTime();
+        assertTrue(expected_slstr.equalElems(stopTime));
+
+        final ProductData.UTC expected_olci = ProductData.UTC.parse("2024-05-26T16:01:49.283029", "yyyy-MM-dd'T'HH:mm:ss");
+        stopTime = olci_manifest.getStopTime();
+        assertTrue(expected_olci.equalElems(stopTime));
     }
 
     @Test
+    @STTM("SNAP-3711")
     public void testGetFileNames() {
-        String[] excluded = new String[0];
-        List<String> fileNames = manifestTest.getFileNames(excluded);
-        assertEquals(67, fileNames.size());
-        assertEquals("r0400.nc", fileNames.get(0));
-        assertEquals("r0560.nc", fileNames.get(5));
-        assertEquals("r0550n.nc", fileNames.get(18));
-        assertEquals("r1375o.nc", fileNames.get(27));
-        assertEquals("flags.nc", fileNames.get(66));
+        final String[] excluded = new String[0];
+
+        final List<String> slstrFileNames = slstr_manifest.getFileNames(excluded);
+        assertEquals(97, slstrFileNames.size());
+        assertEquals("viscal.nc", slstrFileNames.get(0));
+        assertEquals("flags_fn.nc", slstrFileNames.get(22));
+        assertEquals("met_tx.nc", slstrFileNames.get(45));
+        assertEquals("S4_quality_bo.nc", slstrFileNames.get(61));
+        assertEquals("S7_BT_io.nc", slstrFileNames.get(83));
+
+        final List<String> olciFileNames = olci_manifest.getFileNames(excluded);
+        assertEquals(50, olciFileNames.size());
+        assertEquals("Oa01_radiance.nc", olciFileNames.get(0));
+        assertEquals("Oa06_radiance_unc.nc", olciFileNames.get(11));
+        assertEquals("Oa14_radiance_unc.nc", olciFileNames.get(27));
+        assertEquals("Oa20_radiance.nc", olciFileNames.get(38));
+        assertEquals("geo_coordinates.nc", olciFileNames.get(42));
     }
 
     @Test
+    @STTM("SNAP-3711")
     public void testGetFileNames_Exclusions() {
-        String[] excluded = new String[]{"aerosolModelIndex", "pixelStatusFlags"};
-        List<String> fileNames = manifestTest.getFileNames(excluded);
-        assertEquals(65, fileNames.size());
-        assertEquals(false, fileNames.contains("amin.nc"));
-        assertEquals(false, fileNames.contains("flags.nc"));
-        assertEquals("r0560.nc", fileNames.get(5));
-        assertEquals("r0550n.nc", fileNames.get(18));
-        assertEquals("r1375o.nc", fileNames.get(27));
+        final String[] excluded = {"removedPixelsData"};
+        final List<String> fileNames = olci_manifest.getFileNames(excluded);
+        assertEquals(49, fileNames.size());
+
+        assertFalse(fileNames.contains("removed_pixels.nc"));
+        assertEquals("Oa03_radiance_unc.nc", fileNames.get(5));
+        assertEquals("Oa10_radiance.nc", fileNames.get(18));
+        assertEquals("Oa14_radiance_unc.nc", fileNames.get(27));
     }
 
+    @Test
+    @STTM("SNAP-3711")
+    public void testRemoveUnderbarsAtEnd() {
+        assertEquals("bibo", XfduManifest.removeUnderbarsAtEnd("bibo_"));
+        assertEquals("OL_1_EFR", XfduManifest.removeUnderbarsAtEnd("OL_1_EFR___"));
+
+        assertEquals("Heffalump", XfduManifest.removeUnderbarsAtEnd("Heffalump"));
+    }
+
+    @Test
+    @STTM("SNAP-3711")
+    public void testGetRasterWidth() {
+        assertEquals(-1, slstr_manifest.getRasterWidth());
+    }
 }

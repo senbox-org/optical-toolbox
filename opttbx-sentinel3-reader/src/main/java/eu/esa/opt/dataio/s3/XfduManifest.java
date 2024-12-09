@@ -5,11 +5,7 @@ import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.ArrayUtils;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.xml.xpath.XPathFactory;
 import java.text.ParseException;
@@ -26,6 +22,9 @@ public class XfduManifest implements Manifest {
     private final XPathHelper xPathHelper;
     private MetadataElement manifestElement;
 
+    private String productType;
+    private String productName;
+
     public static Manifest createManifest(Document manifestDocument) {
         return new XfduManifest(manifestDocument);
     }
@@ -33,19 +32,27 @@ public class XfduManifest implements Manifest {
     private XfduManifest(Document manifestDocument) {
         doc = manifestDocument;
         xPathHelper = new XPathHelper(XPathFactory.newInstance().newXPath());
+        productType = null;
+        productName = null;
     }
 
     @Override
     public String getProductName() {
-        final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
-        return  xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/productName", gpi);
+        if (productName == null) {
+            final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
+            productName = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/productName", gpi);
+        }
+        return productName;
     }
 
     @Override
     public String getProductType() {
-        final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
-        String typeString = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/productType", gpi);
-        return removeUnderbarsAtEnd(typeString);
+        if (productType == null) {
+            final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
+            final String typeString = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/productType", gpi);
+            productType = removeUnderbarsAtEnd(typeString);
+        }
+        return productType;
     }
 
     @Override
@@ -61,6 +68,11 @@ public class XfduManifest implements Manifest {
     @Override
     public ProductData.UTC getStopTime() {
         return getTime("stopTime");
+    }
+
+    @Override
+    public int getRasterWidth() {
+        return -1;
     }
 
     @Override
@@ -85,7 +97,11 @@ public class XfduManifest implements Manifest {
                 String id = (attr == null) ? "" : attr.getValue();
 
                 if (!ArrayUtils.isMemberOf(id, excluded)) {
-                    final String fileName = xPathHelper.getString("./byteStream/fileLocation/@href", item);
+                    String fileName = xPathHelper.getString("./byteStream/fileLocation/@href", item);
+                    if (fileName.startsWith("./")) {
+                        fileName = fileName.substring(2);
+                    }
+
                     if (!fileNameList.contains(fileName)) {
                         fileNameList.add(fileName);
                     }
@@ -129,7 +145,7 @@ public class XfduManifest implements Manifest {
                         MetadataElement element = new MetadataElement(nodeName);
                         rootMetadata.addElement(element);
                         final String textContent = node.getTextContent().trim();
-                        if (!textContent.equals("")) {
+                        if (!"".equals(textContent)) {
                             element.setAttributeString(nodeName, textContent);
                         }
                         addAttributesToElement(node, element);
@@ -154,7 +170,7 @@ public class XfduManifest implements Manifest {
             ProductData attributeTextContent = ProductData.createInstance(nodeAttributeValue);
             String attributeNodeName = removeNamespace(nodeAttribute.getNodeName());
             final MetadataAttribute attribute = new MetadataAttribute(attributeNodeName,
-                                                                      attributeTextContent, true);
+                    attributeTextContent, true);
             element.addAttribute(attribute);
         }
     }
@@ -208,9 +224,9 @@ public class XfduManifest implements Manifest {
         }
     }
 
+    static String removeUnderbarsAtEnd(String typeString) {
+        final char[] chars = typeString.toCharArray();
 
-    private String removeUnderbarsAtEnd(String typeString) {
-        char[] chars = typeString.toCharArray();
         int endIndex = chars.length;
         for (int i = chars.length - 1; i >= 0; i--) {
             if (chars[i] != '_') {
@@ -218,7 +234,7 @@ public class XfduManifest implements Manifest {
                 break;
             }
         }
-        return typeString.substring(0, endIndex+1);
-    }
 
+        return typeString.substring(0, endIndex + 1);
+    }
 }

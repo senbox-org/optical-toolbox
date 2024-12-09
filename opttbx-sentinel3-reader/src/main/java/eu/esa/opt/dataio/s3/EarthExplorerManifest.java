@@ -93,6 +93,11 @@ class EarthExplorerManifest implements Manifest {
     }
 
     @Override
+    public int getRasterWidth() {
+        throw new RuntimeException("not implemented");
+    }
+
+    @Override
     public final List<String> getFileNames(String schema) {
         final String xPath = String.format("//Data_Object_Descriptor[Type='%s']", schema);
         final NodeList nodeList = xPathHelper.getNodeList(xPath, doc);
