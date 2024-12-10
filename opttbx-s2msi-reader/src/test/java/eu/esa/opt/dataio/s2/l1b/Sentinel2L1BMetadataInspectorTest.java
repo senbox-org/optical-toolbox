@@ -25,6 +25,7 @@ public class Sentinel2L1BMetadataInspectorTest {
     @Before
     public void setup() {
         String productPath = System.getProperty(TestUtil.PROPERTYNAME_DATA_DIR);
+        Assume.assumeNotNull(productPath);
         Path sentinel2TestProductsPath = Paths.get(productPath, SENTINEL2_DIR);
         Assume.assumeTrue(Files.exists(sentinel2TestProductsPath));
     }

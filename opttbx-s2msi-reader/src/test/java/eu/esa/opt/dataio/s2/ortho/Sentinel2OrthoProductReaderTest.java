@@ -18,10 +18,7 @@ import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.converters.JtsGeometryConverter;
 import org.esa.snap.runtime.Engine;
 import org.esa.snap.runtime.LogUtils4Tests;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.locationtech.jts.geom.Geometry;
 
 import java.awt.Rectangle;
@@ -67,6 +64,7 @@ public class Sentinel2OrthoProductReaderTest {
          * Run these tests only if Sentinel 2 products test directory exists and is set
          */
         String productPath = System.getProperty(TestUtil.PROPERTYNAME_DATA_DIR);
+        Assume.assumeNotNull(productPath);
         sentinel2TestProductsPath = Paths.get(productPath, SENTINEL2_DIR);
         assumeTrue(Files.exists(sentinel2TestProductsPath));
     }
