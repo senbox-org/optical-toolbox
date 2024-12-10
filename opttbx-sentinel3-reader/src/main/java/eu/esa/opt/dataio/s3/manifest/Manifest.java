@@ -1,4 +1,4 @@
-package eu.esa.opt.dataio.s3;/*
+package eu.esa.opt.dataio.s3.manifest;/*
  * Copyright (C) 2012 Brockmann Consult GmbH (info@brockmann-consult.de)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -32,6 +32,8 @@ public interface Manifest {
     ProductData.UTC getStopTime();
 
     int getRasterWidth();
+
+    int getRasterHeight();
 
     List<String> getFileNames(String schema);
 

@@ -1,4 +1,4 @@
-package eu.esa.opt.dataio.s3;
+package eu.esa.opt.dataio.s3.manifest;
 
 import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.ProductData;
@@ -128,6 +128,14 @@ public class XfduManifestTest {
     @Test
     @STTM("SNAP-3711")
     public void testGetRasterWidth() {
-        assertEquals(-1, slstr_manifest.getRasterWidth());
+        assertEquals(3000, slstr_manifest.getRasterWidth());
+        assertEquals(4865, olci_manifest.getRasterWidth());
+    }
+
+    @Test
+    @STTM("SNAP-3711")
+    public void testGetRasterHeight() {
+        assertEquals(2400, slstr_manifest.getRasterHeight());
+        assertEquals(4100, olci_manifest.getRasterHeight());
     }
 }

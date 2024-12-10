@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.s3.slstr;
 
 import com.bc.ceres.core.VirtualDir;
-import eu.esa.opt.dataio.s3.Manifest;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import org.esa.snap.core.datamodel.Product;
 

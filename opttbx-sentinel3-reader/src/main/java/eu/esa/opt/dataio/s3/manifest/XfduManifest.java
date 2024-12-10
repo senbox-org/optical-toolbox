@@ -1,4 +1,4 @@
-package eu.esa.opt.dataio.s3;
+package eu.esa.opt.dataio.s3.manifest;
 
 import eu.esa.opt.dataio.util.XPathHelper;
 import org.esa.snap.core.datamodel.MetadataAttribute;
@@ -17,13 +17,15 @@ import java.util.List;
  */
 public class XfduManifest implements Manifest {
 
-    protected static final String MANIFEST_FILE_NAME = "xfdumanifest.xml";
+    public static final String MANIFEST_FILE_NAME = "xfdumanifest.xml";
+
     private final Document doc;
     private final XPathHelper xPathHelper;
     private MetadataElement manifestElement;
 
     private String productType;
     private String productName;
+    private TypeConfiguration typeConfiguration;
 
     public static Manifest createManifest(Document manifestDocument) {
         return new XfduManifest(manifestDocument);
@@ -34,6 +36,7 @@ public class XfduManifest implements Manifest {
         xPathHelper = new XPathHelper(XPathFactory.newInstance().newXPath());
         productType = null;
         productName = null;
+        typeConfiguration = null;
     }
 
     @Override
@@ -48,9 +51,7 @@ public class XfduManifest implements Manifest {
     @Override
     public String getProductType() {
         if (productType == null) {
-            final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
-            final String typeString = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/productType", gpi);
-            productType = removeUnderbarsAtEnd(typeString);
+            ensureTypeInitialized();
         }
         return productType;
     }
@@ -72,7 +73,14 @@ public class XfduManifest implements Manifest {
 
     @Override
     public int getRasterWidth() {
-        return -1;
+        ensureTypeInitialized();
+        return typeConfiguration.getRasterWidth();
+    }
+
+    @Override
+    public int getRasterHeight() {
+        ensureTypeInitialized();
+        return typeConfiguration.getRasterHeight();
     }
 
     @Override
@@ -236,5 +244,21 @@ public class XfduManifest implements Manifest {
         }
 
         return typeString.substring(0, endIndex + 1);
+    }
+
+    private void ensureTypeInitialized() {
+        if (typeConfiguration == null) {
+            final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
+            final String typeString = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/productType", gpi);
+            productType = removeUnderbarsAtEnd(typeString);
+
+            if (productType.contains("SL_1_RBT")) {
+                typeConfiguration = new SL_1_RBT_Configuration();
+            } else  {
+                typeConfiguration = new OL_1_EFR_Configuration();
+            }
+        }
+
+
     }
 }

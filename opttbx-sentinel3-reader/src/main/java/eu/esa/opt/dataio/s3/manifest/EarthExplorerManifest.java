@@ -13,7 +13,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
  */
 
-package eu.esa.opt.dataio.s3;
+package eu.esa.opt.dataio.s3.manifest;
 
 import eu.esa.opt.dataio.util.XPathHelper;
 import org.esa.snap.core.datamodel.MetadataAttribute;
@@ -94,6 +94,11 @@ class EarthExplorerManifest implements Manifest {
 
     @Override
     public int getRasterWidth() {
+        throw new RuntimeException("not implemented");
+    }
+
+    @Override
+    public int getRasterHeight() {
         throw new RuntimeException("not implemented");
     }
 

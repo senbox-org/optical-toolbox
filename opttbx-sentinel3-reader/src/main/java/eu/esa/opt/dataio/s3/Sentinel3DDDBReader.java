@@ -2,7 +2,10 @@ package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import org.esa.snap.core.dataio.AbstractProductReader;
+import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
@@ -13,6 +16,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -41,15 +45,25 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         virtualDir = getVirtualDir(inputPath);
 
         final Manifest manifest = readManifest();
-
-        final String productName = manifest.getProductName();
-        final String productType = manifest.getProductType();
-
+        final Product product = constructProductFromManifest(manifest, this);
 
 
         final List<String> fileNames = manifest.getFileNames(new String[0]);
+        product.setAutoGrouping("");
 
-        return null;
+        return product;
+    }
+
+    static Product constructProductFromManifest(Manifest manifest, ProductReader productReader) {
+        final String productName = manifest.getProductName();
+        final String productType = manifest.getProductType();
+        final int rasterWidth = manifest.getRasterWidth();
+        final int rasterHeight = manifest.getRasterHeight();
+        final Product product = new Product(productName, productType, rasterWidth, rasterHeight, productReader);
+
+        product.setDescription(manifest.getDescription());
+        product.setFileLocation(new File(productReader.getInput().toString()));
+        return product;
     }
 
     private Manifest readManifest() throws IOException {
