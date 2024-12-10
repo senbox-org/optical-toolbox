@@ -8,10 +8,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.subset.PixelSubsetRegion;
 import org.esa.snap.runtime.Engine;
 import org.esa.snap.runtime.LogUtils4Tests;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -53,6 +50,7 @@ public class Sentinel2L1BProductReaderTest {
          * Run these tests only if Sentinel 2 products test directory exists and is set
          */
         String productPath = System.getProperty(TestUtil.PROPERTYNAME_DATA_DIR);
+        Assume.assumeNotNull(productPath);
         sentinel2TestProductsPath = Paths.get(productPath, SENTINEL2_DIR);
         assumeTrue(Files.exists(sentinel2TestProductsPath));
     }
