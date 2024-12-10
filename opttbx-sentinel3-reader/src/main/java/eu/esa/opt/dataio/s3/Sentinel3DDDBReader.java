@@ -49,7 +49,6 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
 
 
         final List<String> fileNames = manifest.getFileNames(new String[0]);
-        product.setAutoGrouping("");
 
         return product;
     }
