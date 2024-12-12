@@ -178,8 +178,8 @@ public class CoregistrationOpTest {
         parameters.put("radius", "32, 28, 24, 20, 16, 12, 8");
 
         Map<String, Product> sourceProducts = new HashMap<String, Product>();
-        sourceProducts.put("Master", masterSourceProduct);
-        sourceProducts.put("Slave", slaveSourceProduct);
+        sourceProducts.put("sourceProduct", masterSourceProduct);
+        sourceProducts.put("sourceProduct.1", slaveSourceProduct);
 
         // create the operator
         Operator operator = GPF.getDefaultInstance().createOperator("CoregistrationOp", parameters, sourceProducts, null);
