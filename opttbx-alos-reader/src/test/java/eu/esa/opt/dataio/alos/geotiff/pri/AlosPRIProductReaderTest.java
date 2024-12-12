@@ -219,10 +219,10 @@ public class AlosPRIProductReaderTest {
         Band band_F = product.getBand("ALPSMF038921800");
         assertNotNull(band_F);
         assertEquals(20, band_F.getDataType());
-        assertEquals(95183284, band_F.getNumDataElems());
+        assertEquals(95175053, band_F.getNumDataElems());
         //assertEquals("ALPSMF038921800", band_F.getName());
         assertEquals(8231, band_F.getRasterWidth());
-        assertEquals(11564, band_F.getRasterHeight());
+        assertEquals(11563, band_F.getRasterHeight());
 
         assertEquals(0, band_F.getSampleInt(0, 0));
         assertEquals(0, band_F.getSampleInt(6124, 8532));

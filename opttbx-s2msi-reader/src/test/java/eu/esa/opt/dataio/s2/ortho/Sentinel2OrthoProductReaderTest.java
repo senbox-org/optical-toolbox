@@ -195,8 +195,8 @@ public class Sentinel2OrthoProductReaderTest {
         pixelValue = band_view_azimuth_B5.getSampleFloat(8, 3);
         assertEquals(92.8102f, pixelValue, 4);
 
-        assertNotNull(finalProduct.getTiePointGrid("tco3"));
-        TiePointGrid tiePointGrid_total_column_water_vapour = finalProduct.getTiePointGrid("tco3");
+        assertNotNull(finalProduct.getTiePointGrid("tcwv"));
+        TiePointGrid tiePointGrid_total_column_water_vapour = finalProduct.getTiePointGrid("tcwv");
         assertEquals(1220.0, tiePointGrid_total_column_water_vapour.getSubSamplingX(),4);
         assertEquals(1220.0, tiePointGrid_total_column_water_vapour.getSubSamplingY(),4);
         pixelValue = tiePointGrid_total_column_water_vapour.getPixelFloat(700, 772);
@@ -208,8 +208,8 @@ public class Sentinel2OrthoProductReaderTest {
         pixelValue = tiePointGrid_total_column_water_vapour.getPixelFloat(10276, 10540);
         assertEquals(15.901403f, pixelValue, 0.1);
 
-        assertNotNull(finalProduct.getTiePointGrid("tcwv"));
-        TiePointGrid tiePointGrid_total_column_ozone = finalProduct.getTiePointGrid("tcwv");
+        assertNotNull(finalProduct.getTiePointGrid("tco3"));
+        TiePointGrid tiePointGrid_total_column_ozone = finalProduct.getTiePointGrid("tco3");
         assertEquals(1220.0, tiePointGrid_total_column_ozone.getSubSamplingX(),4);
         assertEquals(1220.0, tiePointGrid_total_column_ozone.getSubSamplingY(),4);
         pixelValue = tiePointGrid_total_column_ozone.getPixelFloat(700, 772);
