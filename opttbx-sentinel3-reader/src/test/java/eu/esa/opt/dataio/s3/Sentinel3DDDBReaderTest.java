@@ -86,6 +86,11 @@ public class Sentinel3DDDBReaderTest {
             }
 
             @Override
+            public String getBaselineCollection() {
+                throw new RuntimeException("not implemented");
+            }
+
+            @Override
             public String getDescription() {
                 return "SENTINEL-3 OLCI Level 1 Earth Observation Full Resolution Product";
             }

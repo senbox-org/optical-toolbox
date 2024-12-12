@@ -25,6 +25,7 @@ public class XfduManifest implements Manifest {
 
     private String productType;
     private String productName;
+    private String baselineCollection;
     private TypeConfiguration typeConfiguration;
 
     public static Manifest createManifest(Document manifestDocument) {
@@ -36,6 +37,7 @@ public class XfduManifest implements Manifest {
         xPathHelper = new XPathHelper(XPathFactory.newInstance().newXPath());
         productType = null;
         productName = null;
+        baselineCollection = null;
         typeConfiguration = null;
     }
 
@@ -54,6 +56,15 @@ public class XfduManifest implements Manifest {
             ensureTypeInitialized();
         }
         return productType;
+    }
+
+    @Override
+    public String getBaselineCollection() {
+        if (baselineCollection == null) {
+            final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
+            baselineCollection = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/baselineCollection", gpi);
+        }
+        return baselineCollection;
     }
 
     @Override

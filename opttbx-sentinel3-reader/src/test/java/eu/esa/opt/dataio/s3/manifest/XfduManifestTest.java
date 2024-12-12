@@ -52,6 +52,13 @@ public class XfduManifestTest {
 
     @Test
     @STTM("SNAP-3711")
+    public void testGetbaselineCollection() {
+        assertEquals("004", olci_manifest.getBaselineCollection());
+        assertEquals("004", slstr_manifest.getBaselineCollection());
+    }
+
+    @Test
+    @STTM("SNAP-3711")
     public void testGetDescription() throws Exception {
         assertEquals("SENTINEL-3 SLSTR Level 1 package", slstr_manifest.getDescription());
         assertEquals("SENTINEL-3 OLCI Level 1 Earth Observation Full Resolution Product", olci_manifest.getDescription());

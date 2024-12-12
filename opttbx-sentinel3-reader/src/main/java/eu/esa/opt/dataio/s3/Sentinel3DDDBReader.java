@@ -2,6 +2,8 @@ package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
+import eu.esa.opt.dataio.s3.dddb.DDDB;
+import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import org.esa.snap.core.dataio.AbstractProductReader;
@@ -26,6 +28,7 @@ import java.util.List;
 
 public class Sentinel3DDDBReader extends AbstractProductReader {
 
+    private final DDDB dddb;
     private VirtualDir virtualDir;
 
     /**
@@ -37,6 +40,7 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
     protected Sentinel3DDDBReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         virtualDir = null;
+        dddb = DDDB.getInstance();
     }
 
     @Override
@@ -47,8 +51,12 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         final Manifest manifest = readManifest();
         final Product product = constructProductFromManifest(manifest, this);
 
+        final ProductDescriptor productDescriptor = dddb.getProductDescriptor(manifest.getProductType(), manifest.getBaselineCollection());
 
-        final List<String> fileNames = manifest.getFileNames(new String[0]);
+        final List<String> fileNames = manifest.getFileNames(productDescriptor.getExcludedIdsAsArray());
+        for (final String fileName : fileNames) {
+
+        }
 
         return product;
     }

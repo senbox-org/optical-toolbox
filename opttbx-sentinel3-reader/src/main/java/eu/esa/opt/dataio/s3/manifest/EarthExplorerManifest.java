@@ -68,6 +68,11 @@ class EarthExplorerManifest implements Manifest {
     }
 
     @Override
+    public String getBaselineCollection() {
+        throw new RuntimeException("not implemented");
+    }
+
+    @Override
     public final String getDescription() {
         return xPathHelper.getString("//File_Description", doc);
     }
