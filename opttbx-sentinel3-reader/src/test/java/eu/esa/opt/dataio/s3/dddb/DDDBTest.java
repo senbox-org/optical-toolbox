@@ -44,14 +44,34 @@ public class DDDBTest {
 
     @Test
     @STTM("SNAP-3711")
-    public void testGetResourceName() {
-        assertEquals("OL_1_EFR_004.json", DDDB.getResourceName("OL_1_EFR", "004"));
-        assertEquals("SL_1_RBT_004.json", DDDB.getResourceName("SL_1_RBT", "004"));
+    public void testGetResourceFileName() {
+        assertEquals("OL_1_EFR_004.json", DDDB.getResourceFileName("OL_1_EFR", "004"));
+        assertEquals("SL_1_RBT_004.json", DDDB.getResourceFileName("SL_1_RBT", "004"));
+
+        assertEquals("SL_1_RBT.json", DDDB.getResourceFileName("SL_1_RBT", ""));
+        assertEquals("OL_1_EFR.json", DDDB.getResourceFileName("OL_1_EFR", null));
+
+        assertEquals("/variables/instrument_data_004.json", DDDB.getResourceFileName("/variables/instrument_data", "004"));
+        assertEquals("/variables/instrument_data.json", DDDB.getResourceFileName("/variables/instrument_data", null));
     }
 
     @Test
     @STTM("SNAP-3711")
     public void testGetDDDBResourceName() {
         assertEquals("dddb/SL_1_RBT/heffalump.org", DDDB.getDddbResourceName("SL_1_RBT", "heffalump.org"));
+        assertEquals("dddb/OL_1_EFR/variables/geo_coordinates.json", DDDB.getDddbResourceName("OL_1_EFR", "variables/geo_coordinates.json"));
+
+        assertEquals("dddb/SL_1_RBT", DDDB.getDddbResourceName("SL_1_RBT", ""));
+    }
+
+    @Test
+    @STTM("SNAP-3711")
+    public void testGetVariableDescriptors() throws IOException {
+        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("geo_coordinates.nc", "OL_1_EFR", "004");
+
+        assertEquals(3, variableDescriptors.length);
+
+        assertEquals("altitude", variableDescriptors[0].getName());
+        assertEquals("float32", variableDescriptors[1].getDataType());
     }
 }

@@ -4,6 +4,7 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.dddb.DDDB;
 import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
+import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import org.esa.snap.core.dataio.AbstractProductReader;
@@ -51,11 +52,16 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         final Manifest manifest = readManifest();
         final Product product = constructProductFromManifest(manifest, this);
 
-        final ProductDescriptor productDescriptor = dddb.getProductDescriptor(manifest.getProductType(), manifest.getBaselineCollection());
+        final String productType = manifest.getProductType();
+        final String baselineCollection = manifest.getBaselineCollection();
+        final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, baselineCollection);
 
         final List<String> fileNames = manifest.getFileNames(productDescriptor.getExcludedIdsAsArray());
         for (final String fileName : fileNames) {
-
+            final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors(fileName, productType, baselineCollection);
+            for (final VariableDescriptor descriptor : variableDescriptors) {
+                product.addBand(descriptor.getName(), descriptor.getDataType());
+            }
         }
 
         return product;
@@ -70,6 +76,7 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
 
         product.setDescription(manifest.getDescription());
         product.setFileLocation(new File(productReader.getInput().toString()));
+
         return product;
     }
 

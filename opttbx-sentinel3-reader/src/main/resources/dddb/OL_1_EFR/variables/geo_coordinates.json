@@ -1,0 +1,14 @@
+[
+  {
+    "name": "altitude",
+    "dataType": "float32"
+  },
+  {
+    "name": "latitude",
+    "dataType": "float32"
+  },
+  {
+    "name": "longitude",
+    "dataType": "float32"
+  }
+]

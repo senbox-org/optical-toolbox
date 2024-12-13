@@ -2,6 +2,9 @@ package eu.esa.opt.dataio.s3.dddb;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.esa.snap.core.util.StringUtils;
+import org.esa.snap.core.util.io.FileUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -11,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 /*
 This class maintains the database of product description metadata that is missing in the
@@ -33,25 +37,53 @@ public class DDDB {
 
     private static final String DB_RESOURCE_PATH = "dddb/";
 
+    private final HashMap<String, ProductDescriptor> productDescriptorMap;
+
     public static DDDB getInstance() {
         return InstanceHolder.instance;
     }
 
-    public ProductDescriptor getProductDescriptor(String productType, String version) throws IOException {
-        final String resourceName = getResourceName(productType, version);
-        // @todo 2 tb/tb add caching mechanism and first check if cached 2024-12-11
+    private DDDB() {
+        productDescriptorMap = new HashMap<>();
+    }
 
-        // getResourceAsStream
-        final URL resourceUrl = getResourceUrl(productType, resourceName);
-        if (resourceUrl == null) {
-            return null;
+    public ProductDescriptor getProductDescriptor(String productType, String version) throws IOException {
+        final String resourceName = getResourceFileName(productType, version);
+
+        ProductDescriptor productDescriptor = productDescriptorMap.get(resourceName);
+        if (productDescriptor == null) {
+            final URL resourceUrl = getResourceUrl(productType, resourceName);
+            if (resourceUrl == null) {
+                return null;
+            }
+
+            productDescriptor = readProductDescriptor(resourceUrl);
+            productDescriptorMap.put(resourceName, productDescriptor);
         }
 
-        return readProductDescriptor(resourceUrl);
+        return productDescriptor;
+    }
+
+    public VariableDescriptor[] getVariableDescriptors(String dataFile, String productType, String version) throws IOException {
+        final String inputFileName = FileUtils.getFilenameWithoutExtension(dataFile);
+
+        String resourceFileName = getResourceFileName("variables/" + inputFileName, version);
+        URL resourceUrl = getResourceUrl(productType, resourceFileName);
+        if (resourceUrl == null) {
+            // try if we have a default, unversioned, version of the file tb 2024-12-13
+            resourceFileName = getResourceFileName("variables/" + inputFileName, null);
+            resourceUrl = getResourceUrl(productType, resourceFileName);
+        }
+
+        if (resourceUrl == null) {
+            throw new IOException("Requested resource not found: " + resourceFileName);
+        }
+
+        return readVariableDescriptors(resourceUrl);
     }
 
     private static ProductDescriptor readProductDescriptor(URL resourceUrl) throws IOException {
-        ProductDescriptor productDescriptor = null;
+        ProductDescriptor productDescriptor;
 
         // import json file
         try (InputStream inputStream = resourceUrl.openStream()) {
@@ -70,6 +102,26 @@ public class DDDB {
         return productDescriptor;
     }
 
+    private static VariableDescriptor[] readVariableDescriptors(URL resourceUrl) throws IOException {
+        VariableDescriptor[] variableDescriptors;
+
+        try (InputStream inputStream = resourceUrl.openStream()) {
+            final JSONParser parser = getParser();
+
+            try {
+                final JSONArray json = (JSONArray) parser.parse(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                String jsonString = json.toJSONString();
+
+                final ObjectMapper objectMapper = getObjectMapper();
+                variableDescriptors = objectMapper.readValue(jsonString, VariableDescriptor[].class);
+            } catch (ParseException e) {
+                throw new IOException(e);
+            }
+        }
+
+        return variableDescriptors;
+    }
+
     private static ObjectMapper getObjectMapper() {
         return ObjectMapperHolder.objectMapper;
     }
@@ -80,17 +132,20 @@ public class DDDB {
 
     private static URL getResourceUrl(String productType, String resourceName) {
         final String dddbResourceName = getDddbResourceName(productType, resourceName);
-        final URL resourceUrl = DDDB.class.getClassLoader().getResource(dddbResourceName);
-
-        // @todo 2 tb/tb add check for resource without version string 2024-12-12
-        return resourceUrl;
+        return DDDB.class.getClassLoader().getResource(dddbResourceName);
     }
 
     static String getDddbResourceName(String productType, String resourceName) {
+        if (StringUtils.isNullOrEmpty(resourceName)) {
+            return DB_RESOURCE_PATH + productType;
+        }
         return DB_RESOURCE_PATH + productType + "/" + resourceName;
     }
 
-    static String getResourceName(String productType, String version) {
+    static String getResourceFileName(String productType, String version) {
+        if (StringUtils.isNullOrEmpty(version)) {
+            return productType + ".json";
+        }
         return productType + "_" + version + ".json";
     }
 
