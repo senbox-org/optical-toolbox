@@ -6,7 +6,7 @@
     <parent>
         <groupId>eu.esa.opt</groupId>
         <artifactId>optical-toolbox</artifactId>
-        <version>11.0.1-SNAPSHOT</version>
+        <version>11.0.1</version>
     </parent>
 
     <artifactId>opttbx-prisma</artifactId>
@@ -20,7 +20,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <snap-version>11.0.1-SNAPSHOT</snap-version>
+        <snap-version>11.0.1</snap-version>
     </properties>
 
     <dependencies>
