@@ -5,6 +5,8 @@ import org.esa.snap.core.util.StringUtils;
 public class ProductDescriptor {
 
     private String excludedIds;
+    private String widthXPath;
+    private String heightXPath;
 
     public ProductDescriptor() {
         excludedIds = "";
@@ -26,5 +28,21 @@ public class ProductDescriptor {
         }
 
         return StringUtils.split(excludedIds, new char[]{','}, true);
+    }
+
+    public String getWidthXPath() {
+        return widthXPath;
+    }
+
+    public void setWidthXPath(String widthXPath) {
+        this.widthXPath = widthXPath;
+    }
+
+    public String getHeightXPath() {
+        return heightXPath;
+    }
+
+    public void setHeightXPath(String heightXPath) {
+        this.heightXPath = heightXPath;
     }
 }

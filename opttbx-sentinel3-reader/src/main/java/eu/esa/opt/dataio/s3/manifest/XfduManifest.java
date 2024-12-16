@@ -26,11 +26,6 @@ public class XfduManifest implements Manifest {
     private String productType;
     private String productName;
     private String baselineCollection;
-    private TypeConfiguration typeConfiguration;
-
-    public static Manifest createManifest(Document manifestDocument) {
-        return new XfduManifest(manifestDocument);
-    }
 
     private XfduManifest(Document manifestDocument) {
         doc = manifestDocument;
@@ -38,7 +33,53 @@ public class XfduManifest implements Manifest {
         productType = null;
         productName = null;
         baselineCollection = null;
-        typeConfiguration = null;
+    }
+
+    public static Manifest createManifest(Document manifestDocument) {
+        return new XfduManifest(manifestDocument);
+    }
+
+    private static String removeNamespace(String withNamespace) {
+        if (!withNamespace.contains(":")) {
+            return withNamespace;
+        }
+        return withNamespace.split(":")[1];
+    }
+
+    private static boolean hasElementChildNodes(Node rootNode) {
+        NodeList childNodes = rootNode.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasAttributeChildNodes(Node rootNode) {
+        final NamedNodeMap attributeNodes = rootNode.getAttributes();
+        for (int i = 0; i < attributeNodes.getLength(); i++) {
+            Node node = attributeNodes.item(i);
+            if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static String removeUnderbarsAtEnd(String typeString) {
+        final char[] chars = typeString.toCharArray();
+
+        int endIndex = chars.length;
+        for (int i = chars.length - 1; i >= 0; i--) {
+            if (chars[i] != '_') {
+                endIndex = i;
+                break;
+            }
+        }
+
+        return typeString.substring(0, endIndex + 1);
     }
 
     @Override
@@ -53,7 +94,9 @@ public class XfduManifest implements Manifest {
     @Override
     public String getProductType() {
         if (productType == null) {
-            ensureTypeInitialized();
+            final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
+            final String typeString = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/productType", gpi);
+            productType = removeUnderbarsAtEnd(typeString);
         }
         return productType;
     }
@@ -80,18 +123,6 @@ public class XfduManifest implements Manifest {
     @Override
     public ProductData.UTC getStopTime() {
         return getTime("stopTime");
-    }
-
-    @Override
-    public int getRasterWidth() {
-        ensureTypeInitialized();
-        return typeConfiguration.getRasterWidth();
-    }
-
-    @Override
-    public int getRasterHeight() {
-        ensureTypeInitialized();
-        return typeConfiguration.getRasterHeight();
     }
 
     @Override
@@ -141,11 +172,15 @@ public class XfduManifest implements Manifest {
         return manifestElement;
     }
 
-    private static String removeNamespace(String withNamespace) {
-        if (!withNamespace.contains(":")) {
-            return withNamespace;
-        }
-        return withNamespace.split(":")[1];
+    @Override
+    public String getXPathString(String xPath) {
+        return xPathHelper.getString(xPath, doc);
+    }
+
+    @Override
+    public int getXPathInt(String xPath) {
+        final String xPathString = getXPathString(xPath);
+        return Integer.parseInt(xPathString);
     }
 
     private MetadataElement convertNodeToMetadataElement(Node rootNode, MetadataElement rootMetadata) {
@@ -194,28 +229,6 @@ public class XfduManifest implements Manifest {
         }
     }
 
-    private static boolean hasElementChildNodes(Node rootNode) {
-        NodeList childNodes = rootNode.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            Node node = childNodes.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean hasAttributeChildNodes(Node rootNode) {
-        final NamedNodeMap attributeNodes = rootNode.getAttributes();
-        for (int i = 0; i < attributeNodes.getLength(); i++) {
-            Node node = attributeNodes.item(i);
-            if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private List<String> getFileNames(String objectPath, List<String> fileNameList) {
         final NodeList nodeList = xPathHelper.getNodeList(
                 "/XFDU/" + objectPath, doc);
@@ -241,35 +254,5 @@ public class XfduManifest implements Manifest {
         } catch (ParseException ignored) {
             return null;
         }
-    }
-
-    static String removeUnderbarsAtEnd(String typeString) {
-        final char[] chars = typeString.toCharArray();
-
-        int endIndex = chars.length;
-        for (int i = chars.length - 1; i >= 0; i--) {
-            if (chars[i] != '_') {
-                endIndex = i;
-                break;
-            }
-        }
-
-        return typeString.substring(0, endIndex + 1);
-    }
-
-    private void ensureTypeInitialized() {
-        if (typeConfiguration == null) {
-            final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
-            final String typeString = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/productType", gpi);
-            productType = removeUnderbarsAtEnd(typeString);
-
-            if (productType.contains("SL_1_RBT")) {
-                typeConfiguration = new SL_1_RBT_Configuration();
-            } else  {
-                typeConfiguration = new OL_1_EFR_Configuration();
-            }
-        }
-
-
     }
 }

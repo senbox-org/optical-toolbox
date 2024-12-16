@@ -50,11 +50,16 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         virtualDir = getVirtualDir(inputPath);
 
         final Manifest manifest = readManifest();
-        final Product product = constructProductFromManifest(manifest, this);
-
         final String productType = manifest.getProductType();
         final String baselineCollection = manifest.getBaselineCollection();
         final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, baselineCollection);
+
+        final String productName = manifest.getProductName();
+        // @todo 1 tb/tb replace hard coded size with data read from manifest
+        final Product product = new Product(productName, productType, 2400, 3000, (ProductReader) this);
+
+        product.setDescription(manifest.getDescription());
+        product.setFileLocation(new File(((ProductReader) this).getInput().toString()));
 
         final List<String> fileNames = manifest.getFileNames(productDescriptor.getExcludedIdsAsArray());
         for (final String fileName : fileNames) {
@@ -63,19 +68,6 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
                 product.addBand(descriptor.getName(), descriptor.getDataType());
             }
         }
-
-        return product;
-    }
-
-    static Product constructProductFromManifest(Manifest manifest, ProductReader productReader) {
-        final String productName = manifest.getProductName();
-        final String productType = manifest.getProductType();
-        final int rasterWidth = manifest.getRasterWidth();
-        final int rasterHeight = manifest.getRasterHeight();
-        final Product product = new Product(productName, productType, rasterWidth, rasterHeight, productReader);
-
-        product.setDescription(manifest.getDescription());
-        product.setFileLocation(new File(productReader.getInput().toString()));
 
         return product;
     }

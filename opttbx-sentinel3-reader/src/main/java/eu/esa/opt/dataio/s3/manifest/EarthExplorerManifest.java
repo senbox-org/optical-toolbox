@@ -98,16 +98,6 @@ class EarthExplorerManifest implements Manifest {
     }
 
     @Override
-    public int getRasterWidth() {
-        throw new RuntimeException("not implemented");
-    }
-
-    @Override
-    public int getRasterHeight() {
-        throw new RuntimeException("not implemented");
-    }
-
-    @Override
     public final List<String> getFileNames(String schema) {
         final String xPath = String.format("//Data_Object_Descriptor[Type='%s']", schema);
         final NodeList nodeList = xPathHelper.getNodeList(xPath, doc);
@@ -132,6 +122,16 @@ class EarthExplorerManifest implements Manifest {
         manifestElement.addElement(convertNodeToMetadataElement(node, new MetadataElement(node.getNodeName())));
 
         return manifestElement;
+    }
+
+    @Override
+    public String getXPathString(String xPath) {
+        throw new RuntimeException("not implemented");
+    }
+
+    @Override
+    public int getXPathInt(String xPath) {
+        throw new RuntimeException("not implemented");
     }
 
     private static MetadataElement convertNodeToMetadataElement(Node sourceNode, MetadataElement targetElement) {

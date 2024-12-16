@@ -1,2 +1,4 @@
 {
+  "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/rows",
+  "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/columns"
 }

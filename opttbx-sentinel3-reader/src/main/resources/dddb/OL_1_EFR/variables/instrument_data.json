@@ -1,0 +1,34 @@
+[
+  {
+    "name": "FWHM",
+    "dataType": "float32",
+    "width": 3700,
+    "height": 21
+  },
+  {
+    "name": "detector_index",
+    "dataType": "int16",
+    "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows"
+  },
+  {
+    "name": "frame_offset",
+    "dataType": "int8",
+    "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows"
+  },
+  {
+    "name": "lambda0",
+    "dataType": "float32",
+    "width": 3700,
+    "height": 21
+  },
+  {
+    "name": "relative_spectral_covariance",
+    "type" : "m",
+    "dataType": "float32",
+    "width": 21,
+    "height": 21
+  }
+
+]

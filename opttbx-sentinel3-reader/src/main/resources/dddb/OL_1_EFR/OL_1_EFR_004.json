@@ -1,3 +1,5 @@
 {
-  "excludedIds" : "removedPixelsData"
+  "excludedIds" : "removedPixelsData",
+  "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+  "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns"
 }

@@ -1,19 +1,17 @@
 [
   {
-    "name": "altitude",
-    "dataType": "float32",
+    "name": "TP_latitude",
+    "ncVarName" : "latitude",
+    "type" : "t",
+    "dataType": "int32",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns"
   },
   {
-    "name": "latitude",
-    "dataType": "float32",
-    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
-    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns"
-  },
-  {
-    "name": "longitude",
-    "dataType": "float32",
+    "name": "TP_longitude",
+    "ncVarName" : "longitude",
+    "type" : "t",
+    "dataType": "int32",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns"
   }

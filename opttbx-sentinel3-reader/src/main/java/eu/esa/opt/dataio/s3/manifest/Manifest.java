@@ -33,14 +33,13 @@ public interface Manifest {
 
     ProductData.UTC getStopTime();
 
-    int getRasterWidth();
-
-    int getRasterHeight();
-
     List<String> getFileNames(String schema);
 
     List<String> getFileNames(String[] excluded);
 
     MetadataElement getMetadata();
 
+    String getXPathString(String xPath);
+
+    int getXPathInt(String xPath);
 }

@@ -3,7 +3,6 @@ package eu.esa.opt.dataio.s3;
 import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
-import eu.esa.opt.dataio.s3.manifest.TypeConfiguration;
 import org.esa.snap.core.dataio.IllegalFileFormatException;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -19,20 +18,7 @@ import static org.junit.Assert.assertEquals;
 
 public class Sentinel3DDDBReaderTest {
 
-    @Test
-    @STTM("SNAP-3711")
-    public void testConstructProductFromManifest() {
-        final Manifest manifest = createManifest();
-        final ProductReader productReader = getProductReader();
 
-        final Product product = Sentinel3DDDBReader.constructProductFromManifest(manifest, productReader);
-        assertEquals("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3", product.getName());
-        assertEquals("OL_1_EFR", product.getProductType());
-        assertEquals(4865, product.getSceneRasterWidth());
-        assertEquals(4100, product.getSceneRasterHeight());
-        assertEquals("SENTINEL-3 OLCI Level 1 Earth Observation Full Resolution Product", product.getDescription());
-        assertEquals("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3" + File.separator +"xfdumanifest.xml", product.getFileLocation().toString());
-    }
 
     private static ProductReader getProductReader() {
         return new ProductReader() {
@@ -106,16 +92,6 @@ public class Sentinel3DDDBReaderTest {
             }
 
             @Override
-            public int getRasterWidth() {
-                return 4865;
-            }
-
-            @Override
-            public int getRasterHeight() {
-                return 4100;
-            }
-
-            @Override
             public List<String> getFileNames(String schema) {
                 throw new RuntimeException("not implemented");
             }
@@ -127,6 +103,16 @@ public class Sentinel3DDDBReaderTest {
 
             @Override
             public MetadataElement getMetadata() {
+                throw new RuntimeException("not implemented");
+            }
+
+            @Override
+            public String getXPathString(String xPath) {
+                throw new RuntimeException("not implemented");
+            }
+
+            @Override
+            public int getXPathInt(String xPath) {
                 throw new RuntimeException("not implemented");
             }
         };

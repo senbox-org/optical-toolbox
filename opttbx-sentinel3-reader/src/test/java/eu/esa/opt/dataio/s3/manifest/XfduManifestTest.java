@@ -134,15 +134,21 @@ public class XfduManifestTest {
 
     @Test
     @STTM("SNAP-3711")
-    public void testGetRasterWidth() {
-        assertEquals(3000, slstr_manifest.getRasterWidth());
-        assertEquals(4865, olci_manifest.getRasterWidth());
+    public void testGetXPathString() {
+        String xpathValue = slstr_manifest.getXPathString("/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/rows");
+        assertEquals("2400", xpathValue);
+
+        xpathValue = olci_manifest.getXPathString("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows");
+        assertEquals("4091", xpathValue);
     }
 
     @Test
     @STTM("SNAP-3711")
-    public void testGetRasterHeight() {
-        assertEquals(2400, slstr_manifest.getRasterHeight());
-        assertEquals(4100, olci_manifest.getRasterHeight());
+    public void testGetXPathInt() {
+        int xpathValue = slstr_manifest.getXPathInt("/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/columns");
+        assertEquals(3000, xpathValue);
+
+        xpathValue = olci_manifest.getXPathInt("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns");
+        assertEquals(4865, xpathValue);
     }
 }
