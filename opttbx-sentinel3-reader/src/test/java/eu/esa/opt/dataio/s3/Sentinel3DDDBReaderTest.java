@@ -2,6 +2,7 @@ package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import org.esa.snap.core.dataio.IllegalFileFormatException;
 import org.esa.snap.core.dataio.ProductReader;
@@ -10,15 +11,48 @@ import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.*;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class Sentinel3DDDBReaderTest {
 
+    @Test
+    @STTM("SNAP-3711")
+    public void testEnsureWithAndHeight_alreadySet() {
+        final ProductDescriptor productDescriptor = new ProductDescriptor();
+        productDescriptor.setWidth(27);
+        productDescriptor.setHeight(38);
 
+        final Manifest manifest = createManifest();
+        Sentinel3DDDBReader.ensureWidthAndHeight(productDescriptor, manifest);
+
+        assertEquals(27, productDescriptor.getWidth());
+        assertEquals(38, productDescriptor.getHeight());
+    }
+
+    @Test
+    @STTM("SNAP-3711")
+    public void testEnsureWithAndHeight_fromXPath() {
+        final ProductDescriptor productDescriptor = new ProductDescriptor();
+        productDescriptor.setWidthXPath("/data/simple/width");
+        productDescriptor.setHeightXPath("/data/simple/height");
+
+        final Manifest manifest = createManifest();
+        Sentinel3DDDBReader.ensureWidthAndHeight(productDescriptor, manifest);
+
+        assertEquals(108, productDescriptor.getWidth());
+        assertEquals(176, productDescriptor.getHeight());
+    }
+
+    @Test
+    @STTM("SNAP-3711")
+    public void testIsZipFile() {
+        assertTrue(Sentinel3DDDBReader.isZipFile(Paths.get("some", "where", "file.zip")));
+        assertFalse(Sentinel3DDDBReader.isZipFile(Paths.get("some", "where", "file.ZAP")));
+    }
 
     private static ProductReader getProductReader() {
         return new ProductReader() {
@@ -38,7 +72,7 @@ public class Sentinel3DDDBReaderTest {
             }
 
             @Override
-            public Product readProductNodes(Object input, ProductSubsetDef subsetDef) throws IOException, IllegalFileFormatException {
+            public Product readProductNodes(Object input, ProductSubsetDef subsetDef) throws IOException {
                 throw new RuntimeException("not implemented");
             }
 
@@ -113,7 +147,13 @@ public class Sentinel3DDDBReaderTest {
 
             @Override
             public int getXPathInt(String xPath) {
-                throw new RuntimeException("not implemented");
+                if (xPath.contains("width")) {
+                    return 108;
+                } else if (xPath.contains("height")) {
+                    return 176;
+                }
+
+                throw new RuntimeException("unexpected value");
             }
         };
     }

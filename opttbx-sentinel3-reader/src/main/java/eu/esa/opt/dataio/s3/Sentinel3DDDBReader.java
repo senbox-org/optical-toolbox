@@ -5,10 +5,10 @@ import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.dddb.DDDB;
 import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
+import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import org.esa.snap.core.dataio.AbstractProductReader;
-import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
@@ -44,43 +44,17 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         dddb = DDDB.getInstance();
     }
 
-    @Override
-    protected Product readProductNodesImpl() throws IOException {
-        final Path inputPath = getInputPath();
-        virtualDir = getVirtualDir(inputPath);
-
-        final Manifest manifest = readManifest();
-        final String productType = manifest.getProductType();
-        final String baselineCollection = manifest.getBaselineCollection();
-        final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, baselineCollection);
-
-        final String productName = manifest.getProductName();
-        // @todo 1 tb/tb replace hard coded size with data read from manifest
-        final Product product = new Product(productName, productType, 2400, 3000, (ProductReader) this);
-
-        product.setDescription(manifest.getDescription());
-        product.setFileLocation(new File(((ProductReader) this).getInput().toString()));
-
-        final List<String> fileNames = manifest.getFileNames(productDescriptor.getExcludedIdsAsArray());
-        for (final String fileName : fileNames) {
-            final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors(fileName, productType, baselineCollection);
-            for (final VariableDescriptor descriptor : variableDescriptors) {
-                product.addBand(descriptor.getName(), descriptor.getDataType());
-            }
+    // package access for testing only tb 2024-12-17
+    static void ensureWidthAndHeight(ProductDescriptor productDescriptor, Manifest manifest) {
+        int width = productDescriptor.getWidth();
+        int height = productDescriptor.getHeight();
+        if (width < 0 || height < 0) {
+            // read from XPath
+            width = manifest.getXPathInt(productDescriptor.getWidthXPath());
+            productDescriptor.setWidth(width);
+            height = manifest.getXPathInt(productDescriptor.getHeightXPath());
+            productDescriptor.setHeight(height);
         }
-
-        return product;
-    }
-
-    private Manifest readManifest() throws IOException {
-        final Manifest manifest;
-        try (InputStream manifestInputStream = getManifestInputStream(virtualDir)) {
-            final Document manifestDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(manifestInputStream);
-            manifest = XfduManifest.createManifest(manifestDocument);
-        } catch (ParserConfigurationException | SAXException e) {
-            throw new IOException(e);
-        }
-        return manifest;
     }
 
     private static VirtualDir getVirtualDir(Path inputPath) {
@@ -98,33 +72,8 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         return virtualDir;
     }
 
-    @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
-        throw new RuntimeException("not implemented");
-    }
-
-    @Override
-    public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
-        super.readTiePointGridRasterData(tpg, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer, pm);
-    }
-
-    @Override
-    public void close() throws IOException {
-        if (virtualDir != null)  {
-            virtualDir.close();
-            virtualDir = null;
-        }
-        super.close();
-    }
-
-    private Path getInputPath() {
-        // @todo 3 tb/tb check for null 2024-12-06
-        return Paths.get(getInput().toString());
-    }
-
     // @todo 2 tb/tb this one wants to be member of a utility class 2024-12-06
-    // refactor, add tests
-    private static boolean isZipFile(Path inputPath) {
+    static boolean isZipFile(Path inputPath) {
         final Path fileName = inputPath.getFileName();
         return fileName.toString().toLowerCase().endsWith(".zip");
     }
@@ -140,5 +89,83 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         }
 
         return null;
+    }
+
+    @Override
+    protected Product readProductNodesImpl() throws IOException {
+        initalizeInput();
+
+        final Manifest manifest = readManifest();
+
+        // create a naked produt, requires
+        // - name
+        final String productName = manifest.getProductName();
+        // - type
+        final String productType = manifest.getProductType();
+        // - dimension
+        final String baselineCollection = manifest.getBaselineCollection();
+        final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, baselineCollection);
+        ensureWidthAndHeight(productDescriptor, manifest);
+
+        final Product product = new Product(productName, productType, productDescriptor.getWidth(), productDescriptor.getHeight(), this);
+
+        // add other properties from manifest and descriptor
+        product.setDescription(manifest.getDescription());
+        product.setFileLocation(new File(getInput().toString()));
+
+        final List<String> fileNames = manifest.getFileNames(productDescriptor.getExcludedIdsAsArray());
+        for (final String fileName : fileNames) {
+            final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors(fileName, productType, baselineCollection);
+            for (final VariableDescriptor descriptor : variableDescriptors) {
+                final char type = descriptor.getType();
+                final VariableType variableType = VariableType.fromChar(type);
+                if (variableType == VariableType.VARIABLE || variableType == VariableType.FLAG) {
+                    final int dataType = ProductData.getType(descriptor.getDataType());
+                    product.addBand(descriptor.getName(), dataType);
+                }
+            }
+        }
+
+        return product;
+    }
+
+    private void initalizeInput() {
+        final Path inputPath = getInputPath();
+        virtualDir = getVirtualDir(inputPath);
+    }
+
+    private Manifest readManifest() throws IOException {
+        final Manifest manifest;
+        try (InputStream manifestInputStream = getManifestInputStream(virtualDir)) {
+            final Document manifestDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(manifestInputStream);
+            manifest = XfduManifest.createManifest(manifestDocument);
+        } catch (ParserConfigurationException | SAXException e) {
+            throw new IOException(e);
+        }
+        return manifest;
+    }
+
+    @Override
+    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
+        throw new RuntimeException("not implemented");
+    }
+
+    @Override
+    public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
+        super.readTiePointGridRasterData(tpg, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer, pm);
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (virtualDir != null) {
+            virtualDir.close();
+            virtualDir = null;
+        }
+        super.close();
+    }
+
+    private Path getInputPath() {
+        // @todo 3 tb/tb check for null 2024-12-06
+        return Paths.get(getInput().toString());
     }
 }

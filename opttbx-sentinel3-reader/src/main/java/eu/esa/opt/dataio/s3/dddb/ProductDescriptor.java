@@ -7,9 +7,13 @@ public class ProductDescriptor {
     private String excludedIds;
     private String widthXPath;
     private String heightXPath;
+    private int width;
+    private int height;
 
     public ProductDescriptor() {
         excludedIds = "";
+        width = -1;
+        height = -1;
     }
 
     public String getExcludedIds() {
@@ -44,5 +48,21 @@ public class ProductDescriptor {
 
     public void setHeightXPath(String heightXPath) {
         this.heightXPath = heightXPath;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
