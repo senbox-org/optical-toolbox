@@ -14,8 +14,13 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
+import org.esa.snap.dataio.netcdf.util.ReaderUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import ucar.ma2.*;
+import ucar.nc2.NetcdfFile;
+import ucar.nc2.Variable;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,12 +30,18 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Sentinel3DDDBReader extends AbstractProductReader {
 
     private final DDDB dddb;
+    private final Map<String, VariableDescriptor> tiepointMap;
+    private final Map<String, VariableDescriptor> metadataMap;
     private VirtualDir virtualDir;
+    private Map<String, VariableDescriptor> variablesMap;
+    private Map<String, NetcdfFile> filesMap;
 
     /**
      * Constructs a new abstract product reader.
@@ -42,6 +53,10 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         super(readerPlugIn);
         virtualDir = null;
         dddb = DDDB.getInstance();
+        variablesMap = new HashMap<>();
+        tiepointMap = new HashMap<>();
+        metadataMap = new HashMap<>();
+        filesMap = new HashMap<>();
     }
 
     // package access for testing only tb 2024-12-17
@@ -91,6 +106,10 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         return null;
     }
 
+    static String createDescriptorKey(VariableDescriptor descriptor) {
+        return descriptor.getName();
+    }
+
     @Override
     protected Product readProductNodesImpl() throws IOException {
         initalizeInput();
@@ -113,20 +132,43 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         product.setDescription(manifest.getDescription());
         product.setFileLocation(new File(getInput().toString()));
 
+        initializeDDDBDescriptors(manifest, productDescriptor);
+
+        for (VariableDescriptor descriptor : variablesMap.values()) {
+            // add band - check for other attributes (scaling/offset etc) tb 2025-12-18
+            final int dataType = ProductData.getType(descriptor.getDataType());
+            product.addBand(descriptor.getName(), dataType);
+        }
+
+        return product;
+    }
+
+    private void initializeDDDBDescriptors(Manifest manifest, ProductDescriptor productDescriptor) throws IOException {
+        final String productType = manifest.getProductType();
+        final String baselineCollection = manifest.getBaselineCollection();
+
         final List<String> fileNames = manifest.getFileNames(productDescriptor.getExcludedIdsAsArray());
         for (final String fileName : fileNames) {
             final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors(fileName, productType, baselineCollection);
             for (final VariableDescriptor descriptor : variableDescriptors) {
+                descriptor.setFileName(fileName);
+
+                final String descriptorKey = createDescriptorKey(descriptor);
                 final char type = descriptor.getType();
+
                 final VariableType variableType = VariableType.fromChar(type);
                 if (variableType == VariableType.VARIABLE || variableType == VariableType.FLAG) {
-                    final int dataType = ProductData.getType(descriptor.getDataType());
-                    product.addBand(descriptor.getName(), dataType);
+                    variablesMap.put(descriptorKey, descriptor);
+                } else if (variableType == VariableType.TIE_POINT) {
+                    // add TiePoint raster tb 2025-12-18
+                    tiepointMap.put(descriptorKey, descriptor);
+                } else if (variableType == VariableType.METADATA) {
+                    // add metadatum as special metanode
+                    // implement lazy loading for those file-based meta attributes tb 2025-12-18
+                    metadataMap.put(descriptorKey, descriptor);
                 }
             }
         }
-
-        return product;
     }
 
     private void initalizeInput() {
@@ -147,7 +189,44 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
 
     @Override
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
-        throw new RuntimeException("not implemented");
+        final String name = destBand.getName();
+        final VariableDescriptor descriptor = variablesMap.get(name);
+
+        String fileName = descriptor.getFileName();
+        NetcdfFile netcdfFile = filesMap.get(fileName);
+        if (netcdfFile == null) {
+            final File file = virtualDir.getFile(fileName);
+            if (file == null) {
+                throw new IOException("File not found: " + fileName);
+            }
+
+            netcdfFile = NetcdfFileOpener.open(file.getAbsolutePath());
+            filesMap.put(fileName, netcdfFile);
+        }
+
+        final Variable variable = netcdfFile.findVariable(name);
+
+        final double scaleFactor = ReaderUtils.getScalingFactor(variable);
+        final double offset = ReaderUtils.getAddOffset(variable);
+
+        final int[] sliceOffset = {sourceOffsetY, sourceOffsetX};
+        final int[] sliceDimensions = {sourceHeight, sourceWidth};
+        final int[] stride = {sourceStepY, sourceStepX};
+        try {
+            final Section sect = new Section(sliceOffset, sliceDimensions, stride);
+            Array sliceData;
+            synchronized (netcdfFile) {
+                sliceData = variable.read(sect);
+            }
+            if (ReaderUtils.mustScale(scaleFactor, offset)) {
+                final MAMath.ScaleOffset scaleOffset = new MAMath.ScaleOffset(scaleFactor, offset);
+                sliceData = MAMath.convert2Unpacked(sliceData, scaleOffset);
+            }
+
+            destBuffer.setElems(sliceData.get1DJavaArray(DataType.FLOAT));
+        } catch (InvalidRangeException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
@@ -160,6 +239,17 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         if (virtualDir != null) {
             virtualDir.close();
             virtualDir = null;
+        }
+        if (variablesMap != null) {
+            variablesMap.clear();
+            variablesMap = null;
+        }
+        if (filesMap != null) {
+            for (final NetcdfFile ncFile : filesMap.values()) {
+                ncFile.close();
+            }
+            filesMap.clear();
+            filesMap = null;
         }
         super.close();
     }

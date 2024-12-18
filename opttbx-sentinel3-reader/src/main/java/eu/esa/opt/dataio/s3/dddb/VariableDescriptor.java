@@ -11,6 +11,7 @@ public class VariableDescriptor {
     private int width;
     private int height;
     private int depth;
+    private String fileName;
 
     public VariableDescriptor() {
         type = 'v';
@@ -89,5 +90,13 @@ public class VariableDescriptor {
 
     public void setDepth(int depth) {
         this.depth = depth;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

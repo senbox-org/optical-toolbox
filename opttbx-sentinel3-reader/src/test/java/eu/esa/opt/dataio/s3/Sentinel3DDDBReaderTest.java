@@ -3,6 +3,7 @@ package eu.esa.opt.dataio.s3;
 import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
+import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import org.esa.snap.core.dataio.IllegalFileFormatException;
 import org.esa.snap.core.dataio.ProductReader;
@@ -54,43 +55,13 @@ public class Sentinel3DDDBReaderTest {
         assertFalse(Sentinel3DDDBReader.isZipFile(Paths.get("some", "where", "file.ZAP")));
     }
 
-    private static ProductReader getProductReader() {
-        return new ProductReader() {
-            @Override
-            public ProductReaderPlugIn getReaderPlugIn() {
-                throw new RuntimeException("not implemented");
-            }
+    @Test
+    @STTM("SNAP-3711")
+    public void testCreateDescriptorKey() {
+        final VariableDescriptor descriptor = new VariableDescriptor();
+        descriptor.setName("Elfriede");
 
-            @Override
-            public Object getInput() {
-                return "S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3/xfdumanifest.xml";
-            }
-
-            @Override
-            public ProductSubsetDef getSubsetDef() {
-                throw new RuntimeException("not implemented");
-            }
-
-            @Override
-            public Product readProductNodes(Object input, ProductSubsetDef subsetDef) throws IOException {
-                throw new RuntimeException("not implemented");
-            }
-
-            @Override
-            public GeoCoding readGeoCoding(Product product) throws IOException {
-                throw new RuntimeException("not implemented");
-            }
-
-            @Override
-            public void readBandRasterData(Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
-                throw new RuntimeException("not implemented");
-            }
-
-            @Override
-            public void close() throws IOException {
-                throw new RuntimeException("not implemented");
-            }
-        };
+        assertEquals("Elfriede", Sentinel3DDDBReader.createDescriptorKey(descriptor));
     }
 
     private static Manifest createManifest() {
