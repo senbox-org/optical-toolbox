@@ -10,7 +10,10 @@ The release notes are provided on the STEP website at https://step.esa.int/main/
     [SNAP-3701] OLCI/SLSTR calibration coefficients support
 
 # New in SNAP 11.0.1
+    [SNAP-3880] Add support for Sentinel-2C products
     [SNAP-3882] NSIDCProductReader conflicts with CCI WV data
+    [SNAP-3895] Add support for Sentinel-2 L1B products following PSD 15
+    [SNAP-3902] Unable to open any product in SNAP due to a failure with loading the HDF native library by the ECOSTRESS reader, after applying the update to SNAP
 
 # New in SNAP 11.0.0
     [SNAP-3811] Update Band Grouping Help
