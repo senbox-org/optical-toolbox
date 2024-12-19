@@ -18,7 +18,10 @@ import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import ucar.ma2.*;
+import ucar.ma2.Array;
+import ucar.ma2.DataType;
+import ucar.ma2.InvalidRangeException;
+import ucar.ma2.MAMath;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -33,15 +36,18 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Sentinel3DDDBReader extends AbstractProductReader {
 
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
     private final Map<String, VariableDescriptor> metadataMap;
+    private final Map<String, VariableDescriptor> variablesMap;
+    private final Map<String, Variable> ncVariablesMap;
+    private final Map<String, NetcdfFile> filesMap;
+    private final Map<String, Array> dataMap;
     private VirtualDir virtualDir;
-    private Map<String, VariableDescriptor> variablesMap;
-    private Map<String, NetcdfFile> filesMap;
 
     /**
      * Constructs a new abstract product reader.
@@ -53,10 +59,12 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         super(readerPlugIn);
         virtualDir = null;
         dddb = DDDB.getInstance();
-        variablesMap = new HashMap<>();
+        variablesMap = new TreeMap<>();
+        ncVariablesMap = new HashMap<>();
         tiepointMap = new HashMap<>();
         metadataMap = new HashMap<>();
         filesMap = new HashMap<>();
+        dataMap = new HashMap<>();
     }
 
     // package access for testing only tb 2024-12-17
@@ -116,12 +124,9 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
 
         final Manifest manifest = readManifest();
 
-        // create a naked produt, requires
-        // - name
+        // create a naked produt
         final String productName = manifest.getProductName();
-        // - type
         final String productType = manifest.getProductType();
-        // - dimension
         final String baselineCollection = manifest.getBaselineCollection();
         final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, baselineCollection);
         ensureWidthAndHeight(productDescriptor, manifest);
@@ -133,7 +138,6 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         product.setFileLocation(new File(getInput().toString()));
 
         initializeDDDBDescriptors(manifest, productDescriptor);
-
         for (VariableDescriptor descriptor : variablesMap.values()) {
             // add band - check for other attributes (scaling/offset etc) tb 2025-12-18
             final int dataType = ProductData.getType(descriptor.getDataType());
@@ -169,6 +173,7 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
                 }
             }
         }
+
     }
 
     private void initalizeInput() {
@@ -192,41 +197,82 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         final String name = destBand.getName();
         final VariableDescriptor descriptor = variablesMap.get(name);
 
-        String fileName = descriptor.getFileName();
-        NetcdfFile netcdfFile = filesMap.get(fileName);
-        if (netcdfFile == null) {
-            final File file = virtualDir.getFile(fileName);
-            if (file == null) {
-                throw new IOException("File not found: " + fileName);
-            }
+        final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
+        final Array rawDataArray = getRawData(name, netCDFVariable);
 
-            netcdfFile = NetcdfFileOpener.open(file.getAbsolutePath());
-            filesMap.put(fileName, netcdfFile);
-        }
+        extractSubset(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY, destBuffer, rawDataArray, netCDFVariable);
+    }
 
-        final Variable variable = netcdfFile.findVariable(name);
-
-        final double scaleFactor = ReaderUtils.getScalingFactor(variable);
-        final double offset = ReaderUtils.getAddOffset(variable);
-
+    private static void extractSubset(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, ProductData destBuffer, Array rawDataArray, Variable netCDFVariable) throws IOException {
         final int[] sliceOffset = {sourceOffsetY, sourceOffsetX};
         final int[] sliceDimensions = {sourceHeight, sourceWidth};
         final int[] stride = {sourceStepY, sourceStepX};
+
         try {
-            final Section sect = new Section(sliceOffset, sliceDimensions, stride);
-            Array sliceData;
-            synchronized (netcdfFile) {
-                sliceData = variable.read(sect);
-            }
+            Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride);
+
+            final double scaleFactor = ReaderUtils.getScalingFactor(netCDFVariable);
+            final double offset = ReaderUtils.getAddOffset(netCDFVariable);
             if (ReaderUtils.mustScale(scaleFactor, offset)) {
                 final MAMath.ScaleOffset scaleOffset = new MAMath.ScaleOffset(scaleFactor, offset);
                 sliceData = MAMath.convert2Unpacked(sliceData, scaleOffset);
             }
-
             destBuffer.setElems(sliceData.get1DJavaArray(DataType.FLOAT));
         } catch (InvalidRangeException e) {
             throw new IOException(e);
         }
+    }
+
+    private Variable getNetCDFVariable(VariableDescriptor descriptor, String name) throws IOException {
+        final NetcdfFile netcdfFile = getNetcdfFile(descriptor.getFileName());
+
+        Variable ncVar;
+
+        synchronized (ncVariablesMap) {
+            Variable variable;
+
+            variable = ncVariablesMap.get(name);
+            if (variable == null) {
+                variable = netcdfFile.findVariable(name);
+                if (variable == null) {
+                    throw new IOException("requested variable not found: " + name + netcdfFile.getLocation());
+                }
+                ncVariablesMap.put(name, variable);
+            }
+
+            ncVar = variable;
+        }
+        return ncVar;
+    }
+
+    private Array getRawData(String name, Variable variable) throws IOException {
+        Array fullDataArray;
+
+        synchronized (dataMap) {
+            fullDataArray = dataMap.get(name);
+            if (fullDataArray == null) {
+                fullDataArray = variable.read();
+                dataMap.put(name, fullDataArray);
+            }
+        }
+        return fullDataArray;
+    }
+
+    private NetcdfFile getNetcdfFile(String fileName) throws IOException {
+        NetcdfFile netcdfFile;
+        synchronized (filesMap) {
+            netcdfFile = filesMap.get(fileName);
+            if (netcdfFile == null) {
+                final File file = virtualDir.getFile(fileName);
+                if (file == null) {
+                    throw new IOException("File not found: " + fileName);
+                }
+
+                netcdfFile = NetcdfFileOpener.open(file.getAbsolutePath());
+                filesMap.put(fileName, netcdfFile);
+            }
+        }
+        return netcdfFile;
     }
 
     @Override
@@ -240,17 +286,15 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
             virtualDir.close();
             virtualDir = null;
         }
-        if (variablesMap != null) {
-            variablesMap.clear();
-            variablesMap = null;
+        variablesMap.clear();
+        ncVariablesMap.clear();
+
+        for (final NetcdfFile ncFile : filesMap.values()) {
+            ncFile.close();
         }
-        if (filesMap != null) {
-            for (final NetcdfFile ncFile : filesMap.values()) {
-                ncFile.close();
-            }
-            filesMap.clear();
-            filesMap = null;
-        }
+        filesMap.clear();
+        dataMap.clear();
+
         super.close();
     }
 

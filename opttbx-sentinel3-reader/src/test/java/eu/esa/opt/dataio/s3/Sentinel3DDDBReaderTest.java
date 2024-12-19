@@ -64,6 +64,14 @@ public class Sentinel3DDDBReaderTest {
         assertEquals("Elfriede", Sentinel3DDDBReader.createDescriptorKey(descriptor));
     }
 
+    @Test
+    @STTM("SNAP-3711")
+    public void testClose() throws IOException {
+        Sentinel3DDDBReader sentinel3DDDBReader = new Sentinel3DDDBReader(new Sentinel3ProductReaderPlugIn());
+
+        sentinel3DDDBReader.close();
+    }
+
     private static Manifest createManifest() {
         return new Manifest() {
             @Override
