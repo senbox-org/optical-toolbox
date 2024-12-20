@@ -7,15 +7,14 @@ import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
+import org.esa.snap.engine_utilities.util.ZipUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import ucar.ma2.Array;
@@ -47,6 +46,9 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
     private final Map<String, Variable> ncVariablesMap;
     private final Map<String, NetcdfFile> filesMap;
     private final Map<String, Array> dataMap;
+    private final Map<String, Float> nameToWavelengthMap;
+    private final Map<String, Float> nameToBandwidthMap;
+    private final Map<String, Integer> nameToIndexMap;
     private VirtualDir virtualDir;
 
     /**
@@ -65,6 +67,9 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         metadataMap = new HashMap<>();
         filesMap = new HashMap<>();
         dataMap = new HashMap<>();
+        nameToWavelengthMap = new HashMap<>();
+        nameToBandwidthMap = new HashMap<>();
+        nameToIndexMap = new HashMap<>();
     }
 
     // package access for testing only tb 2024-12-17
@@ -82,7 +87,7 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
 
     private static VirtualDir getVirtualDir(Path inputPath) {
         VirtualDir virtualDir;
-        if (isZipFile(inputPath)) {
+        if (ZipUtils.isZip(inputPath)) {
             virtualDir = VirtualDir.create(inputPath);
         } else {
             Path productDirectory = inputPath;
@@ -95,27 +100,28 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         return virtualDir;
     }
 
-    // @todo 2 tb/tb this one wants to be member of a utility class 2024-12-06
-    static boolean isZipFile(Path inputPath) {
-        final Path fileName = inputPath.getFileName();
-        return fileName.toString().toLowerCase().endsWith(".zip");
-    }
-
-    // @todo 1 tb/tb it's duplicated - move to an appropriate location and remove other code segment 2024-12-09
-    // @todo 3 tb/tb mock test 2024-05-31
-    private static InputStream getManifestInputStream(VirtualDir virtualDir) throws IOException {
-        final String[] list = virtualDir.listAllFiles();
-        for (final String entry : list) {
-            if (entry.toLowerCase().endsWith(XfduManifest.MANIFEST_FILE_NAME)) {
-                return virtualDir.getInputStream(entry);
-            }
-        }
-
-        return null;
-    }
-
     static String createDescriptorKey(VariableDescriptor descriptor) {
         return descriptor.getName();
+    }
+
+    private static void extractSubset(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, ProductData destBuffer, Array rawDataArray, Variable netCDFVariable) throws IOException {
+        final int[] sliceOffset = {sourceOffsetY, sourceOffsetX};
+        final int[] sliceDimensions = {sourceHeight, sourceWidth};
+        final int[] stride = {sourceStepY, sourceStepX};
+
+        try {
+            Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride);
+
+            final double scaleFactor = ReaderUtils.getScalingFactor(netCDFVariable);
+            final double offset = ReaderUtils.getAddOffset(netCDFVariable);
+            if (ReaderUtils.mustScale(scaleFactor, offset)) {
+                final MAMath.ScaleOffset scaleOffset = new MAMath.ScaleOffset(scaleFactor, offset);
+                sliceData = MAMath.convert2Unpacked(sliceData, scaleOffset);
+            }
+            destBuffer.setElems(sliceData.get1DJavaArray(DataType.FLOAT));
+        } catch (InvalidRangeException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
@@ -123,6 +129,22 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         initalizeInput();
 
         final Manifest manifest = readManifest();
+        MetadataElement metadata = manifest.getMetadata();
+        MetadataElement metadataSection = metadata.getElement("metadataSection");
+        MetadataElement olciProductInformation = metadataSection.getElement("olciProductInformation");
+        MetadataElement bandDescriptionsElement = olciProductInformation.getElement("bandDescriptions");
+        // @todo 1 tb/tb duplicated, other segment is in OlciProductFactory 2024-12-20
+        if (bandDescriptionsElement != null) {
+            for (int i = 0; i < bandDescriptionsElement.getNumElements(); i++) {
+                final MetadataElement bandDescriptionElement = bandDescriptionsElement.getElementAt(i);
+                final String bandName = bandDescriptionElement.getAttribute("name").getData().getElemString();
+                final float wavelength = Float.parseFloat(bandDescriptionElement.getAttribute("centralWavelength").getData().getElemString());
+                final float bandWidth = Float.parseFloat(bandDescriptionElement.getAttribute("bandWidth").getData().getElemString());
+                nameToWavelengthMap.put(bandName, wavelength);
+                nameToBandwidthMap.put(bandName, bandWidth);
+                nameToIndexMap.put(bandName, i);
+            }
+        }
 
         // create a naked produt
         final String productName = manifest.getProductName();
@@ -141,7 +163,17 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         for (VariableDescriptor descriptor : variablesMap.values()) {
             // add band - check for other attributes (scaling/offset etc) tb 2025-12-18
             final int dataType = ProductData.getType(descriptor.getDataType());
-            product.addBand(descriptor.getName(), dataType);
+            final String bandname = descriptor.getName();
+            final Band band = product.addBand(bandname, dataType);
+            if (nameToWavelengthMap.containsKey(bandname)) {
+                band.setSpectralWavelength(nameToWavelengthMap.get(bandname));
+            }
+            if (nameToBandwidthMap.containsKey(bandname)) {
+                band.setSpectralBandwidth(nameToBandwidthMap.get(bandname));
+            }
+            if (nameToIndexMap.containsKey(bandname)) {
+                band.setSpectralBandIndex(nameToIndexMap.get(bandname));
+            }
         }
 
         return product;
@@ -181,9 +213,10 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         virtualDir = getVirtualDir(inputPath);
     }
 
+    // @todo 3 tb/tb this could be made testeable by passing in the virtual dir. We can mock then.
     private Manifest readManifest() throws IOException {
         final Manifest manifest;
-        try (InputStream manifestInputStream = getManifestInputStream(virtualDir)) {
+        try (InputStream manifestInputStream = ManifestUtil.getManifestInputStream(virtualDir)) {
             final Document manifestDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(manifestInputStream);
             manifest = XfduManifest.createManifest(manifestDocument);
         } catch (ParserConfigurationException | SAXException e) {
@@ -201,26 +234,6 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         final Array rawDataArray = getRawData(name, netCDFVariable);
 
         extractSubset(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY, destBuffer, rawDataArray, netCDFVariable);
-    }
-
-    private static void extractSubset(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, ProductData destBuffer, Array rawDataArray, Variable netCDFVariable) throws IOException {
-        final int[] sliceOffset = {sourceOffsetY, sourceOffsetX};
-        final int[] sliceDimensions = {sourceHeight, sourceWidth};
-        final int[] stride = {sourceStepY, sourceStepX};
-
-        try {
-            Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride);
-
-            final double scaleFactor = ReaderUtils.getScalingFactor(netCDFVariable);
-            final double offset = ReaderUtils.getAddOffset(netCDFVariable);
-            if (ReaderUtils.mustScale(scaleFactor, offset)) {
-                final MAMath.ScaleOffset scaleOffset = new MAMath.ScaleOffset(scaleFactor, offset);
-                sliceData = MAMath.convert2Unpacked(sliceData, scaleOffset);
-            }
-            destBuffer.setElems(sliceData.get1DJavaArray(DataType.FLOAT));
-        } catch (InvalidRangeException e) {
-            throw new IOException(e);
-        }
     }
 
     private Variable getNetCDFVariable(VariableDescriptor descriptor, String name) throws IOException {

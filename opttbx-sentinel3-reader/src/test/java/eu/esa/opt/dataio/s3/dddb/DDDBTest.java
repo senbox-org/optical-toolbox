@@ -98,11 +98,13 @@ public class DDDBTest {
         assertEquals(1, variableDescriptors.length);
         assertEquals("Oa07_radiance", variableDescriptors[0].getName());
         assertEquals("float32", variableDescriptors[0].getDataType());
+        assertEquals("!quality_flags.invalid", variableDescriptors[0].getValidExpression());
 
         variableDescriptors = dddb.getVariableDescriptors("Oa14_radiance_unc.nc", "OL_1_EFR", "003");
         assertEquals(1, variableDescriptors.length);
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows", variableDescriptors[0].getHeightXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", variableDescriptors[0].getWidthXPath());
+        assertEquals("!quality_flags.invalid", variableDescriptors[0].getValidExpression());
 
         variableDescriptors = dddb.getVariableDescriptors("tie_geo_coordinates.nc", "OL_1_EFR", "004");
         assertEquals(2, variableDescriptors.length);
@@ -111,5 +113,15 @@ public class DDDBTest {
 
         assertEquals('t', variableDescriptors[1].getType());
         assertEquals(-1, variableDescriptors[1].getHeight());
+    }
+
+    @Test
+    @STTM("SNAP-3711")
+    public void testGetVariableDescriptors_notExisting() {
+        try {
+            dddb.getVariableDescriptors("now_way_this_exist.ts", "OL_1_EFR", "004");
+            fail("IOException expected");
+        } catch (IOException expected) {
+        }
     }
 }

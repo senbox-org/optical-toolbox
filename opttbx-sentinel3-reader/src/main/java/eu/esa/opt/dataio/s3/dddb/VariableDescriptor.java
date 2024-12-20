@@ -12,6 +12,7 @@ public class VariableDescriptor {
     private int height;
     private int depth;
     private String fileName;
+    private String validExpression;
 
     public VariableDescriptor() {
         type = 'v';
@@ -98,5 +99,13 @@ public class VariableDescriptor {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getValidExpression() {
+        return validExpression;
+    }
+
+    public void setValidExpression(String validExpression) {
+        this.validExpression = validExpression;
     }
 }

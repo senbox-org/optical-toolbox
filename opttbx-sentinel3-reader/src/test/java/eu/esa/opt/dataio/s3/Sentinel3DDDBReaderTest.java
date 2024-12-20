@@ -50,13 +50,6 @@ public class Sentinel3DDDBReaderTest {
 
     @Test
     @STTM("SNAP-3711")
-    public void testIsZipFile() {
-        assertTrue(Sentinel3DDDBReader.isZipFile(Paths.get("some", "where", "file.zip")));
-        assertFalse(Sentinel3DDDBReader.isZipFile(Paths.get("some", "where", "file.ZAP")));
-    }
-
-    @Test
-    @STTM("SNAP-3711")
     public void testCreateDescriptorKey() {
         final VariableDescriptor descriptor = new VariableDescriptor();
         descriptor.setName("Elfriede");

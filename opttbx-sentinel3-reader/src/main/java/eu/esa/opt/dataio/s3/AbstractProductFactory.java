@@ -19,6 +19,7 @@ import com.bc.ceres.glevel.MultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
 import org.esa.snap.core.dataio.ProductIO;
@@ -101,7 +102,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     @Override
     public final Product createProduct(VirtualDir virtualDir) throws IOException {
-        final InputStream manifestInputStream = getManifestInputStream(virtualDir);
+        final InputStream manifestInputStream = ManifestUtil.getManifestInputStream(virtualDir);
         manifest = createManifest(manifestInputStream);
 
         final List<String> fileNames = getFileNames(manifest);
@@ -556,17 +557,5 @@ public abstract class AbstractProductFactory implements ProductFactory {
             logger.log(Level.SEVERE, msg, e);
             throw new IOException(msg, e);
         }
-    }
-
-    // @todo 3 tb/tb make static and mock test 2024-05-31
-    private InputStream getManifestInputStream(VirtualDir virtualDir) throws IOException {
-        final String[] list = virtualDir.listAllFiles();
-        for (final String entry : list) {
-            if (entry.toLowerCase().endsWith(XfduManifest.MANIFEST_FILE_NAME)) {
-                return virtualDir.getInputStream(entry);
-            }
-        }
-
-        return null;
     }
 }
