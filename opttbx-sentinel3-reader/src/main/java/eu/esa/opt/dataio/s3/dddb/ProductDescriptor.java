@@ -9,9 +9,11 @@ public class ProductDescriptor {
     private String heightXPath;
     private int width;
     private int height;
+    private String bandGroupingPattern;
 
     public ProductDescriptor() {
         excludedIds = "";
+        bandGroupingPattern = "";
         width = -1;
         height = -1;
     }
@@ -64,5 +66,13 @@ public class ProductDescriptor {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public String getBandGroupingPattern() {
+        return bandGroupingPattern;
+    }
+
+    public void setBandGroupingPattern(String bandGroupingPattern) {
+        this.bandGroupingPattern = bandGroupingPattern;
     }
 }

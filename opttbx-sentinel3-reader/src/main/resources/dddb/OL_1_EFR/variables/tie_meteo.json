@@ -5,7 +5,8 @@
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "depth" : 25
+    "depth" : 25,
+    "units" : "K"
   },
   {
     "name": "horizontal_wind",
@@ -13,40 +14,46 @@
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "depth" : 2
+    "depth" : 2,
+    "units" : "m.s-1"
   },
   {
     "name": "humidity",
     "type": "t",
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
-    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns"
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "%"
   },
   {
     "name": "reference_pressure_level",
     "type": "m",
     "dataType": "float32",
-    "width" : 25
+    "width" : 25,
+    "units" : "hPa"
   },
   {
     "name": "sea_level_pressure",
     "type": "t",
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
-    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns"
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "hPa"
   },
   {
     "name": "total_columnar_water_vapour",
     "type": "t",
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
-    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns"
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "kg.m-2"
   },
   {
     "name": "total_ozone",
     "type": "t",
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
-    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns"
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "kg.m-2"
   }
 ]

@@ -3,7 +3,8 @@
     "name": "FWHM",
     "dataType": "float32",
     "width": 3700,
-    "height": 21
+    "height": 21,
+    "units": "nm"
   },
   {
     "name": "detector_index",
@@ -21,13 +22,22 @@
     "name": "lambda0",
     "dataType": "float32",
     "width": 3700,
-    "height": 21
+    "height": 21,
+    "units": "nm"
   },
   {
     "name": "relative_spectral_covariance",
-    "type" : "m",
+    "type": "m",
     "dataType": "float32",
     "width": 21,
     "height": 21
+  },
+  {
+    "name": "solar_flux",
+    "type": "m",
+    "dataType": "float32",
+    "width": 3700,
+    "height": 21,
+    "units" : "mW.m-2.nm-1"
   }
 ]

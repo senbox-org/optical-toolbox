@@ -85,7 +85,6 @@ public class DDDB {
     private static ProductDescriptor readProductDescriptor(URL resourceUrl) throws IOException {
         ProductDescriptor productDescriptor;
 
-        // import json file
         try (InputStream inputStream = resourceUrl.openStream()) {
             final JSONParser parser = getParser();
 
@@ -149,7 +148,7 @@ public class DDDB {
         return productType + "_" + version + ".json";
     }
 
-    private static final class InstanceHolder {
+    private static class InstanceHolder {
         private static final DDDB instance = new DDDB();
     }
 
@@ -160,10 +159,4 @@ public class DDDB {
     private static class JsonParserHolder {
         private static final JSONParser jsonParser = new JSONParser();
     }
-
-    // check if resource present
-    // if not:
-    //  check if resource for type only is present (not version dependent info)
-    // load and parse
-    // ?? do we need to cache descriptors? Possibly clever and requires not much memory.
 }

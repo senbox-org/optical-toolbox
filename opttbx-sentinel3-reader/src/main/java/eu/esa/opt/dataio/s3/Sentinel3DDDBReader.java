@@ -77,7 +77,6 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         int width = productDescriptor.getWidth();
         int height = productDescriptor.getHeight();
         if (width < 0 || height < 0) {
-            // read from XPath
             width = manifest.getXPathInt(productDescriptor.getWidthXPath());
             productDescriptor.setWidth(width);
             height = manifest.getXPathInt(productDescriptor.getHeightXPath());
@@ -118,10 +117,16 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
                 final MAMath.ScaleOffset scaleOffset = new MAMath.ScaleOffset(scaleFactor, offset);
                 sliceData = MAMath.convert2Unpacked(sliceData, scaleOffset);
             }
+            // @todo 1 tb/tb check target buffer data type and use that 2025-01-06
             destBuffer.setElems(sliceData.get1DJavaArray(DataType.FLOAT));
         } catch (InvalidRangeException e) {
             throw new IOException(e);
         }
+    }
+
+    static String bandNameToKey(String bandName) {
+        // @todo 1 tb/tb this is OLCI specific - extract sensor specific class 2025-01-06
+        return bandName.substring(0, 4);
     }
 
     @Override
@@ -131,18 +136,21 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         final Manifest manifest = readManifest();
         MetadataElement metadata = manifest.getMetadata();
         MetadataElement metadataSection = metadata.getElement("metadataSection");
+        // @todo 2 tb this is OLCI specific - extract generic functionality and dispatch to product specific implementation 2025-01-06
         MetadataElement olciProductInformation = metadataSection.getElement("olciProductInformation");
+
         MetadataElement bandDescriptionsElement = olciProductInformation.getElement("bandDescriptions");
+
         // @todo 1 tb/tb duplicated, other segment is in OlciProductFactory 2024-12-20
         if (bandDescriptionsElement != null) {
             for (int i = 0; i < bandDescriptionsElement.getNumElements(); i++) {
                 final MetadataElement bandDescriptionElement = bandDescriptionsElement.getElementAt(i);
-                final String bandName = bandDescriptionElement.getAttribute("name").getData().getElemString();
+                final String bandKey = bandDescriptionElement.getAttribute("name").getData().getElemString();
                 final float wavelength = Float.parseFloat(bandDescriptionElement.getAttribute("centralWavelength").getData().getElemString());
                 final float bandWidth = Float.parseFloat(bandDescriptionElement.getAttribute("bandWidth").getData().getElemString());
-                nameToWavelengthMap.put(bandName, wavelength);
-                nameToBandwidthMap.put(bandName, bandWidth);
-                nameToIndexMap.put(bandName, i);
+                nameToWavelengthMap.put(bandKey, wavelength);
+                nameToBandwidthMap.put(bandKey, bandWidth);
+                nameToIndexMap.put(bandKey, i);
             }
         }
 
@@ -158,21 +166,24 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         // add other properties from manifest and descriptor
         product.setDescription(manifest.getDescription());
         product.setFileLocation(new File(getInput().toString()));
+        product.setAutoGrouping(productDescriptor.getBandGroupingPattern());
 
         initializeDDDBDescriptors(manifest, productDescriptor);
         for (VariableDescriptor descriptor : variablesMap.values()) {
-            // add band - check for other attributes (scaling/offset etc) tb 2025-12-18
+            // add band - check for other attributes (unit, description, fill value) tb 2025-12-18
             final int dataType = ProductData.getType(descriptor.getDataType());
             final String bandname = descriptor.getName();
             final Band band = product.addBand(bandname, dataType);
-            if (nameToWavelengthMap.containsKey(bandname)) {
-                band.setSpectralWavelength(nameToWavelengthMap.get(bandname));
+
+            final String bandKey = bandNameToKey(bandname);
+            if (nameToWavelengthMap.containsKey(bandKey)) {
+                band.setSpectralWavelength(nameToWavelengthMap.get(bandKey));
             }
-            if (nameToBandwidthMap.containsKey(bandname)) {
-                band.setSpectralBandwidth(nameToBandwidthMap.get(bandname));
+            if (nameToBandwidthMap.containsKey(bandKey)) {
+                band.setSpectralBandwidth(nameToBandwidthMap.get(bandKey));
             }
-            if (nameToIndexMap.containsKey(bandname)) {
-                band.setSpectralBandIndex(nameToIndexMap.get(bandname));
+            if (nameToIndexMap.containsKey(bandKey)) {
+                band.setSpectralBandIndex(nameToIndexMap.get(bandKey));
             }
         }
 

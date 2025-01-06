@@ -32,11 +32,13 @@ public class DDDBTest {
         assertEquals("removedPixelsData", olciL1Descriptor.getExcludedIds());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", olciL1Descriptor.getWidthXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows", olciL1Descriptor.getHeightXPath());
+        assertEquals("Oa*_radiance:Oa*_radiance_unc:Oa*_radiance_err:atmospheric_temperature_profile:lambda0:FWHM:solar_flux", olciL1Descriptor.getBandGroupingPattern());
 
         final ProductDescriptor slstrL1Descriptor = dddb.getProductDescriptor("SL_1_RBT", "004");
         assertEquals("", slstrL1Descriptor.getExcludedIds());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/columns", slstrL1Descriptor.getWidthXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/rows", slstrL1Descriptor.getHeightXPath());
+        assertEquals("", slstrL1Descriptor.getBandGroupingPattern());
     }
 
     @Test
@@ -79,13 +81,15 @@ public class DDDBTest {
         assertEquals('v', variableDescriptors[1].getType());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", variableDescriptors[2].getWidthXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows", variableDescriptors[0].getHeightXPath());
+        assertEquals("degrees_north", variableDescriptors[1].getUnits());
 
         variableDescriptors = dddb.getVariableDescriptors("instrument_data.nc", "OL_1_EFR", "004");
 
-        assertEquals(5, variableDescriptors.length);
+        assertEquals(6, variableDescriptors.length);
         assertEquals("FWHM", variableDescriptors[0].getName());
         assertEquals("int16", variableDescriptors[1].getDataType());
         assertEquals('v', variableDescriptors[2].getType());
+        assertEquals("nm", variableDescriptors[3].getUnits());
 
         assertNull(variableDescriptors[3].getWidthXPath());
         assertEquals(3700, variableDescriptors[3].getWidth());
@@ -99,6 +103,7 @@ public class DDDBTest {
         assertEquals("Oa07_radiance", variableDescriptors[0].getName());
         assertEquals("float32", variableDescriptors[0].getDataType());
         assertEquals("!quality_flags.invalid", variableDescriptors[0].getValidExpression());
+        assertEquals("mW.m-2.sr-1.nm-1", variableDescriptors[0].getUnits());
 
         variableDescriptors = dddb.getVariableDescriptors("Oa14_radiance_unc.nc", "OL_1_EFR", "003");
         assertEquals(1, variableDescriptors.length);
@@ -113,6 +118,7 @@ public class DDDBTest {
 
         assertEquals('t', variableDescriptors[1].getType());
         assertEquals(-1, variableDescriptors[1].getHeight());
+        assertEquals("degrees_north", variableDescriptors[0].getUnits());
     }
 
     @Test

@@ -65,6 +65,13 @@ public class Sentinel3DDDBReaderTest {
         sentinel3DDDBReader.close();
     }
 
+    @Test
+    @STTM("SNAP-3711")
+    public void testBandNameToKey() throws IOException {
+        assertEquals("Oa01", Sentinel3DDDBReader.bandNameToKey("Oa01_radiance"));
+        assertEquals("Oa02", Sentinel3DDDBReader.bandNameToKey("Oa02_radiance_unc"));
+    }
+
     private static Manifest createManifest() {
         return new Manifest() {
             @Override

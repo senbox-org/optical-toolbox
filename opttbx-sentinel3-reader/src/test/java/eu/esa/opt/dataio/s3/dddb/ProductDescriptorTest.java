@@ -10,11 +10,13 @@ public class ProductDescriptorTest {
 
     @Test
     @STTM("SNAP-3711")
-    public void tstConstruction() {
+    public void testConstruction() {
         final ProductDescriptor productDescriptor = new ProductDescriptor();
 
         assertEquals(-1, productDescriptor.getWidth());
         assertEquals(-1, productDescriptor.getHeight());
+        assertEquals("", productDescriptor.getExcludedIds());
+        assertEquals("", productDescriptor.getBandGroupingPattern());
     }
 
     @Test
