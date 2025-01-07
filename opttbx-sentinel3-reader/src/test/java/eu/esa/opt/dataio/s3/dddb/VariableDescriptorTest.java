@@ -18,5 +18,6 @@ public class VariableDescriptorTest {
         assertEquals(-1, descriptor.getDepth());
         assertEquals("", descriptor.getValidExpression());
         assertEquals("", descriptor.getUnits());
+        assertEquals("", descriptor.getDescription());
     }
 }

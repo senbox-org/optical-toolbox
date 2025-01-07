@@ -4,6 +4,7 @@
     "type" : "m",
     "dataType": "float32",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
-    "units" : "microseconds since 2000-01-01 00:00:00"
+    "units" : "microseconds since 2000-01-01 00:00:00",
+    "description" : "Elapsed time since 01 Jan 2000 0h"
   }
 ]

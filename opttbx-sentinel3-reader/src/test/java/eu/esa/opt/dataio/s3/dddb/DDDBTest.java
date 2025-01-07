@@ -82,6 +82,7 @@ public class DDDBTest {
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", variableDescriptors[2].getWidthXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows", variableDescriptors[0].getHeightXPath());
         assertEquals("degrees_north", variableDescriptors[1].getUnits());
+        assertEquals("DEM corrected altitude", variableDescriptors[0].getDescription());
 
         variableDescriptors = dddb.getVariableDescriptors("instrument_data.nc", "OL_1_EFR", "004");
 
@@ -90,6 +91,7 @@ public class DDDBTest {
         assertEquals("int16", variableDescriptors[1].getDataType());
         assertEquals('v', variableDescriptors[2].getType());
         assertEquals("nm", variableDescriptors[3].getUnits());
+        assertEquals("Relative spectral covariance matrix", variableDescriptors[4].getDescription());
 
         assertNull(variableDescriptors[3].getWidthXPath());
         assertEquals(3700, variableDescriptors[3].getWidth());
@@ -104,21 +106,40 @@ public class DDDBTest {
         assertEquals("float32", variableDescriptors[0].getDataType());
         assertEquals("!quality_flags.invalid", variableDescriptors[0].getValidExpression());
         assertEquals("mW.m-2.sr-1.nm-1", variableDescriptors[0].getUnits());
+        assertEquals("TOA radiance for OLCI acquisition band Oa07", variableDescriptors[0].getDescription());
 
         variableDescriptors = dddb.getVariableDescriptors("Oa14_radiance_unc.nc", "OL_1_EFR", "003");
         assertEquals(1, variableDescriptors.length);
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows", variableDescriptors[0].getHeightXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", variableDescriptors[0].getWidthXPath());
         assertEquals("!quality_flags.invalid", variableDescriptors[0].getValidExpression());
+        assertEquals("log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa14", variableDescriptors[0].getDescription());
+
+        variableDescriptors = dddb.getVariableDescriptors("qualityFlags.nc", "OL_1_EFR", "003");
+        assertEquals(1, variableDescriptors.length);
+        assertEquals("Classification and quality flags", variableDescriptors[0].getDescription());
 
         variableDescriptors = dddb.getVariableDescriptors("tie_geo_coordinates.nc", "OL_1_EFR", "004");
         assertEquals(2, variableDescriptors.length);
         assertEquals("TP_latitude", variableDescriptors[0].getName());
         assertEquals("latitude", variableDescriptors[0].getNcVarName());
+        assertEquals("Latitude", variableDescriptors[0].getDescription());
 
         assertEquals('t', variableDescriptors[1].getType());
         assertEquals(-1, variableDescriptors[1].getHeight());
         assertEquals("degrees_north", variableDescriptors[0].getUnits());
+
+        variableDescriptors = dddb.getVariableDescriptors("tie_geometries.nc", "OL_1_EFR", "003");
+        assertEquals(4, variableDescriptors.length);
+        assertEquals("Sun Zenith Angle", variableDescriptors[3].getDescription());
+
+        variableDescriptors = dddb.getVariableDescriptors("tie_meteo.nc", "OL_1_EFR", null);
+        assertEquals(7, variableDescriptors.length);
+        assertEquals("Mean sea level pressure", variableDescriptors[4].getDescription());
+
+        variableDescriptors = dddb.getVariableDescriptors("time_coordinates.nc", "OL_1_EFR", null);
+        assertEquals(1, variableDescriptors.length);
+        assertEquals("Elapsed time since 01 Jan 2000 0h", variableDescriptors[0].getDescription());
     }
 
     @Test

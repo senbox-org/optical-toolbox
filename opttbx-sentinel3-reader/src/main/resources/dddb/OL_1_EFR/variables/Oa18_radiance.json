@@ -5,6 +5,7 @@
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
     "validExpression" : "!quality_flags.invalid",
-    "units" : "mW.m-2.sr-1.nm-1"
+    "units" : "mW.m-2.sr-1.nm-1",
+    "description" : "TOA radiance for OLCI acquisition band Oa18"
   }
 ]

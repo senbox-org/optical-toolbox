@@ -6,7 +6,8 @@
     "dataType": "int32",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "degrees_north"
+    "units" : "degrees_north",
+    "description" : "Latitude"
   },
   {
     "name": "TP_longitude",
@@ -15,6 +16,7 @@
     "dataType": "int32",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "degrees_east"
+    "units" : "degrees_east",
+    "description" : "Longitude"
   }
 ]

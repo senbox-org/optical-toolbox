@@ -5,7 +5,8 @@
     "dataType": "int32",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "degrees"
+    "units" : "degrees",
+    "description" : "Observation (Viewing) Azimuth Angle"
   },
   {
     "name": "OZA",
@@ -13,7 +14,8 @@
     "dataType": "int32",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "degrees"
+    "units" : "degrees",
+    "description" : "Observation (Viewing) Zenith Angle"
   },
   {
     "name": "SAA",
@@ -21,7 +23,8 @@
     "dataType": "int32",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "degrees"
+    "units" : "degrees",
+    "description" : "Sun Azimuth Angle"
   },
   {
     "name": "SZA",
@@ -29,6 +32,7 @@
     "dataType": "int32",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "degrees"
+    "units" : "degrees",
+    "description" : "Sun Zenith Angle"
   }
 ]

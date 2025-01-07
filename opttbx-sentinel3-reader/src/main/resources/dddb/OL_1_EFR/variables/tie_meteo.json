@@ -6,7 +6,8 @@
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
     "depth" : 25,
-    "units" : "K"
+    "units" : "K",
+    "description" : "Air temperature profile"
   },
   {
     "name": "horizontal_wind",
@@ -15,7 +16,8 @@
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
     "depth" : 2,
-    "units" : "m.s-1"
+    "units" : "m.s-1",
+    "description" : "Horizontal wind vector at 10m altitude"
   },
   {
     "name": "humidity",
@@ -23,14 +25,16 @@
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "%"
+    "units" : "%",
+    "description" : "Relative humidity"
   },
   {
     "name": "reference_pressure_level",
     "type": "m",
     "dataType": "float32",
     "width" : 25,
-    "units" : "hPa"
+    "units" : "hPa",
+    "description" : "Reference pressure level"
   },
   {
     "name": "sea_level_pressure",
@@ -38,7 +42,8 @@
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "hPa"
+    "units" : "hPa",
+    "description" : "Mean sea level pressure"
   },
   {
     "name": "total_columnar_water_vapour",
@@ -46,7 +51,8 @@
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "kg.m-2"
+    "units" : "kg.m-2",
+    "description" : "Total column water vapour"
   },
   {
     "name": "total_ozone",
@@ -54,6 +60,7 @@
     "dataType": "float32",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "units" : "kg.m-2"
+    "units" : "kg.m-2",
+    "description" : "Total columnar ozone"
   }
 ]

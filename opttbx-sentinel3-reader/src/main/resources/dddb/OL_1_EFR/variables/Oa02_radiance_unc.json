@@ -5,6 +5,7 @@
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
     "validExpression" : "!quality_flags.invalid",
-    "units" : "lg(re mW.m-2.sr-1.nm-1)"
+    "units" : "lg(re mW.m-2.sr-1.nm-1)",
+    "description" : "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa02"
   }
 ]

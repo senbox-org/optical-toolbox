@@ -14,6 +14,7 @@ public class VariableDescriptor {
     private String fileName;
     private String validExpression;
     private String units;
+    private String description;
 
     public VariableDescriptor() {
         type = 'v';
@@ -22,6 +23,7 @@ public class VariableDescriptor {
         depth = -1;
         validExpression = "";
         units = "";
+        description = "";
     }
 
     public String getName() {
@@ -118,5 +120,13 @@ public class VariableDescriptor {
 
     public void setUnits(String units) {
         this.units = units;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
