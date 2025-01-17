@@ -73,13 +73,9 @@ import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERP
 
 public abstract class AbstractProductFactory implements ProductFactory {
 
-    private final static Color[] uncertainty_colors = new Color[]{
-            new Color(127, 0, 255),
-            new Color(0, 0, 255),
-            new Color(0, 255, 0),
-            new Color(255, 255, 0),
-            new Color(255, 127, 0),
-            new Color(255, 0, 0)
+    private final static Color[] uncertainty_colors = {
+            new Color(0, 0, 0),
+            new Color(255, 255, 255)
     };
     private final Map<String, MultiLevelImage> tpgImageMap;
     private final List<Product> openProductList = new ArrayList<>();

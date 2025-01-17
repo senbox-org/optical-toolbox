@@ -158,6 +158,9 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
     private static final String STANDARD_NETS = "C2RCC-Nets";
     private static final String EXTREME_NETS = "C2X-Nets";
     private static final String COMPLEX_NETS = "C2X-COMPLEX-Nets";
+    static final String DEFAULT_DEM_NAME = "Copernicus 90m Global DEM";
+    static final String DEM_NAME_COPERNICUS30 = "Copernicus 30m Global DEM";
+    static final String DEM_NAME_GETASSE30 = "GETASSE30";
     private static final Map<String, String[]> c2rccNetSetMap = new HashMap<>();
 
     static {
@@ -220,7 +223,7 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
     private double press;
 
     @Parameter(defaultValue = "0", unit = "m", interval = "(0, 8500)", label = "Elevation",
-            description = "Used as fallback if elevation could not be taken from GETASSE30 DEM.")
+            description = "Used as fallback if elevation could not be taken from DEM.")
     private double elevation;
 
     @Parameter(alias = "TSMfac", defaultValue = "1.06", description = "TSM factor (TSM = TSMfac * iop_btot^TSMexp).", label = "TSM factor")
@@ -273,6 +276,12 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
             "Use ECMWF auxiliary data (msl and tco3) from the source product, if available.",
             label = "Use ECMWF data, if available")
     private boolean useEcmwfAuxData;
+
+    @Parameter(valueSet = {DEFAULT_DEM_NAME, DEM_NAME_COPERNICUS30, DEM_NAME_GETASSE30},
+            description = "The digital elevation model.",
+            defaultValue = DEFAULT_DEM_NAME,
+            label = "Digital Elevation Model")
+    private String demName = DEFAULT_DEM_NAME;
 
     @Parameter(defaultValue = "true", label = "Output TOA reflectances")
     private boolean outputRtoa;
@@ -458,17 +467,7 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
         double ozone = fetchOzone(atmosphericAuxdata, mjd, x, y, lat, lon);
         double atmPress = fetchSurfacePressure(atmosphericAuxdata, mjd, x, y, lat, lon);
 
-        final double altitude;
-        if (elevationModel != null) {
-            try {
-                altitude = elevationModel.getElevation(geoPos);
-            } catch (Exception e) {
-                throw new OperatorException("Unable to compute altitude.", e);
-            }
-        } else {
-            // in case elevationModel could not be initialised
-            altitude = elevation;
-        }
+        final double altitude = getAltitude(geoPos);
 
         Result result = algorithm.processPixel(x, y, lat, lon,
                                                reflectances,
@@ -948,12 +947,6 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
             throw new OperatorException("Source must be a resampled S2 MSI L1C product", e);
         }
 
-
-        ElevationModelDescriptor getasse30 = ElevationModelRegistry.getInstance().getDescriptor("GETASSE30");
-        if (getasse30 != null) {
-            // if elevation model cannot be initialised the fallback height will be used
-            elevationModel = getasse30.createDem(Resampling.BILINEAR_INTERPOLATION);
-        }
         // (mp/20160504) - SolarFlux is not used so we set it to 0
         solflux = new double[SOURCE_BAND_REFL_NAMES.length]; //getSolarFluxValues();
         timeCoding = sourceProduct.getSceneTimeCoding();
@@ -974,6 +967,10 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
     public void doExecute(ProgressMonitor pm) throws OperatorException {
         pm.beginTask("Preparing computation", 2);
         try {
+            pm.setSubTaskName("Creating DEM");
+            initialiseElevationModel();
+            pm.worked(1);
+
             pm.setSubTaskName("Defining algorithm ...");
             if (StringUtils.isNotNullAndNotEmpty(alternativeNNPath)) {
                 String[] nnFilePaths = NNUtils.getNNFilePaths(Paths.get(alternativeNNPath),
@@ -1192,5 +1189,32 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
         public Spi() {
             super(C2rccMsiOperator.class);
         }
+    }
+
+    public ElevationModel getElevationModel() {
+        return this.elevationModel;
+    }
+
+    public void initialiseElevationModel() {
+        ElevationModelDescriptor elevModelDesc = ElevationModelRegistry.getInstance().getDescriptor(this.demName);
+        if (elevModelDesc != null) {
+            // if elevation model cannot be initialised the fallback height will be used
+            this.elevationModel = elevModelDesc.createDem(Resampling.BILINEAR_INTERPOLATION);
+        }
+    }
+
+    public double getAltitude(GeoPos geoPos) {
+        double altitude;
+        if (this.elevationModel != null) {
+            try {
+                altitude = this.elevationModel.getElevation(geoPos);
+            } catch (Exception e) {
+                throw new OperatorException("Unable to compute altitude.", e);
+            }
+        } else {
+            // in case elevationModel could not be initialised
+            altitude = this.elevation;
+        }
+        return altitude;
     }
 }

@@ -41,6 +41,36 @@ public class SeadasProductReader extends AbstractProductReader {
     private ProductType productType;
     private SeadasFileReader seadasFileReader;
 
+    enum Mission {
+        OCI("OCI");
+
+        private String name;
+        private Mission(String nm) {
+            name = nm;
+        }
+        public String toString() {
+            return name;
+        }
+    }
+
+    enum ProcessingLevel {
+        L1A("L1A"),
+        L1B("L1B"),
+        L1C("L1C"),
+        L2("L2"),
+        L3b("L3 Binned"),
+        L3m("L3 Mapped");
+
+        private String name;
+        private ProcessingLevel(String nm) {
+            name = nm;
+        }
+        public String toString() {
+            return name;
+        }
+    }
+
+
 
     enum ProductType {
         ANCNRT("SeaWiFS Near Real-Time Ancillary Data"),
@@ -109,7 +139,7 @@ public class SeadasProductReader extends AbstractProductReader {
 
         try {
 //            Product product;
-            final File inFile = getInputFile(getInput());
+            final File inFile = SeadasHelper.getInputFile(getInput());
             final String path = inFile.getPath();
 
             ncfile = NetcdfFileOpener.open(path);
@@ -233,7 +263,7 @@ public class SeadasProductReader extends AbstractProductReader {
     }
 
     public File getInputFile() {
-        return getInputFile(getInput());
+        return SeadasHelper.getInputFile(getInput());
     }
 
     public NetcdfFile getNcfile() {
@@ -425,17 +455,4 @@ public class SeadasProductReader extends AbstractProductReader {
         }
         return null;
     }
-
-    public static File getInputFile(Object input) {
-        File inputFile;
-        if (input instanceof File) {
-            inputFile = (File) input;
-        } else if (input instanceof String) {
-            inputFile = new File((String) input);
-        } else {
-            return null;
-        }
-        return inputFile;
-    }
-
 }

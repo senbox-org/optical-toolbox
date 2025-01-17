@@ -28,9 +28,10 @@ public class Rad2ReflAuxdata {
     public static Rad2ReflAuxdata loadMERISAuxdata(String productType) throws IOException {
         final Path auxdataDir = installAuxdata();
 
-        if (productType.startsWith("MER_F")) {
+        final ResolutionType resolutionType = getResolutionType(productType);
+        if (resolutionType == ResolutionType.FULL) {
             return loadFRAuxdata(auxdataDir);
-        } else if (productType.startsWith("MER_R")) {
+        } else if (resolutionType == ResolutionType.REDUCED) {
             return loadRRAuxdata(auxdataDir);
         } else {
             throw new IOException(String.format("No auxillary data found for input product of type '%s'", productType));
@@ -43,6 +44,15 @@ public class Rad2ReflAuxdata {
                             final int numCols) throws IOException {
         this.auxdataDir = auxdataDir;
         loadDetectorData(detectorSunSpectralFluxesFilename, numRows, numCols);
+    }
+
+    static ResolutionType getResolutionType(String productType) {
+        if(productType.contains("MER_R")) {
+            return ResolutionType.REDUCED;
+        } else if (productType.contains("MER_F")) {
+            return ResolutionType.FULL;
+        }
+        return ResolutionType.UNKNOWN;
     }
 
     public double[][] getDetectorSunSpectralFluxes() {

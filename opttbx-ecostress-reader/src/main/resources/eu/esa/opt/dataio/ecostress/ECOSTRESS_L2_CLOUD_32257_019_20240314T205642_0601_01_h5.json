@@ -1,0 +1,76 @@
+{
+  "id": "ECOSTRESS_L2_CLOUD_32257_019_20240314T205642_0601_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "14-MAR-2024 20:56:43.163661",
+    "endTime": "14-MAR-2024 21:01:43.163661",
+    "bands": [
+      {
+        "name": "SDS_CloudMask",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "Bits: 0 = Determined, 1 = Cloud (includes tests and extended), 2 = Test 1 or Test 2, 3 = Test 1: Thermal Brightness Test, 4 = Test 2: Band 4 - 5 Thermal Difference Test, 5 = Water",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2329,
+            "y": 3027,
+            "value": 1.0
+          },
+          {
+            "x": 4009,
+            "y": 3654,
+            "value": 1.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/DayNightFlag",
+        "value": "Night"
+      },
+      {
+        "path": "L2 CLOUD Metadata/QAPercentCloudCover",
+        "value": "0"
+      },
+      {
+        "path": "StandardMetadata/ImageLines",
+        "value": "5632"
+      },
+      {
+        "path": "L2 CLOUD Metadata/CloudMinTemperature",
+        "value": "9999.0"
+      },
+      {
+        "path": "L2 CLOUD Metadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "L2 CLOUD Metadata/QAPercentCloudCover",
+        "value": "0"
+      },
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2024-03-15T06:20:03.381Z"
+      },
+      {
+        "path": "L2 CLOUD Metadata/QAPercentCloudCover",
+        "value": "0"
+      },
+      {
+        "path": "L2 CLOUD Metadata/CloudMinTemperature",
+        "value": "9999.0"
+      },
+      {
+        "path": "L2 CLOUD Metadata/CloudMinTemperature",
+        "value": "9999.0"
+      }
+    ]
+  }
+}

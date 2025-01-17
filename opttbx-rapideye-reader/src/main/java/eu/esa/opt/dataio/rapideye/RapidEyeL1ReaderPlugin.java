@@ -19,7 +19,6 @@ package eu.esa.opt.dataio.rapideye;
 
 import eu.esa.opt.dataio.rapideye.metadata.RapidEyeConstants;
 import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
-import org.apache.commons.lang3.SystemUtils;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.RGBImageProfile;
@@ -57,9 +56,6 @@ public class RapidEyeL1ReaderPlugin extends BaseProductReaderPlugIn {
     }
 
     public DecodeQualification getDecodeQualification(Object input) {
-        if(SystemUtils.IS_OS_MAC){
-            return DecodeQualification.UNABLE;
-        }
         return super.getDecodeQualification(input);
     }
 

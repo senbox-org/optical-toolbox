@@ -24,6 +24,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.SampleCoding;
 import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.datamodel.VirtualBand;
+import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.annotations.OperatorMetadata;
@@ -35,11 +36,13 @@ import org.esa.snap.core.gpf.pointop.Sample;
 import org.esa.snap.core.gpf.pointop.SourceSampleConfigurer;
 import org.esa.snap.core.gpf.pointop.TargetSampleConfigurer;
 import org.esa.snap.core.gpf.pointop.WritableSample;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.math.MathUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * TODO
@@ -55,13 +58,21 @@ import java.util.Map;
         copyright = "CS Group (foss-contact@c-s.fr)")
 public class BiophysicalOp extends PixelOperator {
 
-    private Map<BiophysicalVariable, BiophysicalAlgo> algos = new HashMap<>();
+    private final Map<BiophysicalVariable, BiophysicalAlgo> algos = new HashMap<>();
 
     @SourceProduct(alias = "source", description = "The source product.")
     private Product sourceProduct;
 
     @Parameter(defaultValue = "S2A", label = "Sensor", description = "Sensor", valueSet = {"S2A", "S2B"})
     private String sensor;
+
+    @Parameter(alias = "resolution",
+            label = "Output resolution (m)",
+            description = "The output resolution.",
+            valueSet = {"10", "20", "60"},
+            defaultValue = "60"
+    )
+    private String targetResolution;
 
     @Parameter(defaultValue = "true", label = "Compute LAI", description = "Compute LAI (Leaf Area Index)")
     private boolean computeLAI;
@@ -78,7 +89,11 @@ public class BiophysicalOp extends PixelOperator {
     @Parameter(defaultValue = "true", label = "Compute CWC", description = "Compute Cw (Canopy Water Content)")
     private boolean computeCw;
 
+    private final Pattern S2L2APattern = Pattern.compile("S2[A-B]_MSIL2A_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
+    private final Pattern S2L1CPattern = Pattern.compile("S2[A-B]_MSIL1C_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
 
+    private boolean needsResample = false;
+    private List<BiophysicalVariable> biophysicalVariables;
 
     /**
      * Configures all source samples that this operator requires for the computation of target samples.
@@ -107,7 +122,18 @@ public class BiophysicalOp extends PixelOperator {
 
     @Override
     protected void prepareInputs() throws OperatorException {
-        super.prepareInputs();
+        try {
+            super.prepareInputs();
+        } catch (OperatorException e) {
+            // multi-size
+            if (S2L2APattern.matcher(this.sourceProduct.getName()).find()) {
+                needsResample = true;
+            } else if (S2L1CPattern.matcher(this.sourceProduct.getName()).find()) {
+                throw new OperatorException("The operator requires an atmospherically corrected product");
+            } else {
+                throw e;
+            }
+        }
         loadAuxData();
     }
 
@@ -127,6 +153,26 @@ public class BiophysicalOp extends PixelOperator {
         }
     }
 
+    private String[] getS2Bands() {
+        final Set<String> bandNames = new LinkedHashSet<>() {{
+            add("B3"); add("B4"); add("B5"); add("B6"); add("B7"); add("B8A"); add("B11"); add("B12");
+        }};
+        final List<String> bands = new ArrayList<>(bandNames);
+        boolean hasDetectorBands = Arrays.stream(this.sourceProduct.getBandNames()).anyMatch(n -> n.startsWith("B_detector_footprint_\""));
+        for (String bandName : bandNames) {
+            if (hasDetectorBands) {
+                bands.add("B_detector_footprint_" + bandName);
+            }
+            bands.add("view_azimuth_" + bandName);
+            bands.add("view_zenith_" + bandName);
+        }
+        bands.add("view_zenith_mean");
+        bands.add("sun_zenith");
+        bands.add("sun_azimuth");
+        bands.add("view_azimuth_mean");
+        return bands.toArray(new String[0]);
+    }
+
     /**
      * Configures all target samples computed by this operator.
      * Target samples are defined by using the provided {@link TargetSampleConfigurer}.
@@ -138,15 +184,10 @@ public class BiophysicalOp extends PixelOperator {
      */
     @Override
     protected void configureTargetSamples(TargetSampleConfigurer sampleConfigurer) throws OperatorException {
-
         int sampleIndex = 0;
-        for (BiophysicalVariable biophysicalVariable : BiophysicalVariable.values()) {
-            if (BiophysicalModel.S2A.computesVariable(biophysicalVariable) && isComputed(biophysicalVariable)) {
-                sampleConfigurer.defineSample(sampleIndex, biophysicalVariable.getSampleName());
-                sampleIndex++;
-                sampleConfigurer.defineSample(sampleIndex, biophysicalVariable.getSampleName() + "_flags");
-                sampleIndex++;
-            }
+        for (BiophysicalVariable biophysicalVariable : this.biophysicalVariables) {
+            sampleConfigurer.defineSample(sampleIndex++, biophysicalVariable.getSampleName());
+            sampleConfigurer.defineSample(sampleIndex++, biophysicalVariable.getSampleName() + "_flags");
         }
     }
 
@@ -178,45 +219,72 @@ public class BiophysicalOp extends PixelOperator {
      */
     @Override
     protected void configureTargetProduct(ProductConfigurer productConfigurer) {
+        Product tp;
+        double noDataValue;
+        biophysicalVariables = Arrays.stream(BiophysicalVariable.values())
+                                     .filter(v -> BiophysicalModel.S2A.computesVariable(v) && isComputed(v))
+                                     .collect(Collectors.toList());
+        if (needsResample) {
+            HashMap<String, Product> sourceProducts = new HashMap<>();
+            sourceProducts.put("sourceProduct", this.sourceProduct);
+            final HashMap<String, Object> params = new HashMap<>();
+            // Only resample selected bands
+            final String[] s2Bands = getS2Bands();
+            params.put("bands", s2Bands);
+            params.put("targetResolution", targetResolution);
+            noDataValue = this.sourceProduct.getBand(s2Bands[0]).getNoDataValue();
+            // The new source product is the resampled one, we need to reset references
+            this.sourceProduct = GPF.createProduct("S2Resampling", params, sourceProducts);
+            // Dirty hack, but no other way to clear productList and productMap from OperatorContext
+            setSourceProducts();
+            setSourceProduct("source", this.sourceProduct);
+            // We need to recreate the target product since scene dimensions may have changed from the initial one
+            tp = createTargetProduct();
+            ProductUtils.copyGeoCoding(sourceProduct, tp);
+            ProductUtils.copyTimeInformation(sourceProduct, tp);
+            setTargetProduct(tp);
+            productConfigurer.setSourceProduct(this.sourceProduct);
+            needsResample = false;
+        } else {
+            tp = productConfigurer.getTargetProduct();
+            noDataValue = this.sourceProduct.getBand(getS2Bands()[0]).getNoDataValue();
+        }
         super.configureTargetProduct(productConfigurer);
         productConfigurer.copyMetadata();
         productConfigurer.copyMasks();
 
-        Product tp = productConfigurer.getTargetProduct();
-        // todo setDescription
+        final List<String> description = new ArrayList<>();
+        for (BiophysicalVariable biophysicalVariable : this.biophysicalVariables) {
+            // Add biophysical variable band
+            final Band biophysicalVariableBand = tp.addBand(biophysicalVariable.getBandName(), ProductData.TYPE_FLOAT32);
+            biophysicalVariableBand.setDescription(biophysicalVariable.getDescription());
+            biophysicalVariableBand.setUnit(biophysicalVariable.getUnit());
+            // todo better setDescription
+            // todo setValidPixelExpression
+            biophysicalVariableBand.setNoDataValue(noDataValue);
+            biophysicalVariableBand.setNoDataValueUsed(true);
 
-        for (BiophysicalVariable biophysicalVariable : BiophysicalVariable.values()) {
-            if (BiophysicalModel.S2A.computesVariable(biophysicalVariable) && isComputed(biophysicalVariable)) {
-                // Add biophysical variable band
-                final Band biophysicalVariableBand = tp.addBand(biophysicalVariable.getBandName(), ProductData.TYPE_FLOAT32);
-                biophysicalVariableBand.setDescription(biophysicalVariable.getDescription());
-                biophysicalVariableBand.setUnit(biophysicalVariable.getUnit());
-                // todo better setDescription
-                // todo setValidPixelExpression
-                // todo setNoDataValueUsed (see flhmci)
-                // todo setNoDataValue (see flhmci)
-
-
-                // Add corresponding flag band
-                String flagBandName = String.format("%s_flags", biophysicalVariable.getBandName());
-                final Band biophysicalVariableFlagBand = tp.addBand(flagBandName, ProductData.TYPE_UINT8);
-                final FlagCoding biophysicalVariableFlagCoding = new FlagCoding(flagBandName);
-                for (BiophysicalFlag flagDef : BiophysicalFlag.values()) {
-                    biophysicalVariableFlagCoding.addFlag(flagDef.getName(), flagDef.getFlagValue(), flagDef.getDescription());
-                }
-                tp.getFlagCodingGroup().add(biophysicalVariableFlagCoding);
-                biophysicalVariableFlagBand.setSampleCoding(biophysicalVariableFlagCoding);
-
-                // Add a mask for each flag
-                for (BiophysicalFlag flagDef : BiophysicalFlag.values()) {
-                    String maskName = String.format("%s_%s", biophysicalVariable.getBandName(), flagDef.getName().toLowerCase());
-                    tp.addMask(maskName,
-                               String.format("%s.%s", flagBandName, flagDef.getName()),
-                               flagDef.getDescription(),
-                               flagDef.getColor(), flagDef.getTransparency());
-                }
+            // Add corresponding flag band
+            String flagBandName = String.format("%s_flags", biophysicalVariable.getBandName());
+            final Band biophysicalVariableFlagBand = tp.addBand(flagBandName, ProductData.TYPE_UINT8);
+            final FlagCoding biophysicalVariableFlagCoding = new FlagCoding(flagBandName);
+            for (BiophysicalFlag flagDef : BiophysicalFlag.values()) {
+                biophysicalVariableFlagCoding.addFlag(flagDef.getName(), flagDef.getFlagValue(), flagDef.getDescription());
             }
+            tp.getFlagCodingGroup().add(biophysicalVariableFlagCoding);
+            biophysicalVariableFlagBand.setSampleCoding(biophysicalVariableFlagCoding);
+
+            // Add a mask for each flag
+            for (BiophysicalFlag flagDef : BiophysicalFlag.values()) {
+                String maskName = String.format("%s_%s", biophysicalVariable.getBandName(), flagDef.getName().toLowerCase());
+                tp.addMask(maskName,
+                           String.format("%s.%s", flagBandName, flagDef.getName()),
+                           flagDef.getDescription(),
+                           flagDef.getColor(), flagDef.getTransparency());
+            }
+            description.add(biophysicalVariable.getDescription());
         }
+        tp.setDescription("Biophysical variables (" + String.join(",", description));
     }
 
     /**
@@ -238,9 +306,9 @@ public class BiophysicalOp extends PixelOperator {
     protected void computePixel(int x, int y, Sample[] sourceSamples, WritableSample[] targetSamples) {
 
         double[] input = new double[11];
-        for (int i = 0; i < 10; ++i) {
+        /*for (int i = 0; i < 10; ++i) {
             input[i] = sourceSamples[i].getDouble();
-        }
+        }*/
 
         input[L2BInput.B3.getIndex()] = sourceSamples[L2BInput.B3.getIndex()].getDouble();
         input[L2BInput.B4.getIndex()] = sourceSamples[L2BInput.B4.getIndex()].getDouble();
@@ -259,20 +327,16 @@ public class BiophysicalOp extends PixelOperator {
         input[10] = Math.cos(MathUtils.DTOR * (sourceSamples[L2BInput.SUN_AZIMUTH.getIndex()].getDouble() - sourceSamples[L2BInput.VIEW_AZIMUTH.getIndex()].getDouble()));
 
         int targetIndex = 0;
-        for (BiophysicalVariable biophysicalVariable : BiophysicalVariable.values()) {
-            if (BiophysicalModel.S2A.computesVariable(biophysicalVariable) && isComputed(biophysicalVariable)) {
-                BiophysicalAlgo algo = algos.get(biophysicalVariable);
-                BiophysicalAlgo.Result result = algo.process(input);
-                targetSamples[targetIndex].set(result.getOutputValue());
-                targetIndex++;
+        for (BiophysicalVariable biophysicalVariable : this.biophysicalVariables) {
+            BiophysicalAlgo algo = algos.get(biophysicalVariable);
+            BiophysicalAlgo.Result result = algo.process(input);
+            targetSamples[targetIndex++].set(result.getOutputValue());
 
-                targetSamples[targetIndex].set(BiophysicalFlag.INPUT_OUT_OF_RANGE.getBitIndex(), result.isInputOutOfRange());
-                targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_THRESHOLDED_TO_MIN_OUTPUT.getBitIndex(), result.isOutputThresholdedToMinOutput());
-                targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_THRESHOLDED_TO_MAX_OUTPUT.getBitIndex(), result.isOutputThresholdedToMaxOutput());
-                targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_TOO_LOW.getBitIndex(), result.isOutputTooLow());
-                targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_TOO_HIGH.getBitIndex(), result.isOutputTooHigh());
-                targetIndex++;
-            }
+            targetSamples[targetIndex].set(BiophysicalFlag.INPUT_OUT_OF_RANGE.getBitIndex(), result.isInputOutOfRange());
+            targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_THRESHOLDED_TO_MIN_OUTPUT.getBitIndex(), result.isOutputThresholdedToMinOutput());
+            targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_THRESHOLDED_TO_MAX_OUTPUT.getBitIndex(), result.isOutputThresholdedToMaxOutput());
+            targetSamples[targetIndex].set(BiophysicalFlag.OUTPUT_TOO_LOW.getBitIndex(), result.isOutputTooLow());
+            targetSamples[targetIndex++].set(BiophysicalFlag.OUTPUT_TOO_HIGH.getBitIndex(), result.isOutputTooHigh());
         }
     }
 
@@ -366,26 +430,28 @@ public class BiophysicalOp extends PixelOperator {
     }
 
     public enum S2BandConstant {
-        B1("B1", "B01", 0, 414, 472, 443),
-        B2("B2", "B02", 1, 425, 555, 490),
-        B3("B3", "B03", 2, 510, 610, 560),
-        B4("B4", "B04", 3, 617, 707, 665),
-        B5("B5", "B05", 4, 625, 722, 705),
-        B6("B6", "B06", 5, 720, 760, 740),
-        B7("B7", "B07", 6, 741, 812, 783),
-        B8("B8", "B08", 7, 752, 927, 842),
-        B8A("B8A", "B8A", 8, 823, 902, 865),
-        B9("B9", "B09", 9, 903, 982, 945),
-        B10("B10", "B10", 10, 1338, 1413, 1375),
-        B11("B11", "B11", 11, 1532, 1704, 1610),
-        B12("B12", "B12", 12, 2035, 2311, 2190);
+    	// Updated min and max values in accordance with the table from
+    	// https://sentinels.copernicus.eu/web/sentinel/technical-guides/sentinel-2-msi/mission-performance
+        B1("B1", "B01", 0, 433, 453, 443),
+        B2("B2", "B02", 1, 457.5, 522.5, 490),
+        B3("B3", "B03", 2, 542.5, 577.5, 560),
+        B4("B4", "B04", 3, 650, 680, 665),
+        B5("B5", "B05", 4, 697.5, 712.5, 705),
+        B6("B6", "B06", 5, 732.5, 747.5, 740),
+        B7("B7", "B07", 6, 773, 793, 783),
+        B8("B8", "B08", 7, 784.5, 899.5, 842),
+        B8A("B8A", "B8A", 8, 855, 875, 865),
+        B9("B9", "B09", 9, 935, 955, 945),
+        B10("B10", "B10", 10, 1360, 1390, 1375),
+        B11("B11", "B11", 11, 1565, 1655, 1610),
+        B12("B12", "B12", 12, 2100, 2280, 2190);
 
-        private String physicalName;
-        private String filenameBandId;
-        private int bandIndex;
-        private double wavelengthMin;
-        private double wavelengthMax;
-        private double wavelengthCentral;
+        private final String physicalName;
+        private final String filenameBandId;
+        private final int bandIndex;
+        private final double wavelengthMin;
+        private final double wavelengthMax;
+        private final double wavelengthCentral;
 
         S2BandConstant(String physicalName,
                         String filenameBandId,

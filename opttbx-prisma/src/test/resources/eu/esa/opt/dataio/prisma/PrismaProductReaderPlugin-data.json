@@ -1,0 +1,24 @@
+{
+    "testProducts": [
+        {
+            "id": "PRS_L1_STD_OFFL_20240402102837_20240402102842_0001_he5",
+            "relativePath": "sensors_platforms/PRISMA.ASI.IT/PRS_L1_STD_OFFL_20240402102837_20240402102842_0001.he5",
+            "description": "PRISMA L1 hyperspectral product Processor_Version: 4.3-0 HDFEOSVersion: HDFEOS_5.1.15"
+        },
+        {
+            "id": "PRS_L2B_STD_20240402102837_20240402102842_0001_he5",
+            "relativePath": "sensors_platforms/PRISMA.ASI.IT/PRS_L2B_STD_20240402102837_20240402102842_0001.he5",
+            "description": "PRISMA L2B hyperspectral product Processor_Version: 02.05 HDFEOSVersion: HDFEOS_5.1.15"
+        },
+        {
+            "id": "PRS_L2C_STD_20240402102837_20240402102842_0001_he5",
+            "relativePath": "sensors_platforms/PRISMA.ASI.IT/PRS_L2C_STD_20240402102837_20240402102842_0001.he5",
+            "description": "PRISMA L2C hyperspectral product Processor_Version: 02.05 HDFEOSVersion: HDFEOS_5.1.15"
+        },
+        {
+            "id": "PRS_L2D_STD_20240402102837_20240402102842_0001_he5",
+            "relativePath": "sensors_platforms/PRISMA.ASI.IT/PRS_L2D_STD_20240402102837_20240402102842_0001.he5",
+            "description": "PRISMA L2D hyperspectral product Processor_Version: 02.05 HDFEOSVersion: HDFEOS_5.1.15"
+        }
+    ]
+}

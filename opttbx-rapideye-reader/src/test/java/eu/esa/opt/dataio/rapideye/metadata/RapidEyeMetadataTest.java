@@ -185,7 +185,7 @@ public class RapidEyeMetadataTest {
     @Test
     public void testGetPath() {
         String root = System.getProperty(TestUtil.PROPERTYNAME_DATA_DIR);
-        String partialPath = root + File.separator + productsFolder + "2009-04-16T104920_RE4_1B-NAC_3436599_84303_metadata.xml";
+        String partialPath = root + (!root.endsWith(File.separator) ? File.separator : "") + productsFolder + "2009-04-16T104920_RE4_1B-NAC_3436599_84303_metadata.xml";
         String metadataPath = metadata.getPath().toString();
         if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX) {
             partialPath = partialPath.replaceAll("\\\\", "/");

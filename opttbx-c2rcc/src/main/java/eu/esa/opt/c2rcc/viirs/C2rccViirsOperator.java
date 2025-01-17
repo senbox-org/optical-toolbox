@@ -13,6 +13,10 @@ import org.esa.snap.core.datamodel.PixelPos;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TimeCoding;
+import org.esa.snap.core.dataop.dem.ElevationModel;
+import org.esa.snap.core.dataop.dem.ElevationModelDescriptor;
+import org.esa.snap.core.dataop.dem.ElevationModelRegistry;
+import org.esa.snap.core.dataop.resamp.Resampling;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.annotations.OperatorMetadata;
@@ -85,6 +89,11 @@ public class C2rccViirsOperator extends PixelOperator implements C2rccConfigurab
 
     private static final String PRODUCT_TYPE = "C2RCC_VIIRS";
 
+    static final String DEFAULT_DEM_NAME = "Copernicus 90m Global DEM";
+    static final String DEM_NAME_COPERNICUS30 = "Copernicus 30m Global DEM";
+    static final String DEM_NAME_GETASSE30 = "GETASSE30";
+
+
     @SourceProduct(label = "VIIRS L1C product",
             description = "VIIRS L1C source product.")
     private Product sourceProduct;
@@ -135,6 +144,10 @@ public class C2rccViirsOperator extends PixelOperator implements C2rccConfigurab
             description = "The surface air pressure at sea level if not provided by auxiliary data")
     private double press;
 
+    @Parameter(defaultValue = "0", unit = "m", interval = "(0, 8500)", label = "Elevation",
+            description = "Used as fallback if elevation could not be taken from DEM.")
+    private double elevation;
+
     @Parameter(description = "Path to the atmospheric auxiliary data directory. Use either this or tomsomiStartProduct, " +
             "tomsomiEndProduct, ncepStartProduct and ncepEndProduct to use ozone and air pressure aux data " +
             "for calculations. If the auxiliary data needed for interpolation not available in this " +
@@ -149,10 +162,17 @@ public class C2rccViirsOperator extends PixelOperator implements C2rccConfigurab
             label = "Output AC reflectances as rrs instead of rhow")
     private boolean outputAsRrs;
 
+    @Parameter(valueSet = {DEFAULT_DEM_NAME, DEM_NAME_COPERNICUS30, DEM_NAME_GETASSE30},
+            description = "The digital elevation model.",
+            defaultValue = DEFAULT_DEM_NAME,
+            label = "Digital Elevation Model")
+    private String demName = DEFAULT_DEM_NAME;
+
 
     private C2rccViirsAlgorithm algorithm;
     private AtmosphericAuxdata atmosphericAuxdata;
     private TimeCoding timeCoding;
+    private ElevationModel elevationModel;
 
     @Override
     public void setAtmosphericAuxDataPath(String atmosphericAuxDataPath) {
@@ -214,16 +234,16 @@ public class C2rccViirsOperator extends PixelOperator implements C2rccConfigurab
             final double sun_azi = sourceSamples[SUN_AZI_IX].getDouble();
             final double view_zeni = sourceSamples[VIEW_ZEN_IX].getDouble();
             final double view_azi = sourceSamples[VIEW_AZI_IX].getDouble();
-            final double dem_alt = 0.0;  // todo to be replaced by a real value
             final double atm_press = C2rccCommons.fetchSurfacePressure(atmosphericAuxdata, mjd, x, y, lat, lon);
             final double ozone = C2rccCommons.fetchOzone(atmosphericAuxdata, mjd, x, y, lat, lon);
 
+            final double altitude = getAltitude(geoPos);
 
             C2rccViirsAlgorithm.Result result = algorithm.processPixel(
                     toa_ref,
                     sun_zeni, sun_azi,
                     view_zeni, view_azi,
-                    dem_alt,
+                    altitude,
                     atm_press, ozone
             );
 
@@ -338,6 +358,11 @@ public class C2rccViirsOperator extends PixelOperator implements C2rccConfigurab
     public void doExecute(ProgressMonitor pm) throws OperatorException {
         pm.beginTask("Preparing computation", 2);
         try {
+
+            pm.setSubTaskName("Creating DEM");
+            initialiseElevationModel();
+            pm.worked(1);
+
             pm.setSubTaskName("Defining algorithm ...");
             algorithm = new C2rccViirsAlgorithm();
             algorithm.setTemperature(temperature);
@@ -440,6 +465,33 @@ public class C2rccViirsOperator extends PixelOperator implements C2rccConfigurab
 
         public Spi() {
             super(C2rccViirsOperator.class);
+        }
+    }
+
+    public ElevationModel getElevationModel() {
+        return this.elevationModel;
+    }
+
+    public double getAltitude(GeoPos geoPos) {
+        double altitude;
+        if (this.elevationModel != null) {
+            try {
+                altitude = this.elevationModel.getElevation(geoPos);
+            } catch (Exception e) {
+                throw new OperatorException("Unable to compute altitude.", e);
+            }
+        } else {
+            // in case elevationModel could not be initialised
+            altitude = this.elevation;
+        }
+        return altitude;
+    }
+
+    public void initialiseElevationModel() {
+        ElevationModelDescriptor elevModelDesc = ElevationModelRegistry.getInstance().getDescriptor(this.demName);
+        if (elevModelDesc != null) {
+            // if elevation model cannot be initialised the fallback height will be used
+            this.elevationModel = elevModelDesc.createDem(Resampling.BILINEAR_INTERPOLATION);
         }
     }
 }

@@ -133,12 +133,18 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
         final String filename = FileUtils.getFilenameFromPath(inputString);
 
         // check if we have a directory name (not ending on xml)
-        if (isDirectory(FileUtils.getExtension(filename))) {
+        final String fileExtension = FileUtils.getExtension(filename);
+        if (isDirectory(fileExtension)) {
             inputString = inputString + File.separator + manifestFileBasename + ".xml";
         }
 
         if (!isValidInputFileName(filename)) {
             return false;
+        }
+
+        if (".zip".equalsIgnoreCase(fileExtension)) {
+            String zipName = FileUtils.getFilenameWithoutExtension(filename);
+            return isValidSourceName(zipName);
         }
 
         final Path path = Paths.get(inputString);
@@ -148,11 +154,6 @@ public class Sentinel3ProductReaderPlugIn implements ProductReaderPlugIn {
         } else {
             int nameCount = path.getNameCount();
             parentFileName = path.getName(nameCount - 2).toString();
-        }
-        final String extension = FileUtils.getExtension(parentFileName);
-        if (".zip".equalsIgnoreCase(extension)) {
-            String zipName = FileUtils.getFilenameWithoutExtension(parentFileName);
-            return isValidSourceName(zipName);
         }
 
         return isValidSourceName(parentFileName);

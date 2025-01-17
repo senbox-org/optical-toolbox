@@ -21,7 +21,7 @@ public class MerisLevel1ProductFactory extends MerisProductFactory {
         if (targetNode.getName().matches("M[0-1][0-9].*")) {
             if (targetNode instanceof Band) {
                 final Band targetBand = (Band) targetNode;
-                final String targetName = targetBand.getName();
+                final String targetName = targetBand.getName().substring(0, 3);
                 targetBand.setSpectralBandIndex(getBandindex(targetName));
                 targetBand.setSpectralWavelength(getWavelength(targetName));
                 targetBand.setSpectralBandwidth(getBandwidth(targetName));

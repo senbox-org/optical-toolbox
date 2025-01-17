@@ -850,11 +850,11 @@
       },
       {
         "name": "Oa01_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa01",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa01",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.2017770600505173",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "15.913915952327704",
         "noDataValueUsed": "true",
         "spectralWavelength": "400.0",
         "spectralBandwidth": "15.0",
@@ -862,7 +862,7 @@
           {
             "x": 1374,
             "y": 3613,
-            "value": 0.19492902
+            "value": 1.5664950609207153
           },
           {
             "x": 4853,
@@ -896,11 +896,11 @@
       },
       {
         "name": "Oa02_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa02",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa02",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.0860279868356884",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.19068155669882",
         "noDataValueUsed": "true",
         "spectralWavelength": "412.5",
         "spectralBandwidth": "10.0",
@@ -908,12 +908,12 @@
           {
             "x": 1349,
             "y": 2381,
-            "value": 0.412432
+            "value": 2.5848300457000732
           },
           {
             "x": 4517,
             "y": 568,
-            "value": 0.085839994
+            "value": 1.2185405492782593
           }
         ]
       },
@@ -942,11 +942,11 @@
       },
       {
         "name": "Oa03_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa03",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa03",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.1022109473124146",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.653508096595026",
         "noDataValueUsed": "true",
         "spectralWavelength": "442.5",
         "spectralBandwidth": "10.0",
@@ -954,12 +954,12 @@
           {
             "x": 1800,
             "y": 3605,
-            "value": 0.21335597
+            "value": 1.6343910694122314
           },
           {
             "x": 2846,
             "y": 2354,
-            "value": 0.369579
+            "value": 2.3419573307037354
           }
         ]
       },
@@ -988,11 +988,11 @@
       },
       {
         "name": "Oa04_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa04",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa04",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.0275759566575289",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "10.655552094264573",
         "noDataValueUsed": "true",
         "spectralWavelength": "490.0",
         "spectralBandwidth": "10.0",
@@ -1000,12 +1000,12 @@
           {
             "x": 1585,
             "y": 2802,
-            "value": 0.21999997
+            "value": 1.659586787223816
           },
           {
             "x": 3130,
             "y": 2762,
-            "value": -0.031712018
+            "value": 0.9295825958251953
           }
         ]
       },
@@ -1034,11 +1034,11 @@
       },
       {
         "name": "Oa05_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa05",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa05",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.093781050760299",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.4102648727268",
         "noDataValueUsed": "true",
         "spectralWavelength": "510.0",
         "spectralBandwidth": "10.0",
@@ -1046,7 +1046,7 @@
           {
             "x": 3903,
             "y": 3690,
-            "value": 0.12895702
+            "value": 1.3457272052764893
           },
           {
             "x": 124,
@@ -1080,11 +1080,11 @@
       },
       {
         "name": "Oa06_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa06",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa06",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.1029820353724062",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.675994304168194",
         "noDataValueUsed": "true",
         "spectralWavelength": "560.0",
         "spectralBandwidth": "10.0",
@@ -1092,12 +1092,12 @@
           {
             "x": 4778,
             "y": 1321,
-            "value": -0.18950199
+            "value": 0.6463950276374817
           },
           {
             "x": 1747,
             "y": 21,
-            "value": -0.16522999
+            "value": 0.6835495829582214
           }
         ]
       },
@@ -1126,11 +1126,11 @@
       },
       {
         "name": "Oa07_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa07",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa07",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.178901962004602",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "15.097393058948203",
         "noDataValueUsed": "true",
         "spectralWavelength": "620.0",
         "spectralBandwidth": "10.0",
@@ -1138,12 +1138,12 @@
           {
             "x": 1919,
             "y": 4043,
-            "value": 0.24498998
+            "value": 1.757883071899414
           },
           {
             "x": 1116,
             "y": 2933,
-            "value": 0.27932498
+            "value": 1.9025013446807861
           }
         ]
       },
@@ -1172,11 +1172,11 @@
       },
       {
         "name": "Oa08_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa08",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa08",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.149231017101556",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "14.100386500401466",
         "noDataValueUsed": "true",
         "spectralWavelength": "665.0",
         "spectralBandwidth": "10.0",
@@ -1184,12 +1184,12 @@
           {
             "x": 1593,
             "y": 2163,
-            "value": 0.499764
+            "value": 3.160559892654419
           },
           {
             "x": 1742,
             "y": 3271,
-            "value": 0.221421
+            "value": 1.6650259494781494
           }
         ]
       },
@@ -1218,11 +1218,11 @@
       },
       {
         "name": "Oa09_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa09",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa09",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.0490810414776206",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "11.196467955509334",
         "noDataValueUsed": "true",
         "spectralWavelength": "673.75",
         "spectralBandwidth": "7.5",
@@ -1230,12 +1230,12 @@
           {
             "x": 3418,
             "y": 3252,
-            "value": 0.17793104
+            "value": 1.506367802619934
           },
           {
             "x": 4106,
             "y": 278,
-            "value": 0.21068104
+            "value": 1.6243553161621094
           }
         ]
       },
@@ -1264,11 +1264,11 @@
       },
       {
         "name": "Oa10_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa10",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa10",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.0496359751559794",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "11.21078374518024",
         "noDataValueUsed": "true",
         "spectralWavelength": "681.25",
         "spectralBandwidth": "7.5",
@@ -1276,12 +1276,12 @@
           {
             "x": 1304,
             "y": 3524,
-            "value": 0.19535598
+            "value": 1.5680358409881592
           },
           {
             "x": 1879,
             "y": 1517,
-            "value": 0.317396
+            "value": 2.0768063068389893
           }
         ]
       },
@@ -1310,11 +1310,11 @@
       },
       {
         "name": "Oa11_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa11",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa11",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.0841900580562651",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.139199757835486",
         "noDataValueUsed": "true",
         "spectralWavelength": "708.75",
         "spectralBandwidth": "10.0",
@@ -1322,12 +1322,12 @@
           {
             "x": 2426,
             "y": 568,
-            "value": 0.19821005
+            "value": 1.5783743858337402
           },
           {
             "x": 4713,
             "y": 556,
-            "value": -0.044719968
+            "value": 0.9021526575088501
           }
         ]
       },
@@ -1356,11 +1356,11 @@
       },
       {
         "name": "Oa12_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa12",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa12",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "0.9457540130242705",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "8.82579860340686",
         "noDataValueUsed": "true",
         "spectralWavelength": "753.75",
         "spectralBandwidth": "7.5",
@@ -1368,12 +1368,12 @@
           {
             "x": 3117,
             "y": 3706,
-            "value": 0.085328996
+            "value": 1.2171076536178589
           },
           {
             "x": 4063,
             "y": 2172,
-            "value": -0.49054602
+            "value": 0.32318708300590515
           }
         ]
       },
@@ -1402,11 +1402,11 @@
       },
       {
         "name": "Oa13_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa13",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa13",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "0.7821869971230626",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "6.056015766054634",
         "noDataValueUsed": "true",
         "spectralWavelength": "761.25",
         "spectralBandwidth": "2.5",
@@ -1414,12 +1414,12 @@
           {
             "x": 4521,
             "y": 160,
-            "value": -0.055471
+            "value": 0.8800938725471497
           },
           {
             "x": 3425,
             "y": 2957,
-            "value": -0.497896
+            "value": 0.3177635073661804
           }
         ]
       },
@@ -1448,11 +1448,11 @@
       },
       {
         "name": "Oa14_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa14",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa14",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "0.875947933178395",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "7.515327886381686",
         "noDataValueUsed": "true",
         "spectralWavelength": "764.375",
         "spectralBandwidth": "3.75",
@@ -1460,12 +1460,12 @@
           {
             "x": 611,
             "y": 415,
-            "value": -0.20610003
+            "value": 0.6221569776535034
           },
           {
             "x": 419,
             "y": 468,
-            "value": 0.045967963
+            "value": 1.111649751663208
           }
         ]
       },
@@ -1494,11 +1494,11 @@
       },
       {
         "name": "Oa15_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa15",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa15",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "0.9709419910795987",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "9.352807399109343",
         "noDataValueUsed": "true",
         "spectralWavelength": "767.5",
         "spectralBandwidth": "2.5",
@@ -1506,12 +1506,12 @@
           {
             "x": 814,
             "y": 967,
-            "value": 0.35332897
+            "value": 2.2559475898742676
           },
           {
             "x": 1221,
             "y": 3973,
-            "value": 0.313483
+            "value": 2.058178186416626
           }
         ]
       },
@@ -1540,11 +1540,11 @@
       },
       {
         "name": "Oa16_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa16",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa16",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.0803989963606",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.033694902345514",
         "noDataValueUsed": "true",
         "spectralWavelength": "778.75",
         "spectralBandwidth": "15.0",
@@ -1552,12 +1552,12 @@
           {
             "x": 4412,
             "y": 2082,
-            "value": -0.110154
+            "value": 0.7759718894958496
           },
           {
             "x": 4189,
             "y": 2284,
-            "value": -0.717579
+            "value": 0.1916112452745437
           }
         ]
       },
@@ -1586,11 +1586,11 @@
       },
       {
         "name": "Oa17_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa17",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa17",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.1521010491997004",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "14.193877384343956",
         "noDataValueUsed": "true",
         "spectralWavelength": "865.0",
         "spectralBandwidth": "20.0",
@@ -1598,12 +1598,12 @@
           {
             "x": 3061,
             "y": 1743,
-            "value": -0.668529
+            "value": 0.2145216017961502
           },
           {
             "x": 2628,
             "y": 3122,
-            "value": 0.069791034
+            "value": 1.1743323802947998
           }
         ]
       },
@@ -1632,11 +1632,11 @@
       },
       {
         "name": "Oa18_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa18",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa18",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.2045490313321352",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "16.015814547852585",
         "noDataValueUsed": "true",
         "spectralWavelength": "885.0",
         "spectralBandwidth": "10.0",
@@ -1644,12 +1644,12 @@
           {
             "x": 1330,
             "y": 1573,
-            "value": -0.250901
+            "value": 0.5611758828163147
           },
           {
             "x": 3319,
             "y": 762,
-            "value": -0.28220102
+            "value": 0.5221544504165649
           }
         ]
       },
@@ -1678,11 +1678,11 @@
       },
       {
         "name": "Oa19_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa19",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa19",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.053304926957935",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "11.30589445827514",
         "noDataValueUsed": "true",
         "spectralWavelength": "900.0",
         "spectralBandwidth": "10.0",
@@ -1690,12 +1690,12 @@
           {
             "x": 343,
             "y": 2851,
-            "value": 0.09091496
+            "value": 1.232863426208496
           },
           {
             "x": 2957,
             "y": 3530,
-            "value": 0.17234795
+            "value": 1.4871265888214111
           }
         ]
       },
@@ -1724,11 +1724,11 @@
       },
       {
         "name": "Oa20_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa20",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa20",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "1.1579650789499283",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "14.386828909991552",
         "noDataValueUsed": "true",
         "spectralWavelength": "940.0",
         "spectralBandwidth": "20.0",
@@ -1736,12 +1736,12 @@
           {
             "x": 2925,
             "y": 2731,
-            "value": -0.61405694
+            "value": 0.2431885004043579
           },
           {
             "x": 3818,
             "y": 365,
-            "value": -0.24658696
+            "value": 0.5667780637741089
           }
         ]
       },
@@ -1770,11 +1770,11 @@
       },
       {
         "name": "Oa21_radiance_unc",
-        "description": "log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa21",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa21",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "lg(re mW.m-2.sr-1.nm-1)",
-        "noDataValue": "0.8817270016297698",
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "7.616001161851203",
         "noDataValueUsed": "true",
         "spectralWavelength": "1020.0",
         "spectralBandwidth": "40.0",
@@ -1782,12 +1782,12 @@
           {
             "x": 620,
             "y": 3736,
-            "value": 0.23403099
+            "value": 1.7140796184539795
           },
           {
             "x": 942,
             "y": 1317,
-            "value": -0.18812801
+            "value": 0.6484432816505432
           }
         ]
       },

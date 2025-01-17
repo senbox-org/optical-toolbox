@@ -40,11 +40,11 @@ public class L1BPaceProductReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-3683,SNAP-3684")
+    @STTM("SNAP-3683,SNAP-3684,SNAP-3808")
     public void testGetProductFileFilter() {
         final SnapFileFilter productFileFilter = plugIn.getProductFileFilter();
 
-        assertEquals("PACE-L1B", productFileFilter.getFormatName());
+        assertEquals("PaceOCI_L1B", productFileFilter.getFormatName());
         assertEquals(".nc", productFileFilter.getDefaultExtension());
         assertEquals("PACE OCI L1B Products (*.nc)", productFileFilter.getDescription());
     }
@@ -67,11 +67,11 @@ public class L1BPaceProductReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-3683,SNAP-3684")
+    @STTM("SNAP-3683,SNAP-3684,SNAP-3808")
     public void testGetFormatNames() {
         final String[] formatNames = plugIn.getFormatNames();
 
         assertEquals(1, formatNames.length);
-        assertEquals("PACE-L1B", formatNames[0]);
+        assertEquals("PaceOCI_L1B", formatNames[0]);
     }
 }

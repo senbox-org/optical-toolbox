@@ -1,0 +1,137 @@
+{
+  "id": "ECOSTRESS_L3_ET_ALEXI_USDA_00544_008_20180810T192504_0503_02_ames_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 3000,
+    "sceneHeight": 3000,
+    "startTime": "10-AUG-2018 19:25:04.421606",
+    "endTime": "10-AUG-2018 19:30:04.421606",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 1293.0,
+          "y": 1612.0,
+          "lat": 42.237557679729946,
+          "lon": -93.34540665949386
+        },
+        {
+          "x": 2227.0,
+          "y": 1946.0,
+          "lat": 42.14757234957404,
+          "lon": -93.00445068341733
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
+    "bands": [
+      {
+        "name": "EVAPOTRANSPIRATION__ALEXI_ETdaily",
+        "bandWidth": 3000,
+        "bandHeight": 3000,
+        "geophysicalUnit": "mm/day",
+        "noDataValue": "45.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 156,
+            "y": 534,
+            "value": 7.782691
+          },
+          {
+            "x": 2055,
+            "y": 2551,
+            "value": -9999.0
+          }
+        ]
+      },
+      {
+        "name": "EVAPOTRANSPIRATION__ALEXI_ETdailyUncertainty",
+        "bandWidth": 3000,
+        "bandHeight": 3000,
+        "geophysicalUnit": "mm/day",
+        "noDataValue": "45.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 872,
+            "y": 770,
+            "value": -9999.0
+          },
+          {
+            "x": 1831,
+            "y": 1095,
+            "value": -9999.0
+          }
+        ]
+      },
+      {
+        "name": "EVAPOTRANSPIRATION__ALEXI_QualityFlag",
+        "bandWidth": 3000,
+        "bandHeight": 3000,
+        "geophysicalUnit": "NA",
+        "noDataValue": "45.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1650,
+            "y": 2236,
+            "value": 35.0
+          },
+          {
+            "x": 1825,
+            "y": 2785,
+            "value": 35.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2018-12-05T05:52:33.803Z"
+      },
+      {
+        "path": "L3_ET_ALEXI Metadata/Projection",
+        "value": "UTM"
+      },
+      {
+        "path": "L3_ET_ALEXI Metadata/AncillaryFileSurfReflectanceFill",
+        "value": ""
+      },
+      {
+        "path": "L3_ET_ALEXI Metadata/AncillaryFileSurfReflectanceFill",
+        "value": ""
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "L3_ALEXI-USDA"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "1.0.0"
+      },
+      {
+        "path": "StandardMetadata/HDFVersionId",
+        "value": ""
+      },
+      {
+        "path": "StandardMetadata/AutomaticQualityFlag",
+        "value": "PASS"
+      },
+      {
+        "path": "L3_ET_ALEXI Metadata/AncillaryFileWindSpeed",
+        "value": "CFSR_wind_2018222"
+      },
+      {
+        "path": "L3_ET_ALEXI Metadata/AvgETUncertainty",
+        "value": "-8480.212"
+      }
+    ]
+  }
+}

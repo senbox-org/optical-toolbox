@@ -95,7 +95,7 @@ class EnmapProductReader extends AbstractProductReader {
     static String getEPSGCode(String projection) throws Exception {
         int code;
         if (projection.startsWith("UTM")) {
-            int utmZone = Integer.parseInt(projection.substring(8, 10));
+            final int utmZone = Integer.parseInt(projection.substring(8, projection.lastIndexOf('_')));
             if (projection.endsWith("North")) {
                 code = 32600 + utmZone;
             } else {

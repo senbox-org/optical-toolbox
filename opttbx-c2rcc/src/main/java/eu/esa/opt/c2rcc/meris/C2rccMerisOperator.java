@@ -18,6 +18,10 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TimeCoding;
 import org.esa.snap.core.dataop.barithm.BandArithmetic;
+import org.esa.snap.core.dataop.dem.ElevationModel;
+import org.esa.snap.core.dataop.dem.ElevationModelDescriptor;
+import org.esa.snap.core.dataop.dem.ElevationModelRegistry;
+import org.esa.snap.core.dataop.resamp.Resampling;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.annotations.OperatorMetadata;
@@ -166,6 +170,10 @@ public class C2rccMerisOperator extends PixelOperator implements C2rccConfigurab
 
     private static final String STANDARD_NETS = "C2RCC-Nets";
     private static final String EXTREME_NETS = "C2X-Nets";
+    static final String DEFAULT_ALTITUDE = "";
+    static final String DEM_NAME_COPERNICUS30 = "Copernicus 30m Global DEM";
+    static final String DEM_NAME_COPERNICUS90 = "Copernicus 90m Global DEM";
+    static final String DEM_NAME_GETASSE30 = "GETASSE30";
     private static final Map<String, String[]> c2rccNetSetMap = new HashMap<>();
 
     static {
@@ -306,6 +314,12 @@ public class C2rccMerisOperator extends PixelOperator implements C2rccConfigurab
             label = "Use ECMWF aux data of source product")
     private boolean useEcmwfAuxData;
 
+    @Parameter(valueSet = {DEFAULT_ALTITUDE, DEM_NAME_COPERNICUS30, DEM_NAME_COPERNICUS90, DEM_NAME_GETASSE30},
+            description = "The digital elevation model. Default uses product's 'dem_alt' band",
+            defaultValue = DEFAULT_ALTITUDE,
+            label = "Digital Elevation Model")
+    private String demName = DEFAULT_ALTITUDE;
+
     @Parameter(defaultValue = "true", label = "Output TOA reflectances")
     private boolean outputRtoa;
 
@@ -341,6 +355,8 @@ public class C2rccMerisOperator extends PixelOperator implements C2rccConfigurab
 
     private C2rccMerisAlgorithm algorithm;
     private SolarFluxLazyLookup solarFluxLazyLookup;
+    private boolean useSnapDem;
+    private ElevationModel elevationModel;
     private double[] constantSolarFlux;
     private AtmosphericAuxdata atmosphericAuxdata;
     private TimeCoding timeCoding;
@@ -483,6 +499,8 @@ public class C2rccMerisOperator extends PixelOperator implements C2rccConfigurab
         double atmPress = fetchSurfacePressure(atmosphericAuxdata, mjd, x, y, lat, lon);
         double ozone = fetchOzone(atmosphericAuxdata, mjd, x, y, lat, lon);
 
+        final double altitude = getAltitude(geoPos, sourceSamples);
+
         C2rccMerisAlgorithm.Result result = algorithm.processPixel(x, y, lat, lon,
                                                                    radiances,
                                                                    solflux,
@@ -490,7 +508,7 @@ public class C2rccMerisOperator extends PixelOperator implements C2rccConfigurab
                                                                    sourceSamples[SUN_AZI_IX].getDouble(),
                                                                    sourceSamples[VIEW_ZEN_IX].getDouble(),
                                                                    sourceSamples[VIEW_AZI_IX].getDouble(),
-                                                                   sourceSamples[DEM_ALT_IX].getDouble(),
+                                                                   altitude,
                                                                    sourceSamples[VALID_PIXEL_IX].getBoolean(),
                                                                    atmPress,
                                                                    ozone);
@@ -1009,6 +1027,12 @@ public class C2rccMerisOperator extends PixelOperator implements C2rccConfigurab
     public void doExecute(ProgressMonitor pm) throws OperatorException {
         pm.beginTask("Preparing computation", 3);
         try {
+
+            pm.setSubTaskName("Creating DEM");
+            initialiseUseSnapDEM();
+            initialiseElevationModel();
+            pm.worked(1);
+
             pm.setSubTaskName("Defining algorithm ...");
             if (StringUtils.isNotNullAndNotEmpty(alternativeNNPath)) {
                 String[] nnFilePaths = NNUtils.getNNFilePaths(Paths.get(alternativeNNPath),
@@ -1130,5 +1154,41 @@ public class C2rccMerisOperator extends PixelOperator implements C2rccConfigurab
         public Spi() {
             super(C2rccMerisOperator.class);
         }
+    }
+
+    public void initialiseUseSnapDEM() {
+        this.useSnapDem = !demName.equals(DEFAULT_ALTITUDE);
+    }
+
+    public ElevationModel getElevationModel() {
+        return this.elevationModel;
+    }
+
+    public void initialiseElevationModel() {
+        if (this.useSnapDem) {
+            ElevationModelDescriptor elevModelDesc = ElevationModelRegistry.getInstance().getDescriptor(this.demName);
+            if (elevModelDesc != null) {
+                // if elevation model cannot be initialised the fallback height will be used
+                this.elevationModel = elevModelDesc.createDem(Resampling.BILINEAR_INTERPOLATION);
+            }
+        }
+    }
+
+    public double getAltitude(GeoPos geoPos, Sample[] sourceSamples) {
+        double altitude;
+        if (this.useSnapDem) {
+            if (this.elevationModel != null) {
+                try {
+                    altitude = this.elevationModel.getElevation(geoPos);
+                } catch (Exception e) {
+                    throw new OperatorException("Unable to compute altitude.", e);
+                }
+            } else {
+                altitude = sourceSamples[DEM_ALT_IX].getDouble();
+            }
+        } else {
+            altitude = sourceSamples[DEM_ALT_IX].getDouble();
+        }
+        return altitude;
     }
 }

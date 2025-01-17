@@ -155,7 +155,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "443.0",
-                "spectralBandwidth": "58.0",
+                "spectralBandwidth": "20.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -227,7 +227,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "1375.0",
-                "spectralBandwidth": "75.0",
+                "spectralBandwidth": "30.0",
                 "expectedPixels": [
                     {
                         "x": 21,
@@ -299,7 +299,7 @@
                 "noDataValue": "0.0",
                 "noDataValueUsed": "false",
                 "spectralWavelength": "945.0",
-                "spectralBandwidth": "79.0",
+                "spectralBandwidth": "20.0",
                 "expectedPixels": [
                     {
                         "x": 21,

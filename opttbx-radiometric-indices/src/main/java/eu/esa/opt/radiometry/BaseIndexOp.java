@@ -30,12 +30,14 @@ import org.esa.snap.core.gpf.annotations.TargetProduct;
 import org.esa.snap.core.util.ProductUtils;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -86,10 +88,11 @@ public abstract class BaseIndexOp extends Operator {
             defaultValue = "First")
     private String downsamplingMethod;
     protected String[] sourceBandNames;
-    private List<Field> bandFields;
+    private final List<Field> bandFields;
 
     private FlagCoding flagCoding;
-    private List<MaskDescriptor> maskDescriptors;
+    private final List<MaskDescriptor> maskDescriptors;
+    private final Pattern S2Pattern = Pattern.compile("S2[A-B]_MSIL[1C|2A]_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
 
     protected BaseIndexOp() {
         maskDescriptors = new ArrayList<>();
@@ -260,7 +263,7 @@ public abstract class BaseIndexOp extends Operator {
             }
 
         });
-        this.sourceBandNames = bands.toArray(new String[bands.size()]);
+        this.sourceBandNames = bands.toArray(new String[0]);
     }
 
     private void addMaskDescriptor(String name, String expression, String description, Color color, double transparency) {
@@ -278,16 +281,44 @@ public abstract class BaseIndexOp extends Operator {
 
     private Product resample(Product source, int targetWidth, int targetHeight) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("referenceBandName", null);
-        parameters.put("targetWidth", targetWidth);
-        parameters.put("targetHeight", targetHeight);
-        parameters.put("targetResolution", null);
-        if (RESAMPLE_LOWEST.equals(this.resampleType)) {
-            parameters.put("downsampling", this.downsamplingMethod != null ? this.downsamplingMethod : "First");
-        } else if (RESAMPLE_HIGHEST.equals(this.resampleType)) {
-            parameters.put("upsampling", this.upsamplingMethod != null ? this.upsamplingMethod : "Nearest");
+        final boolean resampleToLowest = RESAMPLE_LOWEST.equals(this.resampleType);
+        final boolean resampleToHighest = RESAMPLE_HIGHEST.equals(this.resampleType);
+        if (S2Pattern.matcher(source.getName()).find()) {
+            int targetResolution = 0;
+            int currentResolution;
+            for (String bandName : this.sourceBandNames) {
+                final AffineTransform transform = Product.findImageToModelTransform(source.getBand(bandName).getGeoCoding());
+                currentResolution = (int) transform.getScaleX();
+                if (targetResolution == 0) {
+                    targetResolution = currentResolution;
+                } else {
+                    targetResolution = resampleToLowest
+                                       ? Math.min(targetResolution, currentResolution)
+                                       : resampleToHighest
+                                         ? Math.max(targetResolution, currentResolution)
+                                         : currentResolution;
+                }
+            }
+            parameters.put("targetResolution", targetResolution);
+            if (resampleToLowest) {
+                parameters.put("downsampling", this.downsamplingMethod != null ? this.downsamplingMethod : "First");
+            } else if (resampleToHighest) {
+                parameters.put("upsampling", this.upsamplingMethod != null ? this.upsamplingMethod : "Nearest");
+            }
+            parameters.put("bands", this.sourceBandNames);
+            return GPF.createProduct("S2Resampling", parameters, source);
+        } else {
+            parameters.put("referenceBandName", null);
+            parameters.put("targetWidth", targetWidth);
+            parameters.put("targetHeight", targetHeight);
+            parameters.put("targetResolution", null);
+            if (resampleToLowest) {
+                parameters.put("downsampling", this.downsamplingMethod != null ? this.downsamplingMethod : "First");
+            } else if (resampleToHighest) {
+                parameters.put("upsampling", this.upsamplingMethod != null ? this.upsamplingMethod : "Nearest");
+            }
+            return GPF.createProduct("Resample", parameters, source);
         }
-        return GPF.createProduct("Resample", parameters, source);
     }
 
     private void initDefaultMasks() {

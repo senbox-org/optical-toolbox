@@ -19,6 +19,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TimeCoding;
 import org.esa.snap.core.datamodel.VirtualBand;
 import org.esa.snap.core.dataop.dem.ElevationModel;
+import org.esa.snap.core.dataop.dem.ElevationModelDescriptor;
 import org.esa.snap.core.dataop.dem.ElevationModelRegistry;
 import org.esa.snap.core.dataop.resamp.Resampling;
 import org.esa.snap.core.gpf.Operator;
@@ -161,6 +162,11 @@ public class C2rccOlciOperator extends PixelOperator implements C2rccConfigurabl
 
     private static final int C2RCC_FLAGS_IX = SINGLE_IX + 19;
 
+    static final String DEFAULT_ALTITUDE = "";
+    static final String DEM_NAME_COPERNICUS90 = "Copernicus 90m Global DEM";
+    static final String DEM_NAME_COPERNICUS30 = "Copernicus 30m Global DEM";
+    static final String DEM_NAME_GETASSE30 = "GETASSE30";
+
     private static final String RADIANCE_BANDNAME_PATTERN = "Oa%02d_radiance";
     private static final String SOLAR_FLUX_BANDNAME_PATTERN = "solar_flux_band_%d";
 
@@ -276,6 +282,12 @@ public class C2rccOlciOperator extends PixelOperator implements C2rccConfigurabl
             "Use ECMWF auxiliary data (total_ozone, sea_level_pressure) from the source product.",
             label = "Use ECMWF aux data of source product")
     private boolean useEcmwfAuxData;
+
+    @Parameter(valueSet = {DEFAULT_ALTITUDE, DEM_NAME_COPERNICUS30, DEM_NAME_COPERNICUS90, DEM_NAME_GETASSE30},
+            description = "The digital elevation model. Default uses product's 'altitude' band",
+            defaultValue = DEFAULT_ALTITUDE,
+            label = "Digital Elevation Model")
+    private String demName = DEFAULT_ALTITUDE;
 
     @Parameter(defaultValue = "true", label = "Output TOA reflectances")
     private boolean outputRtoa;
@@ -466,16 +478,8 @@ public class C2rccOlciOperator extends PixelOperator implements C2rccConfigurabl
         double lon = geoPos.getLon();
         double atmPress = fetchSurfacePressure(atmosphericAuxdata, mjd, x, y, lat, lon);
         double ozone = fetchOzone(atmosphericAuxdata, mjd, x, y, lat, lon);
-        final double altitude;
-        if (useSnapDem) {
-            try {
-                altitude = elevationModel.getElevation(geoPos);
-            } catch (Exception e) {
-                throw new OperatorException("Unable to compute altitude.", e);
-            }
-        } else {
-            altitude = sourceSamples[DEM_ALT_IX].getDouble();
-        }
+
+        final double altitude = getAltitude(geoPos, sourceSamples);
 
         Result result = algorithm.processPixel(x, y, lat, lon,
                 radiances,
@@ -943,7 +947,6 @@ public class C2rccOlciOperator extends PixelOperator implements C2rccConfigurabl
             assertSourceBand(getRadianceBandName(i));
             assertSourceBand(getSolarFluxBandname(i));
         }
-        useSnapDem = !sourceProduct.containsRasterDataNode(RASTER_NAME_ALTITUDE);
 
         if (!sourceProduct.isCompatibleBandArithmeticExpression(validPixelExpression)) {
             throw new OperatorException("The validPixelExpression cannot be applied to this source product.");
@@ -962,18 +965,19 @@ public class C2rccOlciOperator extends PixelOperator implements C2rccConfigurabl
 
     @Override
     public void doExecute(ProgressMonitor pm) throws OperatorException {
+        initialiseUseSnapDEM();
+
         int numTicks = 2;
         if (useSnapDem) {
             numTicks += 1;
         }
         pm.beginTask("Preparing computation", numTicks);
         try {
-            if (useSnapDem) {
-                pm.setSubTaskName("Creating DEM");
-                elevationModel = ElevationModelRegistry.getInstance().getDescriptor("GETASSE30").
-                        createDem(Resampling.BILINEAR_INTERPOLATION);
-                pm.worked(1);
-            }
+
+            pm.setSubTaskName("Creating DEM");
+            initialiseElevationModel();
+            pm.worked(1);
+
             pm.setSubTaskName("Defining algorithm ...");
             final String[] nnFilePaths;
             final boolean loadFromResources = alternativeNNPath == null || alternativeNNPath.trim().length() == 0;
@@ -1106,5 +1110,41 @@ public class C2rccOlciOperator extends PixelOperator implements C2rccConfigurabl
             return super.createOperator(parameters, sourceProducts, renderingHints);
         }
 
+    }
+
+    public ElevationModel getElevationModel() {
+        return this.elevationModel;
+    }
+
+    public void initialiseUseSnapDEM() {
+        this.useSnapDem = !sourceProduct.containsRasterDataNode(RASTER_NAME_ALTITUDE)
+                || !demName.equals(DEFAULT_ALTITUDE);
+    }
+
+    public void initialiseElevationModel() {
+        if (this.useSnapDem) {
+            ElevationModelDescriptor elevationModelDesc = ElevationModelRegistry.getInstance().getDescriptor(this.demName);
+
+            if (elevationModelDesc != null) {
+                elevationModel = elevationModelDesc.createDem(Resampling.BILINEAR_INTERPOLATION);
+            } else {
+                ElevationModelDescriptor elevationModelDescDefault = ElevationModelRegistry.getInstance().getDescriptor(DEM_NAME_GETASSE30);
+                elevationModel = elevationModelDescDefault.createDem(Resampling.BILINEAR_INTERPOLATION);
+            }
+        }
+    }
+
+    public double getAltitude(GeoPos geoPos, Sample[] sourceSamples) {
+        double altitude;
+        if (useSnapDem) {
+            try {
+                altitude = elevationModel.getElevation(geoPos);
+            } catch (Exception e) {
+                throw new OperatorException("Unable to compute altitude.", e);
+            }
+        } else {
+            altitude = sourceSamples[DEM_ALT_IX].getDouble();
+        }
+        return altitude;
     }
 }

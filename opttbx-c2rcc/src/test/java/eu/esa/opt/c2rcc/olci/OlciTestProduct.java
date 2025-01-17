@@ -37,6 +37,11 @@ class OlciTestProduct {
         product.addBand(C2rccOlciOperator.RASTER_NAME_TOTAL_OZONE, "0.004");
         Band flagBand = product.addBand(C2rccOlciOperator.RASTER_NAME_QUALITY_FLAGS, ProductData.TYPE_INT8);
         FlagCoding l1FlagsCoding = new FlagCoding(C2rccOlciOperator.RASTER_NAME_QUALITY_FLAGS);
+
+        l1FlagsCoding.addFlag("invalid", 0x1, "Invalid pixel");
+        l1FlagsCoding.addFlag("land", 0x1, "Pixel is over land");
+        l1FlagsCoding.addFlag("fresh_inland_water", 0x1, "Freshwater pixel");
+
         product.getFlagCodingGroup().add(l1FlagsCoding);
         flagBand.setSampleCoding(l1FlagsCoding);
 

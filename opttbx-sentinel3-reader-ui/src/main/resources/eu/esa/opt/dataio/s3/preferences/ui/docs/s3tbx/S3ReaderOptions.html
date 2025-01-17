@@ -55,20 +55,21 @@
 
         <p><code>value = ((raw_value * factor) + offset) * adjustment_factor</code></p>
 
-        When switched on, the S3TBX will consider factors, offsets and adjustment factors given in the <i><b>s3tbx.properties</b></i> file.<br/>
+        When switched on, the OPTTBX will consider factors, offsets and adjustment factors given in the <i><b>opttbx.properties</b></i> file.<br/>
+        Using the <i><b>EDIT</b></i> button next to the checkbox, calibration coefficients can be written to this file from within SNAP.<br>
         <i><b>Please see the note below on where to find this file.</b></i><br><br>
         Factors and offsets can be set to each band.<br>
         To set a factor, add a line like this:<br><br>
 
-        <p><code>s3tbx.reader.slstrl1b.<b>xx</b>.calibration.factor = 2.0</code></p>
+        <p><code>opttbx.reader.slstrl1b.<b>xx</b>.calibration.factor = 2.0</code></p>
 
         Likewise, offsets are set like this:<br>
 
-        <p><code>s3tbx.reader.slstrl1b.xx.calibration.offset = 0.5</code></p>
+        <p><code>opttbx.reader.slstrl1b.xx.calibration.offset = 0.5</code></p>
 
         and adjustment factors like this:<br>
 
-        <p><code>s3tbx.reader.slstrl1b.xx.calibration.adjustment_factor = 1.2</code></p>
+        <p><code>opttbx.reader.slstrl1b.xx.calibration.adjustment_factor = 1.2</code></p>
 
         Where <b>xx</b> is to be replaced by any band name in lowercase.
 
@@ -104,17 +105,18 @@
     </li>
     <li><b>Read Sentinel-3 OLCI L1 product with custom calibration</b><br>
         This option provides a way to set scaling factors and offsets to OLCI L1 bands.
-        When switched on, the S3TBX will consider factors and offsets given in the <i><b>s3tbx.properties</b></i> file.<br>
+        When switched on, the OPTTBX will consider factors and offsets given in the <i><b>opttbx.properties</b></i> file.<br>
+        Using the <i><b>EDIT</b></i> button next to the checkbox, calibration coefficients can be written to this file from within SNAP.<br>
         <i><b>Please see the note below on where to find this file.</b></i><br><br>
         Factors and offsets can be set to any band.<br>
         To set a factor, add a line like this:<br><br>
 
-        <p><code>s3tbx.reader.olcil1.xx.calibration.factor = 2.0</code></p>
+        <p><code>opttbx.reader.olcil1.xx.calibration.factor = 2.0</code></p>
 
         where xx is to be replaced by the name of the band in lowercase.
         Likewise, offsets are set like this:<br><br>
 
-        <p><code>s3tbx.reader.olcil1.xx.calibration.offset = 0.5</code></p>
+        <p><code>opttbx.reader.olcil1.xx.calibration.offset = 0.5</code></p>
 
         Note that possibly pre-existing scaling factors or offsets, defined by the Sentinel-3 product will be replaced.
     </li>

@@ -12,6 +12,8 @@ import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.StringUtils;
+import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.runtime.Config;
 
 import java.io.File;
@@ -30,9 +32,17 @@ import java.util.regex.Pattern;
 public abstract class OlciProductFactory extends AbstractProductFactory {
 
     public final static String OLCI_USE_PIXELGEOCODING = "opttbx.reader.olci.pixelGeoCoding";
+
     final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "opttbx.reader.olci.tiePointGeoCoding.forward";
     private final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "opttbx.reader.olci.pixelGeoCoding.inverse";
     private final static String[] excludedIDs = {"removedPixelsData"};
+    private static final String UNCERTAINTY_REGEX = ".*_unc";
+    private static final String LOG10_REGEX = "lg(.*)";
+    private static final Pattern uncertaintyRegEx = Pattern.compile(UNCERTAINTY_REGEX);
+    private static final Pattern log10RegEx = Pattern.compile(LOG10_REGEX);
+    private static final String[] LOG_SCALED_GEO_VARIABLE_NAMES = {"anw_443", "acdm_443", "aphy_443", "acdom_443", "bbp_443", "kd_490", "bbp_slope", "OWC",
+            "ADG443_NN", "CHL_NN", "CHL_OC4ME", "KD490_M07", "TSM_NN"};
+
     private final Map<String, Float> nameToWavelengthMap;
     private final Map<String, Float> nameToBandwidthMap;
     private final Map<String, Integer> nameToIndexMap;
@@ -88,6 +98,60 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         codingNames[1] = TiePointInverse.KEY;
 
         return codingNames;
+    }
+
+    public static boolean isUncertaintyBand(String bandName) {
+        final Matcher matcher = uncertaintyRegEx.matcher(bandName);
+
+        return matcher.matches();
+    }
+
+    public static boolean isLogScaledUnit(String units) {
+        if (StringUtils.isNullOrEmpty(units)) {
+            return false;
+        }
+        final Matcher matcher = log10RegEx.matcher(units);
+        return matcher.matches();
+    }
+
+    static boolean isLogScaledGeophysicalData(String bandName) {
+        for (final String logScaledBandName : LOG_SCALED_GEO_VARIABLE_NAMES) {
+            if (bandName.startsWith(logScaledBandName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static String stripLogFromUnit(String unitString) {
+        if (StringUtils.isNullOrEmpty(unitString)) {
+            return "";
+        }
+
+        final String trimmedUnit = unitString.trim();
+        int logIdx = trimmedUnit.indexOf("lg(");
+        if (logIdx >= 0) {
+            final String logRemoved = trimmedUnit.substring(logIdx + 3, trimmedUnit.length() - 1);
+            if (logRemoved.startsWith("re")){
+                return logRemoved.substring(3);
+            }
+
+            return logRemoved;
+        }
+
+        if (trimmedUnit.startsWith("lg")) {
+            return trimmedUnit.substring(2);
+        }
+        return unitString;
+    }
+
+    static String stripLogFromDescription(String description) {
+        if (StringUtils.isNullOrEmpty(description)) {
+            return "";
+        }
+
+        final String trimmed = description.trim();
+        return trimmed.replace("log10 scaled ", "");
     }
 
     @Override
@@ -211,7 +275,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
 
     @Override
     protected void configureTargetNode(Band sourceBand, RasterDataNode targetNode) {
-        if (targetNode.getName().matches("Oa[0-2][0-9].*")) {
+        final String targetNodeName = targetNode.getName();
+        if (targetNodeName.matches("Oa[0-2][0-9].*")) {
             if (targetNode instanceof Band) {
                 final Band targetBand = (Band) targetNode;
                 String cutName = targetBand.getName().substring(0, 4);
@@ -221,30 +286,18 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
                 applyCustomCalibration(targetBand);
             }
         }
-        // convert log10 scaled variables int concentrations and also their error bands
-        // the unit string follows the CF conventions.
-        // See: http://www.unidata.ucar.edu/software/udunits/udunits-2.0.4/udunits2lib.html#Syntax
-        if (targetNode.getName().startsWith("ADG443_NN") ||
-                targetNode.getName().startsWith("CHL_NN") ||
-                targetNode.getName().startsWith("CHL_OC4ME") ||
-                targetNode.getName().startsWith("KD490_M07") ||
-                targetNode.getName().startsWith("TSM_NN")) {
-            if (targetNode instanceof Band) {
-                final Band targetBand = (Band) targetNode;
-                String unit = targetBand.getUnit();
-                Pattern pattern = Pattern.compile("lg\\s*\\(\\s*re:?\\s*(.*)\\)");
-                final Matcher m = pattern.matcher(unit);
-                if (m.matches()) {
-                    targetBand.setLog10Scaled(true);
-                    targetBand.setUnit(m.group(1));
-                    String description = targetBand.getDescription();
-                    description = description.replace("log10 scaled ", "");
-                    targetBand.setDescription(description);
-                } else {
-                    getLogger().log(Level.WARNING, "Unit extraction not working for band " + targetNode.getName());
-                }
-                targetNode.setValidPixelExpression(getValidExpression());
+
+        if (isUncertaintyBand(targetNodeName) || isLogScaledGeophysicalData(targetNodeName)) {
+            final String unit = sourceBand.getUnit();
+            if (isLogScaledUnit(unit)) {
+                targetNode.setLog10Scaled(true);
+                targetNode.setUnit(stripLogFromUnit(unit));
+
+                final String description = sourceBand.getDescription();
+                targetNode.setDescription(stripLogFromDescription(description));
             }
+
+            targetNode.setValidPixelExpression(getValidExpression());
         }
     }
 
@@ -275,11 +328,11 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         return reader.readProductNodes(file, null);
     }
 
-    // @todo 2 test this tb 2024-05-31
     public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
         final String[] allFiles = virtualDir.listAllFiles();
         for (String dirFileName : allFiles) {
-            if (dirFileName.equalsIgnoreCase(fileName)) {
+            final String filenameFromVirtualDir = FileUtils.getFilenameFromPath(dirFileName);
+            if (filenameFromVirtualDir.equalsIgnoreCase(fileName)) {
                 return virtualDir.getFile(dirFileName);
             }
         }

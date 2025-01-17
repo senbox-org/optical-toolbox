@@ -21,7 +21,7 @@
 
     <groupId>eu.esa.opt</groupId>
     <artifactId>optical-toolbox</artifactId>
-    <version>11.0.0-SNAPSHOT</version>
+    <version>12.0.0-SNAPSHOT</version>
     <name>SNAP Optical Toolbox</name>
     <description>Tools for optical Satellites</description>
     <url>https://sentinel.esa.int/web/sentinel/toolboxes/optical</url>
@@ -86,6 +86,9 @@
         <module>opttbx-avhrr-reader</module>
         <module>opttbx-c2rcc</module>
         <module>opttbx-dos</module>
+        <module>opttbx-ecostress-reader</module>
+        <module>opttbx-ecostress-swath2grid</module>
+        <module>opttbx-ecostress-swath2grid-ui</module>
         <module>opttbx-flhmci</module>
         <module>opttbx-flhmci-ui</module>
         <module>opttbx-fub-wew</module>
@@ -114,18 +117,20 @@
 
         <module>opttbx-unmix-ui</module>
         <module>opttbx-unmix</module>
+        <module>opttbx-prisma</module>
+        <module>opttbx-s2msi-resampler-ui</module>
 
     </modules>
 
     <packaging>pom</packaging>
 
     <properties>
-        <snap.version>11.0.0-SNAPSHOT</snap.version>
-        <opttbx.version>11.0.0-SNAPSHOT</opttbx.version>
-        <seadas.reader.version>1.10.0-SNAPSHOT</seadas.reader.version>
-        <seadas.reader.ui.version>1.10.0-SNAPSHOT</seadas.reader.ui.version>
+        <snap.version>12.0.0-SNAPSHOT</snap.version>
+        <opttbx.version>12.0.0-SNAPSHOT</opttbx.version>
+        <seadas.reader.version>1.10.2</seadas.reader.version>
+        <seadas.reader.ui.version>1.10.2</seadas.reader.ui.version>
         <snap-help-system.version>1.0.0</snap-help-system.version>
-        <netbeans.version>RELEASE113</netbeans.version>
+        <netbeans.version>RELEASE210</netbeans.version>
         <geotools.version>28.2</geotools.version>
         <javahelp.version>2.0.05</javahelp.version>
         <brandingToken>opttbx</brandingToken>
@@ -135,6 +140,7 @@
         <sonar.qualitygate.wait>true</sonar.qualitygate.wait>
         <sonar.java.binaries>**/classes</sonar.java.binaries>
         <sonar.exclusions>*/src</sonar.exclusions>
+        <jvm.version>21</jvm.version>
     </properties>
 
     <repositories>
@@ -452,8 +458,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>${jvm.version}</source>
+                    <target>${jvm.version}</target>
                     <debug>true</debug>
                     <encoding>UTF-8</encoding>
                 </configuration>
@@ -481,7 +487,7 @@
                                     <version>[3.2.5,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>11</version>
+                                    <version>${jvm.version}</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
@@ -568,7 +574,7 @@
                 <plugin>
                     <groupId>org.apache.netbeans.utilities</groupId>
                     <artifactId>nbm-maven-plugin</artifactId>
-                    <version>4.4</version>
+                    <version>14.0</version>
                     <extensions>true</extensions>
                     <dependencies>
                         <dependency>
@@ -684,13 +690,13 @@
 
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.5</version>
+                    <version>3.5.0</version>
                     <configuration>
                         <enableAssertions>false</enableAssertions>
                         <!--<skip>true</skip>-->
                         <printSummary>true</printSummary>
                         <useFile>false</useFile>
-                        <argLine>-Xmx1024M -Dfile.encoding=UTF-8 @{argLine}</argLine>
+                        <argLine>-Dfile.encoding=UTF-8 @{argLine}</argLine>
                     </configuration>
                 </plugin>
 

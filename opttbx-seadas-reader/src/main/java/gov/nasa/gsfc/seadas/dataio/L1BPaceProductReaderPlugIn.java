@@ -2,6 +2,7 @@ package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
+import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.Debug;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.dataio.netcdf.GenericNetCdfReaderPlugIn;
@@ -16,13 +17,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
+public class L1BPaceProductReaderPlugIn implements ProductReaderPlugIn {
 
     private static final String DEFAULT_FILE_EXTENSION = ".nc";
 
     public static final String READER_DESCRIPTION = "PACE OCI L1B Products";
-    public static final String FORMAT_NAME = "PACE-L1B";
+    public static final String FORMAT_NAME = "PaceOCI_L1B";
 
+    static {
+        L1BPaceRgbProfiles.registerRGBProfiles();
+    }
 
     /**
      * Checks whether the given object is an acceptable input for this product reader and if so, the method checks if it
@@ -30,46 +34,41 @@ public class L1BPaceProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File file = SeadasProductReader.getInputFile(input);
-        if (file == null) {
-            return DecodeQualification.UNABLE;
+        final File inputFile = SeadasHelper.getInputFile(input);
+
+        final DecodeQualification decodeQualification = SeadasHelper.checkInputObject(inputFile);
+        if (decodeQualification == DecodeQualification.UNABLE) {
+            return decodeQualification;
         }
-        if (!file.exists()) {
-            Debug.trace("# File not found: " + file);
-            return DecodeQualification.UNABLE;
-        }
-        if (!file.isFile()) {
-            Debug.trace("# Not a file: " + file);
-            return DecodeQualification.UNABLE;
-        }
+
         NetcdfFile ncfile = null;
         H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
 
         try {
-            ncfile = NetcdfFileOpener.open(file.getPath());
+            ncfile = NetcdfFileOpener.open(inputFile.getPath());
             if (ncfile != null) {
                 Attribute scene_title = ncfile.findGlobalAttribute("title");
 
                 if (scene_title != null) {
                     if (scene_title.toString().contains("PACE OCIS Level-1B Data") ||
                             scene_title.toString().contains("PACE OCI Level-1B Data")) {
-                        Debug.trace(file.toString());
+                        Debug.trace(inputFile.toString());
                         ncfile.close();
                         DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
                         debugFlags.set("HdfEos/turnOff", false);
                         H5iosp.setDebugFlags(debugFlags);
                         return DecodeQualification.INTENDED;
                     } else {
-                        Debug.trace("# Unrecognized scene title =[" + scene_title + "]: " + file);
+                        Debug.trace("# Unrecognized scene title =[" + scene_title + "]: " + inputFile);
                     }
                 } else {
-                    Debug.trace("# Missing scene title attribute': " + file);
+                    Debug.trace("# Missing scene title attribute': " + inputFile);
                 }
             } else {
-                Debug.trace("# Can't open as NetCDF: " + file);
+                Debug.trace("# Can't open as NetCDF: " + inputFile);
             }
         } catch (Exception ignore) {
-            Debug.trace("# I/O exception caught: " + file);
+            Debug.trace("# I/O exception caught: " + inputFile);
         } finally {
             DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
             debugFlags.set("HdfEos/turnOff", false);

@@ -110,7 +110,7 @@
       ],
       "tiePointGrids": [
         {
-            "name": "tco3",
+            "name": "tcwv",
             "description": "Total column water vapour at surface level provided by ECMWF",
             "offsetX": "0.5",
             "offsetY": "0.5",
@@ -140,7 +140,7 @@
               ]
           },
           {
-            "name": "tcwv",
+            "name": "tco3",
             "description": "Total column ozone at surface level provided by ECMWF",
             "offsetX": "0.5",
             "offsetY": "0.5",
@@ -210,7 +210,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "490.0",
-        "spectralBandwidth": "130.0",
+        "spectralBandwidth": "65.0",
         "expectedPixels": [
           {
             "x": 7556,
@@ -248,7 +248,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "560.0",
-        "spectralBandwidth": "100.0",
+        "spectralBandwidth": "35.0",
         "expectedPixels": [
           {
             "x": 7556,
@@ -286,7 +286,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "665.0",
-        "spectralBandwidth": "90.0",
+        "spectralBandwidth": "30.0",
         "expectedPixels": [
           {
             "x": 7556,
@@ -324,7 +324,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "705.0",
-        "spectralBandwidth": "97.0",
+        "spectralBandwidth": "15.0",
         "expectedPixels": [
           {
             "x": 3778,
@@ -362,7 +362,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "740.0",
-        "spectralBandwidth": "40.0",
+        "spectralBandwidth": "15.0",
         "expectedPixels": [
           {
             "x": 3778,
@@ -400,7 +400,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "783.0",
-        "spectralBandwidth": "71.0",
+        "spectralBandwidth": "20.0",
         "expectedPixels": [
           {
             "x": 3778,
@@ -438,7 +438,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "842.0",
-        "spectralBandwidth": "175.0",
+        "spectralBandwidth": "115.0",
         "expectedPixels": [
           {
             "x": 7556,
@@ -476,7 +476,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "865.0",
-        "spectralBandwidth": "79.0",
+        "spectralBandwidth": "20.0",
         "expectedPixels": [
           {
             "x": 3778,
@@ -514,7 +514,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "1610.0",
-        "spectralBandwidth": "172.0",
+        "spectralBandwidth": "90.0",
         "expectedPixels": [
           {
             "x": 3778,
@@ -552,7 +552,7 @@
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "2190.0",
-        "spectralBandwidth": "276.0",
+        "spectralBandwidth": "180.0",
         "expectedPixels": [
           {
             "x": 3778,
