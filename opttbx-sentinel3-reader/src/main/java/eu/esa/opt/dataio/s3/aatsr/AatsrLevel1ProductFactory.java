@@ -1,9 +1,9 @@
 package eu.esa.opt.dataio.s3.aatsr;
 
 import com.bc.ceres.core.VirtualDir;
-import com.bc.ceres.glevel.MultiLevelImage;
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
-import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
+import com.bc.ceres.multilevel.MultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory;
 import eu.esa.opt.dataio.s3.util.MetTxReader;

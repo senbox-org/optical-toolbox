@@ -18,9 +18,9 @@
 package eu.esa.opt.dataio.s2.ortho;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.glevel.MultiLevelImage;
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
-import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
+import com.bc.ceres.multilevel.MultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
 import org.esa.snap.dataio.gdal.reader.GDALMultiLevelSource;
 import eu.esa.opt.dataio.s2.CAMSReader;
 import eu.esa.opt.dataio.s2.ColorIterator;
@@ -64,9 +64,6 @@ import org.esa.snap.core.image.MosaicMatrix;
 import org.esa.snap.core.image.SourceImageScaler;
 import org.esa.snap.core.util.ImageUtils;
 import org.esa.snap.core.util.ProductUtils;
-import org.esa.snap.dataio.gdal.drivers.Dataset;
-import org.esa.snap.dataio.gdal.drivers.GDAL;
-import org.esa.snap.dataio.gdal.drivers.GDALConst;
 import org.esa.snap.dataio.geotiff.GeoTiffMatrixMultiLevelSource;
 import org.esa.snap.lib.openjpeg.utils.StackTraceUtils;
 import org.geotools.data.simple.SimpleFeatureIterator;
