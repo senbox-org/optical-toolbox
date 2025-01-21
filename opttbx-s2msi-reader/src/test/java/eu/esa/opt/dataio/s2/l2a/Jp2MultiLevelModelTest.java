@@ -18,7 +18,7 @@
 package eu.esa.opt.dataio.s2.l2a;
 
 import com.bc.ceres.annotation.STTM;
-import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import org.junit.Before;
 import org.junit.Test;
 

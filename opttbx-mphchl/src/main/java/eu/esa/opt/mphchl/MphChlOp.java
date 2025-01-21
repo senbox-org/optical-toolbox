@@ -1,6 +1,6 @@
 package eu.esa.opt.mphchl;
 
-import com.bc.ceres.glevel.MultiLevelImage;
+import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.olci.radiometry.SensorConstants;
 import eu.esa.opt.olci.radiometry.rayleigh.RayleighCorrectionOp;
 import org.esa.snap.core.datamodel.Band;

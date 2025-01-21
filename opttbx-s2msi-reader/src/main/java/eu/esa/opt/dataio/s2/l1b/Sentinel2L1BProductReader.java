@@ -18,8 +18,8 @@
 package eu.esa.opt.dataio.s2.l1b;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
-import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
 import eu.esa.opt.dataio.s2.S2BandInformation;
 import eu.esa.opt.dataio.s2.S2Config;
 import eu.esa.opt.dataio.s2.S2IndexBandInformation;

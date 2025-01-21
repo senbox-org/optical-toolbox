@@ -2,7 +2,7 @@ package eu.esa.opt.dataio.landsat.geotiff.level2;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
-import com.bc.ceres.glevel.MultiLevelImage;
+import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.dataio.landsat.geotiff.LandsatTypeInfo;
 import eu.esa.opt.dataio.landsat.metadata.XmlMetadataParser;
 import eu.esa.opt.dataio.landsat.metadata.XmlMetadataParserFactory;

@@ -18,7 +18,7 @@
 package eu.esa.opt.dataio.spot;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import eu.esa.opt.dataio.ColorPaletteBand;
 import org.esa.snap.engine_utilities.dataio.VirtualDirEx;

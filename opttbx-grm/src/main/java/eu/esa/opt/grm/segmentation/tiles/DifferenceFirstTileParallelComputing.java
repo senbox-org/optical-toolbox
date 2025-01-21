@@ -1,6 +1,6 @@
 package eu.esa.opt.grm.segmentation.tiles;
 
-import com.bc.ceres.glevel.MultiLevelImage;
+import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.grm.segmentation.TileDataSource;
 import eu.esa.opt.grm.segmentation.BoundingBox;
 import eu.esa.opt.grm.segmentation.DifferenceTileDataSourceImpl;
