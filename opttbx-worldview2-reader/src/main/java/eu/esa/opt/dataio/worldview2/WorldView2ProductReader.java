@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.worldview2;
 
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
-import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
 import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;

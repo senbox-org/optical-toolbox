@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.s3.util;
 
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import org.esa.snap.core.datamodel.*;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;

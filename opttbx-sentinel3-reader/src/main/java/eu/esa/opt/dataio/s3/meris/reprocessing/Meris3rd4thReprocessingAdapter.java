@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.s3.meris.reprocessing;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.glevel.MultiLevelImage;
+import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.ReprocessingAdapter;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
