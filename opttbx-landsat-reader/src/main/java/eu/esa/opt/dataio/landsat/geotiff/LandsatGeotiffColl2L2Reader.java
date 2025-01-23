@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
 
+import com.bc.ceres.multilevel.MultiLevelImage;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -49,7 +50,6 @@ import org.esa.snap.dataio.geotiff.GeoTiffProductReaderPlugIn;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
-import com.bc.ceres.glevel.MultiLevelImage;
 
 import eu.esa.opt.dataio.landsat.geotiff.specs.FlagCodingArgs;
 import eu.esa.opt.dataio.landsat.geotiff.specs.ProductSensorSpecification;
