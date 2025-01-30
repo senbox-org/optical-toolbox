@@ -15,7 +15,7 @@ package eu.esa.opt.dataio.s3;/*
  */
 
 import com.bc.ceres.core.VirtualDir;
-import com.bc.ceres.glevel.MultiLevelImage;
+import com.bc.ceres.multilevel.MultiLevelImage;
 import org.esa.snap.core.datamodel.Product;
 
 import java.io.IOException;

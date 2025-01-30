@@ -18,8 +18,8 @@
 package eu.esa.opt.dataio.spot;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
-import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
 import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import eu.esa.opt.dataio.spot.dimap.SpotConstants;

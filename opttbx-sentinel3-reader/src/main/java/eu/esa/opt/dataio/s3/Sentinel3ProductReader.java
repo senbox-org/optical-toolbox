@@ -16,7 +16,7 @@ package eu.esa.opt.dataio.s3;/*
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
-import com.bc.ceres.glevel.MultiLevelImage;
+import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.olci.OlciLevel1ProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;

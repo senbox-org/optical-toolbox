@@ -3,7 +3,7 @@ package eu.esa.opt.mosaic;
 import com.bc.ceres.binding.Converter;
 import com.bc.ceres.binding.ConverterRegistry;
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import eu.esa.opt.mosaic.internal.MosaicOpConditionConverter;
 import eu.esa.opt.mosaic.internal.MosaicOpConditionDomConverter;
 import eu.esa.opt.mosaic.internal.MosaicOpVariableConverter;

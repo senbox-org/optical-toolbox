@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.pleiades;
 
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.image.MosaicMatrix;
 import org.esa.snap.jp2.reader.internal.JP2MatrixBandMultiLevelSource;

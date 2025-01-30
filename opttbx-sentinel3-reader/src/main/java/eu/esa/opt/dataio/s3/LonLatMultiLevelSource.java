@@ -15,8 +15,8 @@ package eu.esa.opt.dataio.s3;/*
  */
 
 import com.bc.ceres.core.Assert;
-import com.bc.ceres.glevel.MultiLevelSource;
-import com.bc.ceres.glevel.support.GenericMultiLevelSource;
+import com.bc.ceres.multilevel.MultiLevelSource;
+import com.bc.ceres.multilevel.support.GenericMultiLevelSource;
 import org.esa.snap.core.util.jai.SingleBandedSampleModel;
 
 import javax.media.jai.ImageLayout;

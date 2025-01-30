@@ -15,11 +15,9 @@ package eu.esa.opt.dataio.s3;
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-import com.bc.ceres.glevel.MultiLevelSource;
-import com.bc.ceres.glevel.support.AbstractMultiLevelSource;
-import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
-import eu.esa.opt.dataio.s3.LonLatFunction;
-import eu.esa.opt.dataio.s3.LonLatMultiLevelSource;
+import com.bc.ceres.multilevel.MultiLevelSource;
+import com.bc.ceres.multilevel.support.AbstractMultiLevelSource;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
 import org.junit.Test;
 
 import java.awt.geom.AffineTransform;

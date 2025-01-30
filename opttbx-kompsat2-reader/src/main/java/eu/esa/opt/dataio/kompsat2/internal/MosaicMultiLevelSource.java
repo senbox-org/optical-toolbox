@@ -1,9 +1,9 @@
 package eu.esa.opt.dataio.kompsat2.internal;
 
 
-import com.bc.ceres.glevel.support.AbstractMultiLevelSource;
-import com.bc.ceres.glevel.support.DefaultMultiLevelModel;
-import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
+import com.bc.ceres.multilevel.support.AbstractMultiLevelSource;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import org.esa.snap.core.datamodel.Band;
 
 import javax.media.jai.BorderExtender;

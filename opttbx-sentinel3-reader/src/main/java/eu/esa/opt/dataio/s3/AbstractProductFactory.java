@@ -15,11 +15,10 @@ package eu.esa.opt.dataio.s3;/*
  */
 
 import com.bc.ceres.core.VirtualDir;
-import com.bc.ceres.glevel.MultiLevelImage;
-import com.bc.ceres.glevel.support.DefaultMultiLevelImage;
-import com.bc.ceres.glevel.support.DefaultMultiLevelSource;
+import com.bc.ceres.multilevel.MultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
-import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
 import org.esa.snap.core.dataio.ProductIO;
@@ -57,6 +56,7 @@ import java.awt.Color;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
@@ -102,7 +102,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     @Override
     public final Product createProduct(VirtualDir virtualDir) throws IOException {
-        final InputStream manifestInputStream = ManifestUtil.getManifestInputStream(virtualDir);
+        final InputStream manifestInputStream = getManifestInputStream(virtualDir);
         manifest = createManifest(manifestInputStream);
 
         final List<String> fileNames = getFileNames(manifest);
@@ -550,12 +550,25 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
     private Document createXmlDocument(InputStream inputStream) throws IOException {
+        final String msg = "Cannot create document from manifest XML file.";
+
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
         } catch (SAXException | ParserConfigurationException e) {
-            final String msg = "Cannot create document from manifest XML file.";
-            logger.log(Level.SEVERE, msg, e);
+            getLogger().log(Level.SEVERE, msg, e);
             throw new IOException(msg, e);
         }
+    }
+
+    // @todo 3 tb/tb make static and mock test 2024-05-31
+    private InputStream getManifestInputStream(VirtualDir virtualDir) throws IOException {
+        final String[] list = virtualDir.listAllFiles();
+        for (final String entry : list) {
+            if (entry.toLowerCase().endsWith(XfduManifest.MANIFEST_FILE_NAME)) {
+                return virtualDir.getInputStream(entry);
+            }
+        }
+
+        return null;
     }
 }
