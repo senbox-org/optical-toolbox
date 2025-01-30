@@ -25,7 +25,7 @@ import java.util.Locale;
 public class ProbaVProductReaderPlugIn implements ProductReaderPlugIn {
 
     public static final String FORMAT_NAME_PROBA_V = "PROBA-V-L2A/L3";
-    private static final String _H5_CLASS_NAME = "ncsa.hdf.hdf5lib.H5";
+    private static final String _H5_CLASS_NAME = "libjhdf5.jnilib";
     private static final Class[] SUPPORTED_INPUT_TYPES = new Class[]{String.class, File.class};
     private static final String DESCRIPTION = "PROBA-V Format";
     private static final String FILE_EXTENSION = ".HDF5";
