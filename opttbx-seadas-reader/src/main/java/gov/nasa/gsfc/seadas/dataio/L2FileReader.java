@@ -111,7 +111,7 @@ public class L2FileReader extends SeadasFileReader {
         SeadasProductReader.ProductType productType = productReader.getProductType();
         if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
                 productType == SeadasProductReader.ProductType.Level2_CZCS ||
-                productType == SeadasProductReader.ProductType.Level2_PaceOCI ||
+                productType == SeadasProductReader.ProductType.Level2_Pace ||
                 productType == SeadasProductReader.ProductType.Level2_PaceOCIS)
             mustFlipX = false;
 
