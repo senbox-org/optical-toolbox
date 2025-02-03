@@ -7,7 +7,7 @@
 
 <toc version="2.0" categoryclosedimage="folder" categoryopenimage="folder" topicimage="doc">
 
-    <tocitem text="Sentinel Toolbox Application">
+    <tocitem text="SeaDAS Application">
         <tocitem text="Optical">
             <tocitem text="Thematic Water Processing">
                 <tocitem text="OLCI MPH/CHL Processor" target="mphChlProcessor">
