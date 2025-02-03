@@ -48,13 +48,19 @@ public class DDDB {
     }
 
     public ProductDescriptor getProductDescriptor(String productType, String version) throws IOException {
-        final String resourceName = getResourceFileName(productType, version);
+        String resourceName = getResourceFileName(productType, version);
 
         ProductDescriptor productDescriptor = productDescriptorMap.get(resourceName);
         if (productDescriptor == null) {
-            final URL resourceUrl = getResourceUrl(productType, resourceName);
+            URL resourceUrl = getResourceUrl(productType, resourceName);
             if (resourceUrl == null) {
-                return null;
+                // try if we have a default, unversioned, version of the file tb 2025-02-03
+                resourceName = getResourceFileName(productType, null);
+                resourceUrl = getResourceUrl(productType, resourceName);
+            }
+
+            if (resourceUrl == null) {
+                throw new IOException("Invalid DDDB resource: " + resourceName);
             }
 
             productDescriptor = readProductDescriptor(resourceUrl);

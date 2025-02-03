@@ -8,6 +8,8 @@ public class VariableDescriptor {
     private String dataType;
     private String widthXPath;
     private String heightXPath;
+    private String tpXSubsamplingXPath;
+    private String tpYSubsamplingXPath;
     private int width;
     private int height;
     private int depth;
@@ -24,6 +26,8 @@ public class VariableDescriptor {
         validExpression = "";
         units = "";
         description = "";
+        tpXSubsamplingXPath = "";
+        tpYSubsamplingXPath = "";
     }
 
     public String getName() {
@@ -72,6 +76,22 @@ public class VariableDescriptor {
 
     public void setHeightXPath(String heightXPath) {
         this.heightXPath = heightXPath;
+    }
+
+    public String getTpXSubsamplingXPath() {
+        return tpXSubsamplingXPath;
+    }
+
+    public void settpXSubsamplingXPath(String tpXSubsamplingXPath) {
+        this.tpXSubsamplingXPath = tpXSubsamplingXPath;
+    }
+
+    public String getTpYSubsamplingXPath() {
+        return tpYSubsamplingXPath;
+    }
+
+    public void settpYSubsamplingXPath(String tpYSubsamplingXPath) {
+        this.tpYSubsamplingXPath = tpYSubsamplingXPath;
     }
 
     public int getWidth() {

@@ -18,7 +18,7 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testIsSingleton() {
         final DDDB dddb_2 = DDDB.getInstance();
 
@@ -26,13 +26,17 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetProductDescriptor() throws IOException {
-        final ProductDescriptor olciL1Descriptor = dddb.getProductDescriptor("OL_1_EFR", "004");
+        ProductDescriptor olciL1Descriptor = dddb.getProductDescriptor("OL_1_EFR", "004");
         assertEquals("removedPixelsData", olciL1Descriptor.getExcludedIds());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", olciL1Descriptor.getWidthXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows", olciL1Descriptor.getHeightXPath());
         assertEquals("Oa*_radiance:Oa*_radiance_unc:Oa*_radiance_err:atmospheric_temperature_profile:lambda0:FWHM:solar_flux", olciL1Descriptor.getBandGroupingPattern());
+
+        olciL1Descriptor = dddb.getProductDescriptor("OL_1_ERR", "___");
+        assertEquals("removedPixelsData", olciL1Descriptor.getExcludedIds());
+        assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", olciL1Descriptor.getWidthXPath());
 
         final ProductDescriptor slstrL1Descriptor = dddb.getProductDescriptor("SL_1_RBT", "004");
         assertEquals("", slstrL1Descriptor.getExcludedIds());
@@ -42,14 +46,17 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetProductDescriptor_invalidResource() throws IOException {
-        final ProductDescriptor invalid = dddb.getProductDescriptor("IN_V_ALI", "D");
-        assertNull(invalid);
+        try {
+            dddb.getProductDescriptor("IN_V_ALI", "D");
+            fail("IOException expected");
+        } catch (IOException expected) {
+        }
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetResourceFileName() {
         assertEquals("OL_1_EFR_004.json", DDDB.getResourceFileName("OL_1_EFR", "004"));
         assertEquals("SL_1_RBT_004.json", DDDB.getResourceFileName("SL_1_RBT", "004"));
@@ -62,7 +69,7 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetDDDBResourceName() {
         assertEquals("dddb/SL_1_RBT/heffalump.org", DDDB.getDddbResourceName("SL_1_RBT", "heffalump.org"));
         assertEquals("dddb/OL_1_EFR/variables/geo_coordinates.json", DDDB.getDddbResourceName("OL_1_EFR", "variables/geo_coordinates.json"));
@@ -71,7 +78,7 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetVariableDescriptors() throws IOException {
         VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("geo_coordinates.nc", "OL_1_EFR", "004");
 
@@ -124,6 +131,8 @@ public class DDDBTest {
         assertEquals("TP_latitude", variableDescriptors[0].getName());
         assertEquals("latitude", variableDescriptors[0].getNcVarName());
         assertEquals("Latitude", variableDescriptors[0].getDescription());
+        assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint", variableDescriptors[0].getTpXSubsamplingXPath());
+        assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint", variableDescriptors[0].getTpYSubsamplingXPath());
 
         assertEquals('t', variableDescriptors[1].getType());
         assertEquals(-1, variableDescriptors[1].getHeight());
@@ -143,7 +152,7 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetVariableDescriptors_notExisting() {
         try {
             dddb.getVariableDescriptors("now_way_this_exist.ts", "OL_1_EFR", "004");

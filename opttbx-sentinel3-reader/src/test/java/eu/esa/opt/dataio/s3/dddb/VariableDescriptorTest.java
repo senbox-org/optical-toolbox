@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 public class VariableDescriptorTest {
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testConstruction() {
         final VariableDescriptor descriptor = new VariableDescriptor();
 
@@ -19,5 +19,7 @@ public class VariableDescriptorTest {
         assertEquals("", descriptor.getValidExpression());
         assertEquals("", descriptor.getUnits());
         assertEquals("", descriptor.getDescription());
+        assertEquals("", descriptor.getTpXSubsamplingXPath());
+        assertEquals("", descriptor.getTpYSubsamplingXPath());
     }
 }

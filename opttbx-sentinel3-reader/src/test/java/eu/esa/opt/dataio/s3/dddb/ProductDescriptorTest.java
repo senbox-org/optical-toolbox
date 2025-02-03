@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 public class ProductDescriptorTest {
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testConstruction() {
         final ProductDescriptor productDescriptor = new ProductDescriptor();
 
@@ -20,7 +20,7 @@ public class ProductDescriptorTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetExcludedIdsAsArray() {
         final ProductDescriptor productDescriptor = new ProductDescriptor();
 
