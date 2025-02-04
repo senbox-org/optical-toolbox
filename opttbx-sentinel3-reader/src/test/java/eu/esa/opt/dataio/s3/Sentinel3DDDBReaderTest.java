@@ -11,6 +11,8 @@ import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.*;
 import org.junit.Test;
+import ucar.ma2.Array;
+import ucar.ma2.DataType;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -18,10 +20,11 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@SuppressWarnings("AnonymousInnerClass")
 public class Sentinel3DDDBReaderTest {
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testEnsureWithAndHeight_alreadySet() {
         final ProductDescriptor productDescriptor = new ProductDescriptor();
         productDescriptor.setWidth(27);
@@ -35,7 +38,7 @@ public class Sentinel3DDDBReaderTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testEnsureWithAndHeight_fromXPath() {
         final ProductDescriptor productDescriptor = new ProductDescriptor();
         productDescriptor.setWidthXPath("/data/simple/width");
@@ -49,7 +52,7 @@ public class Sentinel3DDDBReaderTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testCreateDescriptorKey() {
         final VariableDescriptor descriptor = new VariableDescriptor();
         descriptor.setName("Elfriede");
@@ -58,7 +61,7 @@ public class Sentinel3DDDBReaderTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testClose() throws IOException {
         Sentinel3DDDBReader sentinel3DDDBReader = new Sentinel3DDDBReader(new Sentinel3ProductReaderPlugIn());
 
@@ -66,10 +69,27 @@ public class Sentinel3DDDBReaderTest {
     }
 
     @Test
-    @STTM("SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711")
     public void testBandNameToKey() throws IOException {
         assertEquals("Oa01", Sentinel3DDDBReader.bandNameToKey("Oa01_radiance"));
         assertEquals("Oa02", Sentinel3DDDBReader.bandNameToKey("Oa02_radiance_unc"));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAssignResultData() throws IOException {
+        final int[] rawData = {12, 13, 14, 15};
+        final Array rawArray = Array.factory(DataType.INT, new int[] {2,2}, rawData);
+
+        final ProductData productDataDouble = ProductData.createInstance(ProductData.TYPE_FLOAT64, 4);
+        Sentinel3DDDBReader.assignResultData(productDataDouble, rawArray);
+        assertEquals(12.0, productDataDouble.getElemDoubleAt(0), 1e-8);
+        assertEquals(14.0, productDataDouble.getElemDoubleAt(2), 1e-8);
+
+        final ProductData productDataInt = ProductData.createInstance(ProductData.TYPE_INT32, 4);
+        Sentinel3DDDBReader.assignResultData(productDataInt, rawArray);
+        assertEquals(13, productDataInt.getElemIntAt(1));
+        assertEquals(15, productDataInt.getElemIntAt(3));
     }
 
     private static Manifest createManifest() {

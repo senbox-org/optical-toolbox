@@ -13,6 +13,7 @@ import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
@@ -22,7 +23,6 @@ import org.xml.sax.SAXException;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
-import ucar.ma2.MAMath;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -63,9 +63,10 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         super(readerPlugIn);
         virtualDir = null;
         dddb = DDDB.getInstance();
+        // the treemap sorts the entries alphanumerically - as these data should be displayed in the SNAP product tree tb 2025-02-04
         variablesMap = new TreeMap<>();
+        tiepointMap = new TreeMap<>();
         ncVariablesMap = new HashMap<>();
-        tiepointMap = new HashMap<>();
         metadataMap = new HashMap<>();
         filesMap = new HashMap<>();
         dataMap = new HashMap<>();
@@ -105,6 +106,7 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         return descriptor.getName();
     }
 
+    // @todo 2 tb/tb add tests for this 2025-02-04
     private static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, Variable netCDFVariable) throws IOException {
         final int[] sliceOffset = {rasterExtract.getYOffset(), rasterExtract.getXOffset()};
         final int[] sliceDimensions = {rasterExtract.getHeight(), rasterExtract.getWidth()};
@@ -112,20 +114,18 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
 
         try {
             Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride);
-
-            final double scaleFactor = ReaderUtils.getScalingFactor(netCDFVariable);
-            final double offset = ReaderUtils.getAddOffset(netCDFVariable);
-            if (ReaderUtils.mustScale(scaleFactor, offset)) {
-                final MAMath.ScaleOffset scaleOffset = new MAMath.ScaleOffset(scaleFactor, offset);
-                sliceData = MAMath.convert2Unpacked(sliceData, scaleOffset);
-            }
-            // @todo 1 tb/tb extract method and test 2025-02-03
-            final int destDataType = destBuffer.getType();
-            final DataType netcdfDataType = DataTypeUtils.getNetcdfDataType(destDataType);
-            destBuffer.setElems(sliceData.get1DJavaArray(netcdfDataType));
+            sliceData = ReaderUtils.scaleArray(sliceData, netCDFVariable);
+            assignResultData(destBuffer, sliceData);
         } catch (InvalidRangeException e) {
             throw new IOException(e);
         }
+    }
+
+    // package access for testing only tb 2025-02-04
+    static void assignResultData(ProductData destBuffer, Array sliceData) {
+        final int destDataType = destBuffer.getType();
+        final DataType netcdfDataType = DataTypeUtils.getNetcdfDataType(destDataType);
+        destBuffer.setElems(sliceData.get1DJavaArray(netcdfDataType));
     }
 
     static String bandNameToKey(String bandName) {
@@ -261,15 +261,34 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
         final String name = destBand.getName();
         final VariableDescriptor descriptor = variablesMap.get(name);
 
+        final RasterExtract rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
+        readData(rasterExtract, destBuffer, descriptor, name);
+    }
+
+    @Override
+    public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
+        final String tpGridName = tpg.getName();
+        final VariableDescriptor descriptor = tiepointMap.get(tpGridName);
+
+        final RasterExtract rasterExtract = new RasterExtract(destOffsetX, destOffsetY, destWidth, destHeight, 1, 1);
+        readData(rasterExtract, destBuffer, descriptor, tpGridName);
+    }
+
+    private void readData(RasterExtract rasterExtract, ProductData destBuffer, VariableDescriptor descriptor, String name) throws IOException {
         final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
         final Array rawDataArray = getRawData(name, netCDFVariable);
 
-        final RasterExtract rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
         extractSubset(rasterExtract, destBuffer, rawDataArray, netCDFVariable);
     }
 
     private Variable getNetCDFVariable(VariableDescriptor descriptor, String name) throws IOException {
         final NetcdfFile netcdfFile = getNetcdfFile(descriptor.getFileName());
+
+        String variableName = name;
+        final String ncVarName = descriptor.getNcVarName();
+        if (StringUtils.isNotNullAndNotEmpty(ncVarName)) {
+            variableName = ncVarName;
+        }
 
         Variable ncVar;
 
@@ -278,8 +297,7 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
 
             variable = ncVariablesMap.get(name);
             if (variable == null) {
-                variable = netcdfFile.findVariable(name);
-                // @todo 1 tb/tb check for ncVarname at descriptor, if set, use this one 2025-02-03
+                variable = netcdfFile.findVariable(variableName);
                 if (variable == null) {
                     throw new IOException("requested variable not found: " + name + netcdfFile.getLocation());
                 }
@@ -322,17 +340,6 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
     }
 
     @Override
-    public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
-        final String tpGridName = tpg.getName();
-        final VariableDescriptor descriptor = tiepointMap.get(tpGridName);
-        final Variable netCDFVariable = getNetCDFVariable(descriptor, tpGridName);
-        final Array rawDataArray = getRawData(tpGridName, netCDFVariable);
-
-        final RasterExtract rasterExtract = new RasterExtract(destOffsetX, destOffsetY, destWidth, destHeight, 1, 1);
-        extractSubset(rasterExtract, destBuffer, rawDataArray, netCDFVariable);
-    }
-
-    @Override
     public void close() throws IOException {
         if (virtualDir != null) {
             virtualDir.close();
@@ -352,7 +359,6 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
     }
 
     private Path getInputPath() {
-        // @todo 3 tb/tb check for null 2024-12-06
         return Paths.get(getInput().toString());
     }
 }
