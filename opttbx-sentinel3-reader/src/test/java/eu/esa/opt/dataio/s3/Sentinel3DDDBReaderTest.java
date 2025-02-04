@@ -1,21 +1,15 @@
 package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.annotation.STTM;
-import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
-import org.esa.snap.core.dataio.IllegalFileFormatException;
-import org.esa.snap.core.dataio.ProductReader;
-import org.esa.snap.core.dataio.ProductReaderPlugIn;
-import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.*;
 import org.junit.Test;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -31,7 +25,7 @@ public class Sentinel3DDDBReaderTest {
         productDescriptor.setHeight(38);
 
         final Manifest manifest = createManifest();
-        Sentinel3DDDBReader.ensureWidthAndHeight(productDescriptor, manifest);
+        Sentinel3Level1Reader.ensureWidthAndHeight(productDescriptor, manifest);
 
         assertEquals(27, productDescriptor.getWidth());
         assertEquals(38, productDescriptor.getHeight());
@@ -45,7 +39,7 @@ public class Sentinel3DDDBReaderTest {
         productDescriptor.setHeightXPath("/data/simple/height");
 
         final Manifest manifest = createManifest();
-        Sentinel3DDDBReader.ensureWidthAndHeight(productDescriptor, manifest);
+        Sentinel3Level1Reader.ensureWidthAndHeight(productDescriptor, manifest);
 
         assertEquals(108, productDescriptor.getWidth());
         assertEquals(176, productDescriptor.getHeight());
@@ -57,13 +51,13 @@ public class Sentinel3DDDBReaderTest {
         final VariableDescriptor descriptor = new VariableDescriptor();
         descriptor.setName("Elfriede");
 
-        assertEquals("Elfriede", Sentinel3DDDBReader.createDescriptorKey(descriptor));
+        assertEquals("Elfriede", Sentinel3Level1Reader.createDescriptorKey(descriptor));
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testClose() throws IOException {
-        Sentinel3DDDBReader sentinel3DDDBReader = new Sentinel3DDDBReader(new Sentinel3ProductReaderPlugIn());
+        Sentinel3Level1Reader sentinel3DDDBReader = new Sentinel3Level1Reader(new Sentinel3ProductReaderPlugIn());
 
         sentinel3DDDBReader.close();
     }
@@ -71,8 +65,8 @@ public class Sentinel3DDDBReaderTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testBandNameToKey() throws IOException {
-        assertEquals("Oa01", Sentinel3DDDBReader.bandNameToKey("Oa01_radiance"));
-        assertEquals("Oa02", Sentinel3DDDBReader.bandNameToKey("Oa02_radiance_unc"));
+        assertEquals("Oa01", Sentinel3Level1Reader.bandNameToKey("Oa01_radiance"));
+        assertEquals("Oa02", Sentinel3Level1Reader.bandNameToKey("Oa02_radiance_unc"));
     }
 
     @Test
@@ -82,12 +76,12 @@ public class Sentinel3DDDBReaderTest {
         final Array rawArray = Array.factory(DataType.INT, new int[] {2,2}, rawData);
 
         final ProductData productDataDouble = ProductData.createInstance(ProductData.TYPE_FLOAT64, 4);
-        Sentinel3DDDBReader.assignResultData(productDataDouble, rawArray);
+        Sentinel3Level1Reader.assignResultData(productDataDouble, rawArray);
         assertEquals(12.0, productDataDouble.getElemDoubleAt(0), 1e-8);
         assertEquals(14.0, productDataDouble.getElemDoubleAt(2), 1e-8);
 
         final ProductData productDataInt = ProductData.createInstance(ProductData.TYPE_INT32, 4);
-        Sentinel3DDDBReader.assignResultData(productDataInt, rawArray);
+        Sentinel3Level1Reader.assignResultData(productDataInt, rawArray);
         assertEquals(13, productDataInt.getElemIntAt(1));
         assertEquals(15, productDataInt.getElemIntAt(3));
     }

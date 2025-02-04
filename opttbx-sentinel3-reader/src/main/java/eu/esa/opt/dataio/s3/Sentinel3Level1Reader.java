@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Sentinel3DDDBReader extends AbstractProductReader {
+public class Sentinel3Level1Reader extends AbstractProductReader {
 
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
@@ -59,7 +59,7 @@ public class Sentinel3DDDBReader extends AbstractProductReader {
      * @param readerPlugIn the reader plug-in which created this reader, can be {@code null} for internal reader
      *                     implementations
      */
-    protected Sentinel3DDDBReader(ProductReaderPlugIn readerPlugIn) {
+    protected Sentinel3Level1Reader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         virtualDir = null;
         dddb = DDDB.getInstance();
