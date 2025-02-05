@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.Iterator;
 
+import static eu.esa.opt.dataio.s3.S3ReaderPlugInTest.createManifestFilePath;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 
@@ -220,13 +221,5 @@ public class Sentinel3Level1ReaderPlugInTest {
         final Iterator<ProductReaderPlugIn> readerPlugIns = ioPlugInManager.getReaderPlugIns("Sen3L1");
         assertTrue(readerPlugIns.hasNext());
         assertTrue(readerPlugIns.next() instanceof Sentinel3Level1ReaderPlugIn);
-    }
-
-    // @todo 1 tb/tb duplicated code from other plugin - refactor and add common utility 2025-02-04
-    private static String createManifestFilePath(String sensorId, String levelId, String productId, String suffix) {
-        String validParentDirectory = String.format("S3_%s_%s_%s_TTTTTTTTTTTT_%s" , sensorId,
-                levelId, productId, suffix);
-        String manifestFile = "xfdumanifest.xml";
-        return validParentDirectory +  File.separator + manifestFile;
     }
 }

@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3;
 
+import eu.esa.opt.dataio.S3ReaderPlugIn;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -13,19 +14,20 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-public class Sentinel3Level1ReaderPlugIn implements ProductReaderPlugIn {
+public class Sentinel3Level1ReaderPlugIn extends S3ReaderPlugIn {
 
-    private static final Class[] SUPPORTED_INPUT_TYPES = {String.class, File.class};
     private static final String[] FILE_EXTENSIONS = {".xml", ".zip"};
     private static final String FORMAT_NAME = "Sen3L1";
     private static final String DESCRIPTION = "Sentinel-3 Level 1 products";
-    private static final String MANIFEST_BASE = "xfdumanifest.xml";
-    private static final String ALTERNATIVE_MANIFEST_BASE = "L1c_Manifest.xml";
 
     private final Pattern sourceNamePattern;
+    private final String manifestName;
+    private final String altManifestName;
 
     public Sentinel3Level1ReaderPlugIn() {
         sourceNamePattern = Pattern.compile("S3.?_(OL_1_E[FR]R|ER1_AT_1_RBT|ER2_AT_1_RBT|ENV_AT_1_RBT)_.*(.SEN3)?(.zip)?");
+        manifestName = MANIFEST_BASE + ".xml";
+        altManifestName = ALTERNATIVE_MANIFEST_BASE + ".xml";
     }
 
     @Override
@@ -73,7 +75,7 @@ public class Sentinel3Level1ReaderPlugIn implements ProductReaderPlugIn {
 
     // public access for testing only 2025-02-05
     public boolean isValidInputFileName(String name) {
-         if (MANIFEST_BASE.equalsIgnoreCase(name) || ALTERNATIVE_MANIFEST_BASE.equalsIgnoreCase(name)) {
+         if (manifestName.equalsIgnoreCase(name) || altManifestName.equalsIgnoreCase(name)) {
              return true;
          }
 
@@ -120,16 +122,7 @@ public class Sentinel3Level1ReaderPlugIn implements ProductReaderPlugIn {
     }
 
     @Override
-    public Class[] getInputTypes() {
-        return SUPPORTED_INPUT_TYPES;
-    }
-
-    @Override
     public ProductReader createReaderInstance() {
         return new Sentinel3Level1Reader(this);
-    }
-
-    private static boolean isDirectory(String extension) {
-        return !(".zip".equalsIgnoreCase(extension) || ".ZIP".equalsIgnoreCase(extension) || ".xml".equalsIgnoreCase(extension));
     }
 }

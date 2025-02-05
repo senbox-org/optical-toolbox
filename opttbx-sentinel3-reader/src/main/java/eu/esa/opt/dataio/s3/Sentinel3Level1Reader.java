@@ -170,6 +170,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader {
         product.setDescription(manifest.getDescription());
         product.setFileLocation(new File(getInput().toString()));
         product.setAutoGrouping(productDescriptor.getBandGroupingPattern());
+        product.setStartTime(manifest.getStartTime());
+        product.setEndTime(manifest.getStopTime());
 
         initializeDDDBDescriptors(manifest, productDescriptor);
         addVariables(product);
