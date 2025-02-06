@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Sentinel3Level1Reader extends AbstractProductReader {
+public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider {
 
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
@@ -52,6 +52,12 @@ public class Sentinel3Level1Reader extends AbstractProductReader {
     private final Map<String, Float> nameToBandwidthMap;
     private final Map<String, Integer> nameToIndexMap;
     private VirtualDir virtualDir;
+
+    // @todo 1 tb/tb add custom calibration support 2025-02-06
+    // @todo 1 add geocoding support 2025-02-06
+    // @todo 1 tb/tb integrate this 2025-02-06
+    private static final String[] LOG_SCALED_GEO_VARIABLE_NAMES = {"anw_443", "acdm_443", "aphy_443", "acdom_443", "bbp_443", "kd_490", "bbp_slope", "OWC",
+            "ADG443_NN", "CHL_NN", "CHL_OC4ME", "KD490_M07", "TSM_NN"};
 
     /**
      * Constructs a new abstract product reader.
@@ -177,6 +183,14 @@ public class Sentinel3Level1Reader extends AbstractProductReader {
         addVariables(product);
         addTiePointGrids(product, manifest);
 
+        // metadata
+        final MetadataElement metadataRoot = product.getMetadataRoot();
+        metadataRoot.addElement(metadata);
+        for (VariableDescriptor metaDescriptor : metadataMap.values()) {
+            final MetadataElementLazy metadataElementLazy = new MetadataElementLazy(metaDescriptor.getName(), this);
+            metadataRoot.addElement(metadataElementLazy);
+        }
+
         return product;
     }
 
@@ -233,8 +247,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader {
                 } else if (variableType == VariableType.TIE_POINT) {
                     tiepointMap.put(descriptorKey, descriptor);
                 } else if (variableType == VariableType.METADATA) {
-                    // add metadatum as special metanode
-                    // implement lazy loading for those file-based meta attributes tb 2025-12-18
                     metadataMap.put(descriptorKey, descriptor);
                 }
             }
@@ -363,4 +375,56 @@ public class Sentinel3Level1Reader extends AbstractProductReader {
     private Path getInputPath() {
         return Paths.get(getInput().toString());
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // MetadataProvider
+
+    @Override
+    public MetadataElement[] readElements(String name) throws IOException {
+        final VariableDescriptor descriptor = metadataMap.get(name);
+        if (descriptor == null) {
+            return new MetadataElement[0];
+        }
+
+        final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
+        if (netCDFVariable.getRank() != 2 || !netCDFVariable.getDimension(0).getFullName().equals("bands")) {
+            return new MetadataElement[0];
+        }
+
+        final String variableName = netCDFVariable.getFullName();
+        final MetadataElement variableElement = new MetadataElement(variableName);
+        final float[][] contentMatrix = (float[][]) netCDFVariable.read().copyToNDJavaArray();
+        final int length = contentMatrix.length;
+
+        for (int i = 0; i < length; i++) {
+            final String elementName = variableName + " for band " + (i + 1);
+            final MetadataElement xElement = new MetadataElement(elementName);
+            final ProductData content = ProductData.createInstance(contentMatrix[i]);
+            final MetadataAttribute covarianceAttribute = new MetadataAttribute(elementName, content, true);
+            xElement.addAttribute(covarianceAttribute);
+            variableElement.addElement(xElement);
+        }
+
+        return new MetadataElement[] {variableElement};
+    }
+
+    @Override
+    public MetadataAttribute[] readAttributes(String name) throws IOException {
+        final VariableDescriptor descriptor = metadataMap.get(name);
+        if (descriptor == null) {
+            return new MetadataAttribute[0];
+        }
+
+        final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
+        if (netCDFVariable.getRank() != 1 ) {
+            return new MetadataAttribute[0];
+        }
+
+        final Array metaData = netCDFVariable.read();
+        float[] values = (float[]) metaData.copyTo1DJavaArray();
+        final MetadataAttribute attribute = new MetadataAttribute(name, ProductData.createInstance(values), true);
+        return new MetadataAttribute[]{attribute};
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }

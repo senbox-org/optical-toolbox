@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.s3.manifest;
 
 import com.bc.ceres.annotation.STTM;
+import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -150,5 +151,36 @@ public class XfduManifestTest {
 
         xpathValue = olci_manifest.getXPathInt("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns");
         assertEquals(4865, xpathValue);
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testGetMetadata() {
+        MetadataElement metaRoot = slstr_manifest.getMetadata();
+        assertEquals("Manifest", metaRoot.getName());
+
+        MetadataElement metadataSection = metaRoot.getElement("metadataSection");
+        assertNotNull(metadataSection);
+        assertNotNull(metadataSection.getElement("acquisitionPeriod"));
+        assertNotNull(metadataSection.getElement("platform"));
+        assertNotNull(metadataSection.getElement("frameSet"));
+        assertNotNull(metadataSection.getElement("generalProductInformation"));
+        assertNotNull(metadataSection.getElement("slstrProductInformation"));
+        assertNotNull(metadataSection.getElement("orbitReference"));
+        assertNotNull(metadataSection.getElement("qualityInformation"));
+        assertNotNull(metadataSection.getElement("processing"));
+
+        metaRoot = olci_manifest.getMetadata();
+        assertEquals("Manifest", metaRoot.getName());
+        metadataSection = metaRoot.getElement("metadataSection");
+        assertNotNull(metadataSection);
+        assertNotNull(metadataSection.getElement("acquisitionPeriod"));
+        assertNotNull(metadataSection.getElement("platform"));
+        assertNotNull(metadataSection.getElement("frameSet"));
+        assertNotNull(metadataSection.getElement("generalProductInformation"));
+        assertNotNull(metadataSection.getElement("olciProductInformation"));
+        assertNotNull(metadataSection.getElement("orbitReference"));
+        assertNotNull(metadataSection.getElement("qualityInformation"));
+        assertNotNull(metadataSection.getElement("processing"));
     }
 }

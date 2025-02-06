@@ -116,6 +116,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
             }
         }
 
+        // @todo 1 tb/** replace this logic with something faster 2025-02-06
         readProducts(ensuredNames, virtualDir);
 
         final String productName = getProductName();
