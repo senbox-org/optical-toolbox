@@ -26,6 +26,7 @@ import ucar.ma2.Array;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
+import ucar.nc2.Dimension;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,8 +44,16 @@ public class L1AOctsFileReader extends SeadasFileReader {
     @Override
     public Product createProduct() throws ProductIOException {
 
-        int sceneWidth = getIntAttribute("Pixels_per_Scan_Line");
-        int sceneHeight = getIntAttribute("Number_of_Scan_Lines") * 2;
+        int sceneWidth = getDimension("nsamp");
+        int sceneHeight = getDimension("lines");
+        ProductData.UTC utcStart = getUTCAttribute("time_coverage_start");
+        ProductData.UTC utcEnd = getUTCAttribute("time_coverage_end");
+        if (sceneHeight == 0) {
+            sceneWidth = getIntAttribute("Pixels_per_Scan_Line");
+            sceneHeight = getIntAttribute("Number_of_Scan_Lines") * 2;
+            utcStart = getUTCAttribute("Start_Time");
+            utcEnd = getUTCAttribute("End_Time");
+        }
         String productName = productReader.getInputFile().getName();
 
         SeadasProductReader.ProductType productType = productReader.getProductType();
@@ -52,11 +61,9 @@ public class L1AOctsFileReader extends SeadasFileReader {
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
         product.setDescription(productName);
 
-        ProductData.UTC utcStart = getUTCAttribute("Start_Time");
         if (utcStart != null) {
             product.setStartTime(utcStart);
         }
-        ProductData.UTC utcEnd = getUTCAttribute("End_Time");
         if (utcEnd != null) {
             product.setEndTime(utcEnd);
         }
@@ -87,6 +94,10 @@ public class L1AOctsFileReader extends SeadasFileReader {
 
         Variable lats = ncFile.findVariable(navGroup + "/" +latitude);
         Variable lons = ncFile.findVariable(navGroup + "/" +longitude);
+        if (lats == null) {
+            lats = ncFile.findVariable(latitude);
+            lons = ncFile.findVariable(longitude);
+        }
 
         int[] dims = lats.getShape();
 
@@ -167,5 +178,13 @@ public class L1AOctsFileReader extends SeadasFileReader {
         }
         return bandToVariableMap;
     }
-
+    private int getDimension(String dimensionName) {
+        final List<Dimension> dimensions = ncFile.getDimensions();
+        for (Dimension dimension : dimensions) {
+            if (dimension.getShortName().equals(dimensionName)) {
+                return dimension.getLength();
+            }
+        }
+        return -1;
+    }
 }
