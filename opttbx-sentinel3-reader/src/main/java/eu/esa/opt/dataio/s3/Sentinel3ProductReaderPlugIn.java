@@ -14,7 +14,6 @@ package eu.esa.opt.dataio.s3;/*
  * with this program; if not, see http://www.gnu.org/licenses/
  */
 
-import eu.esa.opt.dataio.S3ReaderPlugIn;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.util.StringUtils;

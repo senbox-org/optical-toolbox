@@ -74,7 +74,7 @@ public class MetadataElementLazyTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testGetAttributeIndex() {
-       assertEquals(-1, metadataElementLazy.getAttributeIndex(new MetadataAttribute("sure_not", ProductData.createInstance(new float[]{13}), true)));
+        assertEquals(-1, metadataElementLazy.getAttributeIndex(new MetadataAttribute("sure_not", ProductData.createInstance(new float[]{13}), true)));
     }
 
     @Test
@@ -83,6 +83,26 @@ public class MetadataElementLazyTest {
         final ProductNodeGroup<MetadataElement> elementGroup = metadataElementLazy.getElementGroup();
         assertEquals(2, elementGroup.getNodeCount());
         assertEquals("Himpelchen", elementGroup.get(0).getName());
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testRemoveElement() {
+        final ProductNodeGroup<MetadataElement> elementGroup = metadataElementLazy.getElementGroup();
+        assertEquals(2, elementGroup.getNodeCount());
+
+        metadataElementLazy.removeElement(elementGroup.get(0));
+        assertEquals(1, elementGroup.getNodeCount());
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testGetElementIndex() {
+        final ProductNodeGroup<MetadataElement> elementGroup = metadataElementLazy.getElementGroup();
+        assertEquals(2, elementGroup.getNodeCount());
+
+        final int elementIndex = metadataElementLazy.getElementIndex(elementGroup.get(1));
+        assertEquals(1, elementIndex);
     }
 
     @Test
@@ -101,7 +121,7 @@ public class MetadataElementLazyTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testGetElementNames() {
-        final String[] expected = new String[]{"Himpelchen", "Pimpelchen"};
+        final String[] expected = {"Himpelchen", "Pimpelchen"};
         final String[] elementNames = metadataElementLazy.getElementNames();
         assertArrayEquals(expected, elementNames);
     }
@@ -135,11 +155,11 @@ public class MetadataElementLazyTest {
 
         @Override
         public MetadataElement[] readElements(String name) throws IOException {
-            final MetadataElement[] metadataElements = new MetadataElement[2];
+            MetadataElement container = new MetadataElement("container_name_not_relevant_here");
+            container.addElement(new MetadataElement("Himpelchen"));
+            container.addElement(new MetadataElement("Pimpelchen"));
 
-            metadataElements[0] = new MetadataElement("Himpelchen");
-            metadataElements[1] = new MetadataElement("Pimpelchen");
-            return metadataElements;
+            return new MetadataElement[] {container};
         }
 
         @Override

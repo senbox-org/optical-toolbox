@@ -1,4 +1,4 @@
-package eu.esa.opt.dataio;
+package eu.esa.opt.dataio.s3;
 
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 

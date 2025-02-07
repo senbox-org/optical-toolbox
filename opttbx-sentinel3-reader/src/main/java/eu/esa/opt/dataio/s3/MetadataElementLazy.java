@@ -2,6 +2,7 @@ package eu.esa.opt.dataio.s3;
 
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.ProductNode;
 import org.esa.snap.core.datamodel.ProductNodeGroup;
 
 import java.io.IOException;
@@ -11,7 +12,6 @@ public class MetadataElementLazy extends MetadataElement {
     private final MetadataProvider provider;
     private boolean attributesLoaded;
     private boolean elementsLoaded;
-
 
     /**
      * Constructs a new metadata element.
@@ -118,13 +118,19 @@ public class MetadataElementLazy extends MetadataElement {
             return;
         }
 
+        final ProductNode owner = getOwner();
         try {
+            // disable firing of NodeAdded events. Leads to infinite recursions ... tb 2025-02-07
+            setOwner(null);
+
             final MetadataAttribute[] metadataAttributes = provider.readAttributes(getName());
             for (MetadataAttribute attribute : metadataAttributes) {
                 addAttribute(attribute);
             }
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
+        } finally {
+            setOwner(owner);
         }
         attributesLoaded = true;
     }
@@ -134,13 +140,22 @@ public class MetadataElementLazy extends MetadataElement {
             return;
         }
 
+        final ProductNode owner = getOwner();
         try {
-            MetadataElement[] metadataElements = provider.readElements(getName());
+            // disable firing of NodeAdded events. Leads to infinite recursions ... tb 2025-02-07
+            setOwner(null);
+
+            final MetadataElement[] metadataElements = provider.readElements(getName());
             for (MetadataElement element : metadataElements) {
-                addElement(element);
+                MetadataElement[] containedElements = element.getElements();
+                for (MetadataElement containedElement : containedElements) {
+                    addElement(containedElement);
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
+        } finally {
+            setOwner(owner);
         }
 
         elementsLoaded = true;
