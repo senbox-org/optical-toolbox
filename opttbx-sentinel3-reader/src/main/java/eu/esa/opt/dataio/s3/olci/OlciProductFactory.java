@@ -26,14 +26,14 @@ import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static eu.esa.opt.dataio.s3.util.S3Util.OLCI_USE_PIXELGEOCODING;
+import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePointCoding;
+
 /**
  * @author Tonio Fincke
  */
 public abstract class OlciProductFactory extends AbstractProductFactory {
 
-    public final static String OLCI_USE_PIXELGEOCODING = "opttbx.reader.olci.pixelGeoCoding";
-
-    final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "opttbx.reader.olci.tiePointGeoCoding.forward";
     private final static String[] excludedIDs = {"removedPixelsData"};
     private static final String UNCERTAINTY_REGEX = ".*_unc";
     private static final String LOG10_REGEX = "lg(.*)";
@@ -88,16 +88,6 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
             default:
                 throw new IllegalArgumentException("unsupported product of type: " + productType);
         }
-    }
-
-    static String[] getForwardAndInverseKeys_tiePointCoding() {
-        final String[] codingNames = new String[2];
-
-        final Preferences preferences = Config.instance("opttbx").preferences();
-        codingNames[0] = preferences.get(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD, TiePointBilinearForward.KEY);
-        codingNames[1] = TiePointInverse.KEY;
-
-        return codingNames;
     }
 
     public static boolean isUncertaintyBand(String bandName) {

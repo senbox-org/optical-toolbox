@@ -20,6 +20,7 @@ import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
 import org.esa.snap.engine_utilities.util.ZipUtils;
+import org.esa.snap.runtime.Config;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import ucar.ma2.Array;
@@ -41,12 +42,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static eu.esa.opt.dataio.s3.util.S3Util.OLCI_USE_PIXELGEOCODING;
 import static eu.esa.opt.dataio.s3.util.S3Util.SYSPROP_OLCI_PIXEL_CODING_INVERSE;
 
 public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider {
 
     public static final String LON_VAR_NAME = "longitude";
     public static final String LAT_VAR_NAME = "latitude";
+    public static final String TP_LON_VAR_NAME = "TP_longitude";
+    public static final String TP_LAT_VAR_NAME = "TP_latitude";
+
+
     // @todo 1 tb/tb add custom calibration support 2025-02-06
     // @todo 1 add geocoding support 2025-02-06
     // @todo 1 tb/tb integrate this 2025-02-06
@@ -201,7 +207,15 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     @Override
     public GeoCoding readGeoCoding(Product product) throws IOException {
-        // @todo 1 tb/tb distinguish pixel or tiepoint geocoding, load accordingly 2025-02-07
+        if (Config.instance("opttbx").load().preferences().getBoolean(OLCI_USE_PIXELGEOCODING, true)) {
+            // @todo 1 tb/tb distinguish pixel or tiepoint geocoding, load accordingly 2025-02-07
+            return createPixelGeoCoding(product);
+        } else {
+            return createTiePointGeoCoding(product);
+        }
+    }
+
+    private ComponentGeoCoding createPixelGeoCoding(Product product) throws IOException {
         final Band lonBand = product.getBand(LON_VAR_NAME);
         final Band latBand = product.getBand(LAT_VAR_NAME);
         if (lonBand == null || latBand == null) {
@@ -210,7 +224,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
         final int width = product.getSceneRasterWidth();
         final int height = product.getSceneRasterHeight();
-        RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
+        final RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
 
         final ProductData productDataLon = ProductData.createInstance(new double[width * height]);
         final ProductData productDataLat = ProductData.createInstance(new double[width * height]);
@@ -243,6 +257,53 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         geoCoding.initialize();
 
         return geoCoding;
+    }
+
+    private ComponentGeoCoding createTiePointGeoCoding(Product product) throws IOException {
+            TiePointGrid lonGrid = product.getTiePointGrid(TP_LON_VAR_NAME);
+            TiePointGrid latGrid = product.getTiePointGrid(TP_LAT_VAR_NAME);
+            if (latGrid == null || lonGrid == null) {
+                return null;
+            }
+
+        final VariableDescriptor lonDescriptor = variablesMap.get(TP_LON_VAR_NAME);
+        final VariableDescriptor latDescriptor = variablesMap.get(TP_LAT_VAR_NAME);
+
+        final int width = lonDescriptor.getWidth();
+        final int height = lonDescriptor.getHeight();
+        final int bufferSize = width * height;
+        final ProductData productDataLon = ProductData.createInstance(new double[bufferSize]);
+        final ProductData productDataLat = ProductData.createInstance(new double[bufferSize]);
+
+        final RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
+        readData(rasterExtract, productDataLon, lonDescriptor, TP_LON_VAR_NAME);
+        readData(rasterExtract, productDataLat, latDescriptor, TP_LAT_VAR_NAME);
+
+        // @todo 1 tb/tb read from sensor specific class 2025-02-07
+        final double resolutionInKm;
+        String productType = product.getProductType();
+        if (productType.contains("RR")) {
+            resolutionInKm = 1.2;
+        } else if (productType.contains("FR")) {
+            resolutionInKm = 0.3;
+        } else {
+            throw new RuntimeException("not foreseen to get here");
+        }
+
+        final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(), TP_LON_VAR_NAME, TP_LAT_VAR_NAME,
+                lonGrid.getGridWidth(), lonGrid.getGridHeight(),
+                product.getSceneRasterWidth(), product.getSceneRasterHeight(), resolutionInKm,
+                lonGrid.getOffsetX(), lonGrid.getOffsetY(),
+                lonGrid.getSubSamplingX(), lonGrid.getSubSamplingY());
+
+        final String[] codingKeys = S3Util.getForwardAndInverseKeys_tiePointCoding();
+        final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
+        final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
+
+        final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
+        geoCoding.initialize();
+
+       return geoCoding;
     }
 
     private void addVariables(Product product) {

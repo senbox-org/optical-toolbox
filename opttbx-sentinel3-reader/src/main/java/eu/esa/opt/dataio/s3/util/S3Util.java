@@ -2,7 +2,9 @@ package eu.esa.opt.dataio.s3.util;
 
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
+import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
+import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.runtime.Config;
 
 import java.util.prefs.Preferences;
@@ -13,6 +15,8 @@ import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERP
 public class S3Util {
 
     public final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "opttbx.reader.olci.pixelGeoCoding.inverse";
+    public final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "opttbx.reader.olci.tiePointGeoCoding.forward";
+    public final static String OLCI_USE_PIXELGEOCODING = "opttbx.reader.olci.pixelGeoCoding";
 
     /**
      * Defines the transformation keys for forward and inverse pixel-geocoding transformations
@@ -34,6 +38,16 @@ public class S3Util {
         } else {
             codingNames[0] = PixelForward.KEY;
         }
+
+        return codingNames;
+    }
+
+    public static String[] getForwardAndInverseKeys_tiePointCoding() {
+        final String[] codingNames = new String[2];
+
+        final Preferences preferences = Config.instance("opttbx").preferences();
+        codingNames[0] = preferences.get(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD, TiePointBilinearForward.KEY);
+        codingNames[1] = TiePointInverse.KEY;
 
         return codingNames;
     }

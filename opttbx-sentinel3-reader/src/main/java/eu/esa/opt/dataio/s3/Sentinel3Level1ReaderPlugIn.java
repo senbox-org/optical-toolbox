@@ -92,7 +92,6 @@ public class Sentinel3Level1ReaderPlugIn extends S3ReaderPlugIn {
         String inputString = input.toString();
         final String filename = FileUtils.getFilenameFromPath(inputString);
 
-        // check if we have a directory name (not ending on xml)
         final String fileExtension = FileUtils.getExtension(filename);
         if (isDirectory(fileExtension)) {
             inputString = inputString + File.separator + MANIFEST_BASE;
