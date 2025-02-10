@@ -9,9 +9,11 @@ import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
+import eu.esa.opt.dataio.s3.util.S3Util;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
+import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
@@ -39,8 +41,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static eu.esa.opt.dataio.s3.util.S3Util.SYSPROP_OLCI_PIXEL_CODING_INVERSE;
+
 public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider {
 
+    public static final String LON_VAR_NAME = "longitude";
+    public static final String LAT_VAR_NAME = "latitude";
+    // @todo 1 tb/tb add custom calibration support 2025-02-06
+    // @todo 1 add geocoding support 2025-02-06
+    // @todo 1 tb/tb integrate this 2025-02-06
+    private static final String[] LOG_SCALED_GEO_VARIABLE_NAMES = {"anw_443", "acdm_443", "aphy_443", "acdom_443", "bbp_443", "kd_490", "bbp_slope", "OWC",
+            "ADG443_NN", "CHL_NN", "CHL_OC4ME", "KD490_M07", "TSM_NN"};
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
     private final Map<String, VariableDescriptor> metadataMap;
@@ -52,12 +63,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private final Map<String, Float> nameToBandwidthMap;
     private final Map<String, Integer> nameToIndexMap;
     private VirtualDir virtualDir;
-
-    // @todo 1 tb/tb add custom calibration support 2025-02-06
-    // @todo 1 add geocoding support 2025-02-06
-    // @todo 1 tb/tb integrate this 2025-02-06
-    private static final String[] LOG_SCALED_GEO_VARIABLE_NAMES = {"anw_443", "acdm_443", "aphy_443", "acdom_443", "bbp_443", "kd_490", "bbp_slope", "OWC",
-            "ADG443_NN", "CHL_NN", "CHL_OC4ME", "KD490_M07", "TSM_NN"};
 
     /**
      * Constructs a new abstract product reader.
@@ -194,12 +199,60 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         return product;
     }
 
+    @Override
+    public GeoCoding readGeoCoding(Product product) throws IOException {
+        // @todo 1 tb/tb distinguish pixel or tiepoint geocoding, load accordingly 2025-02-07
+        final Band lonBand = product.getBand(LON_VAR_NAME);
+        final Band latBand = product.getBand(LAT_VAR_NAME);
+        if (lonBand == null || latBand == null) {
+            return null;
+        }
+
+        final int width = product.getSceneRasterWidth();
+        final int height = product.getSceneRasterHeight();
+        RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
+
+        final ProductData productDataLon = ProductData.createInstance(new double[width * height]);
+        final ProductData productDataLat = ProductData.createInstance(new double[width * height]);
+
+        final VariableDescriptor lonDescriptor = variablesMap.get(LON_VAR_NAME);
+        readData(rasterExtract, productDataLon, lonDescriptor, LON_VAR_NAME);
+
+        final VariableDescriptor latDescriptor = variablesMap.get(LAT_VAR_NAME);
+        readData(rasterExtract, productDataLat, latDescriptor, LAT_VAR_NAME);
+
+        // @todo 1 tb/tb read from sensor specific class 2025-02-07
+        final double resolutionInKm;
+        String productType = product.getProductType();
+        if (productType.contains("RR")) {
+            resolutionInKm = 1.2;
+        } else if (productType.contains("FR")) {
+            resolutionInKm = 0.3;
+        } else {
+            throw new RuntimeException("not foreseen to get here");
+        }
+
+        final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
+                LON_VAR_NAME, LAT_VAR_NAME, lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKm);
+
+        final String[] codingKeys = S3Util.getForwardAndInverseKeys_pixelCoding(SYSPROP_OLCI_PIXEL_CODING_INVERSE);
+        final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
+        final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
+
+        final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
+        geoCoding.initialize();
+
+        return geoCoding;
+    }
+
     private void addVariables(Product product) {
         for (VariableDescriptor descriptor : variablesMap.values()) {
             // @todo 2 - add band - check for other attributes (unit, description, fill value) tb 2025-12-18
             final int dataType = ProductData.getType(descriptor.getDataType());
             final String bandname = descriptor.getName();
-            final Band band = product.addBand(bandname, dataType);
+
+            final Band band = new BandUsingReaderDirectly(bandname, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+            product.addBand(band);
 
             final String bandKey = bandNameToKey(bandname);
             if (nameToWavelengthMap.containsKey(bandKey)) {
@@ -387,7 +440,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
 
         final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
-        if (netCDFVariable.getRank() != 2 || !netCDFVariable.getDimension(0).getFullName().equals("bands")) {
+        if (netCDFVariable.getRank() != 2 || !"bands".equals(netCDFVariable.getDimension(0).getFullName())) {
             return new MetadataElement[0];
         }
 
@@ -405,7 +458,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             variableElement.addElement(xElement);
         }
 
-        return new MetadataElement[] {variableElement};
+        return new MetadataElement[]{variableElement};
     }
 
     @Override
@@ -416,7 +469,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
 
         final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
-        if (netCDFVariable.getRank() != 1 ) {
+        if (netCDFVariable.getRank() != 1) {
             return new MetadataAttribute[0];
         }
 

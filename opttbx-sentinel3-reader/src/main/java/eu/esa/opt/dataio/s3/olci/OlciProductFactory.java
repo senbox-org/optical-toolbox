@@ -2,11 +2,12 @@ package eu.esa.opt.dataio.s3.olci;
 
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
-import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.SentinelTimeCoding;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReaderFactory;
+import eu.esa.opt.dataio.s3.util.S3Util;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
@@ -33,7 +34,6 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     public final static String OLCI_USE_PIXELGEOCODING = "opttbx.reader.olci.pixelGeoCoding";
 
     final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "opttbx.reader.olci.tiePointGeoCoding.forward";
-    private final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "opttbx.reader.olci.pixelGeoCoding.inverse";
     private final static String[] excludedIDs = {"removedPixelsData"};
     private static final String UNCERTAINTY_REGEX = ".*_unc";
     private static final String LOG10_REGEX = "lg(.*)";
@@ -55,6 +55,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         nameToIndexMap = new HashMap<>();
     }
 
+    // @todo 2 tb/tb move to product-type specific class, evt. read from manifest 2025-02-07
     static double getResolutionInKm(String productType) {
         switch (productType) {
             case "OL_1_EFR":
@@ -131,7 +132,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         int logIdx = trimmedUnit.indexOf("lg(");
         if (logIdx >= 0) {
             final String logRemoved = trimmedUnit.substring(logIdx + 3, trimmedUnit.length() - 1);
-            if (logRemoved.startsWith("re")){
+            if (logRemoved.startsWith("re")) {
                 return logRemoved.substring(3);
             }
 
@@ -151,6 +152,17 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
 
         final String trimmed = description.trim();
         return trimmed.replace("log10 scaled ", "");
+    }
+
+    public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
+        final String[] allFiles = virtualDir.listAllFiles();
+        for (String dirFileName : allFiles) {
+            final String filenameFromVirtualDir = FileUtils.getFilenameFromPath(dirFileName);
+            if (filenameFromVirtualDir.equalsIgnoreCase(fileName)) {
+                return virtualDir.getFile(dirFileName);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -226,7 +238,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
                 lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKilometers);
 
-        final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(SYSPROP_OLCI_PIXEL_CODING_INVERSE);
+        final String[] codingKeys = S3Util.getForwardAndInverseKeys_pixelCoding(S3Util.SYSPROP_OLCI_PIXEL_CODING_INVERSE);
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
 
@@ -276,8 +288,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     protected void configureTargetNode(Band sourceBand, RasterDataNode targetNode) {
         final String targetNodeName = targetNode.getName();
         if (targetNodeName.matches("Oa[0-2][0-9].*")) {
-            if (targetNode instanceof Band) {
-                final Band targetBand = (Band) targetNode;
+            if (targetNode instanceof Band targetBand) {
                 String cutName = targetBand.getName().substring(0, 4);
                 targetBand.setSpectralBandIndex(getBandindex(cutName));
                 targetBand.setSpectralWavelength(getWavelength(cutName));
@@ -325,16 +336,5 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         final S3NetcdfReader reader = S3NetcdfReaderFactory.createS3NetcdfProduct(file);
         addSeparatingDimensions(reader.getSuffixesForSeparatingDimensions());
         return reader.readProductNodes(file, null);
-    }
-
-    public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
-        final String[] allFiles = virtualDir.listAllFiles();
-        for (String dirFileName : allFiles) {
-            final String filenameFromVirtualDir = FileUtils.getFilenameFromPath(dirFileName);
-            if (filenameFromVirtualDir.equalsIgnoreCase(fileName)) {
-                return virtualDir.getFile(dirFileName);
-            }
-        }
-        return null;
     }
 }

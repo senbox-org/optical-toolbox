@@ -20,6 +20,7 @@ import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
+import eu.esa.opt.dataio.s3.util.S3Util;
 import org.esa.snap.core.dataio.geocoding.ComponentFactory;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.ForwardCoding;
@@ -644,7 +645,7 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
             final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVarName, latVarName,
                                                       width, height, resolutionInKm);
 
-            final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
+            final String[] codingKeys = S3Util.getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
 
             final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
             final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);

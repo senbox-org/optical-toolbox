@@ -23,9 +23,6 @@ import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.ProductReader;
-import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
-import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
-import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.ColorPaletteDef;
 import org.esa.snap.core.datamodel.CrsGeoCoding;
@@ -39,7 +36,6 @@ import org.esa.snap.core.datamodel.SampleCoding;
 import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
-import org.esa.snap.runtime.Config;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import ucar.ma2.Array;
@@ -56,7 +52,6 @@ import java.awt.Color;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
@@ -67,11 +62,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.prefs.Preferences;
 
 import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
-import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
-import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERPOLATING;
 
 public abstract class AbstractProductFactory implements ProductFactory {
 
@@ -477,30 +469,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
         final double[] tiePoints = new double[tpData.getWidth() * tpData.getHeight()];
         tpData.getPixels(tpData.getMinX(), tpData.getMinY(), tpData.getWidth(), tpData.getHeight(), tiePoints);
         return tiePoints;
-    }
-
-    /**
-     * Defines the transformation keys for forward and inverse pixel-geocoding transformations
-     * @param inverseCodingProperty the property defining the preferences key storing the desired inverse geocoding
-     *                              algorithm. Uses the OptTbx part of the preferences.
-     * @return and array of keys. Index 0: forward coding, index 1: inverse coding
-     */
-    protected static String[] getForwardAndInverseKeys_pixelCoding(String inverseCodingProperty) {
-        final String[] codingNames = new String[2];
-
-        final Preferences snapPreferences = Config.instance("snap").preferences();
-        final boolean useFractAccuracy = snapPreferences.getBoolean(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY, false);
-
-        final Preferences opttbxPreferences = Config.instance("opttbx").preferences();
-        codingNames[1] = opttbxPreferences.get(inverseCodingProperty, PixelQuadTreeInverse.KEY);
-        if (useFractAccuracy) {
-            codingNames[0] = PixelInterpolatingForward.KEY;
-            codingNames[1] = codingNames[1].concat(KEY_SUFFIX_INTERPOLATING);
-        } else {
-            codingNames[0] = PixelForward.KEY;
-        }
-
-        return codingNames;
     }
 
     private void setTimes(Product targetProduct) {

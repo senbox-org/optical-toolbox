@@ -5,6 +5,7 @@ import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
+import eu.esa.opt.dataio.s3.util.S3Util;
 import eu.esa.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
@@ -298,7 +299,7 @@ public class SlstrFrpProductFactory extends SlstrProductFactory {
 
         final Preferences preferences = Config.instance("opttbx").preferences();
         final String inverseKey = preferences.get(SYSPROP_SLSTR_FRP_PIXEL_CODING_INVERSE, PixelQuadTreeInverse.KEY);
-        final String[] keys = getForwardAndInverseKeys_pixelCoding(inverseKey);
+        final String[] keys = S3Util.getForwardAndInverseKeys_pixelCoding(inverseKey);
         final ForwardCoding forward = ComponentFactory.getForward(keys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(keys[1]);
 

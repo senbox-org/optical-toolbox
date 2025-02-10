@@ -1,23 +1,6 @@
-/*
- * Copyright (c) 2021.  Brockmann Consult GmbH (info@brockmann-consult.de)
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 3 of the License, or (at your option)
- * any later version.
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, see http://www.gnu.org/licenses/
- */
+package eu.esa.opt.dataio.s3.util;
 
-package eu.esa.opt.dataio.s3;
-
-import eu.esa.opt.dataio.s3.AbstractProductFactory;
-import eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory;
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelGeoIndexInverse;
@@ -28,9 +11,10 @@ import static eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory.SLSTR_L1B_PIX
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
 import static org.junit.Assert.assertEquals;
 
-public class AbstractProductFactoryTest {
+public class S3UtilTest {
 
     @Test
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetForwardAndInverseKeys_default() {
         final String inverseKey = System.getProperty(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
         final String fractionalAccuracy = System.getProperty(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY);
@@ -39,7 +23,7 @@ public class AbstractProductFactoryTest {
             System.clearProperty(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
             System.clearProperty(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY);
 
-            final String[] keys = AbstractProductFactory.getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
+            final String[] keys = S3Util.getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
             assertEquals(PixelForward.KEY, keys[0]);
             assertEquals(PixelQuadTreeInverse.KEY, keys[1]);
         } finally {
@@ -53,6 +37,7 @@ public class AbstractProductFactoryTest {
     }
 
     @Test
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetForwardAndInverseKeys_interpolating() {
         final String inverseKey = System.getProperty(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
         final String fractionalAccuracy = System.getProperty(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY);
@@ -60,7 +45,7 @@ public class AbstractProductFactoryTest {
         try {
             System.setProperty(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY, "true");
 
-            final String[] keys = SlstrLevel1ProductFactory.getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
+            final String[] keys = S3Util.getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
             assertEquals(PixelInterpolatingForward.KEY, keys[0]);
             assertEquals(PixelQuadTreeInverse.KEY_INTERPOLATING, keys[1]);
         } finally {
@@ -74,6 +59,7 @@ public class AbstractProductFactoryTest {
     }
 
     @Test
+    @STTM("SNAP-1696,SNAP-3711")
     public void testGetForwardAndInverseKeys_inverse() {
         final String inverseKey = System.getProperty(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
         final String fractionalAccuracy = System.getProperty(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY);
@@ -82,7 +68,7 @@ public class AbstractProductFactoryTest {
             System.clearProperty(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY);
             System.setProperty(SLSTR_L1B_PIXEL_GEOCODING_INVERSE, PixelGeoIndexInverse.KEY);
 
-            final String[] keys = SlstrLevel1ProductFactory.getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
+            final String[] keys = S3Util.getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
             assertEquals(PixelForward.KEY, keys[0]);
             assertEquals(PixelGeoIndexInverse.KEY, keys[1]);
         } finally {
