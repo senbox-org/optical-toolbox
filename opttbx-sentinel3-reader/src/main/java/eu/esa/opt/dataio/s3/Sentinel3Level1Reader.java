@@ -41,9 +41,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.prefs.Preferences;
 
-import static eu.esa.opt.dataio.s3.util.S3Util.OLCI_USE_PIXELGEOCODING;
-import static eu.esa.opt.dataio.s3.util.S3Util.SYSPROP_OLCI_PIXEL_CODING_INVERSE;
+import static eu.esa.opt.dataio.s3.util.S3Util.*;
 
 public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider {
 
@@ -54,9 +54,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
 
     // @todo 1 tb/tb add custom calibration support 2025-02-06
-    // @todo 1 tb/tb integrate this 2025-02-06
-    private static final String[] LOG_SCALED_GEO_VARIABLE_NAMES = {"anw_443", "acdm_443", "aphy_443", "acdom_443", "bbp_443", "kd_490", "bbp_slope", "OWC",
-            "ADG443_NN", "CHL_NN", "CHL_OC4ME", "KD490_M07", "TSM_NN"};
+
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
     private final Map<String, VariableDescriptor> metadataMap;
@@ -120,7 +118,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         if (variableDescriptor.getType() == 't') {
             int tpSubsamplingX = variableDescriptor.getTpSubsamplingX();
             int tpSubsamplingY = variableDescriptor.getTpSubsamplingY();
-            if (tpSubsamplingX < 0 || tpSubsamplingY < 0 ) {
+            if (tpSubsamplingX < 0 || tpSubsamplingY < 0) {
                 final int subsamplingX = manifest.getXPathInt(variableDescriptor.getTpXSubsamplingXPath());
                 final int subsamplingY = manifest.getXPathInt(variableDescriptor.getTpYSubsamplingXPath());
                 final int tpWidth = (int) Math.ceil((double) width / subsamplingX);
@@ -279,7 +277,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
                 LON_VAR_NAME, LAT_VAR_NAME, lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKm);
 
-        final String[] codingKeys = S3Util.getForwardAndInverseKeys_pixelCoding(SYSPROP_OLCI_PIXEL_CODING_INVERSE);
+        final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(SYSPROP_OLCI_PIXEL_CODING_INVERSE);
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
 
@@ -328,7 +326,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                 lonGrid.getOffsetX(), lonGrid.getOffsetY(),
                 lonGrid.getSubSamplingX(), lonGrid.getSubSamplingY());
 
-        final String[] codingKeys = S3Util.getForwardAndInverseKeys_tiePointCoding();
+        final String[] codingKeys = getForwardAndInverseKeys_tiePointCoding();
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
 
@@ -357,7 +355,35 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             if (nameToIndexMap.containsKey(bandKey)) {
                 band.setSpectralBandIndex(nameToIndexMap.get(bandKey));
             }
+
+            applyCustomCalibration(band);
         }
+    }
+
+    private void applyCustomCalibration(Band band) {
+        final Preferences preferences = loadPreferences();
+        preferences.getBoolean(OLCI_L1_CUSTOM_CALIBRATION, false);
+
+        final String calibrationOffsetPropertyName = OLCI_L1_CALIBRATION_PATTERN
+                .replace("ID", band.getName().toLowerCase())
+                .replace("TYPE", "offset");
+        final double calibrationOffset = preferences.getDouble(calibrationOffsetPropertyName, Double.NaN);
+        if (!Double.isNaN(calibrationOffset)) {
+            band.setScalingOffset(calibrationOffset);
+        }
+
+        String calibrationFactorPropertyName = OLCI_L1_CALIBRATION_PATTERN
+                .replace("ID", band.getName().toLowerCase())
+                .replace("TYPE", "factor");
+        final double calibrationFactor = preferences.getDouble(calibrationFactorPropertyName, Double.NaN);
+        if (!Double.isNaN(calibrationFactor)) {
+            band.setScalingFactor(calibrationFactor);
+        }
+    }
+
+    // @todo 1 tb/tb this is OLCI specific - refactor 2025-02-11
+    private Preferences loadPreferences() {
+        return Config.instance("opttbx").load().preferences();
     }
 
     private void addTiePointGrids(Product product, Manifest manifest) {

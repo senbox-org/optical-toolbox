@@ -21,10 +21,10 @@ import org.esa.snap.runtime.Config;
 
 import java.util.prefs.Preferences;
 
-public class OlciLevel1ProductFactory extends OlciProductFactory {
+import static eu.esa.opt.dataio.s3.util.S3Util.OLCI_L1_CALIBRATION_PATTERN;
+import static eu.esa.opt.dataio.s3.util.S3Util.OLCI_L1_CUSTOM_CALIBRATION;
 
-    public final static String OLCI_L1_CUSTOM_CALIBRATION = "opttbx.reader.olcil1.applyCustomCalibration";
-    private final static String OLCI_L1_CALIBRATION_PATTERN = "opttbx.reader.olcil1.ID.calibration.TYPE";
+public class OlciLevel1ProductFactory extends OlciProductFactory {
 
     private final static String validExpression = "!quality_flags.invalid";
 
@@ -46,7 +46,7 @@ public class OlciLevel1ProductFactory extends OlciProductFactory {
     }
 
     private boolean applyCustomCalibration() {
-        Preferences preferences = loadPreferences();
+        final Preferences preferences = loadPreferences();
         return preferences.getBoolean(OLCI_L1_CUSTOM_CALIBRATION, false);
     }
 
@@ -59,6 +59,7 @@ public class OlciLevel1ProductFactory extends OlciProductFactory {
     }
 
     private Preferences loadPreferences() {
+        // @todo 2 tb/tb lazy loading 2025-02-11
         return Config.instance("opttbx").load().preferences();
     }
 

@@ -153,7 +153,7 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
         olciPixelGeocodingsCheckBox.setSelected(
                 preferences.getBoolean(S3Util.OLCI_USE_PIXELGEOCODING, true));
         olciL1CalibrationCheckBox.setSelected(
-                preferences.getBoolean(OlciLevel1ProductFactory.OLCI_L1_CUSTOM_CALIBRATION, false));
+                preferences.getBoolean(S3Util.OLCI_L1_CUSTOM_CALIBRATION, false));
         merisPixelGeocodingsCheckBox.setSelected(
                 preferences.getBoolean(MerisProductFactory.MERIS_SAFE_USE_PIXELGEOCODING, true));
     }
@@ -171,7 +171,7 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
         preferences.putBoolean(SlstrSstProductFactory.SLSTR_L2_SST_USE_PIXELGEOCODINGS,
                                slstrL2SSTPixelGeocodingsCheckBox.isSelected());
         preferences.putBoolean(S3Util.OLCI_USE_PIXELGEOCODING, olciPixelGeocodingsCheckBox.isSelected());
-        preferences.putBoolean(OlciLevel1ProductFactory.OLCI_L1_CUSTOM_CALIBRATION, olciL1CalibrationCheckBox.isSelected());
+        preferences.putBoolean(S3Util.OLCI_L1_CUSTOM_CALIBRATION, olciL1CalibrationCheckBox.isSelected());
         preferences.putBoolean(MerisProductFactory.MERIS_SAFE_USE_PIXELGEOCODING, merisPixelGeocodingsCheckBox.isSelected());
         try {
             preferences.flush();
