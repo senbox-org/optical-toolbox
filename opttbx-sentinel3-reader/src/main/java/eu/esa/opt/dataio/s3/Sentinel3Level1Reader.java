@@ -54,7 +54,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
 
     // @todo 1 tb/tb add custom calibration support 2025-02-06
-    // @todo 1 add geocoding support 2025-02-06
     // @todo 1 tb/tb integrate this 2025-02-06
     private static final String[] LOG_SCALED_GEO_VARIABLE_NAMES = {"anw_443", "acdm_443", "aphy_443", "acdom_443", "bbp_443", "kd_490", "bbp_slope", "OWC",
             "ADG443_NN", "CHL_NN", "CHL_OC4ME", "KD490_M07", "TSM_NN"};
@@ -69,6 +68,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private final Map<String, Float> nameToBandwidthMap;
     private final Map<String, Integer> nameToIndexMap;
     private VirtualDir virtualDir;
+    private Manifest manifest;
 
     /**
      * Constructs a new abstract product reader.
@@ -79,6 +79,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     protected Sentinel3Level1Reader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         virtualDir = null;
+        manifest = null;
         dddb = DDDB.getInstance();
         // the treemap sorts the entries alphanumerically - as these data should be displayed in the SNAP product tree tb 2025-02-04
         variablesMap = new TreeMap<>();
@@ -101,6 +102,35 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             productDescriptor.setWidth(width);
             height = manifest.getXPathInt(productDescriptor.getHeightXPath());
             productDescriptor.setHeight(height);
+        }
+    }
+
+    // package access for testing only tb 2025-02-11
+    static void ensureWidthAndHeight(VariableDescriptor variableDescriptor, Manifest manifest) {
+        int width = variableDescriptor.getWidth();
+        int height = variableDescriptor.getHeight();
+
+        if (width < 0 || height < 0) {
+            width = manifest.getXPathInt(variableDescriptor.getWidthXPath());
+            variableDescriptor.setWidth(width);
+            height = manifest.getXPathInt(variableDescriptor.getHeightXPath());
+            variableDescriptor.setHeight(height);
+        }
+
+        if (variableDescriptor.getType() == 't') {
+            int tpSubsamplingX = variableDescriptor.getTpSubsamplingX();
+            int tpSubsamplingY = variableDescriptor.getTpSubsamplingY();
+            if (tpSubsamplingX < 0 || tpSubsamplingY < 0 ) {
+                final int subsamplingX = manifest.getXPathInt(variableDescriptor.getTpXSubsamplingXPath());
+                final int subsamplingY = manifest.getXPathInt(variableDescriptor.getTpYSubsamplingXPath());
+                final int tpWidth = (int) Math.ceil((double) width / subsamplingX);
+                final int tpHeight = (int) Math.ceil((double) height / subsamplingY);
+
+                variableDescriptor.setTpSubsamplingX(subsamplingX);
+                variableDescriptor.setTpSubsamplingY(subsamplingY);
+                variableDescriptor.setWidth(tpWidth);
+                variableDescriptor.setHeight(tpHeight);
+            }
         }
     }
 
@@ -154,7 +184,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     protected Product readProductNodesImpl() throws IOException {
         initalizeInput();
 
-        final Manifest manifest = readManifest();
+        manifest = readManifest();
         MetadataElement metadata = manifest.getMetadata();
         MetadataElement metadataSection = metadata.getElement("metadataSection");
         // @todo 2 tb this is OLCI specific - extract generic functionality and dispatch to product specific implementation 2025-01-06
@@ -260,14 +290,16 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     private ComponentGeoCoding createTiePointGeoCoding(Product product) throws IOException {
-            TiePointGrid lonGrid = product.getTiePointGrid(TP_LON_VAR_NAME);
-            TiePointGrid latGrid = product.getTiePointGrid(TP_LAT_VAR_NAME);
-            if (latGrid == null || lonGrid == null) {
-                return null;
-            }
+        TiePointGrid lonGrid = product.getTiePointGrid(TP_LON_VAR_NAME);
+        TiePointGrid latGrid = product.getTiePointGrid(TP_LAT_VAR_NAME);
+        if (latGrid == null || lonGrid == null) {
+            return null;
+        }
 
-        final VariableDescriptor lonDescriptor = variablesMap.get(TP_LON_VAR_NAME);
-        final VariableDescriptor latDescriptor = variablesMap.get(TP_LAT_VAR_NAME);
+        final VariableDescriptor lonDescriptor = tiepointMap.get(TP_LON_VAR_NAME);
+        ensureWidthAndHeight(lonDescriptor, manifest);
+        final VariableDescriptor latDescriptor = tiepointMap.get(TP_LAT_VAR_NAME);
+        ensureWidthAndHeight(latDescriptor, manifest);
 
         final int width = lonDescriptor.getWidth();
         final int height = lonDescriptor.getHeight();
@@ -303,7 +335,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
         geoCoding.initialize();
 
-       return geoCoding;
+        return geoCoding;
     }
 
     private void addVariables(Product product) {
@@ -482,6 +514,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
         filesMap.clear();
         dataMap.clear();
+
+        manifest = null;
 
         super.close();
     }

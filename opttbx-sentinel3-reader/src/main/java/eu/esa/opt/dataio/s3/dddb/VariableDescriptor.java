@@ -4,6 +4,7 @@ public class VariableDescriptor {
 
     private String name;
     private String ncVarName;
+    // @todo 2 tb/tb add typesafe enum 2025-02-11
     private char type;
     private String dataType;
     private String widthXPath;
@@ -12,6 +13,8 @@ public class VariableDescriptor {
     private String tpYSubsamplingXPath;
     private int width;
     private int height;
+    private int tpSubsamplingX;
+    private int tpSubsamplingY;
     private int depth;
     private String fileName;
     private String validExpression;
@@ -28,6 +31,8 @@ public class VariableDescriptor {
         description = "";
         tpXSubsamplingXPath = "";
         tpYSubsamplingXPath = "";
+        tpSubsamplingX = -1;
+        tpSubsamplingY = -1;
     }
 
     public String getName() {
@@ -92,6 +97,22 @@ public class VariableDescriptor {
 
     public void settpYSubsamplingXPath(String tpYSubsamplingXPath) {
         this.tpYSubsamplingXPath = tpYSubsamplingXPath;
+    }
+
+    public int getTpSubsamplingX() {
+        return tpSubsamplingX;
+    }
+
+    public int getTpSubsamplingY() {
+        return tpSubsamplingY;
+    }
+
+    public void setTpSubsamplingX(int tpSubsamplingX) {
+        this.tpSubsamplingX = tpSubsamplingX;
+    }
+
+    public void setTpSubsamplingY(int tpSubsamplingY) {
+        this.tpSubsamplingY = tpSubsamplingY;
     }
 
     public int getWidth() {
