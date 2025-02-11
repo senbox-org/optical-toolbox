@@ -21,13 +21,13 @@ class GdalGeoTiffImageReader extends EnmapImageReader {
         this.product = gtProduct;
     }
 
-    public static EnmapImageReader createImageReader(VirtualDir dataDir, String fileName) throws IOException {
+    public static EnmapImageReader createImageReader(VirtualDir dataDir, String fileName, boolean isNonCompliantProduct) throws IOException {
         try {
             Iterator<ProductReaderPlugIn> readerPlugIns =
                     ProductIOPlugInManager.getInstance().getReaderPlugIns(GDAL_FORMAT_NAME);
             if (readerPlugIns.hasNext()) {
                 ProductReader reader = readerPlugIns.next().createReaderInstance();
-                String relativePath = getRelativePath(dataDir, fileName);
+                String relativePath = getRelativePath(dataDir, fileName, isNonCompliantProduct);
                 Product product = reader.readProductNodes(dataDir.getFile(relativePath), null);
                 return new GdalGeoTiffImageReader(product);
             } else {
