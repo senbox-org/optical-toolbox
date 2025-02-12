@@ -1055,4 +1055,277 @@ public class SeadasReaderDefaults {
     public static final boolean PROPERTY_RESTORE_DEFAULTS_DEFAULT = false;
 
 
+
+
+    public static String getEnabledKey(MaskType maskType) {
+        switch (maskType) {
+            case WATER: return SeadasReaderDefaults.PROPERTY_MASK_Water_ENABLED_KEY;
+            case SPARE: return SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_KEY;
+            case COASTZ: return SeadasReaderDefaults.PROPERTY_MASK_COASTZ_ENABLED_KEY;
+            case STRAYLIGHT: return SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_ENABLED_KEY;
+            case CLDICE: return SeadasReaderDefaults.PROPERTY_MASK_CLDICE_ENABLED_KEY;
+            case COCCOLITH: return SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_ENABLED_KEY;
+            case TURBIDW: return SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_ENABLED_KEY;
+            case HISOLZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_ENABLED_KEY;
+            case LOWLW: return SeadasReaderDefaults.PROPERTY_MASK_LOWLW_ENABLED_KEY;
+            case CHLFAIL: return SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_ENABLED_KEY;
+            case NAVWARN: return SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_ENABLED_KEY;
+            case ABSAER: return SeadasReaderDefaults.PROPERTY_MASK_ABSAER_ENABLED_KEY;
+            case MAXAERITER: return SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_ENABLED_KEY;
+            case MODGLINT: return SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_ENABLED_KEY;
+            case CHLWARN: return SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_ENABLED_KEY;
+            case ATMWARN: return SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_ENABLED_KEY;
+            case SEAICE: return SeadasReaderDefaults.PROPERTY_MASK_SEAICE_ENABLED_KEY;
+            case NAVFAIL: return SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_ENABLED_KEY;
+            case FILTER: return SeadasReaderDefaults.PROPERTY_MASK_FILTER_ENABLED_KEY;
+            case BOWTIEDEL: return SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_ENABLED_KEY;
+            case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_ENABLED_KEY;
+            case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_ENABLED_KEY;
+            case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_KEY;
+            case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_ENABLED_KEY;
+            case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_ENABLED_KEY;
+            case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_ENABLED_KEY;
+            case PRODWARN: return SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_ENABLED_KEY;
+            case LAND: return SeadasReaderDefaults.PROPERTY_MASK_LAND_ENABLED_KEY;
+            case ATMFAIL: return SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_ENABLED_KEY;
+            case COMPOSITE1_INCLUDE: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_INCLUDE_KEY;
+            case COMPOSITE1: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_ENABLED_KEY;
+            case COMPOSITE2_INCLUDE: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_INCLUDE_KEY;
+            case COMPOSITE2: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_ENABLED_KEY;
+            case COMPOSITE3_INCLUDE: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_INCLUDE_KEY;
+            case COMPOSITE3: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_ENABLED_KEY;
+            default: throw new IllegalArgumentException("Unknown MaskType: " + maskType);
+        }
+    }
+
+    public static String getColorKey(MaskType maskType) {
+        switch (maskType) {
+            case WATER: return SeadasReaderDefaults.PROPERTY_MASK_Water_COLOR_KEY;
+            case SPARE: return SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_KEY;
+            case COASTZ: return SeadasReaderDefaults.PROPERTY_MASK_COASTZ_COLOR_KEY;
+            case STRAYLIGHT: return SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_COLOR_KEY;
+            case CLDICE: return SeadasReaderDefaults.PROPERTY_MASK_CLDICE_COLOR_KEY;
+            case COCCOLITH: return SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_COLOR_KEY;
+            case TURBIDW: return SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_COLOR_KEY;
+            case HISOLZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_COLOR_KEY;
+            case LOWLW: return SeadasReaderDefaults.PROPERTY_MASK_LOWLW_COLOR_KEY;
+            case CHLFAIL: return SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_COLOR_KEY;
+            case NAVWARN: return SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_COLOR_KEY;
+            case ABSAER: return SeadasReaderDefaults.PROPERTY_MASK_ABSAER_COLOR_KEY;
+            case MAXAERITER: return SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_COLOR_KEY;
+            case MODGLINT: return SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_COLOR_KEY;
+            case CHLWARN: return SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_COLOR_KEY;
+            case ATMWARN: return SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_COLOR_KEY;
+            case SEAICE: return SeadasReaderDefaults.PROPERTY_MASK_SEAICE_COLOR_KEY;
+            case NAVFAIL: return SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_COLOR_KEY;
+            case FILTER: return SeadasReaderDefaults.PROPERTY_MASK_FILTER_COLOR_KEY;
+            case BOWTIEDEL: return SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_COLOR_KEY;
+            case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_COLOR_KEY;
+            case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_KEY;
+            case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_KEY;
+            case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_COLOR_KEY;
+            case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_COLOR_KEY;
+            case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_COLOR_KEY;
+            case PRODWARN: return SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_COLOR_KEY;
+            case LAND: return SeadasReaderDefaults.PROPERTY_MASK_LAND_COLOR_KEY;
+            case ATMFAIL: return SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_COLOR_KEY;
+            case COMPOSITE1: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_COLOR_KEY;
+            case COMPOSITE2: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_COLOR_KEY;
+            case COMPOSITE3: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_COLOR_KEY;
+            default: throw new IllegalArgumentException("Unknown MaskType: " + maskType);
+        }
+    }
+
+    public static String getTransparencyKey(MaskType maskType) {
+        switch (maskType) {
+            case WATER: return SeadasReaderDefaults.PROPERTY_MASK_Water_TRANSPARENCY_KEY;
+            case SPARE: return SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_KEY;
+            case COASTZ: return SeadasReaderDefaults.PROPERTY_MASK_COASTZ_TRANSPARENCY_KEY;
+            case STRAYLIGHT: return SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_TRANSPARENCY_KEY;
+            case CLDICE: return SeadasReaderDefaults.PROPERTY_MASK_CLDICE_TRANSPARENCY_KEY;
+            case COCCOLITH: return SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_TRANSPARENCY_KEY;
+            case TURBIDW: return SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_TRANSPARENCY_KEY;
+            case HISOLZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_TRANSPARENCY_KEY;
+            case LOWLW: return SeadasReaderDefaults.PROPERTY_MASK_LOWLW_TRANSPARENCY_KEY;
+            case CHLFAIL: return SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_TRANSPARENCY_KEY;
+            case NAVWARN: return SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_TRANSPARENCY_KEY;
+            case ABSAER: return SeadasReaderDefaults.PROPERTY_MASK_ABSAER_TRANSPARENCY_KEY;
+            case MAXAERITER: return SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_TRANSPARENCY_KEY;
+            case MODGLINT: return SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_TRANSPARENCY_KEY;
+            case CHLWARN: return SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_TRANSPARENCY_KEY;
+            case ATMWARN: return SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_TRANSPARENCY_KEY;
+            case SEAICE: return SeadasReaderDefaults.PROPERTY_MASK_SEAICE_TRANSPARENCY_KEY;
+            case NAVFAIL: return SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_TRANSPARENCY_KEY;
+            case FILTER: return SeadasReaderDefaults.PROPERTY_MASK_FILTER_TRANSPARENCY_KEY;
+            case BOWTIEDEL: return SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_TRANSPARENCY_KEY;
+            case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_TRANSPARENCY_KEY;
+            case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_KEY;
+            case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_KEY;
+            case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_TRANSPARENCY_KEY;
+            case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_TRANSPARENCY_KEY;
+            case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_TRANSPARENCY_KEY;
+            case PRODWARN: return SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_TRANSPARENCY_KEY;
+            case LAND: return SeadasReaderDefaults.PROPERTY_MASK_LAND_TRANSPARENCY_KEY;
+            case ATMFAIL: return SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_TRANSPARENCY_KEY;
+            case COMPOSITE1: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_TRANSPARENCY_KEY;
+            case COMPOSITE2: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_TRANSPARENCY_KEY;
+            case COMPOSITE3: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_TRANSPARENCY_KEY;
+            default: throw new IllegalArgumentException("Unknown MaskType: " + maskType);
+        }
+    }
+
+
+
+    public static boolean getDefaultBool(MaskType maskType) {
+        switch (maskType) {
+            case WATER: return SeadasReaderDefaults.PROPERTY_MASK_Water_ENABLED_DEFAULT;
+            case SPARE: return SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_DEFAULT;
+            case COASTZ: return SeadasReaderDefaults.PROPERTY_MASK_COASTZ_ENABLED_DEFAULT;
+            case STRAYLIGHT: return SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_ENABLED_DEFAULT;
+            case CLDICE: return SeadasReaderDefaults.PROPERTY_MASK_CLDICE_ENABLED_DEFAULT;
+            case COCCOLITH: return SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_ENABLED_DEFAULT;
+            case TURBIDW: return SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_ENABLED_DEFAULT;
+            case HISOLZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_ENABLED_DEFAULT;
+            case LOWLW: return SeadasReaderDefaults.PROPERTY_MASK_LOWLW_ENABLED_DEFAULT;
+            case CHLFAIL: return SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_ENABLED_DEFAULT;
+            case NAVWARN: return SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_ENABLED_DEFAULT;
+            case ABSAER: return SeadasReaderDefaults.PROPERTY_MASK_ABSAER_ENABLED_DEFAULT;
+            case MAXAERITER: return SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_ENABLED_DEFAULT;
+            case MODGLINT: return SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_ENABLED_DEFAULT;
+            case CHLWARN: return SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_ENABLED_DEFAULT;
+            case ATMWARN: return SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_ENABLED_DEFAULT;
+            case SEAICE: return SeadasReaderDefaults.PROPERTY_MASK_SEAICE_ENABLED_DEFAULT;
+            case NAVFAIL: return SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_ENABLED_DEFAULT;
+            case FILTER: return SeadasReaderDefaults.PROPERTY_MASK_FILTER_ENABLED_DEFAULT;
+            case BOWTIEDEL: return SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_ENABLED_DEFAULT;
+            case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_ENABLED_DEFAULT;
+            case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_ENABLED_DEFAULT;
+            case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_DEFAULT;
+            case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_ENABLED_DEFAULT;
+            case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_ENABLED_DEFAULT;
+            case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_ENABLED_DEFAULT;
+            case PRODWARN: return SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_ENABLED_DEFAULT;
+            case LAND: return SeadasReaderDefaults.PROPERTY_MASK_LAND_ENABLED_DEFAULT;
+            case ATMFAIL: return SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_ENABLED_DEFAULT;
+            case COMPOSITE1_INCLUDE: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_INCLUDE_DEFAULT;
+            case COMPOSITE1: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_ENABLED_DEFAULT;
+            case COMPOSITE2_INCLUDE: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_INCLUDE_DEFAULT;
+            case COMPOSITE2: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_ENABLED_DEFAULT;
+            case COMPOSITE3: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_ENABLED_DEFAULT;
+            case COMPOSITE3_INCLUDE: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_INCLUDE_DEFAULT;
+            default: return false;
+        }
+    }
+
+    public static Color getDefaultColor(MaskType maskType) {
+        switch (maskType) {
+            case WATER: return SeadasReaderDefaults.PROPERTY_MASK_Water_COLOR_DEFAULT;
+            case SPARE: return SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_DEFAULT;
+            case COASTZ: return SeadasReaderDefaults.PROPERTY_MASK_COASTZ_COLOR_DEFAULT;
+            case STRAYLIGHT: return SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_COLOR_DEFAULT;
+            case CLDICE: return SeadasReaderDefaults.PROPERTY_MASK_CLDICE_COLOR_DEFAULT;
+            case COCCOLITH: return SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_COLOR_DEFAULT;
+            case TURBIDW: return SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_COLOR_DEFAULT;
+            case HISOLZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT;
+            case LOWLW: return SeadasReaderDefaults.PROPERTY_MASK_LOWLW_COLOR_DEFAULT;
+            case CHLFAIL: return SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_COLOR_DEFAULT;
+            case NAVWARN: return SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_COLOR_DEFAULT;
+            case ABSAER: return SeadasReaderDefaults.PROPERTY_MASK_ABSAER_COLOR_DEFAULT;
+            case MAXAERITER: return SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_COLOR_DEFAULT;
+            case MODGLINT: return SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_COLOR_DEFAULT;
+            case CHLWARN: return SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_COLOR_DEFAULT;
+            case ATMWARN: return SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_COLOR_DEFAULT;
+            case SEAICE: return SeadasReaderDefaults.PROPERTY_MASK_SEAICE_COLOR_DEFAULT;
+            case NAVFAIL: return SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_COLOR_DEFAULT;
+            case FILTER: return SeadasReaderDefaults.PROPERTY_MASK_FILTER_COLOR_DEFAULT;
+            case BOWTIEDEL: return SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_COLOR_DEFAULT;
+            case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_COLOR_DEFAULT;
+            case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_DEFAULT;
+            case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_DEFAULT;
+            case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_COLOR_DEFAULT;
+            case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_COLOR_DEFAULT;
+            case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_COLOR_DEFAULT;
+            case PRODWARN: return SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_COLOR_DEFAULT;
+            case LAND: return SeadasReaderDefaults.PROPERTY_MASK_LAND_COLOR_DEFAULT;
+            case ATMFAIL: return SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_COLOR_DEFAULT;
+            case COMPOSITE1: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_COLOR_DEFAULT;
+            case COMPOSITE2: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_COLOR_DEFAULT;
+            case COMPOSITE3: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_COLOR_DEFAULT;
+            default: return Color.BLACK;
+        }
+    }
+
+    public static double getDefaultTransparency(MaskType maskType) {
+        switch (maskType) {
+            case WATER: return SeadasReaderDefaults.PROPERTY_MASK_Water_TRANSPARENCY_DEFAULT;
+            case SPARE: return SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_DEFAULT;
+            case COASTZ: return SeadasReaderDefaults.PROPERTY_MASK_COASTZ_TRANSPARENCY_DEFAULT;
+            case STRAYLIGHT: return SeadasReaderDefaults.PROPERTY_MASK_STRAYLIGHT_TRANSPARENCY_DEFAULT;
+            case CLDICE: return SeadasReaderDefaults.PROPERTY_MASK_CLDICE_TRANSPARENCY_DEFAULT;
+            case COCCOLITH: return SeadasReaderDefaults.PROPERTY_MASK_COCCOLITH_TRANSPARENCY_DEFAULT;
+            case TURBIDW: return SeadasReaderDefaults.PROPERTY_MASK_TURBIDW_TRANSPARENCY_DEFAULT;
+            case HISOLZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISOLZEN_TRANSPARENCY_DEFAULT;
+            case LOWLW: return SeadasReaderDefaults.PROPERTY_MASK_LOWLW_TRANSPARENCY_DEFAULT;
+            case CHLFAIL: return SeadasReaderDefaults.PROPERTY_MASK_CHLFAIL_TRANSPARENCY_DEFAULT;
+            case NAVWARN: return SeadasReaderDefaults.PROPERTY_MASK_NAVWARN_TRANSPARENCY_DEFAULT;
+            case ABSAER: return SeadasReaderDefaults.PROPERTY_MASK_ABSAER_TRANSPARENCY_DEFAULT;
+            case MAXAERITER: return SeadasReaderDefaults.PROPERTY_MASK_MAXAERITER_TRANSPARENCY_DEFAULT;
+            case MODGLINT: return SeadasReaderDefaults.PROPERTY_MASK_MODGLINT_TRANSPARENCY_DEFAULT;
+            case CHLWARN: return SeadasReaderDefaults.PROPERTY_MASK_CHLWARN_TRANSPARENCY_DEFAULT;
+            case ATMWARN: return SeadasReaderDefaults.PROPERTY_MASK_ATMWARN_TRANSPARENCY_DEFAULT;
+            case SEAICE: return SeadasReaderDefaults.PROPERTY_MASK_SEAICE_TRANSPARENCY_DEFAULT;
+            case NAVFAIL: return SeadasReaderDefaults.PROPERTY_MASK_NAVFAIL_TRANSPARENCY_DEFAULT;
+            case FILTER: return SeadasReaderDefaults.PROPERTY_MASK_FILTER_TRANSPARENCY_DEFAULT;
+            case BOWTIEDEL: return SeadasReaderDefaults.PROPERTY_MASK_BOWTIEDEL_TRANSPARENCY_DEFAULT;
+            case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_TRANSPARENCY_DEFAULT;
+            case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_DEFAULT;
+            case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_DEFAULT;
+            case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_TRANSPARENCY_DEFAULT;
+            case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_TRANSPARENCY_DEFAULT;
+            case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT;
+            case PRODWARN: return SeadasReaderDefaults.PROPERTY_MASK_PRODWARN_TRANSPARENCY_DEFAULT;
+            case LAND: return SeadasReaderDefaults.PROPERTY_MASK_LAND_TRANSPARENCY_DEFAULT;
+            case ATMFAIL: return SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_TRANSPARENCY_DEFAULT;
+            case COMPOSITE1: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_TRANSPARENCY_DEFAULT;
+            case COMPOSITE2: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_TRANSPARENCY_DEFAULT;
+            case COMPOSITE3: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_TRANSPARENCY_DEFAULT;
+            default: return 0.0;
+        }
+    }
+
+    public static String getDefaultStrings(MaskType maskType) {
+        switch (maskType) {
+            case COMPOSITE1_NAME: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_DEFAULT;
+            case COMPOSITE1_EXPRESSION: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAGS_DEFAULT;
+            case COMPOSITE2_NAME: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_DEFAULT;
+            case COMPOSITE2_EXPRESSION: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAGS_DEFAULT;
+            case COMPOSITE3_NAME: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_DEFAULT;
+            case COMPOSITE3_EXPRESSION: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAGS_DEFAULT;
+            default: return null;
+        }
+    }
+
+    public static String getStringsKey(MaskType maskType) {
+        switch (maskType) {
+            case COMPOSITE1_NAME: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_KEY;
+            case COMPOSITE1_EXPRESSION: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAGS_KEY;
+            case COMPOSITE2_NAME: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_KEY;
+            case COMPOSITE2_EXPRESSION: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAGS_KEY;
+            case COMPOSITE3_NAME: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_KEY;
+            case COMPOSITE3_EXPRESSION: return SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAGS_KEY;
+            default: return null;
+        }
+    }
+
+
+
+    public enum MaskType {
+        WATER, SPARE, COASTZ, STRAYLIGHT, CLDICE, COCCOLITH, TURBIDW,
+        HISOLZEN, LOWLW, CHLFAIL, NAVWARN, ABSAER, MAXAERITER, MODGLINT,
+        CHLWARN, ATMWARN, SEAICE, NAVFAIL, FILTER, BOWTIEDEL, HIPOL, PRODFAIL, GEOREGION,
+        HIGLINT, HILT, HISATZEN, PRODWARN, LAND, ATMFAIL,
+        COMPOSITE1, COMPOSITE1_INCLUDE, COMPOSITE1_NAME, COMPOSITE1_EXPRESSION,
+        COMPOSITE2, COMPOSITE2_INCLUDE, COMPOSITE2_NAME, COMPOSITE2_EXPRESSION,
+        COMPOSITE3, COMPOSITE3_INCLUDE, COMPOSITE3_NAME, COMPOSITE3_EXPRESSION;
+    }
 }

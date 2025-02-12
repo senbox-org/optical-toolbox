@@ -18,7 +18,10 @@ package gov.nasa.gsfc.seadas.dataio;
 import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.PropertyMap;
+import org.esa.snap.core.util.ResourceInstaller;
+import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.CsvReader;
 import org.esa.snap.rcp.SnapApp;
 import ucar.ma2.Array;
@@ -27,10 +30,14 @@ import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Section;
 import ucar.nc2.*;
 
-import java.awt.Color;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
@@ -47,6 +54,7 @@ import static java.lang.System.arraycopy;
  * @since
  */
 //APR2021 - Bing Yang - added capability to read 3d products
+    //AUG 2024 - Daniel Knowles - added PACE OCI actual center wavelengths lookup in resources
 
 
 public abstract class SeadasFileReader {
@@ -575,10 +583,7 @@ public abstract class SeadasFileReader {
                 if (metadataElementBand != null) {
                     MetadataElement metadataElementL2Flags = metadataElementBand.getElement("l2_flags");
                     if (metadataElementL2Flags != null) {
-                        flagMeanings =metadataElementL2Flags.getAttribute("FLAG_MEANINGS").getData().getElemString();
-                        if (flagMeanings != null) {
-                            flagNames = flagMeanings.split(" ");
-                        }
+                        setFlagMeaningsAndNames(product, metadataElementL2Flags);
                     }
                 }
             } catch (Exception ignore) {
@@ -1170,11 +1175,24 @@ public abstract class SeadasFileReader {
         }
     }
 
-
-
-
-
-
+    private void setFlagMeaningsAndNames(Product product, MetadataElement metadataElementL2Flags) {
+        final MetadataAttribute flagMeaningsAttribute = metadataElementL2Flags.getAttribute("FLAG_MEANINGS");
+        if (flagMeaningsAttribute != null) {
+            flagMeanings = flagMeaningsAttribute.getData().getElemString();
+            flagNames = flagMeanings.split(" ");
+        } else {
+            final MetadataElement global = product.getMetadataRoot().getElement("Global_Attributes");
+            if (global != null) {
+                final MetadataAttribute maskNamesAttribute = global.getAttribute("Mask_Names");
+                if (maskNamesAttribute != null) {
+                    flagMeanings = maskNamesAttribute.getData().getElemString();
+                    if (flagMeanings != null) {
+                        flagNames = flagMeanings.split(",");
+                    }
+                }
+            }
+        }
+    }
 
 
     private Mask createMask(Product product, String maskName, Color maskColor, double maskTransparency) {
@@ -1419,6 +1437,58 @@ public abstract class SeadasFileReader {
     }
 
     protected void setSpectralBand(Product product) {
+
+        HashMap<String, String> ociWavelengths = new HashMap<String, String>();
+
+        String sensor = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
+        String platform = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
+        String processing_level = ProductUtils.getMetaData(product, "processing_level");
+
+        String SENSOR_INFO = "sensor_info";
+        String AUXDATA = "auxdata";
+        String OCI_BANDPASS_CSV = "oci_bandpass.csv";
+
+        if (SeadasProductReader.Mission.OCI.toString().equals(sensor)) {
+
+            File sensorInfoAuxDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO).toFile();
+            File ociBandPassFile = new File(sensorInfoAuxDir, OCI_BANDPASS_CSV);
+
+            if (ociBandPassFile == null ||  !ociBandPassFile.exists()) {
+                try {
+                    Path auxdataDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO);
+
+                    Path sourceBasePath = ResourceInstaller.findModuleCodeBasePath(SeadasFileReader.class);
+                    Path auxdirSource = sourceBasePath.resolve(AUXDATA);
+                    Path sourceDirPath = auxdirSource.resolve(SENSOR_INFO);
+
+                    final ResourceInstaller resourceInstaller = new ResourceInstaller(sourceDirPath, auxdataDir);
+
+                    resourceInstaller.install(".*." + OCI_BANDPASS_CSV, ProgressMonitor.NULL);
+
+                } catch (IOException e) {
+                    SnapApp.getDefault().handleError("Unable to install " + AUXDATA + "/" + SENSOR_INFO + "/" + OCI_BANDPASS_CSV, e);
+                }
+            }
+
+            if (sensorInfoAuxDir != null && sensorInfoAuxDir.exists()) {
+
+                if (ociBandPassFile != null && ociBandPassFile.exists()) {
+
+                    try (BufferedReader br = new BufferedReader(new FileReader(ociBandPassFile))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            String[] values = line.split(",");
+                            if (values != null && values.length > 3) {
+                                ociWavelengths.put(values[1].trim(), values[2].trim());
+                            }
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+        }
+
         int spectralBandIndex = 0;
         for (String name : product.getBandNames()) {
             Band band = product.getBandAt(product.getBandIndex(name));
@@ -1429,11 +1499,28 @@ public abstract class SeadasFileReader {
                 if (!wvlstr.matches("^\\d{3,}")) {
                     wvlstr = parts[parts.length - 2].trim();
                 }
+
+                if (SeadasProductReader.Mission.OCI.toString().equals(sensor) &&
+                        (SeadasProductReader.ProcessingLevel.L2.toString().equals(processing_level) ||
+                                SeadasProductReader.ProcessingLevel.L3m.toString().equals(processing_level))) {
+                    wvlstr = getPaceOCIWavelengths(wvlstr, ociWavelengths);
+                }
+
                 final float wavelength = Float.parseFloat(wvlstr);
                 band.setSpectralWavelength(wavelength);
                 band.setSpectralBandIndex(spectralBandIndex++);
             }
         }
+    }
+
+    protected String getPaceOCIWavelengths(String wvlstr, HashMap<String, String> ociWavelengths) {
+        String wvlstr_oci = ociWavelengths.get(wvlstr);
+
+        if (wvlstr_oci != null && wvlstr_oci.length() > 0) {
+            wvlstr = wvlstr_oci;
+        }
+
+        return wvlstr;
     }
 
     protected Map<Band, Variable> add3DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
