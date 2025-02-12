@@ -18,9 +18,9 @@ class JaiGeoTiffImageReader extends EnmapImageReader {
         this.geoTiffImageReader = geoTiffImageReader;
     }
 
-    public static EnmapImageReader createImageReader(VirtualDir dataDir, String fileName) throws IOException {
+    public static EnmapImageReader createImageReader(VirtualDir dataDir, String fileName, boolean isNonCompliantProduct) throws IOException {
         try {
-            return new JaiGeoTiffImageReader(new GeoTiffImageReader(getInputStream(dataDir, fileName), () -> {
+            return new JaiGeoTiffImageReader(new GeoTiffImageReader(getInputStream(dataDir, fileName, isNonCompliantProduct), () -> {
             }));
         } catch (IllegalStateException ise) {
             throw new IOException("Could not create spectral data reader.", ise);

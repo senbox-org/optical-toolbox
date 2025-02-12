@@ -40,6 +40,8 @@ public abstract class EnmapMetadata {
     private final Document doc;
     String NOT_AVAILABLE = "NA";
 
+    private boolean nonCompliantProduct = false;
+
     protected EnmapMetadata(Document doc, XPath xpath) {
         this.xpath = xpath;
         this.doc = doc;
@@ -661,6 +663,20 @@ public abstract class EnmapMetadata {
         return null;
     }
 
+    protected String getCorrectedFileName(String key, NodeList nodeSet) throws IOException {
+        String fileName = getFileName(key, nodeSet);
+
+        if (fileName == null) {
+            return null;
+        }
+
+        if (this.isNonCompliantProduct() && fileName.matches(EnmapFileUtils.L2A_BASEFILENAME + "-.*")) {
+            return fileName.replaceFirst(EnmapFileUtils.L2A_BASEFILENAME + "-", "");
+        }
+
+        return fileName;
+    }
+
     private int getNodeContentAsInt(String path) throws IOException {
         return Integer.parseInt(getNodeContent(path));
     }
@@ -671,6 +687,14 @@ public abstract class EnmapMetadata {
 
     private double getAngleCenter(String alongOffNadirAngle) throws IOException {
         return Double.parseDouble(getNodeContent("/level_X/specific/" + alongOffNadirAngle + "/center"));
+    }
+
+    public boolean isNonCompliantProduct() {
+        return this.nonCompliantProduct;
+    }
+
+    public void setNonCompliantProduct(boolean nonCompliantProduct) {
+        this.nonCompliantProduct = nonCompliantProduct;
     }
 
     public enum PROCESSING_LEVEL {L1B, L1C, L2A}

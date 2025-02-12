@@ -51,6 +51,13 @@ public class EnmapProductReaderPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-3904")
+    public void testGetDecodeQualification_l2a_noPrefix_zip() throws URISyntaxException {
+        File inputZip = new File(Objects.requireNonNull(getClass().getResource("enmap_L2A_noPrefix.zip")).toURI());
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(inputZip));
+    }
+
+    @Test
     @STTM("SNAP-3627")
     public void testGetDecodeQualification_l1c_gtif_tar() throws URISyntaxException {
         File inputZip = new File(Objects.requireNonNull(getClass().getResource("dims_op_oc_oc-en_701293165_1.tar.gz")).toURI());
@@ -72,6 +79,13 @@ public class EnmapProductReaderPlugInTest {
     @Test
     public void testGetDecodeQualification_l2a_gtif_folder() throws URISyntaxException {
         File inputFolder = new File(Objects.requireNonNull(getClass().getResource("enmap_L2A_gtif_qualification/ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-METADATA.XML")).toURI());
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(inputFolder));
+    }
+
+    @Test
+    @STTM("SNAP-3904")
+    public void testGetDecodeQualification_l2a_noPrefix_folder() throws URISyntaxException {
+        File inputFolder = new File(Objects.requireNonNull(getClass().getResource("enmap_L2A_noPrefix/METADATA.XML")).toURI());
         assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(inputFolder));
     }
 

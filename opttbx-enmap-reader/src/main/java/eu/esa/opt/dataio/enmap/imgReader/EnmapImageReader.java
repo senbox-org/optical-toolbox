@@ -59,9 +59,9 @@ public abstract class EnmapImageReader {
             boolean useJai = preferences.getBoolean(ENMAP_GEOTIFF_USE_JAI, false);
             Map<String, String> fileNameMap = meta.getFileNameMap();
             if (useJai) {
-                return JaiGeoTiffImageReader.createImageReader(dataDir, fileNameMap.get(imageKey));
+                return JaiGeoTiffImageReader.createImageReader(dataDir, fileNameMap.get(imageKey), meta.isNonCompliantProduct());
             } else {
-                return GdalGeoTiffImageReader.createImageReader(dataDir, fileNameMap.get(imageKey));
+                return GdalGeoTiffImageReader.createImageReader(dataDir, fileNameMap.get(imageKey), meta.isNonCompliantProduct());
 
             }
         } else {
