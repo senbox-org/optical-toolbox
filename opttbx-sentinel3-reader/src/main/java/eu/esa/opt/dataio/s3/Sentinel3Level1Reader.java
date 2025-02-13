@@ -580,7 +580,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         return geoCoding;
     }
 
-    private void addVariables(Product product) {
+    private void addVariables(Product product) throws IOException {
         for (VariableDescriptor descriptor : variablesMap.values()) {
             // @todo 2 - add band - check for other attributes (unit, description, fill value) tb 2025-12-18
             final int dataType = ProductData.getType(descriptor.getDataType());
@@ -599,6 +599,9 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             if (nameToIndexMap.containsKey(bandKey)) {
                 band.setSpectralBandIndex(nameToIndexMap.get(bandKey));
             }
+
+            Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
+            addSampleCodings(product, band, netCDFVariable, false);
 
             applyCustomCalibration(band);
         }
@@ -639,7 +642,9 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             final int tpRasterWidth = (int) Math.ceil((double) product.getSceneRasterWidth() / subsamplingX);
             final int tpRasterHeight = (int) Math.ceil((double) product.getSceneRasterHeight() / subsamplingY);
 
-            final TiePointGrid tiePointGrid = new TiePointGrid(tiePointName, tpRasterWidth, tpRasterHeight, 0.5, 0.5, subsamplingX, subsamplingY);
+            final TiePointGrid tiePointGrid = new TiePointGrid(tiePointName, tpRasterWidth, tpRasterHeight, 0.0, 0.0, subsamplingX, subsamplingY);
+            tiePointGrid.setDescription(descriptor.getDescription());
+            tiePointGrid.setUnit(descriptor.getUnits());
             product.addTiePointGrid(tiePointGrid);
         }
     }
@@ -819,11 +824,32 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         readData(rasterExtract, destBuffer, descriptor, tpGridName);
     }
 
-    private void readData(RasterExtract rasterExtract, ProductData destBuffer, VariableDescriptor descriptor, String name) throws IOException {
+    private synchronized void readData(RasterExtract rasterExtract, ProductData destBuffer, VariableDescriptor descriptor, String name) throws IOException {
         final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
         final Array rawDataArray = getRawData(name, netCDFVariable);
 
-        extractSubset(rasterExtract, destBuffer, rawDataArray, netCDFVariable);
+        if (descriptor.getVariableType() == SPECIAL) {
+            // create line buffer
+            final ProductData lineBuffer = ProductData.createInstance(new float[rasterExtract.getWidth()]);
+            // read line
+            extractSubset(rasterExtract, lineBuffer, rawDataArray, netCDFVariable);
+            // duplicate data over Y dimension to destination buffer
+            final float[] targetBuffer = (float[]) destBuffer.getElems();
+            final float[] lineBufferElems = (float[]) lineBuffer.getElems();
+            final int lineLenght = lineBufferElems.length;
+            int offset = 0;
+            while ((offset + lineLenght) < targetBuffer.length) {
+                int remaining = targetBuffer.length - (offset + lineLenght);
+                int toCopy = lineLenght;
+                if (remaining < lineLenght) {
+                    toCopy = remaining;
+                }
+                System.arraycopy(lineBufferElems, 0, targetBuffer, offset, toCopy);
+                offset += lineLenght;
+            }
+        } else {
+            extractSubset(rasterExtract, destBuffer, rawDataArray, netCDFVariable);
+        }
     }
 
     private Variable getNetCDFVariable(VariableDescriptor descriptor, String name) throws IOException {
@@ -909,6 +935,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private Path getInputPath() {
         return Paths.get(getInput().toString());
     }
+
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MetadataProvider

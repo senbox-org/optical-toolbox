@@ -33,6 +33,9 @@ public class Sentinel3Level1ReaderPlugInTest {
 
         path = createManifestFilePath("OL", "1", "EFR", "");
         assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
+
+        path = "sensors_platforms/SENTINEL-3/olci/L1/S3A_OL_1_EFR____20180407T004637_20180407T004937_20180408T065235_0180_029_373_2520_MAR_O_NT_002.SEN3/xfdumanifest.xml";
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
     }
 
     @Test
