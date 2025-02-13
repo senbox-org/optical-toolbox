@@ -16,12 +16,12 @@ public class VariableTypeTest {
         assertEquals(VariableType.FLAG, VariableType.fromChar('f'));
         assertEquals(VariableType.TIE_POINT, VariableType.fromChar('t'));
         assertEquals(VariableType.METADATA, VariableType.fromChar('m'));
+        assertEquals(VariableType.SPECIAL, VariableType.fromChar('s'));
 
         try {
             VariableType.fromChar('K');
             fail("RuntimeException expected");
         } catch (RuntimeException expected) {
         }
-
     }
 }

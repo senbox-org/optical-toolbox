@@ -7,6 +7,8 @@ import static org.junit.Assert.assertEquals;
 
 public class VariableDescriptorTest {
 
+
+
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testConstruction() {
@@ -21,5 +23,17 @@ public class VariableDescriptorTest {
         assertEquals("", descriptor.getDescription());
         assertEquals("", descriptor.getTpXSubsamplingXPath());
         assertEquals("", descriptor.getTpYSubsamplingXPath());
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testGetVaraibleType() {
+        final VariableDescriptor descriptor = new VariableDescriptor();
+
+        descriptor.setType('v');
+        assertEquals(VariableType.VARIABLE, descriptor.getVariableType());
+
+        descriptor.setType('m');
+        assertEquals(VariableType.METADATA, descriptor.getVariableType());
     }
 }

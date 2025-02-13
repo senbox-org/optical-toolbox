@@ -4,7 +4,8 @@ public enum VariableType {
     VARIABLE,
     FLAG,
     TIE_POINT,
-    METADATA;
+    METADATA,
+    SPECIAL;
 
     public static VariableType fromChar(char type){
         return switch (type) {
@@ -12,6 +13,7 @@ public enum VariableType {
             case 'f' -> FLAG;
             case 't' -> TIE_POINT;
             case 'm' -> METADATA;
+            case 's' -> SPECIAL;
             default -> throw new RuntimeException("not implemented: " + type);
         };
     }

@@ -55,6 +55,10 @@ public class VariableDescriptor {
         return type;
     }
 
+    public VariableType getVariableType() {
+        return VariableType.fromChar(type);
+    }
+
     public void setType(char type) {
         this.type = type;
     }

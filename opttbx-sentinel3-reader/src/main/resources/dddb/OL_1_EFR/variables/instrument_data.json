@@ -2,6 +2,7 @@
   {
     "name": "FWHM",
     "dataType": "float32",
+    "type": "s",
     "width": 3700,
     "height": 21,
     "units": "nm",
@@ -24,6 +25,7 @@
   {
     "name": "lambda0",
     "dataType": "float32",
+    "type": "s",
     "width": 3700,
     "height": 21,
     "units": "nm",

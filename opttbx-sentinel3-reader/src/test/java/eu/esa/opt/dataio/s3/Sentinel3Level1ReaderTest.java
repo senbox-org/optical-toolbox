@@ -13,7 +13,7 @@ import ucar.ma2.DataType;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 @SuppressWarnings("AnonymousInnerClass")
 public class Sentinel3Level1ReaderTest {
@@ -192,5 +192,39 @@ public class Sentinel3Level1ReaderTest {
         Sentinel3Level1Reader.assignResultData(productDataInt, rawArray);
         assertEquals(13, productDataInt.getElemIntAt(1));
         assertEquals(15, productDataInt.getElemIntAt(3));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testGetLayerName() throws IOException {
+        assertEquals("FWHM_band_11", Sentinel3Level1Reader.getLayerName("FWHM", 11));
+        assertEquals("Gandasum_band_6", Sentinel3Level1Reader.getLayerName("Gandasum", 6));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testIsLayerName() throws IOException {
+        assertTrue(Sentinel3Level1Reader.isLayerName("FWHM_band_11"));
+        assertTrue(Sentinel3Level1Reader.isLayerName("Gandasum_band_6"));
+
+        assertFalse(Sentinel3Level1Reader.isLayerName("OaRadiance"));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testVariableNameFromLayerName() throws IOException {
+        assertEquals("FWHM", Sentinel3Level1Reader.getVariableNameFromLayerName("FWHM_band_11"));
+        assertEquals("Gandasum", Sentinel3Level1Reader.getVariableNameFromLayerName("Gandasum_band_6"));
+
+        assertEquals("Heffalump", Sentinel3Level1Reader.getVariableNameFromLayerName("Heffalump"));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testLayerIndexFromLayerName() throws IOException {
+        assertEquals(11, Sentinel3Level1Reader.getLayerIndexFromLayerName("FWHM_band_11"));
+        assertEquals(6, Sentinel3Level1Reader.getLayerIndexFromLayerName("Gandasum_band_6"));
+
+        assertEquals(-1, Sentinel3Level1Reader.getLayerIndexFromLayerName("Heffalump"));
     }
 }

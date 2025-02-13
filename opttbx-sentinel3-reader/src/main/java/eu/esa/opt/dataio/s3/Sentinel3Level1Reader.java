@@ -9,13 +9,13 @@ import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
-import eu.esa.opt.dataio.s3.util.S3Util;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
+import org.esa.snap.dataio.netcdf.util.Constants;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
+import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -43,22 +44,28 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.prefs.Preferences;
 
+import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.util.S3Util.*;
 
 public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider {
 
+    // @todo 1 tb/tb move to OLCI specific class 2025-02-12
     public static final String LON_VAR_NAME = "longitude";
     public static final String LAT_VAR_NAME = "latitude";
     public static final String TP_LON_VAR_NAME = "TP_longitude";
     public static final String TP_LAT_VAR_NAME = "TP_latitude";
 
-
-    // @todo 1 tb/tb add custom calibration support 2025-02-06
+    // @todo 1 tb/tb move to general utilities class 2025-02-12
+    private static final String flag_values = "flag_values";
+    private static final String flag_masks = "flag_masks";
+    private static final String flag_meanings = "flag_meanings";
+    private static final String fillValue = "_FillValue";
 
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
     private final Map<String, VariableDescriptor> metadataMap;
     private final Map<String, VariableDescriptor> variablesMap;
+    private final Map<String, VariableDescriptor> specialsMap;
     private final Map<String, Variable> ncVariablesMap;
     private final Map<String, NetcdfFile> filesMap;
     private final Map<String, Array> dataMap;
@@ -68,12 +75,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private VirtualDir virtualDir;
     private Manifest manifest;
 
-    /**
-     * Constructs a new abstract product reader.
-     *
-     * @param readerPlugIn the reader plug-in which created this reader, can be {@code null} for internal reader
-     *                     implementations
-     */
     protected Sentinel3Level1Reader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         virtualDir = null;
@@ -82,6 +83,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         // the treemap sorts the entries alphanumerically - as these data should be displayed in the SNAP product tree tb 2025-02-04
         variablesMap = new TreeMap<>();
         tiepointMap = new TreeMap<>();
+        specialsMap = new TreeMap<>();
         ncVariablesMap = new HashMap<>();
         metadataMap = new HashMap<>();
         filesMap = new HashMap<>();
@@ -115,7 +117,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             variableDescriptor.setHeight(height);
         }
 
-        if (variableDescriptor.getType() == 't') {
+        if (variableDescriptor.getVariableType() == TIE_POINT) {
             int tpSubsamplingX = variableDescriptor.getTpSubsamplingX();
             int tpSubsamplingY = variableDescriptor.getTpSubsamplingY();
             if (tpSubsamplingX < 0 || tpSubsamplingY < 0) {
@@ -178,6 +180,247 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         return bandName.substring(0, 4);
     }
 
+    // package access for testing only tb 2025-02-12
+    static String getLayerName(String variableFullName, int i) {
+        return variableFullName + "_band_" + i;
+    }
+
+    // package access for testing only tb 2025-02-12
+    static boolean isLayerName(String layerName) {
+        return layerName.contains("_band_");
+    }
+
+    // package access for testing only tb 2025-02-12
+    static int getLayerIndexFromLayerName(String layerName) {
+        String band = "_band_";
+        final int index = layerName.indexOf(band);
+        if (index < 0) {
+            return -1;
+        }
+
+        final String numberString = layerName.substring(index + band.length());
+        return Integer.parseInt(numberString);
+    }
+
+    // package access for testing only tb 2025-02-12
+    static String getVariableNameFromLayerName(String layerName) {
+        int index = layerName.indexOf("_band_");
+        if (index >= 0) {
+            return layerName.substring(0, index);
+        } else {
+            return layerName;
+        }
+    }
+
+    private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
+                                   Attribute sampleMasks, boolean msb) {
+        final String[] meanings = getSampleMeanings(sampleMeanings);
+        String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
+        final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = replaceNonWordCharacters(uniqueNames[i]);
+            switch (sampleMasks.getDataType()) {
+                case BYTE:
+                case UBYTE:
+                    int[] byteValues = {
+                            DataType.unsignedByteToShort(sampleMasks.getNumericValue(i).byteValue()),
+                            DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue())
+                    };
+                    if (byteValues[0] == byteValues[1]) {
+                        sampleCoding.addSample(sampleName, byteValues[0], null);
+                    } else {
+                        sampleCoding.addSamples(sampleName, byteValues, null);
+                    }
+                    break;
+                case SHORT:
+                case USHORT:
+                    int[] shortValues = {
+                            DataType.unsignedShortToInt(sampleMasks.getNumericValue(i).shortValue()),
+                            DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue())
+                    };
+                    if (shortValues[0] == shortValues[1]) {
+                        sampleCoding.addSample(sampleName, shortValues[0], null);
+                    } else {
+                        sampleCoding.addSamples(sampleName, shortValues, null);
+                    }
+                    break;
+                case INT:
+                case UINT:
+                    int[] intValues = {
+                            sampleMasks.getNumericValue(i).intValue(),
+                            sampleValues.getNumericValue(i).intValue()
+                    };
+                    if (intValues[0] == intValues[1]) {
+                        sampleCoding.addSample(sampleName, intValues[0], null);
+                    } else {
+                        sampleCoding.addSamples(sampleName, intValues, null);
+                    }
+                    break;
+                case LONG:
+                case ULONG:
+                    long[] longValues = {
+                            sampleMasks.getNumericValue(i).longValue(),
+                            sampleValues.getNumericValue(i).longValue()
+                    };
+                    if (msb) {
+                        int[] intLongValues =
+                                {(int) (longValues[0] >>> 32), (int) (longValues[1] >>> 32)};
+                        if (longValues[0] > 0) {
+                            if (intLongValues[0] == intLongValues[1]) {
+                                sampleCoding.addSample(sampleName, intLongValues[0], null);
+                            } else {
+                                sampleCoding.addSamples(sampleName, intLongValues, null);
+                            }
+                        }
+                    } else {
+                        int[] intLongValues =
+                                {(int) (longValues[0] & 0x00000000FFFFFFFFL), (int) (longValues[1] & 0x00000000FFFFFFFFL)};
+                        if (intLongValues[0] > 0 || longValues[0] == 0L) {
+                            if (intLongValues[0] == intLongValues[1]) {
+                                sampleCoding.addSample(sampleName, intLongValues[0], null);
+                            } else {
+                                sampleCoding.addSamples(sampleName, intLongValues, null);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
+                                   boolean msb) {
+        final String[] meanings = getSampleMeanings(sampleMeanings);
+        String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
+        final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = replaceNonWordCharacters(uniqueNames[i]);
+            switch (sampleValues.getDataType()) {
+                case BYTE:
+                case UBYTE:
+                    sampleCoding.addSample(sampleName,
+                            DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue()),
+                            null);
+                    break;
+                case SHORT:
+                case USHORT:
+                    sampleCoding.addSample(sampleName,
+                            DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue()), null);
+                    break;
+                case INT:
+                case UINT:
+                    sampleCoding.addSample(sampleName, sampleValues.getNumericValue(i).intValue(), null);
+                    break;
+                case LONG:
+                case ULONG:
+                    final long longValue = sampleValues.getNumericValue(i).longValue();
+                    if (msb) {
+                        long shiftedValue = longValue >>> 32;
+                        if (shiftedValue > 0) {
+                            sampleCoding.addSample(sampleName, (int) shiftedValue, null);
+                        }
+                    } else {
+                        long shiftedValue = longValue & 0x00000000FFFFFFFFL;
+                        if (shiftedValue > 0 || longValue == 0L) {
+                            sampleCoding.addSample(sampleName, (int) shiftedValue, null);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    static String replaceNonWordCharacters(String flagName) {
+        return flagName.replaceAll("\\W+", "_");
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    private static String[] getSampleMeanings(Attribute sampleMeanings) {
+        final int sampleMeaningsCount = sampleMeanings.getLength();
+        if (sampleMeaningsCount == 0) {
+            return new String[0];
+        }
+        if (sampleMeaningsCount > 1) {
+            // handle a common misunderstanding of CF conventions, where flag meanings are stored as array of strings
+            final String[] strings = new String[sampleMeaningsCount];
+            for (int i = 0; i < strings.length; i++) {
+                strings[i] = sampleMeanings.getStringValue(i);
+            }
+            return strings;
+        }
+        return sampleMeanings.getStringValue().split(" ");
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    private static float getSpectralWavelength(Variable variable) {
+        Attribute attribute = variable.findAttribute("wavelength");
+        if (attribute != null) {
+            return getAttributeValue(attribute).floatValue();
+        }
+        return 0f;
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    private static float getSpectralBandwidth(Variable variable) {
+        Attribute attribute = variable.findAttribute("bandwidth");
+        if (attribute != null) {
+            return getAttributeValue(attribute).floatValue();
+        }
+        return 0f;
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    protected static double getScalingFactor(Variable variable) {
+        Attribute attribute = variable.findAttribute(Constants.SCALE_FACTOR_ATT_NAME);
+        if (attribute == null) {
+            attribute = variable.findAttribute(Constants.SLOPE_ATT_NAME);
+        }
+        if (attribute == null) {
+            attribute = variable.findAttribute("scaling_factor");
+        }
+        if (attribute != null) {
+            return getAttributeValue(attribute).doubleValue();
+        }
+        return 1.0;
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    protected static double getAddOffset(Variable variable) {
+        Attribute attribute = variable.findAttribute(Constants.ADD_OFFSET_ATT_NAME);
+        if (attribute == null) {
+            attribute = variable.findAttribute(Constants.INTERCEPT_ATT_NAME);
+        }
+        if (attribute != null) {
+            return getAttributeValue(attribute).doubleValue();
+        }
+        return 0.0;
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    private static Number getAttributeValue(Attribute attribute) {
+        if (attribute.isString()) {
+            String stringValue = attribute.getStringValue();
+            if (stringValue.endsWith("b")) {
+                // Special management for bytes; Can occur in e.g. ASCAT files from EUMETSAT
+                return Byte.parseByte(stringValue.substring(0, stringValue.length() - 1));
+            } else {
+                return Double.parseDouble(stringValue);
+            }
+        } else {
+            return attribute.getNumericValue();
+        }
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    private static int getRasterDataType(Variable variable) {
+        int rasterDataType = DataTypeUtils.getRasterDataType(variable);
+        if (rasterDataType == -1 && variable.getDataType() == DataType.LONG) {
+            rasterDataType = variable.getDataType().isUnsigned() ? ProductData.TYPE_UINT32 : ProductData.TYPE_INT32;
+        }
+        return rasterDataType;
+    }
+
     @Override
     protected Product readProductNodesImpl() throws IOException {
         initalizeInput();
@@ -221,6 +464,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         initializeDDDBDescriptors(manifest, productDescriptor);
         addVariables(product);
         addTiePointGrids(product, manifest);
+        addSpecialBands(product, manifest);
 
         // metadata
         final MetadataElement metadataRoot = product.getMetadataRoot();
@@ -400,6 +644,109 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
     }
 
+    private void addSpecialBands(Product product, Manifest manifest) throws IOException {
+        // @todo 2 tb/tb check if and how to synchronise 2025-02-12
+        for (VariableDescriptor variableDescriptor : specialsMap.values()) {
+            Variable specialVariable = getNetCDFVariable(variableDescriptor, variableDescriptor.getName());
+            if (specialVariable == null) {
+                continue;
+            }
+            final String variableFullName = specialVariable.getFullName();
+            final int dimensionIndex = specialVariable.findDimensionIndex("bands");
+            if (dimensionIndex != -1) {
+                final int numBands = specialVariable.getDimension(dimensionIndex).getLength();
+                for (int i = 1; i <= numBands; i++) {
+                    addVariableAsBand(product, specialVariable, getLayerName(variableFullName, i), true);
+                }
+            }
+        }
+    }
+
+    protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
+        final int type = getRasterDataType(variable);
+
+        final Band band = product.addBand(variableName, type);
+        band.setDescription(variable.getDescription());
+        band.setUnit(variable.getUnitsString());
+        band.setScalingFactor(getScalingFactor(variable));
+        band.setScalingOffset(getAddOffset(variable));
+        band.setSpectralWavelength(getSpectralWavelength(variable));
+        band.setSpectralBandwidth(getSpectralBandwidth(variable));
+        band.setSynthetic(synthetic);
+        addSampleCodings(product, band, variable, false);
+        addFillValue(band, variable);
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    protected void addFillValue(Band band, Variable variable) {
+        final Attribute fillValueAttribute = variable.findAttribute(fillValue);
+        if (fillValueAttribute != null) {
+            //todo double is not always correct
+            band.setNoDataValue(fillValueAttribute.getNumericValue().doubleValue());
+            // enable only if it is not a flag band
+            band.setNoDataValueUsed(!band.isFlagBand());
+        }
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    protected void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
+        final Attribute flagValuesAttribute = variable.findAttribute(flag_values);
+        final Attribute flagMasksAttribute = variable.findAttribute(flag_masks);
+        final Attribute flagMeaningsAttribute = variable.findAttribute(flag_meanings);
+        if (flagValuesAttribute != null && flagMasksAttribute != null) {
+            final FlagCoding flagCoding =
+                    getFlagCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,
+                            flagValuesAttribute, flagMasksAttribute, msb);
+            band.setSampleCoding(flagCoding);
+        } else if (flagValuesAttribute != null) {
+            final IndexCoding indexCoding =
+                    getIndexCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,
+                            flagValuesAttribute, msb);
+            band.setSampleCoding(indexCoding);
+        } else if (flagMasksAttribute != null) {
+            final FlagCoding flagCoding = getFlagCoding(product, band.getName(), band.getDescription(),
+                    flagMeaningsAttribute, flagMasksAttribute, msb);
+            band.setSampleCoding(flagCoding);
+        }
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    private FlagCoding getFlagCoding(Product product, String flagCodingName, String flagCodingDescription,
+                                     Attribute flagMeaningsAttribute, Attribute flagValuesAttribute,
+                                     Attribute flagMasksAttribute, boolean msb) {
+        final FlagCoding flagCoding = new FlagCoding(flagCodingName);
+        flagCoding.setDescription(flagCodingDescription);
+        addSamples(flagCoding, flagMeaningsAttribute, flagValuesAttribute, flagMasksAttribute, msb);
+        if (!product.getFlagCodingGroup().contains(flagCodingName)) {
+            product.getFlagCodingGroup().add(flagCoding);
+        }
+        return flagCoding;
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    private FlagCoding getFlagCoding(Product product, String flagCodingName, String flagCodingDescription,
+                                     Attribute flagMeaningsAttribute, Attribute flagMasksAttribute, boolean msb) {
+        final FlagCoding flagCoding = new FlagCoding(flagCodingName);
+        flagCoding.setDescription(flagCodingDescription);
+        addSamples(flagCoding, flagMeaningsAttribute, flagMasksAttribute, msb);
+        if (!product.getFlagCodingGroup().contains(flagCodingName)) {
+            product.getFlagCodingGroup().add(flagCoding);
+        }
+        return flagCoding;
+    }
+
+    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
+    private IndexCoding getIndexCoding(Product product, String indexCodingName, String indexCodingDescription,
+                                       Attribute flagMeaningsAttribute, Attribute flagValuesAttribute, boolean msb) {
+        final IndexCoding indexCoding = new IndexCoding(indexCodingName);
+        indexCoding.setDescription(indexCodingDescription);
+        addSamples(indexCoding, flagMeaningsAttribute, flagValuesAttribute, msb);
+        if (!product.getIndexCodingGroup().contains(indexCodingName)) {
+            product.getIndexCodingGroup().add(indexCoding);
+        }
+        return indexCoding;
+    }
+
     private void initializeDDDBDescriptors(Manifest manifest, ProductDescriptor productDescriptor) throws IOException {
         final String productType = manifest.getProductType();
         final String baselineCollection = manifest.getBaselineCollection();
@@ -411,15 +758,16 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                 descriptor.setFileName(fileName);
 
                 final String descriptorKey = createDescriptorKey(descriptor);
-                final char type = descriptor.getType();
-
-                final VariableType variableType = VariableType.fromChar(type);
-                if (variableType == VariableType.VARIABLE || variableType == VariableType.FLAG) {
+                final VariableType variableType = descriptor.getVariableType();
+                if (variableType == VARIABLE || variableType == FLAG) {
                     variablesMap.put(descriptorKey, descriptor);
-                } else if (variableType == VariableType.TIE_POINT) {
+                } else if (variableType == TIE_POINT) {
                     tiepointMap.put(descriptorKey, descriptor);
-                } else if (variableType == VariableType.METADATA) {
+                } else if (variableType == METADATA) {
                     metadataMap.put(descriptorKey, descriptor);
+                }
+                if (variableType == SPECIAL) {
+                    specialsMap.put(descriptorKey, descriptor);
                 }
             }
         }
@@ -444,10 +792,21 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     @Override
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
-        final String name = destBand.getName();
-        final VariableDescriptor descriptor = variablesMap.get(name);
+        final VariableDescriptor descriptor;
+        final RasterExtract rasterExtract;
 
-        final RasterExtract rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
+        String name = destBand.getName();
+        if (isLayerName(name)) {
+            name = getVariableNameFromLayerName(destBand.getName());
+            descriptor = specialsMap.get(name);
+            int layerIndex = getLayerIndexFromLayerName(destBand.getName());
+            // get layer from layername
+            rasterExtract = new RasterExtract(sourceOffsetX, layerIndex - 1, sourceWidth, 1, 1, 1);
+        } else {
+            descriptor = variablesMap.get(name);
+            rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
+        }
+
         readData(rasterExtract, destBuffer, descriptor, name);
     }
 
@@ -534,6 +893,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         variablesMap.clear();
         ncVariablesMap.clear();
         tiepointMap.clear();
+        specialsMap.clear();
 
         for (final NetcdfFile ncFile : filesMap.values()) {
             ncFile.close();
