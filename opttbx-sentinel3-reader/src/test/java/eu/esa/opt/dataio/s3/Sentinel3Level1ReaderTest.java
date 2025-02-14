@@ -227,4 +227,31 @@ public class Sentinel3Level1ReaderTest {
 
         assertEquals(-1, Sentinel3Level1Reader.getLayerIndexFromLayerName("Heffalump"));
     }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testIsPressureLevelName() throws IOException {
+        assertTrue(Sentinel3Level1Reader.isPressureLevelName("atmospheric_temperature_profile_pressure_level_14"));
+
+        assertFalse(Sentinel3Level1Reader.isPressureLevelName("Gandasum_band_6"));
+        assertFalse(Sentinel3Level1Reader.isPressureLevelName("OnTheAirTonight"));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testVariableNameFromPressureLevelName() throws IOException {
+        assertEquals("whatever_measured", Sentinel3Level1Reader.getVariableNameFromPressureLevelName("whatever_measured_pressure_level_11"));
+
+        assertEquals("Gandasum_band_6", Sentinel3Level1Reader.getVariableNameFromPressureLevelName("Gandasum_band_6"));
+        assertEquals("Heffalump", Sentinel3Level1Reader.getVariableNameFromPressureLevelName("Heffalump"));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testLayerIndexFromPressureLevelName() throws IOException {
+        assertEquals(10, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("whatever_measured_pressure_level_10"));
+        assertEquals(6, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("Gandasum_pressure_level_6"));
+
+        assertEquals(-1, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("Nasenmann.org"));
+    }
 }

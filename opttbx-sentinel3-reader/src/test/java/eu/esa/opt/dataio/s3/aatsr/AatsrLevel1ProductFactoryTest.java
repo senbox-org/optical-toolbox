@@ -1,6 +1,5 @@
 package eu.esa.opt.dataio.s3.aatsr;
 
-import eu.esa.opt.dataio.s3.aatsr.AatsrLevel1ProductFactory;
 import org.esa.snap.core.datamodel.Product;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,11 +28,11 @@ public class AatsrLevel1ProductFactoryTest {
     @Test
     public void testFindMasterProduct() throws Exception {
         final ArrayList<Product> openProductList = new ArrayList<>();
-        openProductList.add(new Product("p1", "t", 12,14));
-        openProductList.add(new Product("p2", "t", 12,15));
-        openProductList.add(new Product("p3", "t", 13,15));
-        openProductList.add(new Product("p4", "t", 13,14));
-        openProductList.add(new Product("p5", "t", 12,14));
+        openProductList.add(new Product("p1", "t", 12, 14));
+        openProductList.add(new Product("p2", "t", 12, 15));
+        openProductList.add(new Product("p3", "t", 13, 15));
+        openProductList.add(new Product("p4", "t", 13, 14));
+        openProductList.add(new Product("p5", "t", 12, 14));
         final Product masterProduct = AatsrLevel1ProductFactory.findMasterProduct(openProductList);
         assertEquals("p3", masterProduct.getName());
     }

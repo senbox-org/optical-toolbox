@@ -9,6 +9,7 @@ import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
+import eu.esa.opt.dataio.s3.util.LazyLoadingTiePointGrid;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -155,9 +156,20 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     // @todo 2 tb/tb add tests for this 2025-02-04
     private static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, Variable netCDFVariable) throws IOException {
-        final int[] sliceOffset = {rasterExtract.getYOffset(), rasterExtract.getXOffset()};
-        final int[] sliceDimensions = {rasterExtract.getHeight(), rasterExtract.getWidth()};
-        final int[] stride = {rasterExtract.getStepY(), rasterExtract.getStepX()};
+        final int[] sliceOffset;
+        final int[] sliceDimensions;
+        final int[] stride;
+
+        final int layerIdx = rasterExtract.getLayerIdx();
+        if (layerIdx >= 0) {
+            sliceOffset = new int[] {rasterExtract.getYOffset(), rasterExtract.getXOffset(), layerIdx};
+            sliceDimensions = new int[]{rasterExtract.getHeight(), rasterExtract.getWidth(), 1};
+            stride = new int[] {rasterExtract.getStepY(), rasterExtract.getStepX(), 1};
+        } else {
+            sliceOffset = new int[] {rasterExtract.getYOffset(), rasterExtract.getXOffset()};
+            sliceDimensions = new int[]{rasterExtract.getHeight(), rasterExtract.getWidth()};
+            stride = new int[] {rasterExtract.getStepY(), rasterExtract.getStepX()};
+        }
 
         try {
             Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride);
@@ -210,6 +222,33 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         } else {
             return layerName;
         }
+    }
+
+    // package access for testing only tb 2025-02-12
+    static boolean isPressureLevelName(String layerName) {
+        return layerName.contains("_pressure_level_");
+    }
+
+    // package access for testing only tb 2025-02-12
+    static String getVariableNameFromPressureLevelName(String layerName) {
+        int index = layerName.indexOf("_pressure_level_");
+        if (index >= 0) {
+            return layerName.substring(0, index);
+        } else {
+            return layerName;
+        }
+    }
+
+    // package access for testing only tb 2025-02-12
+    static int getLayerIndexFromPressureLevelName(String layerName) {
+        String band = "_pressure_level_";
+        final int index = layerName.indexOf(band);
+        if (index < 0) {
+            return -1;
+        }
+
+        final String numberString = layerName.substring(index + band.length());
+        return Integer.parseInt(numberString);
     }
 
     private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
@@ -635,6 +674,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     private void addTiePointGrids(Product product, Manifest manifest) {
         for (VariableDescriptor descriptor : tiepointMap.values()) {
+            ensureWidthAndHeight(descriptor, manifest);
             final String tiePointName = descriptor.getName();
             final int subsamplingX = manifest.getXPathInt(descriptor.getTpXSubsamplingXPath());
             final int subsamplingY = manifest.getXPathInt(descriptor.getTpYSubsamplingXPath());
@@ -642,10 +682,23 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             final int tpRasterWidth = (int) Math.ceil((double) product.getSceneRasterWidth() / subsamplingX);
             final int tpRasterHeight = (int) Math.ceil((double) product.getSceneRasterHeight() / subsamplingY);
 
-            final TiePointGrid tiePointGrid = new TiePointGrid(tiePointName, tpRasterWidth, tpRasterHeight, 0.0, 0.0, subsamplingX, subsamplingY);
-            tiePointGrid.setDescription(descriptor.getDescription());
-            tiePointGrid.setUnit(descriptor.getUnits());
-            product.addTiePointGrid(tiePointGrid);
+            int depth = descriptor.getDepth();
+            if (depth != -1) {
+                // @todo 1 tb/tb this is the simplest make-it-work-hack. Refactor and merge with existing
+                // functionality - add tests! 2025-02-14
+                for (int layer = 1; layer <= depth; layer++) {
+                    String layerName = tiePointName + "_pressure_level_" + layer;
+                    final TiePointGrid tiePointGrid = new LazyLoadingTiePointGrid(this, layerName, tpRasterWidth, tpRasterHeight, 0.0, 0.0, subsamplingX, subsamplingY);
+                    tiePointGrid.setDescription(descriptor.getDescription());
+                    tiePointGrid.setUnit(descriptor.getUnits());
+                    product.addTiePointGrid(tiePointGrid);
+                }
+            } else {
+                final TiePointGrid tiePointGrid = new LazyLoadingTiePointGrid(this, tiePointName, tpRasterWidth, tpRasterHeight, 0.0, 0.0, subsamplingX, subsamplingY);
+                tiePointGrid.setDescription(descriptor.getDescription());
+                tiePointGrid.setUnit(descriptor.getUnits());
+                product.addTiePointGrid(tiePointGrid);
+            }
         }
     }
 
@@ -818,10 +871,26 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     @Override
     public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
         final String tpGridName = tpg.getName();
-        final VariableDescriptor descriptor = tiepointMap.get(tpGridName);
 
-        final RasterExtract rasterExtract = new RasterExtract(destOffsetX, destOffsetY, destWidth, destHeight, 1, 1);
-        readData(rasterExtract, destBuffer, descriptor, tpGridName);
+        final VariableDescriptor descriptor;
+        final RasterExtract rasterExtract;
+        // check if 3d variable
+        if (isPressureLevelName(tpGridName)) {
+            // extract tp variable name
+            String gridVariableName = getVariableNameFromPressureLevelName(tpGridName);
+
+            // get VariableDescriptor for it
+            descriptor = tiepointMap.get(gridVariableName);
+            // extract layer index from name
+            int layer = getLayerIndexFromPressureLevelName(tpGridName);
+            // create RasterÉxtract accordingly - subsetting just one layer from 3d
+            rasterExtract = new RasterExtract(destOffsetX, destOffsetY, destWidth, destHeight, 1, 1, layer - 1);
+            readData(rasterExtract, destBuffer, descriptor, gridVariableName);
+        } else {
+            descriptor = tiepointMap.get(tpGridName);
+            rasterExtract = new RasterExtract(destOffsetX, destOffsetY, destWidth, destHeight, 1, 1);
+            readData(rasterExtract, destBuffer, descriptor, tpGridName);
+        }
     }
 
     private synchronized void readData(RasterExtract rasterExtract, ProductData destBuffer, VariableDescriptor descriptor, String name) throws IOException {
@@ -935,7 +1004,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private Path getInputPath() {
         return Paths.get(getInput().toString());
     }
-
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

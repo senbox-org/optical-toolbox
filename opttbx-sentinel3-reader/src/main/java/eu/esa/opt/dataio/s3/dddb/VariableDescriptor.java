@@ -4,7 +4,6 @@ public class VariableDescriptor {
 
     private String name;
     private String ncVarName;
-    // @todo 2 tb/tb add typesafe enum 2025-02-11
     private char type;
     private String dataType;
     private String widthXPath;
