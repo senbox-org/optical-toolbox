@@ -18,14 +18,27 @@ public class Sentinel3Level1ReaderPlugIn extends S3ReaderPlugIn {
     private static final String FORMAT_NAME = "Sen3L1";
     private static final String DESCRIPTION = "Sentinel-3 Level 1 products";
 
+    static final Class[] INPUT_TYPES = {Path.class, File.class, String.class};
+    private static final InputConverter[] INPUT_CONVERTERS = {
+            input -> (Path) input,
+            input -> ((File) input).toPath(),
+            input -> Paths.get((String) input)
+
+    };
     private final Pattern sourceNamePattern;
     private final String manifestName;
+
     private final String altManifestName;
 
     public Sentinel3Level1ReaderPlugIn() {
         sourceNamePattern = Pattern.compile("S3.?_(OL_1_E[FR]R|ER1_AT_1_RBT|ER2_AT_1_RBT|ENV_AT_1_RBT)_.*(.SEN3)?(.zip)?");
         manifestName = MANIFEST_BASE + ".xml";
         altManifestName = ALTERNATIVE_MANIFEST_BASE + ".xml";
+    }
+
+    @Override
+    public Class[] getInputTypes() {
+        return INPUT_TYPES;
     }
 
     @Override
@@ -132,5 +145,18 @@ public class Sentinel3Level1ReaderPlugIn extends S3ReaderPlugIn {
     @Override
     public ProductReader createReaderInstance() {
         return new Sentinel3Level1Reader(this);
+    }
+
+    private interface InputConverter {
+        Path convertInput(Object input);
+    }
+
+    static Path convertToPath(final Object object) {
+        for (int i = 0; i < INPUT_TYPES.length; i++) {
+            if (INPUT_TYPES[i].isInstance(object)) {
+                return INPUT_CONVERTERS[i].convertInput(object);
+            }
+        }
+        return null;
     }
 }

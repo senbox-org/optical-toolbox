@@ -118,6 +118,16 @@ public class MetadataElementLazy extends MetadataElement {
             return;
         }
 
+        /*
+        TODO: 13.02.2025 SE/TB -- Thoughts
+            Instead of removing the owner and then setting it again to interrupt the informing of the listeners, we
+            should be able to set a LazyLoading state in the respective nodes (via java try with resources block),
+            which temporarily stops the firing of listener events of these nodes and below.
+            After the work is done (try with resource block), only 1 event should be fired to the topmost inserted or
+            changed nodes.
+            So if a complete node tree has been inserted or modified, then only one event should be fired to the root
+            element of the modified or added tree.
+        */
         final ProductNode owner = getOwner();
         try {
             // disable firing of NodeAdded events. Leads to infinite recursions ... tb 2025-02-07
@@ -140,6 +150,16 @@ public class MetadataElementLazy extends MetadataElement {
             return;
         }
 
+        /*
+        TODO: 13.02.2025 SE/TB -- Thoughts
+            Instead of removing the owner and then setting it again to interrupt the informing of the listeners, we
+            should be able to set a LazyLoading state in the respective nodes (via java try with resources block),
+            which temporarily stops the firing of listener events of these nodes and below.
+            After the work is done (try with resource block), only 1 event should be fired to the topmost inserted or
+            changed nodes.
+            So if a complete node tree has been inserted or modified, then only one event should be fired to the root
+            element of the modified or added tree.
+        */
         final ProductNode owner = getOwner();
         try {
             // disable firing of NodeAdded events. Leads to infinite recursions ... tb 2025-02-07

@@ -1023,6 +1023,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
         final String variableName = netCDFVariable.getFullName();
         final MetadataElement variableElement = new MetadataElement(variableName);
+        // TODO: 13.02.2025 SE/TB -- just floats? @see org.esa.snap.dataio.netcdf.util.MetadataUtils.addAttribute(...)
         final float[][] contentMatrix = (float[][]) netCDFVariable.read().copyToNDJavaArray();
         final int length = contentMatrix.length;
 
@@ -1051,6 +1052,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
 
         final Array metaData = netCDFVariable.read();
+        // TODO: 13.02.2025 SE/TB -- just floats? @see org.esa.snap.dataio.netcdf.util.MetadataUtils.addAttribute(...)
         float[] values = (float[]) metaData.copyTo1DJavaArray();
         final MetadataAttribute attribute = new MetadataAttribute(name, ProductData.createInstance(values), true);
         return new MetadataAttribute[]{attribute};
