@@ -152,7 +152,6 @@ public class SeadasProductReader extends AbstractProductReader {
                     break;
                 case Level2:
                 case Level1B:
-                case Level1A_CZCS:
                 case Level2_CZCS:
                 case Level2_Pace:
                 case Level2_PaceOCIS:
@@ -160,6 +159,9 @@ public class SeadasProductReader extends AbstractProductReader {
                     break;
                 case Level2_DscovrEpic:
                     seadasFileReader = new L2DscovrEpicFileReader(this);
+                    break;
+                case Level1A_CZCS:
+                    seadasFileReader = new L1ACzcsFileReader(this);
                     break;
                 case Level1A_Hawkeye:
                     seadasFileReader = new L1AHawkeyeFileReader(this);
