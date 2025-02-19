@@ -609,7 +609,7 @@
         "bandWidth": 7551,
         "bandHeight": 7351,
         "geophysicalUnit": "Kelvin",
-        "noDataValue": "-9999.0",
+        "noDataValue": "-99.99",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
         "spectralBandwidth": "0.0",
@@ -622,7 +622,7 @@
           {
             "x": 1877,
             "y": 3909,
-            "value": 186.0
+            "value": 1.86
           }
         ]
       },
