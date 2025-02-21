@@ -26,6 +26,7 @@ import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
 import ucar.nc2.Group;
 import ucar.nc2.Variable;
+import ucar.nc2.Dimension;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -62,8 +63,12 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
     @Override
     public Product createProduct() throws ProductIOException {
 
-        int sceneHeight = ncFile.findDimension("number_of_scans").getLength();
-        int sceneWidth = ncFile.findDimension("ccd_pixels").getLength();
+        int sceneWidth = getDimension("pixels");
+        int sceneHeight = getDimension("scans");
+        if (sceneHeight == -1) {
+            sceneHeight = ncFile.findDimension("number_of_scans").getLength();
+            sceneWidth = ncFile.findDimension("ccd_pixels").getLength();
+        }
 
         String productName;
 
@@ -79,12 +84,12 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         try {
             blue_wavlengths = blueWvl.read();
             red_wavlengths = redWvl.read();
-            //swir_wavlengths = swirWvl.read();
+            swir_wavlengths = swirWvl.read();
 
 
             // somehow there are duplicate bands in the test file.
             // fixme
-            swir_wavlengths = Array.makeArray(DataType.DOUBLE, new String[] {"940", "1038", "1250", "1251", "1378", "1615", "1616", "2130", "2260"});
+//            swir_wavlengths = Array.makeArray(DataType.DOUBLE, new String[] {"940", "1038", "1250", "1251", "1378", "1615", "1616", "2130", "2260"});
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage(), e);
         }
@@ -345,5 +350,14 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
                 throw new ProductIOException(e.getMessage());
             }
         }
+    }
+    private int getDimension(String dimensionName) {
+        final List<Dimension> dimensions = ncFile.getDimensions();
+        for (Dimension dimension : dimensions) {
+            if (dimension.getShortName().equals(dimensionName)) {
+                return dimension.getLength();
+            }
+        }
+        return -1;
     }
 }
