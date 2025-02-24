@@ -16,6 +16,8 @@ public class L1bMetadataFactory {
         int psd = S2Metadata.getPSD(metadataPath);
         if(psd == 14 || psd == 13 || psd == 12 || psd == 0 )  {
             return L1bProductMetadataPSD13.create(metadataPath);
+        } else  if(psd == 15)  {
+            return L1bProductMetadataPSD150.create(metadataPath);
         } else {
             //TODO
             return null;
@@ -26,7 +28,9 @@ public class L1bMetadataFactory {
         int psd = S2Metadata.getPSD(metadataPath);
         if(psd == 14 || psd == 13 || psd == 12 || psd == 0 )  {
             return L1bGranuleMetadataPSD13.create(metadataPath);
-        } else {
+        } else if (psd == 15){
+            return L1bGranuleMetadataPSD150.create(metadataPath);
+        }else {
             //TODO
             return null;
         }
@@ -36,6 +40,8 @@ public class L1bMetadataFactory {
         int psd = S2Metadata.getPSD(metadataPath);
         if(psd == 14 || psd == 13 || psd == 12 || psd == 0 )  {
             return L1bDatastripMetadataPSD13.create(metadataPath);
+        } else if (psd == 15) {
+            return L1bDatastripMetadataPSD150.create(metadataPath);
         } else {
             //TODO
             return null;

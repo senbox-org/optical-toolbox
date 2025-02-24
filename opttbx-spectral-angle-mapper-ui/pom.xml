@@ -63,6 +63,10 @@
             <groupId>org.esa.snap</groupId>
             <artifactId>ceres-glayer</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>ceres-jai</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

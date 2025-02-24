@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3.util;
 
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import org.esa.snap.core.datamodel.*;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
@@ -107,8 +108,10 @@ class InstrumentDataReader extends S3NetcdfReader {
         } else {
             variable = getNetcdfFile().findVariable(variableName);
         }
-        return new S3MultiLevelOpImage(band, variable, new String[]{dimensionName}, new int[]{dimensionIndex},
+        S3MultiLevelOpSource levelSource = new S3MultiLevelOpSource(band, variable, new String[]{dimensionName},
+                new int[]{dimensionIndex},
                 detectorIndexBand, "detectors", dimensionName);
+        return new DefaultMultiLevelImage(levelSource);
     }
 
     @Override

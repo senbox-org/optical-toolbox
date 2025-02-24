@@ -17,7 +17,7 @@ package eu.esa.opt.meris.cloud;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.SubProgressMonitor;
-import com.bc.ceres.glevel.MultiLevelImage;
+import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.meris.cloud.common.CentralWavelengthProvider;
 import eu.esa.opt.meris.cloud.common.CloudAlgorithm;
 import eu.esa.opt.meris.cloud.internal.ProcessingNode;

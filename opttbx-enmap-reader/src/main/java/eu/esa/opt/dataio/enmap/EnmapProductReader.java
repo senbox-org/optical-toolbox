@@ -51,6 +51,8 @@ class EnmapProductReader extends AbstractProductReader {
     private VirtualDir dataDir;
     private VirtualDir tgzDataDir;
 
+    private boolean isNonCompliantProduct = false;
+
     EnmapProductReader(EnmapProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         syncObject = new Object();
@@ -140,6 +142,11 @@ class EnmapProductReader extends AbstractProductReader {
         String[] fileNames = dataDir.listAllFiles();
         String metadataFile = getMetadataFile(fileNames);
         EnmapMetadata meta = EnmapMetadata.create(dataDir.getInputStream(metadataFile));
+
+        this.isNonCompliantProduct = checkIfProductIsNonCompliant(dataDir);
+        if (this.isNonCompliantProduct) {
+            meta.setNonCompliantProduct(true);
+        }
 
         String productFormat = meta.getProductFormat();
         if (!ProductFormat.GeoTIFF_Metadata.name().equals(ProductFormat.toEnumName(productFormat))) {
@@ -506,7 +513,7 @@ class EnmapProductReader extends AbstractProductReader {
     private Point2D getEastingNorthing(EnmapMetadata meta) throws IOException {
         Map<String, String> fileNameMap = meta.getFileNameMap();
         String dataFileName = fileNameMap.get(QUALITY_CLASSES_KEY);
-        InputStream inputStream = getInputStream(dataDir, dataFileName);
+        InputStream inputStream = getInputStream(dataDir, dataFileName, this.isNonCompliantProduct);
         ProductReader reader = null;
         try {
             reader = ProductIO.getProductReader("GeoTIFF");

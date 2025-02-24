@@ -32,16 +32,16 @@ abstract class EnmapOrthoMetadata extends EnmapMetadata {
         NodeList nodeSet = getNodeSet("/level_X/product/productFileInformation/*/name");
 
         HashMap<String, String> map = new HashMap<>();
-        map.put(EnmapFileUtils.METADATA_KEY, getFileName(EnmapFileUtils.METADATA_KEY, nodeSet));
-        map.put(EnmapFileUtils.SPECTRAL_IMAGE_KEY, getFileName(EnmapFileUtils.SPECTRAL_IMAGE_KEY, nodeSet));
-        map.put(EnmapFileUtils.QUALITY_CLASSES_KEY, getFileName(EnmapFileUtils.QUALITY_CLASSES_KEY, nodeSet));
-        map.put(EnmapFileUtils.QUALITY_CLOUD_KEY, getFileName(EnmapFileUtils.QUALITY_CLOUD_KEY, nodeSet));
-        map.put(EnmapFileUtils.QUALITY_CLOUDSHADOW_KEY, getFileName(EnmapFileUtils.QUALITY_CLOUDSHADOW_KEY, nodeSet));
-        map.put(EnmapFileUtils.QUALITY_HAZE_KEY, getFileName(EnmapFileUtils.QUALITY_HAZE_KEY, nodeSet));
-        map.put(EnmapFileUtils.QUALITY_CIRRUS_KEY, getFileName(EnmapFileUtils.QUALITY_CIRRUS_KEY, nodeSet));
-        map.put(EnmapFileUtils.QUALITY_SNOW_KEY, getFileName(EnmapFileUtils.QUALITY_SNOW_KEY, nodeSet));
-        map.put(EnmapFileUtils.QUALITY_TESTFLAGS_KEY, getFileName(EnmapFileUtils.QUALITY_TESTFLAGS_KEY, nodeSet));
-        map.put(EnmapFileUtils.QUALITY_PIXELMASK_KEY, getFileName(EnmapFileUtils.QUALITY_PIXELMASK_KEY, nodeSet));
+        map.put(EnmapFileUtils.METADATA_KEY, getCorrectedFileName(EnmapFileUtils.METADATA_KEY, nodeSet));
+        map.put(EnmapFileUtils.SPECTRAL_IMAGE_KEY, getCorrectedFileName(EnmapFileUtils.SPECTRAL_IMAGE_KEY, nodeSet));
+        map.put(EnmapFileUtils.QUALITY_CLASSES_KEY, getCorrectedFileName(EnmapFileUtils.QUALITY_CLASSES_KEY, nodeSet));
+        map.put(EnmapFileUtils.QUALITY_CLOUD_KEY, getCorrectedFileName(EnmapFileUtils.QUALITY_CLOUD_KEY, nodeSet));
+        map.put(EnmapFileUtils.QUALITY_CLOUDSHADOW_KEY, getCorrectedFileName(EnmapFileUtils.QUALITY_CLOUDSHADOW_KEY, nodeSet));
+        map.put(EnmapFileUtils.QUALITY_HAZE_KEY, getCorrectedFileName(EnmapFileUtils.QUALITY_HAZE_KEY, nodeSet));
+        map.put(EnmapFileUtils.QUALITY_CIRRUS_KEY, getCorrectedFileName(EnmapFileUtils.QUALITY_CIRRUS_KEY, nodeSet));
+        map.put(EnmapFileUtils.QUALITY_SNOW_KEY, getCorrectedFileName(EnmapFileUtils.QUALITY_SNOW_KEY, nodeSet));
+        map.put(EnmapFileUtils.QUALITY_TESTFLAGS_KEY, getCorrectedFileName(EnmapFileUtils.QUALITY_TESTFLAGS_KEY, nodeSet));
+        map.put(EnmapFileUtils.QUALITY_PIXELMASK_KEY, getCorrectedFileName(EnmapFileUtils.QUALITY_PIXELMASK_KEY, nodeSet));
 
         return map;
     }

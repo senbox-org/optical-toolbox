@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.core.ProgressMonitor;
+import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import eu.esa.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.datamodel.Band;
@@ -173,7 +174,9 @@ public class S3NetcdfReader extends AbstractProductReader {
         for (int i = 0; i < dimensionIndexList.size(); i++) {
             dimensionIndexes[i] = dimensionIndexList.get(i);
         }
-        return new S3MultiLevelOpImage(band, variable, dimensionNames, dimensionIndexes, xIndex, yIndex);
+        S3MultiLevelOpSource levelSource = new S3MultiLevelOpSource(band, variable, dimensionNames, dimensionIndexes, xIndex,
+                yIndex);
+        return new DefaultMultiLevelImage(levelSource);
     }
 
     protected int getDimensionIndexFromBandName(String bandName) {
