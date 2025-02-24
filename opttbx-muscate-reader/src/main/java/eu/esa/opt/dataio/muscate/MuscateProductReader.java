@@ -981,7 +981,7 @@ public class MuscateProductReader extends AbstractProductReader implements S2Ang
         try {
             CoordinateReferenceSystem mapCRS = CRS.decode("EPSG:" + metadata.getEPSG());
             MuscateMetadata.Geoposition firstGeoPosition = metadata.getGeoPositions().get(0);
-            CrsGeoCoding crsGeoCoding = new CrsGeoCoding(mapCRS, band.getRasterWidth(), band.getRasterHeight(), firstGeoPosition.ulx, firstGeoPosition.uly, resolution.x, resolution.y, 0.0, 0.0);
+            CrsGeoCoding crsGeoCoding = new CrsGeoCoding(mapCRS, band.getRasterWidth(), band.getRasterHeight(), firstGeoPosition.ulx, firstGeoPosition.uly, resolution.x, resolution.y, -bandBounds.x, -bandBounds.y);
             band.setGeoCoding(crsGeoCoding);
         } catch (Exception e) {
             logger.warning(String.format("Unable to set geocoding to the band %s", angleBandName));
