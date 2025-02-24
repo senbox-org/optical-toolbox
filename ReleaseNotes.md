@@ -4,6 +4,10 @@ Optical Toolbox Release Notes
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
 # New in SNAP 12.0.0
+    [SNAP-3912] SNAP 12 is unable to read S2 products
+    [SNAP-3904] SNAP cannot open EnMAP products retrieved from DLR
+    [SNAP-3882] NSIDCProductReader conflicts with CCI WV data
+    [SNAP-3804] PRISMA RGB & HSV tools not working well (3)
     [SNAP-3767] CZCS reading crashes
     [SNAP-3764] Integrate BandGroups in PinManager
     [SNAP-1699] C2RCC should make use of Copernicus DEM
