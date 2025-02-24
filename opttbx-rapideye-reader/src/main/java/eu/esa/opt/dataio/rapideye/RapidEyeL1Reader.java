@@ -19,6 +19,7 @@ package eu.esa.opt.dataio.rapideye;
 
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.dataio.nitf.GDALNITFReaderWrapper;
+import org.esa.snap.core.util.jai.JAIUtils;
 import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import eu.esa.opt.dataio.ColorPaletteBand;
 import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
@@ -144,8 +145,7 @@ public class RapidEyeL1Reader extends AbstractProductReader {
             product.setEndTime(metadata.getProductEndTime());
             product.setFileLocation(productPath.toFile());
 
-            //Dimension preferredTileSize = defaultJAIReadTileSize; // new Dimension(defaultJAIReadTileSize.width * 2, defaultJAIReadTileSize.height *2); // multiple mosaic tile size
-            Dimension preferredTileSize = new Dimension(defaultProductWidth, defaultProductHeight);
+            Dimension preferredTileSize = JAIUtils.computePreferredTileSize(product.getSceneRasterWidth(), product.getSceneRasterHeight(), 1);
 
             product.setPreferredTileSize(preferredTileSize);
 
@@ -197,7 +197,14 @@ public class RapidEyeL1Reader extends AbstractProductReader {
                 if (subsetDef == null || subsetDef.isNodeAccepted(bandName)) {
                     File localFile = this.productDirectory.getFile(nitfFiles[i]);
                     Band targetBand;
-                    GDALNITFReaderWrapper nitfReader = new GDALNITFReaderWrapper(localFile);
+                    final ProductSubsetDef subsetDefNitf;
+                    if (subsetDef != null) {
+                        subsetDefNitf = new ProductSubsetDef();
+                        subsetDefNitf.setSubsetRegion(subsetDef.getSubsetRegion());
+                    } else {
+                        subsetDefNitf = null;
+                    }
+                    GDALNITFReaderWrapper nitfReader = new GDALNITFReaderWrapper(localFile, subsetDefNitf);
                     this.bandImageReaders.add(nitfReader);
 
                     if (subsetDef == null || !subsetDef.isIgnoreMetadata()) {
@@ -241,8 +248,8 @@ public class RapidEyeL1Reader extends AbstractProductReader {
                 GeoTiffProductReader geoTiffProductReader = new GeoTiffProductReader(getReaderPlugIn());
                 Product udmGeoTiffProduct = geoTiffProductReader.readProduct(this.geoTiffImageReader, null);
                 Band geoTiffBand = udmGeoTiffProduct.getBandAt(0);
-                float scaleX = metadata.getRasterWidth() / (float) udmGeoTiffProduct.getSceneRasterWidth();
-                float scaleY = metadata.getRasterHeight() / (float) udmGeoTiffProduct.getSceneRasterHeight();
+                float scaleX = product.getSceneRasterWidth() / (float) udmGeoTiffProduct.getSceneRasterWidth();
+                float scaleY = product.getSceneRasterHeight() / (float) udmGeoTiffProduct.getSceneRasterHeight();
                 RenderedOp renderedOp = ScaleDescriptor.create(geoTiffBand.getSourceImage(), scaleX, scaleY, 0.0f, 0.0f, Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
                 Band unusableDataBand = product.addBand(UNUSABLE_DATA_BAND_NAME, geoTiffBand.getDataType());
                 unusableDataBand.setSourceImage(renderedOp);
