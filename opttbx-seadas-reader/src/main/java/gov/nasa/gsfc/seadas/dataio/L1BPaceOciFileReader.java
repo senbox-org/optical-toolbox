@@ -62,13 +62,11 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     @Override
     public Product createProduct() throws ProductIOException {
+        
+        int[] shape = ncFile.findVariable("geolocation_data/latitude").getShape();
 
-        int sceneWidth = getDimension("pixels");
-        int sceneHeight = getDimension("scans");
-        if (sceneHeight == -1) {
-            sceneHeight = ncFile.findDimension("number_of_scans").getLength();
-            sceneWidth = ncFile.findDimension("ccd_pixels").getLength();
-        }
+        int sceneWidth = shape[1];
+        int sceneHeight = shape[0];
 
         String productName;
 
@@ -85,16 +83,9 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             blue_wavlengths = blueWvl.read();
             red_wavlengths = redWvl.read();
             swir_wavlengths = swirWvl.read();
-
-
-            // somehow there are duplicate bands in the test file.
-            // fixme
-//            swir_wavlengths = Array.makeArray(DataType.DOUBLE, new String[] {"940", "1038", "1250", "1251", "1378", "1615", "1616", "2130", "2260"});
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage(), e);
         }
-//        mustFlipX = mustFlipY = getDefaultFlip();
-//        mustFlipY = getDefaultFlip();
         mustFlipY = true;
         mustFlipX = false;
         SeadasProductReader.ProductType productType = productReader.getProductType();
