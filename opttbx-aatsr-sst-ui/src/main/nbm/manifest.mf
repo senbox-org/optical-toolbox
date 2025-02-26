@@ -5,4 +5,3 @@ OpenIDE-Module-Java-Dependencies: Java > 11
 OpenIDE-Module-Display-Category: SNAP Toolboxes
 OpenIDE-Module-Specification-Version: ${project.nbmSpecVersion}
 OpenIDE-Module-Implementation-Version: ${project.nbmImplVersion}
-OpenIDE-Module-Requires: org.netbeans.api.javahelp.Help
