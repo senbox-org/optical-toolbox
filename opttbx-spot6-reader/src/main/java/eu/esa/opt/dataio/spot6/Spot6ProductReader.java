@@ -517,7 +517,7 @@ public class Spot6ProductReader extends AbstractProductReader {
                     if (refBand != null) {
                         product.addMask(maskName, node, mask.description, colorIterator.next(), 0.5, refBand);
                     } else {
-                        product.addMask(mask.name, node, mask.description, colorIterator.next(), 0.5);
+                        product.addMask(maskName, node, mask.description, colorIterator.next(), 0.5);
                     }
                 }
             }
