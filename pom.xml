@@ -125,8 +125,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <snap.version>12.0.0-SNAPSHOT</snap.version>
-        <opttbx.version>12.0.0-SNAPSHOT</opttbx.version>
+        <snap.version>12.0.0</snap.version>
+        <opttbx.version>12.0.0</opttbx.version>
         <seadas.reader.version>1.10.2</seadas.reader.version>
         <seadas.reader.ui.version>1.10.2</seadas.reader.ui.version>
         <snap-help-system.version>1.0.2</snap-help-system.version>
