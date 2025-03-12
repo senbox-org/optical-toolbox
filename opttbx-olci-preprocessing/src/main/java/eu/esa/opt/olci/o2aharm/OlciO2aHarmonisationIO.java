@@ -224,16 +224,37 @@ class OlciO2aHarmonisationIO {
         final int numCoefs = 3;
         final int numCameras = 5;
         final int w = modelProduct.getSceneRasterWidth();
-        final int h = modelProduct.getSceneRasterHeight();
+        final int h = modelProduct.getSceneRasterHeight();  // now 21 --> we still only need the 5 bands 12-16
+        final int h2 = 5;
+
+        int transitionOrbitNumber = 0;
+        final MetadataElement metadataRoot = modelProduct.getMetadataRoot();
+        if (metadataRoot != null) {
+            final MetadataElement globalAttrElement = metadataRoot.getElement("Global_Attributes");
+            if (globalAttrElement != null) {
+                final MetadataAttribute transitionOrbitAttr = globalAttrElement.getAttribute("orbitNumber");
+                if (transitionOrbitAttr != null) {
+                    final String s = transitionOrbitAttr.getData().getElemString();
+                    transitionOrbitNumber = Integer.parseInt(s);
+                }
+            }
+        }
+        final boolean isEarlyOrbit = orbitNumber < transitionOrbitNumber;
+
         final Band[][] cwvlCoefBands = new Band[numCoefs][numCameras];
         final Band[][] fwhmCoefBands = new Band[numCoefs][numCameras];
         for (int i = 0; i < numCoefs; i++) {
             for (int j = 0; j < numCameras; j++) {
-                cwvlCoefBands[i][j] = modelProduct.getBand("cwvl_coef_coef" + (i + 1) + "_camera" + (j + 1));
-                fwhmCoefBands[i][j] = modelProduct.getBand("fwhm_coef_coef" + (i + 1) + "_camera" + (j + 1));
+                final String cwvlCoeffBandName = isEarlyOrbit ? "cwvl_coef_early_coef" + (i + 1) + "_camera" + (j + 1) :
+                        "cwvl_coef_coef" + (i + 1) + "_camera" + (j + 1);
+                final String fwhmCoeffBandName = isEarlyOrbit ? "fwhm_coef_early_coef" + (i + 1) + "_camera" + (j + 1) :
+                        "fwhm_coef_coef" + (i + 1) + "_camera" + (j + 1);
+                cwvlCoefBands[i][j] = modelProduct.getBand(cwvlCoeffBandName);
+                fwhmCoefBands[i][j] = modelProduct.getBand(fwhmCoeffBandName);
             }
         }
 
+        // full size arrays for coeffs, 21 bands
         final float[][][][] cwvlCoefs = new float[numCoefs][numCameras][h][w];
         final float[][][][] fwhmCoefs = new float[numCoefs][numCameras][h][w];
         for (int i = 0; i < numCoefs; i++) {
@@ -249,30 +270,31 @@ class OlciO2aHarmonisationIO {
             }
         }
 
-        final float[][][] cwvl = new float[numCameras][h][w];
-        final float[][][] fwhm = new float[numCameras][h][w];
+        // reduce arrays to 5 bands:
+        final float[][][] cwvl = new float[numCameras][h2][w];
+        final float[][][] fwhm = new float[numCameras][h2][w];
         for (int j = 0; j < numCameras; j++) {
-            for (int k = 0; k < h; k++) {
+            for (int k = 0; k < h2; k++) {
                 for (int m = 0; m < w; m++) {
-                    cwvl[k][j][m] = cwvlCoefs[0][j][k][m] + cwvlCoefs[1][j][k][m] + cwvlCoefs[2][j][k][m];
-                    fwhm[k][j][m] = fwhmCoefs[0][j][k][m] + fwhmCoefs[1][j][k][m] + fwhmCoefs[2][j][k][m];
+                    cwvl[k][j][m] = cwvlCoefs[0][j][k + 11][m] + cwvlCoefs[1][j][k + 11][m] + cwvlCoefs[2][j][k + 11][m];
+                    fwhm[k][j][m] = fwhmCoefs[0][j][k + 11][m] + fwhmCoefs[1][j][k + 11][m] + fwhmCoefs[2][j][k + 11][m];
                 }
             }
         }
 
         // transpose and revert sequence
         for (int j = 0; j < numCameras; j++) {
-            for (int k = 0; k < h; k++) {
+            for (int k = 0; k < h2; k++) {
                 ArrayUtils.reverse(cwvl[k][j]);  // np.transpose(cwvlCoefs,(1,0,2)[...,::-1]
                 ArrayUtils.reverse(fwhm[k][j]);  // np.transpose(cwvlCoefs,(1,0,2)[...,::-1]
             }
         }
 
         // merge k and m dimensions
-        final float[][] cwvl_2D = new float[numCameras][h * w];
-        final float[][] fwhm_2D = new float[numCameras][h * w];
+        final float[][] cwvl_2D = new float[numCameras][h2 * w];
+        final float[][] fwhm_2D = new float[numCameras][h2 * w];
         for (int j = 0; j < numCameras; j++) {
-            for (int k = 0; k < h; k++) {
+            for (int k = 0; k < h2; k++) {
                 for (int m = 0; m < w; m++) {
                     final int index = k * w + m;
                     cwvl_2D[j][index] = cwvl[j][k][m];  // reshape((5,-1))
@@ -283,6 +305,7 @@ class OlciO2aHarmonisationIO {
 
         return new SpectralCharacteristics(cwvl_2D, fwhm_2D);
     }
+
 
     static int getOrbitNumber(Product product) throws IOException, java.text.ParseException {
         final String productName = product.getName();
@@ -362,7 +385,12 @@ class OlciO2aHarmonisationIO {
         // original 'olci_<identifier>_temporal_model_O2_bands_20200227.nc4' are differently interpreted by
         // different SNAP 7.x nc readers. Re-exporting as NetCDF4-CF into
         // 'olci_<identifier>_temporal_model_O2_bands_20200227.nc' seems to have solved the problem
-        final Path pathModelFile = installAuxdata().resolve("olci_" + platform + "_temporal_model_O2_bands.nc");
+//        final Path pathModelFile = installAuxdata().resolve("olci_" + platform + "_temporal_model_O2_bands.nc");
+
+        // update JW/RP 202503:
+        // this is a band subset of the original temporal_characterisation_olci_[A|B]_20250121.nc provided by RP
+        final Path pathModelFile =
+                installAuxdata().resolve("subset_0_of_temporal_characterisation_olci_" + platform + "_20250121.nc");
         File filePath = pathModelFile.toFile();
         try {
             return ProductIO.readProduct(filePath.getAbsolutePath());
@@ -419,10 +447,10 @@ class OlciO2aHarmonisationIO {
         final String platform = getPlatformIdentifier(synFileName);  // A or B
         if (platform.equals("A")) {
             // S3A cycles from [1..86]. See email GK, 20220201.
-            return OlciO2aHarmonisationConstants.s3aFirstAO[cycle-1] + relOrbit - 1;
+            return OlciO2aHarmonisationConstants.s3aFirstAO[cycle - 1] + relOrbit - 1;
         } else if (platform.equals("B")) {
             // S3A cycles from [20..67]. See email GK, 20220201.
-            return OlciO2aHarmonisationConstants.s3bFirstAO[cycle-20] + relOrbit - 1;
+            return OlciO2aHarmonisationConstants.s3bFirstAO[cycle - 20] + relOrbit - 1;
         } else {
             throw new IOException("Cannot retrieve SYN absolute orbit number - exiting.");
         }
@@ -447,7 +475,7 @@ class OlciO2aHarmonisationIO {
         final long diffDatesAsSeconds = TimeUnit.SECONDS.convert(diffDates, TimeUnit.MILLISECONDS);
 
         // The orbital cycle is 27 days (14+7/27 orbits per day, 385 orbits per cycle):
-        final double orbitsPerSecond = (14.0 + 7.0/27.0) / 86400.0;
+        final double orbitsPerSecond = (14.0 + 7.0 / 27.0) / 86400.0;
 
         return (int) (1 + (diffDatesAsSeconds * orbitsPerSecond));
     }
