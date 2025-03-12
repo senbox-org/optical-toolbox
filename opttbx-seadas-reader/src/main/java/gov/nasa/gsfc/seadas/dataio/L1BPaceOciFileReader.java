@@ -63,12 +63,17 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
     @Override
     public Product createProduct() throws ProductIOException {
         
-        int[] shape = ncFile.findVariable("geolocation_data/latitude").getShape();
-
-        int sceneWidth = shape[1];
-        int sceneHeight = shape[0];
-
+        int[] shape;
+        int sceneWidth, sceneHeight ;
         String productName;
+
+        try {
+            shape = ncFile.findVariable("geolocation_data/latitude").getShape();
+            sceneWidth = shape[1];
+            sceneHeight = shape[0];
+        } catch (Exception e) {
+            throw new ProductIOException(e.getMessage(), e);
+        }
 
         try {
             productName = getStringAttribute("product_name");
