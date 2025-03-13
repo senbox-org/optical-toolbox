@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.ecostress;
 
+import eu.esa.snap.hdf.HDFLoader;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -7,9 +8,7 @@ import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
 import java.io.File;
-import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 /**
  * Reader plug-in for ECOSTRESS products
@@ -19,41 +18,13 @@ import java.util.logging.Logger;
 public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
 
     static final String FORMAT_NAME_ECOSTRESS = "ECOSTRESS-L1B/L2/L3/L4";
-    private static final String _H5_CLASS_NAME = "ncsa.hdf.hdf5lib.H5";
     private static final Class<?>[] SUPPORTED_INPUT_TYPES = new Class[]{String.class, File.class};
     private static final String DESCRIPTION = "ECOSTRESS Format";
     private static final String FILE_EXTENSION = ".H5";
     private static final String[] DEFAULT_FILE_EXTENSIONS = new String[]{FILE_EXTENSION};
     private static final String[] FORMAT_NAMES = new String[]{FORMAT_NAME_ECOSTRESS};
 
-    private static Boolean hdf5LibAvailable = null;
-
-    private static final Logger logger = Logger.getLogger(EcostressProductReaderPlugIn.class.getName());
-
     private EcostressMetadata ecostressMetadata;
-
-    /**
-     * Checks whether the HDF5 native library is loaded in SNAP and initialise it
-     *
-     * @return {@code true} when the HDF5 native library is loaded in SNAP
-     */
-    private static boolean checkAndInitHdf5Lib() {
-        final ClassLoader classLoader = EcostressProductReaderPlugIn.class.getClassLoader();
-
-        final String classResourceName = "/" + EcostressProductReaderPlugIn._H5_CLASS_NAME.replace('.', '/') + ".class";
-        if (EcostressProductReaderPlugIn.class.getResource(classResourceName) != null) {
-            try {
-                Class.forName(EcostressProductReaderPlugIn._H5_CLASS_NAME, true, classLoader);
-                return true;
-            } catch (Throwable error) {
-                logger.warning(MessageFormat.format("{0}: HDF-5 library not available: {1}: {2}", EcostressProductReaderPlugIn.class, error.getClass(), error.getMessage()));
-                logger.warning("ECOSTRESS readers disabled.");
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
 
     /**
      * Gets the ECOSTRESS file object from reader input object
@@ -62,7 +33,7 @@ public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
      * @return the ECOSTRESS file object
      */
     public static EcostressFile getEcostressFile(Object input) {
-        ensureHDF5Initialised();
+        HDFLoader.ensureHDF5Initialised();
         if (input instanceof String) {
             return new EcostressFile((String) input);
         } else if (input instanceof File) {
@@ -81,20 +52,6 @@ public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
     private static boolean isInputEcostressFileNameValid(String fileName) {
         // just check file extension
         return fileName.toUpperCase().endsWith(FILE_EXTENSION);
-    }
-
-    /**
-     * Ensures that the HDF5 native library is loaded and initialised
-     */
-    private static void ensureHDF5Initialised() {
-        if (hdf5LibAvailable == null) {
-            synchronized (logger) {
-                hdf5LibAvailable = checkAndInitHdf5Lib();
-            }
-        }
-        if (!hdf5LibAvailable) {
-            throw new IllegalStateException("HDF5 NOT initialised! Check log for details.");
-        }
     }
 
     /**
@@ -124,21 +81,10 @@ public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
      * @return the decode qualification
      */
     public DecodeQualification getDecodeQualification(Object input) {
-        // Ecostress reader is not intended on mac arm systems -> no hdf
-        if (!isArmArchitecture() && isInputValid(input)) {
+        if (isInputValid(input)) {
             return DecodeQualification.INTENDED;
         }
         return DecodeQualification.UNABLE;
-    }
-
-    /**
-     * Checks whether the system is running on an ARM architecture.
-     *
-     * @return {@code true} if the system uses an ARM architecture, otherwise {@code false}.
-     */
-    protected boolean isArmArchitecture() {
-        String arch = System.getProperty("os.arch");
-        return arch.contains("aarch") || arch.contains("arm64");
     }
 
     /**

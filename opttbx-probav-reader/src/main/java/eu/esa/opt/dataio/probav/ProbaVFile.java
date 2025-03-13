@@ -1,15 +1,17 @@
-package eu.esa.opt.dataio.ecostress;
+package eu.esa.opt.dataio.probav;
 
+import hdf.hdf5lib.H5;
+import hdf.hdf5lib.HDF5Constants;
 import hdf.object.FileFormat;
 
 import java.io.File;
 
 /**
- * Ecostress Product File class
+ * ProbaV Product File class
  *
  * @author adraghici
  */
-public class EcostressFile extends File implements AutoCloseable {
+public class ProbaVFile extends File implements AutoCloseable {
 
     /**
      * the HDF5 object
@@ -18,37 +20,43 @@ public class EcostressFile extends File implements AutoCloseable {
 
     /**
      * Creates a new instance of this class
-     * @param inputFilePath the ECOSTRESS file path string
+     * @param inputFilePath the ProbaV file path string
      */
-    public EcostressFile(String inputFilePath) {
+    public ProbaVFile(String inputFilePath) {
         super(inputFilePath);
         try {
             final FileFormat h5FileFormat = FileFormat.getFileFormat(FileFormat.FILE_TYPE_HDF5);
             this.h5File = h5FileFormat.createInstance(this.getAbsolutePath(), FileFormat.READ);
         } catch (Exception e) {
-            throw new IllegalStateException("Error initialising ECOSTRESS product '" + this.getName() + "': " + e.getMessage());
+            throw new IllegalStateException("Error initialising ProbaV product '" + this.getName() + "': " + e.getMessage());
         }
     }
 
     /**
      * Creates a new instance of this class
-     * @param inputFile the ECOSTRESS file path object
+     * @param inputFile the ProbaV file path object
      */
-    public EcostressFile(File inputFile) {
+    public ProbaVFile(File inputFile) {
         this(inputFile.getAbsolutePath());
     }
 
     /**
-     * Gets the HDF5 object of ECOSTRESS file
-     * @return the HDF5 object of ECOSTRESS file
+     * Gets the HDF5 object of ProbaV file
+     * @return the HDF5 object of ProbaV file
      */
     public FileFormat getH5File() {
         open();
         return h5File;
     }
 
+    public long getFileId() throws Exception {
+        return H5.H5Fopen(h5File.getAbsolutePath(),   // Name of the file to access.
+                HDF5Constants.H5F_ACC_RDONLY,  // File access flag
+                HDF5Constants.H5P_DEFAULT);
+    }
+
     /**
-     * Opens the HDF5 object of ECOSTRESS file
+     * Opens the HDF5 object of ProbaV file
      */
     private void open() {
         try {
@@ -56,12 +64,12 @@ public class EcostressFile extends File implements AutoCloseable {
                 this.h5File.open();
             }
         } catch (Exception e) {
-            throw new IllegalStateException("Error opening ECOSTRESS product '" + this.getName() + "': " + e.getMessage());
+            throw new IllegalStateException("Error opening ProbaV product '" + this.getName() + "': " + e.getMessage());
         }
     }
 
     /**
-     * Closes the HDF5 object of ECOSTRESS file
+     * Closes the HDF5 object of ProbaV file
      * @throws Exception if an error occurs
      */
     @Override
