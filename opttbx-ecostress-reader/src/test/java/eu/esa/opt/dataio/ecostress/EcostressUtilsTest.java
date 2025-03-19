@@ -1,12 +1,14 @@
 package eu.esa.opt.dataio.ecostress;
 
 import eu.esa.opt.dataio.ecostress.l2.cloud.EcostressL2CloudConstants;
-import eu.esa.snap.hdf.HdfActivator;
+import eu.esa.snap.hdf.HDFLoader;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.awt.*;
 import java.net.URISyntaxException;
@@ -24,9 +26,7 @@ public class EcostressUtilsTest {
 
     @Before
     public void loadHdf5Library() {
-        final String arch = System.getProperty("os.arch").toLowerCase();
-        Assume.assumeFalse("EcostressUtilsTest: skipping on ARM CPU", arch.equals("aarch64"));
-        HdfActivator.activate();
+        HDFLoader.ensureHDF5Initialised();
     }
 
     @Test

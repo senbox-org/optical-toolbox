@@ -1,26 +1,20 @@
 package eu.esa.opt.dataio.probav;
 
-import ncsa.hdf.hdf5lib.H5;
-import ncsa.hdf.hdf5lib.HDF5Constants;
-import ncsa.hdf.hdf5lib.exceptions.HDF5Exception;
-import ncsa.hdf.object.Attribute;
-import ncsa.hdf.object.Datatype;
-import ncsa.hdf.object.h5.H5Datatype;
-import ncsa.hdf.object.h5.H5Group;
-import ncsa.hdf.object.h5.H5ScalarDS;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.CrsGeoCoding;
-import org.esa.snap.core.datamodel.MetadataAttribute;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductData;
+import hdf.hdf5lib.H5;
+import hdf.hdf5lib.HDF5Constants;
+import hdf.hdf5lib.exceptions.HDF5Exception;
+import hdf.object.Attribute;
+import hdf.object.Datatype;
+import hdf.object.Group;
+import hdf.object.HObject;
+import hdf.object.h5.H5Datatype;
+import hdf.object.h5.H5Group;
+import hdf.object.h5.H5ScalarDS;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.SystemUtils;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -37,51 +31,57 @@ public class ProbaVUtils {
      * @param attribute - input attribute
      * @return the value as string
      */
-    public static String getAttributeValue(Attribute attribute) {
+    public static String getAttributeValue(Attribute attribute) throws Exception {
         String result = "";
-        switch (attribute.getType().getDatatypeClass()) {
-            case Datatype.CLASS_INTEGER:
-                if (attribute.getValue().getClass() == long[].class) {
-                    long[] ivals = (long[]) attribute.getValue();
+        switch (attribute.getAttributeDatatype().getDatatypeClass()) {
+            case Datatype.CLASS_INTEGER -> {
+                if (attribute.getAttributeData().getClass() == long[].class) {
+                    long[] ivals = (long[]) attribute.getAttributeData();
                     for (long ival : ivals) {
-                        result = result.concat(Long.toString(ival) + " ");
+                        result = result.concat(ival + " ");
                     }
                 }
-                if (attribute.getValue().getClass() == int[].class) {
-                    int[] ivals = (int[]) attribute.getValue();
+                if (attribute.getAttributeData().getClass() == int[].class) {
+                    int[] ivals = (int[]) attribute.getAttributeData();
                     for (int ival : ivals) {
-                        result = result.concat(Integer.toString(ival) + " ");
+                        result = result.concat(ival + " ");
                     }
                 }
-                if (attribute.getValue().getClass() == short[].class) {
-                    short[] ivals = (short[]) attribute.getValue();
+                if (attribute.getAttributeData().getClass() == short[].class) {
+                    short[] ivals = (short[]) attribute.getAttributeData();
                     for (short ival : ivals) {
-                        result = result.concat(Short.toString(ival) + " ");
+                        result = result.concat(ival + " ");
                     }
                 }
-                break;
-            case Datatype.CLASS_FLOAT:
-                if (attribute.getValue().getClass() == float[].class) {
-                    float[] fvals = (float[]) attribute.getValue();
+                if (attribute.getAttributeData().getClass() == byte[].class) {
+                    byte[] ivals = (byte[]) attribute.getAttributeData();
+                    for (byte ival : ivals) {
+                        result = result.concat(ival + " ");
+                    }
+                }
+            }
+            case Datatype.CLASS_FLOAT -> {
+                if (attribute.getAttributeData().getClass() == float[].class) {
+                    float[] fvals = (float[]) attribute.getAttributeData();
                     for (float fval : fvals) {
-                        result = result.concat(Float.toString(fval) + " ");
+                        result = result.concat(fval + " ");
                     }
                 }
-                if (attribute.getValue().getClass() == double[].class) {
-                    double[] dvals = (double[]) attribute.getValue();
+                if (attribute.getAttributeData().getClass() == double[].class) {
+                    double[] dvals = (double[]) attribute.getAttributeData();
                     for (double dval : dvals) {
-                        result = result.concat(Double.toString(dval) + " ");
+                        result = result.concat(dval + " ");
                     }
                 }
-                break;
-            case Datatype.CLASS_STRING:
-                String[] svals = (String[]) attribute.getValue();
+            }
+            case Datatype.CLASS_STRING -> {
+                String[] svals = (String[]) attribute.getAttributeData();
                 for (String sval : svals) {
                     result = result.concat(sval + " ");
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
 
         return result.trim();
@@ -94,13 +94,14 @@ public class ProbaVUtils {
      * @param attributeName - the attribute name
      * @return the value as string
      */
-    public static String getStringAttributeValue(List<Attribute> metadata, String attributeName) {
+    public static String getStringAttributeValue(List<?> metadata, String attributeName) {
         String stringAttr = null;
-        for (Attribute attribute : metadata) {
-            if (attribute.getName().equals(attributeName)) {
+        for (Object metadataItem : metadata) {
+            final Attribute attribute = (Attribute) metadataItem;
+            if (attribute.getAttributeName().equals(attributeName)) {
                 try {
                     stringAttr = getAttributeValue(attribute);
-                } catch (NumberFormatException e) {
+                } catch (Exception e) {
                     SystemUtils.LOG.log(Level.WARNING, "Cannot parse string attribute: " +
                             e.getMessage());
                 }
@@ -116,13 +117,14 @@ public class ProbaVUtils {
      * @param attributeName - the attribute name
      * @return the value as double
      */
-    public static double getDoubleAttributeValue(List<Attribute> metadata, String attributeName) {
+    public static double getDoubleAttributeValue(List<?> metadata, String attributeName) {
         double doubleAttr = Double.NaN;
-        for (Attribute attribute : metadata) {
-            if (attribute.getName().equals(attributeName)) {
+        for (Object metadataItem : metadata) {
+            final Attribute attribute = (Attribute) metadataItem;
+            if (attribute.getAttributeName().equals(attributeName)) {
                 try {
                     doubleAttr = Double.parseDouble(getAttributeValue(attribute));
-                } catch (NumberFormatException e) {
+                } catch (Exception e) {
                     SystemUtils.LOG.log(Level.WARNING, "Cannot parse float attribute: " + e.getMessage());
                 }
             }
@@ -136,20 +138,18 @@ public class ProbaVUtils {
      * @param metadata- the metadata containing the attributes
      * @return start/end times as String[]
      */
-    public static String[] getStartEndTimeFromAttributes(List<Attribute> metadata) {
+    public static String[] getStartEndTimeFromAttributes(List<?> metadata) throws Exception {
         String startDate = "";
         String startTime = "";
         String endDate = "";
         String endTime = "";
-        for (Attribute attribute : metadata) {
-            if (attribute.getName().equals("OBSERVATION_START_DATE")) {
-                startDate = getAttributeValue(attribute);
-            } else if (attribute.getName().equals("OBSERVATION_START_TIME")) {
-                startTime = getAttributeValue(attribute);
-            } else if (attribute.getName().equals("OBSERVATION_END_DATE")) {
-                endDate = getAttributeValue(attribute);
-            } else if (attribute.getName().equals("OBSERVATION_END_TIME")) {
-                endTime = getAttributeValue(attribute);
+        for (Object metadataItem : metadata) {
+            final Attribute attribute = (Attribute) metadataItem;
+            switch (attribute.getAttributeName()) {
+                case "OBSERVATION_START_DATE" -> startDate = getAttributeValue(attribute);
+                case "OBSERVATION_START_TIME" -> startTime = getAttributeValue(attribute);
+                case "OBSERVATION_END_DATE" -> endDate = getAttributeValue(attribute);
+                case "OBSERVATION_END_TIME" -> endTime = getAttributeValue(attribute);
             }
         }
 
@@ -175,16 +175,16 @@ public class ProbaVUtils {
      * @param datatypeClass - the HDF datatype
      * @param destBuffer    - the data buffer being filled
      */
-    public static void readProbaVData(int file_id,
+    public static void readProbaVData(long file_id,
                                       int width, int height, long offsetX, long offsetY,
                                       String datasetName, int datatypeClass,
                                       ProductData destBuffer) {
         try {
-            final int dataset_id = H5.H5Dopen(file_id,                       // Location identifier
+            final long dataset_id = H5.H5Dopen(file_id,                       // Location identifier
                     datasetName,                   // Dataset name
                     HDF5Constants.H5P_DEFAULT);    // Identifier of dataset access property list
 
-            final int dataspace_id = H5.H5Dget_space(dataset_id);
+            final long dataspace_id = H5.H5Dget_space(dataset_id);
 
             final long[] offset = {offsetY, offsetX};
             final long[] count = {height, width};
@@ -196,7 +196,7 @@ public class ProbaVUtils {
                     count,                          // Number of blocks included in hyperslab.
                     null);                          // Size of block in hyperslab.
 
-            final int memspace_id = H5.H5Screate_simple(count.length, // Number of dimensions of dataspace.
+            final long memspace_id = H5.H5Screate_simple(count.length, // Number of dimensions of dataspace.
                     count,        // An array of the size of each dimension.
                     null);       // An array of the maximum size of each dimension.
 
@@ -208,7 +208,7 @@ public class ProbaVUtils {
                     count,                              // Number of blocks included in hyperslab.
                     null);                          // Size of block in hyperslab.
 
-            int dataType = ProbaVUtils.getDatatypeForH5Dread(datatypeClass);
+            long dataType = ProbaVUtils.getAttributeDatatypeForH5Dread(datatypeClass);
 
             if (destBuffer != null) {
                 H5.H5Dread(dataset_id,                    // Identifier of the dataset read from.
@@ -233,33 +233,26 @@ public class ProbaVUtils {
      * @param productTypeNode - the data set tree node (starting at LEVEL3)
      * @return boolean
      */
-    public static boolean isLevel3Ndvi(TreeNode productTypeNode) {
+    public static boolean isLevel3Ndvi(Group productTypeNode) {
         boolean hasNdvi = false;
-        for (int i = 0; i < productTypeNode.getChildCount(); i++) {
+        boolean isNdvi = true;
+        for (int i = 0; i < productTypeNode.getNumberOfMembersInFile(); i++) {
             // we have: 'GEOMETRY', 'NDVI', 'QUALITY', 'RADIOMETRY', 'TIME'
-            final TreeNode productTypeChildNode = productTypeNode.getChildAt(i);
-            final String productTypeChildNodeName = productTypeChildNode.toString();
+            final Group productTypeChildNode = (Group) productTypeNode.getMember(i);
+            final String productTypeChildNodeName = productTypeChildNode.getName();
 
             if (productTypeChildNodeName.equals("NDVI")) {
                 hasNdvi = true;
-                break;
-            }
-        }
-
-        if (hasNdvi) {
-            for (int i = 0; i < productTypeNode.getChildCount(); i++) {
-                // check if GEOMETRY, QUALITY, RADIOMETRY, TIME are present but empty
-                final TreeNode productTypeChildNode = productTypeNode.getChildAt(i);
-                final String productTypeChildNodeName = productTypeChildNode.toString();
-                if (!productTypeChildNodeName.equals("NDVI")) {
-                    if (productTypeChildNode.getChildCount() > 0) {
-                        return false;
-                    }
+            } else {
+                if (productTypeChildNode.getNumberOfMembersInFile() > 0) {
+                    isNdvi = false;
                 }
             }
-            return true;
+            if (!isNdvi && hasNdvi) {
+                return false;
+            }
         }
-        return false;
+        return hasNdvi;
     }
 
     /**
@@ -268,8 +261,8 @@ public class ProbaVUtils {
      * @param productTypeNode - the data set tree node (starting at LEVEL3)
      * @return boolean
      */
-    public static boolean isLevel3Toc(TreeNode productTypeNode) {
-        return isReflectanceType(productTypeNode, "TOC");
+    public static boolean isLevel3Toc(Group productTypeNode) {
+        return isReflectanceType(productTypeNode);
     }
 
     /**
@@ -300,9 +293,8 @@ public class ProbaVUtils {
      * @param bandName - band name
      * @param dataType - data type
      * @return the target band
-     * @throws Exception
      */
-    public static Band createTargetBand(Product product, List<Attribute> metadata, String bandName, int dataType) throws Exception {
+    public static Band createTargetBand(Product product, List<Attribute> metadata, String bandName, int dataType) {
         final double scaleFactorAttr = ProbaVUtils.getDoubleAttributeValue(metadata, "SCALE");
         final double scaleFactor = Double.isNaN(scaleFactorAttr) ? 1.0f : scaleFactorAttr;
         final double scaleOffsetAttr = ProbaVUtils.getDoubleAttributeValue(metadata, "OFFSET");
@@ -319,10 +311,9 @@ public class ProbaVUtils {
      *
      * @param level3BandsChildNode - the data node
      * @return - the data set (H5ScalarDS)
-     * @throws HDF5Exception
      */
-    public static H5ScalarDS getH5ScalarDS(TreeNode level3BandsChildNode) throws HDF5Exception {
-        H5ScalarDS scalarDS = (H5ScalarDS) ((DefaultMutableTreeNode) level3BandsChildNode).getUserObject();
+    public static H5ScalarDS getH5ScalarDS(HObject level3BandsChildNode) {
+        H5ScalarDS scalarDS = (H5ScalarDS) level3BandsChildNode;
         scalarDS.open();
         scalarDS.init();
         return scalarDS;
@@ -335,12 +326,13 @@ public class ProbaVUtils {
      * @param parentElement       - the parent metadata element
      * @param metadataElementName - the element name
      */
-    public static void addMetadataElementWithAttributes(List<Attribute> metadataAttributes,
+    public static void addMetadataElementWithAttributes(List<?> metadataAttributes,
                                                         final MetadataElement parentElement,
-                                                        String metadataElementName) {
+                                                        String metadataElementName) throws Exception {
         final MetadataElement metadataElement = new MetadataElement(metadataElementName);
-        for (Attribute attribute : metadataAttributes) {
-            metadataElement.addAttribute(new MetadataAttribute(attribute.getName(),
+        for (Object metadataAttributesItem : metadataAttributes) {
+            final Attribute attribute = (Attribute) metadataAttributesItem;
+            metadataElement.addAttribute(new MetadataAttribute(attribute.getAttributeName(),
                     ProductData.createInstance(ProbaVUtils.getAttributeValue(attribute)), true));
         }
         parentElement.addElement(metadataElement);
@@ -352,10 +344,11 @@ public class ProbaVUtils {
      * @param metadataAttributes - the HDF metadata attributes
      * @param parentElement      - the parent metadata element
      */
-    public static void addMetadataAttributes(List<Attribute> metadataAttributes,
-                                             final MetadataElement parentElement) {
-        for (Attribute attribute : metadataAttributes) {
-            parentElement.addAttribute(new MetadataAttribute(attribute.getName(),
+    public static void addMetadataAttributes(List<?> metadataAttributes,
+                                             final MetadataElement parentElement) throws Exception {
+        for (Object metadataAttributesItem : metadataAttributes) {
+            final Attribute attribute = (Attribute) metadataAttributesItem;
+            parentElement.addAttribute(new MetadataAttribute(attribute.getAttributeName(),
                     ProductData.createInstance(ProbaVUtils.getAttributeValue(attribute)), true));
         }
     }
@@ -365,13 +358,12 @@ public class ProbaVUtils {
      *
      * @param product  - the product
      * @param timeNode - the HDF node containing the time information
-     * @throws HDF5Exception
-     * @throws ParseException
+     * @throws Exception - when an error occurs
      */
-    public static void addStartStopTimes(Product product, DefaultMutableTreeNode timeNode) throws HDF5Exception, ParseException {
-        final H5Group timeGroup = (H5Group) timeNode.getUserObject();
-        final List timeMetadata = timeGroup.getMetadata();
-        String[] startEndTime = ProbaVUtils.getStartEndTimeFromAttributes(timeMetadata);
+    public static void addStartStopTimes(Product product, HObject timeNode) throws Exception  {
+        final H5Group timeGroup = (H5Group) timeNode;
+        final List<?> timeMetadata = timeGroup.getMetadata();
+        final String[] startEndTime = ProbaVUtils.getStartEndTimeFromAttributes(timeMetadata);
         if (startEndTime != null) {
             product.setStartTime(ProductData.UTC.parse(startEndTime[0],
                     ProbaVConstants.PROBAV_DATE_FORMAT_PATTERN));
@@ -386,22 +378,20 @@ public class ProbaVUtils {
      * @param product       - the product
      * @param parentNode    - the HDF parent node
      * @param bandGroupName - band subgroup name (should be NDVI, QUALITY or TIME)
-     * @throws HDF5Exception
+     * @throws Exception    - When an error occurs
      */
-    public static void addBandSubGroupMetadata(Product product, DefaultMutableTreeNode parentNode, String bandGroupName) throws HDF5Exception {
+    public static void addBandSubGroupMetadata(Product product, Group parentNode, String bandGroupName) throws Exception {
         // NDVI, QUALITY, TIME
         addRootMetadataElement(product, parentNode, bandGroupName);
 
         final MetadataElement rootMetadataElement = product.getMetadataRoot().getElement(bandGroupName);
 
-        final TreeNode childNode = parentNode.getChildAt(0);
-        final String childNodeName = childNode.toString();
-        final MetadataElement childMetadataElement = new MetadataElement(childNodeName);
+        final HObject childNode = parentNode.getMember(0);
 
         if (!bandGroupName.equals(ProbaVConstants.QUALITY_BAND_GROUP_NAME)) {
             // skip the 'SM' metadata as it is not the original SM band
             final H5ScalarDS ds = ProbaVUtils.getH5ScalarDS(childNode);
-            final List childMetadata = ds.getMetadata();
+            final List<?> childMetadata = ds.getMetadata();
             ProbaVUtils.addMetadataAttributes(childMetadata, rootMetadataElement);
         }
     }
@@ -412,12 +402,12 @@ public class ProbaVUtils {
      * @param product     - the product
      * @param parentNode  - the HDF parent node
      * @param elementName - the metadata element name
-     * @throws HDF5Exception
+     * @throws HDF5Exception - when an error occurs
      */
-    public static void addRootMetadataElement(Product product, DefaultMutableTreeNode parentNode, String elementName)
-            throws HDF5Exception {
-        final H5Group parentGeometryGroup = (H5Group) parentNode.getUserObject();
-        final List parentGeometryMetadata = parentGeometryGroup.getMetadata();
+    public static void addRootMetadataElement(Product product, HObject parentNode, String elementName)
+            throws Exception {
+        final H5Group parentGeometryGroup = (H5Group) parentNode;
+        final List<?> parentGeometryMetadata = parentGeometryGroup.getMetadata();
         ProbaVUtils.addMetadataElementWithAttributes(parentGeometryMetadata, product.getMetadataRoot(), elementName);
     }
 
@@ -426,9 +416,8 @@ public class ProbaVUtils {
      *
      * @param metadata - HDF metadata
      * @param band     - the band
-     * @throws HDF5Exception
      */
-    public static void setBandUnitAndDescription(List<Attribute> metadata, Band band) throws HDF5Exception {
+    public static void setBandUnitAndDescription(List<Attribute> metadata, Band band) {
         band.setDescription(ProbaVUtils.getStringAttributeValue(metadata, "DESCRIPTION"));
         band.setUnit(ProbaVUtils.getStringAttributeValue(metadata, "UNITS"));
     }
@@ -439,9 +428,9 @@ public class ProbaVUtils {
      * @param treeNode - node to extract metadata from
      * @param band     - the spectral band
      */
-    public static void setSpectralBandProperties(DefaultMutableTreeNode treeNode, Band band) throws HDF5Exception {
-        final H5Group group = (H5Group) treeNode.getUserObject();
-        final List metadata = group.getMetadata();
+    public static void setSpectralBandProperties(HObject treeNode, Band band) throws HDF5Exception {
+        final H5Group group = (H5Group) treeNode;
+        final List<?> metadata = group.getMetadata();
         final double solarIrradiance = ProbaVUtils.getDoubleAttributeValue(metadata, "SOLAR_IRRADIANCE");
         band.setSolarFlux((float) solarIrradiance);
         if (band.getName().endsWith("REFL_BLUE")) {
@@ -471,25 +460,23 @@ public class ProbaVUtils {
      * @param productTypeChildNode - the product type child node (LEVEL2A or LEVEL3)
      * @param productWidth         - product width
      * @param productHeight        - product height
-     * @throws HDF5Exception
+     * @throws HDF5Exception       - when an error occurs
      */
-    public static void setProbaVGeoCoding(Product product, TreeNode inputFileRootNode, TreeNode productTypeChildNode,
+    public static void setProbaVGeoCoding(Product product, HObject inputFileRootNode, HObject productTypeChildNode,
                                           int productWidth, int productHeight) throws HDF5Exception {
 
-        final H5Group h5GeometryGroup = (H5Group) ((DefaultMutableTreeNode) productTypeChildNode).getUserObject();
-        final List geometryMetadata = h5GeometryGroup.getMetadata();
+        final H5Group h5GeometryGroup = (H5Group) productTypeChildNode;
+        final List<?> geometryMetadata = h5GeometryGroup.getMetadata();
         final double easting = ProbaVUtils.getDoubleAttributeValue(geometryMetadata, "TOP_LEFT_LONGITUDE");
         final double northing = ProbaVUtils.getDoubleAttributeValue(geometryMetadata, "TOP_LEFT_LATITUDE");
         // pixel size: 10deg/rasterDim, it is also in the 6th and 7th value of MAPPING attribute in the raster nodes
-        final double topLeftLon = easting;
         final double topRightLon = ProbaVUtils.getDoubleAttributeValue(geometryMetadata, "TOP_RIGHT_LONGITUDE");
-        final double pixelSizeX = Math.abs(topRightLon - topLeftLon) / (productWidth - 1);
-        final double topLeftLat = northing;
+        final double pixelSizeX = Math.abs(topRightLon - easting) / (productWidth - 1);
         final double bottomLeftLat = ProbaVUtils.getDoubleAttributeValue(geometryMetadata, "BOTTOM_LEFT_LATITUDE");
-        final double pixelSizeY = (topLeftLat - bottomLeftLat) / (productHeight - 1);
+        final double pixelSizeY = (northing - bottomLeftLat) / (productHeight - 1);
 
-        final H5Group h5RootGroup = (H5Group) ((DefaultMutableTreeNode) inputFileRootNode).getUserObject();
-        final List rootMetadata = h5RootGroup.getMetadata();
+        final H5Group h5RootGroup = (H5Group) inputFileRootNode;
+        final List<?> rootMetadata = h5RootGroup.getMetadata();
         final String crsString = ProbaVUtils.getStringAttributeValue(rootMetadata, "MAP_PROJECTION_WKT");
         try {
             final CoordinateReferenceSystem crs = CRS.parseWKT(crsString);
@@ -510,47 +497,51 @@ public class ProbaVUtils {
      */
     public static ProductData getDataBufferForH5Dread(int datatypeClass, int width, int height) {
         switch (datatypeClass) {
-            case H5Datatype.CLASS_CHAR:
+            case H5Datatype.CLASS_CHAR -> {
                 return ProductData.createInstance(new byte[width * height]);
-            case H5Datatype.CLASS_FLOAT:
+            }
+            case H5Datatype.CLASS_FLOAT -> {
                 return ProductData.createInstance(new float[width * height]);
-            case H5Datatype.CLASS_INTEGER:
+            }
+            case H5Datatype.CLASS_INTEGER -> {
                 return ProductData.createInstance(new short[width * height]);
-            default:
-                break;
+            }
+            default -> {
+            }
         }
         return null;
     }
 
     //// private methods ////
 
-    private static boolean isReflectanceType(TreeNode productTypeNode, String type) {
-        for (int i = 0; i < productTypeNode.getChildCount(); i++) {
+    private static boolean isReflectanceType(Group productTypeNode) {
+        for (int i = 0; i < productTypeNode.getNumberOfMembersInFile(); i++) {
             // we have: 'GEOMETRY', 'NDVI', 'QUALITY', 'RADIOMETRY', 'TIME'
-            final TreeNode productTypeChildNode = productTypeNode.getChildAt(i);
-            final String productTypeChildNodeName = productTypeChildNode.toString();
+            final Group productTypeChildNode = (Group) productTypeNode.getMember(i);
+            final String productTypeChildNodeName = productTypeChildNode.getName();
 
             if (productTypeChildNodeName.equals("RADIOMETRY")) {
                 // children are BLUE, RED, NIR, SWIR
-                final TreeNode radiometryChildNode = productTypeChildNode.getChildAt(0);
-                return radiometryChildNode.getChildAt(0).toString().equals(type);
+                final Group radiometryChildNode = (Group) productTypeChildNode.getMember(0);
+                return radiometryChildNode.getMember(0).getName().equals("TOC");
             }
         }
         return false;
     }
 
-    private static int getDatatypeForH5Dread(int datatypeClass) {
+    private static long getAttributeDatatypeForH5Dread(int datatypeClass) {
         switch (datatypeClass) {
-            case H5Datatype.CLASS_BITFIELD:
+            case H5Datatype.CLASS_BITFIELD, H5Datatype.CLASS_CHAR -> {
                 return HDF5Constants.H5T_NATIVE_UINT8;
-            case H5Datatype.CLASS_CHAR:
-                return HDF5Constants.H5T_NATIVE_UINT8;
-            case H5Datatype.CLASS_FLOAT:
+            }
+            case H5Datatype.CLASS_FLOAT -> {
                 return HDF5Constants.H5T_NATIVE_FLOAT;
-            case H5Datatype.CLASS_INTEGER:
+            }
+            case H5Datatype.CLASS_INTEGER -> {
                 return HDF5Constants.H5T_NATIVE_INT16;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
         return -1;
     }
