@@ -1,7 +1,6 @@
 package eu.esa.opt.swath2grid;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.snap.hdf.HdfActivator;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
@@ -10,7 +9,6 @@ import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.engine_utilities.utils.TestUtil;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,9 +19,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -42,13 +38,6 @@ public class EcostressSwath2GridOpTest {
         assumeTrue(TestUtil.testdataAvailable());
         checkTestDirectoryExists();
         SystemUtils.initGeoTools();
-    }
-
-    @Before
-    public void loadHdf5Library() {
-        final String arch = System.getProperty("os.arch").toLowerCase();
-        Assume.assumeFalse("EcostressUtilsTest: skipping on ARM CPU", arch.equals("aarch64"));
-        HdfActivator.activate();
     }
 
     private void checkTestDirectoryExists() {
