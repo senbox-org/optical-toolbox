@@ -114,6 +114,7 @@
         <module>opttbx-enmap-reader</module>
         <module>opttbx-seadas-reader</module>
         <module>opttbx-seadas-reader-ui</module>
+        <module>opttbx-flex-reader</module>
 
         <module>opttbx-unmix-ui</module>
         <module>opttbx-unmix</module>
