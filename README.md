@@ -73,8 +73,31 @@ Setting up IntelliJ IDEA
 4. Use the following configuration to run SNAP in the IDE:
 
    **Main class:** org.esa.snap.nbexec.Launcher
-   **VM parameters:** -Dsun.awt.nopixfmt=true -Dsun.java2d.noddraw=true -Dsun.java2d.dpiaware=false
-   All VM parameters are optional
+
+   **VM parameters:** `-Dsun.awt.nopixfmt=true
+	  -Dsun.java2d.noddraw=true
+	  -Dsun.java2d.dpiaware=false
+	  -DTopSecurityManager.disable=true
+	  -Xms256m
+	  -Xmx22024m
+	  -Dorg.netbeans.level=INFO
+	  -Dsnap.debug=true
+	  -Djava.security.manager=allow
+	  --add-opens
+	  java.base/java.net=ALL-UNNAMED
+	  --add-opens
+	  java.desktop/sun.awt=ALL-UNNAMED
+	  --add-opens
+	  java.base/java.security=ALL-UNNAMED
+	  --add-opens
+	  java.desktop/javax.swing=ALL-UNNAMED
+	  --add-opens
+	  java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED
+	  --add-opens
+	  java.desktop/sun.java2d=ALL-UNNAMED`
+   
+    All VM parameters are optional
+
    **Program arguments:**
    --userdir
    "${snap}/optical-toolbox/target/userdir"

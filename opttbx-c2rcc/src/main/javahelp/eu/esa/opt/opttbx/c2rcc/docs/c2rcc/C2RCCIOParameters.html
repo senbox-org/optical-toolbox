@@ -47,9 +47,13 @@
 <b>Sensor specific source product</b>
 <p>The first parameter is the sensor specific source product. A validation is performed if the specified product is
     compatible with the current
-    processor.</p>
-<p>The required MODIS L1C data is not a standard format. It can be generated with l2gen of SeaDAS. See <a
-        href="Create_MODIS_L1C.html">Create MODIS L1C</a></p>
+    processor.
+    <br /><br />
+    <span style="font-weight: bold; color: red;">NOTE:</span>
+    MODIS, SeaWiFS and VIIRS processors require special source products that are not standard format. They can be generated using the
+    l2gen tool of SeaDAS. See <a href="Create_MODIS_L1C.html">Create MODIS L1C</a> for an example usage of l2gen to generate the required input products.
+    Source products for the SeaDAS and VIIRS processors can be generated similarly.
+</p>
 
 <b>Ancillary data products</b>
 <p>The four ancillary products, two for ozone and two for air pressure are optional. Here either all or none of the

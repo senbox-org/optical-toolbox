@@ -18,6 +18,7 @@
 package eu.esa.opt.dataio.nitf;
 
 import org.esa.snap.core.dataio.ProductReader;
+import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.dataio.gdal.reader.plugins.NITFDriverProductReaderPlugIn;
 import java.io.File;
@@ -37,8 +38,12 @@ public class GDALNITFReaderWrapper {
     private final Product bandProduct;
 
     public GDALNITFReaderWrapper(File file) throws IOException {
+        this(file, null);
+    }
+
+    public GDALNITFReaderWrapper(File file, ProductSubsetDef subsetDef) throws IOException {
         reader = readerPlugin.createReaderInstance();
-        bandProduct =  reader.readProductNodes(file, null);
+        bandProduct =  reader.readProductNodes(file, subsetDef);
     }
 
     public ProductReader getReader(){
