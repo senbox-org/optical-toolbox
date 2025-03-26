@@ -63,7 +63,7 @@ public class BiophysicalOp extends PixelOperator {
     @SourceProduct(alias = "source", description = "The source product.")
     private Product sourceProduct;
 
-    @Parameter(defaultValue = "S2A", label = "Sensor", description = "Sensor", valueSet = {"S2A", "S2B"})
+    @Parameter(defaultValue = "S2A", label = "Sensor", description = "Sensor", valueSet = {"S2A", "S2B", "S2C"})
     private String sensor;
 
     @Parameter(alias = "resolution",
@@ -89,8 +89,8 @@ public class BiophysicalOp extends PixelOperator {
     @Parameter(defaultValue = "true", label = "Compute CWC", description = "Compute Cw (Canopy Water Content)")
     private boolean computeCw;
 
-    private final Pattern S2L2APattern = Pattern.compile("S2[A-B]_MSIL2A_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
-    private final Pattern S2L1CPattern = Pattern.compile("S2[A-B]_MSIL1C_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
+    private final Pattern S2L2APattern = Pattern.compile("S2[A-C]_MSIL2A_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
+    private final Pattern S2L1CPattern = Pattern.compile("S2[A-C]_MSIL1C_\\d{8}T\\d{6}_N\\d{4}_R\\d{3}_T\\d{2}\\w{3}_\\d{8}T\\d{6}");
 
     private boolean needsResample = false;
     private List<BiophysicalVariable> biophysicalVariables;

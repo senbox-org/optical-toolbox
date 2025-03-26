@@ -59,7 +59,7 @@ public class Biophysical10mOp extends PixelOperator {
     @SourceProduct(alias = "source", description = "The source product.")
     private Product sourceProduct;
 
-    @Parameter(defaultValue = "S2A_10m", label = "Sensor", description = "Sensor", valueSet = {"S2A_10m", "S2B_10m"})
+    @Parameter(defaultValue = "S2A_10m", label = "Sensor", description = "Sensor", valueSet = {"S2A_10m", "S2B_10m", "S2C_10m"})
     private String sensor;
 
     @Parameter(defaultValue = "true", label = "Compute LAI", description = "Compute LAI (Leaf Area Index)")
