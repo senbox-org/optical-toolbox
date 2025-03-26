@@ -16,6 +16,7 @@
 
 package eu.esa.opt.biophysical;
 
+import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.biophysical.BiophysicalAlgo;
 import eu.esa.opt.biophysical.BiophysicalAuxdata;
 import eu.esa.opt.biophysical.BiophysicalModel;
@@ -57,6 +58,28 @@ public class BiophysicalAlgoTest {
     public void testFCOVER_S2B() throws IOException {
         testVariable(BiophysicalVariable.FCOVER, BiophysicalModel.S2B);
     }
+    @Test
+    @STTM("SNAP-3974")
+    public void testLAI_S2C() throws IOException {
+        testVariable(BiophysicalVariable.LAI, BiophysicalModel.S2C);
+    }
+
+    //S2C_tests
+    @Test
+    @STTM("SNAP-3974")
+    public void testCAB_S2C() throws IOException {
+        testVariable(BiophysicalVariable.LAI_Cab, BiophysicalModel.S2C);
+    }
+    @Test
+    @STTM("SNAP-3974")
+    public void testFAPAR_S2C() throws IOException {
+        testVariable(BiophysicalVariable.FAPAR, BiophysicalModel.S2C);
+    }
+    @Test
+    @STTM("SNAP-3974")
+    public void testFCOVER_S2C() throws IOException {
+        testVariable(BiophysicalVariable.FCOVER, BiophysicalModel.S2C);
+    }
 
     //S2A_10m_tests
     @Test
@@ -71,8 +94,6 @@ public class BiophysicalAlgoTest {
     public void testFCOVER_S2A_10m() throws IOException {
         testVariable(BiophysicalVariable.FCOVER, BiophysicalModel.S2A_10m);
     }
-
-
 
     private void testVariable(BiophysicalVariable biophysicalVariable, BiophysicalModel biophysicalModel) throws IOException {
         BiophysicalAuxdata biophysicalVariableData = BiophysicalAuxdata.makeBiophysicalAuxdata(biophysicalVariable, biophysicalModel);

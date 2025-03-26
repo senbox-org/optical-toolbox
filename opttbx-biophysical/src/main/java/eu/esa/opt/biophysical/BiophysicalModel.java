@@ -7,8 +7,10 @@ public enum BiophysicalModel {
 
     S2A("S2A", true, true, true, true, true),
     S2B("S2B", true, true, true, true, true),
+    S2C("S2C", true, true, true, true, true),
     S2A_10m("S2A_10m", true, false, false, true, true),
     S2B_10m("S2B_10m", true, false, false, true, true),
+    S2C_10m("S2C_10m", true, false, false, true, true),
     LANDSAT8("LANDSAT8", true, false, false, true, true);
 
     private final String description;
