@@ -21,9 +21,6 @@ import org.esa.snap.runtime.Config;
 
 import java.util.prefs.Preferences;
 
-import static eu.esa.opt.dataio.s3.util.S3Util.OLCI_L1_CALIBRATION_PATTERN;
-import static eu.esa.opt.dataio.s3.util.S3Util.OLCI_L1_CUSTOM_CALIBRATION;
-
 public class OlciLevel1ProductFactory extends OlciProductFactory {
 
     private final static String validExpression = "!quality_flags.invalid";
@@ -47,11 +44,13 @@ public class OlciLevel1ProductFactory extends OlciProductFactory {
 
     private boolean applyCustomCalibration() {
         final Preferences preferences = loadPreferences();
-        return preferences.getBoolean(OLCI_L1_CUSTOM_CALIBRATION, false);
+        // @todo 1 tb/tb get from factory 2025-04-03
+        return preferences.getBoolean(new OlciContext().getCustomCalibrationKey(), false);
     }
 
     private double getCalibrationOffset(String bandName) {
-        String calibrationOffsetPropertyName = OLCI_L1_CALIBRATION_PATTERN
+        // @todo 1 tb/tb get from factory 2025-04-03
+        String calibrationOffsetPropertyName = new OlciContext().getCalibrationPatternKey()
                 .replace("ID", bandName.toLowerCase())
                 .replace("TYPE", "offset");
         Preferences preferences = loadPreferences();
@@ -64,7 +63,8 @@ public class OlciLevel1ProductFactory extends OlciProductFactory {
     }
 
     protected double getCalibrationFactor(String bandName) {
-        String calibrationFactorPropertyName = OLCI_L1_CALIBRATION_PATTERN
+        // @todo 1 tb/tb get from factory 2025-04-03
+        String calibrationFactorPropertyName = new OlciContext().getCalibrationPatternKey()
                 .replace("ID", bandName.toLowerCase())
                 .replace("TYPE", "factor");
         Preferences preferences = loadPreferences();

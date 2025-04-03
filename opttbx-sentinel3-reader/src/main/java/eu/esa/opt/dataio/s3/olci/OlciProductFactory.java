@@ -22,11 +22,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static eu.esa.opt.dataio.s3.util.S3Util.OLCI_USE_PIXELGEOCODING;
 import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePointCoding;
 
 /**
@@ -207,7 +205,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
 
     @Override
     protected void setGeoCoding(Product targetProduct) throws IOException {
-        if (Config.instance("opttbx").load().preferences().getBoolean(OLCI_USE_PIXELGEOCODING, true)) {
+        // @todo 1 tb/tb move to factory for contexts 2025-04-03
+        if (Config.instance("opttbx").load().preferences().getBoolean(new OlciContext().getUsePixelGeoCodingKey(), true)) {
             setPixelGeoCoding(targetProduct);
         } else {
             setTiePointGeoCoding(targetProduct);
@@ -230,7 +229,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
                 lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKilometers);
 
-        final String[] codingKeys = S3Util.getForwardAndInverseKeys_pixelCoding(S3Util.SYSPROP_OLCI_PIXEL_CODING_INVERSE);
+        // @todo 1 tb/tb reference to factory for getting the module 2025-04-03
+        final String[] codingKeys = S3Util.getForwardAndInverseKeys_pixelCoding(new OlciContext().getInversePixelGeoCodingKey());
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
 

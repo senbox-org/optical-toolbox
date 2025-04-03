@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.annotation.STTM;
+import eu.esa.opt.dataio.s3.olci.OlciContext;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelGeoIndexInverse;
@@ -8,7 +9,6 @@ import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.junit.Test;
 
 import static eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory.SLSTR_L1B_PIXEL_GEOCODING_INVERSE;
-import static eu.esa.opt.dataio.s3.util.S3Util.SYSPROP_OLCI_TIE_POINT_CODING_FORWARD;
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
 import static org.junit.Assert.assertEquals;
 
@@ -85,9 +85,11 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testGetForwardAndInverseKeys_tiePointCoding_forwardKey() {
-        final String forwardKey = System.getProperty(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD);
+        // @todo 2 tb/tb add tests for other sensors 2025-04-03
+        final String tiePointForwardGeoCodingKey = new OlciContext().getTiePointForwardGeoCodingKey();
+        final String forwardKey = System.getProperty(tiePointForwardGeoCodingKey);
         try {
-            System.setProperty(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD, "YEAH!");
+            System.setProperty(tiePointForwardGeoCodingKey, "YEAH!");
 
             final String[] codingKeys = S3Util.getForwardAndInverseKeys_tiePointCoding();
             assertEquals("YEAH!", codingKeys[0]);
@@ -95,9 +97,9 @@ public class S3UtilTest {
 
         } finally {
             if (forwardKey != null) {
-                System.setProperty(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD, forwardKey);
+                System.setProperty(tiePointForwardGeoCodingKey, forwardKey);
             } else {
-                System.clearProperty(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD);
+                System.clearProperty(tiePointForwardGeoCodingKey);
             }
         }
     }
@@ -105,9 +107,11 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testGetForwardAndInverseKeys_tiePointCoding_default() {
-        final String forwardKey = System.getProperty(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD);
+        // @todo 2 tb/tb add tests for other sensors 2025-04-03
+        final String tiePointForwardGeoCodingKey = new OlciContext().getTiePointForwardGeoCodingKey();
+        final String forwardKey = System.getProperty(tiePointForwardGeoCodingKey);
         try {
-            System.clearProperty(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD);
+            System.clearProperty(tiePointForwardGeoCodingKey);
 
             final String[] codingKeys = S3Util.getForwardAndInverseKeys_tiePointCoding();
             assertEquals("FWD_TIE_POINT_BILINEAR", codingKeys[0]);
@@ -115,7 +119,7 @@ public class S3UtilTest {
 
         } finally {
             if (forwardKey != null) {
-                System.setProperty(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD, forwardKey);
+                System.setProperty(tiePointForwardGeoCodingKey, forwardKey);
             }
         }
     }

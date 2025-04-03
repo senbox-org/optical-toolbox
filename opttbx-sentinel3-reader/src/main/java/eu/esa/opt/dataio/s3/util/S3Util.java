@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3.util;
 
+import eu.esa.opt.dataio.s3.olci.OlciContext;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
@@ -13,13 +14,6 @@ import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP
 import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERPOLATING;
 
 public class S3Util {
-
-    // @todo 1 tb/tb move OLCI specific stuff to sensor class 2025-02-11
-    public final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "opttbx.reader.olci.pixelGeoCoding.inverse";
-    public final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "opttbx.reader.olci.tiePointGeoCoding.forward";
-    public final static String OLCI_USE_PIXELGEOCODING = "opttbx.reader.olci.pixelGeoCoding";
-    public final static String OLCI_L1_CUSTOM_CALIBRATION = "opttbx.reader.olcil1.applyCustomCalibration";
-    public final static String OLCI_L1_CALIBRATION_PATTERN = "opttbx.reader.olcil1.ID.calibration.TYPE";
 
     /**
      * Defines the transformation keys for forward and inverse pixel-geocoding transformations
@@ -49,7 +43,8 @@ public class S3Util {
         final String[] codingNames = new String[2];
 
         final Preferences preferences = Config.instance("opttbx").preferences();
-        codingNames[0] = preferences.get(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD, TiePointBilinearForward.KEY);
+        // @todo 1 tb/tb move to factory for type ... 2025-04-03
+        codingNames[0] = preferences.get(new OlciContext().getTiePointForwardGeoCodingKey(), TiePointBilinearForward.KEY);
         codingNames[1] = TiePointInverse.KEY;
 
         return codingNames;

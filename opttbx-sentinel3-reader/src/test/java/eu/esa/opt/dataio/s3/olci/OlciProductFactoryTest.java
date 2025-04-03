@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static eu.esa.opt.dataio.s3.util.S3Util.SYSPROP_OLCI_TIE_POINT_CODING_FORWARD;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

@@ -9,6 +9,7 @@ import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
+import eu.esa.opt.dataio.s3.olci.OlciContext;
 import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
 import eu.esa.opt.dataio.s3.util.LayeredTiePointGrid;
@@ -30,7 +31,6 @@ import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
-import ucar.nc2.AttributeContainer;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -545,8 +545,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     @Override
     public GeoCoding readGeoCoding(Product product) throws IOException {
-
-        if (Config.instance("opttbx").load().preferences().getBoolean(OLCI_USE_PIXELGEOCODING, true)) {
+        // @todo 1 tb/tb move to factory for contexts 2025-04-03
+        if (Config.instance("opttbx").load().preferences().getBoolean(new OlciContext().getUsePixelGeoCodingKey(), true)) {
             // @todo 1 tb/tb distinguish pixel or tiepoint geocoding, load accordingly 2025-02-07
             return createPixelGeoCoding(product);
         } else {
@@ -588,7 +588,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
                 LON_VAR_NAME, LAT_VAR_NAME, lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKm);
 
-        final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(SYSPROP_OLCI_PIXEL_CODING_INVERSE);
+        // @todo 1 tb/tb reference to factory for getting the module 2025-04-03
+        final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(new OlciContext().getInversePixelGeoCodingKey());
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
 
@@ -689,7 +690,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                 }
 
                 // @todo tb refactor 2025-04-03
-                band.setValidPixelExpression( "!quality_flags.invalid");
+                band.setValidPixelExpression("!quality_flags.invalid");
             } else {
                 band.setDescription(descriptor.getDescription());
                 band.setUnit(descriptor.getUnits());
@@ -699,9 +700,11 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     private void applyCustomCalibration(Band band) {
         final Preferences preferences = loadPreferences();
-        preferences.getBoolean(OLCI_L1_CUSTOM_CALIBRATION, false);
+        // @todo 1 tb/tb get from factory 2025-04-03
+        final OlciContext olciContext = new OlciContext();
+        preferences.getBoolean(olciContext.getCustomCalibrationKey(), false);
 
-        final String calibrationOffsetPropertyName = OLCI_L1_CALIBRATION_PATTERN
+        final String calibrationOffsetPropertyName = olciContext.getCalibrationPatternKey()
                 .replace("ID", band.getName().toLowerCase())
                 .replace("TYPE", "offset");
         final double calibrationOffset = preferences.getDouble(calibrationOffsetPropertyName, Double.NaN);
@@ -709,7 +712,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             band.setScalingOffset(calibrationOffset);
         }
 
-        String calibrationFactorPropertyName = OLCI_L1_CALIBRATION_PATTERN
+        String calibrationFactorPropertyName = olciContext.getCalibrationPatternKey()
                 .replace("ID", band.getName().toLowerCase())
                 .replace("TYPE", "factor");
         final double calibrationFactor = preferences.getDouble(calibrationFactorPropertyName, Double.NaN);
@@ -1074,7 +1077,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MetadataProvider
-
     @Override
     public MetadataElement readElement(String name) throws IOException {
         final VariableDescriptor descriptor = metadataMap.get(name);
@@ -1089,7 +1091,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         return extractMetadata(netCDFVariable);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void setMasks(Product targetProduct) {
         final Band[] bands = targetProduct.getBands();

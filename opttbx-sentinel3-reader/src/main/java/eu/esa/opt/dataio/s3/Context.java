@@ -1,0 +1,10 @@
+package eu.esa.opt.dataio.s3;
+
+public interface Context {
+
+    String getInversePixelGeoCodingKey();
+    String getTiePointForwardGeoCodingKey();
+    String getUsePixelGeoCodingKey();
+    String getCustomCalibrationKey();
+    String getCalibrationPatternKey();
+}
