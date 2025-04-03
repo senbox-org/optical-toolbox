@@ -104,7 +104,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         return matcher.matches();
     }
 
-    static boolean isLogScaledGeophysicalData(String bandName) {
+    // @todo tb this is OLCI specific 2025-04-03
+    public static boolean isLogScaledGeophysicalData(String bandName) {
         for (final String logScaledBandName : LOG_SCALED_GEO_VARIABLE_NAMES) {
             if (bandName.startsWith(logScaledBandName)) {
                 return true;
@@ -113,7 +114,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         return false;
     }
 
-    static String stripLogFromUnit(String unitString) {
+    public static String stripLogFromUnit(String unitString) {
         if (StringUtils.isNullOrEmpty(unitString)) {
             return "";
         }
@@ -135,7 +136,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         return unitString;
     }
 
-    static String stripLogFromDescription(String description) {
+    // @todo 1 tb/tb refactor, add tests etc 2025-04-03
+    public static String stripLogFromDescription(String description) {
         if (StringUtils.isNullOrEmpty(description)) {
             return "";
         }

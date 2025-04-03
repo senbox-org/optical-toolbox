@@ -110,7 +110,7 @@ public class DDDBTest {
         variableDescriptors = dddb.getVariableDescriptors("Oa07_radiance.nc", "OL_1_EFR", null);
         assertEquals(1, variableDescriptors.length);
         assertEquals("Oa07_radiance", variableDescriptors[0].getName());
-        assertEquals("float32", variableDescriptors[0].getDataType());
+        assertEquals("uint16", variableDescriptors[0].getDataType());
         assertEquals("!quality_flags.invalid", variableDescriptors[0].getValidExpression());
         assertEquals("mW.m-2.sr-1.nm-1", variableDescriptors[0].getUnits());
         assertEquals("TOA radiance for OLCI acquisition band Oa07", variableDescriptors[0].getDescription());
@@ -144,6 +144,10 @@ public class DDDBTest {
 
         variableDescriptors = dddb.getVariableDescriptors("tie_meteo.nc", "OL_1_EFR", null);
         assertEquals(7, variableDescriptors.length);
+        assertEquals("Air temperature profile", variableDescriptors[0].getDescription());
+        assertEquals("_pressure_level_", variableDescriptors[0].getDepthPrefixToken());
+        assertEquals("Horizontal wind vector at 10m altitude", variableDescriptors[1].getDescription());
+        assertEquals("_vector_", variableDescriptors[1].getDepthPrefixToken());
         assertEquals("Mean sea level pressure", variableDescriptors[4].getDescription());
 
         variableDescriptors = dddb.getVariableDescriptors("time_coordinates.nc", "OL_1_EFR", null);

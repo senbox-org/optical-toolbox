@@ -8,6 +8,7 @@
     "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
     "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
     "depth" : 25,
+    "depthPrefixToken" : "_pressure_level_",
     "units" : "K",
     "description" : "Air temperature profile"
   },
@@ -20,6 +21,7 @@
     "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
     "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
     "depth" : 2,
+    "depthPrefixToken" : "_vector_",
     "units" : "m.s-1",
     "description" : "Horizontal wind vector at 10m altitude"
   },

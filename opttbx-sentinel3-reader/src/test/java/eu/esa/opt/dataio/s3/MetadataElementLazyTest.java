@@ -7,6 +7,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.ProductNodeGroup;
 import org.junit.Before;
 import org.junit.Test;
+import ucar.nc2.Variable;
 
 import java.io.IOException;
 
@@ -154,23 +155,22 @@ public class MetadataElementLazyTest {
     private static class MockAttributeProvider implements MetadataProvider {
 
         @Override
-        public MetadataElement[] readElements(String name) throws IOException {
+        public MetadataElement readElement(String name) throws IOException {
             MetadataElement container = new MetadataElement("container_name_not_relevant_here");
+
             container.addElement(new MetadataElement("Himpelchen"));
             container.addElement(new MetadataElement("Pimpelchen"));
 
-            return new MetadataElement[] {container};
-        }
-
-        @Override
-        public MetadataAttribute[] readAttributes(String name) throws IOException {
             final MetadataAttribute[] metadataAttributes = new MetadataAttribute[4];
 
             metadataAttributes[0] = new MetadataAttribute("one", ProductData.createInstance(new int[]{1}), true);
             metadataAttributes[1] = new MetadataAttribute("two", ProductData.createInstance(new short[]{2, 3}), true);
             metadataAttributes[2] = new MetadataAttribute("three", ProductData.createInstance(new float[]{4, 5, 6}), true);
             metadataAttributes[3] = new MetadataAttribute("four", ProductData.createInstance(new double[]{7, 8, 9, 10}), true);
-            return metadataAttributes;
+            for(MetadataAttribute attribute : metadataAttributes) {
+                container.addAttribute(attribute);
+            }
+            return container;
         }
     }
 }

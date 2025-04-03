@@ -17,7 +17,7 @@
   },
   {
     "name": "frame_offset",
-    "dataType": "int8",
+    "dataType": "int16",
     "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "description" : "Re-sampling along-track frame offset"

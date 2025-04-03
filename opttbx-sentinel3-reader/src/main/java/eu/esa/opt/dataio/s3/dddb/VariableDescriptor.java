@@ -15,6 +15,7 @@ public class VariableDescriptor {
     private int tpSubsamplingX;
     private int tpSubsamplingY;
     private int depth;
+    private String depthPrefixToken;
     private String fileName;
     private String validExpression;
     private String units;
@@ -25,6 +26,7 @@ public class VariableDescriptor {
         width = -1;
         height = -1;
         depth = -1;
+        depthPrefixToken = "";
         validExpression = "";
         units = "";
         description = "";
@@ -140,6 +142,14 @@ public class VariableDescriptor {
 
     public void setDepth(int depth) {
         this.depth = depth;
+    }
+
+    public String getDepthPrefixToken() {
+        return depthPrefixToken;
+    }
+
+    public void setDepthPrefixToken(String depthPrefixToken) {
+        this.depthPrefixToken = depthPrefixToken;
     }
 
     public String getFileName() {

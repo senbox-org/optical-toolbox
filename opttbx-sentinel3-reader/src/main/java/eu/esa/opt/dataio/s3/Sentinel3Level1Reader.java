@@ -9,7 +9,9 @@ import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
-import eu.esa.opt.dataio.s3.util.LazyLoadingTiePointGrid;
+import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
+import eu.esa.opt.dataio.s3.util.ColorProvider;
+import eu.esa.opt.dataio.s3.util.LayeredTiePointGrid;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -28,11 +30,13 @@ import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
+import ucar.nc2.AttributeContainer;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +50,9 @@ import java.util.TreeMap;
 import java.util.prefs.Preferences;
 
 import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.isLogScaledUnit;
+import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.stripLogFromDescription;
+import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
 import static eu.esa.opt.dataio.s3.util.S3Util.*;
 
 public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider {
@@ -75,11 +82,13 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private final Map<String, Integer> nameToIndexMap;
     private VirtualDir virtualDir;
     private Manifest manifest;
+    private ColorProvider colorProvider;
 
     protected Sentinel3Level1Reader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         virtualDir = null;
         manifest = null;
+        colorProvider = null;
         dddb = DDDB.getInstance();
         // the treemap sorts the entries alphanumerically - as these data should be displayed in the SNAP product tree tb 2025-02-04
         variablesMap = new TreeMap<>();
@@ -155,25 +164,27 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     // @todo 2 tb/tb add tests for this 2025-02-04
-    private static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, Variable netCDFVariable) throws IOException {
+    private static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, Variable netCDFVariable, boolean rawData) throws IOException {
         final int[] sliceOffset;
         final int[] sliceDimensions;
         final int[] stride;
 
         final int layerIdx = rasterExtract.getLayerIdx();
         if (layerIdx >= 0) {
-            sliceOffset = new int[] {rasterExtract.getYOffset(), rasterExtract.getXOffset(), layerIdx};
+            sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset(), layerIdx};
             sliceDimensions = new int[]{rasterExtract.getHeight(), rasterExtract.getWidth(), 1};
-            stride = new int[] {rasterExtract.getStepY(), rasterExtract.getStepX(), 1};
+            stride = new int[]{rasterExtract.getStepY(), rasterExtract.getStepX(), 1};
         } else {
-            sliceOffset = new int[] {rasterExtract.getYOffset(), rasterExtract.getXOffset()};
+            sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset()};
             sliceDimensions = new int[]{rasterExtract.getHeight(), rasterExtract.getWidth()};
-            stride = new int[] {rasterExtract.getStepY(), rasterExtract.getStepX()};
+            stride = new int[]{rasterExtract.getStepY(), rasterExtract.getStepX()};
         }
 
         try {
             Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride);
-            sliceData = ReaderUtils.scaleArray(sliceData, netCDFVariable);
+            if (!rawData) {
+                sliceData = ReaderUtils.scaleArray(sliceData, netCDFVariable);
+            }
             assignResultData(destBuffer, sliceData);
         } catch (InvalidRangeException e) {
             throw new IOException(e);
@@ -249,6 +260,21 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
         final String numberString = layerName.substring(index + band.length());
         return Integer.parseInt(numberString);
+    }
+
+    // package access for testing only tb 2025-02-12
+    static int getLayerIndexFromTiePointName(String layerName, VariableDescriptor variableDescriptor) {
+        final String token = variableDescriptor.getDepthPrefixToken();
+        if (StringUtils.isNotNullAndNotEmpty(token)) {
+            final int index = layerName.indexOf(token);
+            if (index < 0) {
+                return -1;
+            }
+            final String numberString = layerName.substring(index + token.length());
+            return Integer.parseInt(numberString);
+        }
+
+        return -1;
     }
 
     private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
@@ -484,7 +510,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             }
         }
 
-        // create a naked produt
+        // create a naked product
         final String productName = manifest.getProductName();
         final String productType = manifest.getProductType();
         final String baselineCollection = manifest.getBaselineCollection();
@@ -504,6 +530,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         addVariables(product);
         addTiePointGrids(product, manifest);
         addSpecialBands(product, manifest);
+        setMasks(product);
 
         // metadata
         final MetadataElement metadataRoot = product.getMetadataRoot();
@@ -518,6 +545,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     @Override
     public GeoCoding readGeoCoding(Product product) throws IOException {
+
         if (Config.instance("opttbx").load().preferences().getBoolean(OLCI_USE_PIXELGEOCODING, true)) {
             // @todo 1 tb/tb distinguish pixel or tiepoint geocoding, load accordingly 2025-02-07
             return createPixelGeoCoding(product);
@@ -541,10 +569,10 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final ProductData productDataLat = ProductData.createInstance(new double[width * height]);
 
         final VariableDescriptor lonDescriptor = variablesMap.get(LON_VAR_NAME);
-        readData(rasterExtract, productDataLon, lonDescriptor, LON_VAR_NAME);
+        readData(rasterExtract, productDataLon, lonDescriptor, LON_VAR_NAME, false);
 
         final VariableDescriptor latDescriptor = variablesMap.get(LAT_VAR_NAME);
-        readData(rasterExtract, productDataLat, latDescriptor, LAT_VAR_NAME);
+        readData(rasterExtract, productDataLat, latDescriptor, LAT_VAR_NAME, false);
 
         // @todo 1 tb/tb read from sensor specific class 2025-02-07
         final double resolutionInKm;
@@ -589,8 +617,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final ProductData productDataLat = ProductData.createInstance(new double[bufferSize]);
 
         final RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
-        readData(rasterExtract, productDataLon, lonDescriptor, TP_LON_VAR_NAME);
-        readData(rasterExtract, productDataLat, latDescriptor, TP_LAT_VAR_NAME);
+        readData(rasterExtract, productDataLon, lonDescriptor, TP_LON_VAR_NAME, true);
+        readData(rasterExtract, productDataLat, latDescriptor, TP_LAT_VAR_NAME, true);
 
         // @todo 1 tb/tb read from sensor specific class 2025-02-07
         final double resolutionInKm;
@@ -626,6 +654,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             final String bandname = descriptor.getName();
 
             final Band band = new BandUsingReaderDirectly(bandname, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+
+
             product.addBand(band);
 
             final String bandKey = bandNameToKey(bandname);
@@ -639,10 +669,31 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                 band.setSpectralBandIndex(nameToIndexMap.get(bandKey));
             }
 
-            Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
+            final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
             addSampleCodings(product, band, netCDFVariable, false);
+            //addFillValue(netCDFVariable, band);
+            band.setScalingFactor(getScalingFactor(netCDFVariable));
+            band.setScalingOffset(getAddOffset(netCDFVariable));
+            addFillValue(band, netCDFVariable);
 
             applyCustomCalibration(band);
+
+            if (OlciProductFactory.isUncertaintyBand(bandname) || OlciProductFactory.isLogScaledGeophysicalData(bandname)) {
+                final String unit = descriptor.getUnits();
+                if (isLogScaledUnit(unit)) {
+                    band.setLog10Scaled(true);
+                    band.setUnit(OlciProductFactory.stripLogFromUnit(unit));
+
+                    final String description = descriptor.getDescription();
+                    band.setDescription(stripLogFromDescription(description));
+                }
+
+                // @todo tb refactor 2025-04-03
+                band.setValidPixelExpression( "!quality_flags.invalid");
+            } else {
+                band.setDescription(descriptor.getDescription());
+                band.setUnit(descriptor.getUnits());
+            }
         }
     }
 
@@ -686,15 +737,17 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             if (depth != -1) {
                 // @todo 1 tb/tb this is the simplest make-it-work-hack. Refactor and merge with existing
                 // functionality - add tests! 2025-02-14
+                final String layerPrefix = tiePointName + descriptor.getDepthPrefixToken();
                 for (int layer = 1; layer <= depth; layer++) {
-                    String layerName = tiePointName + "_pressure_level_" + layer;
-                    final TiePointGrid tiePointGrid = new LazyLoadingTiePointGrid(this, layerName, tpRasterWidth, tpRasterHeight, 0.0, 0.0, subsamplingX, subsamplingY);
+                    final String layerName = layerPrefix + layer;
+                    final LayeredTiePointGrid tiePointGrid = new LayeredTiePointGrid(layerName, tpRasterWidth, tpRasterHeight, 0.0, 0.0, subsamplingX, subsamplingY);
                     tiePointGrid.setDescription(descriptor.getDescription());
                     tiePointGrid.setUnit(descriptor.getUnits());
+                    tiePointGrid.setVariableName(tiePointName);
                     product.addTiePointGrid(tiePointGrid);
                 }
             } else {
-                final TiePointGrid tiePointGrid = new LazyLoadingTiePointGrid(this, tiePointName, tpRasterWidth, tpRasterHeight, 0.0, 0.0, subsamplingX, subsamplingY);
+                final TiePointGrid tiePointGrid = new TiePointGrid(tiePointName, tpRasterWidth, tpRasterHeight, 0.0, 0.0, subsamplingX, subsamplingY);
                 tiePointGrid.setDescription(descriptor.getDescription());
                 tiePointGrid.setUnit(descriptor.getUnits());
                 product.addTiePointGrid(tiePointGrid);
@@ -740,9 +793,9 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final Attribute fillValueAttribute = variable.findAttribute(fillValue);
         if (fillValueAttribute != null) {
             //todo double is not always correct
+            band.setNoDataValueUsed(!band.isFlagBand());
             band.setNoDataValue(fillValueAttribute.getNumericValue().doubleValue());
             // enable only if it is not a flag band
-            band.setNoDataValueUsed(!band.isFlagBand());
         }
     }
 
@@ -865,35 +918,48 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
         }
 
-        readData(rasterExtract, destBuffer, descriptor, name);
+        readData(rasterExtract, destBuffer, descriptor, name, true);
     }
 
     @Override
     public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
         final String tpGridName = tpg.getName();
 
-        final VariableDescriptor descriptor;
-        final RasterExtract rasterExtract;
-        // check if 3d variable
-        if (isPressureLevelName(tpGridName)) {
-            // extract tp variable name
-            String gridVariableName = getVariableNameFromPressureLevelName(tpGridName);
+        final ProductData gridData = tpg.getData();
+        if (gridData == null) {
 
-            // get VariableDescriptor for it
-            descriptor = tiepointMap.get(gridVariableName);
-            // extract layer index from name
-            int layer = getLayerIndexFromPressureLevelName(tpGridName);
-            // create RasterÉxtract accordingly - subsetting just one layer from 3d
-            rasterExtract = new RasterExtract(destOffsetX, destOffsetY, destWidth, destHeight, 1, 1, layer - 1);
-            readData(rasterExtract, destBuffer, descriptor, gridVariableName);
-        } else {
-            descriptor = tiepointMap.get(tpGridName);
-            rasterExtract = new RasterExtract(destOffsetX, destOffsetY, destWidth, destHeight, 1, 1);
-            readData(rasterExtract, destBuffer, descriptor, tpGridName);
+            final String ncVariableName;
+            if (tpg instanceof LayeredTiePointGrid) {
+                ncVariableName = ((LayeredTiePointGrid) tpg).getVariableName();
+            } else {
+                ncVariableName = tpGridName;
+            }
+
+            final VariableDescriptor descriptor = tiepointMap.get(ncVariableName);
+            final Variable netCDFVariable = getNetCDFVariable(descriptor, ncVariableName);
+
+            Array rawDataArray = getRawData(tpGridName, netCDFVariable);
+            final int layer = getLayerIndexFromTiePointName(tpGridName, descriptor);
+            if (layer >= 0) {
+                final int[] sliceOffset = new int[]{0, 0, layer - 1};  // shift to zero based z coord. tb 2025-03-26
+                final int[] sliceDimensions = new int[]{tpg.getGridHeight(), tpg.getGridWidth(), 1};
+                final int[] stride = new int[]{1, 1, 1};
+                try {
+                    rawDataArray = rawDataArray.section(sliceOffset, sliceDimensions, stride);
+                } catch (InvalidRangeException e) {
+                    throw new IOException(e);
+                }
+            }
+
+            final Array scaledData = ReaderUtils.scaleArray(rawDataArray, netCDFVariable);
+            final ProductData tiePointData = ProductData.createInstance((float[]) scaledData.get1DJavaArray(DataType.FLOAT));
+            tpg.setData(tiePointData);
         }
+
+        System.arraycopy(tpg.getGridData().getElems(), 0, destBuffer.getElems(), 0, destWidth * destHeight);
     }
 
-    private synchronized void readData(RasterExtract rasterExtract, ProductData destBuffer, VariableDescriptor descriptor, String name) throws IOException {
+    private synchronized void readData(RasterExtract rasterExtract, ProductData destBuffer, VariableDescriptor descriptor, String name, boolean rawData) throws IOException {
         final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
         final Array rawDataArray = getRawData(name, netCDFVariable);
 
@@ -901,7 +967,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             // create line buffer
             final ProductData lineBuffer = ProductData.createInstance(new float[rasterExtract.getWidth()]);
             // read line
-            extractSubset(rasterExtract, lineBuffer, rawDataArray, netCDFVariable);
+            extractSubset(rasterExtract, lineBuffer, rawDataArray, netCDFVariable, rawData);
             // duplicate data over Y dimension to destination buffer
             final float[] targetBuffer = (float[]) destBuffer.getElems();
             final float[] lineBufferElems = (float[]) lineBuffer.getElems();
@@ -917,7 +983,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                 offset += lineLenght;
             }
         } else {
-            extractSubset(rasterExtract, destBuffer, rawDataArray, netCDFVariable);
+            extractSubset(rasterExtract, destBuffer, rawDataArray, netCDFVariable, rawData);
         }
     }
 
@@ -1006,55 +1072,59 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MetadataProvider
 
     @Override
-    public MetadataElement[] readElements(String name) throws IOException {
+    public MetadataElement readElement(String name) throws IOException {
         final VariableDescriptor descriptor = metadataMap.get(name);
         if (descriptor == null) {
-            return new MetadataElement[0];
+            return null;
         }
-
         final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
-        if (netCDFVariable.getRank() != 2 || !"bands".equals(netCDFVariable.getDimension(0).getFullName())) {
-            return new MetadataElement[0];
+        if (netCDFVariable == null) {
+            return null;
         }
 
-        final String variableName = netCDFVariable.getFullName();
-        final MetadataElement variableElement = new MetadataElement(variableName);
-        final float[][] contentMatrix = (float[][]) netCDFVariable.read().copyToNDJavaArray();
-        final int length = contentMatrix.length;
-
-        for (int i = 0; i < length; i++) {
-            final String elementName = variableName + " for band " + (i + 1);
-            final MetadataElement xElement = new MetadataElement(elementName);
-            final ProductData content = ProductData.createInstance(contentMatrix[i]);
-            final MetadataAttribute covarianceAttribute = new MetadataAttribute(elementName, content, true);
-            xElement.addAttribute(covarianceAttribute);
-            variableElement.addElement(xElement);
-        }
-
-        return new MetadataElement[]{variableElement};
+        return extractMetadata(netCDFVariable);
     }
 
-    @Override
-    public MetadataAttribute[] readAttributes(String name) throws IOException {
-        final VariableDescriptor descriptor = metadataMap.get(name);
-        if (descriptor == null) {
-            return new MetadataAttribute[0];
-        }
-
-        final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
-        if (netCDFVariable.getRank() != 1) {
-            return new MetadataAttribute[0];
-        }
-
-        final Array metaData = netCDFVariable.read();
-        float[] values = (float[]) metaData.copyTo1DJavaArray();
-        final MetadataAttribute attribute = new MetadataAttribute(name, ProductData.createInstance(values), true);
-        return new MetadataAttribute[]{attribute};
-    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    private void setMasks(Product targetProduct) {
+        final Band[] bands = targetProduct.getBands();
+        for (Band band : bands) {
+            final SampleCoding sampleCoding = band.getSampleCoding();
+            if (sampleCoding != null) {
+                final String bandName = band.getName();
+                if (bandName.endsWith("_index")) {
+                    continue;
+                }
+                final boolean isFlagBand = band.isFlagBand();
+                for (int i = 0; i < sampleCoding.getNumAttributes(); i++) {
+                    final String sampleName = sampleCoding.getSampleName(i);
+                    final int sampleValue = sampleCoding.getSampleValue(i);
+                    if (!"spare".equals(sampleName)) {
+                        final String expression;
+                        if (isFlagBand) {
+                            expression = bandName + "." + sampleName;
+                        } else {
+                            expression = bandName + " == " + sampleValue;
+                        }
+                        final String maskName = bandName + "_" + sampleName;
+                        final Color maskColor = getColorProvider().getMaskColor(sampleName);
+                        targetProduct.addMask(maskName, expression, expression, maskColor, 0.5);
+                    }
+                }
+            }
+        }
+    }
+
+    private ColorProvider getColorProvider() {
+        if (colorProvider == null) {
+            colorProvider = new ColorProvider();
+        }
+
+        return colorProvider;
+    }
 }

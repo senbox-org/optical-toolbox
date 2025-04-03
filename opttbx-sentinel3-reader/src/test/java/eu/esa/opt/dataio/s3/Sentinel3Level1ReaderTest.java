@@ -254,4 +254,15 @@ public class Sentinel3Level1ReaderTest {
 
         assertEquals(-1, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("Nasenmann.org"));
     }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testLayerIndexFromTiePointName() {
+        final VariableDescriptor variableDescriptor = new VariableDescriptor();
+        variableDescriptor.setDepthPrefixToken("_pressure_level_");
+        assertEquals(10, Sentinel3Level1Reader.getLayerIndexFromTiePointName("whatever_measured_pressure_level_10", variableDescriptor));
+        assertEquals(6, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("Gandasum_pressure_level_6"));
+
+        assertEquals(-1, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("Nasenmann.org"));
+    }
 }

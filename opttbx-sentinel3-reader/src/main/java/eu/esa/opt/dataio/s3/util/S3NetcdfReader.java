@@ -538,62 +538,67 @@ public class S3NetcdfReader extends AbstractProductReader {
     protected void addVariableMetadata(Variable variable, Product product) {
         List<Dimension> variableDimensions = variable.getDimensions();
         if (variableDimensions.size() == 1) {
-            final MetadataElement variableElement = new MetadataElement(variable.getFullName());
-            final List<Attribute> attributes = variable.getAttributes();
-            for (Attribute attribute : attributes) {
-                if (attribute.getFullName().equals("flag_meanings")) {
-                    final String[] flagMeanings = attribute.getStringValue().split(" ");
-                    for (int i = 0; i < flagMeanings.length; i++) {
-                        String flagMeaning = flagMeanings[i];
-                        final ProductData attributeData = ProductData.createInstance(flagMeaning);
-                        final MetadataAttribute metadataAttribute =
-                                new MetadataAttribute(attribute.getFullName() + "." + i, attributeData, true);
-                        variableElement.addAttribute(metadataAttribute);
-                    }
-                } else {
-                    if (attribute.getValues() != null) {
-                        final ProductData attributeData = getAttributeData(attribute);
-                        final MetadataAttribute metadataAttribute = new MetadataAttribute(attribute.getFullName(), attributeData, true);
-                        variableElement.addAttribute(metadataAttribute);
-                    }
-                }
-            }
-            if (variable.getDataType() != DataType.STRING) {
-                try {
-                    Object data = variable.read().copyTo1DJavaArray();
-                    MetadataAttribute variableAttribute = null;
-                    if (data instanceof float[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((float[]) data), true);
-                    } else if (data instanceof double[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((double[]) data), true);
-                    } else if (data instanceof byte[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((byte[]) data), true);
-                    } else if (data instanceof short[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((short[]) data), true);
-                    } else if (data instanceof int[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((int[]) data), true);
-                    } else if (data instanceof long[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((long[]) data), true);
-                    }
-                    if (variableAttribute != null) {
-                        variableAttribute.setUnit(variable.getUnitsString());
-                        variableAttribute.setDescription(variable.getDescription());
-                        variableElement.addAttribute(variableAttribute);
-                    }
-                } catch (IOException e) {
-                    Logger logger = Logger.getLogger(this.getClass().getName());
-                    logger.severe("Could not read variable " + variable.getFullName());
-                }
-            }
+            final MetadataElement variableElement = extractMetadata(variable);
             product.getMetadataRoot().getElement("Variable_Attributes").addElement(variableElement);
         }
     }
 
-    private int getProductDataType(Attribute attribute) {
+    public static MetadataElement extractMetadata(Variable variable) {
+        final MetadataElement variableElement = new MetadataElement(variable.getFullName());
+        final List<Attribute> attributes = variable.getAttributes();
+        for (Attribute attribute : attributes) {
+            if (attribute.getFullName().equals("flag_meanings")) {
+                final String[] flagMeanings = attribute.getStringValue().split(" ");
+                for (int i = 0; i < flagMeanings.length; i++) {
+                    String flagMeaning = flagMeanings[i];
+                    final ProductData attributeData = ProductData.createInstance(flagMeaning);
+                    final MetadataAttribute metadataAttribute =
+                            new MetadataAttribute(attribute.getFullName() + "." + i, attributeData, true);
+                    variableElement.addAttribute(metadataAttribute);
+                }
+            } else {
+                if (attribute.getValues() != null) {
+                    final ProductData attributeData = getAttributeData(attribute);
+                    final MetadataAttribute metadataAttribute = new MetadataAttribute(attribute.getFullName(), attributeData, true);
+                    variableElement.addAttribute(metadataAttribute);
+                }
+            }
+        }
+        if (variable.getDataType() != DataType.STRING) {
+            try {
+                Object data = variable.read().copyTo1DJavaArray();
+                MetadataAttribute variableAttribute = null;
+                if (data instanceof float[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((float[]) data), true);
+                } else if (data instanceof double[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((double[]) data), true);
+                } else if (data instanceof byte[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((byte[]) data), true);
+                } else if (data instanceof short[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((short[]) data), true);
+                } else if (data instanceof int[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((int[]) data), true);
+                } else if (data instanceof long[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((long[]) data), true);
+                }
+                if (variableAttribute != null) {
+                    variableAttribute.setUnit(variable.getUnitsString());
+                    variableAttribute.setDescription(variable.getDescription());
+                    variableElement.addAttribute(variableAttribute);
+                }
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(S3NetcdfReader.class.getName());
+                logger.severe("Could not read variable " + variable.getFullName());
+            }
+        }
+        return variableElement;
+    }
+
+    public static int getProductDataType(Attribute attribute) {
         return DataTypeUtils.getEquivalentProductDataType(attribute.getDataType(), false, false);
     }
 
-    protected ProductData getAttributeData(Attribute attribute) {
+    public static  ProductData getAttributeData(Attribute attribute) {
         int type = getProductDataType(attribute);
         final Array attributeValues = attribute.getValues();
         ProductData productData = null;
@@ -648,7 +653,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         return productData;
     }
 
-    private Object convertShortToByteArray(Object array) {
+    public static Object convertShortToByteArray(Object array) {
         if (array instanceof short[]) {
             short[] shortArray = (short[]) array;
             byte[] newArray = new byte[shortArray.length];
@@ -660,7 +665,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         return array;
     }
 
-    private Object convertIntToShortArray(Object array) {
+    public static Object convertIntToShortArray(Object array) {
         if (array instanceof int[]) {
             int[] intArray = (int[]) array;
             short[] newArray = new short[intArray.length];
@@ -672,7 +677,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         return array;
     }
 
-    private Object convertLongToIntArray(Object array) {
+    public static Object convertLongToIntArray(Object array) {
         if (array instanceof long[]) {
             long[] longArray = (long[]) array;
             int[] newArray = new int[longArray.length];
