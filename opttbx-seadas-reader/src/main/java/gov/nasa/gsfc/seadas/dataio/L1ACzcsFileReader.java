@@ -105,13 +105,9 @@ public class L1ACzcsFileReader extends SeadasFileReader {
         if (productName == null) {
             productName = productReader.getInputFile().getName();
         }
-        mustFlipX = mustFlipY = getDefaultFlip();
+        mustFlipX = false;
+        mustFlipY = getDefaultFlip();
         SeadasProductReader.ProductType productType = productReader.getProductType();
-        if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
-                productType == SeadasProductReader.ProductType.Level2_CZCS ||
-                productType == SeadasProductReader.ProductType.Level2_Pace ||
-                productType == SeadasProductReader.ProductType.Level2_PaceOCIS)
-            mustFlipX = false;
 
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
         product.setDescription(productName);
