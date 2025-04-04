@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.s3.olci;
 
 import com.bc.ceres.annotation.STTM;
+import eu.esa.opt.dataio.s3.util.GeoLocationNames;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,5 +44,15 @@ public class OlciContextTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testGetCalibrationPatternKey() {
         assertEquals("opttbx.reader.olcil1.ID.calibration.TYPE", olciContext.getCalibrationPatternKey());
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testGetGeoLocationNames() {
+        final GeoLocationNames geoLocationNames = olciContext.getGeoLocationNames();
+        assertEquals("longitude", geoLocationNames.getLongitudeName());
+        assertEquals("latitude", geoLocationNames.getLatitudeName());
+        assertEquals("TP_longitude", geoLocationNames.getTpLongitudeName());
+        assertEquals("TP_latitude", geoLocationNames.getTpLatitudeName());
     }
 }

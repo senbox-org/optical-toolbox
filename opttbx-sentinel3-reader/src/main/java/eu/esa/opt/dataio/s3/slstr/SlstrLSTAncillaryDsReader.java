@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3.slstr;
 
+import eu.esa.opt.dataio.s3.util.CFConstants;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
@@ -25,8 +26,8 @@ class SlstrLSTAncillaryDsReader extends S3NetcdfReader {
             final Variable validationVariable = netcdfFile.findVariable("validation");
             if(validationVariable != null) {
                 try {
-                    final Attribute validationMeanings = validationVariable.findAttribute("flag_meanings");
-                    final Attribute validationValues = validationVariable.findAttribute("flag_values");
+                    final Attribute validationMeanings = validationVariable.findAttribute(CFConstants.FLAG_MEANINGS);
+                    final Attribute validationValues = validationVariable.findAttribute(CFConstants.FLAG_VALUES);
                     final Array validationFlags = validationVariable.read();
                     final MetadataElement element =
                             product.getMetadataRoot().getElement("Variable_Attributes").getElement(variable.getFullName());

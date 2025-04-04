@@ -11,7 +11,9 @@ import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.olci.OlciContext;
 import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
+import eu.esa.opt.dataio.s3.util.CFConstants;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
+import eu.esa.opt.dataio.s3.util.GeoLocationNames;
 import eu.esa.opt.dataio.s3.util.LayeredTiePointGrid;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
@@ -53,21 +55,10 @@ import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.isLogScaledUnit;
 import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.stripLogFromDescription;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
-import static eu.esa.opt.dataio.s3.util.S3Util.*;
+import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_pixelCoding;
+import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePointCoding;
 
 public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider {
-
-    // @todo 1 tb/tb move to OLCI specific class 2025-02-12
-    public static final String LON_VAR_NAME = "longitude";
-    public static final String LAT_VAR_NAME = "latitude";
-    public static final String TP_LON_VAR_NAME = "TP_longitude";
-    public static final String TP_LAT_VAR_NAME = "TP_latitude";
-
-    // @todo 1 tb/tb move to general utilities class 2025-02-12
-    private static final String flag_values = "flag_values";
-    private static final String flag_masks = "flag_masks";
-    private static final String flag_meanings = "flag_meanings";
-    private static final String fillValue = "_FillValue";
 
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
@@ -555,8 +546,11 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     private ComponentGeoCoding createPixelGeoCoding(Product product) throws IOException {
-        final Band lonBand = product.getBand(LON_VAR_NAME);
-        final Band latBand = product.getBand(LAT_VAR_NAME);
+        // @todo 1 tb/tb reference to factory for getting the module 2025-04-04
+        final OlciContext olciContext = new OlciContext();
+        final GeoLocationNames geoLocationNames = olciContext.getGeoLocationNames();
+        final Band lonBand = product.getBand(geoLocationNames.getLongitudeName());
+        final Band latBand = product.getBand(geoLocationNames.getLatitudeName());
         if (lonBand == null || latBand == null) {
             return null;
         }
@@ -568,11 +562,11 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final ProductData productDataLon = ProductData.createInstance(new double[width * height]);
         final ProductData productDataLat = ProductData.createInstance(new double[width * height]);
 
-        final VariableDescriptor lonDescriptor = variablesMap.get(LON_VAR_NAME);
-        readData(rasterExtract, productDataLon, lonDescriptor, LON_VAR_NAME, false);
+        final VariableDescriptor lonDescriptor = variablesMap.get(geoLocationNames.getLongitudeName());
+        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getLongitudeName(), false);
 
-        final VariableDescriptor latDescriptor = variablesMap.get(LAT_VAR_NAME);
-        readData(rasterExtract, productDataLat, latDescriptor, LAT_VAR_NAME, false);
+        final VariableDescriptor latDescriptor = variablesMap.get(geoLocationNames.getLatitudeName());
+        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getLatitudeName(), false);
 
         // @todo 1 tb/tb read from sensor specific class 2025-02-07
         final double resolutionInKm;
@@ -586,10 +580,10 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
 
         final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
-                LON_VAR_NAME, LAT_VAR_NAME, lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKm);
+                geoLocationNames.getLongitudeName(), geoLocationNames.getLatitudeName(),
+                lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKm);
 
-        // @todo 1 tb/tb reference to factory for getting the module 2025-04-03
-        final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(new OlciContext().getInversePixelGeoCodingKey());
+        final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(olciContext.getInversePixelGeoCodingKey());
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
 
@@ -600,15 +594,18 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     private ComponentGeoCoding createTiePointGeoCoding(Product product) throws IOException {
-        TiePointGrid lonGrid = product.getTiePointGrid(TP_LON_VAR_NAME);
-        TiePointGrid latGrid = product.getTiePointGrid(TP_LAT_VAR_NAME);
+        // @todo 1 tb/tb reference to factory for getting the module 2025-04-04
+        final OlciContext olciContext = new OlciContext();
+        final GeoLocationNames geoLocationNames = olciContext.getGeoLocationNames();
+        TiePointGrid lonGrid = product.getTiePointGrid(geoLocationNames.getTpLongitudeName());
+        TiePointGrid latGrid = product.getTiePointGrid(geoLocationNames.getTpLatitudeName());
         if (latGrid == null || lonGrid == null) {
             return null;
         }
 
-        final VariableDescriptor lonDescriptor = tiepointMap.get(TP_LON_VAR_NAME);
+        final VariableDescriptor lonDescriptor = tiepointMap.get(geoLocationNames.getTpLongitudeName());
         ensureWidthAndHeight(lonDescriptor, manifest);
-        final VariableDescriptor latDescriptor = tiepointMap.get(TP_LAT_VAR_NAME);
+        final VariableDescriptor latDescriptor = tiepointMap.get(geoLocationNames.getTpLatitudeName());
         ensureWidthAndHeight(latDescriptor, manifest);
 
         final int width = lonDescriptor.getWidth();
@@ -618,8 +615,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final ProductData productDataLat = ProductData.createInstance(new double[bufferSize]);
 
         final RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
-        readData(rasterExtract, productDataLon, lonDescriptor, TP_LON_VAR_NAME, true);
-        readData(rasterExtract, productDataLat, latDescriptor, TP_LAT_VAR_NAME, true);
+        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getTpLongitudeName(), true);
+        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getTpLatitudeName(), true);
 
         // @todo 1 tb/tb read from sensor specific class 2025-02-07
         final double resolutionInKm;
@@ -632,7 +629,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             throw new RuntimeException("not foreseen to get here");
         }
 
-        final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(), TP_LON_VAR_NAME, TP_LAT_VAR_NAME,
+        final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
+                geoLocationNames.getTpLongitudeName(), geoLocationNames.getTpLatitudeName(),
                 lonGrid.getGridWidth(), lonGrid.getGridHeight(),
                 product.getSceneRasterWidth(), product.getSceneRasterHeight(), resolutionInKm,
                 lonGrid.getOffsetX(), lonGrid.getOffsetY(),
@@ -672,7 +670,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
             final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
             addSampleCodings(product, band, netCDFVariable, false);
-            //addFillValue(netCDFVariable, band);
             band.setScalingFactor(getScalingFactor(netCDFVariable));
             band.setScalingOffset(getAddOffset(netCDFVariable));
             addFillValue(band, netCDFVariable);
@@ -793,7 +790,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
     protected void addFillValue(Band band, Variable variable) {
-        final Attribute fillValueAttribute = variable.findAttribute(fillValue);
+        final Attribute fillValueAttribute = variable.findAttribute(CFConstants.FILL_VALUE);
         if (fillValueAttribute != null) {
             //todo double is not always correct
             band.setNoDataValueUsed(!band.isFlagBand());
@@ -804,9 +801,9 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
     protected void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
-        final Attribute flagValuesAttribute = variable.findAttribute(flag_values);
-        final Attribute flagMasksAttribute = variable.findAttribute(flag_masks);
-        final Attribute flagMeaningsAttribute = variable.findAttribute(flag_meanings);
+        final Attribute flagValuesAttribute = variable.findAttribute(CFConstants.FLAG_VALUES);
+        final Attribute flagMasksAttribute = variable.findAttribute(CFConstants.FLAG_MASKS);
+        final Attribute flagMeaningsAttribute = variable.findAttribute(CFConstants.FLAG_MEANINGS);
         if (flagValuesAttribute != null && flagMasksAttribute != null) {
             final FlagCoding flagCoding =
                     getFlagCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,

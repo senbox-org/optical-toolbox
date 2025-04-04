@@ -4,15 +4,7 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import eu.esa.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.AbstractProductReader;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.FlagCoding;
-import org.esa.snap.core.datamodel.IndexCoding;
-import org.esa.snap.core.datamodel.MetadataAttribute;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.core.datamodel.SampleCoding;
-import org.esa.snap.core.datamodel.VirtualBand;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.dataio.netcdf.util.Constants;
@@ -40,10 +32,7 @@ public class S3NetcdfReader extends AbstractProductReader {
 
     //todo check whether this class is still necessary as most of its functionality is also provided by the default netcdf reader
     private static final String product_type = "product_type";
-    private static final String flag_values = "flag_values";
-    private static final String flag_masks = "flag_masks";
-    private static final String flag_meanings = "flag_meanings";
-    private static final String fillValue = "_FillValue";
+
     private NetcdfFile netcdfFile;
 
     public S3NetcdfReader() {
@@ -204,7 +193,7 @@ public class S3NetcdfReader extends AbstractProductReader {
             final String[][] rowColumnNamePairs = getRowColumnNamePairs();
             for (String[] rowColumnNamePair : rowColumnNamePairs) {
                 if (variable.findDimensionIndex(rowColumnNamePair[0]) != -1 &&
-                    variable.findDimensionIndex(rowColumnNamePair[1]) != -1) {
+                        variable.findDimensionIndex(rowColumnNamePair[1]) != -1) {
                     final String variableName = variable.getFullName();
                     final String[] dimensions = getSeparatingDimensions();
                     final String[] suffixes = getSuffixesForSeparatingDimensions();
@@ -278,7 +267,7 @@ public class S3NetcdfReader extends AbstractProductReader {
     }
 
     protected void addFillValue(Band band, Variable variable) {
-        final Attribute fillValueAttribute = variable.findAttribute(fillValue);
+        final Attribute fillValueAttribute = variable.findAttribute(CFConstants.FILL_VALUE);
         if (fillValueAttribute != null) {
             //todo double is not always correct
             band.setNoDataValue(fillValueAttribute.getNumericValue().doubleValue());
@@ -288,9 +277,9 @@ public class S3NetcdfReader extends AbstractProductReader {
     }
 
     protected void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
-        final Attribute flagValuesAttribute = variable.findAttribute(flag_values);
-        final Attribute flagMasksAttribute = variable.findAttribute(flag_masks);
-        final Attribute flagMeaningsAttribute = variable.findAttribute(flag_meanings);
+        final Attribute flagValuesAttribute = variable.findAttribute(CFConstants.FLAG_VALUES);
+        final Attribute flagMasksAttribute = variable.findAttribute(CFConstants.FLAG_MASKS);
+        final Attribute flagMeaningsAttribute = variable.findAttribute(CFConstants.FLAG_MEANINGS);
         if (flagValuesAttribute != null && flagMasksAttribute != null) {
             final FlagCoding flagCoding =
                     getFlagCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,
@@ -353,13 +342,13 @@ public class S3NetcdfReader extends AbstractProductReader {
                 case BYTE:
                 case UBYTE:
                     sampleCoding.addSample(sampleName,
-                                           DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue()),
-                                           null);
+                            DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue()),
+                            null);
                     break;
                 case SHORT:
                 case USHORT:
                     sampleCoding.addSample(sampleName,
-                                           DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue()), null);
+                            DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue()), null);
                     break;
                 case INT:
                 case UINT:
@@ -547,7 +536,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         final MetadataElement variableElement = new MetadataElement(variable.getFullName());
         final List<Attribute> attributes = variable.getAttributes();
         for (Attribute attribute : attributes) {
-            if (attribute.getFullName().equals("flag_meanings")) {
+            if (attribute.getFullName().equals(CFConstants.FLAG_MEANINGS)) {
                 final String[] flagMeanings = attribute.getStringValue().split(" ");
                 for (int i = 0; i < flagMeanings.length; i++) {
                     String flagMeaning = flagMeanings[i];
@@ -598,7 +587,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         return DataTypeUtils.getEquivalentProductDataType(attribute.getDataType(), false, false);
     }
 
-    public static  ProductData getAttributeData(Attribute attribute) {
+    public static ProductData getAttributeData(Attribute attribute) {
         int type = getProductDataType(attribute);
         final Array attributeValues = attribute.getValues();
         ProductData productData = null;
@@ -654,8 +643,7 @@ public class S3NetcdfReader extends AbstractProductReader {
     }
 
     public static Object convertShortToByteArray(Object array) {
-        if (array instanceof short[]) {
-            short[] shortArray = (short[]) array;
+        if (array instanceof short[] shortArray) {
             byte[] newArray = new byte[shortArray.length];
             for (int i = 0; i < shortArray.length; i++) {
                 newArray[i] = (byte) shortArray[i];
@@ -666,8 +654,7 @@ public class S3NetcdfReader extends AbstractProductReader {
     }
 
     public static Object convertIntToShortArray(Object array) {
-        if (array instanceof int[]) {
-            int[] intArray = (int[]) array;
+        if (array instanceof int[] intArray) {
             short[] newArray = new short[intArray.length];
             for (int i = 0; i < intArray.length; i++) {
                 newArray[i] = (short) intArray[i];
@@ -678,8 +665,7 @@ public class S3NetcdfReader extends AbstractProductReader {
     }
 
     public static Object convertLongToIntArray(Object array) {
-        if (array instanceof long[]) {
-            long[] longArray = (long[]) array;
+        if (array instanceof long[] longArray) {
             int[] newArray = new int[longArray.length];
             for (int i = 0; i < longArray.length; i++) {
                 newArray[i] = (int) longArray[i];
