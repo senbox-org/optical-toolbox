@@ -10,4 +10,5 @@ public interface Context {
     String getCustomCalibrationKey();
     String getCalibrationPatternKey();
     GeoLocationNames getGeoLocationNames();
+    String bandNameToKey(String bandName);
 }

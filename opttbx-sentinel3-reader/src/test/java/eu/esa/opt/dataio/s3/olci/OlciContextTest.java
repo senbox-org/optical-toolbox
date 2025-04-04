@@ -12,7 +12,7 @@ public class OlciContextTest {
     private OlciContext olciContext;
 
     @Before
-    public void setUp()  {
+    public void setUp() {
         olciContext = new OlciContext();
     }
 
@@ -54,5 +54,12 @@ public class OlciContextTest {
         assertEquals("latitude", geoLocationNames.getLatitudeName());
         assertEquals("TP_longitude", geoLocationNames.getTpLongitudeName());
         assertEquals("TP_latitude", geoLocationNames.getTpLatitudeName());
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testBandNameToKey() {
+        assertEquals("Oa01", olciContext.bandNameToKey("Oa01_radiance"));
+        assertEquals("Oa02", olciContext.bandNameToKey("Oa02_radiance_unc"));
     }
 }

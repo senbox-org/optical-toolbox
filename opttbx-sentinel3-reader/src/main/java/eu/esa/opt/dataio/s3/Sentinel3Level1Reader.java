@@ -11,17 +11,13 @@ import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.olci.OlciContext;
 import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
-import eu.esa.opt.dataio.s3.util.CFConstants;
-import eu.esa.opt.dataio.s3.util.ColorProvider;
-import eu.esa.opt.dataio.s3.util.GeoLocationNames;
-import eu.esa.opt.dataio.s3.util.LayeredTiePointGrid;
+import eu.esa.opt.dataio.s3.util.*;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
-import org.esa.snap.dataio.netcdf.util.Constants;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
@@ -189,11 +185,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         destBuffer.setElems(sliceData.get1DJavaArray(netcdfDataType));
     }
 
-    static String bandNameToKey(String bandName) {
-        // @todo 1 tb/tb this is OLCI specific - extract sensor specific class 2025-01-06
-        return bandName.substring(0, 4);
-    }
-
     // package access for testing only tb 2025-02-12
     static String getLayerName(String variableFullName, int i) {
         return variableFullName + "_band_" + i;
@@ -270,11 +261,11 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
                                    Attribute sampleMasks, boolean msb) {
-        final String[] meanings = getSampleMeanings(sampleMeanings);
+        final String[] meanings = S3NetcdfReader.getSampleMeanings(sampleMeanings);
         String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
         final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
         for (int i = 0; i < sampleCount; i++) {
-            final String sampleName = replaceNonWordCharacters(uniqueNames[i]);
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
             switch (sampleMasks.getDataType()) {
                 case BYTE:
                 case UBYTE:
@@ -346,11 +337,11 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
                                    boolean msb) {
-        final String[] meanings = getSampleMeanings(sampleMeanings);
+        final String[] meanings = S3NetcdfReader.getSampleMeanings(sampleMeanings);
         String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
         final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
         for (int i = 0; i < sampleCount; i++) {
-            final String sampleName = replaceNonWordCharacters(uniqueNames[i]);
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
             switch (sampleValues.getDataType()) {
                 case BYTE:
                 case UBYTE:
@@ -383,88 +374,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                     }
                     break;
             }
-        }
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    static String replaceNonWordCharacters(String flagName) {
-        return flagName.replaceAll("\\W+", "_");
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    private static String[] getSampleMeanings(Attribute sampleMeanings) {
-        final int sampleMeaningsCount = sampleMeanings.getLength();
-        if (sampleMeaningsCount == 0) {
-            return new String[0];
-        }
-        if (sampleMeaningsCount > 1) {
-            // handle a common misunderstanding of CF conventions, where flag meanings are stored as array of strings
-            final String[] strings = new String[sampleMeaningsCount];
-            for (int i = 0; i < strings.length; i++) {
-                strings[i] = sampleMeanings.getStringValue(i);
-            }
-            return strings;
-        }
-        return sampleMeanings.getStringValue().split(" ");
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    private static float getSpectralWavelength(Variable variable) {
-        Attribute attribute = variable.findAttribute("wavelength");
-        if (attribute != null) {
-            return getAttributeValue(attribute).floatValue();
-        }
-        return 0f;
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    private static float getSpectralBandwidth(Variable variable) {
-        Attribute attribute = variable.findAttribute("bandwidth");
-        if (attribute != null) {
-            return getAttributeValue(attribute).floatValue();
-        }
-        return 0f;
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    protected static double getScalingFactor(Variable variable) {
-        Attribute attribute = variable.findAttribute(Constants.SCALE_FACTOR_ATT_NAME);
-        if (attribute == null) {
-            attribute = variable.findAttribute(Constants.SLOPE_ATT_NAME);
-        }
-        if (attribute == null) {
-            attribute = variable.findAttribute("scaling_factor");
-        }
-        if (attribute != null) {
-            return getAttributeValue(attribute).doubleValue();
-        }
-        return 1.0;
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    protected static double getAddOffset(Variable variable) {
-        Attribute attribute = variable.findAttribute(Constants.ADD_OFFSET_ATT_NAME);
-        if (attribute == null) {
-            attribute = variable.findAttribute(Constants.INTERCEPT_ATT_NAME);
-        }
-        if (attribute != null) {
-            return getAttributeValue(attribute).doubleValue();
-        }
-        return 0.0;
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    private static Number getAttributeValue(Attribute attribute) {
-        if (attribute.isString()) {
-            String stringValue = attribute.getStringValue();
-            if (stringValue.endsWith("b")) {
-                // Special management for bytes; Can occur in e.g. ASCAT files from EUMETSAT
-                return Byte.parseByte(stringValue.substring(0, stringValue.length() - 1));
-            } else {
-                return Double.parseDouble(stringValue);
-            }
-        } else {
-            return attribute.getNumericValue();
         }
     }
 
@@ -647,17 +556,17 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     private void addVariables(Product product) throws IOException {
+        // @todo 1 tb/tb get from factory 2025-04-03
+        OlciContext context = new OlciContext();
         for (VariableDescriptor descriptor : variablesMap.values()) {
             // @todo 2 - add band - check for other attributes (unit, description, fill value) tb 2025-12-18
             final int dataType = ProductData.getType(descriptor.getDataType());
             final String bandname = descriptor.getName();
 
             final Band band = new BandUsingReaderDirectly(bandname, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
-
-
             product.addBand(band);
 
-            final String bandKey = bandNameToKey(bandname);
+            final String bandKey = context.bandNameToKey(bandname);
             if (nameToWavelengthMap.containsKey(bandKey)) {
                 band.setSpectralWavelength(nameToWavelengthMap.get(bandKey));
             }
@@ -670,12 +579,13 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
             final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
             addSampleCodings(product, band, netCDFVariable, false);
-            band.setScalingFactor(getScalingFactor(netCDFVariable));
-            band.setScalingOffset(getAddOffset(netCDFVariable));
+            band.setScalingFactor(S3Util.getScalingFactor(netCDFVariable));
+            band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
             addFillValue(band, netCDFVariable);
 
             applyCustomCalibration(band);
 
+            // @todo 1 OLCI specific! 2025-04-04
             if (OlciProductFactory.isUncertaintyBand(bandname) || OlciProductFactory.isLogScaledGeophysicalData(bandname)) {
                 final String unit = descriptor.getUnits();
                 if (isLogScaledUnit(unit)) {
@@ -779,10 +689,10 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final Band band = product.addBand(variableName, type);
         band.setDescription(variable.getDescription());
         band.setUnit(variable.getUnitsString());
-        band.setScalingFactor(getScalingFactor(variable));
-        band.setScalingOffset(getAddOffset(variable));
-        band.setSpectralWavelength(getSpectralWavelength(variable));
-        band.setSpectralBandwidth(getSpectralBandwidth(variable));
+        band.setScalingFactor(S3Util.getScalingFactor(variable));
+        band.setScalingOffset(S3Util.getAddOffset(variable));
+        band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
+        band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
         band.setSynthetic(synthetic);
         addSampleCodings(product, band, variable, false);
         addFillValue(band, variable);

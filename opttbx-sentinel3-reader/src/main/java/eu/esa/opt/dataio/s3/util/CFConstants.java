@@ -7,4 +7,7 @@ public class CFConstants {
     public static final String FLAG_MEANINGS = "flag_meanings";
     public static final String FLAG_MASKS = "flag_masks";
     public static final String FLAG_VALUES = "flag_values";
+
+    public static final String SCALE_FACTOR = "scale_factor";
+    public static final String ADD_OFFSET = "add_offset";
 }

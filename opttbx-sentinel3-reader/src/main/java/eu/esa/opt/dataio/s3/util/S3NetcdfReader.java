@@ -234,10 +234,10 @@ public class S3NetcdfReader extends AbstractProductReader {
             final Band lowerBand = product.addBand(variableName + "_lsb", ProductData.TYPE_UINT32);
             lowerBand.setDescription(variable.getDescription() + "(least significant bytes)");
             lowerBand.setUnit(variable.getUnitsString());
-            lowerBand.setScalingFactor(getScalingFactor(variable));
-            lowerBand.setScalingOffset(getAddOffset(variable));
-            lowerBand.setSpectralWavelength(getSpectralWavelength(variable));
-            lowerBand.setSpectralBandwidth(getSpectralBandwidth(variable));
+            lowerBand.setScalingFactor(S3Util.getScalingFactor(variable));
+            lowerBand.setScalingOffset(S3Util.getAddOffset(variable));
+            lowerBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
+            lowerBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             lowerBand.setSynthetic(synthetic);
             addFillValue(lowerBand, variable);
             addSampleCodings(product, lowerBand, variable, false);
@@ -245,10 +245,10 @@ public class S3NetcdfReader extends AbstractProductReader {
             final Band upperBand = product.addBand(variableName + "_msb", ProductData.TYPE_UINT32);
             upperBand.setDescription(variable.getDescription() + "(most significant bytes)");
             upperBand.setUnit(variable.getUnitsString());
-            upperBand.setScalingFactor(getScalingFactor(variable));
-            upperBand.setScalingOffset(getAddOffset(variable));
-            upperBand.setSpectralWavelength(getSpectralWavelength(variable));
-            upperBand.setSpectralBandwidth(getSpectralBandwidth(variable));
+            upperBand.setScalingFactor(S3Util.getScalingFactor(variable));
+            upperBand.setScalingOffset(S3Util.getAddOffset(variable));
+            upperBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
+            upperBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             upperBand.setSynthetic(synthetic);
             addFillValue(upperBand, variable);
             addSampleCodings(product, upperBand, variable, true);
@@ -256,10 +256,10 @@ public class S3NetcdfReader extends AbstractProductReader {
             final Band band = product.addBand(variableName, type);
             band.setDescription(variable.getDescription());
             band.setUnit(variable.getUnitsString());
-            band.setScalingFactor(getScalingFactor(variable));
-            band.setScalingOffset(getAddOffset(variable));
-            band.setSpectralWavelength(getSpectralWavelength(variable));
-            band.setSpectralBandwidth(getSpectralBandwidth(variable));
+            band.setScalingFactor(S3Util.getScalingFactor(variable));
+            band.setScalingOffset(S3Util.getAddOffset(variable));
+            band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
+            band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             band.setSynthetic(synthetic);
             addSampleCodings(product, band, variable, false);
             addFillValue(band, variable);
@@ -337,7 +337,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
         final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
         for (int i = 0; i < sampleCount; i++) {
-            final String sampleName = replaceNonWordCharacters(uniqueNames[i]);
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
             switch (sampleValues.getDataType()) {
                 case BYTE:
                 case UBYTE:
@@ -379,7 +379,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
         final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
         for (int i = 0; i < sampleCount; i++) {
-            final String sampleName = replaceNonWordCharacters(uniqueNames[i]);
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
             switch (sampleMasks.getDataType()) {
                 case BYTE:
                 case UBYTE:
@@ -449,10 +449,10 @@ public class S3NetcdfReader extends AbstractProductReader {
         }
     }
 
-    private static String[] getSampleMeanings(Attribute sampleMeanings) {
+    public static String[] getSampleMeanings(Attribute sampleMeanings) {
         final int sampleMeaningsCount = sampleMeanings.getLength();
         if (sampleMeaningsCount == 0) {
-            return new String[sampleMeaningsCount];
+            return new String[0];
         }
         if (sampleMeaningsCount > 1) {
             // handle a common misunderstanding of CF conventions, where flag meanings are stored as array of strings
@@ -463,65 +463,6 @@ public class S3NetcdfReader extends AbstractProductReader {
             return strings;
         }
         return sampleMeanings.getStringValue().split(" ");
-    }
-
-    static String replaceNonWordCharacters(String flagName) {
-        return flagName.replaceAll("\\W+", "_");
-    }
-
-    private static float getSpectralWavelength(Variable variable) {
-        Attribute attribute = variable.findAttribute("wavelength");
-        if (attribute != null) {
-            return getAttributeValue(attribute).floatValue();
-        }
-        return 0f;
-    }
-
-    private static float getSpectralBandwidth(Variable variable) {
-        Attribute attribute = variable.findAttribute("bandwidth");
-        if (attribute != null) {
-            return getAttributeValue(attribute).floatValue();
-        }
-        return 0f;
-    }
-
-    protected static double getScalingFactor(Variable variable) {
-        Attribute attribute = variable.findAttribute(Constants.SCALE_FACTOR_ATT_NAME);
-        if (attribute == null) {
-            attribute = variable.findAttribute(Constants.SLOPE_ATT_NAME);
-        }
-        if (attribute == null) {
-            attribute = variable.findAttribute("scaling_factor");
-        }
-        if (attribute != null) {
-            return getAttributeValue(attribute).doubleValue();
-        }
-        return 1.0;
-    }
-
-    protected static double getAddOffset(Variable variable) {
-        Attribute attribute = variable.findAttribute(Constants.ADD_OFFSET_ATT_NAME);
-        if (attribute == null) {
-            attribute = variable.findAttribute(Constants.INTERCEPT_ATT_NAME);
-        }
-        if (attribute != null) {
-            return getAttributeValue(attribute).doubleValue();
-        }
-        return 0.0;
-    }
-
-    private static Number getAttributeValue(Attribute attribute) {
-        if (attribute.isString()) {
-            String stringValue = attribute.getStringValue();
-            if (stringValue.endsWith("b")) {
-                // Special management for bytes; Can occur in e.g. ASCAT files from EUMETSAT
-                return Byte.parseByte(stringValue.substring(0, stringValue.length() - 1));
-            } else {
-                return Double.parseDouble(stringValue);
-            }
-        } else {
-            return attribute.getNumericValue();
-        }
     }
 
     protected void addVariableMetadata(Variable variable, Product product) {

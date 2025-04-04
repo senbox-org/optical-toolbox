@@ -172,13 +172,6 @@ public class Sentinel3Level1ReaderTest {
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
-    public void testBandNameToKey() throws IOException {
-        assertEquals("Oa01", Sentinel3Level1Reader.bandNameToKey("Oa01_radiance"));
-        assertEquals("Oa02", Sentinel3Level1Reader.bandNameToKey("Oa02_radiance_unc"));
-    }
-
-    @Test
-    @STTM("SNAP-1696,SNAP-3711")
     public void testAssignResultData() throws IOException {
         final int[] rawData = {12, 13, 14, 15};
         final Array rawArray = Array.factory(DataType.INT, new int[]{2, 2}, rawData);

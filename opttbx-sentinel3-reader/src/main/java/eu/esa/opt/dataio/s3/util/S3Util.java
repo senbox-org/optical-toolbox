@@ -6,7 +6,10 @@ import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
+import org.esa.snap.dataio.netcdf.util.Constants;
 import org.esa.snap.runtime.Config;
+import ucar.nc2.Attribute;
+import ucar.nc2.Variable;
 
 import java.util.prefs.Preferences;
 
@@ -17,6 +20,7 @@ public class S3Util {
 
     /**
      * Defines the transformation keys for forward and inverse pixel-geocoding transformations
+     *
      * @param inverseCodingProperty the property defining the preferences key storing the desired inverse geocoding
      *                              algorithm. Uses the OptTbx part of the preferences.
      * @return and array of keys. Index 0: forward coding, index 1: inverse coding
@@ -48,5 +52,64 @@ public class S3Util {
         codingNames[1] = TiePointInverse.KEY;
 
         return codingNames;
+    }
+
+    public static String replaceNonWordCharacters(String flagName) {
+        return flagName.replaceAll("\\W+", "_");
+    }
+
+    public static float getSpectralWavelength(Variable variable) {
+        final Attribute attribute = variable.findAttribute("wavelength");
+        if (attribute != null) {
+            return getAttributeValue(attribute).floatValue();
+        }
+        return 0f;
+    }
+
+    public static float getSpectralBandwidth(Variable variable) {
+        final Attribute attribute = variable.findAttribute("bandwidth");
+        if (attribute != null) {
+            return S3Util.getAttributeValue(attribute).floatValue();
+        }
+        return 0f;
+    }
+
+    public static Number getAttributeValue(Attribute attribute) {
+        if (attribute.isString()) {
+            String stringValue = attribute.getStringValue();
+            if (stringValue.endsWith("b")) {
+                // Special management for bytes; Can occur in e.g. ASCAT files from EUMETSAT
+                return Byte.parseByte(stringValue.substring(0, stringValue.length() - 1));
+            } else {
+                return Double.parseDouble(stringValue);
+            }
+        } else {
+            return attribute.getNumericValue();
+        }
+    }
+
+    public static double getScalingFactor(Variable variable) {
+        Attribute attribute = variable.findAttribute(CFConstants.SCALE_FACTOR);
+        if (attribute == null) {
+            attribute = variable.findAttribute(Constants.SLOPE_ATT_NAME);
+        }
+        if (attribute == null) {
+            attribute = variable.findAttribute("scaling_factor");
+        }
+        if (attribute != null) {
+            return S3Util.getAttributeValue(attribute).doubleValue();
+        }
+        return 1.0;
+    }
+
+    public static double getAddOffset(Variable variable) {
+        Attribute attribute = variable.findAttribute(CFConstants.ADD_OFFSET);
+        if (attribute == null) {
+            attribute = variable.findAttribute(Constants.INTERCEPT_ATT_NAME);
+        }
+        if (attribute != null) {
+            return S3Util.getAttributeValue(attribute).doubleValue();
+        }
+        return 0.0;
     }
 }

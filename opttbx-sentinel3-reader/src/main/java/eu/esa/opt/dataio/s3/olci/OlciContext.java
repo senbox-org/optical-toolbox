@@ -45,4 +45,9 @@ public class OlciContext implements Context {
     public GeoLocationNames getGeoLocationNames() {
        return new GeoLocationNames(LON_VAR_NAME, LAT_VAR_NAME, TP_LON_VAR_NAME, TP_LAT_VAR_NAME);
     }
+
+    @Override
+    public String bandNameToKey(String bandName) {
+        return bandName.substring(0, 4);
+    }
 }
