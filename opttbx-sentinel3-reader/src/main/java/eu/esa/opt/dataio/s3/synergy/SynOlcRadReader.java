@@ -38,7 +38,7 @@ class SynOlcRadReader extends S3NetcdfReader {
             band.setScalingFactor(S3Util.getScalingFactor(variable));
             band.setScalingOffset(S3Util.getAddOffset(variable));
             band.setSynthetic(synthetic);
-            addFillValue(band, variable);
+            S3Util.addFillValue(band, variable);
             addSampleCodings(product, band, variable, false);
         } else {
             super.addVariableAsBand(product, variable, variableName, synthetic);

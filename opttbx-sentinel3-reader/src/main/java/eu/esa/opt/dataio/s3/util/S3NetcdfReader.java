@@ -219,16 +219,8 @@ public class S3NetcdfReader extends AbstractProductReader {
         }
     }
 
-    private static int getRasterDataType(Variable variable) {
-        int rasterDataType = DataTypeUtils.getRasterDataType(variable);
-        if (rasterDataType == -1 && variable.getDataType() == DataType.LONG) {
-            rasterDataType = variable.getDataType().isUnsigned() ? ProductData.TYPE_UINT32 : ProductData.TYPE_INT32;
-        }
-        return rasterDataType;
-    }
-
     protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
-        int type = getRasterDataType(variable);
+        int type = S3Util.getRasterDataType(variable);
         //todo consider unsigned long - split into three bands?
         if (type == ProductData.TYPE_INT64 || type == ProductData.TYPE_UINT64) {
             final Band lowerBand = product.addBand(variableName + "_lsb", ProductData.TYPE_UINT32);
@@ -239,7 +231,7 @@ public class S3NetcdfReader extends AbstractProductReader {
             lowerBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
             lowerBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             lowerBand.setSynthetic(synthetic);
-            addFillValue(lowerBand, variable);
+            S3Util.addFillValue(lowerBand, variable);
             addSampleCodings(product, lowerBand, variable, false);
 
             final Band upperBand = product.addBand(variableName + "_msb", ProductData.TYPE_UINT32);
@@ -250,7 +242,7 @@ public class S3NetcdfReader extends AbstractProductReader {
             upperBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
             upperBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             upperBand.setSynthetic(synthetic);
-            addFillValue(upperBand, variable);
+            S3Util.addFillValue(upperBand, variable);
             addSampleCodings(product, upperBand, variable, true);
         } else {
             final Band band = product.addBand(variableName, type);
@@ -262,17 +254,7 @@ public class S3NetcdfReader extends AbstractProductReader {
             band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             band.setSynthetic(synthetic);
             addSampleCodings(product, band, variable, false);
-            addFillValue(band, variable);
-        }
-    }
-
-    protected void addFillValue(Band band, Variable variable) {
-        final Attribute fillValueAttribute = variable.findAttribute(CFConstants.FILL_VALUE);
-        if (fillValueAttribute != null) {
-            //todo double is not always correct
-            band.setNoDataValue(fillValueAttribute.getNumericValue().doubleValue());
-            // enable only if it is not a flag band
-            band.setNoDataValueUsed(!band.isFlagBand());
+            S3Util.addFillValue(band, variable);
         }
     }
 
@@ -333,7 +315,7 @@ public class S3NetcdfReader extends AbstractProductReader {
 
     private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
                                    boolean msb) {
-        final String[] meanings = getSampleMeanings(sampleMeanings);
+        final String[] meanings = S3Util.getSampleMeanings(sampleMeanings);
         String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
         final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
         for (int i = 0; i < sampleCount; i++) {
@@ -375,7 +357,7 @@ public class S3NetcdfReader extends AbstractProductReader {
 
     private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
                                    Attribute sampleMasks, boolean msb) {
-        final String[] meanings = getSampleMeanings(sampleMeanings);
+        final String[] meanings = S3Util.getSampleMeanings(sampleMeanings);
         String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
         final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
         for (int i = 0; i < sampleCount; i++) {
@@ -447,22 +429,6 @@ public class S3NetcdfReader extends AbstractProductReader {
                     break;
             }
         }
-    }
-
-    public static String[] getSampleMeanings(Attribute sampleMeanings) {
-        final int sampleMeaningsCount = sampleMeanings.getLength();
-        if (sampleMeaningsCount == 0) {
-            return new String[0];
-        }
-        if (sampleMeaningsCount > 1) {
-            // handle a common misunderstanding of CF conventions, where flag meanings are stored as array of strings
-            final String[] strings = new String[sampleMeaningsCount];
-            for (int i = 0; i < strings.length; i++) {
-                strings[i] = sampleMeanings.getStringValue(i);
-            }
-            return strings;
-        }
-        return sampleMeanings.getStringValue().split(" ");
     }
 
     protected void addVariableMetadata(Variable variable, Product product) {

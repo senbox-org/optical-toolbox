@@ -528,7 +528,7 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
                 if (shortName.contains("orphan") && !shortName.equals("orphan_pixels")) {
                     final int height = variable.getDimension(0).getLength();
                     final int width = variable.getDimension(1).getLength();
-                    Band band = new Band(shortName, getDataType(variable), width, height);
+                    Band band = new Band(shortName, S3Util.getRasterDataType(variable), width, height);
                     targetProduct.addBand(band);
                     CfBandPart.readCfBandAttributes(variable, band);
                     band.setSourceImage(new DefaultMultiLevelImage(new LazyMultiLevelSource(band) {
@@ -681,14 +681,6 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
             return "fo";
         }
         return "";
-    }
-
-    private int getDataType(Variable variable) {
-        int rasterDataType = DataTypeUtils.getRasterDataType(variable);
-        if (variable.getDataType() == DataType.LONG) {
-            rasterDataType = variable.getDataType().isUnsigned() ? ProductData.TYPE_UINT32 : ProductData.TYPE_INT32;
-        }
-        return rasterDataType;
     }
 
     private static class SlstrOrphanOpImage extends NetcdfOpImage {

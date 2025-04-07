@@ -261,7 +261,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
                                    Attribute sampleMasks, boolean msb) {
-        final String[] meanings = S3NetcdfReader.getSampleMeanings(sampleMeanings);
+        final String[] meanings = S3Util.getSampleMeanings(sampleMeanings);
         String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
         final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
         for (int i = 0; i < sampleCount; i++) {
@@ -337,9 +337,10 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
                                    boolean msb) {
-        final String[] meanings = S3NetcdfReader.getSampleMeanings(sampleMeanings);
+        final String[] meanings = S3Util.getSampleMeanings(sampleMeanings);
         String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
         final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
+
         for (int i = 0; i < sampleCount; i++) {
             final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
             switch (sampleValues.getDataType()) {
@@ -375,15 +376,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                     break;
             }
         }
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    private static int getRasterDataType(Variable variable) {
-        int rasterDataType = DataTypeUtils.getRasterDataType(variable);
-        if (rasterDataType == -1 && variable.getDataType() == DataType.LONG) {
-            rasterDataType = variable.getDataType().isUnsigned() ? ProductData.TYPE_UINT32 : ProductData.TYPE_INT32;
-        }
-        return rasterDataType;
     }
 
     @Override
@@ -581,7 +573,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             addSampleCodings(product, band, netCDFVariable, false);
             band.setScalingFactor(S3Util.getScalingFactor(netCDFVariable));
             band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
-            addFillValue(band, netCDFVariable);
+            S3Util.addFillValue(band, netCDFVariable);
 
             applyCustomCalibration(band);
 
@@ -684,7 +676,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
-        final int type = getRasterDataType(variable);
+        final int type = S3Util.getRasterDataType(variable);
 
         final Band band = product.addBand(variableName, type);
         band.setDescription(variable.getDescription());
@@ -695,18 +687,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
         band.setSynthetic(synthetic);
         addSampleCodings(product, band, variable, false);
-        addFillValue(band, variable);
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    protected void addFillValue(Band band, Variable variable) {
-        final Attribute fillValueAttribute = variable.findAttribute(CFConstants.FILL_VALUE);
-        if (fillValueAttribute != null) {
-            //todo double is not always correct
-            band.setNoDataValueUsed(!band.isFlagBand());
-            band.setNoDataValue(fillValueAttribute.getNumericValue().doubleValue());
-            // enable only if it is not a flag band
-        }
+        S3Util.addFillValue(band, variable);
     }
 
     // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
