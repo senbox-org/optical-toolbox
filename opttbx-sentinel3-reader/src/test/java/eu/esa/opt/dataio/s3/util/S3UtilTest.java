@@ -323,6 +323,38 @@ public class S3UtilTest {
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesByte_withMasks() {
+        final String[] uniqueNames = new String[] {"nasenmann", "heffalump"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{1, 2}));
+        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{1, 2}));
+        SampleCoding sampleCoding = new SampleCoding("byteTest");
+
+        S3Util.addSamplesByte(sampleCoding, uniqueNames, masksAttribute, valuesAttribute);
+
+        assertEquals(1, sampleCoding.getSampleValue(0));
+        assertEquals("nasenmann", sampleCoding.getSampleName(0));
+        assertEquals(2, sampleCoding.getSampleValue(1));
+        assertEquals("heffalump", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesByte_withMasks_differentValues() {
+        final String[] uniqueNames = new String[] {"nasenmann", "heffalump"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{3, 4}));
+        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{5, 6}));
+        SampleCoding sampleCoding = new SampleCoding("byteTest");
+
+        S3Util.addSamplesByte(sampleCoding, uniqueNames, masksAttribute, valuesAttribute);
+
+        assertEquals(5, sampleCoding.getSampleValue(0));
+        assertEquals("nasenmann", sampleCoding.getSampleName(0));
+        assertEquals(6, sampleCoding.getSampleValue(1));
+        assertEquals("heffalump", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesShort() {
         final String[] uniqueNames = new String[] {"Alice", "Bertie?", "Charly"};
         final Attribute shortAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{106, 108, 111}));
@@ -335,6 +367,42 @@ public class S3UtilTest {
         assertEquals(108, sampleCoding.getSampleValue(1));
         assertEquals("Bertie_", sampleCoding.getSampleName(1));
         assertEquals(111, sampleCoding.getSampleValue(2));
+        assertEquals("Charly", sampleCoding.getSampleName(2));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesShort_withMasks() {
+        final String[] uniqueNames = new String[] {"Alice", "Bertie?", "Charly"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{7, 8, 9}));
+        final Attribute maskAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.SHORT, new int[]{3}, new short[]{7, 8, 9}));
+        SampleCoding sampleCoding = new SampleCoding("shortTest");
+
+        S3Util.addSamplesShort(sampleCoding, uniqueNames, maskAttribute, valuesAttribute);
+
+        assertEquals(7, sampleCoding.getSampleValue(0));
+        assertEquals("Alice", sampleCoding.getSampleName(0));
+        assertEquals(8, sampleCoding.getSampleValue(1));
+        assertEquals("Bertie_", sampleCoding.getSampleName(1));
+        assertEquals(9, sampleCoding.getSampleValue(2));
+        assertEquals("Charly", sampleCoding.getSampleName(2));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesShort_withMasks_differentValues() {
+        final String[] uniqueNames = new String[] {"Alice", "Bertie?", "Charly"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{7, 8, 9}));
+        final Attribute maskAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.SHORT, new int[]{3}, new short[]{10, 11, 12}));
+        SampleCoding sampleCoding = new SampleCoding("shortTest");
+
+        S3Util.addSamplesShort(sampleCoding, uniqueNames, maskAttribute, valuesAttribute);
+
+        assertEquals(10, sampleCoding.getSampleValue(0));
+        assertEquals("Alice", sampleCoding.getSampleName(0));
+        assertEquals(11, sampleCoding.getSampleValue(1));
+        assertEquals("Bertie_", sampleCoding.getSampleName(1));
+        assertEquals(12, sampleCoding.getSampleValue(2));
         assertEquals("Charly", sampleCoding.getSampleName(2));
     }
 
@@ -355,6 +423,38 @@ public class S3UtilTest {
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesInt_withMasks() {
+        final String[] uniqueNames = new String[] {"DonaldDuck", "Dorette::"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{13, 14}));
+        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{13, 14}));
+        SampleCoding sampleCoding = new SampleCoding("intTest");
+
+        S3Util.addSamplesInt(sampleCoding, uniqueNames, masksAttribute, valuesAttribute);
+
+        assertEquals(13, sampleCoding.getSampleValue(0));
+        assertEquals("DonaldDuck", sampleCoding.getSampleName(0));
+        assertEquals(14, sampleCoding.getSampleValue(1));
+        assertEquals("Dorette_", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesInt_withMasks_differentValues() {
+        final String[] uniqueNames = new String[] {"DonaldDuck", "Dorette::"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{15, 16}));
+        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{17, 18}));
+        SampleCoding sampleCoding = new SampleCoding("intTest");
+
+        S3Util.addSamplesInt(sampleCoding, uniqueNames, masksAttribute, valuesAttribute);
+
+        assertEquals(17, sampleCoding.getSampleValue(0));
+        assertEquals("DonaldDuck", sampleCoding.getSampleName(0));
+        assertEquals(18, sampleCoding.getSampleValue(1));
+        assertEquals("Dorette_", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesLong_msb() {
         final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
         final Attribute longAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
@@ -363,6 +463,34 @@ public class S3UtilTest {
         S3Util.addSamplesLong(sampleCoding, uniqueNames, longAttribute, true);
 
         assertEquals(28744, sampleCoding.getSampleValue(0));
+        assertEquals("Loop", sampleCoding.getSampleName(0));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesLong_msb_withMasks() {
+        final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        SampleCoding sampleCoding = new SampleCoding("longTest");
+
+        S3Util.addSamplesLong(sampleCoding, uniqueNames, masksAttribute, valuesAttribute, true);
+
+        assertEquals(28744, sampleCoding.getSampleValue(0));
+        assertEquals("Loop", sampleCoding.getSampleName(0));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesLong_msb_withMasks_differentValues() {
+        final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{223456789012345L, 33456789}));
+        SampleCoding sampleCoding = new SampleCoding("longTest");
+
+        S3Util.addSamplesLong(sampleCoding, uniqueNames, masksAttribute, valuesAttribute, true);
+
+        assertEquals(52027, sampleCoding.getSampleValue(0));
         assertEquals("Loop", sampleCoding.getSampleName(0));
     }
 
@@ -379,6 +507,34 @@ public class S3UtilTest {
         assertEquals("Loop", sampleCoding.getSampleName(0));
         assertEquals(-1748747584, sampleCoding.getSampleValue(1));
         assertEquals("LongJohnSilver", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesLong_lsb_withMasks() {
+        final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        SampleCoding sampleCoding = new SampleCoding("longTest");
+
+        S3Util.addSamplesLong(sampleCoding, uniqueNames, masksAttribute, valuesAttribute, false);
+
+        assertEquals(23456789, sampleCoding.getSampleValue(0));
+        assertEquals("LongJohnSilver", sampleCoding.getSampleName(0));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesLong_lsb_withMasks_differentValues() {
+        final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
+        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{223456789012345L, 33456789}));
+        SampleCoding sampleCoding = new SampleCoding("longTest");
+
+        S3Util.addSamplesLong(sampleCoding, uniqueNames, masksAttribute, valuesAttribute, false);
+
+        assertEquals(33456789, sampleCoding.getSampleValue(0));
+        assertEquals("LongJohnSilver", sampleCoding.getSampleName(0));
     }
 
     @Test    
@@ -454,4 +610,11 @@ public class S3UtilTest {
         } catch (IllegalArgumentException expected) {
         }
     }
+/*
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testCreateFlagCoding() {
+
+    }
+ */
 }

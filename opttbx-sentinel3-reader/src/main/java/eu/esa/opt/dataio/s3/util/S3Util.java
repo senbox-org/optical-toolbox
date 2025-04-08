@@ -162,6 +162,20 @@ public class S3Util {
         }
     }
 
+    public static void addSamplesByte(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleMasks, Attribute sampleValues) {
+        final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
+            final short mask = DataType.unsignedByteToShort(sampleMasks.getNumericValue(i).byteValue());
+            final short value = DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue());
+            if (mask == value) {
+                sampleCoding.addSample(sampleName, mask, null);
+            } else {
+                sampleCoding.addSamples(sampleName, new int[]{mask, value}, null);
+            }
+        }
+    }
+
     public static void addSamplesShort(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleValues) {
         final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
         for (int i = 0; i < sampleCount; i++) {
@@ -171,11 +185,39 @@ public class S3Util {
         }
     }
 
+    public static void addSamplesShort(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleMasks, Attribute sampleValues) {
+        final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
+            final int mask = DataType.unsignedShortToInt(sampleMasks.getNumericValue(i).shortValue());
+            final int value = DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue());
+            if (mask == value) {
+                sampleCoding.addSample(sampleName, mask, null);
+            } else {
+                sampleCoding.addSamples(sampleName, new int[]{mask, value}, null);
+            }
+        }
+    }
+
     public static void addSamplesInt(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleValues) {
         final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
         for (int i = 0; i < sampleCount; i++) {
             final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
             sampleCoding.addSample(sampleName, sampleValues.getNumericValue(i).intValue(), null);
+        }
+    }
+
+    public static void addSamplesInt(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleMasks, Attribute sampleValues) {
+        final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
+            final int mask = sampleMasks.getNumericValue(i).intValue();
+            final int value = sampleValues.getNumericValue(i).intValue();
+            if (mask == value) {
+                sampleCoding.addSample(sampleName, mask, null);
+            } else {
+                sampleCoding.addSamples(sampleName, new int[]{mask, value}, null);
+            }
         }
     }
 
@@ -193,6 +235,36 @@ public class S3Util {
                 long shiftedValue = longValue & 0x00000000FFFFFFFFL;
                 if (shiftedValue > 0 || longValue == 0L) {
                     sampleCoding.addSample(sampleName, (int) shiftedValue, null);
+                }
+            }
+        }
+    }
+
+    public static void addSamplesLong(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleMasks, Attribute sampleValues, boolean msb) {
+        final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
+            final long value = sampleValues.getNumericValue(i).longValue();
+            final long mask = sampleMasks.getNumericValue(i).longValue();
+            if (msb) {
+                int shiftedValue = (int) (value >>> 32);
+                int shiftedMask = (int) (mask >>> 32);
+                if (shiftedValue > 0) {
+                    if (shiftedValue == shiftedMask) {
+                        sampleCoding.addSample(sampleName, shiftedValue, null);
+                    } else {
+                        sampleCoding.addSamples(sampleName, new int[]{shiftedMask, shiftedValue}, null);
+                    }
+                }
+            } else {
+                int shiftedValue = (int) (value & 0x00000000FFFFFFFFL);
+                int shiftedMask = (int) (mask & 0x00000000FFFFFFFFL);
+                if (shiftedValue > 0 || value == 0L) {
+                    if (shiftedValue == shiftedMask) {
+                        sampleCoding.addSample(sampleName, shiftedValue, null);
+                    } else {
+                        sampleCoding.addSamples(sampleName, new int[]{shiftedMask, shiftedValue}, null);
+                    }
                 }
             }
         }
@@ -219,6 +291,32 @@ public class S3Util {
             case ULONG:
                 addSamplesLong(sampleCoding, uniqueNames, sampleValues, msb);
                 break;
+            default:
+                throw new IllegalArgumentException("Unsupported data type: " + sampleValues.getDataType());
+        }
+    }
+
+    public static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
+                                  Attribute sampleMasks, boolean msb) {
+        final String[] meanings = S3Util.getSampleMeanings(sampleMeanings);
+        final String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
+
+        switch (sampleMasks.getDataType()) {
+            case BYTE:
+            case UBYTE:
+                addSamplesByte(sampleCoding, uniqueNames, sampleMasks, sampleValues);
+                break;
+            case SHORT:
+            case USHORT:
+                addSamplesShort(sampleCoding, uniqueNames, sampleMasks, sampleValues);
+                break;
+            case INT:
+            case UINT:
+                addSamplesInt(sampleCoding, uniqueNames, sampleMasks, sampleValues);
+                break;
+            case LONG:
+            case ULONG:
+                addSamplesLong(sampleCoding, uniqueNames, sampleMasks, sampleValues, msb);
             default:
                 throw new IllegalArgumentException("Unsupported data type: " + sampleValues.getDataType());
         }

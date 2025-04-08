@@ -306,87 +306,11 @@ public class S3NetcdfReader extends AbstractProductReader {
                                      Attribute flagMasksAttribute, boolean msb) {
         final FlagCoding flagCoding = new FlagCoding(flagCodingName);
         flagCoding.setDescription(flagCodingDescription);
-        addSamples(flagCoding, flagMeaningsAttribute, flagValuesAttribute, flagMasksAttribute, msb);
+        S3Util.addSamples(flagCoding, flagMeaningsAttribute, flagValuesAttribute, flagMasksAttribute, msb);
         if (!product.getFlagCodingGroup().contains(flagCodingName)) {
             product.getFlagCodingGroup().add(flagCoding);
         }
         return flagCoding;
-    }
-
-        private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
-                                   Attribute sampleMasks, boolean msb) {
-        final String[] meanings = S3Util.getSampleMeanings(sampleMeanings);
-        String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
-        final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
-        for (int i = 0; i < sampleCount; i++) {
-            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
-            switch (sampleMasks.getDataType()) {
-                case BYTE:
-                case UBYTE:
-                    int[] byteValues = {
-                            DataType.unsignedByteToShort(sampleMasks.getNumericValue(i).byteValue()),
-                            DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue())
-                    };
-                    if (byteValues[0] == byteValues[1]) {
-                        sampleCoding.addSample(sampleName, byteValues[0], null);
-                    } else {
-                        sampleCoding.addSamples(sampleName, byteValues, null);
-                    }
-                    break;
-                case SHORT:
-                case USHORT:
-                    int[] shortValues = {
-                            DataType.unsignedShortToInt(sampleMasks.getNumericValue(i).shortValue()),
-                            DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue())
-                    };
-                    if (shortValues[0] == shortValues[1]) {
-                        sampleCoding.addSample(sampleName, shortValues[0], null);
-                    } else {
-                        sampleCoding.addSamples(sampleName, shortValues, null);
-                    }
-                    break;
-                case INT:
-                case UINT:
-                    int[] intValues = {
-                            sampleMasks.getNumericValue(i).intValue(),
-                            sampleValues.getNumericValue(i).intValue()
-                    };
-                    if (intValues[0] == intValues[1]) {
-                        sampleCoding.addSample(sampleName, intValues[0], null);
-                    } else {
-                        sampleCoding.addSamples(sampleName, intValues, null);
-                    }
-                    break;
-                case LONG:
-                case ULONG:
-                    long[] longValues = {
-                            sampleMasks.getNumericValue(i).longValue(),
-                            sampleValues.getNumericValue(i).longValue()
-                    };
-                    if (msb) {
-                        int[] intLongValues =
-                                {(int) (longValues[0] >>> 32), (int) (longValues[1] >>> 32)};
-                        if (longValues[0] > 0) {
-                            if (intLongValues[0] == intLongValues[1]) {
-                                sampleCoding.addSample(sampleName, intLongValues[0], null);
-                            } else {
-                                sampleCoding.addSamples(sampleName, intLongValues, null);
-                            }
-                        }
-                    } else {
-                        int[] intLongValues =
-                                {(int) (longValues[0] & 0x00000000FFFFFFFFL), (int) (longValues[1] & 0x00000000FFFFFFFFL)};
-                        if (intLongValues[0] > 0 || longValues[0] == 0L) {
-                            if (intLongValues[0] == intLongValues[1]) {
-                                sampleCoding.addSample(sampleName, intLongValues[0], null);
-                            } else {
-                                sampleCoding.addSamples(sampleName, intLongValues, null);
-                            }
-                        }
-                    }
-                    break;
-            }
-        }
     }
 
     protected void addVariableMetadata(Variable variable, Product product) {
