@@ -9,6 +9,7 @@ import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.SampleCoding;
 import org.esa.snap.dataio.netcdf.util.Constants;
 import org.junit.Test;
 import ucar.ma2.Array;
@@ -303,5 +304,154 @@ public class S3UtilTest {
         final Attribute flagAttribute = new Attribute("blank_separated", emptyArray);
         final String[] sampleMeanings = S3Util.getSampleMeanings(flagAttribute);
         assertEquals(0, sampleMeanings.length);
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesByte() {
+        final String[] uniqueNames = new String[] {"nasenmann", "heffalump"};
+        final Attribute byteAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{28, 33}));
+        SampleCoding sampleCoding = new SampleCoding("byteTest");
+
+        S3Util.addSamplesByte(sampleCoding, uniqueNames, byteAttribute);
+
+        assertEquals(28, sampleCoding.getSampleValue(0));
+        assertEquals("nasenmann", sampleCoding.getSampleName(0));
+        assertEquals(33, sampleCoding.getSampleValue(1));
+        assertEquals("heffalump", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesShort() {
+        final String[] uniqueNames = new String[] {"Alice", "Bertie?", "Charly"};
+        final Attribute shortAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{106, 108, 111}));
+        SampleCoding sampleCoding = new SampleCoding("shortTest");
+
+        S3Util.addSamplesShort(sampleCoding, uniqueNames, shortAttribute);
+
+        assertEquals(106, sampleCoding.getSampleValue(0));
+        assertEquals("Alice", sampleCoding.getSampleName(0));
+        assertEquals(108, sampleCoding.getSampleValue(1));
+        assertEquals("Bertie_", sampleCoding.getSampleName(1));
+        assertEquals(111, sampleCoding.getSampleValue(2));
+        assertEquals("Charly", sampleCoding.getSampleName(2));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesInt() {
+        final String[] uniqueNames = new String[] {"DonaldDuck", "Dorette::"};
+        final Attribute intAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{-23, -44}));
+        SampleCoding sampleCoding = new SampleCoding("intTest");
+
+        S3Util.addSamplesInt(sampleCoding, uniqueNames, intAttribute);
+
+        assertEquals(-23, sampleCoding.getSampleValue(0));
+        assertEquals("DonaldDuck", sampleCoding.getSampleName(0));
+        assertEquals(-44, sampleCoding.getSampleValue(1));
+        assertEquals("Dorette_", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesLong_msb() {
+        final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
+        final Attribute longAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        SampleCoding sampleCoding = new SampleCoding("longTest");
+
+        S3Util.addSamplesLong(sampleCoding, uniqueNames, longAttribute, true);
+
+        assertEquals(28744, sampleCoding.getSampleValue(0));
+        assertEquals("Loop", sampleCoding.getSampleName(0));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamplesLong_lsb() {
+        final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
+        final Attribute longAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 234567890123456L}));
+        SampleCoding sampleCoding = new SampleCoding("longTest");
+
+        S3Util.addSamplesLong(sampleCoding, uniqueNames, longAttribute, false);
+
+        assertEquals(-2045911175, sampleCoding.getSampleValue(0));
+        assertEquals("Loop", sampleCoding.getSampleName(0));
+        assertEquals(-1748747584, sampleCoding.getSampleValue(1));
+        assertEquals("LongJohnSilver", sampleCoding.getSampleName(1));
+    }
+
+    @Test    
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_byte() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Lars", "Luisa"}));
+        final Attribute flagValues_byte = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.UBYTE, new int[]{2}, new byte[]{18, 19}));
+        SampleCoding sampleCoding = new SampleCoding("byteTest");
+
+        S3Util.addSamples(sampleCoding, flagMeanings, flagValues_byte, false);
+
+        assertEquals(18, sampleCoding.getSampleValue(0));
+        assertEquals("Lars", sampleCoding.getSampleName(0));
+        assertEquals(19, sampleCoding.getSampleValue(1));
+        assertEquals("Luisa", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_short() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Mara", "Michael"}));
+        final Attribute flagValues_short = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.USHORT, new int[]{2}, new short[]{20, 21}));
+        SampleCoding sampleCoding = new SampleCoding("shortTest");
+
+        S3Util.addSamples(sampleCoding, flagMeanings, flagValues_short, false);
+
+        assertEquals(20, sampleCoding.getSampleValue(0));
+        assertEquals("Mara", sampleCoding.getSampleName(0));
+        assertEquals(21, sampleCoding.getSampleValue(1));
+        assertEquals("Michael", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_int() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Norbert", "Nadine"}));
+        final Attribute flagValues_int = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.UINT, new int[]{2}, new int[]{32768, 32769}));
+        SampleCoding sampleCoding = new SampleCoding("intTest");
+
+        S3Util.addSamples(sampleCoding, flagMeanings, flagValues_int, false);
+
+        assertEquals(32768, sampleCoding.getSampleValue(0));
+        assertEquals("Norbert", sampleCoding.getSampleName(0));
+        assertEquals(32769, sampleCoding.getSampleValue(1));
+        assertEquals("Nadine", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_long() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Oppa", "Omma"}));
+        final Attribute flagValues_int = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{24, 25}));
+        SampleCoding sampleCoding = new SampleCoding("longTest");
+
+        S3Util.addSamples(sampleCoding, flagMeanings, flagValues_int, false);
+
+        assertEquals(24, sampleCoding.getSampleValue(0));
+        assertEquals("Oppa", sampleCoding.getSampleName(0));
+        assertEquals(25, sampleCoding.getSampleValue(1));
+        assertEquals("Omma", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_invalidDataType() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"inv", "alid"}));
+        final Attribute flagValues_int = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.FLOAT, new int[]{2}, new float[]{25, 26}));
+        SampleCoding sampleCoding = new SampleCoding("invalidTest");
+
+        try {
+            S3Util.addSamples(sampleCoding, flagMeanings, flagValues_int, false);
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException expected) {
+        }
     }
 }

@@ -283,7 +283,7 @@ public class S3NetcdfReader extends AbstractProductReader {
                                        Attribute flagMeaningsAttribute, Attribute flagValuesAttribute, boolean msb) {
         final IndexCoding indexCoding = new IndexCoding(indexCodingName);
         indexCoding.setDescription(indexCodingDescription);
-        addSamples(indexCoding, flagMeaningsAttribute, flagValuesAttribute, msb);
+        S3Util.addSamples(indexCoding, flagMeaningsAttribute, flagValuesAttribute, msb);
         if (!product.getIndexCodingGroup().contains(indexCodingName)) {
             product.getIndexCodingGroup().add(indexCoding);
         }
@@ -294,7 +294,7 @@ public class S3NetcdfReader extends AbstractProductReader {
                                      Attribute flagMeaningsAttribute, Attribute flagMasksAttribute, boolean msb) {
         final FlagCoding flagCoding = new FlagCoding(flagCodingName);
         flagCoding.setDescription(flagCodingDescription);
-        addSamples(flagCoding, flagMeaningsAttribute, flagMasksAttribute, msb);
+        S3Util.addSamples(flagCoding, flagMeaningsAttribute, flagMasksAttribute, msb);
         if (!product.getFlagCodingGroup().contains(flagCodingName)) {
             product.getFlagCodingGroup().add(flagCoding);
         }
@@ -313,49 +313,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         return flagCoding;
     }
 
-    private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
-                                   boolean msb) {
-        final String[] meanings = S3Util.getSampleMeanings(sampleMeanings);
-        String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
-        final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
-        for (int i = 0; i < sampleCount; i++) {
-            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
-            switch (sampleValues.getDataType()) {
-                case BYTE:
-                case UBYTE:
-                    sampleCoding.addSample(sampleName,
-                            DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue()),
-                            null);
-                    break;
-                case SHORT:
-                case USHORT:
-                    sampleCoding.addSample(sampleName,
-                            DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue()), null);
-                    break;
-                case INT:
-                case UINT:
-                    sampleCoding.addSample(sampleName, sampleValues.getNumericValue(i).intValue(), null);
-                    break;
-                case LONG:
-                case ULONG:
-                    final long longValue = sampleValues.getNumericValue(i).longValue();
-                    if (msb) {
-                        long shiftedValue = longValue >>> 32;
-                        if (shiftedValue > 0) {
-                            sampleCoding.addSample(sampleName, (int) shiftedValue, null);
-                        }
-                    } else {
-                        long shiftedValue = longValue & 0x00000000FFFFFFFFL;
-                        if (shiftedValue > 0 || longValue == 0L) {
-                            sampleCoding.addSample(sampleName, (int) shiftedValue, null);
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-
-    private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
+        private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
                                    Attribute sampleMasks, boolean msb) {
         final String[] meanings = S3Util.getSampleMeanings(sampleMeanings);
         String[] uniqueNames = StringUtils.makeStringsUnique(meanings);

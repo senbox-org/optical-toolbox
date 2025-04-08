@@ -8,6 +8,8 @@ import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.SampleCoding;
+import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.dataio.netcdf.util.Constants;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.runtime.Config;
@@ -149,5 +151,76 @@ public class S3Util {
             return strings;
         }
         return sampleMeanings.getStringValue().split(" ");
+    }
+
+    public static void addSamplesByte(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleValues) {
+        final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
+            final short value = DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue());
+            sampleCoding.addSample(sampleName, value, null);
+        }
+    }
+
+    public static void addSamplesShort(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleValues) {
+        final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
+            final int value = DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue());
+            sampleCoding.addSample(sampleName, value, null);
+        }
+    }
+
+    public static void addSamplesInt(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleValues) {
+        final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
+            sampleCoding.addSample(sampleName, sampleValues.getNumericValue(i).intValue(), null);
+        }
+    }
+
+    public static void addSamplesLong(SampleCoding sampleCoding, String[] uniqueNames, Attribute sampleValues, boolean msb) {
+        final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
+        for (int i = 0; i < sampleCount; i++) {
+            final String sampleName = S3Util.replaceNonWordCharacters(uniqueNames[i]);
+            final long longValue = sampleValues.getNumericValue(i).longValue();
+            if (msb) {
+                long shiftedValue = longValue >>> 32;
+                if (shiftedValue > 0) {
+                    sampleCoding.addSample(sampleName, (int) shiftedValue, null);
+                }
+            } else {
+                long shiftedValue = longValue & 0x00000000FFFFFFFFL;
+                if (shiftedValue > 0 || longValue == 0L) {
+                    sampleCoding.addSample(sampleName, (int) shiftedValue, null);
+                }
+            }
+        }
+    }
+
+    public static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues, boolean msb) {
+        final String[] meanings = S3Util.getSampleMeanings(sampleMeanings);
+        final String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
+
+        switch (sampleValues.getDataType()) {
+            case BYTE:
+            case UBYTE:
+                addSamplesByte(sampleCoding, uniqueNames, sampleValues);
+                break;
+            case SHORT:
+            case USHORT:
+                addSamplesShort(sampleCoding, uniqueNames, sampleValues);
+                break;
+            case INT:
+            case UINT:
+                addSamplesInt(sampleCoding, uniqueNames, sampleValues);
+                break;
+            case LONG:
+            case ULONG:
+                addSamplesLong(sampleCoding, uniqueNames, sampleValues, msb);
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported data type: " + sampleValues.getDataType());
+        }
     }
 }
