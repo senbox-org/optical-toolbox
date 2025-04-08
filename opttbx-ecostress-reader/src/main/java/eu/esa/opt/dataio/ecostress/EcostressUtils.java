@@ -1,11 +1,11 @@
 package eu.esa.opt.dataio.ecostress;
 
-import ncsa.hdf.hdf5lib.exceptions.HDF5Exception;
-import ncsa.hdf.object.Attribute;
-import ncsa.hdf.object.Datatype;
-import ncsa.hdf.object.HObject;
-import ncsa.hdf.object.h5.H5Group;
-import ncsa.hdf.object.h5.H5ScalarDS;
+import hdf.hdf5lib.exceptions.HDF5Exception;
+import hdf.object.Attribute;
+import hdf.object.Datatype;
+import hdf.object.HObject;
+import hdf.object.h5.H5Group;
+import hdf.object.h5.H5ScalarDS;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
@@ -117,7 +117,7 @@ public class EcostressUtils {
                         if (bandElementObject instanceof H5ScalarDS) {
                             final H5ScalarDS bandElement = (H5ScalarDS) bandElementObject;
                             final String bandName = getBandNameFromEcostressObject(bandElement);
-                            final Band bandObject = new Band(bandName, extractDataTypeOfProductData(bandElement), bandElement.getWidth(), bandElement.getHeight());
+                            final Band bandObject = new Band(bandName, extractDataTypeOfProductData(bandElement), (int) bandElement.getWidth(), (int) bandElement.getHeight());
                             final Attribute bandDescriptionAttribute = extractEcostressBandAttribute(bandElement, BAND_ATTRIBUTE_NAME_DESCRIPTION);
                             if (bandDescriptionAttribute != null) {
                                 final String bandDescription = getEcostressAttributeValue(bandDescriptionAttribute).getElemString();
@@ -228,7 +228,7 @@ public class EcostressUtils {
      * @return the SNAP band object data type from an ECOSTRESS product file
      * @throws HDF5Exception if an error occurs
      */
-    private static int extractDataTypeOfProductData(H5ScalarDS h5ScalarDS) throws HDF5Exception {
+    private static int extractDataTypeOfProductData(H5ScalarDS h5ScalarDS) throws Exception {
         final Object h5ScalarDSValueObject = h5ScalarDS.read();
         switch (h5ScalarDS.getDatatype().getDatatypeClass()) {
             case Datatype.CLASS_INTEGER:
@@ -240,6 +240,9 @@ public class EcostressUtils {
                 }
                 if (h5ScalarDSValueObject.getClass() == short[].class) {
                     return ProductData.TYPE_INT16;
+                }
+                if (h5ScalarDSValueObject.getClass() == byte[].class) {
+                    return ProductData.TYPE_INT8;
                 }
                 break;
             case Datatype.CLASS_FLOAT:
@@ -272,11 +275,11 @@ public class EcostressUtils {
             try {
                 for (Object attributeObject : h5ScalarDS.getMetadata()) {
                     final Attribute attribute = (Attribute) attributeObject;
-                    if (attribute.getName().equalsIgnoreCase(attributeName)) {
+                    if (attribute.getAttributeName().equalsIgnoreCase(attributeName)) {
                         return attribute;
                     }
                 }
-            } catch (HDF5Exception e) {
+            } catch (Exception e) {
                 logger.warning("Failed to extract attribute '" + attributeName + "' from band '" + h5ScalarDS.getFullName() + "'");
             }
         }
@@ -385,7 +388,7 @@ public class EcostressUtils {
      * @param ecostressScalar the ECOSTRESS product file HDF5 scalar object
      * @return the HDF5 scalar object value from ECOSTRESS product file HDF5 scalar object
      */
-    private static ProductData getEcostressH5ScalarDSValue(H5ScalarDS ecostressScalar) throws HDF5Exception {
+    private static ProductData getEcostressH5ScalarDSValue(H5ScalarDS ecostressScalar) throws Exception {
         final Object ecostressScalarValueObject = ecostressScalar.read();
         return extractEcostressObjectValue(ecostressScalar.getDatatype(), ecostressScalarValueObject.getClass(), ecostressScalarValueObject);
     }
@@ -395,9 +398,9 @@ public class EcostressUtils {
      * @param ecostressAttribute the ECOSTRESS product file HDF5 attribute object
      * @return the HDF5 attribute object value from ECOSTRESS product file HDF5 attribute object
      */
-    private static ProductData getEcostressAttributeValue(Attribute ecostressAttribute) {
-        final Object ecostressAttributeValueObject = ecostressAttribute.getValue();
-        return extractEcostressObjectValue(ecostressAttribute.getType(), ecostressAttributeValueObject.getClass(), ecostressAttributeValueObject);
+    private static ProductData getEcostressAttributeValue(Attribute ecostressAttribute) throws Exception {
+        final Object ecostressAttributeValueObject = ecostressAttribute.getAttributeData();
+        return extractEcostressObjectValue(ecostressAttribute.getAttributeDatatype(), ecostressAttributeValueObject.getClass(), ecostressAttributeValueObject);
     }
 
     /**
@@ -420,6 +423,10 @@ public class EcostressUtils {
                 }
                 if (ecostressObjectClass == short[].class) {
                     final short[] ecostressObjectValues = (short[]) ecostressObject;
+                    return ProductData.createInstance(ecostressObjectValues);
+                }
+                if (ecostressObjectClass == byte[].class) {
+                    final byte[] ecostressObjectValues = (byte[]) ecostressObject;
                     return ProductData.createInstance(ecostressObjectValues);
                 }
                 break;
