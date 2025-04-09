@@ -316,6 +316,20 @@ public abstract class AbstractProductFactory implements ProductFactory {
         return copyBand(sourceBand, targetProduct, true);
     }
 
+    // package access for testing only tb 2025-04-08
+    static ColorPaletteDef getCounterWaterColorPalette() {
+        final ColorPaletteDef.Point[] points = new ColorPaletteDef.Point[8];
+        points[0] = new ColorPaletteDef.Point(0.0, new Color(145, 70, 15));
+        points[1] = new ColorPaletteDef.Point(1.0, new Color(145, 110, 15));
+        points[2] = new ColorPaletteDef.Point(2.0, new Color(185, 160, 50));
+        points[3] = new ColorPaletteDef.Point(3.0, new Color(135, 145, 105));
+        points[4] = new ColorPaletteDef.Point(4.0, new Color(130, 160, 95));
+        points[5] = new ColorPaletteDef.Point(5.0, new Color(95, 160, 120));
+        points[6] = new ColorPaletteDef.Point(6.0, new Color(25, 140, 180));
+        points[7] = new ColorPaletteDef.Point(7.0, new Color(0,0,0));
+        return new ColorPaletteDef(points);
+    }
+
     protected RasterDataNode addSpecialNode(Product masterProduct, Band sourceBand, Product targetProduct) {
         return null;
     }
@@ -353,6 +367,10 @@ public abstract class AbstractProductFactory implements ProductFactory {
                     if (targetNode != null) {
                         configureTargetNode(sourceBand, targetNode);
                         mapping.put(sourceBand.getName(), targetNode.getName());
+
+                        if (targetNode.getName().startsWith("counter_water")) {
+                            targetNode.setImageInfo(new ImageInfo(getCounterWaterColorPalette()));
+                        }
                     }
                 }
             }
