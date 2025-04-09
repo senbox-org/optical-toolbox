@@ -231,8 +231,8 @@ public class S3NetcdfReader extends AbstractProductReader {
             lowerBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
             lowerBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             lowerBand.setSynthetic(synthetic);
+            S3Util.addSampleCodings(product, lowerBand, variable, false);
             S3Util.addFillValue(lowerBand, variable);
-            addSampleCodings(product, lowerBand, variable, false);
 
             final Band upperBand = product.addBand(variableName + "_msb", ProductData.TYPE_UINT32);
             upperBand.setDescription(variable.getDescription() + "(most significant bytes)");
@@ -242,8 +242,8 @@ public class S3NetcdfReader extends AbstractProductReader {
             upperBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
             upperBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             upperBand.setSynthetic(synthetic);
+            S3Util.addSampleCodings(product, upperBand, variable, true);
             S3Util.addFillValue(upperBand, variable);
-            addSampleCodings(product, upperBand, variable, true);
         } else {
             final Band band = product.addBand(variableName, type);
             band.setDescription(variable.getDescription());
@@ -253,64 +253,9 @@ public class S3NetcdfReader extends AbstractProductReader {
             band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
             band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             band.setSynthetic(synthetic);
-            addSampleCodings(product, band, variable, false);
+            S3Util.addSampleCodings(product, band, variable, false);
             S3Util.addFillValue(band, variable);
         }
-    }
-
-    protected void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
-        final Attribute flagValuesAttribute = variable.findAttribute(CFConstants.FLAG_VALUES);
-        final Attribute flagMasksAttribute = variable.findAttribute(CFConstants.FLAG_MASKS);
-        final Attribute flagMeaningsAttribute = variable.findAttribute(CFConstants.FLAG_MEANINGS);
-        if (flagValuesAttribute != null && flagMasksAttribute != null) {
-            final FlagCoding flagCoding =
-                    getFlagCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,
-                            flagValuesAttribute, flagMasksAttribute, msb);
-            band.setSampleCoding(flagCoding);
-        } else if (flagValuesAttribute != null) {
-            final IndexCoding indexCoding =
-                    getIndexCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,
-                            flagValuesAttribute, msb);
-            band.setSampleCoding(indexCoding);
-        } else if (flagMasksAttribute != null) {
-            final FlagCoding flagCoding = getFlagCoding(product, band.getName(), band.getDescription(),
-                    flagMeaningsAttribute, flagMasksAttribute, msb);
-            band.setSampleCoding(flagCoding);
-        }
-    }
-
-    private IndexCoding getIndexCoding(Product product, String indexCodingName, String indexCodingDescription,
-                                       Attribute flagMeaningsAttribute, Attribute flagValuesAttribute, boolean msb) {
-        final IndexCoding indexCoding = new IndexCoding(indexCodingName);
-        indexCoding.setDescription(indexCodingDescription);
-        S3Util.addSamples(indexCoding, flagMeaningsAttribute, flagValuesAttribute, msb);
-        if (!product.getIndexCodingGroup().contains(indexCodingName)) {
-            product.getIndexCodingGroup().add(indexCoding);
-        }
-        return indexCoding;
-    }
-
-    private FlagCoding getFlagCoding(Product product, String flagCodingName, String flagCodingDescription,
-                                     Attribute flagMeaningsAttribute, Attribute flagMasksAttribute, boolean msb) {
-        final FlagCoding flagCoding = new FlagCoding(flagCodingName);
-        flagCoding.setDescription(flagCodingDescription);
-        S3Util.addSamples(flagCoding, flagMeaningsAttribute, flagMasksAttribute, msb);
-        if (!product.getFlagCodingGroup().contains(flagCodingName)) {
-            product.getFlagCodingGroup().add(flagCoding);
-        }
-        return flagCoding;
-    }
-
-    private FlagCoding getFlagCoding(Product product, String flagCodingName, String flagCodingDescription,
-                                     Attribute flagMeaningsAttribute, Attribute flagValuesAttribute,
-                                     Attribute flagMasksAttribute, boolean msb) {
-        final FlagCoding flagCoding = new FlagCoding(flagCodingName);
-        flagCoding.setDescription(flagCodingDescription);
-        S3Util.addSamples(flagCoding, flagMeaningsAttribute, flagValuesAttribute, flagMasksAttribute, msb);
-        if (!product.getFlagCodingGroup().contains(flagCodingName)) {
-            product.getFlagCodingGroup().add(flagCoding);
-        }
-        return flagCoding;
     }
 
     protected void addVariableMetadata(Variable variable, Product product) {

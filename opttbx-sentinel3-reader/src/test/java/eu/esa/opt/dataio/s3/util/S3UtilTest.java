@@ -6,10 +6,7 @@ import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelGeoIndexInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.FlagCoding;
-import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.core.datamodel.SampleCoding;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.dataio.netcdf.util.Constants;
 import org.junit.Test;
 import ucar.ma2.Array;
@@ -610,11 +607,120 @@ public class S3UtilTest {
         } catch (IllegalArgumentException expected) {
         }
     }
-/*
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_byte_withMasks() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Lars", "Luisa"}));
+        final Attribute flagMasks  = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.UBYTE, new int[]{2}, new byte[]{18, 19}));
+        final Attribute flagValues_byte = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.UBYTE, new int[]{2}, new byte[]{18, 19}));
+        SampleCoding sampleCoding = new SampleCoding("byteTest");
+
+        S3Util.addSamples(sampleCoding, flagMeanings, flagValues_byte, flagMasks, false);
+
+        assertEquals(18, sampleCoding.getSampleValue(0));
+        assertEquals("Lars", sampleCoding.getSampleName(0));
+        assertEquals(19, sampleCoding.getSampleValue(1));
+        assertEquals("Luisa", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_short_withMasks() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Mara", "Michael"}));
+        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.USHORT, new int[]{2}, new short[]{20, 21}));
+        final Attribute flagValues_short = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.USHORT, new int[]{2}, new short[]{22, 23}));
+        SampleCoding sampleCoding = new SampleCoding("shortTest");
+
+        S3Util.addSamples(sampleCoding, flagMeanings, flagValues_short, flagMasks,false);
+
+        assertEquals(20, sampleCoding.getSampleValue(0));
+        assertEquals("Mara", sampleCoding.getSampleName(0));
+        assertEquals(21, sampleCoding.getSampleValue(1));
+        assertEquals("Michael", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_int_withMasks() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Norbert", "Nadine"}));
+        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.UINT, new int[]{2}, new int[]{32770, 32771}));
+        final Attribute flagValues_int = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.UINT, new int[]{2}, new int[]{32768, 32769}));
+        SampleCoding sampleCoding = new SampleCoding("intTest");
+
+        S3Util.addSamples(sampleCoding, flagMeanings, flagValues_int, flagMasks,false);
+
+        assertEquals(32770, sampleCoding.getSampleValue(0));
+        assertEquals("Norbert", sampleCoding.getSampleName(0));
+        assertEquals(32771, sampleCoding.getSampleValue(1));
+        assertEquals("Nadine", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_long_withMasks() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Oppa", "Omma"}));
+        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{24, 25}));
+        final Attribute flagValues_long = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{24, 25}));
+        SampleCoding sampleCoding = new SampleCoding("longTest");
+
+        S3Util.addSamples(sampleCoding, flagMeanings, flagValues_long, flagMasks,false);
+
+        assertEquals(24, sampleCoding.getSampleValue(0));
+        assertEquals("Oppa", sampleCoding.getSampleName(0));
+        assertEquals(25, sampleCoding.getSampleValue(1));
+        assertEquals("Omma", sampleCoding.getSampleName(1));
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testAddSamples_invalidDataType_withMasks() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"inv", "alid"}));
+        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.FLOAT, new int[]{2}, new float[]{25, 26}));
+        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.FLOAT, new int[]{2}, new float[]{25, 26}));
+        SampleCoding sampleCoding = new SampleCoding("invalidTest");
+
+        try {
+            S3Util.addSamples(sampleCoding, flagMeanings, flagValues, flagMasks,false);
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException expected) {
+        }
+    }
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testCreateIndexCoding() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"for", "index"}));
+        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{24, 25}));
+        final IndexCoding indexCoding = S3Util.createIndexCoding("theName", "theDescription", flagMeanings, flagValues, true);
+
+        assertEquals("theName", indexCoding.getName());
+        assertEquals("theDescription", indexCoding.getDescription());
+        assertEquals(24, indexCoding.getIndexValue("for"));
+    }
+
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testCreateFlagCoding() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{26, 27}));
+        final FlagCoding flagCoding = S3Util.createFlagCoding("theName", "theDescription", flagMeanings, flagValues, true);
 
+        assertEquals("theName", flagCoding.getName());
+        assertEquals("theDescription", flagCoding.getDescription());
+        assertEquals(27, flagCoding.getFlagMask("coding"));
     }
- */
+
+    @Test
+    @STTM("SNAP-1696,SNAP-3711")
+    public void testCreateFlagCoding_withMasks() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{27, 28}));
+        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{26, 27}));
+        final FlagCoding flagCoding = S3Util.createFlagCoding("theName", "theDescription", flagMeanings, flagValues, flagMasks, true);
+
+        assertEquals("theName", flagCoding.getName());
+        assertEquals("theDescription", flagCoding.getDescription());
+        assertEquals(27, flagCoding.getFlagMask("flag"));
+    }
 }

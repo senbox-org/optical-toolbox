@@ -6,9 +6,7 @@ import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.core.datamodel.SampleCoding;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.dataio.netcdf.util.Constants;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
@@ -317,8 +315,68 @@ public class S3Util {
             case LONG:
             case ULONG:
                 addSamplesLong(sampleCoding, uniqueNames, sampleMasks, sampleValues, msb);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported data type: " + sampleValues.getDataType());
+        }
+    }
+
+    public static IndexCoding createIndexCoding(String name, String description, Attribute flagMeanings, Attribute flagValues, boolean msb) {
+        final IndexCoding indexCoding = new IndexCoding(name);
+
+        indexCoding.setDescription(description);
+        S3Util.addSamples(indexCoding, flagMeanings, flagValues, msb);
+
+        return indexCoding;
+    }
+
+    public static FlagCoding createFlagCoding(String name, String description, Attribute flagMeanings, Attribute flagValues, boolean msb) {
+        final FlagCoding flagCoding = new FlagCoding(name);
+
+        flagCoding.setDescription(description);
+        S3Util.addSamples(flagCoding, flagMeanings, flagValues, msb);
+
+        return flagCoding;
+    }
+
+    public static FlagCoding createFlagCoding(String name, String description, Attribute flagMeanings, Attribute flagValues, Attribute flagMasks, boolean msb) {
+        final FlagCoding flagCoding = new FlagCoding(name);
+
+        flagCoding.setDescription(description);
+        S3Util.addSamples(flagCoding, flagMeanings, flagValues, flagMasks, msb);
+
+        return flagCoding;
+    }
+
+    // @todo 3 tb/tb add tests 2025-04-08
+    public static void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
+        final Attribute flagValuesAttribute = variable.findAttribute(CFConstants.FLAG_VALUES);
+        final Attribute flagMasksAttribute = variable.findAttribute(CFConstants.FLAG_MASKS);
+        final Attribute flagMeaningsAttribute = variable.findAttribute(CFConstants.FLAG_MEANINGS);
+        if (flagValuesAttribute != null && flagMasksAttribute != null) {
+            final FlagCoding flagCoding = S3Util.createFlagCoding(band.getName(), band.getDescription(), flagMeaningsAttribute, flagValuesAttribute, flagMasksAttribute, msb);
+            band.setSampleCoding(flagCoding);
+
+            final ProductNodeGroup<FlagCoding> flagCodingGroup = product.getFlagCodingGroup();
+            if (!flagCodingGroup.contains(band.getName())) {
+                flagCodingGroup.add(flagCoding);
+            }
+        } else if (flagValuesAttribute != null) {
+            final IndexCoding indexCoding = S3Util.createIndexCoding(band.getName(), band.getDescription(), flagMeaningsAttribute, flagValuesAttribute, msb);
+            band.setSampleCoding(indexCoding);
+
+            final ProductNodeGroup<IndexCoding> indexCodingGroup = product.getIndexCodingGroup();
+            if (!indexCodingGroup.contains(band.getName())) {
+                indexCodingGroup.add(indexCoding);
+            }
+        } else if (flagMasksAttribute != null) {
+            final FlagCoding flagCoding = S3Util.createFlagCoding(band.getName(), band.getDescription(), flagMeaningsAttribute, flagMasksAttribute, msb);
+            band.setSampleCoding(flagCoding);
+
+            final ProductNodeGroup<FlagCoding> flagCodingGroup = product.getFlagCodingGroup();
+            if (!flagCodingGroup.contains(band.getName())) {
+                flagCodingGroup.add(flagCoding);
+            }
         }
     }
 }

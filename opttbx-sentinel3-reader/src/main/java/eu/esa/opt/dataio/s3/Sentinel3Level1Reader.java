@@ -450,7 +450,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             }
 
             final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
-            addSampleCodings(product, band, netCDFVariable, false);
+            S3Util.addSampleCodings(product, band, netCDFVariable, false);
             band.setScalingFactor(S3Util.getScalingFactor(netCDFVariable));
             band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
             S3Util.addFillValue(band, netCDFVariable);
@@ -566,67 +566,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
         band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
         band.setSynthetic(synthetic);
-        addSampleCodings(product, band, variable, false);
+        S3Util.addSampleCodings(product, band, variable, false);
         S3Util.addFillValue(band, variable);
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    protected void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
-        final Attribute flagValuesAttribute = variable.findAttribute(CFConstants.FLAG_VALUES);
-        final Attribute flagMasksAttribute = variable.findAttribute(CFConstants.FLAG_MASKS);
-        final Attribute flagMeaningsAttribute = variable.findAttribute(CFConstants.FLAG_MEANINGS);
-        if (flagValuesAttribute != null && flagMasksAttribute != null) {
-            final FlagCoding flagCoding =
-                    getFlagCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,
-                            flagValuesAttribute, flagMasksAttribute, msb);
-            band.setSampleCoding(flagCoding);
-        } else if (flagValuesAttribute != null) {
-            final IndexCoding indexCoding =
-                    getIndexCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,
-                            flagValuesAttribute, msb);
-            band.setSampleCoding(indexCoding);
-        } else if (flagMasksAttribute != null) {
-            final FlagCoding flagCoding = getFlagCoding(product, band.getName(), band.getDescription(),
-                    flagMeaningsAttribute, flagMasksAttribute, msb);
-            band.setSampleCoding(flagCoding);
-        }
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    private FlagCoding getFlagCoding(Product product, String flagCodingName, String flagCodingDescription,
-                                     Attribute flagMeaningsAttribute, Attribute flagValuesAttribute,
-                                     Attribute flagMasksAttribute, boolean msb) {
-        final FlagCoding flagCoding = new FlagCoding(flagCodingName);
-        flagCoding.setDescription(flagCodingDescription);
-        S3Util.addSamples(flagCoding, flagMeaningsAttribute, flagValuesAttribute, flagMasksAttribute, msb);
-        if (!product.getFlagCodingGroup().contains(flagCodingName)) {
-            product.getFlagCodingGroup().add(flagCoding);
-        }
-        return flagCoding;
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    private FlagCoding getFlagCoding(Product product, String flagCodingName, String flagCodingDescription,
-                                     Attribute flagMeaningsAttribute, Attribute flagMasksAttribute, boolean msb) {
-        final FlagCoding flagCoding = new FlagCoding(flagCodingName);
-        flagCoding.setDescription(flagCodingDescription);
-        S3Util.addSamples(flagCoding, flagMeaningsAttribute, flagMasksAttribute, msb);
-        if (!product.getFlagCodingGroup().contains(flagCodingName)) {
-            product.getFlagCodingGroup().add(flagCoding);
-        }
-        return flagCoding;
-    }
-
-    // @todo 1 tb/tb this is duplicated - refactor! 2025-02-12
-    private IndexCoding getIndexCoding(Product product, String indexCodingName, String indexCodingDescription,
-                                       Attribute flagMeaningsAttribute, Attribute flagValuesAttribute, boolean msb) {
-        final IndexCoding indexCoding = new IndexCoding(indexCodingName);
-        indexCoding.setDescription(indexCodingDescription);
-        S3Util.addSamples(indexCoding, flagMeaningsAttribute, flagValuesAttribute, msb);
-        if (!product.getIndexCodingGroup().contains(indexCodingName)) {
-            product.getIndexCodingGroup().add(indexCoding);
-        }
-        return indexCoding;
     }
 
     private void initializeDDDBDescriptors(Manifest manifest, ProductDescriptor productDescriptor) throws IOException {
