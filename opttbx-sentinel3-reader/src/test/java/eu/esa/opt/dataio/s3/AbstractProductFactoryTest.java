@@ -16,13 +16,18 @@
 
 package eu.esa.opt.dataio.s3;
 
+import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
 import eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory;
+import org.checkerframework.checker.units.qual.A;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelGeoIndexInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
+import org.esa.snap.core.datamodel.ColorPaletteDef;
 import org.junit.Test;
+
+import java.awt.*;
 
 import static eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory.SLSTR_L1B_PIXEL_GEOCODING_INVERSE;
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
@@ -93,5 +98,44 @@ public class AbstractProductFactoryTest {
                 System.setProperty(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY, fractionalAccuracy);
             }
         }
+    }
+
+    @Test
+    @STTM("SNAP-3545")
+    public void testGetCounterWaterColorPalette() {
+        final ColorPaletteDef colorPalette = AbstractProductFactory.getCounterWaterColorPalette();
+        assertEquals(8, colorPalette.getNumPoints());
+
+        ColorPaletteDef.Point point = colorPalette.getPointAt(0);
+        assertEquals(0.0, point.getSample(), 1e-8);
+        assertEquals(new Color(145, 70, 15), point.getColor());
+
+        point = colorPalette.getPointAt(1);
+        assertEquals(1.0, point.getSample(), 1e-8);
+        assertEquals(new Color(145, 110, 15), point.getColor());
+
+        point = colorPalette.getPointAt(2);
+        assertEquals(2.0, point.getSample(), 1e-8);
+        assertEquals(new Color(185, 160, 50), point.getColor());
+
+        point = colorPalette.getPointAt(3);
+        assertEquals(3.0, point.getSample(), 1e-8);
+        assertEquals(new Color(135, 145, 105), point.getColor());
+
+        point = colorPalette.getPointAt(4);
+        assertEquals(4.0, point.getSample(), 1e-8);
+        assertEquals(new Color(130, 160, 95), point.getColor());
+
+        point = colorPalette.getPointAt(5);
+        assertEquals(5.0, point.getSample(), 1e-8);
+        assertEquals(new Color(95, 160, 120), point.getColor());
+
+        point = colorPalette.getPointAt(6);
+        assertEquals(6.0, point.getSample(), 1e-8);
+        assertEquals(new Color(25, 140, 180), point.getColor());
+
+        point = colorPalette.getPointAt(7);
+        assertEquals(7.0, point.getSample(), 1e-8);
+        assertEquals(new Color(0, 0, 0), point.getColor());
     }
 }
