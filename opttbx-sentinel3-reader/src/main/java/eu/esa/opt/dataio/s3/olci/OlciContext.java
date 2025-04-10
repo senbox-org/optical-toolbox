@@ -1,9 +1,12 @@
 package eu.esa.opt.dataio.s3.olci;
 
-import eu.esa.opt.dataio.s3.Context;
+import eu.esa.opt.dataio.s3.SensorContext;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.util.GeoLocationNames;
+import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.Product;
 
-public class OlciContext implements Context {
+public class OlciContext implements SensorContext {
 
     private final static String OLCI_USE_PIXELGEOCODING = "opttbx.reader.olci.pixelGeoCoding";
     private final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "opttbx.reader.olci.pixelGeoCoding.inverse";
@@ -49,5 +52,25 @@ public class OlciContext implements Context {
     @Override
     public String bandNameToKey(String bandName) {
         return bandName.substring(0, 4);
+    }
+
+    @Override
+    public MetadataElement getBandDescriptionsElement(Manifest manifest) {
+        final MetadataElement metadata = manifest.getMetadata();
+        final MetadataElement metadataSection = metadata.getElement("metadataSection");
+        final MetadataElement olciProductInformation = metadataSection.getElement("olciProductInformation");
+
+        return olciProductInformation.getElement("bandDescriptions");
+    }
+
+    @Override
+    public double getResolutionInKm(String productType) {
+        if (productType.contains("RR")) {
+            return 1.2;
+        } else if (productType.contains("FR")) {
+            return 0.3;
+        } else {
+            throw new RuntimeException("invalid product type: " + productType);
+        }
     }
 }

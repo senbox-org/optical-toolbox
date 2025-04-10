@@ -9,7 +9,6 @@ import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
-import eu.esa.opt.dataio.s3.olci.OlciContext;
 import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
 import eu.esa.opt.dataio.s3.util.*;
 import eu.esa.snap.core.dataio.RasterExtract;
@@ -28,7 +27,6 @@ import org.xml.sax.SAXException;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
-import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -70,6 +68,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private VirtualDir virtualDir;
     private Manifest manifest;
     private ColorProvider colorProvider;
+    private SensorContext sensorContext;
 
     protected Sentinel3Level1Reader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
@@ -77,6 +76,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         manifest = null;
         colorProvider = null;
         dddb = DDDB.getInstance();
+        sensorContext = null;
         // the treemap sorts the entries alphanumerically - as these data should be displayed in the SNAP product tree tb 2025-02-04
         variablesMap = new TreeMap<>();
         tiepointMap = new TreeMap<>();
@@ -264,12 +264,10 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         initalizeInput();
 
         manifest = readManifest();
-        MetadataElement metadata = manifest.getMetadata();
-        MetadataElement metadataSection = metadata.getElement("metadataSection");
-        // @todo 2 tb this is OLCI specific - extract generic functionality and dispatch to product specific implementation 2025-01-06
-        MetadataElement olciProductInformation = metadataSection.getElement("olciProductInformation");
 
-        MetadataElement bandDescriptionsElement = olciProductInformation.getElement("bandDescriptions");
+        final String productType = manifest.getProductType();
+        sensorContext = SensorContextFactory.get(productType);
+        final MetadataElement bandDescriptionsElement = sensorContext.getBandDescriptionsElement(manifest);
         // @todo 1 tb/tb duplicated, other segment is in OlciProductFactory 2024-12-20
         if (bandDescriptionsElement != null) {
             for (int i = 0; i < bandDescriptionsElement.getNumElements(); i++) {
@@ -285,7 +283,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
         // create a naked product
         final String productName = manifest.getProductName();
-        final String productType = manifest.getProductType();
         final String baselineCollection = manifest.getBaselineCollection();
         final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, baselineCollection);
         ensureWidthAndHeight(productDescriptor, manifest);
@@ -302,12 +299,12 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         initializeDDDBDescriptors(manifest, productDescriptor);
         addVariables(product);
         addTiePointGrids(product, manifest);
-        addSpecialBands(product, manifest);
+        addSpecialBands(product);
         setMasks(product);
 
         // metadata
         final MetadataElement metadataRoot = product.getMetadataRoot();
-        metadataRoot.addElement(metadata);
+        metadataRoot.addElement(manifest.getMetadata());
         for (VariableDescriptor metaDescriptor : metadataMap.values()) {
             final MetadataElementLazy metadataElementLazy = new MetadataElementLazy(metaDescriptor.getName(), this);
             metadataRoot.addElement(metadataElementLazy);
@@ -318,8 +315,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     @Override
     public GeoCoding readGeoCoding(Product product) throws IOException {
-        // @todo 1 tb/tb move to factory for contexts 2025-04-03
-        if (Config.instance("opttbx").load().preferences().getBoolean(new OlciContext().getUsePixelGeoCodingKey(), true)) {
+        if (Config.instance("opttbx").load().preferences().getBoolean(sensorContext.getUsePixelGeoCodingKey(), true)) {
             return createPixelGeoCoding(product);
         } else {
             return createTiePointGeoCoding(product);
@@ -327,9 +323,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     private ComponentGeoCoding createPixelGeoCoding(Product product) throws IOException {
-        // @todo 1 tb/tb reference to factory for getting the module 2025-04-04
-        final OlciContext olciContext = new OlciContext();
-        final GeoLocationNames geoLocationNames = olciContext.getGeoLocationNames();
+        final GeoLocationNames geoLocationNames = sensorContext.getGeoLocationNames();
         final Band lonBand = product.getBand(geoLocationNames.getLongitudeName());
         final Band latBand = product.getBand(geoLocationNames.getLatitudeName());
         if (lonBand == null || latBand == null) {
@@ -349,22 +343,12 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final VariableDescriptor latDescriptor = variablesMap.get(geoLocationNames.getLatitudeName());
         readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getLatitudeName(), false);
 
-        // @todo 1 tb/tb read from sensor specific class 2025-02-07
-        final double resolutionInKm;
-        String productType = product.getProductType();
-        if (productType.contains("RR")) {
-            resolutionInKm = 1.2;
-        } else if (productType.contains("FR")) {
-            resolutionInKm = 0.3;
-        } else {
-            throw new RuntimeException("not foreseen to get here");
-        }
-
+        final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
         final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
                 geoLocationNames.getLongitudeName(), geoLocationNames.getLatitudeName(),
                 lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKm);
 
-        final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(olciContext.getInversePixelGeoCodingKey());
+        final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(sensorContext.getInversePixelGeoCodingKey());
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
 
@@ -375,9 +359,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     private ComponentGeoCoding createTiePointGeoCoding(Product product) throws IOException {
-        // @todo 1 tb/tb reference to factory for getting the module 2025-04-04
-        final OlciContext olciContext = new OlciContext();
-        final GeoLocationNames geoLocationNames = olciContext.getGeoLocationNames();
+        final GeoLocationNames geoLocationNames = sensorContext.getGeoLocationNames();
         TiePointGrid lonGrid = product.getTiePointGrid(geoLocationNames.getTpLongitudeName());
         TiePointGrid latGrid = product.getTiePointGrid(geoLocationNames.getTpLatitudeName());
         if (latGrid == null || lonGrid == null) {
@@ -399,17 +381,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getTpLongitudeName(), true);
         readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getTpLatitudeName(), true);
 
-        // @todo 1 tb/tb read from sensor specific class 2025-02-07
-        final double resolutionInKm;
-        String productType = product.getProductType();
-        if (productType.contains("RR")) {
-            resolutionInKm = 1.2;
-        } else if (productType.contains("FR")) {
-            resolutionInKm = 0.3;
-        } else {
-            throw new RuntimeException("not foreseen to get here");
-        }
-
+        final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
         final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
                 geoLocationNames.getTpLongitudeName(), geoLocationNames.getTpLatitudeName(),
                 lonGrid.getGridWidth(), lonGrid.getGridHeight(),
@@ -428,17 +400,14 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     private void addVariables(Product product) throws IOException {
-        // @todo 1 tb/tb get from factory 2025-04-03
-        OlciContext context = new OlciContext();
         for (VariableDescriptor descriptor : variablesMap.values()) {
-            // @todo 2 - add band - check for other attributes (unit, description, fill value) tb 2025-12-18
             final int dataType = ProductData.getType(descriptor.getDataType());
             final String bandname = descriptor.getName();
 
             final Band band = new BandUsingReaderDirectly(bandname, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
             product.addBand(band);
 
-            final String bandKey = context.bandNameToKey(bandname);
+            final String bandKey = sensorContext.bandNameToKey(bandname);
             if (nameToWavelengthMap.containsKey(bandKey)) {
                 band.setSpectralWavelength(nameToWavelengthMap.get(bandKey));
             }
@@ -479,11 +448,9 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     private void applyCustomCalibration(Band band) {
         final Preferences preferences = loadPreferences();
-        // @todo 1 tb/tb get from factory 2025-04-03
-        final OlciContext olciContext = new OlciContext();
-        preferences.getBoolean(olciContext.getCustomCalibrationKey(), false);
+        preferences.getBoolean(sensorContext.getCustomCalibrationKey(), false);
 
-        final String calibrationOffsetPropertyName = olciContext.getCalibrationPatternKey()
+        final String calibrationOffsetPropertyName = sensorContext.getCalibrationPatternKey()
                 .replace("ID", band.getName().toLowerCase())
                 .replace("TYPE", "offset");
         final double calibrationOffset = preferences.getDouble(calibrationOffsetPropertyName, Double.NaN);
@@ -491,7 +458,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             band.setScalingOffset(calibrationOffset);
         }
 
-        String calibrationFactorPropertyName = olciContext.getCalibrationPatternKey()
+        String calibrationFactorPropertyName = sensorContext.getCalibrationPatternKey()
                 .replace("ID", band.getName().toLowerCase())
                 .replace("TYPE", "factor");
         final double calibrationFactor = preferences.getDouble(calibrationFactorPropertyName, Double.NaN);
@@ -537,7 +504,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
     }
 
-    private void addSpecialBands(Product product, Manifest manifest) throws IOException {
+    private void addSpecialBands(Product product) throws IOException {
         // @todo 2 tb/tb check if and how to synchronise 2025-02-12
         for (VariableDescriptor variableDescriptor : specialsMap.values()) {
             Variable specialVariable = getNetCDFVariable(variableDescriptor, variableDescriptor.getName());
@@ -775,6 +742,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         dataMap.clear();
 
         manifest = null;
+        sensorContext = null;
 
         super.close();
     }

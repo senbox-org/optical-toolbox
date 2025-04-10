@@ -8,12 +8,9 @@ package eu.esa.opt.dataio.s3.preferences.ui;
 import com.bc.ceres.swing.TableLayout;
 import eu.esa.opt.dataio.s3.meris.MerisProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciContext;
-import eu.esa.opt.dataio.s3.olci.OlciLevel1ProductFactory;
-import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
 import eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory;
 import eu.esa.opt.dataio.s3.slstr.SlstrSstProductFactory;
 import eu.esa.opt.dataio.s3.util.CalibrationUtils;
-import eu.esa.opt.dataio.s3.util.S3Util;
 import org.esa.snap.rcp.SnapApp;
 import org.esa.snap.rcp.preferences.PreferenceUtils;
 import org.esa.snap.runtime.Config;
@@ -54,36 +51,36 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
     private void initComponents() {
         slstrL1BPixelGeocodingsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL1BPixelGeocodingsCheckBox,
-                                   NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3ReaderOptionsPanel.slstrL1BPixelGeocodingsCheckBox.text")); // NOI18N
+                NbBundle.getMessage(S3ReaderOptionsPanel.class,
+                        "S3ReaderOptionsPanel.slstrL1BPixelGeocodingsCheckBox.text")); // NOI18N
         slstrL1BOrphanPixelsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL1BOrphanPixelsCheckBox,
-                                   NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3ReaderOptionsPanel.slstrL1BOrphanPixelsCheckBox.text")); // NOI18N
+                NbBundle.getMessage(S3ReaderOptionsPanel.class,
+                        "S3ReaderOptionsPanel.slstrL1BOrphanPixelsCheckBox.text")); // NOI18N
         slstrL1BCalibrationCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL1BCalibrationCheckBox,
-                                   NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3ReaderOptionsPanel.slstrL1BCalibrationFactorCheckBox.text")); // NOI18N
+                NbBundle.getMessage(S3ReaderOptionsPanel.class,
+                        "S3ReaderOptionsPanel.slstrL1BCalibrationFactorCheckBox.text")); // NOI18N
         slstrL1BS3MPCRecommendationCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL1BS3MPCRecommendationCheckBox,
-                                   NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3ReaderOptionsPanel.slstrL1BS3MPCRecommendationCheckBox.text")); // NOI18N
+                NbBundle.getMessage(S3ReaderOptionsPanel.class,
+                        "S3ReaderOptionsPanel.slstrL1BS3MPCRecommendationCheckBox.text")); // NOI18N
         slstrL2SSTPixelGeocodingsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(slstrL2SSTPixelGeocodingsCheckBox,
-                                   NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3ReaderOptionsPanel.slstrL2SSTPixelGeocodingsCheckBox.text")); // NOI18N
+                NbBundle.getMessage(S3ReaderOptionsPanel.class,
+                        "S3ReaderOptionsPanel.slstrL2SSTPixelGeocodingsCheckBox.text")); // NOI18N
         olciPixelGeocodingsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(olciPixelGeocodingsCheckBox,
-                                   NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3ReaderOptionsPanel.olciPixelGeocodingsCheckBox.text")); // NOI18N
+                NbBundle.getMessage(S3ReaderOptionsPanel.class,
+                        "S3ReaderOptionsPanel.olciPixelGeocodingsCheckBox.text")); // NOI18N
         olciL1CalibrationCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(olciL1CalibrationCheckBox,
-                                   NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3ReaderOptionsPanel.olciL1CalibrationCheckBox.text")); // NOI18N
+                NbBundle.getMessage(S3ReaderOptionsPanel.class,
+                        "S3ReaderOptionsPanel.olciL1CalibrationCheckBox.text")); // NOI18N
         merisPixelGeocodingsCheckBox = new JCheckBox();
         Mnemonics.setLocalizedText(merisPixelGeocodingsCheckBox,
-                                   NbBundle.getMessage(S3ReaderOptionsPanel.class,
-                                                       "S3ReaderOptionsPanel.merisPixelGeocodingsCheckBox.text")); // NOI18N
+                NbBundle.getMessage(S3ReaderOptionsPanel.class,
+                        "S3ReaderOptionsPanel.merisPixelGeocodingsCheckBox.text")); // NOI18N
 
         JButton slstrLevel1bCalibrationEditButton = new JButton("Edit");
         slstrLevel1bCalibrationEditButton.setName("Sentinel-S3 SLSTR L1B Custom Calibration");
@@ -113,7 +110,7 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
         JPanel olciLabel = PreferenceUtils.createTitleLabel("OLCI");
         JPanel merisLabel = PreferenceUtils.createTitleLabel("MERIS");
         JLabel commentLabel = new JLabel("<html><b>NOTE:</b> For configuring the behaviour of geo-coding, please \n" +
-                                                 "have also a look at the general Geo-Location panel, too.");
+                "have also a look at the general Geo-Location panel, too.");
         final JSeparator separator = new JSeparator();
 
         TableLayout tableLayout = new TableLayout(1);
@@ -164,15 +161,15 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
     void store() {
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         preferences.putBoolean(SlstrLevel1ProductFactory.SLSTR_L1B_USE_PIXELGEOCODINGS,
-                               slstrL1BPixelGeocodingsCheckBox.isSelected());
+                slstrL1BPixelGeocodingsCheckBox.isSelected());
         preferences.putBoolean(SlstrLevel1ProductFactory.SLSTR_L1B_LOAD_ORPHAN_PIXELS,
-                               slstrL1BOrphanPixelsCheckBox.isSelected());
+                slstrL1BOrphanPixelsCheckBox.isSelected());
         preferences.putBoolean(SlstrLevel1ProductFactory.SLSTR_L1B_CUSTOM_CALIBRATION,
-                               slstrL1BCalibrationCheckBox.isSelected());
+                slstrL1BCalibrationCheckBox.isSelected());
         preferences.putBoolean(SlstrLevel1ProductFactory.SLSTR_L1B_S3MPC_CALIBRATION,
-                               slstrL1BS3MPCRecommendationCheckBox.isSelected());
+                slstrL1BS3MPCRecommendationCheckBox.isSelected());
         preferences.putBoolean(SlstrSstProductFactory.SLSTR_L2_SST_USE_PIXELGEOCODINGS,
-                               slstrL2SSTPixelGeocodingsCheckBox.isSelected());
+                slstrL2SSTPixelGeocodingsCheckBox.isSelected());
         // @todo 1 tb/tb move to factory for contexts 2025-04-03
         final OlciContext olciContext = new OlciContext();
         preferences.putBoolean(olciContext.getUsePixelGeoCodingKey(), olciPixelGeocodingsCheckBox.isSelected());
@@ -191,7 +188,7 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
     }
 
     private void openEditCalibrationDialog(ActionEvent e, CalibrationUtils.PRODUCT_TYPE productType) {
-        JButton button =(JButton) e.getSource();
+        JButton button = (JButton) e.getSource();
         String title = button.getName();
         Preferences preferences = Config.instance("opttbx").load().preferences();
 
