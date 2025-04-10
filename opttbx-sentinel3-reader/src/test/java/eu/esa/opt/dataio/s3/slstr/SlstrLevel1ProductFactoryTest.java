@@ -1,8 +1,11 @@
 package eu.esa.opt.dataio.s3.slstr;
 
+import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory;
+import org.esa.snap.core.datamodel.ColorPaletteDef;
 import org.junit.Test;
 
+import java.awt.*;
 import java.io.IOException;
 
 import static eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory.SLSTR_L1B_PIXEL_GEOCODING_INVERSE;
