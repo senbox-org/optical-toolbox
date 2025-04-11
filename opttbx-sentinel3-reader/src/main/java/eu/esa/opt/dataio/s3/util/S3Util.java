@@ -35,6 +35,7 @@ public class S3Util {
         final Preferences snapPreferences = Config.instance("snap").preferences();
         final boolean useFractAccuracy = snapPreferences.getBoolean(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY, false);
 
+        // @todo 1 tb/tb move to factory for type ... 2025-04-03
         final Preferences opttbxPreferences = Config.instance("opttbx").preferences();
         codingNames[1] = opttbxPreferences.get(inverseCodingProperty, PixelQuadTreeInverse.KEY);
         if (useFractAccuracy) {
