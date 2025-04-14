@@ -160,7 +160,7 @@ public class L2FileReader extends SeadasFileReader {
         addGeocoding(product);
 
         addFlagsAndMasks(product);
-        product.setAutoGrouping("Rrs_unc:Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sol:tg_sen");
+        product.setAutoGrouping("Rrs_unc:Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf");
 
         return product;
     }
