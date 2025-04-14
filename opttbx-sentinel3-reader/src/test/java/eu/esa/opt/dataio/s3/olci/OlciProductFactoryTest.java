@@ -132,22 +132,6 @@ public class OlciProductFactoryTest {
 
     @Test
     @STTM("SNAP-3728")
-    public void testIsLogScaledGeophysicalData() {
-        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("anw_443"));
-        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("aphy_443"));
-        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("bbp_443"));
-        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("bbp_slope"));
-        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("ADG443_NN"));
-        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("CHL_OC4ME_unc"));
-        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("KD490_M07"));
-        assertTrue(OlciProductFactory.isLogScaledGeophysicalData("TSM_NN_unc"));
-
-        assertFalse(OlciProductFactory.isLogScaledGeophysicalData("Oa03_radiance_unc"));
-        assertFalse(OlciProductFactory.isLogScaledGeophysicalData("Oa11_radiance"));
-    }
-
-    @Test
-    @STTM("SNAP-3728")
     public void testStripLogFromUnit() {
         assertEquals("kgm-3", OlciProductFactory.stripLogFromUnit("lg(kgm-3)"));
         assertEquals("m-1", OlciProductFactory.stripLogFromUnit("lg(re m-1)"));

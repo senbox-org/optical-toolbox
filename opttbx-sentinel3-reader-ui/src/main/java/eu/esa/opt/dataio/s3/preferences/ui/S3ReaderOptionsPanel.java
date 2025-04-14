@@ -7,10 +7,11 @@ package eu.esa.opt.dataio.s3.preferences.ui;
 
 import com.bc.ceres.swing.TableLayout;
 import eu.esa.opt.dataio.s3.meris.MerisProductFactory;
-import eu.esa.opt.dataio.s3.olci.OlciContext;
 import eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory;
 import eu.esa.opt.dataio.s3.slstr.SlstrSstProductFactory;
 import eu.esa.opt.dataio.s3.util.CalibrationUtils;
+import eu.esa.opt.dataio.s3.util.SensorContext;
+import eu.esa.opt.dataio.s3.util.SensorContextFactory;
 import org.esa.snap.rcp.SnapApp;
 import org.esa.snap.rcp.preferences.PreferenceUtils;
 import org.esa.snap.runtime.Config;
@@ -148,12 +149,11 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
                 preferences.getBoolean(SlstrLevel1ProductFactory.SLSTR_L1B_S3MPC_CALIBRATION, false));
         slstrL2SSTPixelGeocodingsCheckBox.setSelected(
                 preferences.getBoolean(SlstrSstProductFactory.SLSTR_L2_SST_USE_PIXELGEOCODINGS, true));
-        // @todo 2 tb/tb invent something more clever here 2025-04-03
-        final OlciContext olciContext = new OlciContext();
-        olciPixelGeocodingsCheckBox.setSelected(
-                preferences.getBoolean(olciContext.getUsePixelGeoCodingKey(), true));
-        olciL1CalibrationCheckBox.setSelected(
-                preferences.getBoolean(olciContext.getCustomCalibrationKey(), false));
+
+        final SensorContext olciContext = SensorContextFactory.get("OL_1_EFR");
+        olciPixelGeocodingsCheckBox.setSelected(preferences.getBoolean(olciContext.getUsePixelGeoCodingKey(), true));
+        olciL1CalibrationCheckBox.setSelected(preferences.getBoolean(olciContext.getCustomCalibrationKey(), false));
+
         merisPixelGeocodingsCheckBox.setSelected(
                 preferences.getBoolean(MerisProductFactory.MERIS_SAFE_USE_PIXELGEOCODING, true));
     }
@@ -170,10 +170,11 @@ final class S3ReaderOptionsPanel extends javax.swing.JPanel {
                 slstrL1BS3MPCRecommendationCheckBox.isSelected());
         preferences.putBoolean(SlstrSstProductFactory.SLSTR_L2_SST_USE_PIXELGEOCODINGS,
                 slstrL2SSTPixelGeocodingsCheckBox.isSelected());
-        // @todo 1 tb/tb move to factory for contexts 2025-04-03
-        final OlciContext olciContext = new OlciContext();
+
+        final SensorContext olciContext = SensorContextFactory.get("OL_1_EFR");
         preferences.putBoolean(olciContext.getUsePixelGeoCodingKey(), olciPixelGeocodingsCheckBox.isSelected());
         preferences.putBoolean(olciContext.getCustomCalibrationKey(), olciL1CalibrationCheckBox.isSelected());
+
         preferences.putBoolean(MerisProductFactory.MERIS_SAFE_USE_PIXELGEOCODING, merisPixelGeocodingsCheckBox.isSelected());
         try {
             preferences.flush();

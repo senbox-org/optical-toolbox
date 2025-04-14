@@ -1,6 +1,5 @@
 package eu.esa.opt.dataio.s3.util;
 
-import eu.esa.opt.dataio.s3.SensorContext;
 import eu.esa.opt.dataio.s3.olci.OlciContext;
 
 import java.util.HashMap;

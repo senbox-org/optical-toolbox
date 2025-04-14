@@ -1,7 +1,6 @@
 package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.annotation.STTM;
-import eu.esa.opt.dataio.s3.SensorContext;
 import eu.esa.opt.dataio.s3.olci.OlciContext;
 import org.junit.Test;
 

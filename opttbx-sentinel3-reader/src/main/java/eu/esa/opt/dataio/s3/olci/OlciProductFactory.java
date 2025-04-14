@@ -37,8 +37,6 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     private static final String LOG10_REGEX = "lg(.*)";
     private static final Pattern uncertaintyRegEx = Pattern.compile(UNCERTAINTY_REGEX);
     private static final Pattern log10RegEx = Pattern.compile(LOG10_REGEX);
-    private static final String[] LOG_SCALED_GEO_VARIABLE_NAMES = {"anw_443", "acdm_443", "aphy_443", "acdom_443", "bbp_443", "kd_490", "bbp_slope", "OWC",
-            "ADG443_NN", "CHL_NN", "CHL_OC4ME", "KD490_M07", "TSM_NN"};
 
     private final Map<String, Float> nameToWavelengthMap;
     private final Map<String, Float> nameToBandwidthMap;
@@ -100,16 +98,6 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         }
         final Matcher matcher = log10RegEx.matcher(units);
         return matcher.matches();
-    }
-
-    // @todo tb this is OLCI specific 2025-04-03
-    public static boolean isLogScaledGeophysicalData(String bandName) {
-        for (final String logScaledBandName : LOG_SCALED_GEO_VARIABLE_NAMES) {
-            if (bandName.startsWith(logScaledBandName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static String stripLogFromUnit(String unitString) {
@@ -289,7 +277,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
             }
         }
 
-        if (isUncertaintyBand(targetNodeName) || isLogScaledGeophysicalData(targetNodeName)) {
+        if (isUncertaintyBand(targetNodeName) || OlciContext.isLogScaledGeophysicalData(targetNodeName)) {
             final String unit = sourceBand.getUnit();
             if (isLogScaledUnit(unit)) {
                 targetNode.setLog10Scaled(true);

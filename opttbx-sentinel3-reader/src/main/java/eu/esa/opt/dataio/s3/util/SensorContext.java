@@ -1,9 +1,9 @@
-package eu.esa.opt.dataio.s3;
+package eu.esa.opt.dataio.s3.util;
 
+import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
-import eu.esa.opt.dataio.s3.util.GeoLocationNames;
+import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
 
 public interface SensorContext {
 
@@ -11,12 +11,14 @@ public interface SensorContext {
     String getTiePointForwardGeoCodingKey();
     String getUsePixelGeoCodingKey();
     String getCustomCalibrationKey();
-    String getCalibrationPatternKey();
 
     double getResolutionInKm(String productType);
 
     GeoLocationNames getGeoLocationNames();
     String bandNameToKey(String bandName);
+
+    void addDescriptionAndUnit(Band band, VariableDescriptor descriptor);
+    void applyCalibration(Band band);
 
     MetadataElement getBandDescriptionsElement(Manifest manifest);
 }

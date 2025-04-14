@@ -9,7 +9,6 @@ import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
-import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
 import eu.esa.opt.dataio.s3.util.*;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
@@ -43,11 +42,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.prefs.Preferences;
 
 import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
-import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.isLogScaledUnit;
-import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.stripLogFromDescription;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
 import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_pixelCoding;
 import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePointCoding;
@@ -422,54 +418,12 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             S3Util.addSampleCodings(product, band, netCDFVariable, false);
             band.setScalingFactor(S3Util.getScalingFactor(netCDFVariable));
             band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
+            band.setValidPixelExpression(descriptor.getValidExpression());
             S3Util.addFillValue(band, netCDFVariable);
 
-            applyCustomCalibration(band);
-
-            // @todo 1 OLCI specific! 2025-04-04
-            if (OlciProductFactory.isUncertaintyBand(bandname) || OlciProductFactory.isLogScaledGeophysicalData(bandname)) {
-                final String unit = descriptor.getUnits();
-                if (isLogScaledUnit(unit)) {
-                    band.setLog10Scaled(true);
-                    band.setUnit(OlciProductFactory.stripLogFromUnit(unit));
-
-                    final String description = descriptor.getDescription();
-                    band.setDescription(stripLogFromDescription(description));
-                }
-
-                // @todo tb refactor 2025-04-03
-                band.setValidPixelExpression("!quality_flags.invalid");
-            } else {
-                band.setDescription(descriptor.getDescription());
-                band.setUnit(descriptor.getUnits());
-            }
+            sensorContext.applyCalibration(band);
+            sensorContext.addDescriptionAndUnit(band, descriptor);
         }
-    }
-
-    private void applyCustomCalibration(Band band) {
-        final Preferences preferences = loadPreferences();
-        preferences.getBoolean(sensorContext.getCustomCalibrationKey(), false);
-
-        final String calibrationOffsetPropertyName = sensorContext.getCalibrationPatternKey()
-                .replace("ID", band.getName().toLowerCase())
-                .replace("TYPE", "offset");
-        final double calibrationOffset = preferences.getDouble(calibrationOffsetPropertyName, Double.NaN);
-        if (!Double.isNaN(calibrationOffset)) {
-            band.setScalingOffset(calibrationOffset);
-        }
-
-        String calibrationFactorPropertyName = sensorContext.getCalibrationPatternKey()
-                .replace("ID", band.getName().toLowerCase())
-                .replace("TYPE", "factor");
-        final double calibrationFactor = preferences.getDouble(calibrationFactorPropertyName, Double.NaN);
-        if (!Double.isNaN(calibrationFactor)) {
-            band.setScalingFactor(calibrationFactor);
-        }
-    }
-
-    // @todo 1 tb/tb this is OLCI specific - refactor 2025-02-11
-    private Preferences loadPreferences() {
-        return Config.instance("opttbx").load().preferences();
     }
 
     private void addTiePointGrids(Product product, Manifest manifest) {
