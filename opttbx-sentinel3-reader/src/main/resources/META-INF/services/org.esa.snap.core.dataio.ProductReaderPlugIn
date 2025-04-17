@@ -1,4 +1,5 @@
 eu.esa.opt.dataio.s3.Sentinel3ProductReaderPlugIn
+eu.esa.opt.dataio.s3.Sentinel3Level1ReaderPlugIn
 eu.esa.opt.dataio.s3.slstr.SlstrLevel1B1kmProductReaderPlugIn
 eu.esa.opt.dataio.s3.slstr.SlstrLevel1B500mProductReaderPlugIn
 eu.esa.opt.dataio.s3.meris.MerisLevel1ProductPlugIn

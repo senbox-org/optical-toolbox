@@ -3,6 +3,9 @@ Optical Toolbox Release Notes
 
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
+# New in SNAP 13.0.0
+    [SNAP-1696] Improve open performance of S3 reader
+
 # New in SNAP 12.0.0
     [SNAP-3912] SNAP 12 is unable to read S2 products
     [SNAP-3904] SNAP cannot open EnMAP products retrieved from DLR

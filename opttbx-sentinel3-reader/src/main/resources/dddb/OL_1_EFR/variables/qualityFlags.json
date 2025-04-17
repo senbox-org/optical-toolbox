@@ -1,0 +1,10 @@
+[
+  {
+    "name": "quality_flags",
+    "type" : "f",
+    "dataType": "uint32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "Classification and quality flags"
+  }
+]

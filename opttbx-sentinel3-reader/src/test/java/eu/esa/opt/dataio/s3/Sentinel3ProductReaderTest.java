@@ -1,7 +1,6 @@
 package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.annotation.STTM;
-import eu.esa.opt.dataio.s3.olci.OlciLevel1ProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2WProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
@@ -21,10 +20,7 @@ public class Sentinel3ProductReaderTest {
         Sentinel3ProductReader sentinel3ProductReader = new Sentinel3ProductReader(new Sentinel3ProductReaderPlugIn());
 
         // with Sentinel3ProductReaderPlugIn -----------------------
-        ProductFactory productFactory = sentinel3ProductReader.getProductFactory("S3B_OL_1_EFR____20231214T092214_20231214T092514_20231214T204604_0179_087_207_2340_PS2_O_NT_003.SEN3");
-        assertTrue(productFactory instanceof OlciLevel1ProductFactory);
-
-        productFactory = sentinel3ProductReader.getProductFactory("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3");
+        ProductFactory productFactory = sentinel3ProductReader.getProductFactory("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3");
         assertTrue(productFactory instanceof OlciLevel2LProductFactory);
 
         productFactory = sentinel3ProductReader.getProductFactory("S3A_OL_2_WFR____20070425T152940_20070425T153025_20140610T112151_0045_000_000______MAR_D_NR____.SEN3");
@@ -75,10 +71,11 @@ public class Sentinel3ProductReaderTest {
         productFactory = sentinel3ProductReader.getProductFactory("S3A_SL_1_RBT____20130707T154252_20130707T154752_20150217T183537_0299_158_182______SVL_O_NR_001.SEN3.zip");
         assertTrue(productFactory instanceof SlstrLevel1B500mProductFactory);
 
-
         // not matching
-        sentinel3ProductReader = new Sentinel3ProductReader(new Sentinel3ProductReaderPlugIn());
         productFactory = sentinel3ProductReader.getProductFactory("S5P_NRTI_L2__CLOUD__20240219T082248_20240219T082748_32914_03_020601_20240219T090524");
+        assertNull(productFactory);
+
+        productFactory = sentinel3ProductReader.getProductFactory("S3B_OL_1_EFR____20231214T092214_20231214T092514_20231214T204604_0179_087_207_2340_PS2_O_NT_003.SEN3");
         assertNull(productFactory);
     }
 }

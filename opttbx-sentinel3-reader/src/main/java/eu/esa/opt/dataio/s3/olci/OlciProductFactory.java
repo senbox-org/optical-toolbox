@@ -2,11 +2,12 @@ package eu.esa.opt.dataio.s3.olci;
 
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
-import eu.esa.opt.dataio.s3.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.SentinelTimeCoding;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReaderFactory;
+import eu.esa.opt.dataio.s3.util.S3Util;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
@@ -21,27 +22,21 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePointCoding;
 
 /**
  * @author Tonio Fincke
  */
 public abstract class OlciProductFactory extends AbstractProductFactory {
 
-    public final static String OLCI_USE_PIXELGEOCODING = "opttbx.reader.olci.pixelGeoCoding";
-
-    final static String SYSPROP_OLCI_TIE_POINT_CODING_FORWARD = "opttbx.reader.olci.tiePointGeoCoding.forward";
-    private final static String SYSPROP_OLCI_PIXEL_CODING_INVERSE = "opttbx.reader.olci.pixelGeoCoding.inverse";
     private final static String[] excludedIDs = {"removedPixelsData"};
     private static final String UNCERTAINTY_REGEX = ".*_unc";
     private static final String LOG10_REGEX = "lg(.*)";
     private static final Pattern uncertaintyRegEx = Pattern.compile(UNCERTAINTY_REGEX);
     private static final Pattern log10RegEx = Pattern.compile(LOG10_REGEX);
-    private static final String[] LOG_SCALED_GEO_VARIABLE_NAMES = {"anw_443", "acdm_443", "aphy_443", "acdom_443", "bbp_443", "kd_490", "bbp_slope", "OWC",
-            "ADG443_NN", "CHL_NN", "CHL_OC4ME", "KD490_M07", "TSM_NN"};
 
     private final Map<String, Float> nameToWavelengthMap;
     private final Map<String, Float> nameToBandwidthMap;
@@ -56,6 +51,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         nameToIndexMap = new HashMap<>();
     }
 
+    // @todo 2 tb/tb move to product-type specific class, evt. read from manifest 2025-02-07
     static double getResolutionInKm(String productType) {
         switch (productType) {
             case "OL_1_EFR":
@@ -90,16 +86,6 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         }
     }
 
-    static String[] getForwardAndInverseKeys_tiePointCoding() {
-        final String[] codingNames = new String[2];
-
-        final Preferences preferences = Config.instance("opttbx").preferences();
-        codingNames[0] = preferences.get(SYSPROP_OLCI_TIE_POINT_CODING_FORWARD, TiePointBilinearForward.KEY);
-        codingNames[1] = TiePointInverse.KEY;
-
-        return codingNames;
-    }
-
     public static boolean isUncertaintyBand(String bandName) {
         final Matcher matcher = uncertaintyRegEx.matcher(bandName);
 
@@ -114,16 +100,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         return matcher.matches();
     }
 
-    static boolean isLogScaledGeophysicalData(String bandName) {
-        for (final String logScaledBandName : LOG_SCALED_GEO_VARIABLE_NAMES) {
-            if (bandName.startsWith(logScaledBandName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static String stripLogFromUnit(String unitString) {
+    public static String stripLogFromUnit(String unitString) {
         if (StringUtils.isNullOrEmpty(unitString)) {
             return "";
         }
@@ -132,7 +109,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         int logIdx = trimmedUnit.indexOf("lg(");
         if (logIdx >= 0) {
             final String logRemoved = trimmedUnit.substring(logIdx + 3, trimmedUnit.length() - 1);
-            if (logRemoved.startsWith("re")){
+            if (logRemoved.startsWith("re")) {
                 return logRemoved.substring(3);
             }
 
@@ -145,13 +122,25 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         return unitString;
     }
 
-    static String stripLogFromDescription(String description) {
+    // @todo 1 tb/tb refactor, add tests etc 2025-04-03
+    public static String stripLogFromDescription(String description) {
         if (StringUtils.isNullOrEmpty(description)) {
             return "";
         }
 
         final String trimmed = description.trim();
         return trimmed.replace("log10 scaled ", "");
+    }
+
+    public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
+        final String[] allFiles = virtualDir.listAllFiles();
+        for (String dirFileName : allFiles) {
+            final String filenameFromVirtualDir = FileUtils.getFilenameFromPath(dirFileName);
+            if (filenameFromVirtualDir.equalsIgnoreCase(fileName)) {
+                return virtualDir.getFile(dirFileName);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -204,7 +193,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
 
     @Override
     protected void setGeoCoding(Product targetProduct) throws IOException {
-        if (Config.instance("opttbx").load().preferences().getBoolean(OLCI_USE_PIXELGEOCODING, true)) {
+        // @todo 1 tb/tb move to factory for contexts 2025-04-03
+        if (Config.instance("opttbx").load().preferences().getBoolean(new OlciContext().getUsePixelGeoCodingKey(), true)) {
             setPixelGeoCoding(targetProduct);
         } else {
             setTiePointGeoCoding(targetProduct);
@@ -227,7 +217,8 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
                 lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKilometers);
 
-        final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(SYSPROP_OLCI_PIXEL_CODING_INVERSE);
+        // @todo 1 tb/tb reference to factory for getting the module 2025-04-03
+        final String[] codingKeys = S3Util.getForwardAndInverseKeys_pixelCoding(new OlciContext().getInversePixelGeoCodingKey());
         final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
 
@@ -277,8 +268,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     protected void configureTargetNode(Band sourceBand, RasterDataNode targetNode) {
         final String targetNodeName = targetNode.getName();
         if (targetNodeName.matches("Oa[0-2][0-9].*")) {
-            if (targetNode instanceof Band) {
-                final Band targetBand = (Band) targetNode;
+            if (targetNode instanceof Band targetBand) {
                 String cutName = targetBand.getName().substring(0, 4);
                 targetBand.setSpectralBandIndex(getBandindex(cutName));
                 targetBand.setSpectralWavelength(getWavelength(cutName));
@@ -287,7 +277,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
             }
         }
 
-        if (isUncertaintyBand(targetNodeName) || isLogScaledGeophysicalData(targetNodeName)) {
+        if (isUncertaintyBand(targetNodeName) || OlciContext.isLogScaledGeophysicalData(targetNodeName)) {
             final String unit = sourceBand.getUnit();
             if (isLogScaledUnit(unit)) {
                 targetNode.setLog10Scaled(true);
@@ -326,16 +316,5 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         final S3NetcdfReader reader = S3NetcdfReaderFactory.createS3NetcdfProduct(file);
         addSeparatingDimensions(reader.getSuffixesForSeparatingDimensions());
         return reader.readProductNodes(file, null);
-    }
-
-    public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
-        final String[] allFiles = virtualDir.listAllFiles();
-        for (String dirFileName : allFiles) {
-            final String filenameFromVirtualDir = FileUtils.getFilenameFromPath(dirFileName);
-            if (filenameFromVirtualDir.equalsIgnoreCase(fileName)) {
-                return virtualDir.getFile(dirFileName);
-            }
-        }
-        return null;
     }
 }

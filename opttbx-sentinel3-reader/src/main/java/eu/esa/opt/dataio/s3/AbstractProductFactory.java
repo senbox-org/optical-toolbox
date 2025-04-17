@@ -18,26 +18,14 @@ import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.multilevel.MultiLevelImage;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.ProductReader;
-import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
-import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
-import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.ColorPaletteDef;
-import org.esa.snap.core.datamodel.CrsGeoCoding;
-import org.esa.snap.core.datamodel.ImageInfo;
-import org.esa.snap.core.datamodel.Mask;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductNodeGroup;
-import org.esa.snap.core.datamodel.RasterDataNode;
-import org.esa.snap.core.datamodel.SampleCoding;
-import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
-import org.esa.snap.runtime.Config;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import ucar.ma2.Array;
@@ -50,25 +38,19 @@ import javax.media.jai.operator.CropDescriptor;
 import javax.media.jai.operator.TranslateDescriptor;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.prefs.Preferences;
 
 import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
-import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
-import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERPOLATING;
 
 public abstract class AbstractProductFactory implements ProductFactory {
 
@@ -103,16 +85,9 @@ public abstract class AbstractProductFactory implements ProductFactory {
         manifest = createManifest(manifestInputStream);
 
         final List<String> fileNames = getFileNames(manifest);
-        final List<String> ensuredNames = new ArrayList<>();
-        for (String origName : fileNames) {
-            // @todo 2 extract method, prepare for more cases and write tests tb 2024-05-31
-            if (origName.startsWith("./")) {
-                ensuredNames.add(origName.substring(2));
-            } else {
-                ensuredNames.add(origName);
-            }
-        }
+        final List<String> ensuredNames = removeLeadingSlash(fileNames);
 
+        // @todo 1 tb/** replace this logic with something faster 2025-02-06
         readProducts(ensuredNames, virtualDir);
 
         final String productName = getProductName();
@@ -150,6 +125,18 @@ public abstract class AbstractProductFactory implements ProductFactory {
         return targetProduct;
     }
 
+    static List<String> removeLeadingSlash(List<String> fileNames) {
+        final List<String> ensuredNames = new ArrayList<>();
+        for (String origName : fileNames) {
+            if (origName.startsWith("./")) {
+                ensuredNames.add(origName.substring(2));
+            } else {
+                ensuredNames.add(origName);
+            }
+        }
+        return ensuredNames;
+    }
+
     @Override
     public void dispose() throws IOException {
         openProductList.forEach(Product::dispose);
@@ -174,21 +161,21 @@ public abstract class AbstractProductFactory implements ProductFactory {
         double newOffsetX = offsetX % subSamplingX;
         double dataOffsetX = (newOffsetX - offsetX) / subSamplingX;
         double newWidth = Math.min(sourceBand.getRasterWidth(),
-                                   Math.ceil((targetProduct.getSceneRasterWidth() - newOffsetX) / subSamplingX));
+                Math.ceil((targetProduct.getSceneRasterWidth() - newOffsetX) / subSamplingX));
         double newOffsetY = offsetY % subSamplingY;
         double dataOffsetY = (newOffsetY - offsetY) / subSamplingY;
         double newHeight = Math.min(sourceBand.getRasterHeight(),
-                                    Math.ceil((targetProduct.getSceneRasterHeight() - newOffsetY) / subSamplingY));
+                Math.ceil((targetProduct.getSceneRasterHeight() - newOffsetY) / subSamplingY));
         RenderedOp translatedSourceImage = TranslateDescriptor.create(sourceImage, (float) -dataOffsetX, (float) -dataOffsetY,
-                                                                      Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
         RenderedImage croppedSourceImage = CropDescriptor.create(translatedSourceImage, 0f, 0f,
-                                                                 (float) newWidth, (float) newHeight, null);
+                (float) newWidth, (float) newHeight, null);
         DefaultMultiLevelImage newSourceImage =
                 new DefaultMultiLevelImage(new DefaultMultiLevelSource(croppedSourceImage, sourceImage.getModel()));
         final String bandName = sourceBand.getName();
         final TiePointGrid tiePointGrid = new TiePointGrid(bandName, (int) newWidth, (int) newHeight,
-                                                           newOffsetX, newOffsetY,
-                                                           subSamplingX, subSamplingY);
+                newOffsetX, newOffsetY,
+                subSamplingX, subSamplingY);
         if (unit != null && unit.toLowerCase().contains("degree")) {
             tiePointGrid.setDiscontinuity(TiePointGrid.DISCONT_AUTO);
         }
@@ -491,30 +478,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
         final double[] tiePoints = new double[tpData.getWidth() * tpData.getHeight()];
         tpData.getPixels(tpData.getMinX(), tpData.getMinY(), tpData.getWidth(), tpData.getHeight(), tiePoints);
         return tiePoints;
-    }
-
-    /**
-     * Defines the transformation keys for forward and inverse pixel-geocoding transformations
-     * @param inverseCodingProperty the property defining the preferences key storing the desired inverse geocoding
-     *                              algorithm. Uses the OptTbx part of the preferences.
-     * @return and array of keys. Index 0: forward coding, index 1: inverse coding
-     */
-    protected static String[] getForwardAndInverseKeys_pixelCoding(String inverseCodingProperty) {
-        final String[] codingNames = new String[2];
-
-        final Preferences snapPreferences = Config.instance("snap").preferences();
-        final boolean useFractAccuracy = snapPreferences.getBoolean(SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY, false);
-
-        final Preferences opttbxPreferences = Config.instance("opttbx").preferences();
-        codingNames[1] = opttbxPreferences.get(inverseCodingProperty, PixelQuadTreeInverse.KEY);
-        if (useFractAccuracy) {
-            codingNames[0] = PixelInterpolatingForward.KEY;
-            codingNames[1] = codingNames[1].concat(KEY_SUFFIX_INTERPOLATING);
-        } else {
-            codingNames[0] = PixelForward.KEY;
-        }
-
-        return codingNames;
     }
 
     private void setTimes(Product targetProduct) {

@@ -1,9 +1,12 @@
 package eu.esa.opt.dataio.s3.util;
 
-import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.Product;
 import org.junit.Before;
 import org.junit.Test;
+import ucar.ma2.Array;
+import ucar.ma2.DataType;
+import ucar.nc2.Attribute;
 
 import java.io.IOException;
 import java.net.URI;

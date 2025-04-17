@@ -17,6 +17,7 @@ package eu.esa.opt.dataio.s3.slstr;
 
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
+import eu.esa.opt.dataio.s3.util.S3Util;
 import org.esa.snap.core.dataio.geocoding.ComponentFactory;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.ForwardCoding;
@@ -57,7 +58,7 @@ public class SlstrWstProductFactory extends SlstrSstProductFactory {
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
                                                   targetProduct.getSceneRasterWidth(), targetProduct.getSceneRasterHeight(), RESOLUTION_IN_KM);
 
-        final String[] keys = getForwardAndInverseKeys_pixelCoding(SYSPROP_SLSTR_WST_PIXEL_INVERSE);
+        final String[] keys = S3Util.getForwardAndInverseKeys_pixelCoding(SYSPROP_SLSTR_WST_PIXEL_INVERSE);
         final ForwardCoding forward = ComponentFactory.getForward(keys[0]);
         final InverseCoding inverse = ComponentFactory.getInverse(keys[1]);
 

@@ -18,8 +18,9 @@ import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
-import eu.esa.opt.dataio.s3.Manifest;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
+import eu.esa.opt.dataio.s3.util.S3Util;
 import org.esa.snap.core.dataio.geocoding.ComponentFactory;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.ForwardCoding;
@@ -519,7 +520,7 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
                 if (shortName.contains("orphan") && !shortName.equals("orphan_pixels")) {
                     final int height = variable.getDimension(0).getLength();
                     final int width = variable.getDimension(1).getLength();
-                    Band band = new Band(shortName, getDataType(variable), width, height);
+                    Band band = new Band(shortName, S3Util.getRasterDataType(variable), width, height);
                     targetProduct.addBand(band);
                     CfBandPart.readCfBandAttributes(variable, band);
                     band.setSourceImage(new DefaultMultiLevelImage(new LazyMultiLevelSource(band) {
@@ -636,7 +637,7 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
             final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVarName, latVarName,
                                                       width, height, resolutionInKm);
 
-            final String[] codingKeys = getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
+            final String[] codingKeys = S3Util.getForwardAndInverseKeys_pixelCoding(SLSTR_L1B_PIXEL_GEOCODING_INVERSE);
 
             final ForwardCoding forward = ComponentFactory.getForward(codingKeys[0]);
             final InverseCoding inverse = ComponentFactory.getInverse(codingKeys[1]);
@@ -672,14 +673,6 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
             return "fo";
         }
         return "";
-    }
-
-    private int getDataType(Variable variable) {
-        int rasterDataType = DataTypeUtils.getRasterDataType(variable);
-        if (variable.getDataType() == DataType.LONG) {
-            rasterDataType = variable.getDataType().isUnsigned() ? ProductData.TYPE_UINT32 : ProductData.TYPE_INT32;
-        }
-        return rasterDataType;
     }
 
     private static class SlstrOrphanOpImage extends NetcdfOpImage {

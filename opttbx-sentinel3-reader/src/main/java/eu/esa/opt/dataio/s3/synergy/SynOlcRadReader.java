@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.s3.synergy;
 
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
+import eu.esa.opt.dataio.s3.util.S3Util;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
@@ -34,11 +35,11 @@ class SynOlcRadReader extends S3NetcdfReader {
             final Band band = product.addBand(variableName, ProductData.TYPE_FLOAT32);
             band.setDescription(variable.getDescription());
             band.setUnit(variable.getUnitsString());
-            band.setScalingFactor(getScalingFactor(variable));
-            band.setScalingOffset(getAddOffset(variable));
+            band.setScalingFactor(S3Util.getScalingFactor(variable));
+            band.setScalingOffset(S3Util.getAddOffset(variable));
             band.setSynthetic(synthetic);
-            addFillValue(band, variable);
-            addSampleCodings(product, band, variable, false);
+            S3Util.addSampleCodings(product, band, variable, false);
+            S3Util.addFillValue(band, variable);
         } else {
             super.addVariableAsBand(product, variable, variableName, synthetic);
         }

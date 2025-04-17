@@ -17,7 +17,7 @@ package eu.esa.opt.dataio.s3.slstr;/*
 import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.AbstractProductFactory;
-import eu.esa.opt.dataio.s3.Manifest;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import org.esa.snap.core.dataio.geocoding.ComponentFactory;

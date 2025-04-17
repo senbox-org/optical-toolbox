@@ -120,7 +120,7 @@ class InstrumentDataReader extends S3NetcdfReader {
         if (variable.getRank() == 2 && variable.getDimension(0).getFullName().equals("bands")) {
             try {
                 final String variableName = variable.getFullName();
-                final MetadataElement variableElement = new MetadataElement(variable.getFullName());
+                final MetadataElement variableElement = new MetadataElement(variableName);
                 final float[][] contentMatrix = (float[][]) variable.read().copyToNDJavaArray();
                 final int length = contentMatrix.length;
 
