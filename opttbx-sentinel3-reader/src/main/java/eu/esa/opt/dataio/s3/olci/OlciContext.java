@@ -1,12 +1,15 @@
 package eu.esa.opt.dataio.s3.olci;
 
+import eu.esa.opt.dataio.s3.Sentinel3Level1Reader;
 import eu.esa.opt.dataio.s3.util.AbstractSensorContext;
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.util.GeoLocationNames;
+import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.runtime.Config;
+import ucar.nc2.Variable;
 
 import java.util.prefs.Preferences;
 
@@ -28,6 +31,12 @@ public class OlciContext extends AbstractSensorContext {
     private static final String LAT_VAR_NAME = "latitude";
     private static final String TP_LON_VAR_NAME = "TP_longitude";
     private static final String TP_LAT_VAR_NAME = "TP_latitude";
+
+    private final ReaderContext readerContext;
+
+    public OlciContext(ReaderContext readerContext) {
+        this.readerContext = readerContext;
+    }
 
     @Override
     public String getInversePixelGeoCodingKey() {
@@ -79,6 +88,23 @@ public class OlciContext extends AbstractSensorContext {
     @Override
     public String bandNameToKey(String bandName) {
         return bandName.substring(0, 4);
+    }
+
+    @Override
+    public void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable) {
+        // get layer index
+        final int layerIdx = rasterExtract.getLayerIdx();
+
+        // check if data is already in cache
+        final String layerName = Sentinel3Level1Reader.getLayerName(name, layerIdx + 1);
+
+        // get instrumentData requested (via cache - need DataProvider linking back to reader)
+        readerContext.readData(name, )
+        // select vector of instrumentData for spectral band
+        // get detector_index data
+        // ensure target buffer has same dimension
+        // apply mapping via DataMapper class
+        throw new RuntimeException("not implemented");
     }
 
     @Override

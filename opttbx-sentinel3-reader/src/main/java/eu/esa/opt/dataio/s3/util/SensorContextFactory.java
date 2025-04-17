@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.s3.util;
 
 import eu.esa.opt.dataio.s3.olci.OlciContext;
+import eu.esa.opt.dataio.s3.olci.ReaderContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,10 +10,10 @@ public class SensorContextFactory {
 
     private static final Map<String, SensorContext> contextMap = new HashMap<>();
 
-    public static SensorContext get(String sensorKey) {
+    public static SensorContext get(String sensorKey, ReaderContext readerContext) {
         SensorContext sensorContext = contextMap.get(sensorKey);
         if (sensorContext == null) {
-            sensorContext = new OlciContext();
+            sensorContext = new OlciContext(readerContext);
             contextMap.put(sensorKey, sensorContext);
         }
 

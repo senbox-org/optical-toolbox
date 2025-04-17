@@ -9,6 +9,7 @@ import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
+import eu.esa.opt.dataio.s3.olci.ReaderContext;
 import eu.esa.opt.dataio.s3.util.*;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
@@ -48,7 +49,7 @@ import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
 import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_pixelCoding;
 import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePointCoding;
 
-public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider {
+public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider, ReaderContext {
 
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
@@ -182,7 +183,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     // package access for testing only tb 2025-02-12
-    static String getLayerName(String variableFullName, int i) {
+    public static String getLayerName(String variableFullName, int i) {
         return variableFullName + "_band_" + i;
     }
 
@@ -192,7 +193,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     // package access for testing only tb 2025-02-12
-    static int getLayerIndexFromLayerName(String layerName) {
+    public static int getLayerIndexFromLayerName(String layerName) {
         String band = "_band_";
         final int index = layerName.indexOf(band);
         if (index < 0) {
@@ -262,7 +263,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         manifest = readManifest();
 
         final String productType = manifest.getProductType();
-        sensorContext = SensorContextFactory.get(productType);
+        sensorContext = SensorContextFactory.get(productType, this);
         final MetadataElement bandDescriptionsElement = sensorContext.getBandDescriptionsElement(manifest);
         // @todo 1 tb/tb duplicated, other segment is in OlciProductFactory 2024-12-20
         if (bandDescriptionsElement != null) {
@@ -597,6 +598,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final Array rawDataArray = getRawData(name, netCDFVariable);
 
         if (descriptor.getVariableType() == SPECIAL) {
+
+            sensorContext.handleSpecialDataRequest(rasterExtract, name, netCDFVariable);
             // create line buffer
             final ProductData lineBuffer = ProductData.createInstance(new float[rasterExtract.getWidth()]);
             // read line
@@ -759,5 +762,10 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
 
         return colorProvider;
+    }
+
+    @Override
+    public Array readData(String name, Variable variable) {
+        throw new RuntimeException("not implemented");
     }
 }
