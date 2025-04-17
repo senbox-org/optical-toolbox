@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3.synergy;
 
+import eu.esa.opt.dataio.s3.util.CFConstants;
 import ucar.ma2.Array;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
@@ -57,7 +58,7 @@ class NcFile {
         if (variable != null) {
             final double scaleFactor = getAttributeDouble(variable, "scale_factor", 1.0);
             final double addOffset = getAttributeDouble(variable, "add_offset", 0.0);
-            final double fillValue = getAttributeDouble(variable, "_FillValue", Double.NaN);
+            final double fillValue = getAttributeDouble(variable, CFConstants.FILL_VALUE, Double.NaN);
             final Array array = variable.read();
 
             final double[] data = new double[(int) variable.getSize()];

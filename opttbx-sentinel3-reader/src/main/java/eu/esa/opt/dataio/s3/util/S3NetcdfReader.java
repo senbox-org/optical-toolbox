@@ -4,15 +4,7 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import eu.esa.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.AbstractProductReader;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.FlagCoding;
-import org.esa.snap.core.datamodel.IndexCoding;
-import org.esa.snap.core.datamodel.MetadataAttribute;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.core.datamodel.SampleCoding;
-import org.esa.snap.core.datamodel.VirtualBand;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.dataio.netcdf.util.Constants;
@@ -40,10 +32,7 @@ public class S3NetcdfReader extends AbstractProductReader {
 
     //todo check whether this class is still necessary as most of its functionality is also provided by the default netcdf reader
     private static final String product_type = "product_type";
-    private static final String flag_values = "flag_values";
-    private static final String flag_masks = "flag_masks";
-    private static final String flag_meanings = "flag_meanings";
-    private static final String fillValue = "_FillValue";
+
     private NetcdfFile netcdfFile;
 
     public S3NetcdfReader() {
@@ -204,7 +193,7 @@ public class S3NetcdfReader extends AbstractProductReader {
             final String[][] rowColumnNamePairs = getRowColumnNamePairs();
             for (String[] rowColumnNamePair : rowColumnNamePairs) {
                 if (variable.findDimensionIndex(rowColumnNamePair[0]) != -1 &&
-                    variable.findDimensionIndex(rowColumnNamePair[1]) != -1) {
+                        variable.findDimensionIndex(rowColumnNamePair[1]) != -1) {
                     final String variableName = variable.getFullName();
                     final String[] dimensions = getSeparatingDimensions();
                     final String[] suffixes = getSuffixesForSeparatingDimensions();
@@ -230,370 +219,109 @@ public class S3NetcdfReader extends AbstractProductReader {
         }
     }
 
-    private static int getRasterDataType(Variable variable) {
-        int rasterDataType = DataTypeUtils.getRasterDataType(variable);
-        if (rasterDataType == -1 && variable.getDataType() == DataType.LONG) {
-            rasterDataType = variable.getDataType().isUnsigned() ? ProductData.TYPE_UINT32 : ProductData.TYPE_INT32;
-        }
-        return rasterDataType;
-    }
-
     protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
-        int type = getRasterDataType(variable);
+        int type = S3Util.getRasterDataType(variable);
         //todo consider unsigned long - split into three bands?
         if (type == ProductData.TYPE_INT64 || type == ProductData.TYPE_UINT64) {
             final Band lowerBand = product.addBand(variableName + "_lsb", ProductData.TYPE_UINT32);
             lowerBand.setDescription(variable.getDescription() + "(least significant bytes)");
             lowerBand.setUnit(variable.getUnitsString());
-            lowerBand.setScalingFactor(getScalingFactor(variable));
-            lowerBand.setScalingOffset(getAddOffset(variable));
-            lowerBand.setSpectralWavelength(getSpectralWavelength(variable));
-            lowerBand.setSpectralBandwidth(getSpectralBandwidth(variable));
+            lowerBand.setScalingFactor(S3Util.getScalingFactor(variable));
+            lowerBand.setScalingOffset(S3Util.getAddOffset(variable));
+            lowerBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
+            lowerBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             lowerBand.setSynthetic(synthetic);
-            addFillValue(lowerBand, variable);
-            addSampleCodings(product, lowerBand, variable, false);
+            S3Util.addSampleCodings(product, lowerBand, variable, false);
+            S3Util.addFillValue(lowerBand, variable);
 
             final Band upperBand = product.addBand(variableName + "_msb", ProductData.TYPE_UINT32);
             upperBand.setDescription(variable.getDescription() + "(most significant bytes)");
             upperBand.setUnit(variable.getUnitsString());
-            upperBand.setScalingFactor(getScalingFactor(variable));
-            upperBand.setScalingOffset(getAddOffset(variable));
-            upperBand.setSpectralWavelength(getSpectralWavelength(variable));
-            upperBand.setSpectralBandwidth(getSpectralBandwidth(variable));
+            upperBand.setScalingFactor(S3Util.getScalingFactor(variable));
+            upperBand.setScalingOffset(S3Util.getAddOffset(variable));
+            upperBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
+            upperBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             upperBand.setSynthetic(synthetic);
-            addFillValue(upperBand, variable);
-            addSampleCodings(product, upperBand, variable, true);
+            S3Util.addSampleCodings(product, upperBand, variable, true);
+            S3Util.addFillValue(upperBand, variable);
         } else {
             final Band band = product.addBand(variableName, type);
             band.setDescription(variable.getDescription());
             band.setUnit(variable.getUnitsString());
-            band.setScalingFactor(getScalingFactor(variable));
-            band.setScalingOffset(getAddOffset(variable));
-            band.setSpectralWavelength(getSpectralWavelength(variable));
-            band.setSpectralBandwidth(getSpectralBandwidth(variable));
+            band.setScalingFactor(S3Util.getScalingFactor(variable));
+            band.setScalingOffset(S3Util.getAddOffset(variable));
+            band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
+            band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
             band.setSynthetic(synthetic);
-            addSampleCodings(product, band, variable, false);
-            addFillValue(band, variable);
-        }
-    }
-
-    protected void addFillValue(Band band, Variable variable) {
-        final Attribute fillValueAttribute = variable.findAttribute(fillValue);
-        if (fillValueAttribute != null) {
-            //todo double is not always correct
-            band.setNoDataValue(fillValueAttribute.getNumericValue().doubleValue());
-            // enable only if it is not a flag band
-            band.setNoDataValueUsed(!band.isFlagBand());
-        }
-    }
-
-    protected void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
-        final Attribute flagValuesAttribute = variable.findAttribute(flag_values);
-        final Attribute flagMasksAttribute = variable.findAttribute(flag_masks);
-        final Attribute flagMeaningsAttribute = variable.findAttribute(flag_meanings);
-        if (flagValuesAttribute != null && flagMasksAttribute != null) {
-            final FlagCoding flagCoding =
-                    getFlagCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,
-                            flagValuesAttribute, flagMasksAttribute, msb);
-            band.setSampleCoding(flagCoding);
-        } else if (flagValuesAttribute != null) {
-            final IndexCoding indexCoding =
-                    getIndexCoding(product, band.getName(), band.getDescription(), flagMeaningsAttribute,
-                            flagValuesAttribute, msb);
-            band.setSampleCoding(indexCoding);
-        } else if (flagMasksAttribute != null) {
-            final FlagCoding flagCoding = getFlagCoding(product, band.getName(), band.getDescription(),
-                    flagMeaningsAttribute, flagMasksAttribute, msb);
-            band.setSampleCoding(flagCoding);
-        }
-    }
-
-    private IndexCoding getIndexCoding(Product product, String indexCodingName, String indexCodingDescription,
-                                       Attribute flagMeaningsAttribute, Attribute flagValuesAttribute, boolean msb) {
-        final IndexCoding indexCoding = new IndexCoding(indexCodingName);
-        indexCoding.setDescription(indexCodingDescription);
-        addSamples(indexCoding, flagMeaningsAttribute, flagValuesAttribute, msb);
-        if (!product.getIndexCodingGroup().contains(indexCodingName)) {
-            product.getIndexCodingGroup().add(indexCoding);
-        }
-        return indexCoding;
-    }
-
-    private FlagCoding getFlagCoding(Product product, String flagCodingName, String flagCodingDescription,
-                                     Attribute flagMeaningsAttribute, Attribute flagMasksAttribute, boolean msb) {
-        final FlagCoding flagCoding = new FlagCoding(flagCodingName);
-        flagCoding.setDescription(flagCodingDescription);
-        addSamples(flagCoding, flagMeaningsAttribute, flagMasksAttribute, msb);
-        if (!product.getFlagCodingGroup().contains(flagCodingName)) {
-            product.getFlagCodingGroup().add(flagCoding);
-        }
-        return flagCoding;
-    }
-
-    private FlagCoding getFlagCoding(Product product, String flagCodingName, String flagCodingDescription,
-                                     Attribute flagMeaningsAttribute, Attribute flagValuesAttribute,
-                                     Attribute flagMasksAttribute, boolean msb) {
-        final FlagCoding flagCoding = new FlagCoding(flagCodingName);
-        flagCoding.setDescription(flagCodingDescription);
-        addSamples(flagCoding, flagMeaningsAttribute, flagValuesAttribute, flagMasksAttribute, msb);
-        if (!product.getFlagCodingGroup().contains(flagCodingName)) {
-            product.getFlagCodingGroup().add(flagCoding);
-        }
-        return flagCoding;
-    }
-
-    private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
-                                   boolean msb) {
-        final String[] meanings = getSampleMeanings(sampleMeanings);
-        String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
-        final int sampleCount = Math.min(uniqueNames.length, sampleValues.getLength());
-        for (int i = 0; i < sampleCount; i++) {
-            final String sampleName = replaceNonWordCharacters(uniqueNames[i]);
-            switch (sampleValues.getDataType()) {
-                case BYTE:
-                case UBYTE:
-                    sampleCoding.addSample(sampleName,
-                                           DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue()),
-                                           null);
-                    break;
-                case SHORT:
-                case USHORT:
-                    sampleCoding.addSample(sampleName,
-                                           DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue()), null);
-                    break;
-                case INT:
-                case UINT:
-                    sampleCoding.addSample(sampleName, sampleValues.getNumericValue(i).intValue(), null);
-                    break;
-                case LONG:
-                case ULONG:
-                    final long longValue = sampleValues.getNumericValue(i).longValue();
-                    if (msb) {
-                        long shiftedValue = longValue >>> 32;
-                        if (shiftedValue > 0) {
-                            sampleCoding.addSample(sampleName, (int) shiftedValue, null);
-                        }
-                    } else {
-                        long shiftedValue = longValue & 0x00000000FFFFFFFFL;
-                        if (shiftedValue > 0 || longValue == 0L) {
-                            sampleCoding.addSample(sampleName, (int) shiftedValue, null);
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-
-    private static void addSamples(SampleCoding sampleCoding, Attribute sampleMeanings, Attribute sampleValues,
-                                   Attribute sampleMasks, boolean msb) {
-        final String[] meanings = getSampleMeanings(sampleMeanings);
-        String[] uniqueNames = StringUtils.makeStringsUnique(meanings);
-        final int sampleCount = Math.min(uniqueNames.length, sampleMasks.getLength());
-        for (int i = 0; i < sampleCount; i++) {
-            final String sampleName = replaceNonWordCharacters(uniqueNames[i]);
-            switch (sampleMasks.getDataType()) {
-                case BYTE:
-                case UBYTE:
-                    int[] byteValues = {
-                            DataType.unsignedByteToShort(sampleMasks.getNumericValue(i).byteValue()),
-                            DataType.unsignedByteToShort(sampleValues.getNumericValue(i).byteValue())
-                    };
-                    if (byteValues[0] == byteValues[1]) {
-                        sampleCoding.addSample(sampleName, byteValues[0], null);
-                    } else {
-                        sampleCoding.addSamples(sampleName, byteValues, null);
-                    }
-                    break;
-                case SHORT:
-                case USHORT:
-                    int[] shortValues = {
-                            DataType.unsignedShortToInt(sampleMasks.getNumericValue(i).shortValue()),
-                            DataType.unsignedShortToInt(sampleValues.getNumericValue(i).shortValue())
-                    };
-                    if (shortValues[0] == shortValues[1]) {
-                        sampleCoding.addSample(sampleName, shortValues[0], null);
-                    } else {
-                        sampleCoding.addSamples(sampleName, shortValues, null);
-                    }
-                    break;
-                case INT:
-                case UINT:
-                    int[] intValues = {
-                            sampleMasks.getNumericValue(i).intValue(),
-                            sampleValues.getNumericValue(i).intValue()
-                    };
-                    if (intValues[0] == intValues[1]) {
-                        sampleCoding.addSample(sampleName, intValues[0], null);
-                    } else {
-                        sampleCoding.addSamples(sampleName, intValues, null);
-                    }
-                    break;
-                case LONG:
-                case ULONG:
-                    long[] longValues = {
-                            sampleMasks.getNumericValue(i).longValue(),
-                            sampleValues.getNumericValue(i).longValue()
-                    };
-                    if (msb) {
-                        int[] intLongValues =
-                                {(int) (longValues[0] >>> 32), (int) (longValues[1] >>> 32)};
-                        if (longValues[0] > 0) {
-                            if (intLongValues[0] == intLongValues[1]) {
-                                sampleCoding.addSample(sampleName, intLongValues[0], null);
-                            } else {
-                                sampleCoding.addSamples(sampleName, intLongValues, null);
-                            }
-                        }
-                    } else {
-                        int[] intLongValues =
-                                {(int) (longValues[0] & 0x00000000FFFFFFFFL), (int) (longValues[1] & 0x00000000FFFFFFFFL)};
-                        if (intLongValues[0] > 0 || longValues[0] == 0L) {
-                            if (intLongValues[0] == intLongValues[1]) {
-                                sampleCoding.addSample(sampleName, intLongValues[0], null);
-                            } else {
-                                sampleCoding.addSamples(sampleName, intLongValues, null);
-                            }
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-
-    private static String[] getSampleMeanings(Attribute sampleMeanings) {
-        final int sampleMeaningsCount = sampleMeanings.getLength();
-        if (sampleMeaningsCount == 0) {
-            return new String[sampleMeaningsCount];
-        }
-        if (sampleMeaningsCount > 1) {
-            // handle a common misunderstanding of CF conventions, where flag meanings are stored as array of strings
-            final String[] strings = new String[sampleMeaningsCount];
-            for (int i = 0; i < strings.length; i++) {
-                strings[i] = sampleMeanings.getStringValue(i);
-            }
-            return strings;
-        }
-        return sampleMeanings.getStringValue().split(" ");
-    }
-
-    static String replaceNonWordCharacters(String flagName) {
-        return flagName.replaceAll("\\W+", "_");
-    }
-
-    private static float getSpectralWavelength(Variable variable) {
-        Attribute attribute = variable.findAttribute("wavelength");
-        if (attribute != null) {
-            return getAttributeValue(attribute).floatValue();
-        }
-        return 0f;
-    }
-
-    private static float getSpectralBandwidth(Variable variable) {
-        Attribute attribute = variable.findAttribute("bandwidth");
-        if (attribute != null) {
-            return getAttributeValue(attribute).floatValue();
-        }
-        return 0f;
-    }
-
-    protected static double getScalingFactor(Variable variable) {
-        Attribute attribute = variable.findAttribute(Constants.SCALE_FACTOR_ATT_NAME);
-        if (attribute == null) {
-            attribute = variable.findAttribute(Constants.SLOPE_ATT_NAME);
-        }
-        if (attribute == null) {
-            attribute = variable.findAttribute("scaling_factor");
-        }
-        if (attribute != null) {
-            return getAttributeValue(attribute).doubleValue();
-        }
-        return 1.0;
-    }
-
-    protected static double getAddOffset(Variable variable) {
-        Attribute attribute = variable.findAttribute(Constants.ADD_OFFSET_ATT_NAME);
-        if (attribute == null) {
-            attribute = variable.findAttribute(Constants.INTERCEPT_ATT_NAME);
-        }
-        if (attribute != null) {
-            return getAttributeValue(attribute).doubleValue();
-        }
-        return 0.0;
-    }
-
-    private static Number getAttributeValue(Attribute attribute) {
-        if (attribute.isString()) {
-            String stringValue = attribute.getStringValue();
-            if (stringValue.endsWith("b")) {
-                // Special management for bytes; Can occur in e.g. ASCAT files from EUMETSAT
-                return Byte.parseByte(stringValue.substring(0, stringValue.length() - 1));
-            } else {
-                return Double.parseDouble(stringValue);
-            }
-        } else {
-            return attribute.getNumericValue();
+            S3Util.addSampleCodings(product, band, variable, false);
+            S3Util.addFillValue(band, variable);
         }
     }
 
     protected void addVariableMetadata(Variable variable, Product product) {
         List<Dimension> variableDimensions = variable.getDimensions();
         if (variableDimensions.size() == 1) {
-            final MetadataElement variableElement = new MetadataElement(variable.getFullName());
-            final List<Attribute> attributes = variable.getAttributes();
-            for (Attribute attribute : attributes) {
-                if (attribute.getFullName().equals("flag_meanings")) {
-                    final String[] flagMeanings = attribute.getStringValue().split(" ");
-                    for (int i = 0; i < flagMeanings.length; i++) {
-                        String flagMeaning = flagMeanings[i];
-                        final ProductData attributeData = ProductData.createInstance(flagMeaning);
-                        final MetadataAttribute metadataAttribute =
-                                new MetadataAttribute(attribute.getFullName() + "." + i, attributeData, true);
-                        variableElement.addAttribute(metadataAttribute);
-                    }
-                } else {
-                    if (attribute.getValues() != null) {
-                        final ProductData attributeData = getAttributeData(attribute);
-                        final MetadataAttribute metadataAttribute = new MetadataAttribute(attribute.getFullName(), attributeData, true);
-                        variableElement.addAttribute(metadataAttribute);
-                    }
-                }
-            }
-            if (variable.getDataType() != DataType.STRING) {
-                try {
-                    Object data = variable.read().copyTo1DJavaArray();
-                    MetadataAttribute variableAttribute = null;
-                    if (data instanceof float[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((float[]) data), true);
-                    } else if (data instanceof double[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((double[]) data), true);
-                    } else if (data instanceof byte[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((byte[]) data), true);
-                    } else if (data instanceof short[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((short[]) data), true);
-                    } else if (data instanceof int[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((int[]) data), true);
-                    } else if (data instanceof long[]) {
-                        variableAttribute = new MetadataAttribute("value", ProductData.createInstance((long[]) data), true);
-                    }
-                    if (variableAttribute != null) {
-                        variableAttribute.setUnit(variable.getUnitsString());
-                        variableAttribute.setDescription(variable.getDescription());
-                        variableElement.addAttribute(variableAttribute);
-                    }
-                } catch (IOException e) {
-                    Logger logger = Logger.getLogger(this.getClass().getName());
-                    logger.severe("Could not read variable " + variable.getFullName());
-                }
-            }
+            final MetadataElement variableElement = extractMetadata(variable);
             product.getMetadataRoot().getElement("Variable_Attributes").addElement(variableElement);
         }
     }
 
-    private int getProductDataType(Attribute attribute) {
+    public static MetadataElement extractMetadata(Variable variable) {
+        final MetadataElement variableElement = new MetadataElement(variable.getFullName());
+        final List<Attribute> attributes = variable.getAttributes();
+        for (Attribute attribute : attributes) {
+            if (attribute.getFullName().equals(CFConstants.FLAG_MEANINGS)) {
+                final String[] flagMeanings = attribute.getStringValue().split(" ");
+                for (int i = 0; i < flagMeanings.length; i++) {
+                    String flagMeaning = flagMeanings[i];
+                    final ProductData attributeData = ProductData.createInstance(flagMeaning);
+                    final MetadataAttribute metadataAttribute =
+                            new MetadataAttribute(attribute.getFullName() + "." + i, attributeData, true);
+                    variableElement.addAttribute(metadataAttribute);
+                }
+            } else {
+                if (attribute.getValues() != null) {
+                    final ProductData attributeData = getAttributeData(attribute);
+                    final MetadataAttribute metadataAttribute = new MetadataAttribute(attribute.getFullName(), attributeData, true);
+                    variableElement.addAttribute(metadataAttribute);
+                }
+            }
+        }
+        if (variable.getDataType() != DataType.STRING) {
+            try {
+                Object data = variable.read().copyTo1DJavaArray();
+                MetadataAttribute variableAttribute = null;
+                if (data instanceof float[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((float[]) data), true);
+                } else if (data instanceof double[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((double[]) data), true);
+                } else if (data instanceof byte[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((byte[]) data), true);
+                } else if (data instanceof short[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((short[]) data), true);
+                } else if (data instanceof int[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((int[]) data), true);
+                } else if (data instanceof long[]) {
+                    variableAttribute = new MetadataAttribute("value", ProductData.createInstance((long[]) data), true);
+                }
+                if (variableAttribute != null) {
+                    variableAttribute.setUnit(variable.getUnitsString());
+                    variableAttribute.setDescription(variable.getDescription());
+                    variableElement.addAttribute(variableAttribute);
+                }
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(S3NetcdfReader.class.getName());
+                logger.severe("Could not read variable " + variable.getFullName());
+            }
+        }
+        return variableElement;
+    }
+
+    public static int getProductDataType(Attribute attribute) {
         return DataTypeUtils.getEquivalentProductDataType(attribute.getDataType(), false, false);
     }
 
-    protected ProductData getAttributeData(Attribute attribute) {
+    public static ProductData getAttributeData(Attribute attribute) {
         int type = getProductDataType(attribute);
         final Array attributeValues = attribute.getValues();
         ProductData productData = null;
@@ -648,9 +376,8 @@ public class S3NetcdfReader extends AbstractProductReader {
         return productData;
     }
 
-    private Object convertShortToByteArray(Object array) {
-        if (array instanceof short[]) {
-            short[] shortArray = (short[]) array;
+    public static Object convertShortToByteArray(Object array) {
+        if (array instanceof short[] shortArray) {
             byte[] newArray = new byte[shortArray.length];
             for (int i = 0; i < shortArray.length; i++) {
                 newArray[i] = (byte) shortArray[i];
@@ -660,9 +387,8 @@ public class S3NetcdfReader extends AbstractProductReader {
         return array;
     }
 
-    private Object convertIntToShortArray(Object array) {
-        if (array instanceof int[]) {
-            int[] intArray = (int[]) array;
+    public static Object convertIntToShortArray(Object array) {
+        if (array instanceof int[] intArray) {
             short[] newArray = new short[intArray.length];
             for (int i = 0; i < intArray.length; i++) {
                 newArray[i] = (short) intArray[i];
@@ -672,9 +398,8 @@ public class S3NetcdfReader extends AbstractProductReader {
         return array;
     }
 
-    private Object convertLongToIntArray(Object array) {
-        if (array instanceof long[]) {
-            long[] longArray = (long[]) array;
+    public static Object convertLongToIntArray(Object array) {
+        if (array instanceof long[] longArray) {
             int[] newArray = new int[longArray.length];
             for (int i = 0; i < longArray.length; i++) {
                 newArray[i] = (int) longArray[i];

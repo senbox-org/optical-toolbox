@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.s3.slstr;
 
 import com.bc.ceres.annotation.STTM;
-import eu.esa.opt.dataio.s3.Manifest;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.util.MetTxReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import org.junit.Test;

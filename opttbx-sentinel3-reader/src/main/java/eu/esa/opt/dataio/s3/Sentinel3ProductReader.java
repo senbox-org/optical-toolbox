@@ -17,7 +17,7 @@ package eu.esa.opt.dataio.s3;/*
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.multilevel.MultiLevelImage;
-import eu.esa.opt.dataio.s3.olci.OlciLevel1ProductFactory;
+import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2WProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
@@ -70,9 +70,7 @@ public class Sentinel3ProductReader extends AbstractProductReader {
 
     ProductFactory getProductFactory(String dirName) {
         ProductFactory factory = null;
-        if (dirName.matches("S3.?_OL_1_E[RF]R_.*")) { // OLCI L1b
-            factory = new OlciLevel1ProductFactory(this);
-        } else if (dirName.matches("S3.?_OL_2_(L[FR]R)_.*(.SEN3)?")) { // OLCI L2 L -
+        if (dirName.matches("S3.?_OL_2_(L[FR]R)_.*(.SEN3)?")) { // OLCI L2 L -
             factory = new OlciLevel2LProductFactory(this);
         } else if (dirName.matches("S3.?_OL_2_(W[FR]R)_.*(.SEN3)?")) { // OLCI L2 W -
             factory = new OlciLevel2WProductFactory(this);

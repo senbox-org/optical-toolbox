@@ -26,6 +26,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.Iterator;
 
+import static eu.esa.opt.dataio.s3.S3ReaderPlugInTest.createManifestFilePath;
 import static org.junit.Assert.*;
 
 public class Sentinel3ProductReaderPlugInTest {
@@ -50,10 +51,10 @@ public class Sentinel3ProductReaderPlugInTest {
         String path;
 
         path = createManifestFilePath("OL", "1", "ERR", "");
-        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
+        assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(path));
 
         path = createManifestFilePath("OL", "1", "EFR", "");
-        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
+        assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(path));
     }
 
     @Test
@@ -185,41 +186,41 @@ public class Sentinel3ProductReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-3666")
+    @STTM("SNAP-3666,SNAP-1696,SNAP-3711")
     public void testIsValidSourceName() {
-        assertTrue(plugIn.isValidSourceName("S3B_OL_1_EFR____20231214T092214_20231214T092514_20231214T204604_0179_087_207_2340_PS2_O_NT_003.SEN3"));
-        assertTrue(plugIn.isValidSourceName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3.zip"));
         assertTrue(plugIn.isValidSourceName("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.zip"));
-        assertTrue(plugIn.isValidSourceName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
 
+        assertFalse(plugIn.isValidSourceName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
+        assertFalse(plugIn.isValidSourceName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3.zip"));
+        assertFalse(plugIn.isValidSourceName("S3B_OL_1_EFR____20231214T092214_20231214T092514_20231214T204604_0179_087_207_2340_PS2_O_NT_003.SEN3"));
         assertFalse(plugIn.isValidSourceName("S2A_OPER_PRD_MSIL1C_PDMC_20160918T063540_R022_V20160916T101022_20160916T101045.SAFE"));
         assertFalse(plugIn.isValidSourceName("SM_OPER_MIR_SCLF1C_20221224T220123_20221224T225442_724_001_1.zip"));
     }
 
     @Test
-    @STTM("SNAP-3666")
+    @STTM("SNAP-3666,SNAP-1696,SNAP-3711")
     public void testIsValidInputFileName() {
         assertTrue(plugIn.isValidInputFileName("xfdumanifest.xml"));
         assertTrue(plugIn.isValidInputFileName("L1c_Manifest.xml"));
         assertTrue(plugIn.isValidInputFileName("S3A_SY_2_VGP____20160415T110058_20160415T110845_20160502T125459_0466_003_094______LN1_D_NC____.SEN3"));
         assertTrue(plugIn.isValidInputFileName("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.zip"));
-        assertTrue(plugIn.isValidInputFileName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
 
+        assertFalse(plugIn.isValidInputFileName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
         assertFalse(plugIn.isValidInputFileName("manifest.safe"));
         assertFalse(plugIn.isValidInputFileName("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));
         assertFalse(plugIn.isValidInputFileName("S3A_OL_1_EFR____20170101T095821_20170101T100021__calimnos.nc"));
     }
 
     @Test
-    @STTM("SNAP-3666")
+    @STTM("SNAP-3666,SNAP-1696,SNAP-3711")
     public void testIsValidInput() {
         final String sep = File.separator;
 
         assertTrue(plugIn.isInputValid("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3" + sep + "xfdumanifest.xml"));
         assertTrue(plugIn.isInputValid("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3" + sep + "L1c_Manifest.xml"));
         assertTrue(plugIn.isInputValid("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.zip"));
-        assertTrue(plugIn.isInputValid("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
 
+        assertFalse(plugIn.isInputValid("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
         assertFalse(plugIn.isInputValid("S3A_SL_1_RBT____20180809T035343_20180809T035643_20180810T124116_0179_034_218_2520_MAR_O_NT_002.SEN3" + sep + "manifest.safe"));
         assertFalse(plugIn.isInputValid("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));
     }
@@ -230,12 +231,5 @@ public class Sentinel3ProductReaderPlugInTest {
         assertNotNull(firstInstance);
         final ProductReader secondInstance = plugIn.createReaderInstance();
         assertNotSame(secondInstance, firstInstance);
-    }
-
-    private static String createManifestFilePath(String sensorId, String levelId, String productId, String suffix) {
-        String validParentDirectory = String.format("S3_%s_%s_%s_TTTTTTTTTTTT_%s" , sensorId,
-                levelId, productId, suffix);
-        String manifestFile = "xfdumanifest.xml";
-        return validParentDirectory +  File.separator + manifestFile;
     }
 }
