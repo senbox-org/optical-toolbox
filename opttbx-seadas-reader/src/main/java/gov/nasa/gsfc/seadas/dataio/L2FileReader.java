@@ -23,7 +23,6 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGrid;
-import org.esa.snap.core.util.PropertyMap;
 import ucar.ma2.Array;
 import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
@@ -112,9 +111,9 @@ public class L2FileReader extends SeadasFileReader {
         SeadasProductReader.ProductType productType = productReader.getProductType();
 
 
-        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipX())) {
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXLevel2())) {
             mustFlipX = true;
-        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipX())) {
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXLevel2())) {
             mustFlipX = false;
         } else {
             if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
@@ -127,9 +126,9 @@ public class L2FileReader extends SeadasFileReader {
             }
         }
 
-        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipY())) {
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYLevel2())) {
             mustFlipY = true;
-        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipY())) {
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYLevel2())) {
             mustFlipY = false;
         } else {
             mustFlipY = getDefaultFlip();
@@ -183,11 +182,11 @@ public class L2FileReader extends SeadasFileReader {
 
         addFlagsAndMasks(product);
 //        product.setAutoGrouping("Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf");
-
+// todo not yet implementing any mission dependent band grouping - but this if statement is a stub for that
         if (productType == SeadasProductReader.ProductType.Level2_Pace) {
-            product.setAutoGrouping(getBandGrouping());
+            product.setAutoGrouping(getBandGroupingLevel2());
         } else {
-            product.setAutoGrouping(getBandGrouping());
+            product.setAutoGrouping(getBandGroupingLevel2());
         }
 
         return product;

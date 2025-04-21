@@ -43,9 +43,9 @@ import java.awt.*;
         displayName = "#Options_DisplayName_SeadasL2Reader",
         keywords = "#Options_Keywords_SeadasL2Reader",
         keywordsCategory = "Processors",
-        id = "OCSSW-Processors")
+        id = "SeaDAS-L2-Flag-Masks")
 @org.openide.util.NbBundle.Messages({
-        "Options_DisplayName_SeadasL2Reader=SeaDAS L2 Reader",
+        "Options_DisplayName_SeadasL2Reader=SeaDAS L2 Flag-Masks",
         "Options_Keywords_SeadasL2Reader=seadas, ocssw, l2gen"
 })
 public final class SeadasReaderController extends DefaultConfigController {
@@ -60,8 +60,7 @@ public final class SeadasReaderController extends DefaultConfigController {
     Property composite1Flags;
     Property composite2Flags;
     Property composite3Flags;
-    Property bandGrouping;
-    Property bandGroupingReset;
+
 
     boolean propertyValueChangeEventsEnabled = true;
 
@@ -263,11 +262,6 @@ public final class SeadasReaderController extends DefaultConfigController {
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_DEFAULT);
 
-        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_SECTION_KEY, true);
-        bandGrouping = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_DEFAULT);
-        bandGroupingReset = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT);
-        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_FLIPX_DEFAULT);
-        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_DEFAULT);
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_RESTORE_SECTION_KEY, true);
         restoreDefaults =  initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_KEY, SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_DEFAULT);
@@ -309,15 +303,6 @@ public final class SeadasReaderController extends DefaultConfigController {
 
     @Override
     protected void configure(BindingContext context) {
-
-        bandGroupingReset.addPropertyChangeListener(evt -> {
-            handleResetBandGroupingToDefaults(context);
-        });
-
-        bandGrouping.addPropertyChangeListener(evt -> {
-            handleBandGroupingChanged(context);
-        });
-
 
 
         context.bindEnabledState(SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_KEY).apply();
@@ -364,7 +349,6 @@ public final class SeadasReaderController extends DefaultConfigController {
 
         // This call is an initialization call which set restoreDefault initial value
         handlePreferencesPropertyValueChange(context);
-        handleBandGroupingChanged(context);
     }
 
 
@@ -455,40 +439,6 @@ public final class SeadasReaderController extends DefaultConfigController {
 
 
 
-    private void handleResetBandGroupingToDefaults(BindingContext context) {
-        if (propertyValueChangeEventsEnabled) {
-            propertyValueChangeEventsEnabled = false;
-            try {
-                if (bandGroupingReset.getValue()) {
-                    bandGrouping.setValue(bandGrouping.getDescriptor().getDefaultValue());
-                }
-            } catch (ValidationException e) {
-                e.printStackTrace();
-            }
-            propertyValueChangeEventsEnabled = true;
-
-            context.setComponentsEnabled(SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY, false);
-        }
-    }
-
-
-    private void handleBandGroupingChanged(BindingContext context) {
-        if (propertyValueChangeEventsEnabled) {
-            propertyValueChangeEventsEnabled = false;
-            boolean isDefault = false;
-            if (bandGrouping.getValue().equals(bandGrouping.getDescriptor().getDefaultValue())) {
-                isDefault = true;
-            }
-
-            try {
-                bandGroupingReset.setValue(isDefault);
-                context.setComponentsEnabled(SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY, !isDefault);
-            } catch (ValidationException e) {
-                e.printStackTrace();
-            }
-            propertyValueChangeEventsEnabled = true;
-        }
-    }
 
 
 
@@ -1446,41 +1396,6 @@ public final class SeadasReaderController extends DefaultConfigController {
         Color mask_SPARE_ColorDefault = SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_DEFAULT;
 
 
-
-        // SPARE
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_SECTION_KEY,
-                label = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_SECTION_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_SECTION_TOOLTIP)
-        boolean mask_BAND_GROUPING_Section = true;
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_KEY,
-                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_TOOLTIP)
-        String bandGroupingDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_DEFAULT;
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY,
-                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_TOOLTIP)
-        boolean bandGroupingResetDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT;
-
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPX_KEY,
-                label = SeadasReaderDefaults.PROPERTY_FLIPX_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_FLIPX_TOOLTIP,
-                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
-                        SeadasReaderDefaults.FlIP_YES,
-                        SeadasReaderDefaults.FlIP_NO})
-        String flipxDefault = SeadasReaderDefaults.PROPERTY_FLIPX_DEFAULT;
-
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPY_KEY,
-                label = SeadasReaderDefaults.PROPERTY_FLIPY_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_FLIPY_TOOLTIP,
-                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
-                        SeadasReaderDefaults.FlIP_YES,
-                        SeadasReaderDefaults.FlIP_NO})
-        String flipyDefault = SeadasReaderDefaults.PROPERTY_FLIPY_DEFAULT;
 
 
         // Restore Defaults Section
