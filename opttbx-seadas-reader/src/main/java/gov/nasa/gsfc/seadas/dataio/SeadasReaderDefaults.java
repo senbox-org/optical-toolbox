@@ -1,8 +1,5 @@
 package gov.nasa.gsfc.seadas.dataio;
 
-import org.esa.snap.core.datamodel.Mask;
-import org.esa.snap.core.jexp.impl.AbstractSymbol;
-
 import java.awt.*;
 
 public class SeadasReaderDefaults {
@@ -873,11 +870,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COMPOSITE1_NAME_TOOLTIP = "Set name of Composite1 mask";
     public static final String PROPERTY_MASK_COMPOSITE1_NAME_DEFAULT = "Composite1";
 
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".flag.presets";
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_LABEL = "Composite1: Flag Presets";
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_TOOLTIP = "Set flags for Composite1 mask";
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
-
     public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".flags";
     public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_LABEL = "Composite1: Flags";
     public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_TOOLTIP = "Set flags for Composite1 mask";
@@ -921,11 +913,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COMPOSITE2_NAME_TOOLTIP = "Set name of Composite2 mask";
     public static final String PROPERTY_MASK_COMPOSITE2_NAME_DEFAULT = "Composite2";
 
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".flag.presets";
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_LABEL = "Composite2: Flag Presets";
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_TOOLTIP = "Set flags for Composite2 mask";
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
-
     public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".flags";
     public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_LABEL = "Composite2: Flags";
     public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_TOOLTIP = "Set flags for Composite2 mask";
@@ -968,10 +955,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COMPOSITE3_NAME_TOOLTIP = "Set name of Composite3 mask";
     public static final String PROPERTY_MASK_COMPOSITE3_NAME_DEFAULT = "Composite3";
 
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".flag.presets";
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_LABEL = "Composite3: Flag Presets";
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_TOOLTIP = "Set flags for Composite3 mask";
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
 
     public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".flags";
     public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_LABEL = "Composite3: Flags";
@@ -1042,20 +1025,20 @@ public class SeadasReaderDefaults {
 
     // BAND GROUPING
 
-    public static final String PROPERTY_BAND_PROPERTIES_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".band_properties";
+    public static final String PROPERTY_FILE_PROPERTIES_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties";
 
-    public static final String PROPERTY_BAND_PROPERTIES_SECTION_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".section";
-    public static final String PROPERTY_BAND_PROPERTIES_SECTION_LABEL = "Band Properties";
-    public static final String PROPERTY_BAND_PROPERTIES_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for band properties";
+    public static final String PROPERTY_FILE_PROPERTIES_SECTION_KEY = PROPERTY_FILE_PROPERTIES_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_SECTION_LABEL = "File Properties";
+    public static final String PROPERTY_FILE_PROPERTIES_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for band properties";
 
 
 
-    public static final String PROPERTY_BAND_GROUPING_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_KEY = PROPERTY_FILE_PROPERTIES_ROOT_KEY + ".band_grouping";
     public static final String PROPERTY_BAND_GROUPING_LABEL = "Band Grouping";
     public static final String PROPERTY_BAND_GROUPING_TOOLTIP = "Expression to create band groupings into folders";
     public static final String PROPERTY_BAND_GROUPING_DEFAULT = "Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf";
 
-    public static final String PROPERTY_BAND_GROUPING_RESET_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".band_grouping.reset";
+    public static final String PROPERTY_BAND_GROUPING_RESET_KEY = PROPERTY_FILE_PROPERTIES_ROOT_KEY + ".band_grouping.reset";
     public static final String PROPERTY_BAND_GROUPING_RESET_LABEL = "Band Grouping (reset)";
     public static final String PROPERTY_BAND_GROUPING_RESET_TOOLTIP = "Reset band grouping to default";
     public static final boolean PROPERTY_BAND_GROUPING_RESET_DEFAULT = true;
@@ -1065,12 +1048,12 @@ public class SeadasReaderDefaults {
     public static final String FlIP_NO = "NO";
 
 
-    public static final String PROPERTY_FLIPX_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_KEY = PROPERTY_FILE_PROPERTIES_ROOT_KEY + ".flipx";
     public static final String PROPERTY_FLIPX_LABEL = "Flip (Horizontal)";
     public static final String PROPERTY_FLIPX_TOOLTIP = "Flip image horizontally";
     public static final String PROPERTY_FLIPX_DEFAULT = FlIP_MISSION_DEFAULT;
 
-    public static final String PROPERTY_FLIPY_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_KEY = PROPERTY_FILE_PROPERTIES_ROOT_KEY + ".flipy";
     public static final String PROPERTY_FLIPY_LABEL = "Flip (Vertical)";
     public static final String PROPERTY_FLIPY_TOOLTIP = "Flip image vertically";
     public static final String PROPERTY_FLIPY_DEFAULT = FlIP_MISSION_DEFAULT;
