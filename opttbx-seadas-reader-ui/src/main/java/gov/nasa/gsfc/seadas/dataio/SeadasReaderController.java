@@ -43,9 +43,9 @@ import java.awt.*;
         displayName = "#Options_DisplayName_SeadasL2Reader",
         keywords = "#Options_Keywords_SeadasL2Reader",
         keywordsCategory = "Processors",
-        id = "OCSSW-Processors")
+        id = "SeaDAS-L2-Flag-Masks")
 @org.openide.util.NbBundle.Messages({
-        "Options_DisplayName_SeadasL2Reader=SeaDAS L2 Reader",
+        "Options_DisplayName_SeadasL2Reader=SeaDAS L2 Flag-Masks",
         "Options_Keywords_SeadasL2Reader=seadas, ocssw, l2gen"
 })
 public final class SeadasReaderController extends DefaultConfigController {
@@ -53,20 +53,14 @@ public final class SeadasReaderController extends DefaultConfigController {
     Property restoreDefaults;
 
 
-    Property composite1FlagSelector;
-    boolean composite1FlagSelectorIgnore = false;
-    Property composite1Flags;
     Property composite1MaskName;
     Property composite2MaskName;
     Property composite3MaskName;
 
-    Property composite2FlagSelector;
-    boolean composite2FlagSelectorIgnore = false;
+    Property composite1Flags;
     Property composite2Flags;
-
-    Property composite3FlagSelector;
-    boolean composite3FlagSelectorIgnore = false;
     Property composite3Flags;
+
 
     boolean propertyValueChangeEventsEnabled = true;
 
@@ -230,7 +224,6 @@ public final class SeadasReaderController extends DefaultConfigController {
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_SECTION_KEY, true);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_INCLUDE_DEFAULT);
-        composite1FlagSelector = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_DEFAULT);
         composite1Flags = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAGS_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAGS_DEFAULT);
         composite1MaskName = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_ENABLED_DEFAULT);
@@ -240,7 +233,6 @@ public final class SeadasReaderController extends DefaultConfigController {
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_SECTION_KEY, true);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_INCLUDE_DEFAULT);
-        composite2FlagSelector = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_DEFAULT);
         composite2Flags = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAGS_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAGS_DEFAULT);
         composite2MaskName = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_ENABLED_DEFAULT);
@@ -250,7 +242,6 @@ public final class SeadasReaderController extends DefaultConfigController {
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_SECTION_KEY, true);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_INCLUDE_DEFAULT);
-        composite3FlagSelector = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_DEFAULT);
         composite3Flags = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAGS_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAGS_DEFAULT);
         composite3MaskName = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_ENABLED_DEFAULT);
@@ -270,6 +261,7 @@ public final class SeadasReaderController extends DefaultConfigController {
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_DEFAULT);
+
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_RESTORE_SECTION_KEY, true);
         restoreDefaults =  initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_KEY, SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_DEFAULT);
@@ -312,6 +304,7 @@ public final class SeadasReaderController extends DefaultConfigController {
     @Override
     protected void configure(BindingContext context) {
 
+
         context.bindEnabledState(SeadasReaderDefaults.PROPERTY_MASK_SPARE_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_KEY).apply();
         context.bindEnabledState(SeadasReaderDefaults.PROPERTY_MASK_SPARE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_SPARE_INCLUDE_KEY).apply();
 
@@ -331,111 +324,15 @@ public final class SeadasReaderController extends DefaultConfigController {
 
 
 
-        composite1FlagSelector.addPropertyChangeListener(evt -> {
-                    if (!composite1FlagSelectorIgnore &&
-                            !SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1.equals(composite1FlagSelector.getValue())) {
-                        try {
-                            String flagPreset = composite1FlagSelector.getValue();
-                            if (flagPreset != null && flagPreset.length() > 0) {
-                                String flags = trimPresetIDFromMaskName(flagPreset);
-
-                                if (flags != null && flags.length() > 0) {
-//                                    String maskName = "Composite1";
-//                                    maskName = appendPresetToMaskName(maskName, flagPreset);
-//                                    composite1MaskName.setValue(maskName);
-
-                                    composite1Flags.setValue(flags);
-                                    composite1FlagSelectorIgnore = true;
-                                    composite1FlagSelector.setValue(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1);
-                                    composite1FlagSelectorIgnore = false;
-                                }
-                            }
-                        } catch (Exception e) {
-                        }
-                    }
-        });
 
 
 
 
-        composite2FlagSelector.addPropertyChangeListener(evt -> {
-            if (!composite2FlagSelectorIgnore &&
-                    !SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1.equals(composite2FlagSelector.getValue())) {
-                try {
-                    String flagPreset = composite2FlagSelector.getValue();
-                    if (flagPreset != null && flagPreset.length() > 0) {
-                        String flags = trimPresetIDFromMaskName(flagPreset);
-
-                        if (flags != null && flags.length() > 0) {
-//                            String maskName = "Composite2";
-//                            maskName = appendPresetToMaskName(maskName, flagPreset);
-//                            composite2MaskName.setValue(maskName);
-
-                            composite2Flags.setValue(flags);
-                            composite2FlagSelectorIgnore = true;
-                            composite2FlagSelector.setValue(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1);
-                            composite2FlagSelectorIgnore = false;
-                        }
-                    }
-                } catch (Exception e) {
-                }
-            }
-        });
 
 
 
-        composite3FlagSelector.addPropertyChangeListener(evt -> {
-            if (!composite3FlagSelectorIgnore &&
-                    !SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1.equals(composite3FlagSelector.getValue())) {
-                try {
-                    String flagPreset = composite3FlagSelector.getValue();
-                    if (flagPreset != null && flagPreset.length() > 0) {
-                        String flags = trimPresetIDFromMaskName(flagPreset);
-
-                        if (flags != null && flags.length() > 0) {
-//                            String maskName = "Composite3";
-//                            maskName = appendPresetToMaskName(maskName, flagPreset);
-//                            composite3MaskName.setValue(maskName);
-
-                            composite3Flags.setValue(flags);
-                            composite3FlagSelectorIgnore = true;
-                            composite3FlagSelector.setValue(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1);
-                            composite3FlagSelectorIgnore = false;
-                        }
-                    }
-                } catch (Exception e) {
-                }
-            }
-        });
-        
-        
-        
-        composite2FlagSelector.addPropertyChangeListener(evt -> {
-            if (!composite2FlagSelectorIgnore &&
-                    !SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1.equals(composite2FlagSelector.getValue())) {
-                try {
-                    composite2Flags.setValue(composite2FlagSelector.getValue());
-                    composite2FlagSelectorIgnore = true;
-                    composite2FlagSelector.setValue(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1);
-                    composite2FlagSelectorIgnore = false;
-                } catch (Exception e) {
-                }
-            }
-        });
 
 
-        composite3FlagSelector.addPropertyChangeListener(evt -> {
-            if (!composite3FlagSelectorIgnore &&
-                    !SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1.equals(composite3FlagSelector.getValue())) {
-                try {
-                    composite3Flags.setValue(composite3FlagSelector.getValue());
-                    composite3FlagSelectorIgnore = true;
-                    composite3FlagSelector.setValue(SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1);
-                    composite3FlagSelectorIgnore = false;
-                } catch (Exception e) {
-                }
-            }
-        });
 
         // Add listeners to all components in order to uncheck restoreDefaults checkbox accordingly
 
@@ -534,6 +431,11 @@ public final class SeadasReaderController extends DefaultConfigController {
             context.setComponentsEnabled(SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_KEY, false);
         }
     }
+
+
+
+
+
 
 
 
@@ -1336,15 +1238,6 @@ public final class SeadasReaderController extends DefaultConfigController {
         boolean maskComposite1EnabledDefault = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_ENABLED_DEFAULT;
 
 
-        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_KEY,
-                label = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_LABEL,
-                valueSet = {SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1,
-                        SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION2,
-                        SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION3,
-                        SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION4},
-                description = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_TOOLTIP)
-        String maskComposite1FlagPresetsDefault = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_DEFAULT;
-
         @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_KEY,
                 label = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_LABEL,
                 description = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_NAME_TOOLTIP)
@@ -1387,15 +1280,6 @@ public final class SeadasReaderController extends DefaultConfigController {
                 description = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_ENABLED_TOOLTIP)
         boolean maskComposite2EnabledDefault = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_ENABLED_DEFAULT;
 
-        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_KEY,
-                label = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_LABEL,
-                valueSet = {SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1,
-                        SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION2,
-                        SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION3,
-                        SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION4},
-                description = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_TOOLTIP)
-        String maskComposite2FlagPresetsDefault = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_DEFAULT;
-
         @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_KEY,
                 label = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_LABEL,
                 description = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE2_NAME_TOOLTIP)
@@ -1437,15 +1321,6 @@ public final class SeadasReaderController extends DefaultConfigController {
                 label = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_ENABLED_LABEL,
                 description = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_ENABLED_TOOLTIP)
         boolean maskComposite3EnabledDefault = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_ENABLED_DEFAULT;
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_KEY,
-                label = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_LABEL,
-                valueSet = {SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1,
-                        SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION2,
-                        SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION3,
-                        SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION4},
-                description = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_TOOLTIP)
-        String maskComposite3FlagPresetsDefault = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_DEFAULT;
 
         @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_KEY,
                 label = SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE3_NAME_LABEL,

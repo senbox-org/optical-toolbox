@@ -46,7 +46,28 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
         String productName = productReader.getInputFile().getName();
 
-        mustFlipY = mustFlipX = false;
+//        mustFlipY = mustFlipX = false;
+
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL1CPace())) {
+            mustFlipX = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL1CPace())) {
+            mustFlipX = false;
+        } else {
+            mustFlipX = false; // default flipX
+        }
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYL1CPace())) {
+            mustFlipY = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYL1CPace())) {
+            mustFlipY = false;
+        } else {
+            mustFlipY = false; // default flipY
+        }
+        
+        
+        
+        
         SeadasProductReader.ProductType productType = productReader.getProductType();
 
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
@@ -161,9 +182,10 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
         if (instrument != null) {
             if (instrument.toString().toUpperCase().contains("OCI")) {
-                product.setAutoGrouping("I_-20:I_20:i_20:i_-20:obs_per_view:view_time_offsets:sensor_azimuth:sensor_zenith:" +
-                        "solar_azimuth:solar_zenith:scattering_angle:rotation_angle:qc_bitwise_-20:qc_bitwise_20:" +
-                        "qc_-20:qc_20:I_stdev_-20:I_stdev_20:i_stdev_20:i_stdev_-20");
+//                product.setAutoGrouping("I_-20:I_20:i_20:i_-20:obs_per_view:view_time_offsets:sensor_azimuth:sensor_zenith:" +
+//                        "solar_azimuth:solar_zenith:scattering_angle:rotation_angle:qc_bitwise_-20:qc_bitwise_20:" +
+//                        "qc_-20:qc_20:I_stdev_-20:I_stdev_20:i_stdev_20:i_stdev_-20");
+                product.setAutoGrouping(getBandGroupingL1CPace());
             } else if (instrument.toString().toUpperCase().contains("HARP") && waveLengths != null) {
                 int wvlSize = (int) waveLengths.getSize();
 
@@ -237,13 +259,17 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     autoGroupingStr += "dolp_stdev_*_" + it.next() + ":";
                 }
 
-                autoGroupingStr += "I_*_549:I_*_669:I_*_867:I_*_441:Q_*_549:Q_*_669:Q_*_867:Q_*_441:" +
-                        "U_*_549:U_*_669:U_*_867:U_*_441:DOLP_*_549:DOLP_*_669:DOLP_*_867:DOLP_*_441:" +
-                        "I_noise_*_549:I_noise_*_669:I_noise_*_867:I_noise_*_441:Q_noise_*_549:Q_noise_*_669:Q_noise_*_867:Q_noise_*_441:" +
-                        "U_noise_*_549:U_noise_*_669:U_noise_*_867:U_noise_*_441:DOLP_noise_*_549:DOLP_noise_*_669:DOLP_noise_*_867:DOLP_noise_*_441:" +
-                        "Sensor_Zenith:Sensor_Azimuth:Solar_Zenith:Solar_Azimuth:view_time_offsets:obs_per_view:number_of_observations:" +
-                        "sensor_zenith_angle:sensor_azimuth_angle:solar_zenith_angle:solar_azimuth_angle:scattering_angle:rotation_angle";
-                product.setAutoGrouping(autoGroupingStr);
+//                autoGroupingStr += "I_*_549:I_*_669:I_*_867:I_*_441:Q_*_549:Q_*_669:Q_*_867:Q_*_441:" +
+//                        "U_*_549:U_*_669:U_*_867:U_*_441:DOLP_*_549:DOLP_*_669:DOLP_*_867:DOLP_*_441:" +
+//                        "I_noise_*_549:I_noise_*_669:I_noise_*_867:I_noise_*_441:Q_noise_*_549:Q_noise_*_669:Q_noise_*_867:Q_noise_*_441:" +
+//                        "U_noise_*_549:U_noise_*_669:U_noise_*_867:U_noise_*_441:DOLP_noise_*_549:DOLP_noise_*_669:DOLP_noise_*_867:DOLP_noise_*_441:" +
+//                        "Sensor_Zenith:Sensor_Azimuth:Solar_Zenith:Solar_Azimuth:view_time_offsets:obs_per_view:number_of_observations:" +
+//                        "sensor_zenith_angle:sensor_azimuth_angle:solar_zenith_angle:solar_azimuth_angle:scattering_angle:rotation_angle";
+//                product.setAutoGrouping(autoGroupingStr);
+                product.setAutoGrouping(getBandGroupingL1CPaceHarp2());
+
+
+
 //                product.setAutoGrouping("I_*_549:I_*_669:I_*_867:I_*_441:Q_*_549:Q_*_669:Q_*_867:Q_*_441:" +
 //                        "U_*_549:U_*_669:U_*_867:U_*_441:DOLP_*_549:DOLP_*_669:DOLP_*_867:DOLP_*_441:" +
 //                        "I_noise_*_549:I_noise_*_669:I_noise_*_867:I_noise_*_441:Q_noise_*_549:Q_noise_*_669:Q_noise_*_867:Q_noise_*_441:" +
