@@ -3130,6 +3130,24 @@ public abstract class SeadasFileReader {
 
 
 
+    public String getBandGrouping() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipX() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipY() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_DEFAULT);
+    }
+
+
+
+
     private interface SkipBadNav {
 
         boolean isBadNav(double value);

@@ -1040,6 +1040,43 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_SPARE_COLOR_DEFAULT = MiscFlags;
 
 
+    // BAND GROUPING
+
+    public static final String PROPERTY_BAND_PROPERTIES_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".band_properties";
+
+    public static final String PROPERTY_BAND_PROPERTIES_SECTION_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".section";
+    public static final String PROPERTY_BAND_PROPERTIES_SECTION_LABEL = "Band Properties";
+    public static final String PROPERTY_BAND_PROPERTIES_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for band properties";
+
+
+
+    public static final String PROPERTY_BAND_GROUPING_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_LABEL = "Band Grouping";
+    public static final String PROPERTY_BAND_GROUPING_TOOLTIP = "Expression to create band groupings into folders";
+    public static final String PROPERTY_BAND_GROUPING_DEFAULT = "Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf";
+
+    public static final String PROPERTY_BAND_GROUPING_RESET_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".band_grouping.reset";
+    public static final String PROPERTY_BAND_GROUPING_RESET_LABEL = "Band Grouping (reset)";
+    public static final String PROPERTY_BAND_GROUPING_RESET_TOOLTIP = "Reset band grouping to default";
+    public static final boolean PROPERTY_BAND_GROUPING_RESET_DEFAULT = true;
+
+    public static final String FlIP_MISSION_DEFAULT = "Use Mission Default";
+    public static final String FlIP_YES = "YES";
+    public static final String FlIP_NO = "NO";
+
+
+    public static final String PROPERTY_FLIPX_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_LABEL = "Flip (Horizontal)";
+    public static final String PROPERTY_FLIPX_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_FLIPY_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_LABEL = "Flip (Vertical)";
+    public static final String PROPERTY_FLIPY_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
 
     // Property Setting: Restore Defaults
 

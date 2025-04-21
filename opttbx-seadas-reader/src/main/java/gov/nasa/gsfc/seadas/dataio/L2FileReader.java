@@ -23,6 +23,7 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.util.PropertyMap;
 import ucar.ma2.Array;
 import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
@@ -107,13 +108,34 @@ public class L2FileReader extends SeadasFileReader {
         if (productName == null) {
             productName = productReader.getInputFile().getName();
         }
-        mustFlipX = mustFlipY = getDefaultFlip();
+
         SeadasProductReader.ProductType productType = productReader.getProductType();
-        if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
-                productType == SeadasProductReader.ProductType.Level2_CZCS ||
-                productType == SeadasProductReader.ProductType.Level2_Pace ||
-                productType == SeadasProductReader.ProductType.Level2_PaceOCIS)
+
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipX())) {
+            mustFlipX = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipX())) {
             mustFlipX = false;
+        } else {
+            if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
+                    productType == SeadasProductReader.ProductType.Level2_CZCS ||
+                    productType == SeadasProductReader.ProductType.Level2_Pace ||
+                    productType == SeadasProductReader.ProductType.Level2_PaceOCIS) {
+                mustFlipX = false;
+            } else {
+                mustFlipX = getDefaultFlip();
+            }
+        }
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipY())) {
+            mustFlipY = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipY())) {
+            mustFlipY = false;
+        } else {
+            mustFlipY = getDefaultFlip();
+        }
+
+
 
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
         product.setDescription(productName);
@@ -160,7 +182,13 @@ public class L2FileReader extends SeadasFileReader {
         addGeocoding(product);
 
         addFlagsAndMasks(product);
-        product.setAutoGrouping("Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf");
+//        product.setAutoGrouping("Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf");
+
+        if (productType == SeadasProductReader.ProductType.Level2_Pace) {
+            product.setAutoGrouping(getBandGrouping());
+        } else {
+            product.setAutoGrouping(getBandGrouping());
+        }
 
         return product;
     }
