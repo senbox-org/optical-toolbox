@@ -91,8 +91,27 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage(), e);
         }
-        mustFlipY = true;
-        mustFlipX = false;
+//        mustFlipY = true;
+//        mustFlipX = false;
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL1BPace())) {
+            mustFlipX = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL1BPace())) {
+            mustFlipX = false;
+        } else {
+            mustFlipX = false; // default flipX
+        }
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL1BPace())) {
+            mustFlipY = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL1BPace())) {
+            mustFlipY = false;
+        } else {
+            mustFlipY = true; // default flipY
+        }
+
+
+
         SeadasProductReader.ProductType productType = productReader.getProductType();
 
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
@@ -120,7 +139,8 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         addMetadata(product, "products", "Band_Metadata");
         addMetadata(product, "navigation", "Navigation_Metadata");
 
-        product.setAutoGrouping("rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR");
+//        product.setAutoGrouping("rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR");
+        product.setAutoGrouping(getBandGroupingL1BPace());
 
         return product;
     }

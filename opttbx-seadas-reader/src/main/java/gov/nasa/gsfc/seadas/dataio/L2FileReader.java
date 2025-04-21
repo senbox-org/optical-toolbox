@@ -107,13 +107,34 @@ public class L2FileReader extends SeadasFileReader {
         if (productName == null) {
             productName = productReader.getInputFile().getName();
         }
-        mustFlipX = mustFlipY = getDefaultFlip();
+
         SeadasProductReader.ProductType productType = productReader.getProductType();
-        if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
-                productType == SeadasProductReader.ProductType.Level2_CZCS ||
-                productType == SeadasProductReader.ProductType.Level2_Pace ||
-                productType == SeadasProductReader.ProductType.Level2_PaceOCIS)
+
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXLevel2())) {
+            mustFlipX = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXLevel2())) {
             mustFlipX = false;
+        } else {
+            if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
+                    productType == SeadasProductReader.ProductType.Level2_CZCS ||
+                    productType == SeadasProductReader.ProductType.Level2_Pace ||
+                    productType == SeadasProductReader.ProductType.Level2_PaceOCIS) {
+                mustFlipX = false;
+            } else {
+                mustFlipX = getDefaultFlip();
+            }
+        }
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYLevel2())) {
+            mustFlipY = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYLevel2())) {
+            mustFlipY = false;
+        } else {
+            mustFlipY = getDefaultFlip();
+        }
+
+
 
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
         product.setDescription(productName);
@@ -160,7 +181,13 @@ public class L2FileReader extends SeadasFileReader {
         addGeocoding(product);
 
         addFlagsAndMasks(product);
-        product.setAutoGrouping("Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf");
+//        product.setAutoGrouping("Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf");
+// todo not yet implementing any mission dependent band grouping - but this if statement is a stub for that
+        if (productType == SeadasProductReader.ProductType.Level2_Pace) {
+            product.setAutoGrouping(getBandGroupingLevel2());
+        } else {
+            product.setAutoGrouping(getBandGroupingLevel2());
+        }
 
         return product;
     }
