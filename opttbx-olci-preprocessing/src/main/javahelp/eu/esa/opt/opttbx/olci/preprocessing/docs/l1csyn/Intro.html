@@ -1,0 +1,95 @@
+<!--
+  ~ Copyright (c) 2021.  Brockmann Consult GmbH (info@brockmann-consult.de)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program; if not, see http://www.gnu.org/licenses/
+  ~
+  ~
+  -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SNAP Help - Sentinel-3 L1C Synergy Tool</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<table class="header">
+    <tr class="header">
+        <td class="header">&nbsp;
+            Sentinel-3 L1C SYN Tool - Introduction
+        </td>
+        <td class="header" align="right"><a
+                href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html">
+            <img src="../images/snap_header.jpg" border=0></a>
+        </td>
+    </tr>
+</table>
+
+<h1>Introduction</h1>
+<p>The current Sentinel 3 ground segment includes a synergy branch where Level 1b data from two instruments onboard
+    Sentinel 3, namely OLCI and SLSTR, are commonly processed to a Level 2 product, containing aerosol and surface
+    reflectance data.<br>
+    User demand showed that there is an additional need to obtain a product where the two Level 1b data streams
+    (TOA radiances or reflectances) are merged and collocated, and which allows them to perform an individual
+    Level 2 processing. This product is called Level 1C Synergy. The tool provided here performs the necessary
+    co-registration of the data.</p>
+
+<p>
+    ESA and the Copernicus program are providing Sentinel-3 Level-2 Synergy data [<a href="#ref_1">1</a>][<a href="#ref_2">2</a>] to the users. But
+    users would like to have the data at Level-1 and process their own Level-2 data. Therefore ESA decided to provide a
+    tool to the users instead of providing a predefined L1C file. This allows users to tailor the L1C product to their needs.
+
+    The S3 L1C SYN Tool can create a L1C data product considering various user options. For example different
+    collocation/co-registration algorithms, selection of bands to be included, reprojecting to a map and subsetting to
+    certain regions.
+</p>
+
+<h1>Table of Content</h1>
+
+<ul>
+    <li><a href="ToolDescription.html">S3 L1C Syn Tool Description</a></li>
+    <li><a href="MisrAlgo.html">Misregistration Algorithm</a></li>
+    <li><a href="MisrFile.html">Misregistration File</a></li>
+    <li><a href="CommandLine.html">Processing from the Command Line</a></li>
+
+</ul>
+
+
+<h2>References</h2>
+<ul>
+    <li><a name="ref_1">[1] </a>
+        <object classid="java:eu.esa.snap.netbeans.javahelp.BrowserDisplayer">
+            <param name="content" value="https://sentinel.esa.int/web/sentinel/technical-guides/sentinel-3-synergy/level-2-algorithms-products">
+            <param name="text" value="Level 2 Algorithms And Products (https://sentinel.esa.int)">
+            <param name="textFontSize" value="bigger">
+        </object></li>
+    <li><a name="ref_2">[2] </a>
+        <object classid="java:eu.esa.snap.netbeans.javahelp.BrowserDisplayer">
+            <param name="content" value="https://scihub.copernicus.eu/">
+            <param name="text" value="Copernicus Open Access Hub (https://scihub.copernicus.eu/)">
+            <param name="textFontSize" value="bigger">
+        </object></li>
+</ul>
+
+<table class="invisibletable" style="margin:auto">
+    <tr>
+        <td style="text-align: center; vertical-align: middle;"><img src="images/S3MPC_Logo.png"/></td>
+        <td style="text-align: center; vertical-align: middle;"><img src="images/S3MPC-Disclaimer.png"/></td>
+    </tr>
+</table>
+
+</body>
+</html>

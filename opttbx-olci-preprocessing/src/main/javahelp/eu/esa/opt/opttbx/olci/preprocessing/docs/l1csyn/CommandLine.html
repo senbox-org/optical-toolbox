@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SNAP Help - Sentinel-3 L1C Synergy Tool</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<table class="header">
+    <tr class="header">
+        <td class="header">&nbsp;
+            S3 L1C SYN Tool - Command Line
+        </td>
+        <td class="header" align="right"><a
+                href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html">
+            <img src="../images/snap_header.jpg" border=0></a>
+        </td>
+    </tr>
+</table>
+
+<h1>Command Line processing</h1>
+<p>By invoking gpt with name "L1CSYN" of the tool (operator) and the option <b>-h</b> the specific help for this L1C SYN
+    tool is shown. For general information on processing with GPF please see the <a
+            href="nbdocs://org.esa.snap.snap.gpf.ui/org/esa/snap/core/gpf/docs/gpf/GpfOverview.html">GPF Overview</a>
+    page.</p>
+
+<pre>
+> gpt L1CSYN -h
+Usage:
+  gpt L1CSYN [options] 
+
+Description:
+  Sentinel-3 OLCI/SLSTR L1C SYN Tool
+
+
+Source Options:
+  -SolciProduct=&lt;file&gt;     OLCI L1 ERR or EFR source product
+                           This is a mandatory source.
+  -SslstrProduct=&lt;file&gt;    SLSTR L1 RBT source product
+                           This is a mandatory source.
+
+Parameter Options:
+  -PbandsOlci=&lt;string,string,string,...&gt;     Predefined regular expressions for selection of OLCI bands in the output product. Multiple selection is possible.
+                                             Value must be one of 'All', 'Oa.._radiance', 'FWHM_band_.*', 'lambda0_band_.*', 'solar_flux_band_.*', 'quality_flags.*', 'atmospheric_temperature_profile_.*', 'TP_.*', 'horizontal_wind.*', 'total_.*', 'humidity', 'sea_level_pressure', 'O.*A', 'S.*A'.
+                                             Default value is 'All'.
+  -PbandsSlstr=&lt;string,string,string,...&gt;    Predefined regular expressions for selection of OLCI bands in the output product. Multiple selection is possible.
+                                             Value must be one of 'All', 'F._BT_.*', 'S._BT_.*', 'S*._radiance_an', '.*_an.*', '.*_ao.*', '.*_bn.*', '.*_bo.*', '.*_co.*', '.*_cn.*', '.*_fn.*', '.*_fo.*', '.*_tn.*', '.*_tx.*'.
+                                             Default value is 'All'.
+  -PgeoRegion=&lt;string&gt;                       The subset region in geographical coordinates using WKT-format,
+                                             e.g. POLYGON((&lt;lon1&gt; &lt;lat1&gt;, &lt;lon2&gt; &lt;lat2&gt;, ..., &lt;lon1&gt; &lt;lat1&gt;))
+                                             (make sure to quote the option due to spaces in &lt;geometry&gt;).
+                                             If not given, the entire scene is used.
+  -PmisrFile=&lt;file&gt;                          Optional MISR file which may be used for co-registration of OLCI and SLSTR products
+  -PolciRegexp=&lt;string&gt;                      Regular expressions (comma-separated) to set up selection of OLCI bands. It has priority over OLCI raster data selection. Will not be considered if empty
+  -PreprojectionCRS=&lt;string&gt;                 The CRS used for the reprojection. If set to None or left empty, no reprojection will be performed. If MISR file is specified this setting will be neglected.
+                                             Default value is 'EPSG:4326'.
+  -PshapeFile=&lt;file&gt;                         Optional file which may be used for selecting subset. This has priority over WKT GeoRegion.
+  -PslstrRegexp=&lt;string&gt;                     Regular expressions (comma-separated) to set up selection of SLSTR bands. It has priority over SLSTR raster data selection. Will not be considered if empty
+  -PstayOnOlciGrid=&lt;boolean&gt;                 If this parameter is set to true, the final product will be kept in OLCI image grid.
+                                             Default value is 'true'.
+  -Pupsampling=&lt;string&gt;                      The method used for interpolation (upsampling to a finer resolution).
+                                             Value must be one of 'Nearest', 'Bilinear', 'Bicubic'.
+                                             Default value is 'Nearest'.
+  -PuseMISR=&lt;boolean&gt;                        If set to false MISR product will not be used, instead products will collocated
+                                             Default value is 'true'.
+
+Graph XML Format:
+  &lt;graph id="someGraphId"&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;node id="someNodeId"&gt;
+      &lt;operator&gt;L1CSYN&lt;/operator&gt;
+      &lt;sources&gt;
+        &lt;olciProduct&gt;${olciProduct}&lt;/olciProduct&gt;
+        &lt;slstrProduct&gt;${slstrProduct}&lt;/slstrProduct&gt;
+      &lt;/sources&gt;
+      &lt;parameters&gt;
+        &lt;stayOnOlciGrid&gt;boolean&lt;/stayOnOlciGrid&gt;
+        &lt;useMISR&gt;boolean&lt;/useMISR&gt;
+        &lt;misrFile&gt;file&lt;/misrFile&gt;
+        &lt;reprojectionCRS&gt;string&lt;/reprojectionCRS&gt;
+        &lt;upsampling&gt;string&lt;/upsampling&gt;
+        &lt;bandsOlci&gt;string,string,string,...&lt;/bandsOlci&gt;
+        &lt;bandsSlstr&gt;string,string,string,...&lt;/bandsSlstr&gt;
+        &lt;olciRegexp&gt;string&lt;/olciRegexp&gt;
+        &lt;slstrRegexp&gt;string&lt;/slstrRegexp&gt;
+        &lt;shapeFile&gt;file&lt;/shapeFile&gt;
+        &lt;geoRegion&gt;string&lt;/geoRegion&gt;
+      &lt;/parameters&gt;
+    &lt;/node&gt;
+  &lt;/graph&gt;
+</pre>
+
+<br>
+<p>A complete command line call (on windows) might look like the following:</p>
+<pre>
+> gpt L1CSYN -PbandsOlci="Oa.._radiance,FWHM_band_.*,lambda0_band_.*" -PbandsSlstr=".*_an.*,.*_tn.*,.*_tx.*"
+    -f NetCDF4-CF -t "c:\output\S3_L1C_SYN.nc"
+    -SolciProduct="c:\input\S3A_OL_1_EFR____20170313T110342_20170313T110642_20170314T162839_0179_015_208_2520_LN1_O_NT_002.SEN3"
+    -SslstrProduct="S3A_SL_1_RBT____20170313T110343_20170313T110643_20170314T172757_0179_015_208_2520_LN2_O_NT_002.SEN3"
+</pre>
+
+</body>
+</html>
