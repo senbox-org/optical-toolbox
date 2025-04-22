@@ -1026,10 +1026,34 @@ public class SeadasReaderDefaults {
     public static final String FlIP_MISSION_DEFAULT = "Use Mission Default";
     public static final String FlIP_YES = "YES";
     public static final String FlIP_NO = "NO";
-    
-    
-    
-    
+
+
+    // L3_MAPPED FILES 
+
+    public static final String PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.L3_MAPPED";
+
+    public static final String PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_LABEL = "Level L3 Mapped Files";
+    public static final String PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_TOOLTIP = "SeaDAS Level-3 Mapped file reader options";
+
+    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_LABEL = "Band Grouping";
+    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_TOOLTIP = "Expression to create band groupings into folders";
+    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_DEFAULT = "Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:vgain:BT:tg_sol:tg_sen";
+
+    public static final String PROPERTY_FLIPX_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_L3_MAPPED_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L3_MAPPED_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_L3_MAPPED_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_FLIPY_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_L3_MAPPED_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L3_MAPPED_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_L3_MAPPED_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+
     // LEVEL2 FILES 
 
     public static final String PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.level2";
