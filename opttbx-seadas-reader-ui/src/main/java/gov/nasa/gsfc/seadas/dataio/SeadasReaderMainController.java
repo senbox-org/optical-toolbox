@@ -67,6 +67,13 @@ public final class SeadasReaderMainController extends DefaultConfigController {
     @Override
     protected JPanel createPanel(BindingContext context) {
 
+
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_KEY, true);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L3_MAPPED_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L3_MAPPED_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPX_L3_MAPPED_KEY, SeadasReaderDefaults.PROPERTY_FLIPX_L3_MAPPED_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPY_L3_MAPPED_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_L3_MAPPED_DEFAULT);
+
+        
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_LEVEL2_SECTION_KEY, true);
         bandGrouping = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT);
         bandGroupingReset = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT);
@@ -325,6 +332,39 @@ public final class SeadasReaderMainController extends DefaultConfigController {
     @SuppressWarnings("UnusedDeclaration")
     static class SeadasToolboxBean {
 
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_TOOLTIP)
+        boolean maskL3_MAPPED_Section = true;
+
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPX_L3_MAPPED_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FLIPX_L3_MAPPED_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FLIPX_L3_MAPPED_TOOLTIP,
+                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
+                        SeadasReaderDefaults.FlIP_YES,
+                        SeadasReaderDefaults.FlIP_NO})
+        String flipxL3MappedDefault = SeadasReaderDefaults.PROPERTY_FLIPX_L3_MAPPED_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPY_L3_MAPPED_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FLIPY_L3_MAPPED_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FLIPY_L3_MAPPED_TOOLTIP,
+                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
+                        SeadasReaderDefaults.FlIP_YES,
+                        SeadasReaderDefaults.FlIP_NO})
+        String flipyL3MappedDefault = SeadasReaderDefaults.PROPERTY_FLIPY_L3_MAPPED_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L3_MAPPED_KEY,
+                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L3_MAPPED_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L3_MAPPED_TOOLTIP)
+        String bandGroupingL3MappedDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L3_MAPPED_DEFAULT;
+
+
+
+
+        
+        
 
         @Preference(key = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_LEVEL2_SECTION_KEY,
                 label = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_LEVEL2_SECTION_LABEL,

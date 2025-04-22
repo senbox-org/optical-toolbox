@@ -42,6 +42,28 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         if (geodata == null) {
             geodata = ncFile.findGroup("Geophysical_Data");
         }
+
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL3Mapped())) {
+            mustFlipX = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL3Mapped())) {
+            mustFlipX = false;
+        } else {
+            mustFlipX = false; // default flipX
+        }
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYL3Mapped())) {
+            mustFlipY = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYL3Mapped())) {
+            mustFlipY = false;
+        } else {
+            mustFlipY = false;
+             // default flipY
+        }
+
+
+
+
         if (productReader.getProductType() == SeadasProductReader.ProductType.OISST) {
             dims = ncFile.getVariables().get(4).getShape();
             sceneHeight = dims[2];
@@ -107,7 +129,8 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
             Dimension tileSize = new Dimension(640, 320);
             product.setPreferredTileSize(tileSize);
         }
-        product.setAutoGrouping("Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:vgain:BT:tg_sol:tg_sen");
+
+        product.setAutoGrouping(getBandGroupingL3Mapped());
         return product;
     }
 
