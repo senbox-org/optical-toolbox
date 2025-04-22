@@ -76,7 +76,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
         
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_LEVEL2_SECTION_KEY, true);
         bandGrouping = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT);
-        bandGroupingReset = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT);
+//        bandGroupingReset = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPX_LEVEL2_KEY, SeadasReaderDefaults.PROPERTY_FLIPX_LEVEL2_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPY_LEVEL2_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_LEVEL2_DEFAULT);
 
@@ -91,6 +91,18 @@ public final class SeadasReaderMainController extends DefaultConfigController {
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPY_L1C_PACE_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_L1C_PACE_DEFAULT);
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT);
+
+
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_KEY, true);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPX_L1B_MODIS_KEY, SeadasReaderDefaults.PROPERTY_FLIPX_L1B_MODIS_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPY_L1B_MODIS_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_L1B_MODIS_DEFAULT);
+
+
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_KEY, true);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_VIIRS_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_VIIRS_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPX_L1B_VIIRS_KEY, SeadasReaderDefaults.PROPERTY_FLIPX_L1B_VIIRS_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_DEFAULT);
 
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_RESTORE_SECTION_KEY, true);
@@ -134,13 +146,13 @@ public final class SeadasReaderMainController extends DefaultConfigController {
     @Override
     protected void configure(BindingContext context) {
 
-        bandGroupingReset.addPropertyChangeListener(evt -> {
-            handleResetBandGroupingToDefaults(context);
-        });
-
-        bandGrouping.addPropertyChangeListener(evt -> {
-            handleBandGroupingChanged(context);
-        });
+//        bandGroupingReset.addPropertyChangeListener(evt -> {
+//            handleResetBandGroupingToDefaults(context);
+//        });
+//
+//        bandGrouping.addPropertyChangeListener(evt -> {
+//            handleBandGroupingChanged(context);
+//        });
 
 
         // Handle resetDefaults events - set all other components to defaults
@@ -168,7 +180,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
 
         // This call is an initialization call which set restoreDefault initial value
         handlePreferencesPropertyValueChange(context);
-        handleBandGroupingChanged(context);
+//        handleBandGroupingChanged(context);
     }
 
 
@@ -234,7 +246,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
 
 
 
-
+    // disabled but might want to use in future
     private void handleResetBandGroupingToDefaults(BindingContext context) {
         if (propertyValueChangeEventsEnabled) {
             propertyValueChangeEventsEnabled = false;
@@ -251,7 +263,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
         }
     }
 
-
+    // disabled but might want to use in future
     private void handleBandGroupingChanged(BindingContext context) {
         if (propertyValueChangeEventsEnabled) {
             propertyValueChangeEventsEnabled = false;
@@ -396,43 +408,10 @@ public final class SeadasReaderMainController extends DefaultConfigController {
                 description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_TOOLTIP)
         String bandGroupingDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT;
 
-        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY,
-                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_TOOLTIP)
-        boolean bandGroupingResetDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT;
-
-
-
-
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_PACE_SECTION_KEY,
-                label = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_PACE_SECTION_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_PACE_SECTION_TOOLTIP)
-        boolean maskL1B_PACE_Section = true;
-
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_PACE_KEY,
-                label = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_PACE_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_PACE_TOOLTIP,
-                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
-                        SeadasReaderDefaults.FlIP_YES,
-                        SeadasReaderDefaults.FlIP_NO})
-        String flipxL1bPaceDefault = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_PACE_DEFAULT;
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_PACE_KEY,
-                label = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_PACE_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_PACE_TOOLTIP,
-                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
-                        SeadasReaderDefaults.FlIP_YES,
-                        SeadasReaderDefaults.FlIP_NO})
-        String flipyL1bPaceDefault = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_PACE_DEFAULT;
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_PACE_KEY,
-                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_PACE_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_PACE_TOOLTIP)
-        String bandGroupingL1bPaceDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_PACE_DEFAULT;
-
-
+//        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY,
+//                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_LABEL,
+//                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_TOOLTIP)
+//        boolean bandGroupingResetDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT;
 
 
 
@@ -470,6 +449,104 @@ public final class SeadasReaderMainController extends DefaultConfigController {
         String bandGroupingL1CPaceHarp2Default = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT;
 
 
+
+
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_PACE_SECTION_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_PACE_SECTION_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_PACE_SECTION_TOOLTIP)
+        boolean maskL1B_PACE_Section = true;
+
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_PACE_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_PACE_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_PACE_TOOLTIP,
+                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
+                        SeadasReaderDefaults.FlIP_YES,
+                        SeadasReaderDefaults.FlIP_NO})
+        String flipxL1bPaceDefault = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_PACE_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_PACE_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_PACE_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_PACE_TOOLTIP,
+                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
+                        SeadasReaderDefaults.FlIP_YES,
+                        SeadasReaderDefaults.FlIP_NO})
+        String flipyL1bPaceDefault = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_PACE_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_PACE_KEY,
+                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_PACE_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_PACE_TOOLTIP)
+        String bandGroupingL1bPaceDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_PACE_DEFAULT;
+
+
+
+
+
+
+
+
+
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_TOOLTIP)
+        boolean maskL1B_MODIS_Section = true;
+
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_MODIS_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_MODIS_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_MODIS_TOOLTIP,
+                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
+                        SeadasReaderDefaults.FlIP_YES,
+                        SeadasReaderDefaults.FlIP_NO})
+        String flipxL1B_MODISDefault = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_MODIS_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_MODIS_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_MODIS_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_MODIS_TOOLTIP,
+                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
+                        SeadasReaderDefaults.FlIP_YES,
+                        SeadasReaderDefaults.FlIP_NO})
+        String flipyL1B_MODISDefault = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_MODIS_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_KEY,
+                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_TOOLTIP)
+        String bandGroupingL1B_MODISDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_DEFAULT;
+
+
+
+
+
+
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_TOOLTIP)
+        boolean maskL1B_VIIRS_Section = true;
+
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_VIIRS_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_VIIRS_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_VIIRS_TOOLTIP,
+                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
+                        SeadasReaderDefaults.FlIP_YES,
+                        SeadasReaderDefaults.FlIP_NO})
+        String flipxL1B_VIIRSDefault = SeadasReaderDefaults.PROPERTY_FLIPX_L1B_VIIRS_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_KEY,
+                label = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_TOOLTIP,
+                valueSet = {SeadasReaderDefaults.FlIP_MISSION_DEFAULT,
+                        SeadasReaderDefaults.FlIP_YES,
+                        SeadasReaderDefaults.FlIP_NO})
+        String flipyL1B_VIIRSDefault = SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_VIIRS_KEY,
+                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_VIIRS_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_VIIRS_TOOLTIP)
+        String bandGroupingL1B_VIIRSDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_VIIRS_DEFAULT;
 
 
         // Restore Defaults Section
