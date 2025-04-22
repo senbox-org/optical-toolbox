@@ -54,6 +54,13 @@
                     <tocitem text="PPE Filtering - Algorithm Specification" target="PpeAlgo"/>
                     <tocitem text="PPE Filtering - Processor Description" target="PpeOp"/>
                 </tocitem>
+
+                <tocitem text="S3 L1C SYN Tool" target="l1cSynTool">
+                    <tocitem text="Tool Description" target="l1cSynTool_Tool"/>
+                    <tocitem text="MISR Algo" target="l1cSynTool_MisrAlgo"/>
+                    <tocitem text="MISR File" target="l1cSynTool_MisrFile"/>
+                    <tocitem text="Command Line Processing" target="l1cSynTool_Cmd"/>
+                </tocitem>
             </tocitem>
         </tocitem>
     </tocitem>

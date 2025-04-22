@@ -1,0 +1,122 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SNAP Help - Sentinel-3 L1C Synergy Tool</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<table class="header">
+    <tr class="header">
+        <td class="header">&nbsp;
+            S3 L1C SYN Tool - Tool Description
+        </td>
+        <td class="header" align="right"><a
+                href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html">
+            <img src="../images/snap_header.jpg" border=0></a>
+        </td>
+    </tr>
+</table>
+
+<h1>Tool Description</h1>
+
+<h2>I/O Parameters</h2>
+<p align="center"><img src="images/IOParameters.png"></p>
+<h4>Source Products</h4>
+<b>OLCI Product</b><br>
+<p>Select an OLCI product on which the SLSTR product will be collocated.</p>
+<b>SLSTR Product</b><br>
+<p>Select a SLSTR product which will be collocated with the OLCI product.<br><br>
+    Both products must be taken at the same time (roughly). The start and stop time are validated and an error
+    is shown if the products do not match in the time domain.</p>
+
+<h4>Target Product</h4>
+<b>Name:</b>The name of the target product.<br>
+<p>By default a name with the prefix <i>S3(A|B)_SY_1_SYN_</i> will be suggested. Following start and stop time and the
+    current time.</p>
+<b>Save as:</b>Checkbox to specify whether the target product should be saved to the file system. The combo box
+presents a list of available file formats. The text field or the button next to it allow to specify a target
+directory.<br>
+<b>Open in SNAP:</b>Used to specify whether the target product should be opened in the Sentinel Toolbox. When the
+target product is not saved, it is opened in the Sentinel Toolbox automatically.
+<br>
+
+
+<h4>Processing Parameters</h4>
+<p align="center"><img src="images/ProcessingParameters.png"></p>
+
+<h4>Keep final product on OLCI image grid</h4>
+<p>If this parameter is set to "true" then no reprojection will be performed after co-registration and the L1C target
+    product will be stored in the same image grid as the OLCI L1B source product.
+    In this case value from Reprojection CRS option will not be used. 'True' is default value.</p>
+
+<h4>Use MISR Product</h4>
+<p>Enables or disables the usage of the <a href="MisrFile.html">mis-registration file</a>. If this is disabled, then
+    a collocation using the geo-location information of both products is performed. Therefore the
+    <a href="nbdocs://org.esa.snap.snap.collocation.ui/org/esa/snap/collocation/docs/collocation/CollocationTool.html">Collocation
+        Tool</a>
+    is used internally.</p>
+
+<h4>MISR Product</h4>
+<p>Specifies the path to the MISR product file. The <code>xfdumanifest.xml</code> file within the *.SAFE folder must
+    be selected </p>
+
+<h4>Reprojection CRS</h4>
+<p>Coordinate reference system to which L1C product will be reprojected. If set to "none" or left empty, no reprojection
+    will be performed. Default value is EPSG:4326 [<a href="#ref_1">1</a>].
+    If user set "Keep final project on OLCI image grid" parameter to true, this option will ignored.</p>
+
+<h4>Resampling upsampling method</h4>
+<p>The method used for upsampling SLSTR bands to a common 500m resolution. This step is only performed if the
+    mis-registration file is not used but the collocation by geo-location.</p>
+
+<h4>OLCI raster data</h4>
+<p>Predefined regular expressions for selection of OLCI bands in L1C product. Multiple values selection is possible.
+    Values must be one of <code>'All', 'Oa.._radiance', 'FWHM_band_.*', 'lambda0_band_.*', 'solar_flux_band_.*',
+        'quality_flags.*', 'atmospheric_temperature_profile_.*', 'TP_.*', 'horizontal_wind.*', 'total_.*', 'humidity',
+        'sea_level_pressure', 'O.*A', 'S.*A'</code>.<br>
+    If 'All' is selected then all OLCI bands will be written to L1C product. 'All' is the default value.</p>
+
+<h4>SLSTR raster data</h4>
+<p>Predefined regular expressions for selection of SLSTR bands in L1C product. Multiple values selection is possible.
+    Values must be one of <code>'All', 'F._BT_.*', 'S._BT_.*', 'S*._radiance_an', '.*_an.*', '.*_ao.*', '.*_bn.*',
+        '.*_bo.*', '.*_co.*', '.*_cn.*', '.*_fn.*', '.*_fo.*', '.*_tn.*', '.*_tx.*'</code>.<br>
+    If 'All' is selected then all SLSTR bands will be written to L1C product. 'All' is the default value.</p>
+
+<h4>Regular expressions for OLCI bands</h4>
+<p>Regular expressions for selection of OLCI bands in L1C product. Values must follow JAVA rules for the regular
+    expessions [<a href="#ref_2">2</a>]. Values must be separated by commas. If 'All' is specified then all OLCI bands will be written to L1C
+    product.</p>
+
+<h4>Regular expressions for SLSTR bands</h4>
+<p>Regular expressions for selection of SLSTR bands in L1C product. Values must follow JAVA rules for the regular
+    expressions [<a href="#ref_2">2</a>]. Values must be separated by commas. If 'All' is specified then all SLSTR bands will be written to L1C
+    product.</p>
+
+<h4>Shapefile</h4>
+<p>Optional shapefile which user can specify to create regional subsets. The subset is created after the coregistration and
+    reprojection step. CRS of the shapefile must be WGS84. This option has priority over "WKT region" option.</p>
+
+<h4>WKT region</h4>
+<p>The subset region in geographical coordinates using WKT-format, e.g. POLYGON((&lt;lon1&gt; &lt;lat1&gt;, &lt;lon2&gt;
+    &lt;lat2&gt;, ..., &lt;lon1&gt; &lt;lat1&gt;))
+    (make sure to quote the option due to spaces in &lt;geometry&gt;). If not given, the entire scene is used. The subset
+    is created after the coregistration and reprojection step. Shapefile option has priority over this option.</p>
+
+<h2>References</h2>
+<ul>
+    <li><a name="ref_1">[1]</a>
+        <a href="https://epsg.org/" target="_blank">
+            https://epsg.org/
+        </a>
+    </li>
+    <li><a name="ref_2">[2]</a>
+        <a href="https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/util/regex/Pattern.html" target="_blank">
+            Oracle Java documentation on regex (https://docs.oracle.com/)
+        </a>
+    </li>
+</ul>
+</body>
+</html>
