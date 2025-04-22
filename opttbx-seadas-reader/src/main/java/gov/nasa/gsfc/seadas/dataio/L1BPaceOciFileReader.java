@@ -102,9 +102,9 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             mustFlipX = false; // default flipX
         }
 
-        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL1BPace())) {
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYL1BPace())) {
             mustFlipY = true;
-        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL1BPace())) {
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYL1BPace())) {
             mustFlipY = false;
         } else {
             mustFlipY = true; // default flipY
