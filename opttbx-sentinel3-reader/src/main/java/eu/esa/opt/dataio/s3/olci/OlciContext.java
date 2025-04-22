@@ -99,7 +99,7 @@ public class OlciContext extends AbstractSensorContext {
         final String layerName = Sentinel3Level1Reader.getLayerName(name, layerIdx + 1);
 
         // get instrumentData requested (via cache - need DataProvider linking back to reader)
-        readerContext.readData(name, )
+        // @todo readerContext.readData(name, )
         // select vector of instrumentData for spectral band
         // get detector_index data
         // ensure target buffer has same dimension
