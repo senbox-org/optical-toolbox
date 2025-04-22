@@ -1067,6 +1067,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_LEVEL2_TOOLTIP = "Expression to create band groupings into folders";
     public static final String PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT = "Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf";
 
+    // disabled but might want to use in future
     public static final String PROPERTY_BAND_GROUPING_RESET_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".band_grouping.reset";
     public static final String PROPERTY_BAND_GROUPING_RESET_LABEL = "Band Grouping (reset)";
     public static final String PROPERTY_BAND_GROUPING_RESET_TOOLTIP = "Reset band grouping to default";

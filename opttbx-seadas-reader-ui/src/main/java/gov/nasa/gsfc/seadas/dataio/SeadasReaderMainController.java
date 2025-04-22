@@ -76,7 +76,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
         
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_LEVEL2_SECTION_KEY, true);
         bandGrouping = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT);
-        bandGroupingReset = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT);
+//        bandGroupingReset = initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPX_LEVEL2_KEY, SeadasReaderDefaults.PROPERTY_FLIPX_LEVEL2_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FLIPY_LEVEL2_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_LEVEL2_DEFAULT);
 
@@ -146,13 +146,13 @@ public final class SeadasReaderMainController extends DefaultConfigController {
     @Override
     protected void configure(BindingContext context) {
 
-        bandGroupingReset.addPropertyChangeListener(evt -> {
-            handleResetBandGroupingToDefaults(context);
-        });
-
-        bandGrouping.addPropertyChangeListener(evt -> {
-            handleBandGroupingChanged(context);
-        });
+//        bandGroupingReset.addPropertyChangeListener(evt -> {
+//            handleResetBandGroupingToDefaults(context);
+//        });
+//
+//        bandGrouping.addPropertyChangeListener(evt -> {
+//            handleBandGroupingChanged(context);
+//        });
 
 
         // Handle resetDefaults events - set all other components to defaults
@@ -180,7 +180,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
 
         // This call is an initialization call which set restoreDefault initial value
         handlePreferencesPropertyValueChange(context);
-        handleBandGroupingChanged(context);
+//        handleBandGroupingChanged(context);
     }
 
 
@@ -246,7 +246,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
 
 
 
-
+    // disabled but might want to use in future
     private void handleResetBandGroupingToDefaults(BindingContext context) {
         if (propertyValueChangeEventsEnabled) {
             propertyValueChangeEventsEnabled = false;
@@ -263,7 +263,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
         }
     }
 
-
+    // disabled but might want to use in future
     private void handleBandGroupingChanged(BindingContext context) {
         if (propertyValueChangeEventsEnabled) {
             propertyValueChangeEventsEnabled = false;
@@ -408,10 +408,10 @@ public final class SeadasReaderMainController extends DefaultConfigController {
                 description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_TOOLTIP)
         String bandGroupingDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT;
 
-        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY,
-                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_TOOLTIP)
-        boolean bandGroupingResetDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT;
+//        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_KEY,
+//                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_LABEL,
+//                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_TOOLTIP)
+//        boolean bandGroupingResetDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_RESET_DEFAULT;
 
 
 
@@ -448,7 +448,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
                 description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_TOOLTIP)
         String bandGroupingL1CPaceHarp2Default = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT;
 
-        
+
 
 
 
