@@ -3206,6 +3206,39 @@ public abstract class SeadasFileReader {
 
 
 
+    public String getBandGroupingL1B_MODIS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_DEFAULT);
+    }
+
+    public String getBandFlipXL1B_MODIS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_FLIPX_L1B_MODIS_KEY, SeadasReaderDefaults.PROPERTY_FLIPX_L1B_MODIS_DEFAULT);
+    }
+
+    public String getBandFlipYL1B_MODIS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_FLIPY_L1B_MODIS_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_L1B_MODIS_DEFAULT);
+    }
+
+
+    public String getBandGroupingL1B_VIIRS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_VIIRS_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_VIIRS_DEFAULT);
+    }
+
+    public String getBandFlipXL1B_VIIRS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_FLIPX_L1B_VIIRS_KEY, SeadasReaderDefaults.PROPERTY_FLIPX_L1B_VIIRS_DEFAULT);
+    }
+
+    public String getBandFlipYL1B_VIIRS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_DEFAULT);
+    }
+    
+    
+
 
 
 

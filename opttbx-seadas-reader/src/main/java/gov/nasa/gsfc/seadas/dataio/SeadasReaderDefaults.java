@@ -1067,6 +1067,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_LEVEL2_TOOLTIP = "Expression to create band groupings into folders";
     public static final String PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT = "Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf";
 
+    // disabled but might want to use in future
     public static final String PROPERTY_BAND_GROUPING_RESET_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".band_grouping.reset";
     public static final String PROPERTY_BAND_GROUPING_RESET_LABEL = "Band Grouping (reset)";
     public static final String PROPERTY_BAND_GROUPING_RESET_TOOLTIP = "Reset band grouping to default";
@@ -1146,6 +1147,56 @@ public class SeadasReaderDefaults {
             "Sensor_Zenith:Sensor_Azimuth:Solar_Zenith:Solar_Azimuth:view_time_offsets:obs_per_view:number_of_observations:" +
             "sensor_zenith_angle:sensor_azimuth_angle:solar_zenith_angle:solar_azimuth_angle:scattering_angle:rotation_angle";
 
+
+
+
+    // L1B_MODIS FILES 
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.l1b_modis";
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_LABEL = "Level 1B MODIS Files";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_TOOLTIP = "SeaDAS Level-1B MODIS file reader options";
+
+    public static final String PROPERTY_BAND_GROUPING_L1B_MODIS_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1B_MODIS_LABEL = "Band Grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1B_MODIS_TOOLTIP = "Expression to create band groupings into folders for the MODIS instruments";
+    public static final String PROPERTY_BAND_GROUPING_L1B_MODIS_DEFAULT = "RefSB:Emissive";
+
+    public static final String PROPERTY_FLIPX_L1B_MODIS_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_L1B_MODIS_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1B_MODIS_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_L1B_MODIS_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_FLIPY_L1B_MODIS_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_L1B_MODIS_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1B_MODIS_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_L1B_MODIS_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+    // L1B_VIIRS FILES 
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.l1b_viirs";
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_LABEL = "Level 1B VIIRS Files";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_TOOLTIP = "SeaDAS Level-1B VIIRS file reader options";
+
+    public static final String PROPERTY_BAND_GROUPING_L1B_VIIRS_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1B_VIIRS_LABEL = "Band Grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1B_VIIRS_TOOLTIP = "Expression to create band groupings into folders for the VIIRS instruments";
+    public static final String PROPERTY_BAND_GROUPING_L1B_VIIRS_DEFAULT = "RefSB:Emissive";
+
+    public static final String PROPERTY_FLIPX_L1B_VIIRS_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_L1B_VIIRS_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1B_VIIRS_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_L1B_VIIRS_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_FLIPY_L1B_VIIRS_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_L1B_VIIRS_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1B_VIIRS_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_L1B_VIIRS_DEFAULT = FlIP_MISSION_DEFAULT;
 
 
 
