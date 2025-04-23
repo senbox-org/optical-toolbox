@@ -1023,9 +1023,10 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_SPARE_COLOR_DEFAULT = MiscFlags;
 
 
-    public static final String FlIP_MISSION_DEFAULT = "Use Mission Default";
+    public static final String FlIP_MISSION_DEFAULT = "MISSION DEFAULT: (Earth Orientation)";
     public static final String FlIP_YES = "YES";
-    public static final String FlIP_NO = "NO";
+    public static final String FlIP_NO = "NO: (Native Sensor Orientation)";
+    public static final String FlIP_NO_L3 = "NO: (Native Orientation)";
 
 
     // L3_MAPPED FILES 
@@ -1044,12 +1045,12 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_FLIPX_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".flipx";
     public static final String PROPERTY_FLIPX_L3_MAPPED_LABEL = "Flip Horizontal";
     public static final String PROPERTY_FLIPX_L3_MAPPED_TOOLTIP = "Flip image horizontally";
-    public static final String PROPERTY_FLIPX_L3_MAPPED_DEFAULT = FlIP_MISSION_DEFAULT;
+    public static final String PROPERTY_FLIPX_L3_MAPPED_DEFAULT = FlIP_NO_L3;
 
     public static final String PROPERTY_FLIPY_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".flipy";
     public static final String PROPERTY_FLIPY_L3_MAPPED_LABEL = "Flip Vertical";
     public static final String PROPERTY_FLIPY_L3_MAPPED_TOOLTIP = "Flip image vertically";
-    public static final String PROPERTY_FLIPY_L3_MAPPED_DEFAULT = FlIP_MISSION_DEFAULT;
+    public static final String PROPERTY_FLIPY_L3_MAPPED_DEFAULT = FlIP_NO_L3;
 
 
 
