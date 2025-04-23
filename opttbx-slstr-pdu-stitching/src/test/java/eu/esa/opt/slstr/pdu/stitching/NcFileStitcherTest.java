@@ -1,6 +1,7 @@
 package eu.esa.opt.slstr.pdu.stitching;
 
 import com.bc.ceres.binding.converters.DateFormatConverter;
+import com.google.common.collect.ImmutableList;
 import org.esa.snap.dataio.netcdf.NetCdfActivator;
 import org.esa.snap.dataio.netcdf.nc.NFileWriteable;
 import org.esa.snap.dataio.netcdf.nc.NVariable;
@@ -135,7 +136,7 @@ public class NcFileStitcherTest {
         for (int i = 0; i < 3; i++) {
             final NetcdfFile ncFile = NetcdfFileOpener.open(ncFiles[i]);
             assertNotNull(ncFile);
-            inputFileVariables[i] = ncFile.getVariables();
+            inputFileVariables[i] = new ArrayList<>(ncFile.getVariables());
         }
         for (int i = 0; i < variables.size(); i++) {
             Variable variable = variables.get(i);
@@ -321,8 +322,8 @@ public class NcFileStitcherTest {
         inputWriteable1.close();
         final NetcdfFile inputnc1 = NetcdfFileOpener.open(inputFile1);
         assertNotNull(inputnc1);
-        dimensionLists[0] = inputnc1.getDimensions();
-        variableLists[0] = inputnc1.getVariables();
+        dimensionLists[0] = new ArrayList<>(inputnc1.getDimensions());
+        variableLists[0] = new ArrayList<>(inputnc1.getVariables());
         inputnc1.close();
 
         final File inputFile2 = new File(targetDirectory, "input_2.nc");
@@ -338,8 +339,8 @@ public class NcFileStitcherTest {
         inputWriteable2.close();
         final NetcdfFile inputnc2 = NetcdfFileOpener.open(inputFile2);
         assertNotNull(inputnc2);
-        dimensionLists[1] = inputnc2.getDimensions();
-        variableLists[1] = inputnc2.getVariables();
+        dimensionLists[1] = new ArrayList<>(inputnc2.getDimensions());
+        variableLists[1] = new ArrayList<>(inputnc2.getVariables());
         inputnc2.close();
 
         final File file = new File(targetDirectory, "something.nc");
@@ -382,8 +383,8 @@ public class NcFileStitcherTest {
         inputWriteable1.close();
         final NetcdfFile inputnc1 = NetcdfFileOpener.open(inputFile1);
         assertNotNull(inputnc1);
-        dimensionLists[0] = inputnc1.getDimensions();
-        variableLists[0] = inputnc1.getVariables();
+        dimensionLists[0] = new ArrayList<>(inputnc1.getDimensions());
+        variableLists[0] = new ArrayList<>(inputnc1.getVariables());
         inputnc1.close();
 
         final File inputFile2 = new File(targetDirectory, "input_2.nc");
@@ -399,8 +400,8 @@ public class NcFileStitcherTest {
         inputWriteable2.close();
         final NetcdfFile inputnc2 = NetcdfFileOpener.open(inputFile2);
         assertNotNull(inputnc2);
-        dimensionLists[1] = inputnc2.getDimensions();
-        variableLists[1] = inputnc2.getVariables();
+        dimensionLists[1] = new ArrayList<>(inputnc2.getDimensions());
+        variableLists[1] = new ArrayList<>(inputnc2.getVariables());
         inputnc2.close();
 
         final File file = new File(targetDirectory, "something.nc");
@@ -436,8 +437,8 @@ public class NcFileStitcherTest {
         inputWriteable1.close();
         final NetcdfFile inputnc1 = NetcdfFileOpener.open(inputFile1);
         assertNotNull(inputnc1);
-        dimensionLists[0] = inputnc1.getDimensions();
-        variableLists[0] = inputnc1.getVariables();
+        dimensionLists[0] = new ArrayList<>(inputnc1.getDimensions());
+        variableLists[0] = new ArrayList<>(inputnc1.getVariables());
 
         final File inputFile2 = new File(targetDirectory, "input_2.nc");
         final NFileWriteable inputWriteable2 = NWritableFactory.create(inputFile2.getAbsolutePath(), "netcdf4");
@@ -454,8 +455,8 @@ public class NcFileStitcherTest {
         inputWriteable2.close();
         final NetcdfFile inputnc2 = NetcdfFileOpener.open(inputFile2);
         assertNotNull(inputnc2);
-        dimensionLists[1] = inputnc2.getDimensions();
-        variableLists[1] = inputnc2.getVariables();
+        dimensionLists[1] = new ArrayList<>(inputnc2.getDimensions());
+        variableLists[1] = new ArrayList<>(inputnc2.getVariables());
 
         final File file = new File(targetDirectory, "something.nc");
         SlstrNFileWritable netcdfWriteable = new SlstrNFileWritable(file.getAbsolutePath());
