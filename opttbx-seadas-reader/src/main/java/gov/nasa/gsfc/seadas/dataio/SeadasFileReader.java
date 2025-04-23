@@ -1916,9 +1916,46 @@ public abstract class SeadasFileReader {
         }
     }
 
+
+
+//    public boolean getDefaultFlip() throws ProductIOException {
+//        boolean startNodeAscending = false;
+//        boolean endNodeAscending = false;
+//        try {
+//            Attribute start_node = findAttribute("Start_Node");
+//            if (start_node == null) {
+//                start_node = findAttribute("startDirection");
+//            }
+//            String startAttr = start_node.getStringValue();
+//
+//            if (startAttr != null) {
+//                startNodeAscending = startAttr.equalsIgnoreCase("Ascending");
+//            }
+//            Attribute end_node = findAttribute("End_Node");
+//            if (end_node == null) {
+//                end_node = findAttribute("startDirection");
+//            }
+//            String endAttr = end_node.getStringValue();
+//
+//            if (endAttr != null) {
+//                endNodeAscending = endAttr.equalsIgnoreCase("Ascending");
+//            }
+//
+//        } catch (Exception ignored) {
+//        }
+//
+//        return (startNodeAscending && endNodeAscending);
+//    }
+
+
     public boolean getDefaultFlip() throws ProductIOException {
-        boolean startNodeAscending = false;
-        boolean endNodeAscending = false;
+        return getDefaultFlip(false);
+    }
+
+
+    public boolean getDefaultFlip(boolean defaultFlip) throws ProductIOException {
+        boolean startNodeAscending = defaultFlip;
+        boolean endNodeAscending = defaultFlip;
         try {
             Attribute start_node = findAttribute("Start_Node");
             if (start_node == null) {
@@ -1944,6 +1981,11 @@ public abstract class SeadasFileReader {
 
         return (startNodeAscending && endNodeAscending);
     }
+
+
+
+
+
 
     protected static HashMap<String, String> readTwoColumnTable(String resourceName) {
         final InputStream stream = SeadasProductReader.class.getResourceAsStream(resourceName);
