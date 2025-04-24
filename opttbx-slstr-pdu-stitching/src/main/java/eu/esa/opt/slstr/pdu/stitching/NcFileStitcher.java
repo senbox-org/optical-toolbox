@@ -36,9 +36,9 @@ class NcFileStitcher {
         List<Variable>[] variables = new List[ncFiles.length];
         for (int i = 0; i < ncFiles.length; i++) {
             inputFiles[i] = NetcdfFileOpener.open(ncFiles[i]);
-            globalAttributes[i] = inputFiles[i].getGlobalAttributes();
-            dimensions[i] = inputFiles[i].getDimensions();
-            variables[i] = inputFiles[i].getVariables();
+            globalAttributes[i] = new ArrayList<>(inputFiles[i].getGlobalAttributes());
+            dimensions[i] = new ArrayList<>(inputFiles[i].getDimensions());
+            variables[i] = new ArrayList<>(inputFiles[i].getVariables());
         }
         final File file = new File(targetDirectory, fileName);
         final SlstrNFileWritable netcdfWriteable = new SlstrNFileWritable(file.getAbsolutePath());
