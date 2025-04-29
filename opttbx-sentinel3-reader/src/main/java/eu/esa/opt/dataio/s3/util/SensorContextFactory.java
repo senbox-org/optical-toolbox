@@ -10,10 +10,10 @@ public class SensorContextFactory {
 
     private static final Map<String, SensorContext> contextMap = new HashMap<>();
 
-    public static SensorContext get(String sensorKey, ReaderContext readerContext) {
+    public static SensorContext get(String sensorKey) {
         SensorContext sensorContext = contextMap.get(sensorKey);
         if (sensorContext == null) {
-            sensorContext = new OlciContext(readerContext);
+            sensorContext = new OlciContext();
             contextMap.put(sensorKey, sensorContext);
         }
 

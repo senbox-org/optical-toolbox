@@ -2,9 +2,11 @@ package eu.esa.opt.dataio.s3.util;
 
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.olci.ReaderContext;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.ProductData;
 import ucar.nc2.Variable;
 
 public interface SensorContext {
@@ -22,7 +24,8 @@ public interface SensorContext {
     void addDescriptionAndUnit(Band band, VariableDescriptor descriptor);
     void applyCalibration(Band band);
 
-    void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable);
+    void setReaderContext(ReaderContext context);
+    void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable, ProductData destBuffer);
 
     MetadataElement getBandDescriptionsElement(Manifest manifest);
 }

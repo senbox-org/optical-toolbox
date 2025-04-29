@@ -5,6 +5,7 @@ import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.ProductData;
 import ucar.nc2.Variable;
 
 public abstract class AbstractSensorContext implements SensorContext {
@@ -31,7 +32,7 @@ public abstract class AbstractSensorContext implements SensorContext {
     public abstract String bandNameToKey(String bandName);
 
     @Override
-    public abstract void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable);
+    public abstract void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable, ProductData destBuffer);
 
     @Override
     public void addDescriptionAndUnit(Band band, VariableDescriptor descriptor) {

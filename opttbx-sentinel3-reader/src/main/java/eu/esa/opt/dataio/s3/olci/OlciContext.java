@@ -1,16 +1,20 @@
 package eu.esa.opt.dataio.s3.olci;
 
-import eu.esa.opt.dataio.s3.Sentinel3Level1Reader;
-import eu.esa.opt.dataio.s3.util.AbstractSensorContext;
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.util.AbstractSensorContext;
 import eu.esa.opt.dataio.s3.util.GeoLocationNames;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.runtime.Config;
+import ucar.ma2.Array;
+import ucar.ma2.DataType;
+import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Variable;
 
+import java.io.IOException;
 import java.util.prefs.Preferences;
 
 import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.isLogScaledUnit;
@@ -32,10 +36,10 @@ public class OlciContext extends AbstractSensorContext {
     private static final String TP_LON_VAR_NAME = "TP_longitude";
     private static final String TP_LAT_VAR_NAME = "TP_latitude";
 
-    private final ReaderContext readerContext;
+    private ReaderContext readerContext;
 
-    public OlciContext(ReaderContext readerContext) {
-        this.readerContext = readerContext;
+    public OlciContext() {
+        this.readerContext = null;
     }
 
     @Override
@@ -61,6 +65,11 @@ public class OlciContext extends AbstractSensorContext {
     @Override
     public GeoLocationNames getGeoLocationNames() {
         return new GeoLocationNames(LON_VAR_NAME, LAT_VAR_NAME, TP_LON_VAR_NAME, TP_LAT_VAR_NAME);
+    }
+
+    @Override
+    public void setReaderContext(ReaderContext readerContext) {
+        this.readerContext = readerContext;
     }
 
     @Override
@@ -91,20 +100,29 @@ public class OlciContext extends AbstractSensorContext {
     }
 
     @Override
-    public void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable) {
-        // get layer index
-        final int layerIdx = rasterExtract.getLayerIdx();
-
+    public void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable, ProductData destBuffer) {
         // check if data is already in cache
-        final String layerName = Sentinel3Level1Reader.getLayerName(name, layerIdx + 1);
+        if (readerContext.hasData(name)) {
+            return;
+        }
 
-        // get instrumentData requested (via cache - need DataProvider linking back to reader)
-        // @todo readerContext.readData(name, )
-        // select vector of instrumentData for spectral band
-        // get detector_index data
-        // ensure target buffer has same dimension
-        // apply mapping via DataMapper class
-        throw new RuntimeException("not implemented");
+        final int layerIdx = rasterExtract.getLayerIdx();
+        try {
+            final Array instrumentData = readerContext.readData(netCDFVariable.getShortName(), netCDFVariable);
+            int[] origin = {layerIdx, 0};
+            int[] shape = {1, 3700};
+
+            // select vector of instrumentData for spectral band
+            final Array instrumentDataVector = instrumentData.section(origin, shape).reduce();
+            final Array detectorIndex = readerContext.readData("detector_index");
+            DataMapper dataMapper = new DataMapper();
+            dataMapper.mapData((float[]) instrumentDataVector.get1DJavaArray(DataType.FLOAT),
+                    (float[]) destBuffer.getElems(),
+                    (short[]) detectorIndex.get1DJavaArray(DataType.SHORT));
+            readerContext.ingestToCache(name, Array.factory(DataType.FLOAT, detectorIndex.getShape(), destBuffer.getElems()));
+        } catch (InvalidRangeException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
