@@ -10,8 +10,12 @@ The release notes are provided on the STEP website at https://step.esa.int/main/
     [SNAP-3804] PRISMA RGB & HSV tools not working well (3)
     [SNAP-3767] CZCS reading crashes
     [SNAP-3764] Integrate BandGroups in PinManager
-    [SNAP-1699] C2RCC should make use of Copernicus DEM
+    [SNAP-3728] OLCI L2W update reader
     [SNAP-3701] OLCI/SLSTR calibration coefficients support
+    [SNAP-3700] Update OLCI O2a Harmonisation
+    [SNAP-3699] Update OLCI reader uncertainty handling
+    [SNAP-3674] Handle tie-points girds smaller 2x2
+    [SNAP-1699] C2RCC should make use of Copernicus DEM
 
 # New in SNAP 11.0.1
     [SNAP-3880] Add support for Sentinel-2C products
