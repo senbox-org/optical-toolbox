@@ -494,6 +494,9 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         S3Util.addSampleCodings(product, band, variable, false);
         S3Util.addFillValue(band, variable);
 
+        band.setSensorContext(this.sensorContext);
+        band.setReaderContext(this);
+
         product.addBand(band);
     }
 
