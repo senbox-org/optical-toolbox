@@ -47,8 +47,7 @@ import java.util.TreeMap;
 
 import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
-import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_pixelCoding;
-import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePointCoding;
+import static eu.esa.opt.dataio.s3.util.S3Util.*;
 
 public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider, ReaderContext {
 
@@ -149,26 +148,21 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     // @todo 2 tb/tb add tests for this 2025-02-04
-    private static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, Variable netCDFVariable, boolean rawData) throws IOException {
-        final int[] sliceOffset;
-        final int[] sliceDimensions;
-        final int[] stride;
-
-        final int layerIdx = rasterExtract.getLayerIdx();
-        if (layerIdx >= 0) {
-            sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset(), layerIdx};
-            sliceDimensions = new int[]{rasterExtract.getHeight(), rasterExtract.getWidth(), 1};
-            stride = new int[]{rasterExtract.getStepY(), rasterExtract.getStepX(), 1};
-        } else {
-            sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset()};
-            sliceDimensions = new int[]{rasterExtract.getHeight(), rasterExtract.getWidth()};
-            stride = new int[]{rasterExtract.getStepY(), rasterExtract.getStepX()};
-        }
+    public static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, double scaleFactor, double offset, boolean rawData) throws IOException {
+        final int[] sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset()};
+        //final int stepY = Math.max(rasterExtract.getStepY() - 1, 1);
+        //final int stepX = Math.max(rasterExtract.getStepX()-1 , 1);
+        final int stepY = Math.max(rasterExtract.getStepY(), 1);
+        final int stepX = Math.max(rasterExtract.getStepX(), 1);
+        final int dimY = (int) Math.ceil(rasterExtract.getHeight() / (float) stepY);
+        final int dimX = (int) Math.ceil(rasterExtract.getWidth() / (float) stepX);
+        final int[] sliceDimensions = new int[]{dimY, dimX};
+        final int[] stride = new int[]{stepY, stepX};
 
         try {
-            Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride);
+            Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride).copy().reduce();
             if (!rawData) {
-                sliceData = ReaderUtils.scaleArray(sliceData, netCDFVariable);
+                sliceData = ReaderUtils.scaleArray(sliceData, scaleFactor, offset);
             }
             assignResultData(destBuffer, sliceData);
         } catch (InvalidRangeException e) {
@@ -193,7 +187,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         return layerName.contains("_band_");
     }
 
-    // package access for testing only tb 2025-02-12
     public static int getLayerIndexFromLayerName(String layerName) {
         String band = "_band_";
         final int index = layerName.indexOf(band);
@@ -205,8 +198,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         return Integer.parseInt(numberString);
     }
 
-    // package access for testing only tb 2025-02-12
-    static String getVariableNameFromLayerName(String layerName) {
+    public static String getVariableNameFromLayerName(String layerName) {
         int index = layerName.indexOf("_band_");
         if (index >= 0) {
             return layerName.substring(0, index);
@@ -311,6 +303,11 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
 
         return product;
+    }
+
+    @Override
+    public boolean isSubsetReadingFullySupported() {
+        return true;
     }
 
     @Override
@@ -420,7 +417,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
             final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
             S3Util.addSampleCodings(product, band, netCDFVariable, false);
-            band.setScalingFactor(S3Util.getScalingFactor(netCDFVariable));
+            band.setScalingFactor(getScalingFactor(netCDFVariable));
             band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
             band.setValidPixelExpression(descriptor.getValidExpression());
             S3Util.addFillValue(band, netCDFVariable);
@@ -483,10 +480,11 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
     protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
         final int type = S3Util.getRasterDataType(variable);
+
         final InstrumentBand band = new InstrumentBand(variableName, type, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(variable.getDescription());
         band.setUnit(variable.getUnitsString());
-        band.setScalingFactor(S3Util.getScalingFactor(variable));
+        band.setScalingFactor(getScalingFactor(variable));
         band.setScalingOffset(S3Util.getAddOffset(variable));
         band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
         band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
@@ -494,7 +492,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         S3Util.addSampleCodings(product, band, variable, false);
         S3Util.addFillValue(band, variable);
 
-        band.setSensorContext(this.sensorContext);
         band.setReaderContext(this);
 
         product.addBand(band);
@@ -554,14 +551,13 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         if (isLayerName(destBandName)) {
             variableName = getVariableNameFromLayerName(destBandName);
             descriptor = specialsMap.get(variableName);
-            int layerIndex = getLayerIndexFromLayerName(destBandName);
-            // get layer from layername
-            rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, 1, 1, 1, layerIndex - 1);
+            final InstrumentBand instrumentBand = (InstrumentBand) destBand;
+            instrumentBand.readRasterDataFully();
         } else {
             descriptor = variablesMap.get(destBandName);
-            rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
         }
 
+        rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
         readData(rasterExtract, destBuffer, descriptor, destBandName, true);
     }
 
@@ -607,12 +603,9 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
         final Array rawDataArray = getRawData(name, netCDFVariable);
 
-        if (descriptor.getVariableType() == SPECIAL) {
-            sensorContext.handleSpecialDataRequest(rasterExtract, name, netCDFVariable, destBuffer);
-            // we have already extracted that layer - so set this to a 2D dataset
-            rasterExtract.setLayerIdx(-1);
-        }
-        extractSubset(rasterExtract, destBuffer, rawDataArray, netCDFVariable, rawData);
+        final double scalingFactor = getScalingFactor(netCDFVariable);
+        double offset = getAddOffset(netCDFVariable);
+        extractSubset(rasterExtract, destBuffer, rawDataArray, scalingFactor, offset, rawData);
     }
 
     private Variable getNetCDFVariable(VariableDescriptor descriptor, String name) throws IOException {
@@ -760,16 +753,19 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     @Override
-    public Array readData(String name, Variable variable) throws IOException {
-        return getRawData(name, variable);
+    public Array readData(String name, Variable netCDFVariable) throws IOException {
+        return getRawData(name, netCDFVariable);
     }
 
     @Override
     public Array readData(String name) throws IOException {
-        final VariableDescriptor variableDescriptor = variablesMap.get(name);
+        VariableDescriptor variableDescriptor = variablesMap.get(name);
+        if (variableDescriptor == null) {
+            variableDescriptor = specialsMap.get(name);
+        }
         final Variable netCDFVariable = getNetCDFVariable(variableDescriptor, name);
 
-       return getRawData(name, netCDFVariable);
+        return getRawData(name, netCDFVariable);
     }
 
     @Override

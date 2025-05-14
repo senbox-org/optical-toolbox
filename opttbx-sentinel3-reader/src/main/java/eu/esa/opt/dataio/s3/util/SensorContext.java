@@ -25,7 +25,6 @@ public interface SensorContext {
     void applyCalibration(Band band);
 
     void setReaderContext(ReaderContext context);
-    void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable, ProductData destBuffer);
 
     MetadataElement getBandDescriptionsElement(Manifest manifest);
 }

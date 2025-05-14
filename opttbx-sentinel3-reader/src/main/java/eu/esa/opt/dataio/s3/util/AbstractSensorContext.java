@@ -32,9 +32,6 @@ public abstract class AbstractSensorContext implements SensorContext {
     public abstract String bandNameToKey(String bandName);
 
     @Override
-    public abstract void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable, ProductData destBuffer);
-
-    @Override
     public void addDescriptionAndUnit(Band band, VariableDescriptor descriptor) {
         band.setDescription(descriptor.getDescription());
         band.setUnit(descriptor.getUnits());

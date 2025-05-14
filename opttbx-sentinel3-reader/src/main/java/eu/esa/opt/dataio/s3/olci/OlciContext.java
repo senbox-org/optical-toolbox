@@ -100,32 +100,6 @@ public class OlciContext extends AbstractSensorContext {
     }
 
     @Override
-    public void handleSpecialDataRequest(RasterExtract rasterExtract, String name, Variable netCDFVariable, ProductData destBuffer) {
-        // check if data is already in cache
-        if (readerContext.hasData(name)) {
-            return;
-        }
-
-        final int layerIdx = rasterExtract.getLayerIdx();
-        try {
-            final Array instrumentData = readerContext.readData(netCDFVariable.getShortName(), netCDFVariable);
-            int[] origin = {layerIdx, 0};
-            int[] shape = {1, 3700};
-
-            // select vector of instrumentData for spectral band
-            final Array instrumentDataVector = instrumentData.section(origin, shape).reduce();
-            final Array detectorIndex = readerContext.readData("detector_index");
-            DataMapper dataMapper = new DataMapper();
-            dataMapper.mapData((float[]) instrumentDataVector.get1DJavaArray(DataType.FLOAT),
-                    (float[]) destBuffer.getElems(),
-                    (short[]) detectorIndex.get1DJavaArray(DataType.SHORT));
-            readerContext.ingestToCache(name, Array.factory(DataType.FLOAT, detectorIndex.getShape(), destBuffer.getElems()));
-        } catch (InvalidRangeException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public void addDescriptionAndUnit(Band band, VariableDescriptor descriptor) {
         final String bandName = band.getName();
         if (OlciProductFactory.isUncertaintyBand(bandName) || isLogScaledGeophysicalData(bandName)) {

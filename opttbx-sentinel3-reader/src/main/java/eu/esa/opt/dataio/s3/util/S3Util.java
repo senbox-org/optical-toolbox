@@ -351,7 +351,6 @@ public class S3Util {
         return flagCoding;
     }
 
-    // @todo 3 tb/tb add tests 2025-04-08
     public static void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
         final Attribute flagValuesAttribute = variable.findAttribute(CFConstants.FLAG_VALUES);
         final Attribute flagMasksAttribute = variable.findAttribute(CFConstants.FLAG_MASKS);
