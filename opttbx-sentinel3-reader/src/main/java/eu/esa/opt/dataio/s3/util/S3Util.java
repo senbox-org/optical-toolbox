@@ -52,8 +52,10 @@ public class S3Util {
         final String[] codingNames = new String[2];
 
         final Preferences preferences = Config.instance("opttbx").preferences();
-        // @todo 1 tb/tb move to factory for type ... 2025-04-03
-        codingNames[0] = preferences.get(new OlciContext().getTiePointForwardGeoCodingKey(), TiePointBilinearForward.KEY);
+
+        // @todo 2 tb/tb refactor, get type from outside ... 2025-04-24
+        final SensorContext olciContext = SensorContextFactory.get("OL_1_EFR");
+        codingNames[0] = preferences.get(olciContext.getTiePointForwardGeoCodingKey(), TiePointBilinearForward.KEY);
         codingNames[1] = TiePointInverse.KEY;
 
         return codingNames;
@@ -349,7 +351,6 @@ public class S3Util {
         return flagCoding;
     }
 
-    // @todo 3 tb/tb add tests 2025-04-08
     public static void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
         final Attribute flagValuesAttribute = variable.findAttribute(CFConstants.FLAG_VALUES);
         final Attribute flagMasksAttribute = variable.findAttribute(CFConstants.FLAG_MASKS);

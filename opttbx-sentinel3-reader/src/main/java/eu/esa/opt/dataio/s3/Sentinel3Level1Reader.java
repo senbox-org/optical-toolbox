@@ -9,6 +9,8 @@ import eu.esa.opt.dataio.s3.dddb.VariableType;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
+import eu.esa.opt.dataio.s3.olci.InstrumentBand;
+import eu.esa.opt.dataio.s3.olci.ReaderContext;
 import eu.esa.opt.dataio.s3.util.*;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.dataio.AbstractProductReader;
@@ -45,10 +47,9 @@ import java.util.TreeMap;
 
 import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
-import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_pixelCoding;
-import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePointCoding;
+import static eu.esa.opt.dataio.s3.util.S3Util.*;
 
-public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider {
+public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider, ReaderContext {
 
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
@@ -147,26 +148,21 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     // @todo 2 tb/tb add tests for this 2025-02-04
-    private static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, Variable netCDFVariable, boolean rawData) throws IOException {
-        final int[] sliceOffset;
-        final int[] sliceDimensions;
-        final int[] stride;
-
-        final int layerIdx = rasterExtract.getLayerIdx();
-        if (layerIdx >= 0) {
-            sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset(), layerIdx};
-            sliceDimensions = new int[]{rasterExtract.getHeight(), rasterExtract.getWidth(), 1};
-            stride = new int[]{rasterExtract.getStepY(), rasterExtract.getStepX(), 1};
-        } else {
-            sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset()};
-            sliceDimensions = new int[]{rasterExtract.getHeight(), rasterExtract.getWidth()};
-            stride = new int[]{rasterExtract.getStepY(), rasterExtract.getStepX()};
-        }
+    public static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, double scaleFactor, double offset, boolean rawData) throws IOException {
+        final int[] sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset()};
+        //final int stepY = Math.max(rasterExtract.getStepY() - 1, 1);
+        //final int stepX = Math.max(rasterExtract.getStepX()-1 , 1);
+        final int stepY = Math.max(rasterExtract.getStepY(), 1);
+        final int stepX = Math.max(rasterExtract.getStepX(), 1);
+        final int dimY = (int) Math.ceil(rasterExtract.getHeight() / (float) stepY);
+        final int dimX = (int) Math.ceil(rasterExtract.getWidth() / (float) stepX);
+        final int[] sliceDimensions = new int[]{dimY, dimX};
+        final int[] stride = new int[]{stepY, stepX};
 
         try {
-            Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride);
+            Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride).copy().reduce();
             if (!rawData) {
-                sliceData = ReaderUtils.scaleArray(sliceData, netCDFVariable);
+                sliceData = ReaderUtils.scaleArray(sliceData, scaleFactor, offset);
             }
             assignResultData(destBuffer, sliceData);
         } catch (InvalidRangeException e) {
@@ -182,7 +178,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     // package access for testing only tb 2025-02-12
-    static String getLayerName(String variableFullName, int i) {
+    public static String getLayerName(String variableFullName, int i) {
         return variableFullName + "_band_" + i;
     }
 
@@ -191,8 +187,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         return layerName.contains("_band_");
     }
 
-    // package access for testing only tb 2025-02-12
-    static int getLayerIndexFromLayerName(String layerName) {
+    public static int getLayerIndexFromLayerName(String layerName) {
         String band = "_band_";
         final int index = layerName.indexOf(band);
         if (index < 0) {
@@ -203,8 +198,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         return Integer.parseInt(numberString);
     }
 
-    // package access for testing only tb 2025-02-12
-    static String getVariableNameFromLayerName(String layerName) {
+    public static String getVariableNameFromLayerName(String layerName) {
         int index = layerName.indexOf("_band_");
         if (index >= 0) {
             return layerName.substring(0, index);
@@ -263,6 +257,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
         final String productType = manifest.getProductType();
         sensorContext = SensorContextFactory.get(productType);
+        sensorContext.setReaderContext(this);
+
         final MetadataElement bandDescriptionsElement = sensorContext.getBandDescriptionsElement(manifest);
         // @todo 1 tb/tb duplicated, other segment is in OlciProductFactory 2024-12-20
         if (bandDescriptionsElement != null) {
@@ -307,6 +303,11 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
 
         return product;
+    }
+
+    @Override
+    public boolean isSubsetReadingFullySupported() {
+        return true;
     }
 
     @Override
@@ -416,7 +417,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
             final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
             S3Util.addSampleCodings(product, band, netCDFVariable, false);
-            band.setScalingFactor(S3Util.getScalingFactor(netCDFVariable));
+            band.setScalingFactor(getScalingFactor(netCDFVariable));
             band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
             band.setValidPixelExpression(descriptor.getValidExpression());
             S3Util.addFillValue(band, netCDFVariable);
@@ -470,8 +471,11 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
             if (dimensionIndex != -1) {
                 final int numBands = specialVariable.getDimension(dimensionIndex).getLength();
                 for (int i = 1; i <= numBands; i++) {
-                    addVariableAsBand(product, specialVariable, getLayerName(variableFullName, i), true);
+                    final String layerName = getLayerName(variableFullName, i);
+                    addVariableAsBand(product, specialVariable, layerName, true);
                 }
+            } else {
+                addVariableAsBand(product, specialVariable, variableFullName, false);
             }
         }
     }
@@ -479,16 +483,20 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
         final int type = S3Util.getRasterDataType(variable);
 
-        final Band band = product.addBand(variableName, type);
+        final InstrumentBand band = new InstrumentBand(variableName, type, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(variable.getDescription());
         band.setUnit(variable.getUnitsString());
-        band.setScalingFactor(S3Util.getScalingFactor(variable));
+        band.setScalingFactor(getScalingFactor(variable));
         band.setScalingOffset(S3Util.getAddOffset(variable));
         band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
         band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
         band.setSynthetic(synthetic);
         S3Util.addSampleCodings(product, band, variable, false);
         S3Util.addFillValue(band, variable);
+
+        band.setReaderContext(this);
+
+        product.addBand(band);
     }
 
     private void initializeDDDBDescriptors(Manifest manifest, ProductDescriptor productDescriptor) throws IOException {
@@ -509,8 +517,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                     tiepointMap.put(descriptorKey, descriptor);
                 } else if (variableType == METADATA) {
                     metadataMap.put(descriptorKey, descriptor);
-                }
-                if (variableType == SPECIAL) {
+                } else if (variableType == SPECIAL) {
                     specialsMap.put(descriptorKey, descriptor);
                 }
             }
@@ -539,19 +546,19 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final VariableDescriptor descriptor;
         final RasterExtract rasterExtract;
 
-        String name = destBand.getName();
-        if (isLayerName(name)) {
-            name = getVariableNameFromLayerName(destBand.getName());
-            descriptor = specialsMap.get(name);
-            int layerIndex = getLayerIndexFromLayerName(destBand.getName());
-            // get layer from layername
-            rasterExtract = new RasterExtract(sourceOffsetX, layerIndex - 1, sourceWidth, 1, 1, 1);
+        String destBandName = destBand.getName();
+        String variableName = destBandName;
+
+        if (destBand instanceof InstrumentBand instrumentBand) {
+            variableName = getVariableNameFromLayerName(destBandName);
+            descriptor = specialsMap.get(variableName);
+            instrumentBand.readRasterDataFully();
         } else {
-            descriptor = variablesMap.get(name);
-            rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
+            descriptor = variablesMap.get(destBandName);
         }
 
-        readData(rasterExtract, destBuffer, descriptor, name, true);
+        rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
+        readData(rasterExtract, destBuffer, descriptor, destBandName, true);
     }
 
     @Override
@@ -596,34 +603,15 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
         final Array rawDataArray = getRawData(name, netCDFVariable);
 
-        if (descriptor.getVariableType() == SPECIAL) {
-            // create line buffer
-            final ProductData lineBuffer = ProductData.createInstance(new float[rasterExtract.getWidth()]);
-            // read line
-            extractSubset(rasterExtract, lineBuffer, rawDataArray, netCDFVariable, rawData);
-            // duplicate data over Y dimension to destination buffer
-            final float[] targetBuffer = (float[]) destBuffer.getElems();
-            final float[] lineBufferElems = (float[]) lineBuffer.getElems();
-            final int lineLenght = lineBufferElems.length;
-            int offset = 0;
-            while ((offset + lineLenght) < targetBuffer.length) {
-                int remaining = targetBuffer.length - (offset + lineLenght);
-                int toCopy = lineLenght;
-                if (remaining < lineLenght) {
-                    toCopy = remaining;
-                }
-                System.arraycopy(lineBufferElems, 0, targetBuffer, offset, toCopy);
-                offset += lineLenght;
-            }
-        } else {
-            extractSubset(rasterExtract, destBuffer, rawDataArray, netCDFVariable, rawData);
-        }
+        final double scalingFactor = getScalingFactor(netCDFVariable);
+        double offset = getAddOffset(netCDFVariable);
+        extractSubset(rasterExtract, destBuffer, rawDataArray, scalingFactor, offset, rawData);
     }
 
     private Variable getNetCDFVariable(VariableDescriptor descriptor, String name) throws IOException {
         final NetcdfFile netcdfFile = getNetcdfFile(descriptor.getFileName());
 
-        String variableName = name;
+        String variableName = descriptor.getName();
         final String ncVarName = descriptor.getNcVarName();
         if (StringUtils.isNotNullAndNotEmpty(ncVarName)) {
             variableName = ncVarName;
@@ -636,9 +624,12 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
             variable = ncVariablesMap.get(name);
             if (variable == null) {
-                variable = netcdfFile.findVariable(variableName);
+                variable = netcdfFile.findVariable(name);
                 if (variable == null) {
-                    throw new IOException("requested variable not found: " + name + netcdfFile.getLocation());
+                    variable = netcdfFile.findVariable(variableName);
+                    if (variable == null) {
+                        throw new IOException("requested variable not found: " + name + " " + netcdfFile.getLocation());
+                    }
                 }
                 ncVariablesMap.put(name, variable);
             }
@@ -759,5 +750,31 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
 
         return colorProvider;
+    }
+
+    @Override
+    public Array readData(String name, Variable netCDFVariable) throws IOException {
+        return getRawData(name, netCDFVariable);
+    }
+
+    @Override
+    public Array readData(String name) throws IOException {
+        VariableDescriptor variableDescriptor = variablesMap.get(name);
+        if (variableDescriptor == null) {
+            variableDescriptor = specialsMap.get(name);
+        }
+        final Variable netCDFVariable = getNetCDFVariable(variableDescriptor, name);
+
+        return getRawData(name, netCDFVariable);
+    }
+
+    @Override
+    public boolean hasData(String name) {
+        return dataMap.containsKey(name);
+    }
+
+    @Override
+    public void ingestToCache(String name, Array data) {
+        dataMap.put(name, data);
     }
 }
