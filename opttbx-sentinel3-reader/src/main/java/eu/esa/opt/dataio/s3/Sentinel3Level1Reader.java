@@ -474,6 +474,8 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                     final String layerName = getLayerName(variableFullName, i);
                     addVariableAsBand(product, specialVariable, layerName, true);
                 }
+            } else {
+                addVariableAsBand(product, specialVariable, variableFullName, false);
             }
         }
     }
@@ -515,8 +517,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                     tiepointMap.put(descriptorKey, descriptor);
                 } else if (variableType == METADATA) {
                     metadataMap.put(descriptorKey, descriptor);
-                }
-                if (variableType == SPECIAL) {
+                } else if (variableType == SPECIAL) {
                     specialsMap.put(descriptorKey, descriptor);
                 }
             }
@@ -548,10 +549,9 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         String destBandName = destBand.getName();
         String variableName = destBandName;
 
-        if (isLayerName(destBandName)) {
+        if (destBand instanceof InstrumentBand instrumentBand) {
             variableName = getVariableNameFromLayerName(destBandName);
             descriptor = specialsMap.get(variableName);
-            final InstrumentBand instrumentBand = (InstrumentBand) destBand;
             instrumentBand.readRasterDataFully();
         } else {
             descriptor = variablesMap.get(destBandName);
@@ -624,7 +624,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
 
             variable = ncVariablesMap.get(name);
             if (variable == null) {
-                variable = ncVariablesMap.get(variableName);
+                variable = netcdfFile.findVariable(name);
                 if (variable == null) {
                     variable = netcdfFile.findVariable(variableName);
                     if (variable == null) {

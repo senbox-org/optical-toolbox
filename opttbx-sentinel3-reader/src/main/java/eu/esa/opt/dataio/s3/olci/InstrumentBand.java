@@ -55,14 +55,19 @@ public class InstrumentBand extends BandUsingReaderDirectly {
             final int layerIndex = Sentinel3Level1Reader.getLayerIndexFromLayerName(bandName) - 1;
 
             final Array instrumentDataArray = readerContext.readData(instrumentVariableName);
+
             final Array layerVector;
-            try {
-                // subset to layer
-                final int[] origin = {layerIndex, 0};
-                final int[] shape = {1, NUM_DETECTORS};
-                layerVector = instrumentDataArray.section(origin, shape);
-            } catch (InvalidRangeException e) {
-                throw new IOException(e);
+            if (layerIndex >= 0) {
+                try {
+                    // subset to layer
+                    final int[] origin = {layerIndex, 0};
+                    final int[] shape = {1, NUM_DETECTORS};
+                    layerVector = instrumentDataArray.section(origin, shape);
+                } catch (InvalidRangeException e) {
+                    throw new IOException(e);
+                }
+            } else {
+                layerVector = instrumentDataArray;
             }
 
             final Array detectorIndex = readerContext.readData("detector_index");
