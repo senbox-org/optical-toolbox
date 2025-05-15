@@ -1,13 +1,20 @@
 package eu.esa.opt.dataio.s3.olci;
 
-import eu.esa.opt.dataio.s3.util.AbstractSensorContext;
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.util.AbstractSensorContext;
 import eu.esa.opt.dataio.s3.util.GeoLocationNames;
+import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.runtime.Config;
+import ucar.ma2.Array;
+import ucar.ma2.DataType;
+import ucar.ma2.InvalidRangeException;
+import ucar.nc2.Variable;
 
+import java.io.IOException;
 import java.util.prefs.Preferences;
 
 import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.isLogScaledUnit;
@@ -28,6 +35,12 @@ public class OlciContext extends AbstractSensorContext {
     private static final String LAT_VAR_NAME = "latitude";
     private static final String TP_LON_VAR_NAME = "TP_longitude";
     private static final String TP_LAT_VAR_NAME = "TP_latitude";
+
+    private ReaderContext readerContext;
+
+    public OlciContext() {
+        this.readerContext = null;
+    }
 
     @Override
     public String getInversePixelGeoCodingKey() {
@@ -52,6 +65,11 @@ public class OlciContext extends AbstractSensorContext {
     @Override
     public GeoLocationNames getGeoLocationNames() {
         return new GeoLocationNames(LON_VAR_NAME, LAT_VAR_NAME, TP_LON_VAR_NAME, TP_LAT_VAR_NAME);
+    }
+
+    @Override
+    public void setReaderContext(ReaderContext readerContext) {
+        this.readerContext = readerContext;
     }
 
     @Override
