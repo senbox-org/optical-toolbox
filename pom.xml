@@ -409,6 +409,12 @@
                 <version>3.17.0</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>1.27.1</version>
+            </dependency>
+
             <!-- can this be replaced?? -->
             <dependency>
                 <groupId>com.sun.xsom</groupId>
