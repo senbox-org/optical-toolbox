@@ -131,7 +131,7 @@
         <seadas.reader.ui.version>1.10.2</seadas.reader.ui.version>
         <snap-help-system.version>1.0.2</snap-help-system.version>
         <netbeans.version>RELEASE210</netbeans.version>
-        <geotools.version>28.2</geotools.version>
+        <geotools.version>28.6</geotools.version>
         <javahelp.version>2.0.05</javahelp.version>
         <brandingToken>opttbx</brandingToken>
         <user.language>en</user.language>
