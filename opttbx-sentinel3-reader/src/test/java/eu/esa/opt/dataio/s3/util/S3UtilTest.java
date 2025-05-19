@@ -723,4 +723,83 @@ public class S3UtilTest {
         assertEquals("theDescription", flagCoding.getDescription());
         assertEquals(27, flagCoding.getFlagMask("flag"));
     }
+
+    @Test
+    @STTM("SNAP-3978")
+    public void testAddSampleCodings_values_and_masks() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{27, 28}));
+        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{26, 27}));
+
+        final Variable variable = mock(Variable.class);
+        when(variable.findAttribute(CFConstants.FLAG_MEANINGS)).thenReturn(flagMeanings);
+        when(variable.findAttribute(CFConstants.FLAG_MASKS)).thenReturn(flagMasks);
+        when(variable.findAttribute(CFConstants.FLAG_VALUES)).thenReturn(flagValues);
+
+        final Product product = new Product("test", "test_type", 3, 4);
+        final Band testBand = new Band("test_band", ProductData.TYPE_INT16, 3, 4);
+
+        S3Util.addSampleCodings(product, testBand, variable, false);
+
+        final FlagCoding flagCoding = testBand.getFlagCoding();
+        assertNotNull(flagCoding);
+        MetadataAttribute coding = flagCoding.getFlag("coding");
+        assertEquals(28, coding.getData().getElemInt());
+
+        final ProductNodeGroup<FlagCoding> flagCodingGroup = product.getFlagCodingGroup();
+        final FlagCoding codingFromProduct = flagCodingGroup.get("test_band");
+        assertSame(flagCoding, codingFromProduct);
+    }
+
+    @Test
+    @STTM("SNAP-3978")
+    public void testAddSampleCodings_values() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{31, 32}));
+
+        final Variable variable = mock(Variable.class);
+        when(variable.findAttribute(CFConstants.FLAG_MEANINGS)).thenReturn(flagMeanings);
+        when(variable.findAttribute(CFConstants.FLAG_MASKS)).thenReturn(null);
+        when(variable.findAttribute(CFConstants.FLAG_VALUES)).thenReturn(flagValues);
+
+        final Product product = new Product("test", "test_type", 3, 4);
+        final Band testBand = new Band("test_band", ProductData.TYPE_INT16, 3, 4);
+
+        S3Util.addSampleCodings(product, testBand, variable, false);
+
+        final SampleCoding sampleCoding = testBand.getSampleCoding();
+        assertNotNull(sampleCoding);
+        MetadataAttribute coding = sampleCoding.getAttribute("coding");
+        assertEquals(32, coding.getData().getElemInt());
+
+        final ProductNodeGroup<IndexCoding> indexCodingGroup = product.getIndexCodingGroup();
+        final IndexCoding codingFromProduct = indexCodingGroup.get("test_band");
+        assertSame(sampleCoding, codingFromProduct);
+    }
+
+    @Test
+    @STTM("SNAP-3978")
+    public void masks_and_meanings() {
+        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{33, 34}));
+
+        final Variable variable = mock(Variable.class);
+        when(variable.findAttribute(CFConstants.FLAG_MEANINGS)).thenReturn(flagMeanings);
+        when(variable.findAttribute(CFConstants.FLAG_MASKS)).thenReturn(flagMasks);
+        when(variable.findAttribute(CFConstants.FLAG_VALUES)).thenReturn(null);
+
+        final Product product = new Product("test", "test_type", 3, 4);
+        final Band testBand = new Band("test_band", ProductData.TYPE_INT16, 3, 4);
+
+        S3Util.addSampleCodings(product, testBand, variable, false);
+
+        final SampleCoding sampleCoding = testBand.getSampleCoding();
+        assertNotNull(sampleCoding);
+        MetadataAttribute coding = sampleCoding.getAttribute("coding");
+        assertEquals(34, coding.getData().getElemInt());
+
+        final ProductNodeGroup<FlagCoding> flagCodingGroup = product.getFlagCodingGroup();
+        final FlagCoding codingFromProduct = flagCodingGroup.get("test_band");
+        assertSame(sampleCoding, codingFromProduct);
+    }
 }
