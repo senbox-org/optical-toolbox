@@ -12,6 +12,4 @@ public interface ReaderContext {
 
     boolean hasData(String name);
     void ingestToCache(String name, Array data);
-
-    Object getBandLock(String name);
 }
