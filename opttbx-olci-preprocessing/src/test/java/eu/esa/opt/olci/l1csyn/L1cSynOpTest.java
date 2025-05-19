@@ -47,7 +47,6 @@ public class L1cSynOpTest {
         l1cSynOp.setParameterDefaultValues();
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
-        l1cSynOp.setParameter("useMISR","false");
         Product result = l1cSynOp.getTargetProduct();
         int numBands = result.getNumBands();
         String productType = result.getProductType();
@@ -119,7 +118,6 @@ public class L1cSynOpTest {
         String[] bandsSlstr = {".*_an.*", ".*_ao.*"};
         l1cSynOp.setParameter("bandsOlci", bandsOlci);
         l1cSynOp.setParameter("bandsSlstr",bandsSlstr);
-        l1cSynOp.setParameter("useMISR","false");
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
         Product result = l1cSynOp.getTargetProduct();
@@ -136,7 +134,6 @@ public class L1cSynOpTest {
     public void testDefaultNameCreation() {
         Operator l1cSynOp = new L1cSynOp();
         l1cSynOp.setParameterDefaultValues();
-        l1cSynOp.setParameter("useMISR","false");
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
         Product result = l1cSynOp.getTargetProduct();
@@ -152,7 +149,6 @@ public class L1cSynOpTest {
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
         l1cSynOp.setParameter("olciRegexp","Oa.._radiance, lambda0_band_.*");
         l1cSynOp.setParameter("slstrRegexp","S*._radiance_an, .*_an.*");
-        l1cSynOp.setParameter("useMISR","false");
         Product result = l1cSynOp.getTargetProduct();
         assertTrue(result.containsBand("Oa01_radiance"));
         assertTrue(result.containsBand("Oa11_radiance"));
@@ -170,7 +166,6 @@ public class L1cSynOpTest {
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
         l1cSynOp.setParameterDefaultValues();
-        l1cSynOp.setParameter("useMISR","false");
         l1cSynOp.setParameter("geoRegion","POLYGON((-16.936 26.715, -15.507  26.715 , -15.507 21.844 , -16.936     21.844 ,-16.936 26.715))");
         Product result = l1cSynOp.getTargetProduct();
         assertEquals(10,result.getSceneRasterWidth());
@@ -183,7 +178,6 @@ public class L1cSynOpTest {
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
         l1cSynOp.setParameterDefaultValues();
-        l1cSynOp.setParameter("useMISR","false");
         l1cSynOp.setParameter("stayOnOlciGrid",true);
         Product result = l1cSynOp.getTargetProduct();
         assertEquals("WGS84(DD)",result.getSceneGeoCoding().getMapCRS().getName().toString());
@@ -198,7 +192,6 @@ public class L1cSynOpTest {
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
         l1cSynOp.setParameterDefaultValues();
-        l1cSynOp.setParameter("useMISR","false");
         Product result = l1cSynOp.getTargetProduct();
         assertEquals(4,result.getMetadataRoot().getNumElements());
         assertEquals(0,result.getMetadataRoot().getNumAttributes());

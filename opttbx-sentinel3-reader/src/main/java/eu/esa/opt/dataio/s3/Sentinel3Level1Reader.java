@@ -40,10 +40,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
@@ -62,6 +61,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private final Map<String, Float> nameToWavelengthMap;
     private final Map<String, Float> nameToBandwidthMap;
     private final Map<String, Integer> nameToIndexMap;
+    private final Map<String, Object> dataCacheLockMap;
     private VirtualDir virtualDir;
     private Manifest manifest;
     private ColorProvider colorProvider;
@@ -85,6 +85,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         nameToWavelengthMap = new HashMap<>();
         nameToBandwidthMap = new HashMap<>();
         nameToIndexMap = new HashMap<>();
+        dataCacheLockMap = new ConcurrentHashMap<>();
     }
 
     // package access for testing only tb 2024-12-17
@@ -642,7 +643,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private Array getRawData(String name, Variable variable) throws IOException {
         Array fullDataArray;
 
-        synchronized (dataMap) {
+        synchronized (getBandLock(name)) {
             fullDataArray = dataMap.get(name);
             if (fullDataArray == null) {
                 fullDataArray = variable.read();
@@ -685,6 +686,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         }
         filesMap.clear();
         dataMap.clear();
+        dataCacheLockMap.clear();
 
         manifest = null;
         sensorContext = null;
@@ -776,5 +778,10 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     @Override
     public void ingestToCache(String name, Array data) {
         dataMap.put(name, data);
+    }
+
+    @Override
+    public Object getBandLock(String name) {
+        return dataCacheLockMap.computeIfAbsent(name, k -> new Object());
     }
 }
