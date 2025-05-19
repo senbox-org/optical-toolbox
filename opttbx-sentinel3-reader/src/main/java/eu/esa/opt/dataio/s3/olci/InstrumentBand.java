@@ -49,38 +49,40 @@ public class InstrumentBand extends BandUsingReaderDirectly {
     @Override
     public void readRasterDataFully() throws IOException {
         final String bandName = getName();
-        if (!readerContext.hasData(bandName)) {
-            // extract variable name from band name and layer index
-            final String instrumentVariableName = Sentinel3Level1Reader.getVariableNameFromLayerName(bandName);
-            final int layerIndex = Sentinel3Level1Reader.getLayerIndexFromLayerName(bandName) - 1;
+        synchronized (this) {
+            if (!readerContext.hasData(bandName)) {
+                // extract variable name from band name and layer index
+                final String instrumentVariableName = Sentinel3Level1Reader.getVariableNameFromLayerName(bandName);
+                final int layerIndex = Sentinel3Level1Reader.getLayerIndexFromLayerName(bandName) - 1;
 
-            final Array instrumentDataArray = readerContext.readData(instrumentVariableName);
+                final Array instrumentDataArray = readerContext.readData(instrumentVariableName);
 
-            final Array layerVector;
-            if (layerIndex >= 0) {
-                try {
-                    // subset to layer
-                    final int[] origin = {layerIndex, 0};
-                    final int[] shape = {1, NUM_DETECTORS};
-                    layerVector = instrumentDataArray.section(origin, shape);
-                } catch (InvalidRangeException e) {
-                    throw new IOException(e);
+                final Array layerVector;
+                if (layerIndex >= 0) {
+                    try {
+                        // subset to layer
+                        final int[] origin = {layerIndex, 0};
+                        final int[] shape = {1, NUM_DETECTORS};
+                        layerVector = instrumentDataArray.section(origin, shape);
+                    } catch (InvalidRangeException e) {
+                        throw new IOException(e);
+                    }
+                } else {
+                    layerVector = instrumentDataArray;
                 }
-            } else {
-                layerVector = instrumentDataArray;
+
+                final Array detectorIndex = readerContext.readData("detector_index");
+
+                // create productData
+                productData = Array.factory(DataType.FLOAT, new int[]{getRasterHeight(), getRasterWidth()});
+
+                final DataMapper dataMapper = new DataMapper();
+                dataMapper.mapData((float[]) layerVector.get1DJavaArray(DataType.FLOAT),
+                        (float[]) productData.get1DJavaArray(DataType.FLOAT),
+                        (short[]) detectorIndex.get1DJavaArray(DataType.SHORT));
+
+                readerContext.ingestToCache(bandName, productData);
             }
-
-            final Array detectorIndex = readerContext.readData("detector_index");
-
-            // create productData
-            productData = Array.factory(DataType.FLOAT, new int[]{getRasterHeight(), getRasterWidth()});
-
-            final DataMapper dataMapper = new DataMapper();
-            dataMapper.mapData((float[]) layerVector.get1DJavaArray(DataType.FLOAT),
-                    (float[]) productData.get1DJavaArray(DataType.FLOAT),
-                    (short[]) detectorIndex.get1DJavaArray(DataType.SHORT));
-
-            readerContext.ingestToCache(bandName, productData);
         }
     }
 }
