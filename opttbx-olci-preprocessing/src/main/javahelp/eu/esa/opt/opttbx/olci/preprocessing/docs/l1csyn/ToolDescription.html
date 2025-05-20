@@ -52,25 +52,13 @@ target product is not saved, it is opened in the Sentinel Toolbox automatically.
     product will be stored in the same image grid as the OLCI L1B source product.
     In this case value from Reprojection CRS option will not be used. 'True' is default value.</p>
 
-<h4>Use MISR Product</h4>
-<p>Enables or disables the usage of the <a href="MisrFile.html">mis-registration file</a>. If this is disabled, then
-    a collocation using the geo-location information of both products is performed. Therefore the
-    <a href="nbdocs://org.esa.snap.snap.collocation.ui/org/esa/snap/collocation/docs/collocation/CollocationTool.html">Collocation
-        Tool</a>
-    is used internally.</p>
-
-<h4>MISR Product</h4>
-<p>Specifies the path to the MISR product file. The <code>xfdumanifest.xml</code> file within the *.SAFE folder must
-    be selected </p>
-
 <h4>Reprojection CRS</h4>
 <p>Coordinate reference system to which L1C product will be reprojected. If set to "none" or left empty, no reprojection
     will be performed. Default value is EPSG:4326 [<a href="#ref_1">1</a>].
     If user set "Keep final project on OLCI image grid" parameter to true, this option will ignored.</p>
 
 <h4>Resampling upsampling method</h4>
-<p>The method used for upsampling SLSTR bands to a common 500m resolution. This step is only performed if the
-    mis-registration file is not used but the collocation by geo-location.</p>
+<p>The method used for upsampling SLSTR bands to a common 500m resolution.</p>
 
 <h4>OLCI raster data</h4>
 <p>Predefined regular expressions for selection of OLCI bands in L1C product. Multiple values selection is possible.
