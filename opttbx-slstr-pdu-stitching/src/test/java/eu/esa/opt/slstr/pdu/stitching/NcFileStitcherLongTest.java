@@ -171,7 +171,7 @@ public class NcFileStitcherLongTest {
             for (int i = 0; i < inputFileVariables.length; i++) {
                 final NetcdfFile ncFile = NetcdfFileOpener.open(ncFiles[i]);
                 assertNotNull(ncFile);
-                inputFileVariables[i] = new ArrayList<>(ncFile.getVariables());
+                inputFileVariables[i] = ncFile.getVariables();
             }
             for (int i = 0; i < variables.size(); i++) {
                 Variable variable = variables.get(i);
