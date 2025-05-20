@@ -25,11 +25,8 @@ import org.opengis.feature.simple.SimpleFeature;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,7 +68,7 @@ public class L1cSynOp extends Operator {
 
     @Parameter(label = "OLCI raster data",
             description = "Predefined regular expressions for selection of OLCI bands in the output product. Multiple selection is possible.",
-            valueSet = {"All", "Oa.._radiance", "FWHM_band_.*", "lambda0_band_.*", "solar_flux_band_.*", "quality_flags.*",
+            valueSet = {"All", "Oa.._radiance", "FWHM_band_.*", "lambda0_band_.*", "solar_flux_band_.*",
                     "atmospheric_temperature_profile_.*", "TP_.*", "horizontal_wind.*", "total_.*", "humidity", "sea_level_pressure", "O.*A", "S.*A"},
             defaultValue = "All")
     private String[] bandsOlci;
@@ -103,6 +100,8 @@ public class L1cSynOp extends Operator {
                     "If not given, the entire scene is used.")
     private String geoRegion;
 
+    private static final String[] MANDATORY_BANDS = new String[] {"quality_flags.*", "F\\d+_exception_.*"};
+
     @Override
     public void initialize() throws OperatorException {
         if (!isValidOlciProduct(olciProduct)) {
@@ -122,23 +121,30 @@ public class L1cSynOp extends Operator {
             geoRegion = readShapeFile(shapeFile);
         }
 
-        Product slstrInput = GPF.createProduct("Resample", getSlstrResampleParams(slstrProduct, upsampling), slstrProduct);
+        GPF gpf = GPF.getDefaultInstance();
+
+        Operator resOp = gpf.createOperator("Resample", getSlstrResampleParams(slstrProduct, upsampling), Map.of("sourceProduct", slstrProduct), null);
+
         HashMap<String, Product> sourceProductMap = new HashMap<>();
         sourceProductMap.put("masterProduct", olciProduct);
-        sourceProductMap.put("slaveProduct", slstrInput);
-        Product collocatedTarget = GPF.createProduct("Collocate", getCollocateParams(), sourceProductMap);
+        sourceProductMap.put("slaveProduct", resOp.getTargetProduct());
+
+        Operator colOp = gpf.createOperator("Collocate", getCollocateParams(), sourceProductMap, null);
 
         if (reprojectionCRS != null && !reprojectionCRS.equalsIgnoreCase("none") && !reprojectionCRS.equals("") && !stayOnOlciGrid ) {
-            l1cTarget = GPF.createProduct("Reproject", getReprojectParams(), collocatedTarget);
+            Operator repOp = gpf.createOperator("Reproject", getReprojectParams(), Map.of("sourceProduct", colOp.getTargetProduct()), null);
+            l1cTarget = repOp.getTargetProduct();
         } else {
-            l1cTarget = collocatedTarget;
+            l1cTarget = colOp.getTargetProduct();
         }
+
         Map<String, ProductData.UTC> startEndDateMap = L1cSynUtils.getStartEndDate(slstrProduct, olciProduct);
         ProductData.UTC startDate = startEndDateMap.get("startDate");
         ProductData.UTC endDate = startEndDateMap.get("endDate");
 
         if (geoRegion != null) {
-            l1cTarget = GPF.createProduct("Subset", getSubsetParameters(geoRegion), l1cTarget);
+            Operator subOp = gpf.createOperator("Subset", getSubsetParameters(geoRegion), Map.of("sourceProduct", l1cTarget), null);
+            l1cTarget = subOp.getTargetProduct();
         }
 
         MetadataElement slstrMetadata = slstrProduct.getMetadataRoot();
@@ -147,6 +153,7 @@ public class L1cSynOp extends Operator {
         l1cTarget.setStartTime(startDate);
         l1cTarget.setEndTime(endDate);
         l1cTarget.setName(L1cSynUtils.getSynName(slstrProduct, olciProduct));
+
         removeOrphanBands(l1cTarget);
         if (slstrRegexp == null || slstrRegexp.equals("")) {
             updateBands(slstrProduct, l1cTarget, bandsSlstr);
@@ -171,7 +178,9 @@ public class L1cSynOp extends Operator {
 
     private void updateBands(Product inputProduct, Product l1cTarget, String[] bandsList) {
         if (!Arrays.asList(bandsList).contains("All")) {
-            Pattern pattern = Pattern.compile("\\b(" + String.join("|", bandsList) + ")\\b");
+            String[] allBandsList = ArrayUtils.addAll(bandsList, MANDATORY_BANDS);
+
+            Pattern pattern = Pattern.compile("\\b(" + String.join("|", allBandsList) + ")\\b");
             String[] bandNames = inputProduct.getBandNames();
             String[] tiePointGridNames = inputProduct.getTiePointGridNames();
             String[] tiePointBandNames = (String[]) ArrayUtils.addAll(bandNames, tiePointGridNames);
@@ -187,6 +196,7 @@ public class L1cSynOp extends Operator {
                     }
                 }
             }
+
             String[] maskNames = inputProduct.getMaskGroup().getNodeNames();
             for (String maskName : maskNames) {
                 Matcher matcher = pattern.matcher(maskName);

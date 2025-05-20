@@ -113,7 +113,7 @@ public class L1cSynOpTest {
     public  void testBandSelection() {
         Operator l1cSynOp = new L1cSynOp();
         l1cSynOp.setParameterDefaultValues();
-        String[] bandsOlci = {"Oa.._radiance", "FWHM_band_.*", "solar_flux_band_.*", "quality_flags.*",
+        String[] bandsOlci = {"Oa.._radiance", "FWHM_band_.*", "solar_flux_band_.*",
                 "atmospheric_temperature_profile_.*", "TP_.*"};
         String[] bandsSlstr = {".*_an.*", ".*_ao.*"};
         l1cSynOp.setParameter("bandsOlci", bandsOlci);
@@ -125,6 +125,9 @@ public class L1cSynOpTest {
         assertTrue(result.containsBand("S3_radiance_ao"));
         assertTrue(result.containsBand("Oa03_radiance"));
         assertTrue(result.containsBand("FWHM_band_12"));
+        assertTrue(result.containsBand("F1_exception_in"));
+        assertTrue(result.containsBand("F2_exception_io"));
+        assertTrue(result.containsBand("quality_flags"));
         assertFalse(result.containsBand("S4_radiance_bo"));
         assertFalse(result.containsBand("S5_radiance_cn"));
         assertFalse(result.containsBand("lambda0_band_5"));
@@ -155,9 +158,12 @@ public class L1cSynOpTest {
         assertTrue(result.containsBand("lambda0_band_3"));
         assertTrue(result.containsBand("bayes_an"));
         assertTrue(result.containsBand("S3_radiance_an"));
+        assertTrue(result.containsBand("F1_exception_in"));
+        assertTrue(result.containsBand("F2_exception_io"));
+        assertTrue(result.containsBand("quality_flags"));
         assertFalse(result.containsBand("bayes_bn"));
         assertFalse(result.containsBand("solar_flux_band_4"));
-        assertEquals(71,result.getNumBands());
+        assertEquals(76,result.getNumBands());
     }
 
     @Test
