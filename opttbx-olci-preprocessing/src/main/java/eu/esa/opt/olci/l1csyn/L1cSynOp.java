@@ -22,18 +22,11 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
-import ucar.ma2.InvalidRangeException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,9 +40,6 @@ import java.util.regex.Pattern;
 public class L1cSynOp extends Operator {
 
     private static final long ALLOWED_TIME_DIFF = 200L;
-    private static final boolean USE_FULL_MISR = true;
-    private static final boolean USE_ORPHAN = true;
-    private static final boolean FILL_EMPTY_PIXELS = true;
 
     @SourceProduct(label = "OLCI Product", description = "OLCI L1 ERR or EFR source product")
     private Product olciProduct;
@@ -65,15 +55,8 @@ public class L1cSynOp extends Operator {
             defaultValue = "true")
     private boolean stayOnOlciGrid;
 
-    @Parameter(label = "Use MISR Product", description = "If set to false MISR product will not be used, instead products will collocated",
-            defaultValue = "true")
-    private boolean useMISR;
-
-    @Parameter(label = "MISR Product", description = "Optional MISR file which may be used for co-registration of OLCI and SLSTR products")
-    private File misrFile;
-
     @Parameter(label = "Reprojection CRS",
-            description = "The CRS used for the reprojection. If set to None or left empty, no reprojection will be performed. If MISR file is specified this setting will be neglected.",
+            description = "The CRS used for the reprojection. If set to None or left empty, no reprojection will be performed.",
             defaultValue = "EPSG:4326")
     private String reprojectionCRS;
 
@@ -85,7 +68,7 @@ public class L1cSynOp extends Operator {
 
     @Parameter(label = "OLCI raster data",
             description = "Predefined regular expressions for selection of OLCI bands in the output product. Multiple selection is possible.",
-            valueSet = {"All", "Oa.._radiance", "FWHM_band_.*", "lambda0_band_.*", "solar_flux_band_.*", "quality_flags.*",
+            valueSet = {"All", "Oa.._radiance", "FWHM_band_.*", "lambda0_band_.*", "solar_flux_band_.*",
                     "atmospheric_temperature_profile_.*", "TP_.*", "horizontal_wind.*", "total_.*", "humidity", "sea_level_pressure", "O.*A", "S.*A"},
             defaultValue = "All")
     private String[] bandsOlci;
@@ -117,6 +100,8 @@ public class L1cSynOp extends Operator {
                     "If not given, the entire scene is used.")
     private String geoRegion;
 
+    private static final String[] MANDATORY_BANDS = new String[] {"quality_flags.*", "F\\d+_exception_.*"};
+
     @Override
     public void initialize() throws OperatorException {
         if (!isValidOlciProduct(olciProduct)) {
@@ -136,43 +121,30 @@ public class L1cSynOp extends Operator {
             geoRegion = readShapeFile(shapeFile);
         }
 
-        Product collocatedTarget;
+        GPF gpf = GPF.getDefaultInstance();
 
-        if (useMISR) {
-            ensureValidMISRFile(misrFile);
-            try {
-                HashMap<String, Object> misrParams = createMisrParamsMap();
+        Operator resOp = gpf.createOperator("Resample", getSlstrResampleParams(slstrProduct, upsampling), Map.of("sourceProduct", slstrProduct), null);
 
-                HashMap<String, Product> misrSourceProductMap = new HashMap<>();
-                misrSourceProductMap.put("olciSource", olciProduct);
-                misrSourceProductMap.put("slstrSource", slstrProduct);
+        HashMap<String, Product> sourceProductMap = new HashMap<>();
+        sourceProductMap.put("masterProduct", olciProduct);
+        sourceProductMap.put("slaveProduct", resOp.getTargetProduct());
 
-                collocatedTarget = GPF.createProduct("Misregister", misrParams, misrSourceProductMap);
-            } catch (InvalidRangeException e1) {
-                throw new OperatorException("Misregistration failed. InvalidRangeException", e1);
-            } catch (IOException e2) {
-                throw new OperatorException("Misregistration failed. I/O Exception ", e2);
-            }
+        Operator colOp = gpf.createOperator("Collocate", getCollocateParams(), sourceProductMap, null);
 
+        if (reprojectionCRS != null && !reprojectionCRS.equalsIgnoreCase("none") && !reprojectionCRS.equals("") && !stayOnOlciGrid ) {
+            Operator repOp = gpf.createOperator("Reproject", getReprojectParams(), Map.of("sourceProduct", colOp.getTargetProduct()), null);
+            l1cTarget = repOp.getTargetProduct();
         } else {
-            Product slstrInput = GPF.createProduct("Resample", getSlstrResampleParams(slstrProduct, upsampling), slstrProduct);
-            HashMap<String, Product> sourceProductMap = new HashMap<>();
-            sourceProductMap.put("masterProduct", olciProduct);
-            sourceProductMap.put("slaveProduct", slstrInput);
-            collocatedTarget = GPF.createProduct("Collocate", getCollocateParams(), sourceProductMap);
+            l1cTarget = colOp.getTargetProduct();
         }
 
-        if (reprojectionCRS != null && !reprojectionCRS.equalsIgnoreCase("none") && !reprojectionCRS.equals("") && !stayOnOlciGrid && misrFile == null) {
-            l1cTarget = GPF.createProduct("Reproject", getReprojectParams(), collocatedTarget);
-        } else {
-            l1cTarget = collocatedTarget;
-        }
         Map<String, ProductData.UTC> startEndDateMap = L1cSynUtils.getStartEndDate(slstrProduct, olciProduct);
         ProductData.UTC startDate = startEndDateMap.get("startDate");
         ProductData.UTC endDate = startEndDateMap.get("endDate");
 
         if (geoRegion != null) {
-            l1cTarget = GPF.createProduct("Subset", getSubsetParameters(geoRegion), l1cTarget);
+            Operator subOp = gpf.createOperator("Subset", getSubsetParameters(geoRegion), Map.of("sourceProduct", l1cTarget), null);
+            l1cTarget = subOp.getTargetProduct();
         }
 
         MetadataElement slstrMetadata = slstrProduct.getMetadataRoot();
@@ -181,6 +153,7 @@ public class L1cSynOp extends Operator {
         l1cTarget.setStartTime(startDate);
         l1cTarget.setEndTime(endDate);
         l1cTarget.setName(L1cSynUtils.getSynName(slstrProduct, olciProduct));
+
         removeOrphanBands(l1cTarget);
         if (slstrRegexp == null || slstrRegexp.equals("")) {
             updateBands(slstrProduct, l1cTarget, bandsSlstr);
@@ -196,168 +169,18 @@ public class L1cSynOp extends Operator {
         l1cTarget.setDescription("SENTINEL-3 SYN Level 1C Product");
     }
 
-    private HashMap<String, Object> createMisrParamsMap() throws InvalidRangeException, IOException {
-
-        // Better not using more then 2 threads. More caused issues
-        int parallelThreads = 2;
-        final ExecutorService executorService = Executors.newFixedThreadPool(parallelThreads);
-
-        final HashMap<String, Map<int[], int[]>> misrMap = new HashMap<>();
-        if (!USE_FULL_MISR) {
-            executorService.submit(createMapGenerationRunnable(misrMap, "S3"));
-            executorService.submit(createMapGenerationRunnable(misrMap, "ao"));
-        } else {
-
-            String[] slstrTargetBands;
-            if (slstrRegexp == null || slstrRegexp.equals("")) {
-                slstrTargetBands = getSlstrBands(slstrProduct, bandsSlstr);
-            } else {
-                slstrTargetBands = getSlstrBands(slstrProduct, readRegExp(slstrRegexp));
-            }
-
-            if (mapNeeded(slstrTargetBands, "S1")) {
-                executorService.submit(createMapGenerationRunnable(misrMap, "S1"));
-            }
-
-            if (mapNeeded(slstrTargetBands, "S2")) {
-                executorService.submit(createMapGenerationRunnable(misrMap, "S2"));
-            }
-
-            if (mapNeeded(slstrTargetBands, "S3")) {
-                executorService.submit(createMapGenerationRunnable(misrMap, "S3"));
-            }
-
-            if (mapNeeded(slstrTargetBands, "S4")) {
-                executorService.submit(createMapGenerationRunnable(misrMap, "S4"));
-            }
-
-            if (mapNeeded(slstrTargetBands, "S5")) {
-                executorService.submit(createMapGenerationRunnable(misrMap, "S5"));
-            }
-
-            if (mapNeeded(slstrTargetBands, "S6")) {
-                executorService.submit(createMapGenerationRunnable(misrMap, "S6"));
-            }
-
-            if (mapNeeded(slstrTargetBands, "ao")) {
-                executorService.submit(createMapGenerationRunnable(misrMap, "ao"));
-            }
-
-        }
-        executorService.shutdown();
-        while (true) {
-            try {
-                if (executorService.awaitTermination(2, TimeUnit.SECONDS)) {
-                    break;
-                }
-            } catch (InterruptedException e) {
-                throw new OperatorException("Misregistration failed.", e);
-            }
-        }
-
-        // currently we use the 'ao' data also for bo and co
-        // if misr file changes in this respect han we need to adapt this here
-        misrMap.put("boPixelMap", misrMap.get("aoPixelMap"));
-        misrMap.put("coPixelMap", misrMap.get("aoPixelMap"));
-
-        // currently we use the 'ao' data also for bo and co
-        // if misr file changes in this respect han we need to adapt this here
-        misrMap.put("boOrphanMap", misrMap.get("aoOrphanMap"));
-        misrMap.put("coOrphanMap", misrMap.get("aoOrphanMap"));
-
-        if (!USE_FULL_MISR) {
-            misrMap.put("S1PixelMap", misrMap.get("S3PixelMap"));
-            misrMap.put("S2PixelMap", misrMap.get("S3PixelMap"));
-            misrMap.put("S4PixelMap", misrMap.get("S3PixelMap"));
-            misrMap.put("S5PixelMap", misrMap.get("S3PixelMap"));
-            misrMap.put("S6PixelMap", misrMap.get("S3PixelMap"));
-            misrMap.put("aoPixelMap", misrMap.get("aoPixelMap"));
-            misrMap.put("boPixelMap", misrMap.get("aoPixelMap"));
-            misrMap.put("coPixelMap", misrMap.get("aoPixelMap"));
-            misrMap.put("S1OrphanMap", misrMap.get("S3OrphanMap"));
-            misrMap.put("S2OrphanMap", misrMap.get("S3OrphanMap"));
-            misrMap.put("S4OrphanMap", misrMap.get("S3OrphanMap"));
-            misrMap.put("S5OrphanMap", misrMap.get("S3OrphanMap"));
-            misrMap.put("S6OrphanMap", misrMap.get("S3OrphanMap"));
-            misrMap.put("aoOrphanMap", misrMap.get("aoOrphanMap"));
-            misrMap.put("boOrphanMap", misrMap.get("aoOrphanMap"));
-            misrMap.put("coOrphanMap", misrMap.get("aoOrphanMap"));
-        }
-
-        HashMap<String, Object> misrParams = new HashMap<>(misrMap);
-        misrParams.put("fillEmptyPixels", FILL_EMPTY_PIXELS);
-        misrParams.put("orphan", USE_ORPHAN);
-
-        return misrParams;
-    }
-
-
-    private Runnable createMapGenerationRunnable(HashMap<String, Map<int[], int[]>> misrMap, final String bandType) {
-        return () -> {
-            try {
-                setMapsAsParameter(misrMap, bandType);
-            } catch (InvalidRangeException e1) {
-                throw new OperatorException("Misregistration failed. InvalidRangeException", e1);
-            } catch (IOException e2) {
-                throw new OperatorException("Misregistration failed. I/O Exception ", e2);
-            }
-        };
-    }
-
-    private void setMapsAsParameter(HashMap<String, Map<int[], int[]>> misrMap, String bandType) throws InvalidRangeException, IOException {
-        misrMap.put(bandType + "PixelMap", getPixelMap(bandType));
-        misrMap.put(bandType + "OrphanMap", getOrphanMap(bandType));
-    }
-
-    private Map<int[], int[]> getOrphanMap(String bandType) throws InvalidRangeException, IOException {
-        Map<int[], int[]> mapOrphanSlstr = new SlstrMisrTransform(olciProduct, slstrProduct, misrFile, bandType).getOrphanOlciMap();
-        final Map<int[], int[]> s1Orphans = MapToWrapedArrayFactory.createWrappedArray(mapOrphanSlstr);
-        mapOrphanSlstr.clear();
-        return s1Orphans;
-    }
-
-    private Map<int[], int[]> getPixelMap(String bandType) throws InvalidRangeException, IOException {
-        Map<int[], int[]> mapOlciSlstr = new SlstrMisrTransform(olciProduct, slstrProduct, misrFile, bandType).getSlstrOlciMap();
-        final Map<int[], int[]> pixelMap = MapToWrapedArrayFactory.createWrappedArray(mapOlciSlstr);
-        mapOlciSlstr.clear();
-        return pixelMap;
-    }
 
     private String[] readRegExp(String regExp) {
         regExp = regExp.replace(" ", "");
         return regExp.split(",");
     }
 
-    private String[] getSlstrBands(Product inputProduct, String[] bandsList) {
-        String[] bandNames = inputProduct.getBandNames();
-        String[] tiePointGridNames = inputProduct.getTiePointGridNames();
-        Object[] tiePointBandNames = ArrayUtils.addAll(bandNames, tiePointGridNames);
-        if (!Arrays.asList(bandsList).contains("All")) {
-            Pattern pattern = Pattern.compile("\\b(" + String.join("|", bandsList) + ")\\b");
-            for (String bandName : (String[]) tiePointBandNames) {
-                Matcher matcher = pattern.matcher(bandName);
-                if (!matcher.matches()) {
-                    tiePointBandNames = ArrayUtils.removeElement(tiePointBandNames, bandName);
-                }
-            }
-            return (String[]) tiePointBandNames;
-        } else {
-            return (String[]) tiePointBandNames;
-        }
-    }
-
-    private boolean mapNeeded(String[] bandsList, String key) {
-        for (String bandName : bandsList) {
-            if (bandName.contains(key)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private void updateBands(Product inputProduct, Product l1cTarget, String[] bandsList) {
         if (!Arrays.asList(bandsList).contains("All")) {
-            Pattern pattern = Pattern.compile("\\b(" + String.join("|", bandsList) + ")\\b");
+            String[] allBandsList = ArrayUtils.addAll(bandsList, MANDATORY_BANDS);
+
+            Pattern pattern = Pattern.compile("\\b(" + String.join("|", allBandsList) + ")\\b");
             String[] bandNames = inputProduct.getBandNames();
             String[] tiePointGridNames = inputProduct.getTiePointGridNames();
             String[] tiePointBandNames = (String[]) ArrayUtils.addAll(bandNames, tiePointGridNames);
@@ -373,6 +196,7 @@ public class L1cSynOp extends Operator {
                     }
                 }
             }
+
             String[] maskNames = inputProduct.getMaskGroup().getNodeNames();
             for (String maskName : maskNames) {
                 Matcher matcher = pattern.matcher(maskName);
@@ -447,15 +271,6 @@ public class L1cSynOp extends Operator {
         }
         if (!(slstrSource.getBand("S3_radiance_an").getGeoCoding() instanceof ComponentGeoCoding)) {
             throw new OperatorException("SLSTR product geocoding is not set to pixel-based geo-coding. Please check your SNAP configuration");
-        }
-    }
-
-    private void ensureValidMISRFile(File misrFile) {
-        if (misrFile == null) {
-            throw new OperatorException("MISR file was not specified.");
-        }
-        if (!misrFile.getAbsolutePath().endsWith("xfdumanifest.xml")) {
-            throw new OperatorException("Wrong MISR file format. Please specify path to xfdumanifest.xml of MISR product.");
         }
     }
 

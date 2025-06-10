@@ -2,7 +2,6 @@ package eu.esa.opt.dataio.prisma;
 
 import com.bc.ceres.annotation.STTM;
 
-import com.google.common.collect.ImmutableList;
 import org.esa.snap.core.dataio.IllegalFileFormatException;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
@@ -19,6 +18,7 @@ import ucar.nc2.Variable;
 import ucar.nc2.dataset.VariableDS;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -1034,13 +1034,10 @@ public class MetadataReaderTest {
     public void testReadMetadata_withGlobalAttributes() throws IOException {
         final Product testProduct = new Product("Name", "Type");
         final NetcdfFile mockedHdfFile = Mockito.mock(NetcdfFile.class);
+        final Group mockRootGroup = Mockito.mock(Group.class);
 
-        Group.Builder rootGroupBuilder = Group.builder().setName("root");
-        Group rootGroup = rootGroupBuilder.build();
-        mockedHdfFile.setRootGroup(rootGroup);
-
-        Mockito.when(mockedHdfFile.getRootGroup()).thenReturn(rootGroup);
-        Mockito.when(mockedHdfFile.getGlobalAttributes()).thenReturn(ImmutableList.of(
+        Mockito.when(mockedHdfFile.getRootGroup()).thenReturn(mockRootGroup);
+        Mockito.when(mockedHdfFile.getGlobalAttributes()).thenReturn(List.of(
                 new Attribute("Att ints", Array.makeFromJavaArray(new int[]{2, 5})),
                 new Attribute("Att String", "# 5% --==>> Any Characters")
         ));
@@ -1070,21 +1067,23 @@ public class MetadataReaderTest {
     @Test
     public void testReadMetadata_addAttributeTreeTo() throws IOException {
         final MetadataElement metadataRoot = new MetadataElement("metadataRoot");
+        final Group mockRootGroup = Mockito.mock(Group.class);
+        final Group mockNestedGroup1 = Mockito.mock(Group.class);
+        final Group mockNestedGroup2 = Mockito.mock(Group.class);
 
-        Group.Builder rootGroupBuilder = Group.builder().setName("root");
-        Group.Builder nested1GroupBuilder = Group.builder().setName("nested1");
-        Group.Builder nested2GroupBuilder = Group.builder().setName("nested2");
+        Mockito.when(mockRootGroup.getGroups()).thenReturn(List.of(mockNestedGroup1));
+        Mockito.when(mockNestedGroup1.getGroups()).thenReturn(List.of(mockNestedGroup2));
 
-        nested1GroupBuilder.addGroup(nested2GroupBuilder);
-        rootGroupBuilder.addGroup(nested1GroupBuilder);
+        Mockito.when(mockNestedGroup1.getShortName()).thenReturn("nested1");
+        Mockito.when(mockNestedGroup1.getAttributes()).thenReturn(List.of(
+                new Attribute("att1", Array.makeFromJavaArray(new int[]{2, 5}))));
 
-        nested1GroupBuilder.addAttribute(new Attribute("att1", Array.makeFromJavaArray(new int[]{2, 5})));
-        nested2GroupBuilder.addAttribute(new Attribute("att2", Array.makeFromJavaArray(new int[]{4, 8})));
-
-        Group rootGroup = rootGroupBuilder.build();
+        Mockito.when(mockNestedGroup2.getShortName()).thenReturn("nested2");
+        Mockito.when(mockNestedGroup2.getAttributes()).thenReturn(List.of(
+                new Attribute("att2", Array.makeFromJavaArray(new int[]{4, 8}))));
 
         //execution
-        MetadataReader.addAttributeTreeTo(metadataRoot, rootGroup);
+        MetadataReader.addAttributeTreeTo(metadataRoot, mockRootGroup);
 
         //verification
         assertThat(metadataRoot.getNumElements(), is(1));
@@ -1118,33 +1117,38 @@ public class MetadataReaderTest {
     @STTM("SNAP-3445")
     @Test
     public void testReadMetadata_addAuxVariableTreeTo() throws IOException {
-        Group.Builder rootGroupBuilder = Group.builder().setName("root");
-        Group.Builder nested1GroupBuilder = Group.builder().setName("nested1");
-        Group.Builder nested2GroupBuilder = Group.builder().setName("HDFEOS");
+        final Group mockRootGroup = Mockito.mock(Group.class);
+        final Group mockNestedGroup1 = Mockito.mock(Group.class);
+        final Group mockNestedGroup2 = Mockito.mock(Group.class);
 
-        nested1GroupBuilder.addGroup(nested2GroupBuilder);
-        rootGroupBuilder.addGroup(nested1GroupBuilder);
+        Mockito.when(mockNestedGroup1.getShortName()).thenReturn("nested1");
+        Mockito.when(mockNestedGroup2.getShortName()).thenReturn("HDFEOS");
 
-        Variable.Builder<?> var1Builder = Variable.builder()
+        Mockito.when(mockRootGroup.getGroups()).thenReturn(List.of(mockNestedGroup1));
+        Mockito.when(mockNestedGroup1.getGroups()).thenReturn(List.of(mockNestedGroup2));
+
+        final Variable var1 = Variable.builder()
                 .setName("var1")
                 .setDataType(DataType.INT)
                 .setDimensionsAnonymous(new int[]{3, 2})
-                .setCachedData(Array.makeFromJavaArray(new int[][]{{1, 2}, {3, 4}, {5, 6}}), false);
-        nested1GroupBuilder.addVariable(var1Builder);
-
-        Variable.Builder<?> var2Builder = Variable.builder()
+                .setCachedData(Array.makeFromJavaArray(new int[][]{{1, 2}, {3, 4}, {5, 6}}), false)
+                .setGroup(mockNestedGroup1)
+                .build();
+        final Variable var2 = Variable.builder()
                 .setName("var2")
                 .setDataType(DataType.INT)
                 .setDimensionsAnonymous(new int[]{3, 1})
-                .setCachedData(Array.makeFromJavaArray(new int[]{7, 8, 9}), false);
-        nested2GroupBuilder.addVariable(var2Builder);
+                .setCachedData(Array.makeFromJavaArray(new int[]{7, 8, 9}), false)
+                .setGroup(mockNestedGroup2)
+                .build();
 
-        Group rootGroup = rootGroupBuilder.build();
+        Mockito.when(mockNestedGroup1.getVariables()).thenReturn(List.of(var1));
+        Mockito.when(mockNestedGroup2.getVariables()).thenReturn(List.of(var2));
 
         final MetadataElement metadataRoot = new MetadataElement("metadataRoot");
 
         //execution
-        MetadataReader.addAuxVariableTreeTo(metadataRoot, rootGroup, false);
+        MetadataReader.addAuxVariableTreeTo(metadataRoot, mockRootGroup, false);
 
         //verification
         assertThat(metadataRoot.getNumElements(), is(1));

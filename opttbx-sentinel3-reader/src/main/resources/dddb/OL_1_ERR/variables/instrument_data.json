@@ -41,7 +41,7 @@
   },
   {
     "name": "solar_flux",
-    "type": "m",
+    "type": "s",
     "dataType": "float32",
     "width": 3700,
     "height": 21,

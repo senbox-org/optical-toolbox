@@ -2,8 +2,11 @@ package eu.esa.opt.dataio.s3.util;
 
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.ProductData;
+import ucar.nc2.Variable;
 
 public abstract class AbstractSensorContext implements SensorContext {
 
