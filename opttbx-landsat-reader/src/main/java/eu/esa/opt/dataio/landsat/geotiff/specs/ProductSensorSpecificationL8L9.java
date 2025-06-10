@@ -14,6 +14,7 @@ import java.util.Map;
  * Landsat 8 & Landsat 9 product specification
  * @author Lucian Barbulescu 
  */
+@SuppressWarnings("PointlessBitwiseExpression")
 public class ProductSensorSpecificationL8L9 extends ProductSensorSpecification {
 	
     private static final Map<String, String> bandDescriptions = Collections.unmodifiableMap(new HashMap<String, String>() {{

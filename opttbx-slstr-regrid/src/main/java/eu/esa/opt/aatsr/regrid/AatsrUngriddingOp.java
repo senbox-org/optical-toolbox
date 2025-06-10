@@ -30,6 +30,7 @@ import java.util.List;
  * @author Alasdhair Beaton (Telespazio VEGA)
  * @author Philip Beavis (Telespazio VEGA)
  */
+@SuppressWarnings("FieldMayBeFinal")
 @OperatorMetadata(description = "Ungrids (A)ATSR L1B products and extracts geolocation and pixel field of view data.",
         alias = "AATSR.Ungrid", authors = "Alasdhair Beaton, Philip Beavis", version = "1.0",
         category = "Optical/Geometric", label = "AATSR Ungridding", copyright = "(c) 2016 by Telespazio VEGA UK Ltd."

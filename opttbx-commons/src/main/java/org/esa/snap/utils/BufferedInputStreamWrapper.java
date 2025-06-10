@@ -37,6 +37,7 @@ public class BufferedInputStreamWrapper {
         return ((long)(readInt()) << 32) | (readInt() & 0xFFFFFFFFL);
     }
 
+    @SuppressWarnings("PointlessBitwiseExpression")
     public final int readInt() throws IOException {
         int ch1 = this.bufferredInputStream.read();
         int ch2 = this.bufferredInputStream.read();

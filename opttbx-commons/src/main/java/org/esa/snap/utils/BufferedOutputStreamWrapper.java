@@ -5,6 +5,7 @@ import java.io.*;
 /**
  * @author Jean Coravu
  */
+@SuppressWarnings("PointlessBitwiseExpression")
 public class BufferedOutputStreamWrapper {
 
     private final FileOutputStream fileOutputStream;

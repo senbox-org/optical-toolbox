@@ -28,6 +28,7 @@ import java.util.prefs.Preferences;
  *
  * @author Florian Douziech
  */
+@SuppressWarnings("PointlessBitwiseExpression")
 public enum MaskInfo148 {
 
     MSK_DETFOO(

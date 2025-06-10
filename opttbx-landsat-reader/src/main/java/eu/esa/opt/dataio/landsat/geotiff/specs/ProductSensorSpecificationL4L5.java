@@ -15,6 +15,7 @@ import java.util.Map;
  * @author Lucian Barbulescu 
  */
 
+@SuppressWarnings("PointlessBitwiseExpression")
 public class ProductSensorSpecificationL4L5 extends ProductSensorSpecification {
 	
     private static final Map<String, String> bandDescriptions = Collections.unmodifiableMap(new HashMap<String, String>() {{
