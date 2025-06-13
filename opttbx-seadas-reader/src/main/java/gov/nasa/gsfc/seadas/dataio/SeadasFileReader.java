@@ -29,8 +29,9 @@ import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Section;
 import ucar.nc2.*;
+import ucar.nc2.Dimension;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,9 +41,11 @@ import java.io.FileReader;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static gov.nasa.gsfc.seadas.dataio.SeadasReaderDefaults.*;
 import static java.lang.String.format;
 import static java.lang.System.arraycopy;
 
@@ -81,6 +84,8 @@ public abstract class SeadasFileReader {
     private static final String FLAG_MEANINGS = "flag_meanings";
     protected Logger logger = Logger.getLogger(getClass().getSimpleName());
 
+    private boolean isHeadless;
+
     protected static final SkipBadNav LAT_SKIP_BAD_NAV = new SkipBadNav() {
         @Override
         public final boolean isBadNav(double value) {
@@ -92,7 +97,7 @@ public abstract class SeadasFileReader {
         this.productReader = productReader;
         ncFile = productReader.getNcfile();
         globalAttributes = ncFile.getGlobalAttributes();
-
+        this.isHeadless = GraphicsEnvironment.isHeadless();
     }
 
     public abstract Product createProduct() throws IOException;
