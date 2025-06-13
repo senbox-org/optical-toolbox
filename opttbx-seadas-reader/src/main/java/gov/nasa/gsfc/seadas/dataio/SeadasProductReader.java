@@ -152,7 +152,6 @@ public class SeadasProductReader extends AbstractProductReader {
                     break;
                 case Level2:
                 case Level1B:
-                case Level1A_CZCS:
                 case Level2_CZCS:
                 case Level2_Pace:
                 case Level2_PaceOCIS:
