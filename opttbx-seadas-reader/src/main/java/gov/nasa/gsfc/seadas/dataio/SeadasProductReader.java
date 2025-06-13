@@ -461,17 +461,4 @@ public class SeadasProductReader extends AbstractProductReader {
         }
         return null;
     }
-
-    public static File getInputFile(Object input) {
-        File inputFile;
-        if (input instanceof File) {
-            inputFile = (File) input;
-        } else if (input instanceof String) {
-            inputFile = new File((String) input);
-        } else {
-            return null;
-        }
-        return inputFile;
-    }
-
 }
