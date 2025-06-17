@@ -873,11 +873,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COMPOSITE1_NAME_TOOLTIP = "Set name of Composite1 mask";
     public static final String PROPERTY_MASK_COMPOSITE1_NAME_DEFAULT = "Composite1";
 
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".flag.presets";
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_LABEL = "Composite1: Flag Presets";
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_TOOLTIP = "Set flags for Composite1 mask";
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
-
     public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".flags";
     public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_LABEL = "Composite1: Flags";
     public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_TOOLTIP = "Set flags for Composite1 mask";
@@ -921,11 +916,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COMPOSITE2_NAME_TOOLTIP = "Set name of Composite2 mask";
     public static final String PROPERTY_MASK_COMPOSITE2_NAME_DEFAULT = "Composite2";
 
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".flag.presets";
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_LABEL = "Composite2: Flag Presets";
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_TOOLTIP = "Set flags for Composite2 mask";
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
-
     public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".flags";
     public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_LABEL = "Composite2: Flags";
     public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_TOOLTIP = "Set flags for Composite2 mask";
@@ -968,10 +958,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COMPOSITE3_NAME_TOOLTIP = "Set name of Composite3 mask";
     public static final String PROPERTY_MASK_COMPOSITE3_NAME_DEFAULT = "Composite3";
 
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".flag.presets";
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_LABEL = "Composite3: Flag Presets";
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_TOOLTIP = "Set flags for Composite3 mask";
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
 
     public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".flags";
     public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_LABEL = "Composite3: Flags";
@@ -1038,6 +1024,185 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_SPARE_COLOR_LABEL = "SPARE(s): Color";
     public static final String PROPERTY_MASK_SPARE_COLOR_TOOLTIP = "Set default color of the SPARE mask";
     public static final Color PROPERTY_MASK_SPARE_COLOR_DEFAULT = MiscFlags;
+
+
+    public static final String FlIP_MISSION_DEFAULT = "MISSION DEFAULT: (Earth Orientation)";
+    public static final String FlIP_YES = "YES";
+    public static final String FlIP_NO = "NO: (Native Sensor Orientation)";
+    public static final String FlIP_NO_L3 = "NO: (Native Orientation)";
+
+
+    // L3_MAPPED FILES
+
+    public static final String PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.L3_MAPPED";
+
+    public static final String PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_LABEL = "Level L3 Mapped Files";
+    public static final String PROPERTY_FILE_PROPERTIES_L3_MAPPED_SECTION_TOOLTIP = "SeaDAS Level-3 Mapped file reader options";
+
+    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_LABEL = "Band Grouping";
+    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_TOOLTIP = "Expression to create band groupings into folders";
+    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_DEFAULT = "Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:vgain:BT:tg_sol:tg_sen";
+
+    public static final String PROPERTY_FLIPX_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_L3_MAPPED_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L3_MAPPED_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_L3_MAPPED_DEFAULT = FlIP_NO_L3;
+
+    public static final String PROPERTY_FLIPY_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_L3_MAPPED_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L3_MAPPED_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_L3_MAPPED_DEFAULT = FlIP_NO_L3;
+
+
+
+
+    // LEVEL2 FILES
+
+    public static final String PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.level2";
+
+    public static final String PROPERTY_FILE_PROPERTIES_LEVEL2_SECTION_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_LEVEL2_SECTION_LABEL = "Level 2 Files";
+    public static final String PROPERTY_FILE_PROPERTIES_LEVEL2_SECTION_TOOLTIP = "SeaDAS Level-2 file reader options";
+
+    public static final String PROPERTY_BAND_GROUPING_LEVEL2_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_LEVEL2_LABEL = "Band Grouping";
+    public static final String PROPERTY_BAND_GROUPING_LEVEL2_TOOLTIP = "Expression to create band groupings into folders";
+    public static final String PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT = "Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf";
+
+    // disabled but might want to use in future
+    public static final String PROPERTY_BAND_GROUPING_RESET_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".band_grouping.reset";
+    public static final String PROPERTY_BAND_GROUPING_RESET_LABEL = "Band Grouping (reset)";
+    public static final String PROPERTY_BAND_GROUPING_RESET_TOOLTIP = "Reset band grouping to default";
+    public static final boolean PROPERTY_BAND_GROUPING_RESET_DEFAULT = true;
+
+    public static final String PROPERTY_FLIPX_LEVEL2_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_LEVEL2_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_LEVEL2_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_LEVEL2_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_FLIPY_LEVEL2_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_LEVEL2_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_LEVEL2_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_LEVEL2_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+    // L1B_PACE FILES
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_PACE_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.l1b_pace";
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_PACE_SECTION_KEY = PROPERTY_FILE_PROPERTIES_L1B_PACE_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_PACE_SECTION_LABEL = "Level 1B PACE Files";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_PACE_SECTION_TOOLTIP = "SeaDAS Level-1B PACE OCI file reader options";
+
+    public static final String PROPERTY_BAND_GROUPING_L1B_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1B_PACE_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1B_PACE_LABEL = "Band Grouping (OCI)";
+    public static final String PROPERTY_BAND_GROUPING_L1B_PACE_TOOLTIP = "Expression to create band groupings into folders for the OCI instrument";
+    public static final String PROPERTY_BAND_GROUPING_L1B_PACE_DEFAULT = "rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR";
+
+    public static final String PROPERTY_FLIPX_L1B_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1B_PACE_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_L1B_PACE_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1B_PACE_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_L1B_PACE_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_FLIPY_L1B_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1B_PACE_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_L1B_PACE_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1B_PACE_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_L1B_PACE_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+    // L1C_PACE FILES
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.l1c_pace";
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1C_PACE_SECTION_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_L1C_PACE_SECTION_LABEL = "Level 1C PACE Files";
+    public static final String PROPERTY_FILE_PROPERTIES_L1C_PACE_SECTION_TOOLTIP = "SeaDAS Level-1C PACE OCI file reader options";
+
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_LABEL = "Band Grouping (OCI)";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_TOOLTIP = "Expression to create band groupings into folders for the OCI instrument";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_DEFAULT = "I_-20:I_20:i_20:i_-20:obs_per_view:view_time_offsets:sensor_azimuth:sensor_zenith:" +
+            "solar_azimuth:solar_zenith:scattering_angle:rotation_angle:qc_bitwise_-20:qc_bitwise_20:" +
+            "qc_-20:qc_20:I_stdev_-20:I_stdev_20:i_stdev_20:i_stdev_-20";
+
+    public static final String PROPERTY_FLIPX_L1C_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_L1C_PACE_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1C_PACE_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_L1C_PACE_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_FLIPY_L1C_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_L1C_PACE_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1C_PACE_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_L1C_PACE_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".band_grouping.harp2";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_LABEL = "Band Grouping (HARP2)";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_TOOLTIP = "Expression to create band groupings into folders for the HARP2 instrument";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT = "I_*_549:I_*_669:I_*_867:I_*_441:Q_*_549:Q_*_669:Q_*_867:Q_*_441:" +
+            "U_*_549:U_*_669:U_*_867:U_*_441:DOLP_*_549:DOLP_*_669:DOLP_*_867:DOLP_*_441:" +
+            "I_noise_*_549:I_noise_*_669:I_noise_*_867:I_noise_*_441:Q_noise_*_549:Q_noise_*_669:Q_noise_*_867:Q_noise_*_441:" +
+            "U_noise_*_549:U_noise_*_669:U_noise_*_867:U_noise_*_441:DOLP_noise_*_549:DOLP_noise_*_669:DOLP_noise_*_867:DOLP_noise_*_441:" +
+            "Sensor_Zenith:Sensor_Azimuth:Solar_Zenith:Solar_Azimuth:view_time_offsets:obs_per_view:number_of_observations:" +
+            "sensor_zenith_angle:sensor_azimuth_angle:solar_zenith_angle:solar_azimuth_angle:scattering_angle:rotation_angle";
+
+
+
+
+    // L1B_MODIS FILES
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.l1b_modis";
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_LABEL = "Level 1B MODIS Files";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_TOOLTIP = "SeaDAS Level-1B MODIS file reader options";
+
+    public static final String PROPERTY_BAND_GROUPING_L1B_MODIS_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1B_MODIS_LABEL = "Band Grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1B_MODIS_TOOLTIP = "Expression to create band groupings into folders for the MODIS instruments";
+    public static final String PROPERTY_BAND_GROUPING_L1B_MODIS_DEFAULT = "RefSB:Emissive";
+
+    public static final String PROPERTY_FLIPX_L1B_MODIS_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_L1B_MODIS_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1B_MODIS_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_L1B_MODIS_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_FLIPY_L1B_MODIS_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_L1B_MODIS_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1B_MODIS_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_L1B_MODIS_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+    // L1B_VIIRS FILES
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".file_properties.l1b_viirs";
+
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".section";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_LABEL = "Level 1B VIIRS Files";
+    public static final String PROPERTY_FILE_PROPERTIES_L1B_VIIRS_SECTION_TOOLTIP = "SeaDAS Level-1B VIIRS file reader options";
+
+    public static final String PROPERTY_BAND_GROUPING_L1B_VIIRS_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1B_VIIRS_LABEL = "Band Grouping";
+    public static final String PROPERTY_BAND_GROUPING_L1B_VIIRS_TOOLTIP = "Expression to create band groupings into folders for the VIIRS instruments";
+    public static final String PROPERTY_BAND_GROUPING_L1B_VIIRS_DEFAULT = "RefSB:Emissive";
+
+    public static final String PROPERTY_FLIPX_L1B_VIIRS_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_FLIPX_L1B_VIIRS_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1B_VIIRS_TOOLTIP = "Flip image horizontally";
+    public static final String PROPERTY_FLIPX_L1B_VIIRS_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_FLIPY_L1B_VIIRS_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_FLIPY_L1B_VIIRS_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1B_VIIRS_TOOLTIP = "Flip image vertically";
+    public static final String PROPERTY_FLIPY_L1B_VIIRS_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
 
 
 
