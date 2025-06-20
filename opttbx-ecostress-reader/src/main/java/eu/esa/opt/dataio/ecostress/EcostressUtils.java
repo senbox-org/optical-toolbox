@@ -12,6 +12,7 @@ import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
 
 import java.awt.*;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -114,10 +115,9 @@ public class EcostressUtils {
                 final H5Group ecostressBandsGroup = getEcostressH5Group(ecostressFile, bandsGroupName);
                 if (ecostressBandsGroup != null) {
                     for (final HObject bandElementObject : ecostressBandsGroup.getMemberList()) {
-                        if (bandElementObject instanceof H5ScalarDS) {
-                            final H5ScalarDS bandElement = (H5ScalarDS) bandElementObject;
+                        if (bandElementObject instanceof H5ScalarDS bandElement) {
                             final String bandName = getBandNameFromEcostressObject(bandElement);
-                            final Band bandObject = new Band(bandName, extractDataTypeOfProductData(bandElement), (int) bandElement.getWidth(), (int) bandElement.getHeight());
+                            final Band bandObject = new EcostressBand(bandName, extractDataTypeOfProductData(bandElement), (int) bandElement.getWidth(), (int) bandElement.getHeight(), bandElement.getFullName());
                             final Attribute bandDescriptionAttribute = extractEcostressBandAttribute(bandElement, BAND_ATTRIBUTE_NAME_DESCRIPTION);
                             if (bandDescriptionAttribute != null) {
                                 final String bandDescription = getEcostressAttributeValue(bandDescriptionAttribute).getElemString();
@@ -158,7 +158,8 @@ public class EcostressUtils {
      * @param destBuffer    the destination buffer where the subset data from the ECOSTRESS product file band is put
      */
     public static void readEcostressBandData(EcostressFile ecostressFile, Band targetBand, int width, int height, long offsetX, long offsetY, ProductData destBuffer) {
-        final String bandElementPath = getEcostressObjectPathFromBand(targetBand);
+        final EcostressBand ecostressBand = (EcostressBand) targetBand;
+        final String bandElementPath = ecostressBand.getBandPathInEcostressProduct();
         final Object ecostressBandData = readEcostressBandDataSubset(ecostressFile, bandElementPath, width, height, offsetX, offsetY);
         destBuffer.setElems(ecostressBandData);
     }
@@ -171,7 +172,8 @@ public class EcostressUtils {
      * @return the data from the ECOSTRESS product file band
      */
     public static Object readAndGetEcostressBandData(EcostressFile ecostressFile, Band targetBand) {
-        final String bandElementPath = getEcostressObjectPathFromBand(targetBand);
+        final EcostressBand ecostressBand = (EcostressBand) targetBand;
+        final String bandElementPath = ecostressBand.getBandPathInEcostressProduct();
         return readAndGetEcostressBandData(ecostressFile, bandElementPath, targetBand.getRasterWidth(), targetBand.getRasterHeight());
     }
 
@@ -335,16 +337,11 @@ public class EcostressUtils {
      * @return the band name from the ECOSTRESS product file band
      */
     private static String getBandNameFromEcostressObject(H5ScalarDS ecostressObject) {
-        return ecostressObject.getFullName().substring(1).replaceAll("/", "_").replaceAll(" ", "__");
-    }
-
-    /**
-     * Gets the band node path in the ECOSTRESS product file from band object
-     * @param targetBand the ECOSTRESS product band object
-     * @return the band node path in the ECOSTRESS product file from band object
-     */
-    private static String getEcostressObjectPathFromBand(Band targetBand) {
-        return "/" + targetBand.getName().replaceFirst("(.*?[a-zA-Z])_([a-zA-Z])", "$1/$2").replaceAll("__", " ");
+        String ecostressBandPathInProduct = Paths.get(ecostressObject.getPath()).getParent().toString().replaceAll("\\\\", "/");
+        if (!ecostressBandPathInProduct.endsWith("/")) {
+            ecostressBandPathInProduct += "/";
+        }
+        return ecostressObject.getFullName().replaceFirst(ecostressBandPathInProduct, "").replaceAll("/", "_").replaceAll(" ","_");
     }
 
     /**
