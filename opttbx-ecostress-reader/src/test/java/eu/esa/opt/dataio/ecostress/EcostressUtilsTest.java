@@ -1,6 +1,5 @@
 package eu.esa.opt.dataio.ecostress;
 
-import eu.esa.opt.dataio.ecostress.l2.cloud.EcostressL2CloudConstants;
 import eu.esa.snap.hdf.HDFLoader;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
@@ -103,7 +102,7 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, EcostressL2CloudConstants.ECOSTRESS_L2_CLOUD_PRODUCT_DATA_DEFINITIONS_GROUP_SDS);
+                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, "/SDS");
                 Assert.assertEquals(1, bands.size());
                 final Band band = bands.get(0);
                 Assert.assertEquals("SDS_CloudMask", band.getName());
@@ -123,7 +122,7 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, EcostressL2CloudConstants.ECOSTRESS_L2_CLOUD_PRODUCT_DATA_DEFINITIONS_GROUP_SDS);
+                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, "/SDS");
                 Assert.assertEquals(1, bands.size());
                 final Band band = bands.get(0);
                 final byte[] productDataElements = new byte[100 * 100];

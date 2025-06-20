@@ -1,12 +1,12 @@
 package eu.esa.opt.dataio.ecostress;
 
-import com.bc.ceres.core.ServiceRegistry;
-import com.bc.ceres.core.ServiceRegistryManager;
-import org.esa.snap.core.util.ServiceLoader;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Metadata for ECOSTRESS L1A, L1B, L2, L3, L4 products
@@ -15,13 +15,7 @@ import java.util.List;
  */
 public abstract class EcostressMetadata {
 
-    private static final ServiceRegistry<EcostressMetadata> ecostressMetadataRegistry;
-
-    static {
-        final ServiceRegistryManager serviceRegistryManager = ServiceRegistryManager.getInstance();
-        ecostressMetadataRegistry = serviceRegistryManager.getServiceRegistry(EcostressMetadata.class);
-        ServiceLoader.loadServices(ecostressMetadataRegistry);
-    }
+    private static EcostressMetadataDescriptor[] ecostressMetadataDescriptors;
 
     /**
      * Gets the ECOSTRESS product specific metadata elements paths
@@ -93,7 +87,15 @@ public abstract class EcostressMetadata {
      * @return the Ecostress Metadata for Ecostress file
      */
     public static EcostressMetadata getEcostressMetadataForFile(EcostressFile ecostressFile) {
-        for (EcostressMetadata ecostressMetadata : ecostressMetadataRegistry.getServices()) {
+        if (ecostressMetadataDescriptors == null) {
+            try {
+                ecostressMetadataDescriptors = new ObjectMapper().readValue(EcostressMetadataDescriptor.class.getResource("EcostressMetadataDescriptors.json"), EcostressMetadataDescriptor[].class);
+            } catch (IOException e) {
+                Logger.getLogger(EcostressMetadata.class.getName()).severe("Fail to load the ECOSTRESS Metadata Descriptor JSON. Reason:" + e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
+        for (EcostressMetadata ecostressMetadata : ecostressMetadataDescriptors) {
             if (ecostressMetadata.isProductFileValid(ecostressFile) && EcostressUtils.ecostressNodesExists(ecostressFile, ecostressMetadata.getAllElementsPaths())) {
                 return ecostressMetadata;
             }

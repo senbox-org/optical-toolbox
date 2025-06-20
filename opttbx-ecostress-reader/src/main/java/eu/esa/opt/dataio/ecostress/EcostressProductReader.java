@@ -100,9 +100,6 @@ public class EcostressProductReader extends AbstractProductReader {
         }
         final Product product = new Product(ecostressFile.getName(), ecostressMetadata.getFormatName(), productSize.width, productSize.height, this);
         final MetadataElement productMetadataRoot = product.getMetadataRoot();
-        for (MetadataElement commonMetadataElement : getCommonMetadataElementsList(ecostressFile)) {
-            productMetadataRoot.addElement(commonMetadataElement);
-        }
         for (MetadataElement metadataElement : getMetadataElementsList(ecostressFile, ecostressMetadata)) {
             productMetadataRoot.addElement(metadataElement);
         }
@@ -165,16 +162,6 @@ public class EcostressProductReader extends AbstractProductReader {
             this.ecostressFile = EcostressProductReaderPlugIn.getEcostressFile(inputObject);
         }
         return this.ecostressFile;
-    }
-
-    /**
-     * Gets the ECOSTRESS product common metadata from ECOSTRESS product file
-     *
-     * @param ecostressFile the ECOSTRESS product file object
-     * @return the ECOSTRESS product common metadata
-     */
-    private List<MetadataElement> getCommonMetadataElementsList(EcostressFile ecostressFile) {
-        return EcostressUtils.extractMetadataElements(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA);
     }
 
     private GeoCoding buildGeoCoding(EcostressFile ecostressFile, Product product, EcostressMetadata ecostressMetadata) {
