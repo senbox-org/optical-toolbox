@@ -100,6 +100,9 @@ public class Sentinel3ProductReaderPlugIn extends S3ReaderPlugIn {
 
     // public access for testing only 2024-05-28
     public boolean isValidInputFileName(String name) {
+        if (name.toLowerCase().endsWith(".znap.zip")) {
+            return false;
+        }
         if (isManifestFile(name)) {
             return true;
         }

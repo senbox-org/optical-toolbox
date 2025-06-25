@@ -198,7 +198,7 @@ public class Sentinel3ProductReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-3666,SNAP-1696,SNAP-3711")
+    @STTM("SNAP-3666,SNAP-1696,SNAP-3711,SNAP-3769")
     public void testIsValidInputFileName() {
         assertTrue(plugIn.isValidInputFileName("xfdumanifest.xml"));
         assertTrue(plugIn.isValidInputFileName("L1c_Manifest.xml"));
@@ -209,6 +209,7 @@ public class Sentinel3ProductReaderPlugInTest {
         assertFalse(plugIn.isValidInputFileName("manifest.safe"));
         assertFalse(plugIn.isValidInputFileName("S5P_NRTI_L2__SO2____20240219T082248_20240219T082748_32914_03_020601_20240219T090920.nc"));
         assertFalse(plugIn.isValidInputFileName("S3A_OL_1_EFR____20170101T095821_20170101T100021__calimnos.nc"));
+        assertFalse(plugIn.isValidInputFileName("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.znap.zip"));
     }
 
     @Test
