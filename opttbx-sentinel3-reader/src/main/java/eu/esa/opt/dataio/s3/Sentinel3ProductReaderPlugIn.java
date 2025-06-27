@@ -45,7 +45,7 @@ public class Sentinel3ProductReaderPlugIn extends S3ReaderPlugIn {
     public Sentinel3ProductReaderPlugIn() {
         this(FORMAT_NAME, "Sentinel-3 products",
                 "S3.?_(OL_2_(L[FR]R|W[FR]R)|ER1_AT_1_RBT|ER2_AT_1_RBT|ENV_AT_1_RBT|SL_1_RBT|" +
-                        "SL_2_(LST|WCT|WST|FRP)|SY_1_SYN|SY_2_(AOD|VGP|SYN|V10)|SY_[23]_VG1)_.*(.SEN3)?(.zip)?",
+                        "SL_2_(LST|WCT|WST|AOD|FRP)|SY_1_SYN|SY_2_(AOD|VGP|SYN|V10)|SY_[23]_VG1)_.*(.SEN3)?(.zip)?",
                 MANIFEST_BASE, ALTERNATIVE_MANIFEST_BASE, ".xml", ".zip");
     }
 
