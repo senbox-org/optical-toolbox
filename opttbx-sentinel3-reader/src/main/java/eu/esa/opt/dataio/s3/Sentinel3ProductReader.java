@@ -21,7 +21,7 @@ import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2WProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
-import eu.esa.opt.dataio.s3.synergy.AODProductFactory;
+import eu.esa.opt.dataio.s3.synergy.SynAodProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynL1CProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynLevel2ProductFactory;
 import eu.esa.opt.dataio.s3.synergy.VgtProductFactory;
@@ -91,12 +91,14 @@ public class Sentinel3ProductReader extends AbstractProductReader {
             factory = new SlstrSstProductFactory(this);
         } else if (dirName.matches("S3.?_SL_2_FRP_.*(.SEN3)?")) { // SLSTR L2 FRP
             factory = new SlstrFrpProductFactory(this);
+        } else if (dirName.matches("S3.?_SL_2_AOD_.*(.SEN3)?")) { // SLSTR L2 AOD
+            factory = new SlstrAodProductFactory(this);
         } else if (dirName.matches("S3.?_SY_1_SYN_.*(.SEN3)?")) { // SYN L1
             factory = new SynL1CProductFactory(this);
         } else if (dirName.matches("S3.?_SY_2_SYN_.*(.SEN3)?")) { // SYN L2
             factory = new SynLevel2ProductFactory(this);
         } else if (dirName.matches("S3.?_SY_2_AOD_.*(.SEN3)?")) { // SYN AOD
-            factory = new AODProductFactory(this);
+            factory = new SynAodProductFactory(this);
         } else if (dirName.matches("S3.?_SY_(2_VGP|[23]_VG1|2_V10)_.*(.SEN3)?")) { // SYN VGT
             factory = new VgtProductFactory(this);
         }

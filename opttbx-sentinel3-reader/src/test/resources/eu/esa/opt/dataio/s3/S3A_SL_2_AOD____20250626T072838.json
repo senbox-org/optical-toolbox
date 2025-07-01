@@ -1,0 +1,1916 @@
+{
+  "id": "S3A_SL_2_AOD____20250626T072838",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 157,
+    "sceneHeight": 210,
+    "startTime": "26-JUN-2025 07:28:38.466490",
+    "endTime": "26-JUN-2025 07:33:36.355840",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 67.0,
+          "y": 112.0,
+          "lat": 11.41417407989502,
+          "lon": 35.843849182128906
+        },
+        {
+          "x": 116.0,
+          "y": 136.0,
+          "lat": 8.484779357910156,
+          "lon": 39.54181671142578
+        }
+      ],
+      "reverseAccuracy": 0.5
+    },
+    "flagCodings": [
+      {
+        "name": "aod_quality_flags",
+        "samples": [
+          {
+            "name": "land",
+            "value": 1
+          },
+          {
+            "name": "oblq_missing",
+            "value": 2
+          },
+          {
+            "name": "cloudy_n",
+            "value": 4
+          },
+          {
+            "name": "cloudy_o",
+            "value": 8
+          },
+          {
+            "name": "dual_view",
+            "value": 16
+          },
+          {
+            "name": "glint_n",
+            "value": 32
+          },
+          {
+            "name": "glint_o",
+            "value": 64
+          },
+          {
+            "name": "sdr_neg",
+            "value": 128
+          },
+          {
+            "name": "aod_zero",
+            "value": 256
+          },
+          {
+            "name": "fm_clim",
+            "value": 512
+          },
+          {
+            "name": "unc_failed",
+            "value": 1024
+          },
+          {
+            "name": "unvalid",
+            "value": 2048
+          },
+          {
+            "name": "medium_spatial_variability",
+            "value": 4096
+          }
+        ]
+      },
+      {
+        "name": "SLN_L1b_quality_flags",
+        "samples": [
+          {
+            "name": "SLN_summary_ISP_absent",
+            "value": 1
+          },
+          {
+            "name": "SLN_summary_pixel_absent",
+            "value": 2
+          },
+          {
+            "name": "SLN_summary_not_decompressed",
+            "value": 4
+          },
+          {
+            "name": "SLN_summary_no_signal",
+            "value": 8
+          },
+          {
+            "name": "SLN_summary_saturation",
+            "value": 16
+          },
+          {
+            "name": "SLN_summary_invalid_radiance",
+            "value": 32
+          },
+          {
+            "name": "SLN_summary_no_parameters",
+            "value": 64
+          },
+          {
+            "name": "SLN_summary_unfilled_pixel",
+            "value": 128
+          },
+          {
+            "name": "SLN_coastline",
+            "value": 256
+          },
+          {
+            "name": "SLN_ocean",
+            "value": 512
+          },
+          {
+            "name": "SLN_tidal",
+            "value": 1024
+          },
+          {
+            "name": "SLN_land",
+            "value": 2048
+          },
+          {
+            "name": "SLN_inland_water",
+            "value": 4096
+          },
+          {
+            "name": "SLN_cosmetic",
+            "value": 8192
+          },
+          {
+            "name": "SLN_day",
+            "value": 16384
+          },
+          {
+            "name": "SLN_twilight",
+            "value": 32768
+          },
+          {
+            "name": "SLN_sun_glint",
+            "value": 65536
+          },
+          {
+            "name": "SLN_snow",
+            "value": 131072
+          },
+          {
+            "name": "SLN_summary_cloud",
+            "value": 262144
+          },
+          {
+            "name": "SLN_summary_pointing",
+            "value": 524288
+          }
+        ]
+      },
+      {
+        "name": "SLO_L1b_quality_flags",
+        "samples": [
+          {
+            "name": "SLO_summary_ISP_absent",
+            "value": 1
+          },
+          {
+            "name": "SLO_summary_pixel_absent",
+            "value": 2
+          },
+          {
+            "name": "SLO_summary_not_decompressed",
+            "value": 4
+          },
+          {
+            "name": "SLO_summary_no_signal",
+            "value": 8
+          },
+          {
+            "name": "SLO_summary_saturation",
+            "value": 16
+          },
+          {
+            "name": "SLO_summary_invalid_radiance",
+            "value": 32
+          },
+          {
+            "name": "SLO_summary_no_parameters",
+            "value": 64
+          },
+          {
+            "name": "SLO_summary_unfilled_pixel",
+            "value": 128
+          },
+          {
+            "name": "SLO_coastline",
+            "value": 256
+          },
+          {
+            "name": "SLO_ocean",
+            "value": 512
+          },
+          {
+            "name": "SLO_tidal",
+            "value": 1024
+          },
+          {
+            "name": "SLO_land",
+            "value": 2048
+          },
+          {
+            "name": "SLO_inland_water",
+            "value": 4096
+          },
+          {
+            "name": "SLO_cosmetic",
+            "value": 8192
+          },
+          {
+            "name": "SLO_day",
+            "value": 16384
+          },
+          {
+            "name": "SLO_twilight",
+            "value": 32768
+          },
+          {
+            "name": "SLO_sun_glint",
+            "value": 65536
+          },
+          {
+            "name": "SLO_snow",
+            "value": 131072
+          },
+          {
+            "name": "SLO_summary_cloud",
+            "value": 262144
+          },
+          {
+            "name": "SLO_summary_pointing",
+            "value": 524288
+          }
+        ]
+      }
+    ],
+    "bands": [
+      {
+        "name": "AOD_550",
+        "description": "Aerosol optical thickness at 550 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 8,
+            "y": 37,
+            "value": "NaN"
+          },
+          {
+            "x": 107,
+            "y": 178,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_550_Land",
+        "description": "Aerosol optical thickness at 550 nm - Only over land surfaces (Please read the EUMETSAT Product Notice for further details) - Higher quality (Post-filtered of e.g. cloud residuals...)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 45,
+            "y": 53,
+            "value": "NaN"
+          },
+          {
+            "x": 95,
+            "y": 76,
+            "value": 0.3742
+          }
+        ]
+      },
+      {
+        "name": "AOD_550_uncertainty",
+        "description": "Aerosol optical thickness uncertainty at 550 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 86,
+            "y": 156,
+            "value": "NaN"
+          },
+          {
+            "x": 95,
+            "y": 194,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_550_uncertainty_Land",
+        "description": "Aerosol optical thickness uncertainty at 550 nm - Only over land surfaces  (Please read the EUMETSAT Product Notice for further details) - Higher quality (Post-filtered of e.g. cloud residuals...)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 24,
+            "y": 139,
+            "value": "NaN"
+          },
+          {
+            "x": 81,
+            "y": 191,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_550_Merged_OceanLand",
+        "description": "Aerosol optical thickness at 550 nm - All surfaces (merged Ocean and land)  (Please read the EUMETSAT Product Notice for further details) - Higher quality (Post-filtered of e.g. cloud residuals, sediments...)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 118,
+            "y": 101,
+            "value": 0.4161
+          },
+          {
+            "x": 149,
+            "y": 102,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_670",
+        "description": "Aerosol optical thickness at 670 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 53,
+            "y": 188,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 98,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_865",
+        "description": "Aerosol optical thickness at 865 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 51,
+            "y": 41,
+            "value": "NaN"
+          },
+          {
+            "x": 42,
+            "y": 9,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_1600",
+        "description": "Aerosol optical thickness at 1600 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 152,
+            "y": 126,
+            "value": "NaN"
+          },
+          {
+            "x": 89,
+            "y": 150,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_2250",
+        "description": "Aerosol optical thickness at 2250 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 36,
+            "y": 104,
+            "value": "NaN"
+          },
+          {
+            "x": 50,
+            "y": 151,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "FM_AOD550",
+        "description": "Fine-mode aerosol optical depth at 550 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 56,
+            "y": 104,
+            "value": "NaN"
+          },
+          {
+            "x": 63,
+            "y": 92,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "FM_AOD550_Land",
+        "description": "Fine-mode aerosol optical depth at 550 nm - Higher quality (Post-filtered of e.g. cloud residuals...) - Only over land surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 90,
+            "y": 19,
+            "value": "NaN"
+          },
+          {
+            "x": 101,
+            "y": 3,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AFRI",
+        "description": "Aerosol Free Ratio Index (AFRI) - based on (SWIR-NIR) / (SWIR + NIR) - Higher quality (Post-filtered of e.g. cloud residuals...) - Only over land surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 153,
+            "y": 77,
+            "value": "NaN"
+          },
+          {
+            "x": 149,
+            "y": 198,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AFRI_NonFiltered",
+        "description": "Aerosol Free Ratio Index (AFRI) - based on (SWIR-NIR) / (SWIR + NIR) - All quality (non post-filtered) - Only over land surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 17,
+            "y": 94,
+            "value": "NaN"
+          },
+          {
+            "x": 89,
+            "y": 118,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Smoke_Index",
+        "description": "Smoke Index - Probability of smoke presence, only applicable over vegetated surface - Higher quality (Post-filtered of e.g. cloud residuals...) - Only over land surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 79,
+            "y": 109,
+            "value": 0.23259999
+          },
+          {
+            "x": 70,
+            "y": 122,
+            "value": 0.1521
+          }
+        ]
+      },
+      {
+        "name": "ANG550_865",
+        "description": "Aerosol Angstrom exponent between 550 and 865 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 89,
+            "value": "NaN"
+          },
+          {
+            "x": 11,
+            "y": 208,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "ANG550_865_Land",
+        "description": "Aerosol Angstrom exponent between 550 and 865 nm - Higher quality (Post-filtered of e.g. cloud residuals...) - Only over land surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 46,
+            "y": 156,
+            "value": "NaN"
+          },
+          {
+            "x": 126,
+            "y": 154,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "D_AOD550",
+        "description": "Dust aerosol optical thickness at 550 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 131,
+            "y": 198,
+            "value": "NaN"
+          },
+          {
+            "x": 39,
+            "y": 111,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "D_AOD550_Land",
+        "description": "Dust aerosol optical thickness at 550 nm - Higher quality (Post-filtered of e.g. cloud residuals...) - Only over land surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 95,
+            "y": 54,
+            "value": 0.1902
+          },
+          {
+            "x": 86,
+            "y": 31,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AAOD550",
+        "description": "Aerosol absorption optical thickness at 550 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 74,
+            "y": 117,
+            "value": "NaN"
+          },
+          {
+            "x": 14,
+            "y": 178,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AAOD550_Land",
+        "description": "Aerosol absorption optical thickness at 550 nm - Higher quality (Post-filtered of e.g. cloud residuals...) - Only over land surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 15,
+            "y": 16,
+            "value": "NaN"
+          },
+          {
+            "x": 71,
+            "y": 142,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSA_550",
+        "description": "Aerosol single scattering albedo at 550 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 73,
+            "y": 188,
+            "value": "NaN"
+          },
+          {
+            "x": 136,
+            "y": 126,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Surface_reflectance_550",
+        "description": "Surface directional reflectance (BRF) at 550 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 151,
+            "y": 80,
+            "value": "NaN"
+          },
+          {
+            "x": 13,
+            "y": 111,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Surface_reflectance_550_Land",
+        "description": "Surface directional reflectance (BRF) at 550 nm - Higher quality (Post-filtered of e.g. cloud residuals...) - Only over land surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 115,
+            "y": 124,
+            "value": 0.08
+          },
+          {
+            "x": 153,
+            "y": 39,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSA_670",
+        "description": "Aerosol single scattering albedo at 670 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 72,
+            "y": 54,
+            "value": "NaN"
+          },
+          {
+            "x": 35,
+            "y": 136,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSA_865",
+        "description": "Aerosol single scattering albedo at 865 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 100,
+            "y": 91,
+            "value": "NaN"
+          },
+          {
+            "x": 83,
+            "y": 119,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSA_1600",
+        "description": "Aerosol single scattering albedo at 1600 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 62,
+            "y": 44,
+            "value": "NaN"
+          },
+          {
+            "x": 43,
+            "y": 186,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSA_2250",
+        "description": "Aerosol single scattering albedo at 2250 nm - Best quality (post-filtered due to e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 148,
+            "y": 121,
+            "value": "NaN"
+          },
+          {
+            "x": 119,
+            "y": 68,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_550_Ocean_NonFiltered",
+        "description": "Aerosol optical thickness at 550 nm - All quality (Non-filtered of e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 88,
+            "y": 61,
+            "value": "NaN"
+          },
+          {
+            "x": 130,
+            "y": 182,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "QI_AOD_Ocean",
+        "description": "Ranked Quality Indicator for AOD retrieval - Only over ocean surfaces - 0 = No retrieval, 1 = Poor, 2 = Good, 3 = Very Good (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "65535.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 16,
+            "y": 186,
+            "value": 0.0
+          },
+          {
+            "x": 53,
+            "y": 170,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "AOD_550_Land_NonFiltered",
+        "description": "Aerosol optical thickness at 550 nm - Only over land surfaces  (Please read the EUMETSAT Product Notice for further details) - All quality (Non-filtered of e.g. cloud residuals...)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 28,
+            "y": 145,
+            "value": "NaN"
+          },
+          {
+            "x": 93,
+            "y": 115,
+            "value": 0.0676
+          }
+        ]
+      },
+      {
+        "name": "QI_AOD_Land",
+        "description": "Ranked Quality Indicator for AOD retrieval - Only over land surfaces - 0 = No retrieval, 1 = Poor, 2 = Good, 3 = Very Good (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "65535.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 32,
+            "y": 64,
+            "value": "NaN"
+          },
+          {
+            "x": 64,
+            "y": 181,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_550_uncertainty_Ocean_NonFiltered",
+        "description": "Aerosol optical thickness at 550 nm - All quality (Non-filtered of e.g. cloud residuals, sedimentation...) - Only over ocean surfaces (Please read the EUMETSAT Product Notice for further details)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 110,
+            "y": 188,
+            "value": "NaN"
+          },
+          {
+            "x": 46,
+            "y": 208,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "AOD_550_uncertainty_Land_NonFiltered",
+        "description": "Aerosol optical thickness uncertainty at 550 nm - Only over land surfaces  (Please read the EUMETSAT Product Notice for further details) - All quality (Non-filtered of e.g. cloud residuals...)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 85,
+            "y": 24,
+            "value": "NaN"
+          },
+          {
+            "x": 30,
+            "y": 117,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "time_lsb",
+        "description": "acquisition time since 2000-01-01 00:00:00 UTC(least significant bytes)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "microseconds",
+        "noDataValue": "4.294967295E9",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 71,
+            "y": 27,
+            "value": 1.250457E9
+          },
+          {
+            "x": 130,
+            "y": 120,
+            "value": 1.3794961E9
+          }
+        ]
+      },
+      {
+        "name": "time_msb",
+        "description": "acquisition time since 2000-01-01 00:00:00 UTC(most significant bytes)",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "microseconds",
+        "noDataValue": "4.294967295E9",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 16,
+            "y": 142,
+            "value": 187251.0
+          },
+          {
+            "x": 114,
+            "y": 99,
+            "value": 187251.0
+          }
+        ]
+      },
+      {
+        "name": "latitude",
+        "description": "Latitude at pixel centre",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_north",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 22,
+            "y": 13,
+            "value": 20.475557
+          },
+          {
+            "x": 132,
+            "y": 62,
+            "value": 14.396837
+          }
+        ]
+      },
+      {
+        "name": "longitude",
+        "description": "Longitude at pixel centre",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_east",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 92,
+            "y": 204,
+            "value": 36.25215
+          },
+          {
+            "x": 122,
+            "y": 5,
+            "value": 42.674423
+          }
+        ]
+      },
+      {
+        "name": "pixel_corner_latitude_Corner_1",
+        "description": "Latitude at pixel corner Corner_1",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_north",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 34,
+            "y": 51,
+            "value": 17.138906
+          },
+          {
+            "x": 50,
+            "y": 40,
+            "value": 17.792301
+          }
+        ]
+      },
+      {
+        "name": "pixel_corner_longitude_Corner_1",
+        "description": "Longitude at pixel corner Corner_1",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_east",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 44,
+            "y": 185,
+            "value": 32.637436
+          },
+          {
+            "x": 156,
+            "y": 15,
+            "value": 45.480145
+          }
+        ]
+      },
+      {
+        "name": "pixel_corner_latitude_Corner_2",
+        "description": "Latitude at pixel corner Corner_2",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_north",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 128,
+            "y": 105,
+            "value": 10.913412
+          },
+          {
+            "x": 9,
+            "y": 80,
+            "value": 15.129648
+          }
+        ]
+      },
+      {
+        "name": "pixel_corner_longitude_Corner_2",
+        "description": "Longitude at pixel corner Corner_2",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_east",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 43,
+            "y": 122,
+            "value": 33.591854
+          },
+          {
+            "x": 145,
+            "y": 29,
+            "value": 44.139233
+          }
+        ]
+      },
+      {
+        "name": "pixel_corner_latitude_Corner_3",
+        "description": "Latitude at pixel corner Corner_3",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_north",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 16,
+            "y": 30,
+            "value": 19.11736
+          },
+          {
+            "x": 138,
+            "y": 22,
+            "value": 17.604881
+          }
+        ]
+      },
+      {
+        "name": "pixel_corner_longitude_Corner_3",
+        "description": "Longitude at pixel corner Corner_3",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_east",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 58,
+            "y": 185,
+            "value": 33.711414
+          },
+          {
+            "x": 91,
+            "y": 120,
+            "value": 37.688004
+          }
+        ]
+      },
+      {
+        "name": "pixel_corner_latitude_Corner_4",
+        "description": "Latitude at pixel corner Corner_4",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_north",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 53,
+            "y": 68,
+            "value": 15.30712
+          },
+          {
+            "x": 58,
+            "y": 179,
+            "value": 5.889773
+          }
+        ]
+      },
+      {
+        "name": "pixel_corner_longitude_Corner_4",
+        "description": "Longitude at pixel corner Corner_4",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees_east",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 51,
+            "y": 143,
+            "value": 33.960567
+          },
+          {
+            "x": 101,
+            "y": 141,
+            "value": 38.215275
+          }
+        ]
+      },
+      {
+        "name": "sun_zenith_nadir",
+        "description": "nadir solar zenith angle at pixel center",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "196.6050017089583",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 83,
+            "y": 27,
+            "value": 28.11
+          },
+          {
+            "x": 72,
+            "y": 168,
+            "value": 35.295002
+          }
+        ]
+      },
+      {
+        "name": "sun_zenith_oblique",
+        "description": "oblique solar zenith angle at pixel center",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "196.6050017089583",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 125,
+            "y": 189,
+            "value": 33.042
+          },
+          {
+            "x": 4,
+            "y": 146,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "satellite_zenith_nadir",
+        "description": "nadir satellite zenith angle at pixel center",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "196.6050017089583",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 139,
+            "y": 120,
+            "value": 24.87
+          },
+          {
+            "x": 100,
+            "y": 190,
+            "value": 7.155
+          }
+        ]
+      },
+      {
+        "name": "satellite_zenith_oblique",
+        "description": "oblique satellite zenith angle at pixel center",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "196.6050017089583",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 154,
+            "y": 67,
+            "value": 0.0
+          },
+          {
+            "x": 56,
+            "y": 1,
+            "value": 55.032
+          }
+        ]
+      },
+      {
+        "name": "relative_azimuth_nadir",
+        "description": "nadir relative azimuth angle at pixel center",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "196.6050017089583",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 131,
+            "y": 119,
+            "value": 125.871
+          },
+          {
+            "x": 92,
+            "y": 83,
+            "value": 5.532
+          }
+        ]
+      },
+      {
+        "name": "relative_azimuth_oblique",
+        "description": "oblique relative azimuth angle at pixel center",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "196.6050017089583",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 61,
+            "y": 207,
+            "value": 110.835
+          },
+          {
+            "x": 36,
+            "y": 150,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "scattering_angle_nadir",
+        "description": "nadir scattering angle at pixel center",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "196.6050017089583",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 147,
+            "y": 60,
+            "value": 128.202
+          },
+          {
+            "x": 49,
+            "y": 178,
+            "value": 149.217
+          }
+        ]
+      },
+      {
+        "name": "scattering_angle_oblique",
+        "description": "oblique scattering angle at pixel center",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "196.6050017089583",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 51,
+            "y": 111,
+            "value": 0.0
+          },
+          {
+            "x": 56,
+            "y": 167,
+            "value": 110.712
+          }
+        ]
+      },
+      {
+        "name": "cloud_fraction_nadir",
+        "description": "fraction of cloudy instrument nadir pixels in super-pixel",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 87,
+            "y": 45,
+            "value": 0.0
+          },
+          {
+            "x": 14,
+            "y": 147,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "cloud_fraction_oblique",
+        "description": "fraction of cloudy instrument oblique pixels in super-pixel",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "6.553499834444665",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 110,
+            "y": 166,
+            "value": 0.856
+          },
+          {
+            "x": 132,
+            "y": 14,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "aod_quality_flags",
+        "description": "Aerosol retrieval quality flags",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 131,
+            "y": 47,
+            "value": 2144.0
+          },
+          {
+            "x": 102,
+            "y": 195,
+            "value": 2060.0
+          }
+        ]
+      },
+      {
+        "name": "SLN_L1b_quality_flags",
+        "description": "Original L1b quality flags associated with SLSTR Nadir view",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 42,
+            "y": 180,
+            "value": 4.2949673E9
+          },
+          {
+            "x": 60,
+            "y": 77,
+            "value": 4.2949673E9
+          }
+        ]
+      },
+      {
+        "name": "SLO_L1b_quality_flags",
+        "description": "Original L1b quality flags associated with SLSTR Oblique view",
+        "bandWidth": 157,
+        "bandHeight": 210,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 152,
+            "y": 142,
+            "value": 4.2949673E9
+          },
+          {
+            "x": 113,
+            "y": 89,
+            "value": 4.2949673E9
+          }
+        ]
+      }
+    ],
+    "masks": [
+      {
+        "name": "aod_quality_flags_land",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,63",
+        "description": "aod_quality_flags.land"
+      },
+      {
+        "name": "aod_quality_flags_oblq_missing",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,255",
+        "description": "aod_quality_flags.oblq_missing"
+      },
+      {
+        "name": "aod_quality_flags_cloudy_n",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "191,191,191",
+        "description": "aod_quality_flags.cloudy_n"
+      },
+      {
+        "name": "aod_quality_flags_cloudy_o",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "191,191,191",
+        "description": "aod_quality_flags.cloudy_o"
+      },
+      {
+        "name": "aod_quality_flags_dual_view",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,0",
+        "description": "aod_quality_flags.dual_view"
+      },
+      {
+        "name": "aod_quality_flags_glint_n",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,255",
+        "description": "aod_quality_flags.glint_n"
+      },
+      {
+        "name": "aod_quality_flags_glint_o",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,255",
+        "description": "aod_quality_flags.glint_o"
+      },
+      {
+        "name": "aod_quality_flags_sdr_neg",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,0",
+        "description": "aod_quality_flags.sdr_neg"
+      },
+      {
+        "name": "aod_quality_flags_aod_zero",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,127",
+        "description": "aod_quality_flags.aod_zero"
+      },
+      {
+        "name": "aod_quality_flags_fm_clim",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,0",
+        "description": "aod_quality_flags.fm_clim"
+      },
+      {
+        "name": "aod_quality_flags_unc_failed",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,127",
+        "description": "aod_quality_flags.unc_failed"
+      },
+      {
+        "name": "aod_quality_flags_unvalid",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,127",
+        "description": "aod_quality_flags.unvalid"
+      },
+      {
+        "name": "aod_quality_flags_medium_spatial_variability",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,0,0",
+        "description": "aod_quality_flags.medium_spatial_variability"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_ISP_absent",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,0,127",
+        "description": "SLN_L1b_quality_flags.SLN_summary_ISP_absent"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_pixel_absent",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,0,255",
+        "description": "SLN_L1b_quality_flags.SLN_summary_pixel_absent"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_not_decompressed",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,127,0",
+        "description": "SLN_L1b_quality_flags.SLN_summary_not_decompressed"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_no_signal",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,127,127",
+        "description": "SLN_L1b_quality_flags.SLN_summary_no_signal"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_saturation",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,127,255",
+        "description": "SLN_L1b_quality_flags.SLN_summary_saturation"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_invalid_radiance",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,255,0",
+        "description": "SLN_L1b_quality_flags.SLN_summary_invalid_radiance"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_no_parameters",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,255,127",
+        "description": "SLN_L1b_quality_flags.SLN_summary_no_parameters"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_unfilled_pixel",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,255,255",
+        "description": "SLN_L1b_quality_flags.SLN_summary_unfilled_pixel"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_coastline",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,0",
+        "description": "SLN_L1b_quality_flags.SLN_coastline"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_ocean",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,191",
+        "description": "SLN_L1b_quality_flags.SLN_ocean"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_tidal",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,127",
+        "description": "SLN_L1b_quality_flags.SLN_tidal"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_land",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,63",
+        "description": "SLN_L1b_quality_flags.SLN_land"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_inland_water",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,63",
+        "description": "SLN_L1b_quality_flags.SLN_inland_water"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_cosmetic",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,127,0",
+        "description": "SLN_L1b_quality_flags.SLN_cosmetic"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_day",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,127,127",
+        "description": "SLN_L1b_quality_flags.SLN_day"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_twilight",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,127,255",
+        "description": "SLN_L1b_quality_flags.SLN_twilight"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_sun_glint",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,127",
+        "description": "SLN_L1b_quality_flags.SLN_sun_glint"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_snow",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,255",
+        "description": "SLN_L1b_quality_flags.SLN_snow"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_cloud",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "191,191,191",
+        "description": "SLN_L1b_quality_flags.SLN_summary_cloud"
+      },
+      {
+        "name": "SLN_L1b_quality_flags_SLN_summary_pointing",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,63",
+        "description": "SLN_L1b_quality_flags.SLN_summary_pointing"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_ISP_absent",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,63,0",
+        "description": "SLO_L1b_quality_flags.SLO_summary_ISP_absent"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_pixel_absent",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,63,63",
+        "description": "SLO_L1b_quality_flags.SLO_summary_pixel_absent"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_not_decompressed",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,63,127",
+        "description": "SLO_L1b_quality_flags.SLO_summary_not_decompressed"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_no_signal",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,63,191",
+        "description": "SLO_L1b_quality_flags.SLO_summary_no_signal"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_saturation",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,191",
+        "description": "SLO_L1b_quality_flags.SLO_summary_saturation"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_invalid_radiance",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,191,0",
+        "description": "SLO_L1b_quality_flags.SLO_summary_invalid_radiance"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_no_parameters",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,191,63",
+        "description": "SLO_L1b_quality_flags.SLO_summary_no_parameters"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_unfilled_pixel",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,191,127",
+        "description": "SLO_L1b_quality_flags.SLO_summary_unfilled_pixel"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_coastline",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,0",
+        "description": "SLO_L1b_quality_flags.SLO_coastline"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_ocean",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,191",
+        "description": "SLO_L1b_quality_flags.SLO_ocean"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_tidal",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,191,191",
+        "description": "SLO_L1b_quality_flags.SLO_tidal"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_land",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,63",
+        "description": "SLO_L1b_quality_flags.SLO_land"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_inland_water",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,63",
+        "description": "SLO_L1b_quality_flags.SLO_inland_water"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_cosmetic",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,191,255",
+        "description": "SLO_L1b_quality_flags.SLO_cosmetic"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_day",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,63",
+        "description": "SLO_L1b_quality_flags.SLO_day"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_twilight",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,191",
+        "description": "SLO_L1b_quality_flags.SLO_twilight"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_sun_glint",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "63,0,0",
+        "description": "SLO_L1b_quality_flags.SLO_sun_glint"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_snow",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,255",
+        "description": "SLO_L1b_quality_flags.SLO_snow"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_cloud",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "191,191,191",
+        "description": "SLO_L1b_quality_flags.SLO_summary_cloud"
+      },
+      {
+        "name": "SLO_L1b_quality_flags_SLO_summary_pointing",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "63,0,63",
+        "description": "SLO_L1b_quality_flags.SLO_summary_pointing"
+      }
+    ],
+    "metadata": [
+      {
+        "path": "Manifest/metadataSection/slstrProductInformation/classificationSummary/cloudyPixels/percentage",
+        "value": "24.375977"
+      },
+      {
+        "path": "time_reference_a/value",
+        "value": "804238136466490,804238137966431,804238139466383,804238140966323,804238142166289,804238143666230,804238145166182,804238146666122,804238147866077,804238149366029,804238150865969,804238152365921,804238153565876,804238155065827,804238156565768,804238158065720,804238159265674,804238160765615,804238162265567,804238163765507,804238164965462,804238166465414,804238167965354,804238169465306,804238170665261,804238172165213,804238173665153,804238175165105,804238176365060,804238177865000,804238179364952,804238180864893,804238182064859,804238183564799,804238185064752,804238186564692,804238187764647,804238189264599,804238190764539,804238192264491,804238193464446,804238194964386,804238196464338,804238197964279,804238199164245,804238200664185,804238202164137,804238203664078,804238204864033,804238206363985,804238207863925,804238209363877,804238210563832,804238212063784,804238213563724,804238215063676,804238216263631,804238217763572,804238219263524,804238220763464,804238221963419,804238223463371,804238224963311,804238226463263,804238227663218,804238229163170,804238230663111,804238232163063,804238233363018,804238234862958,804238236362910,804238237862851,804238239062817,804238240562757,804238242062710,804238243562650,804238244762605,804238246262557,804238247762497,804238249262450,804238250462404,804238251962345,804238253462297,804238254962238,804238256162204,804238257662144,804238259162096,804238260662037,804238261861992,804238263361944,804238264861884,804238266361837,804238267561791,804238269061743,804238270561684,804238272061636,804238273261591,804238274761531,804238276261483,804238277761424,804238278961379,804238280461331,804238281961272,804238283461224,804238284661179,804238286161131,804238287661071,804238288861026,804238290360978,804238291860919,804238293360871,804238294560826,804238296060778,804238297560719,804238299060671,804238300260625,804238301760566,804238303260518,804238304760459,804238305960414,804238307460366,804238308960307,804238310460259,804238311660213,804238313160166,804238314660106,804238316160058,804238317360013,804238318859954,804238320359906,804238321859847,804238323059813,804238324559754,804238326059706,804238327559647,804238328759601,804238330259554,804238331759494,804238333259447,804238334459401,804238335959342,804238337459294,804238338959235,804238340159201,804238341659142,804238343159094,804238344659035,804238345858990,804238347358942,804238348858883,804238350358835,804238351558790,804238353058742,804238354558683,804238356058635,804238357258590,804238358758531,804238360258483,804238361758424,804238362958378,804238364458331,804238365958271,804238367458224,804238368658179,804238370158131,804238371658071,804238373158024,804238374357979,804238375857919,804238377357872,804238378857812,804238380057779,804238381557720,804238383057672,804238384557613,804238385757567,804238387257520,804238388757461,804238390257413,804238391457368,804238392957308,804238394457261,804238395957201,804238397157168,804238398657109,804238400157061,804238401657002,804238402856957,804238404356909,804238405856850,804238407356802,804238408556757,804238410056709,804238411556650,804238413056603,804238414256557,804238415756498,804238417256451,804238418756391,804238419956346,804238421456299,804238422956239,804238424456192,804238425656147,804238427156099,804238428656040,804238430155992,804238431355947,804238432855888,804238434355840"
+      },
+      {
+        "path": "time_reference_a/value",
+        "value": "804238136466490,804238137966431,804238139466383,804238140966323,804238142166289,804238143666230,804238145166182,804238146666122,804238147866077,804238149366029,804238150865969,804238152365921,804238153565876,804238155065827,804238156565768,804238158065720,804238159265674,804238160765615,804238162265567,804238163765507,804238164965462,804238166465414,804238167965354,804238169465306,804238170665261,804238172165213,804238173665153,804238175165105,804238176365060,804238177865000,804238179364952,804238180864893,804238182064859,804238183564799,804238185064752,804238186564692,804238187764647,804238189264599,804238190764539,804238192264491,804238193464446,804238194964386,804238196464338,804238197964279,804238199164245,804238200664185,804238202164137,804238203664078,804238204864033,804238206363985,804238207863925,804238209363877,804238210563832,804238212063784,804238213563724,804238215063676,804238216263631,804238217763572,804238219263524,804238220763464,804238221963419,804238223463371,804238224963311,804238226463263,804238227663218,804238229163170,804238230663111,804238232163063,804238233363018,804238234862958,804238236362910,804238237862851,804238239062817,804238240562757,804238242062710,804238243562650,804238244762605,804238246262557,804238247762497,804238249262450,804238250462404,804238251962345,804238253462297,804238254962238,804238256162204,804238257662144,804238259162096,804238260662037,804238261861992,804238263361944,804238264861884,804238266361837,804238267561791,804238269061743,804238270561684,804238272061636,804238273261591,804238274761531,804238276261483,804238277761424,804238278961379,804238280461331,804238281961272,804238283461224,804238284661179,804238286161131,804238287661071,804238288861026,804238290360978,804238291860919,804238293360871,804238294560826,804238296060778,804238297560719,804238299060671,804238300260625,804238301760566,804238303260518,804238304760459,804238305960414,804238307460366,804238308960307,804238310460259,804238311660213,804238313160166,804238314660106,804238316160058,804238317360013,804238318859954,804238320359906,804238321859847,804238323059813,804238324559754,804238326059706,804238327559647,804238328759601,804238330259554,804238331759494,804238333259447,804238334459401,804238335959342,804238337459294,804238338959235,804238340159201,804238341659142,804238343159094,804238344659035,804238345858990,804238347358942,804238348858883,804238350358835,804238351558790,804238353058742,804238354558683,804238356058635,804238357258590,804238358758531,804238360258483,804238361758424,804238362958378,804238364458331,804238365958271,804238367458224,804238368658179,804238370158131,804238371658071,804238373158024,804238374357979,804238375857919,804238377357872,804238378857812,804238380057779,804238381557720,804238383057672,804238384557613,804238385757567,804238387257520,804238388757461,804238390257413,804238391457368,804238392957308,804238394457261,804238395957201,804238397157168,804238398657109,804238400157061,804238401657002,804238402856957,804238404356909,804238405856850,804238407356802,804238408556757,804238410056709,804238411556650,804238413056603,804238414256557,804238415756498,804238417256451,804238418756391,804238419956346,804238421456299,804238422956239,804238424456192,804238425656147,804238427156099,804238428656040,804238430155992,804238431355947,804238432855888,804238434355840"
+      },
+      {
+        "path": "time_reference_a/_FillValue",
+        "value": "-9223372036854775808"
+      },
+      {
+        "path": "Manifest/metadataSection/orbitReference/relativePassNumber/type",
+        "value": "start"
+      },
+      {
+        "path": "Manifest/metadataSection/qualityInformation/extension/productQuality/onlineQualityCheck",
+        "value": "PASSED"
+      },
+      {
+        "path": "time_reference_a/long_name",
+        "value": "Acquisition time of the sub-satellite point included in each line "
+      },
+      {
+        "path": "Manifest/metadataSection/processing/resource[9]/name",
+        "value": "S3B_SL_2_ACLMAX_20160216T000000_20991231T235959_20180129T120000___________________MPC_O_AL_001.SEN3"
+      },
+      {
+        "path": "Manifest/metadataSection/acquisitionPeriod/startTime",
+        "value": "2025-06-26T07:28:38.466490Z"
+      },
+      {
+        "path": "Manifest/metadataSection/qualityInformation/extension/productQuality/onlineQualityCheck",
+        "value": "PASSED"
+      }
+    ]
+  }
+}

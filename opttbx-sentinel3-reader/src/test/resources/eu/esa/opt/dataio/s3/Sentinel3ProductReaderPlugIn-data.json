@@ -126,6 +126,11 @@
       "id": "S3A_SL_2_FRP____20160513T051504",
       "relativePath": "sensors_platforms/SENTINEL-3/slstr/L2/S3A_SL_2_FRP____20160513T051504_20160513T051804_20190909T081834_0179_004_105______LR1_D_NT_002.SEN3/xfdumanifest.xml",
       "description": "S3B_SL2_FRP v2"
+    },
+    {
+      "id": "S3A_SL_2_AOD____20250626T072838",
+      "relativePath": "sensors_platforms/SENTINEL-3/slstr/L2/S3B_SL_2_AOD____20250626T072838_20250626T073336_20250626T092123_0299_108_106______MAR_O_NR_003.SEN3.zip",
+      "description": "S3B_SL2_AOD"
     }
   ]
 }

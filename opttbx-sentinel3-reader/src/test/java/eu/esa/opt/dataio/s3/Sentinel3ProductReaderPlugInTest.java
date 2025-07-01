@@ -198,12 +198,13 @@ public class Sentinel3ProductReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-3666,SNAP-1696,SNAP-3711,SNAP-3769")
+    @STTM("SNAP-3666,SNAP-1696,SNAP-3711,SNAP-3769,SNAP-3657")
     public void testIsValidInputFileName() {
         assertTrue(plugIn.isValidInputFileName("xfdumanifest.xml"));
         assertTrue(plugIn.isValidInputFileName("L1c_Manifest.xml"));
         assertTrue(plugIn.isValidInputFileName("S3A_SY_2_VGP____20160415T110058_20160415T110845_20160502T125459_0466_003_094______LN1_D_NC____.SEN3"));
         assertTrue(plugIn.isValidInputFileName("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.zip"));
+        assertTrue(plugIn.isValidInputFileName("S3B_SL_2_AOD____20250626T072838_20250626T073336_20250626T092123_0299_108_106______MAR_O_NR_003.SEN3.zip"));
 
         assertFalse(plugIn.isValidInputFileName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
         assertFalse(plugIn.isValidInputFileName("manifest.safe"));
@@ -213,13 +214,15 @@ public class Sentinel3ProductReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-3666,SNAP-1696,SNAP-3711")
+    @STTM("SNAP-3666,SNAP-1696,SNAP-3711,SNAP-3657")
     public void testIsValidInput() {
         final String sep = File.separator;
 
         assertTrue(plugIn.isInputValid("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3" + sep + "xfdumanifest.xml"));
         assertTrue(plugIn.isInputValid("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3" + sep + "L1c_Manifest.xml"));
         assertTrue(plugIn.isInputValid("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.zip"));
+        assertTrue(plugIn.isInputValid("S3B_SL_2_AOD____20250626T072838_20250626T073336_20250626T092123_0299_108_106______MAR_O_NR_003.SEN3.zip"));
+        assertTrue(plugIn.isInputValid("S3B_SL_2_AOD____20250626T072838_20250626T073336_20250626T092123_0299_108_106______MAR_O_NR_003.SEN3" + sep + "xfdumanifest.xml"));
 
         assertFalse(plugIn.isInputValid("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
         assertFalse(plugIn.isInputValid("S3A_SL_1_RBT____20180809T035343_20180809T035643_20180810T124116_0179_034_218_2520_MAR_O_NT_002.SEN3" + sep + "manifest.safe"));

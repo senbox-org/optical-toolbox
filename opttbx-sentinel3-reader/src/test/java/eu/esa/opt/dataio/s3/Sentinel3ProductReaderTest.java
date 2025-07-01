@@ -4,7 +4,7 @@ import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2WProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
-import eu.esa.opt.dataio.s3.synergy.AODProductFactory;
+import eu.esa.opt.dataio.s3.synergy.SynAodProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynL1CProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynLevel2ProductFactory;
 import eu.esa.opt.dataio.s3.synergy.VgtProductFactory;
@@ -46,7 +46,7 @@ public class Sentinel3ProductReaderTest {
         assertTrue(productFactory instanceof SynLevel2ProductFactory);
 
         productFactory = sentinel3ProductReader.getProductFactory("S3A_SY_2_AOD____20170619T101637_20170619T101937_20190605T093814_0180_019_065______LR1_D_NT_001.SEN3");
-        assertTrue(productFactory instanceof AODProductFactory);
+        assertTrue(productFactory instanceof SynAodProductFactory);
 
         productFactory = sentinel3ProductReader.getProductFactory("S3A_SY_2_VG1____20130621T100922_20130621T104922_20140527T011902_GLOBAL____________LN2_D_NR____.SEN3");
         assertTrue(productFactory instanceof VgtProductFactory);
