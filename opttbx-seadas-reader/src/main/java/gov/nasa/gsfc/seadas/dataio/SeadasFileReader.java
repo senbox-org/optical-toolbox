@@ -38,6 +38,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
@@ -1749,7 +1752,12 @@ public abstract class SeadasFileReader {
                         String validExp;
 
                         if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+//                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
+                            String minStr = formatValidMinMax(validMinMax[0], true);
+                            String maxStr = formatValidMinMax(validMinMax[1], false);
+
+                            validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
 
                         } else {
                             double[] minmax = {0.0, 0.0};
@@ -1765,7 +1773,66 @@ public abstract class SeadasFileReader {
                                 minmax[1] += band.getScalingOffset();
                             }
 
-                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
+
+//                            validExp = format("%s >= %.06f && %s <= %.06f", safeName, minmax[0], safeName, minmax[1]);
+
+
+
+//                            int precision = 8;
+//
+//
+//                            double min = minmax[0];
+//                            System.out.println("min=" + Double.toString(min));
+//
+//
+//                            BigDecimal minBigDecimal = new BigDecimal(min);
+//                            if (Math.abs(band.getScalingFactor()) < Math.floor((double) precision)) {
+//                                // round down because this is a minimum value in order to be inclusive
+//                                minBigDecimal = minBigDecimal.round(new MathContext(precision, RoundingMode.FLOOR));
+//                            }
+//                            String minStr = minBigDecimal.toString();
+//                            System.out.println("minStr=" + minStr);
+//
+//
+//                            // remove extra padded zeros after decimal
+//                            if (minStr.contains(".")) {
+//                                System.out.println("minStr (contains .)=" + minStr);
+//
+//                                while (minStr.endsWith("0") && !minStr.endsWith(".0")) {
+//                                    minStr = minStr.substring(0,minStr.length()-1);
+//                                    System.out.println("minStr (stripped)=" + minStr);
+//                                }
+//                            }
+//
+//
+//
+//                            double max = minmax[1];
+//                            BigDecimal maxBigDecimal = new BigDecimal(max);
+//                            if (Math.abs(band.getScalingFactor()) < Math.floor((double) precision)) {
+//                                // round up because this is a maximum value in order to be inclusive
+//                                maxBigDecimal = maxBigDecimal.round(new MathContext(precision, RoundingMode.CEILING));
+//                            }
+//                            String maxStr = maxBigDecimal.toString();
+//                            System.out.println("maxStr=" + maxStr);
+//
+//                            // remove extra padded zeros after decimal
+//                            if (maxStr.contains(".")) {
+//                                System.out.println("maxStr (contains .)=" + maxStr);
+//                                while (maxStr.endsWith("0") && !maxStr.endsWith(".0")) {
+//                                    maxStr = maxStr.substring(0,maxStr.length()-1);
+//                                    System.out.println("maxStr (stripped)=" + maxStr);
+//                                }
+//                            }
+
+
+                            String minStr = formatValidMinMax(minmax[0], true);
+                            String maxStr = formatValidMinMax(minmax[1], false);
+
+                            validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+
+//                            double rounded = minBigDecimal.doubleValue();
+
+
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
@@ -1777,6 +1844,60 @@ public abstract class SeadasFileReader {
         }
         return band;
     }
+
+    public String formatValidMinMax(double value, boolean isMin) {
+
+        String minMaxMsg = (isMin) ? "min" : "max";
+
+        int precision = 7;
+
+        String valueStr;
+
+
+        // todo evaluate this rounding threshold - the point was to limit rounding large numbers, perhaps decimal point is better for large numbers
+        if (Math.abs(value) < Math.pow(10.0, (double) precision)) {
+            BigDecimal valueBigDecimal = new BigDecimal(value);
+
+            if (isMin) {
+                // round down because this is a minimum value in order to be inclusive
+                valueBigDecimal = valueBigDecimal.round(new MathContext(precision, RoundingMode.FLOOR));
+            } else {
+                // round up because this is a maximum value in order to be inclusive
+                valueBigDecimal = valueBigDecimal.round(new MathContext(precision, RoundingMode.CEILING));
+            }
+            valueStr = valueBigDecimal.toString();
+
+        } else {
+            if (isMin) {
+                // round down because this is a minimum value in order to be inclusive
+                value = Math.floor(value);
+            } else {
+                // round up because this is a maximum value in order to be inclusive
+                value = Math.ceil(value);
+            }
+
+            valueStr = Double.toString(value);
+        }
+
+
+
+        System.out.println(minMaxMsg + "=" + Double.toString(value));
+        System.out.println(minMaxMsg + "Str=" + valueStr);
+
+
+        // remove extra padded zeros after decimal
+        if (valueStr.contains(".")) {
+            System.out.println(minMaxMsg + "Str (contains .)=" + valueStr);
+
+            while (valueStr.endsWith("0") && !valueStr.endsWith(".0")) {
+                valueStr = valueStr.substring(0,valueStr.length()-1);
+                System.out.println(minMaxMsg + "Str (stripped)=" + valueStr);
+            }
+        }
+
+        return valueStr;
+    }
+
 
     public void addGlobalMetadata(Product product) {
         final MetadataElement globalElement = new MetadataElement("Global_Attributes");
