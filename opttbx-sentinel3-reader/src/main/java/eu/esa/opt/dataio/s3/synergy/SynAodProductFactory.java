@@ -15,14 +15,14 @@ import java.util.List;
 
 import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
 
-public class AODProductFactory extends AbstractProductFactory {
+public class SynAodProductFactory extends AbstractProductFactory {
 
     private static final double FILL_VALUE = -999.0;
     private static final double RESOLUTION_IN_KM = 4.5;
 
     private final static String SYSPROP_SYN_AOD_PIXEL_GEO_CODING_INVERSE = "opttbx.reader.syn.aod.pixelGeoCoding.inverse";
 
-    public AODProductFactory(Sentinel3ProductReader productReader) {
+    public SynAodProductFactory(Sentinel3ProductReader productReader) {
         super(productReader);
     }
 
