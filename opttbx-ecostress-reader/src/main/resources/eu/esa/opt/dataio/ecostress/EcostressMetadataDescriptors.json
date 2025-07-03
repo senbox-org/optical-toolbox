@@ -107,7 +107,7 @@
       "/L3_ET_ALEXI Metadata"
     ],
     "remotePlatformName": "ecostress_eco3etalexiu",
-    "productFileNamePattern": "ECOSTRESS_L3_ET_ALEXI_USDA_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.(ames|bondville).h5",
+    "productFileNamePattern": "ECOSTRESS_L3_ET_ALEXI_USDA_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.(ames|bondville|mead).h5",
     "groupingPattern": "EVAPOTRANSPIRATION_ALEXI"
   },
   {
@@ -159,7 +159,7 @@
       "/L4_ESI_ALEXI Metadata"
     ],
     "remotePlatformName": "ecostress_eco4esialexiu",
-    "productFileNamePattern": "ECOSTRESS_L4_ESI_ALEXI_USDA_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.(ames|bondville).h5",
+    "productFileNamePattern": "ECOSTRESS_L4_ESI_ALEXI_USDA_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.(ames|bondville|mead).h5",
     "groupingPattern": "EVAPORATIVE_STRESS_INDEX_ALEXI"
   },
   {
