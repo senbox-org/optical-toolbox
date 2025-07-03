@@ -8,6 +8,7 @@ public class EcostressMetadataDescriptor extends EcostressMetadata {
     public String remotePlatformName;
     public String productFileNamePattern;
     public String groupingPattern;
+    public Boolean isReversedWhenNight;
 
     @Override
     public String getFormatName() {
@@ -37,6 +38,11 @@ public class EcostressMetadataDescriptor extends EcostressMetadata {
     @Override
     protected String getGroupingPattern() {
         return groupingPattern;
+    }
+
+    @Override
+    protected Boolean isReversedOnNight() {
+        return isReversedWhenNight;
     }
 
 }
