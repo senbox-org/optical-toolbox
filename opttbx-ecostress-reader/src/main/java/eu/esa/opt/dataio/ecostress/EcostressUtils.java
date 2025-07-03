@@ -10,6 +10,7 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.util.ArrayUtils;
 
 import java.awt.*;
 import java.nio.file.Paths;
@@ -157,10 +158,18 @@ public class EcostressUtils {
      * @param offsetY       the Y offset of the subset
      * @param destBuffer    the destination buffer where the subset data from the ECOSTRESS product file band is put
      */
-    public static void readEcostressBandData(EcostressFile ecostressFile, Band targetBand, int width, int height, long offsetX, long offsetY, ProductData destBuffer) {
+    public static void readEcostressBandData(EcostressFile ecostressFile, Band targetBand, int width, int height, long offsetX, long offsetY, ProductData destBuffer, boolean isBandRasterReversed) {
         final EcostressBand ecostressBand = (EcostressBand) targetBand;
         final String bandElementPath = ecostressBand.getBandPathInEcostressProduct();
-        final Object ecostressBandData = readEcostressBandDataSubset(ecostressFile, bandElementPath, width, height, offsetX, offsetY);
+        final Object ecostressBandData;
+        if (isBandRasterReversed) {
+            offsetX = targetBand.getRasterWidth() - width - offsetX;
+            offsetY = targetBand.getRasterHeight() - height - offsetY;
+            ecostressBandData = readEcostressBandDataSubset(ecostressFile, bandElementPath, width, height, offsetX, offsetY);
+            ArrayUtils.swapArray(ecostressBandData);
+        } else {
+            ecostressBandData = readEcostressBandDataSubset(ecostressFile, bandElementPath, width, height, offsetX, offsetY);
+        }
         destBuffer.setElems(ecostressBandData);
     }
 
