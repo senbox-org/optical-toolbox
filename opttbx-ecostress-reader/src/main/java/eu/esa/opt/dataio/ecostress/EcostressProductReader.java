@@ -21,6 +21,7 @@ import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.util.GeoUtils;
 import org.esa.snap.product.library.v2.preferences.RepositoriesCredentialsController;
 import org.esa.snap.product.library.v2.preferences.model.RemoteRepositoryCredentials;
 import org.esa.snap.remote.products.repository.RepositoryProduct;
@@ -28,7 +29,9 @@ import org.esa.snap.remote.products.repository.download.RemoteRepositoriesManage
 import org.esa.snap.remote.products.repository.download.RemoteRepositoryProductImpl;
 import org.esa.snap.remote.products.repository.geometry.Polygon2D;
 import org.esa.snap.runtime.Config;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.awt.*;
 import java.awt.geom.PathIterator;
@@ -319,11 +322,17 @@ public class EcostressProductReader extends AbstractProductReader {
     private static GeoCoding buildCrsGeoCoding(Product product, double topLeftLon, double topRightLon, double topLeftLat, double bottomLeftLat) {
         final int productWidth = product.getSceneRasterWidth();
         final int productHeight = product.getSceneRasterHeight();
-        final double pixelSizeX = Math.abs(topRightLon - topLeftLon) / (productWidth - 1);
-        final double pixelSizeY = (topLeftLat - bottomLeftLat) / (productHeight - 1);
 
         try {
-            return new CrsGeoCoding(DefaultGeographicCRS.WGS84, productWidth, productHeight, topLeftLon, topLeftLat, pixelSizeX, pixelSizeY);
+            CoordinateReferenceSystem wgs84CRS = DefaultGeographicCRS.WGS84;
+            CoordinateReferenceSystem mercatorCRS = CRS.decode("EPSG:3857");
+            final Point2D.Double originPointWGS84 = new Point2D.Double(topLeftLon, bottomLeftLat);
+            final Point2D.Double endPointWGS84 = new Point2D.Double(topRightLon, topLeftLat);
+            final Point2D.Double originPointMercator = GeoUtils.reprojectPoint(originPointWGS84, wgs84CRS, mercatorCRS);
+            final Point2D.Double endPointMercator = GeoUtils.reprojectPoint(endPointWGS84, wgs84CRS, mercatorCRS);
+            final double pixelSizeX = (endPointMercator.getX() - originPointMercator.getX()) / (productWidth - 1);
+            final double pixelSizeY = (endPointMercator.getY() - originPointMercator.getY()) / (productHeight - 1);
+            return new CrsGeoCoding(mercatorCRS, productWidth, productHeight, originPointMercator.getX(), endPointMercator.getY(), pixelSizeX, pixelSizeY, 0, 0);
         } catch (Exception e) {
             logger.warning("Cannot build CRS geocoding for product '" + product.getName() + "': " + e.getMessage());
         }
