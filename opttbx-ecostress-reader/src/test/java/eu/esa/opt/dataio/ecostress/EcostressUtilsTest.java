@@ -22,6 +22,7 @@ import java.util.List;
 public class EcostressUtilsTest {
 
     private static final String ECOSTRESS_TEST_PRODUCT_FILE_NAME = "ECOSTRESS_L2_CLOUD_32257_019_20240314T205642_0601_01.h5";
+    private static final String ECOSTRESS_TEST_NIGHT_PRODUCT_FILE_NAME = "ECOv002_L2_CLOUD_37968_001_20250318T021016_0713_01.h5";
 
     @Before
     public void loadHdf5Library() {
@@ -127,7 +128,7 @@ public class EcostressUtilsTest {
                 final Band band = bands.get(0);
                 final byte[] productDataElements = new byte[100 * 100];
                 final ProductData productData = ProductData.createInstance(productDataElements);
-                EcostressUtils.readEcostressBandData(ecostressFile, band, 100, 100, 400, 3000, productData);
+                EcostressUtils.readEcostressBandData(ecostressFile, band, 100, 100, 400, 3000, productData, false);
                 Assert.assertEquals(100 * 100, productData.getNumElems());
                 Assert.assertEquals(1, productData.getElemIntAt(74 + 31 * 100));
                 Assert.assertEquals(33, productData.getElemIntAt(75 + 31 * 100));
@@ -137,8 +138,36 @@ public class EcostressUtilsTest {
         }
     }
 
+    @Test
+    public void readReversedEcostressBandDataTest() {
+        try {
+            final Path ecostressTestProductFilePath = getEcostressTestNightProductFilePath();
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, "/SDS");
+                Assert.assertEquals(2, bands.size());
+                final Band band = bands.get(0);
+                final byte[] productDataElements = new byte[100 * 100];
+                final ProductData productData = ProductData.createInstance(productDataElements);
+                EcostressUtils.readEcostressBandData(ecostressFile, band, 100, 100, 400, 3000, productData, true);
+                Assert.assertEquals(100 * 100, productData.getNumElems());
+                Assert.assertEquals(2, productData.getElemIntAt(48 + 31 * 100));
+                Assert.assertEquals(1, productData.getElemIntAt(49 + 31 * 100));
+            }
+        } catch (Exception e) {
+            Assert.fail("Test crashed. Reason: " + e.getMessage());
+        }
+    }
+
     private static Path getEcostressTestProductFilePath() throws URISyntaxException {
-        final URL url = EcostressUtilsTest.class.getResource(ECOSTRESS_TEST_PRODUCT_FILE_NAME);
+        return getEcostressTestProductFilePath(ECOSTRESS_TEST_PRODUCT_FILE_NAME);
+    }
+
+    private static Path getEcostressTestNightProductFilePath() throws URISyntaxException {
+        return getEcostressTestProductFilePath(ECOSTRESS_TEST_NIGHT_PRODUCT_FILE_NAME);
+    }
+
+    private static Path getEcostressTestProductFilePath(String ecostressProductFileName) throws URISyntaxException {
+        final URL url = EcostressUtilsTest.class.getResource(ecostressProductFileName);
         if (url != null) {
             return Paths.get(url.toURI());
         }
