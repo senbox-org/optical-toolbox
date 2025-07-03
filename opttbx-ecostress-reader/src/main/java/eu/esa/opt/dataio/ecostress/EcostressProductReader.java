@@ -21,6 +21,7 @@ import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.util.ArrayUtils;
 import org.esa.snap.core.util.GeoUtils;
 import org.esa.snap.product.library.v2.preferences.RepositoriesCredentialsController;
@@ -106,6 +107,11 @@ public class EcostressProductReader extends AbstractProductReader {
         final MetadataElement productMetadataRoot = ecostressProduct.getMetadataRoot();
         for (MetadataElement metadataElement : getMetadataElementsList(ecostressFile, ecostressMetadata)) {
             productMetadataRoot.addElement(metadataElement);
+            final MetadataAttribute dayNightFlagAttribute = metadataElement.getAttribute(EcostressConstants.ECOSTRESS_STANDARD_METADATA_DAY_NIGHT_FLAG);
+            if (dayNightFlagAttribute != null) {
+                final boolean isNight = dayNightFlagAttribute.getData().getElemString().equalsIgnoreCase("night");
+                ecostressProduct.setReversed(ecostressMetadata.isReversedOnNight() && isNight);
+            }
         }
         for (Band band : bandsList) {
             ecostressProduct.addBand(band);

@@ -72,6 +72,13 @@ public abstract class EcostressMetadata {
     protected abstract String getProductFileNameRegex();
 
     /**
+     * Checks whether the ECOSTRESS product is reversed when aquised during the night
+     *
+     * @return {@code true} when the ECOSTRESS product is reversed
+     */
+    protected abstract Boolean isReversedOnNight();
+
+    /**
      * Checks whether the ECOSTRESS product file is valid by validating its filename with a regex
      *
      * @return {@code true} when the ECOSTRESS product file is valid

@@ -18,6 +18,7 @@ public class EcostressConstants {
     public static final String ECOSTRESS_STANDARD_METADATA_WEST_BOUNDING_COORDINATE = "WestBoundingCoordinate";
     public static final String ECOSTRESS_STANDARD_METADATA_NORTH_BOUNDING_COORDINATE = "NorthBoundingCoordinate";
     public static final String ECOSTRESS_STANDARD_METADATA_SOUTH_BOUNDING_COORDINATE = "SouthBoundingCoordinate";
+    public static final String ECOSTRESS_STANDARD_METADATA_DAY_NIGHT_FLAG = "DayNightFlag";
 
     public static final String ECOSTRESS_LATITUDE_BAND_NAME = "latitude";
     public static final String ECOSTRESS_LONGITUDE_BAND_NAME = "longitude";
