@@ -8,12 +8,12 @@ package eu.esa.opt.dataio.ecostress;
 public class EcostressConstants {
 
     public static final String ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA = "/StandardMetadata";
-    public static final String ECOSTRESS_STANDARD_METADATA_RANGE_BEGINNING_DATE = ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA + "/RangeBeginningDate";
-    public static final String ECOSTRESS_STANDARD_METADATA_RANGE_BEGINNING_TIME = ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA + "/RangeBeginningTime";
-    public static final String ECOSTRESS_STANDARD_METADATA_RANGE_ENDING_DATE = ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA + "/RangeEndingDate";
-    public static final String ECOSTRESS_STANDARD_METADATA_RANGE_ENDING_TIME = ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA + "/RangeEndingTime";
-    public static final String ECOSTRESS_STANDARD_METADATA_IMAGE_LINES = ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA + "/ImageLines";
-    public static final String ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS = ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA + "/ImagePixels";
+    public static final String ECOSTRESS_STANDARD_METADATA_RANGE_BEGINNING_DATE = "/RangeBeginningDate";
+    public static final String ECOSTRESS_STANDARD_METADATA_RANGE_BEGINNING_TIME = "/RangeBeginningTime";
+    public static final String ECOSTRESS_STANDARD_METADATA_RANGE_ENDING_DATE = "/RangeEndingDate";
+    public static final String ECOSTRESS_STANDARD_METADATA_RANGE_ENDING_TIME = "/RangeEndingTime";
+    public static final String ECOSTRESS_STANDARD_METADATA_IMAGE_LINES = "/ImageLines";
+    public static final String ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS = "/ImagePixels";
     public static final String ECOSTRESS_STANDARD_METADATA_EAST_BOUNDING_COORDINATE = "EastBoundingCoordinate";
     public static final String ECOSTRESS_STANDARD_METADATA_WEST_BOUNDING_COORDINATE = "WestBoundingCoordinate";
     public static final String ECOSTRESS_STANDARD_METADATA_NORTH_BOUNDING_COORDINATE = "NorthBoundingCoordinate";

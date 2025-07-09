@@ -88,8 +88,8 @@ public class EcostressUtils {
      * @param ecostressFile the ECOSTRESS product file
      * @return the start time from an ECOSTRESS product file
      */
-    public static ProductData.UTC extractStartTime(EcostressFile ecostressFile) {
-        return extractDateTime(ecostressFile, EcostressConstants.ECOSTRESS_STANDARD_METADATA_RANGE_BEGINNING_DATE, EcostressConstants.ECOSTRESS_STANDARD_METADATA_RANGE_BEGINNING_TIME);
+    public static ProductData.UTC extractStartTime(EcostressFile ecostressFile, String pathOfGeneralMetadata ) {
+        return extractDateTime(ecostressFile, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_RANGE_BEGINNING_DATE, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_RANGE_BEGINNING_TIME);
     }
 
     /**
@@ -98,8 +98,8 @@ public class EcostressUtils {
      * @param ecostressFile the ECOSTRESS product file
      * @return the end time from an ECOSTRESS product file
      */
-    public static ProductData.UTC extractEndTime(EcostressFile ecostressFile) {
-        return extractDateTime(ecostressFile, EcostressConstants.ECOSTRESS_STANDARD_METADATA_RANGE_ENDING_DATE, EcostressConstants.ECOSTRESS_STANDARD_METADATA_RANGE_ENDING_TIME);
+    public static ProductData.UTC extractEndTime(EcostressFile ecostressFile, String pathOfGeneralMetadata) {
+        return extractDateTime(ecostressFile, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_RANGE_ENDING_DATE, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_RANGE_ENDING_TIME);
     }
 
     /**
