@@ -65,7 +65,7 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                Assert.assertEquals("14-MAR-2024 20:56:43.163661", EcostressUtils.extractStartTime(ecostressFile).getElemString());
+                Assert.assertEquals("14-MAR-2024 20:56:43.163661", EcostressUtils.extractStartTime(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA).getElemString());
             }
         } catch (Exception e) {
             Assert.fail("Test crashed. Reason: " + e.getMessage());
@@ -77,7 +77,7 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                Assert.assertEquals("14-MAR-2024 21:01:43.163661", EcostressUtils.extractEndTime(ecostressFile).getElemString());
+                Assert.assertEquals("14-MAR-2024 21:01:43.163661", EcostressUtils.extractEndTime(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA).getElemString());
             }
         } catch (Exception e) {
             Assert.fail("Test crashed. Reason: " + e.getMessage());
@@ -89,7 +89,8 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                final Dimension dimension = EcostressUtils.extractEcostressProductDimension(ecostressFile, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
+                final String pathOfGeneralMetadata = EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA;
+                final Dimension dimension = EcostressUtils.extractEcostressProductDimension(ecostressFile, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
                 Assert.assertEquals(5400, dimension.width);
                 Assert.assertEquals(5632, dimension.height);
             }
