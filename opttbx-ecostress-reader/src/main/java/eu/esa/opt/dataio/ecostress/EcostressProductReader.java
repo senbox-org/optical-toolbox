@@ -98,8 +98,14 @@ public class EcostressProductReader extends AbstractProductReader {
         if (ecostressMetadata == null) {
             return null;
         }
+        String pathOfGeneralMetadata = EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA;
+        for (String metadataElementPath : ecostressMetadata.getMetadataElementsPaths()) {
+            if (metadataElementPath.endsWith(EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA)) {
+                pathOfGeneralMetadata = metadataElementPath;
+            }
+        }
         final List<Band> bandsList = getBandsList(ecostressFile, ecostressMetadata);
-        Dimension productSize = EcostressUtils.extractEcostressProductDimension(ecostressFile, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
+        Dimension productSize = EcostressUtils.extractEcostressProductDimension(ecostressFile, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
         if (productSize.height < 1 || productSize.width < 1) {
             productSize = computeProductDimensionUsingBandsDimensions(bandsList);
         }
@@ -118,8 +124,8 @@ public class EcostressProductReader extends AbstractProductReader {
         }
         ecostressProduct.setAutoGrouping(ecostressMetadata.getGroupingPattern());
         ecostressProduct.setDescription("ECOSTRESS Product");
-        ecostressProduct.setStartTime(EcostressUtils.extractStartTime(ecostressFile));
-        ecostressProduct.setEndTime(EcostressUtils.extractEndTime(ecostressFile));
+        ecostressProduct.setStartTime(EcostressUtils.extractStartTime(ecostressFile, pathOfGeneralMetadata));
+        ecostressProduct.setEndTime(EcostressUtils.extractEndTime(ecostressFile, pathOfGeneralMetadata));
         ecostressProduct.setFileLocation(ecostressFile);
         final GeoCoding geoCoding = buildGeoCoding(ecostressFile, ecostressProduct, ecostressMetadata);
         if (geoCoding != null) {
