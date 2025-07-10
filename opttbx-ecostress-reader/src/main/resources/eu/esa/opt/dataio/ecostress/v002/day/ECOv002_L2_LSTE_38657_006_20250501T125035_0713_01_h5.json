@@ -1,11 +1,28 @@
 {
-  "id": "ECOSTRESS_L2_LSTE_32257_019_20240314T205642_0601_01_h5",
+  "id": "v002/day/ECOv002_L2_LSTE_38657_006_20250501T125035_0713_01_h5",
   "decodeQualification": "INTENDED",
   "expectedContent": {
     "sceneWidth": 5400,
     "sceneHeight": 5632,
-    "startTime": "14-MAR-2024 20:56:43.163661",
-    "endTime": "14-MAR-2024 21:01:43.163661",
+    "startTime": "01-MAY-2025 12:50:35.536340",
+    "endTime": "01-MAY-2025 12:51:27.506225",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 37.95271563325222,
+          "lon": -92.68223695481944
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 37.360854498646184,
+          "lon": -90.84114990033137
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
     "bands": [
       {
         "name": "SDS_Emis1",
@@ -18,14 +35,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2329,
-            "y": 3027,
-            "value": -32.0
+            "x": 281,
+            "y": 1003,
+            "value": -23.0
           },
           {
-            "x": 4009,
-            "y": 3654,
-            "value": -33.0
+            "x": 3699,
+            "y": 4790,
+            "value": -92.0
           }
         ]
       },
@@ -40,14 +57,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 281,
-            "y": 1003,
-            "value": 516.0
+            "x": 1570,
+            "y": 1446,
+            "value": 429.0
           },
           {
-            "x": 3699,
-            "y": 4790,
-            "value": 426.0
+            "x": 3296,
+            "y": 2057,
+            "value": 437.0
           }
         ]
       },
@@ -62,14 +79,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1570,
-            "y": 1446,
-            "value": -56.0
+            "x": 2970,
+            "y": 4197,
+            "value": -19.0
           },
           {
-            "x": 3296,
-            "y": 2057,
-            "value": -76.0
+            "x": 3285,
+            "y": 5229,
+            "value": -23.0
           }
         ]
       },
@@ -84,14 +101,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2970,
-            "y": 4197,
-            "value": 281.0
+            "x": 854,
+            "y": 3751,
+            "value": 254.0
           },
           {
-            "x": 3285,
-            "y": 5229,
-            "value": 316.0
+            "x": 2803,
+            "y": 5144,
+            "value": 267.0
           }
         ]
       },
@@ -106,14 +123,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 854,
-            "y": 3751,
-            "value": -12.0
+            "x": 4083,
+            "y": 2729,
+            "value": -31.0
           },
           {
-            "x": 2803,
-            "y": 5144,
-            "value": -23.0
+            "x": 5134,
+            "y": 2736,
+            "value": -24.0
           }
         ]
       },
@@ -128,14 +145,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 4083,
-            "y": 2729,
-            "value": 290.0
+            "x": 1838,
+            "y": 5065,
+            "value": 253.0
           },
           {
-            "x": 5134,
-            "y": 2736,
-            "value": 290.0
+            "x": 53,
+            "y": 2651,
+            "value": 239.0
           }
         ]
       },
@@ -150,14 +167,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1838,
-            "y": 5065,
-            "value": -14.0
+            "x": 1768,
+            "y": 1110,
+            "value": -12.0
           },
           {
-            "x": 53,
-            "y": 2651,
-            "value": -12.0
+            "x": 1475,
+            "y": 243,
+            "value": -13.0
           }
         ]
       },
@@ -172,14 +189,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1768,
-            "y": 1110,
-            "value": 189.0
+            "x": 5245,
+            "y": 3405,
+            "value": 194.0
           },
           {
-            "x": 1475,
-            "y": 243,
-            "value": 192.0
+            "x": 3090,
+            "y": 4036,
+            "value": 173.0
           }
         ]
       },
@@ -194,14 +211,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 5245,
-            "y": 3405,
-            "value": -13.0
+            "x": 1252,
+            "y": 2802,
+            "value": -25.0
           },
           {
-            "x": 3090,
-            "y": 4036,
-            "value": -21.0
+            "x": 1733,
+            "y": 4069,
+            "value": -13.0
           }
         ]
       },
@@ -216,14 +233,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1252,
-            "y": 2802,
-            "value": 144.0
+            "x": 1933,
+            "y": 2805,
+            "value": 150.0
           },
           {
-            "x": 1733,
-            "y": 4069,
-            "value": 148.0
+            "x": 2175,
+            "y": 2491,
+            "value": 164.0
           }
         ]
       },
@@ -238,14 +255,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1933,
-            "y": 2805,
-            "value": -25.0
+            "x": 3103,
+            "y": 517,
+            "value": -26.0
           },
           {
-            "x": 2175,
-            "y": 2491,
-            "value": -26.0
+            "x": 3484,
+            "y": 89,
+            "value": -21.0
           }
         ]
       },
@@ -260,14 +277,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 3103,
-            "y": 517,
-            "value": 14797.0
+            "x": 5266,
+            "y": 2068,
+            "value": 14318.0
           },
           {
-            "x": 3484,
-            "y": 89,
-            "value": 15067.0
+            "x": 5130,
+            "y": 5330,
+            "value": 13447.0
           }
         ]
       },
@@ -282,14 +299,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 5266,
-            "y": 2068,
-            "value": 49.0
+            "x": 598,
+            "y": 2544,
+            "value": 40.0
           },
           {
-            "x": 5130,
-            "y": 5330,
-            "value": 47.0
+            "x": 3082,
+            "y": 3167,
+            "value": 45.0
           }
         ]
       },
@@ -304,14 +321,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 598,
-            "y": 2544,
-            "value": 1992.0
+            "x": 2731,
+            "y": 2937,
+            "value": 2604.0
           },
           {
-            "x": 3082,
-            "y": 3167,
-            "value": 2606.0
+            "x": 2433,
+            "y": 3272,
+            "value": 2313.0
           }
         ]
       },
@@ -326,58 +343,102 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2731,
-            "y": 2937,
-            "value": 18880.0
+            "x": 77,
+            "y": 2391,
+            "value": 19136.0
           },
           {
-            "x": 2433,
-            "y": 3272,
-            "value": 17856.0
+            "x": 379,
+            "y": 5591,
+            "value": 18880.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_cloud_mask",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "1 = cloudy",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1602,
+            "y": 4196,
+            "value": 0.0
+          },
+          {
+            "x": 4339,
+            "y": 4147,
+            "value": 1.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_water_mask",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "0=land 1=water",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4506,
+            "y": 5325,
+            "value": 0.0
+          },
+          {
+            "x": 1342,
+            "y": 2995,
+            "value": 0.0
           }
         ]
       }
     ],
     "metadata": [
       {
-        "path": "StandardMetadata/NorthBoundingCoordinate",
-        "value": "-18.39799049325123"
-      },
-      {
-        "path": "StandardMetadata/WestBoundingCoordinate",
-        "value": "130.7289281032126"
-      },
-      {
-        "path": "StandardMetadata/RangeBeginningTime",
-        "value": "20:56:43.163661"
-      },
-      {
-        "path": "L2 LSTE Metadata/NWPSource",
-        "value": "GEOS5"
-      },
-      {
-        "path": "L2 LSTE Metadata/QAPercentGoodQuality",
-        "value": "93"
-      },
-      {
-        "path": "StandardMetadata/PlatformType",
-        "value": "Spacecraft"
-      },
-      {
         "path": "L2 LSTE Metadata/CloudMinTemperature",
-        "value": "9999.0"
+        "value": "267.8054927062988"
       },
       {
         "path": "L2 LSTE Metadata/CloudMaxTemperature",
-        "value": "0.0"
+        "value": "279.8311903190613"
       },
       {
         "path": "StandardMetadata/ProcessingEnvironment",
-        "value": "Linux eco-p47.tir 3.10.0-1160.105.1.el7.x86_64 #1 SMP Thu Dec 7 15:39:45 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux"
+        "value": "Linux 586f9c2df48c 4.18.0-553.47.1.el8_10.x86_64 #1 SMP Wed Apr 2 12:00:51 PDT 2025 x86_64 x86_64 x86_64 GNU/Linux"
       },
       {
         "path": "StandardMetadata/SISVersion",
         "value": "Version 1"
+      },
+      {
+        "path": "StandardMetadata/BuildID",
+        "value": "0713"
+      },
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2025-05-02T07:43:08.223Z"
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO_L2_LSTE.002"
+      },
+      {
+        "path": "L2 LSTE Metadata/Emis5GoodAvg",
+        "value": "0.9322100938835536"
+      },
+      {
+        "path": "L2 LSTE Metadata/Emis1GoodAvg",
+        "value": "0.947459486183838"
+      },
+      {
+        "path": "StandardMetadata/PlatformShortName",
+        "value": "ISS"
       }
     ]
   }
