@@ -28,10 +28,10 @@ public class Sentinel3Level1ReaderPlugInTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testDecodeQualification_OlciLevel1b() {
-        String path = createManifestFilePath("OL", "1", "ERR", "");
+        String path = createManifestFilePath("OL", "1", "ERR", ".SEN3");
         assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
 
-        path = createManifestFilePath("OL", "1", "EFR", "");
+        path = createManifestFilePath("OL", "1", "EFR", ".SEN3.zip");
         assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
 
         path = "sensors_platforms/SENTINEL-3/olci/L1/S3A_OL_1_EFR____20180407T004637_20180407T004937_20180408T065235_0180_029_373_2520_MAR_O_NT_002.SEN3/xfdumanifest.xml";
@@ -178,6 +178,7 @@ public class Sentinel3Level1ReaderPlugInTest {
         assertFalse(plugIn.isValidSourceName("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.zip"));
         assertFalse(plugIn.isValidSourceName("S2A_OPER_PRD_MSIL1C_PDMC_20160918T063540_R022_V20160916T101022_20160916T101045.SAFE"));
         assertFalse(plugIn.isValidSourceName("SM_OPER_MIR_SCLF1C_20221224T220123_20221224T225442_724_001_1.zip"));
+        assertFalse(plugIn.isValidSourceName("S3A_OL_1_EFR____20170101T095821_20170101T100021_20171010T055022_0119_012_350______MR1_R_NT_002.SEN3__calimnos.nc"));
     }
 
     @Test
