@@ -1,11 +1,11 @@
 {
-  "id": "ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01_h5",
+  "id": "v002/night/ECOv002_L1B_RAD_37968_001_20250318T021016_0713_01_h5",
   "decodeQualification": "INTENDED",
   "expectedContent": {
     "sceneWidth": 5400,
     "sceneHeight": 5632,
-    "startTime": "14-MAR-2024 14:14:43.009439",
-    "endTime": "14-MAR-2024 14:15:34.349787",
+    "startTime": "18-MAR-2025 02:10:16.467964",
+    "endTime": "18-MAR-2025 02:11:07.430279",
     "bands": [
       {
         "name": "Radiance_data_quality_1",
@@ -135,12 +135,12 @@
           {
             "x": 4083,
             "y": 2729,
-            "value": 3.026365
+            "value": 6.0081267
           },
           {
             "x": 5134,
             "y": 2736,
-            "value": 2.9361212
+            "value": 5.9111223
           }
         ]
       },
@@ -157,12 +157,12 @@
           {
             "x": 1838,
             "y": 5065,
-            "value": 2.6666691
+            "value": 5.9010596
           },
           {
             "x": 53,
             "y": 2651,
-            "value": 1.9623872
+            "value": 4.749432
           }
         ]
       },
@@ -179,12 +179,12 @@
           {
             "x": 1768,
             "y": 1110,
-            "value": 3.2646897
+            "value": 6.3978977
           },
           {
             "x": 1475,
             "y": 243,
-            "value": 3.3985999
+            "value": 6.3227086
           }
         ]
       },
@@ -201,12 +201,12 @@
           {
             "x": 5245,
             "y": 3405,
-            "value": 3.9068723
+            "value": 7.1923676
           },
           {
             "x": 3090,
             "y": 4036,
-            "value": 2.9992054
+            "value": 6.6186285
           }
         ]
       },
@@ -223,12 +223,12 @@
           {
             "x": 1252,
             "y": 2802,
-            "value": 2.9718394
+            "value": 6.4850526
           },
           {
             "x": 1733,
             "y": 4069,
-            "value": 3.2117531
+            "value": 5.155396
           }
         ]
       },
@@ -268,12 +268,12 @@
           {
             "x": 3103,
             "y": 4,
-            "value": 1285617.0
+            "value": 411098.0
           },
           {
             "x": 3484,
             "y": 0,
-            "value": 1294688.0
+            "value": 420209.0
           }
         ]
       },
@@ -291,12 +291,12 @@
           {
             "x": 0,
             "y": 2068,
-            "value": 7.6369779E8
+            "value": 7.9553594E8
           },
           {
             "x": 0,
             "y": 5330,
-            "value": 7.6369779E8
+            "value": 7.9553594E8
           }
         ]
       }
@@ -307,16 +307,16 @@
         "value": "L1B_RAD_PGE"
       },
       {
-        "path": "L1B_RADMetadata/QAPercentMissingData",
-        "value": "0.0"
+        "path": "L1B_RADMetadata/CalibrationOffsetCorrection",
+        "value": "0.968,0.511,0.6181,0.5208,0.5515"
       },
       {
-        "path": "L1B_RADMetadata/QAPercentMissingData",
-        "value": "0.0"
+        "path": "L1B_RADMetadata/CalibrationOffsetCorrection",
+        "value": "0.968,0.511,0.6181,0.5208,0.5515"
       },
       {
-        "path": "StandardMetadata/ProcessingLevelID",
-        "value": "L1B"
+        "path": "StandardMetadata/ProcessingLevelDescription",
+        "value": "Level 1B Radiance Parameters"
       },
       {
         "path": "StandardMetadata/NorthBoundingCoordinate",
@@ -328,7 +328,7 @@
       },
       {
         "path": "StandardMetadata/RangeEndingDate",
-        "value": "2024-03-14"
+        "value": "2025-03-18"
       },
       {
         "path": "L1B_RADMetadata/QAPercentMissingData",
@@ -339,8 +339,8 @@
         "value": "Reverse line order"
       },
       {
-        "path": "StandardMetadata/PlatformType",
-        "value": "Spacecraft"
+        "path": "StandardMetadata/PlatformShortName",
+        "value": "ISS"
       }
     ]
   }

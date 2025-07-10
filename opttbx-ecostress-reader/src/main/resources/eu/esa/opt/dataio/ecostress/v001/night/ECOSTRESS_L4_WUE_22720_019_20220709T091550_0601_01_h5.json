@@ -1,0 +1,93 @@
+{
+  "id": "v001/night/ECOSTRESS_L4_WUE_22720_019_20220709T091550_0601_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "09-JUL-2022 09:15:51.209625",
+    "endTime": "09-JUL-2022 09:20:51.209625",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 43.497520272781536,
+          "lon": -68.86559817799375
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 42.89292700877896,
+          "lon": -67.134017003203
+        }
+      ],
+      "reverseAccuracy": 2.1827872842550278E-11
+    },
+    "bands": [
+      {
+        "name": "Water_Use_Efficiency_WUEavg",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "ratio GPP/ET",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": "NaN"
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": "NaN"
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/ImageLines",
+        "value": "5632"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFileGPP",
+        "value": "MOD17A2H.A2022177.h12v04.006.2022186054411.hdf,MOD17A2H.A2022177.h13v04.006.2022186053259.hdf"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2022-07-11T01:04:26.995Z"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFileGPP",
+        "value": "MOD17A2H.A2022177.h12v04.006.2022186054411.hdf,MOD17A2H.A2022177.h13v04.006.2022186053259.hdf"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFileGPP",
+        "value": "MOD17A2H.A2022177.h12v04.006.2022186054411.hdf,MOD17A2H.A2022177.h13v04.006.2022186053259.hdf"
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO4WUE"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "1.2.0"
+      }
+    ]
+  }
+}

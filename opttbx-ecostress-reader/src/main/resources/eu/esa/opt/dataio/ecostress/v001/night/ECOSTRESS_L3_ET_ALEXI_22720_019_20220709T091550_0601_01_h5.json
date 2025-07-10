@@ -1,36 +1,31 @@
 {
-  "id": "ECOSTRESS_L3_ET_ALEXI_22306_005_20220612T161701_0601_02_h5",
+  "id": "v001/night/ECOSTRESS_L3_ET_ALEXI_22720_019_20220709T091550_0601_01_h5",
   "decodeQualification": "INTENDED",
   "expectedContent": {
     "sceneWidth": 5400,
     "sceneHeight": 5632,
-    "startTime": "12-JUN-2022 16:17:01.706317",
-    "endTime": "12-JUN-2022 16:22:01.706317",
+    "startTime": "09-JUL-2022 09:15:51.209625",
+    "endTime": "09-JUL-2022 09:20:51.209625",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 43.49752018262043,
+          "lon": -68.86559551912983
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 42.89292679162268,
+          "lon": -67.13401400188305
+        }
+      ],
+      "reverseAccuracy": 1.4551915228366852E-11
+    },
     "bands": [
       {
-        "name": "EVAPOTRANSPIRATION__ALEXI_ETdaily",
-        "bandWidth": 5400,
-        "bandHeight": 5632,
-        "geophysicalUnit": "mm/day",
-        "noDataValue": "9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 2329,
-            "y": 3027,
-            "value": 0.01
-          },
-          {
-            "x": 4009,
-            "y": 3654,
-            "value": 0.01
-          }
-        ]
-      },
-      {
-        "name": "EVAPOTRANSPIRATION__ALEXI_ETdailyUncertainty",
+        "name": "EVAPOTRANSPIRATION_ALEXI_ETdaily",
         "bandWidth": 5400,
         "bandHeight": 5632,
         "geophysicalUnit": "mm/day",
@@ -42,17 +37,39 @@
           {
             "x": 281,
             "y": 1003,
-            "value": 1.17
+            "value": "NaN"
           },
           {
             "x": 3699,
             "y": 4790,
-            "value": 0.75
+            "value": "NaN"
           }
         ]
       },
       {
-        "name": "EVAPOTRANSPIRATION__ALEXI_QualityFlag",
+        "name": "EVAPOTRANSPIRATION_ALEXI_ETdailyUncertainty",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "mm/day",
+        "noDataValue": "9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1570,
+            "y": 1446,
+            "value": 1.08
+          },
+          {
+            "x": 3296,
+            "y": 2057,
+            "value": 0.9
+          }
+        ]
+      },
+      {
+        "name": "EVAPOTRANSPIRATION_ALEXI_QualityFlag",
         "bandWidth": 5400,
         "bandHeight": 5632,
         "geophysicalUnit": "NA",
@@ -62,13 +79,13 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1570,
-            "y": 1446,
+            "x": 2970,
+            "y": 4197,
             "value": 0.0
           },
           {
-            "x": 3296,
-            "y": 2057,
+            "x": 3285,
+            "y": 5229,
             "value": 0.0
           }
         ]
@@ -76,16 +93,8 @@
     ],
     "metadata": [
       {
-        "path": "L3_ET_ALEXI Metadata/BandSpecification",
-        "value": "0.0,0.0,8.78,0.0,10.52,12.0"
-      },
-      {
-        "path": "L3_ET_ALEXI Metadata/Projection",
-        "value": "ECOSTRESS"
-      },
-      {
         "path": "StandardMetadata/ProductionDateTime",
-        "value": "2023-01-29T18:41:37.151Z"
+        "value": "2022-07-11T01:04:23.240Z"
       },
       {
         "path": "L3_ET_ALEXI Metadata/Projection",
@@ -114,6 +123,14 @@
       {
         "path": "StandardMetadata/AutomaticQualityFlag",
         "value": "PASS"
+      },
+      {
+        "path": "L3_ET_ALEXI Metadata/AncillaryFileWindSpeed",
+        "value": "alexi_wind_2022_07_09_ECOSTRESS_22720019.h5"
+      },
+      {
+        "path": "L3_ET_ALEXI Metadata/AvgETUncertainty",
+        "value": ""
       }
     ]
   }
