@@ -20,9 +20,11 @@ import java.util.logging.Level;
  * @author Razvan Dumitrascu
  * @since 5.0.6
  */
+@Deprecated
 @OperatorMetadata(
         alias = "BandsExtractorOp",
         version="1.0",
+        internal = true,
         category = "Optical/Thematic Land Processing",
         description = "Creates a new product out of the source product containing only the indexes bands given",
         authors = "Razvan Dumitrascu",

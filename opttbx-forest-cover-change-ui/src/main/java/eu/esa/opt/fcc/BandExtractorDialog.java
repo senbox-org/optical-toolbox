@@ -29,6 +29,7 @@ import java.util.*;
  * @author CSG RO
  * @since 13.0.0
  */
+@Deprecated
 public class BandExtractorDialog  extends DefaultSingleTargetProductDialog {
 
     private final Field bandsField;
