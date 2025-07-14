@@ -1,0 +1,506 @@
+[
+  {
+    "formatName": "ECOSTRESS_L1B_ATT",
+    "productDataDefinitionsGroups": [
+      "/Ephemeris",
+      "/Attitude",
+      "/Uncorrected Ephemeris",
+      "/Uncorrected Attitude"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L1GEOMetadata"
+    ],
+    "remotePlatformName": "ecostress_eco1batt",
+    "productFileNamePattern": "ECOSTRESS_L1B_ATT_\\d{5}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Ephemeris:Attitude:Uncorrected_Ephemeris:Uncorrected_Attitude",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_L1B_GEO",
+    "productDataDefinitionsGroups": [
+      "/Geolocation"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L1GEOMetadata"
+    ],
+    "remotePlatformName": "ecostress_eco1bgeo",
+    "productFileNamePattern": "ECOSTRESS_L1B_GEO_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Geolocation",
+    "isReversedWhenNight": true
+  },
+  {
+    "formatName": "ECOSTRESS_L1B_RAD",
+    "productDataDefinitionsGroups": [
+      "/Radiance",
+      "/SWIR",
+      "/FPIEencoder",
+      "/Time"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L1B_RADMetadata"
+    ],
+    "remotePlatformName": "ecostress_eco1brad",
+    "productFileNamePattern": "ECOSTRESS_L1B_RAD_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Radiance:SWIR:FPIEencoder:Time",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_L1B_MAP_RAD",
+    "productDataDefinitionsGroups": [
+      "/Mapped"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "L1GEOMetadata",
+      "/Mapped/MapInformation"
+    ],
+    "remotePlatformName": "ecostress_eco1bmaprad",
+    "productFileNamePattern": "ECOSTRESS_L1B_MAP_RAD_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Mapped",
+    "isReversedWhenNight": true
+  },
+  {
+    "formatName": "ECOSTRESS_L2_CLOUD",
+    "productDataDefinitionsGroups": [
+      "/SDS"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L2 CLOUD Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco2cld",
+    "productFileNamePattern": "ECOSTRESS_L2_CLOUD_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "SDS",
+    "isReversedWhenNight": true
+  },
+  {
+    "formatName": "ECOSTRESS_L2_LSTE",
+    "productDataDefinitionsGroups": [
+      "/SDS"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L2 LSTE Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco2lste",
+    "productFileNamePattern": "ECOSTRESS_L2_LSTE_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "SDS",
+    "isReversedWhenNight": true
+  },
+  {
+    "formatName": "ECOSTRESS_L3_ET_ALEXI",
+    "productDataDefinitionsGroups": [
+      "/EVAPOTRANSPIRATION ALEXI"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L3_ET_ALEXI Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco3etalexi",
+    "productFileNamePattern": "ECOSTRESS_L3_ET_ALEXI_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "EVAPOTRANSPIRATION_ALEXI",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_L3_ET_ALEXI_USDA",
+    "productDataDefinitionsGroups": [
+      "/EVAPOTRANSPIRATION ALEXI"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L3_ET_ALEXI Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco3etalexiu",
+    "productFileNamePattern": "ECOSTRESS_L3_ET_ALEXI_USDA_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.(ames|bondville|mead).h5",
+    "groupingPattern": "EVAPOTRANSPIRATION_ALEXI",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_L3_ET_PT_JPL",
+    "productDataDefinitionsGroups": [
+      "/EVAPOTRANSPIRATION PT-JPL"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L3_ET_PT-JPL Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco3etptjpl",
+    "productFileNamePattern": "ECOSTRESS_L3_ET_PT-JPL_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "EVAPOTRANSPIRATION_PT-JPL",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_L3_L4_QA",
+    "productDataDefinitionsGroups": [
+      "/L3_L4_QA"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L3_L4_QA_Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco3ancqa",
+    "productFileNamePattern": "ECOSTRESS_L3_L4_QA_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "L3_L4_QA",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_L4_ESI_ALEXI",
+    "productDataDefinitionsGroups": [
+      "/EVAPORATIVE STRESS INDEX ALEXI"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L4_ESI_ALEXI Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco4esialexi",
+    "productFileNamePattern": "ECOSTRESS_L4_ESI_ALEXI_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "EVAPORATIVE_STRESS_INDEX_ALEXI",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_L4_ESI_ALEXI_USDA",
+    "productDataDefinitionsGroups": [
+      "/EVAPORATIVE STRESS INDEX ALEXI"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L4_ESI_ALEXI Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco4esialexiu",
+    "productFileNamePattern": "ECOSTRESS_L4_ESI_ALEXI_USDA_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.(ames|bondville|mead).h5",
+    "groupingPattern": "EVAPORATIVE_STRESS_INDEX_ALEXI",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_L4_ESI_PT_JPL",
+    "productDataDefinitionsGroups": [
+      "/Evaporative Stress Index PT-JPL"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L4_ESI_PT-JPL Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco4esiptjpl",
+    "productFileNamePattern": "ECOSTRESS_L4_ESI_PT-JPL_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Evaporative_Stress_Index_PT-JPL",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_L4_WUE",
+    "productDataDefinitionsGroups": [
+      "/Water Use Efficiency"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L4_WUE_Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco4wue",
+    "productFileNamePattern": "ECOSTRESS_L4_WUE_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Water_Use_Efficiency",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOSTRESS_BT",
+    "productDataDefinitionsGroups": [
+      "/lut"
+    ],
+    "productMetadataDefinitionsGroups": [],
+    "remotePlatformName": "",
+    "productFileNamePattern": "EcostressBrightnessTemperatureV\\d{2}.h5",
+    "groupingPattern": "lut",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L1B_ATT",
+    "productDataDefinitionsGroups": [
+      "/Ephemeris",
+      "/Attitude",
+      "/Uncorrected Ephemeris",
+      "/Uncorrected Attitude"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L1GEOMetadata"
+    ],
+    "remotePlatformName": "ecostress_eco1batt",
+    "productFileNamePattern": "ECOv002_L1B_ATT_\\d{5}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Ephemeris:Attitude:Uncorrected_Ephemeris:Uncorrected_Attitude",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L1B_GEO",
+    "productDataDefinitionsGroups": [
+      "/Geolocation"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L1GEOMetadata"
+    ],
+    "remotePlatformName": "ecostress_eco1bgeo",
+    "productFileNamePattern": "ECOv002_L1B_GEO_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Geolocation",
+    "isReversedWhenNight": true
+  },
+  {
+    "formatName": "ECOv002_L1B_RAD",
+    "productDataDefinitionsGroups": [
+      "/Radiance",
+      "/SWIR",
+      "/FPIEencoder",
+      "/Time"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L1B_RADMetadata"
+    ],
+    "remotePlatformName": "ecostress_eco1brad",
+    "productFileNamePattern": "ECOv002_L1B_RAD_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Radiance:SWIR:FPIEencoder:Time",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L1CG_RAD",
+    "productDataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L1CG_RAD_70m/Data Fields"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/StandardMetadata",
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/ProductMetadata"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L1CG_RAD_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Data_Fields",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L1CG_RAD_H5_MVS",
+    "productDataDefinitionsGroups": [],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L1CG_RAD_70m"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L1CG_RAD_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5_mvs.h5",
+    "groupingPattern": "",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L2_CLOUD",
+    "productDataDefinitionsGroups": [
+      "/SDS"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L2 CLOUD Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco2cld",
+    "productFileNamePattern": "ECOv002_L2_CLOUD_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "SDS",
+    "isReversedWhenNight": true
+  },
+  {
+    "formatName": "ECOv002_L2_LSTE",
+    "productDataDefinitionsGroups": [
+      "/SDS"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/StandardMetadata",
+      "/L2 LSTE Metadata"
+    ],
+    "remotePlatformName": "ecostress_eco2lste",
+    "productFileNamePattern": "ECOv002_L2_LSTE_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "SDS",
+    "isReversedWhenNight": true
+  },
+  {
+    "formatName": "ECOv002_L2G_CLOUD",
+    "productDataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L2G_CLOUD_70m/Data Fields"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/StandardMetadata",
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/ProductMetadata"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L2G_CLOUD_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Data_Fields",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L2G_CLOUD_H5_MVS",
+    "productDataDefinitionsGroups": [],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L2G_CLOUD_70m"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L2G_CLOUD_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5_mvs.h5",
+    "groupingPattern": "",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L2G_LSTE",
+    "productDataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L2G_LSTE_70m/Data Fields"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/StandardMetadata",
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/ProductMetadata"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L2G_LSTE_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Data_Fields",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L3G_JET",
+    "productDataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L3G_JET_70m/Data Fields"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/StandardMetadata",
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/ProductMetadata"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L3G_JET_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Data_Fields",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L3G_JET_H5_MVS",
+    "productDataDefinitionsGroups": [],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L3G_JET_70m"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L3G_JET_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5_mvs.h5",
+    "groupingPattern": "",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L3G_MET",
+    "productDataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L3G_MET_70m/Data Fields"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/StandardMetadata",
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/ProductMetadata"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L3G_MET_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Data_Fields",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L3G_MET_H5_MVS",
+    "productDataDefinitionsGroups": [],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L3G_MET_70m"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L3G_MET_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5_mvs.h5",
+    "groupingPattern": "",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L3G_SEB",
+    "productDataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L3G_SEB_70m/Data Fields"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/StandardMetadata",
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/ProductMetadata"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L3G_SEB_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Data_Fields",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L3G_SEB_H5_MVS",
+    "productDataDefinitionsGroups": [],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L3G_SEB_70m"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L3G_SEB_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5_mvs.h5",
+    "groupingPattern": "",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L3G_SM",
+    "productDataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L3G_SM_70m/Data Fields"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/StandardMetadata",
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/ProductMetadata"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L3G_SM_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Data_Fields",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L3G_SM_H5_MVS",
+    "productDataDefinitionsGroups": [],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L3G_SM_70m"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L3G_SM_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5_mvs.h5",
+    "groupingPattern": "",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L4G_ESI",
+    "productDataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L4G_ESI_70m/Data Fields"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/StandardMetadata",
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/ProductMetadata"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L4G_ESI_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Data_Fields",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L4G_ESI_H5_MVS",
+    "productDataDefinitionsGroups": [],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L4G_ESI_70m"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L4G_ESI_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5_mvs.h5",
+    "groupingPattern": "",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L4G_WUE",
+    "productDataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L4G_WUE_70m/Data Fields"
+    ],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/StandardMetadata",
+      "/HDFEOS/ADDITIONAL/FILE_ATTRIBUTES/ProductMetadata"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L4G_WUE_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5",
+    "groupingPattern": "Data_Fields",
+    "isReversedWhenNight": false
+  },
+  {
+    "formatName": "ECOv002_L4G_WUE_H5_MVS",
+    "productDataDefinitionsGroups": [],
+    "productMetadataDefinitionsGroups": [
+      "/HDFEOS/GRIDS/ECO_L4G_WUE_70m"
+    ],
+    "remotePlatformName": "",
+    "productFileNamePattern": "ECOv002_L4G_WUE_\\d{5}_\\d{3}_\\d{8}T\\d{6}_\\d{4}_\\d{2}.h5_mvs.h5",
+    "groupingPattern": "",
+    "isReversedWhenNight": false
+  }
+]

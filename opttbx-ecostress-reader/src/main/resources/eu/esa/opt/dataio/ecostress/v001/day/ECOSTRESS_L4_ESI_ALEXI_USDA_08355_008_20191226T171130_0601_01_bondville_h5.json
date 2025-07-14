@@ -1,0 +1,137 @@
+{
+  "id": "v001/day/ECOSTRESS_L4_ESI_ALEXI_USDA_08355_008_20191226T171130_0601_01_bondville_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 3000,
+    "sceneHeight": 3000,
+    "startTime": "26-DEC-2019 17:11:31.725607",
+    "endTime": "26-DEC-2019 17:16:31.725607",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 1293.0,
+          "y": 1612.0,
+          "lat": 39.9795123623261,
+          "lon": -88.47304838395695
+        },
+        {
+          "x": 2227.0,
+          "y": 1946.0,
+          "lat": 39.890552610178105,
+          "lon": -88.13957577707029
+        }
+      ],
+      "reverseAccuracy": 4.3655745685100555E-11
+    },
+    "bands": [
+      {
+        "name": "EVAPORATIVE_STRESS_INDEX_ALEXI_ESIdaily",
+        "bandWidth": 3000,
+        "bandHeight": 3000,
+        "geophysicalUnit": "unitless",
+        "noDataValue": "45.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 156,
+            "y": 534,
+            "value": -9999.0
+          },
+          {
+            "x": 2055,
+            "y": 2551,
+            "value": 0.33368132
+          }
+        ]
+      },
+      {
+        "name": "EVAPORATIVE_STRESS_INDEX_ALEXI_ESIdailyUncertainty",
+        "bandWidth": 3000,
+        "bandHeight": 3000,
+        "geophysicalUnit": "unitless",
+        "noDataValue": "45.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 872,
+            "y": 770,
+            "value": 0.35323697
+          },
+          {
+            "x": 1831,
+            "y": 1095,
+            "value": 0.35879254
+          }
+        ]
+      },
+      {
+        "name": "EVAPORATIVE_STRESS_INDEX_ALEXI_QualityFlag",
+        "bandWidth": 3000,
+        "bandHeight": 3000,
+        "geophysicalUnit": "NA",
+        "noDataValue": "45.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1650,
+            "y": 2236,
+            "value": 0.0
+          },
+          {
+            "x": 1825,
+            "y": 2785,
+            "value": 0.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2019-12-27T05:42:36.620Z"
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/Projection",
+        "value": "UTM"
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/AncillaryFileSurfReflectanceFill",
+        "value": ""
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/AncillaryFileSurfReflectanceFill",
+        "value": ""
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "L4_ALEXI-USDA"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "1.0.0"
+      },
+      {
+        "path": "StandardMetadata/HDFVersionId",
+        "value": ""
+      },
+      {
+        "path": "StandardMetadata/AutomaticQualityFlag",
+        "value": "PASS"
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/AncillaryFileWindSpeed",
+        "value": "CFSR_wind_2019360"
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/AvgETUncertainty",
+        "value": "0.31298137"
+      }
+    ]
+  }
+}

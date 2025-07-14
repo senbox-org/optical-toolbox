@@ -1,88 +1,304 @@
 {
   "testProducts": [
     {
-      "id": "ECOSTRESS_L1B_ATT_32259_20240314T231351_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L1B_ATT_32259_20240314T231351_0601_01.h5",
-      "description": "ECOSTRESS L1B ATT product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L1B_GEO_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L1B_GEO_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L1B GEO day product"
     },
     {
-      "id": "ECOSTRESS_L1B_GEO_32259_019_20240314T235129_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L1B_GEO_32259_019_20240314T235129_0601_01.h5",
-      "description": "ECOSTRESS L1B GEO product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L1B_MAP_RAD_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L1B_MAP_RAD_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L1B MAP RAD day product"
     },
     {
-      "id": "ECOSTRESS_L1B_MAP_RAD_32259_019_20240314T235129_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L1B_MAP_RAD_32259_019_20240314T235129_0601_01.h5",
-      "description": "ECOSTRESS L1B MAP RAD product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L2_CLOUD_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L2_CLOUD_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L2 Cloud day product"
     },
     {
-      "id": "ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01.h5",
-      "description": "ECOSTRESS L1B RAD product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L2_LSTE_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L2_LSTE_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L2 LSTE day product"
     },
     {
-      "id": "ECOSTRESS_L2_CLOUD_32257_019_20240314T205642_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L2_CLOUD_32257_019_20240314T205642_0601_01.h5",
-      "description": "ECOSTRESS L2 Cloud product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L3_ET_ALEXI_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L3_ET_ALEXI_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L3 ET ALEXI day product"
     },
     {
-      "id": "ECOSTRESS_L2_LSTE_32257_019_20240314T205642_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L2_LSTE_32257_019_20240314T205642_0601_01.h5",
-      "description": "ECOSTRESS L2 LSTE product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L3_ET_ALEXI_USDA_08355_008_20191226T171130_0601_01_bondville_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L3_ET_ALEXI_USDA_08355_008_20191226T171130_0601_01.bondville.h5",
+      "description": "ECOSTRESS L3 ET ALEXI USDA day product"
     },
     {
-      "id": "ECOSTRESS_L3_ET_ALEXI_USDA_00544_008_20180810T192504_0503_02_ames_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L3_ET_ALEXI_USDA_00544_008_20180810T192504_0503_02.ames.h5",
-      "description": "ECOSTRESS L3 ET ALEXI USDA product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L3_ET_PT-JPL_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L3_ET_PT-JPL_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L3 ET PT JPL day product"
     },
     {
-      "id": "ECOSTRESS_L3_ET_ALEXI_22306_005_20220612T161701_0601_02_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L3_ET_ALEXI_22306_005_20220612T161701_0601_02.h5",
-      "description": "ECOSTRESS L3 ET ALEXI product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L3_L4_QA_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L3_L4_QA_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L3 L4 QA day product"
     },
     {
-      "id": "ECOSTRESS_L3_ET_PT-JPL_26313_001_20230225T154024_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L3_ET_PT-JPL_26313_001_20230225T154024_0601_01.h5",
-      "description": "ECOSTRESS L3 ET PT JPL product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L4_ESI_ALEXI_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L4_ESI_ALEXI_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L4 ESI ALEXI day product"
     },
     {
-      "id": "ECOSTRESS_L3_L4_QA_26313_001_20230225T154024_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L3_L4_QA_26313_001_20230225T154024_0601_01.h5",
-      "description": "ECOSTRESS L3 L4 QA product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L4_ESI_ALEXI_USDA_08355_008_20191226T171130_0601_01_bondville_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L4_ESI_ALEXI_USDA_08355_008_20191226T171130_0601_01.bondville.h5",
+      "description": "ECOSTRESS L4 ESI ALEXI USDA day product"
     },
     {
-      "id": "ECOSTRESS_L4_ESI_ALEXI_USDA_05562_006_20190629T163154_0600_01_bondville_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L4_ESI_ALEXI_USDA_05562_006_20190629T163154_0600_01.bondville.h5",
-      "description": "ECOSTRESS L4 ESI ALEXI USDA product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L4_ESI_PT-JPL_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L4_ESI_PT-JPL_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L4 ESI PT JPL day product"
     },
     {
-      "id": "ECOSTRESS_L4_ESI_ALEXI_22387_012_20220617T215911_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L4_ESI_ALEXI_22387_012_20220617T215911_0601_01.h5",
-      "description": "ECOSTRESS L4 ESI ALEXI product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/day/ECOSTRESS_L4_WUE_08355_008_20191226T171130_0601_01_h5",
+      "relativePath": "_ecostress/v001/day/ECOSTRESS_L4_WUE_08355_008_20191226T171130_0601_01.h5",
+      "description": "ECOSTRESS L4 WUE day product"
     },
     {
-      "id": "ECOSTRESS_L4_ESI_PT-JPL_26313_001_20230225T154024_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L4_ESI_PT-JPL_26313_001_20230225T154024_0601_01.h5",
-      "description": "ECOSTRESS L4 ESI PT JPL product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/night/ECOSTRESS_L1B_ATT_32259_20240314T231351_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L1B_ATT_32259_20240314T231351_0601_01.h5",
+      "description": "ECOSTRESS L1B ATT night product"
     },
     {
-      "id": "ECOSTRESS_L4_WUE_26313_001_20230225T154024_0601_01_h5",
-      "relativePath": "_ecostress/ECOSTRESS_L4_WUE_26313_001_20230225T154024_0601_01.h5",
-      "description": "ECOSTRESS L4 WUE product",
-      "disabledForPlatforms": ["aarch64"]
+      "id": "v001/night/ECOSTRESS_L1B_GEO_32259_019_20240314T235129_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L1B_GEO_32259_019_20240314T235129_0601_01.h5",
+      "description": "ECOSTRESS L1B GEO night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L1B_MAP_RAD_32259_019_20240314T235129_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L1B_MAP_RAD_32259_019_20240314T235129_0601_01.h5",
+      "description": "ECOSTRESS L1B MAP RAD night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L1B_RAD_32253_011_20240314T141443_0601_01.h5",
+      "description": "ECOSTRESS L1B RAD night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L2_CLOUD_32257_019_20240314T205642_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L2_CLOUD_32257_019_20240314T205642_0601_01.h5",
+      "description": "ECOSTRESS L2 Cloud night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L2_LSTE_32257_019_20240314T205642_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L2_LSTE_32257_019_20240314T205642_0601_01.h5",
+      "description": "ECOSTRESS L2 LSTE night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L3_ET_ALEXI_22720_019_20220709T091550_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L3_ET_ALEXI_22720_019_20220709T091550_0601_01.h5",
+      "description": "ECOSTRESS L3 ET ALEXI night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L3_ET_PT-JPL_22720_019_20220709T091550_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L3_ET_PT-JPL_22720_019_20220709T091550_0601_01.h5",
+      "description": "ECOSTRESS L3 ET PT JPL night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L3_L4_QA_22720_019_20220709T091550_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L3_L4_QA_22720_019_20220709T091550_0601_01.h5",
+      "description": "ECOSTRESS L3 L4 QA night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L4_ESI_ALEXI_22720_019_20220709T091550_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L4_ESI_ALEXI_22720_019_20220709T091550_0601_01.h5",
+      "description": "ECOSTRESS L4 ESI ALEXI night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L4_ESI_PT-JPL_22720_019_20220709T091550_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L4_ESI_PT-JPL_22720_019_20220709T091550_0601_01.h5",
+      "description": "ECOSTRESS L4 ESI PT JPL night product"
+    },
+    {
+      "id": "v001/night/ECOSTRESS_L4_WUE_22720_019_20220709T091550_0601_01_h5",
+      "relativePath": "_ecostress/v001/night/ECOSTRESS_L4_WUE_22720_019_20220709T091550_0601_01.h5",
+      "description": "ECOSTRESS L4 WUE night product"
+    },
+    {
+      "id": "v002/day/ECOv002_L1B_ATT_38657_20250501T122155_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L1B_ATT_38657_20250501T122155_0713_01.h5",
+      "description": "ECOSTRESS L1B ATT day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L1B_GEO_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L1B_GEO_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L1B GEO day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L1B_RAD_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L1B_RAD_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L1B RAD day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L1CG_RAD_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L1CG_RAD_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L1CG RAD day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L1CG_RAD_38657_006_20250501T125035_0713_01_h5_mvs_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L1CG_RAD_38657_006_20250501T125035_0713_01.h5_mvs.h5",
+      "description": "ECOSTRESS L1CG RAD MVS day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L2_CLOUD_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L2_CLOUD_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L2 CLOUD day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L2_LSTE_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L2_LSTE_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L2 LSTE day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L2G_CLOUD_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L2G_CLOUD_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L2G CLOUD day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L2G_CLOUD_38657_006_20250501T125035_0713_01_h5_mvs_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L2G_CLOUD_38657_006_20250501T125035_0713_01.h5_mvs.h5",
+      "description": "ECOSTRESS L2G CLOUD MVS day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L2G_LSTE_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L2G_LSTE_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L2G LSTE day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L3G_JET_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L3G_JET_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L3G JET day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L3G_JET_38657_006_20250501T125035_0713_01_h5_mvs_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L3G_JET_38657_006_20250501T125035_0713_01.h5_mvs.h5",
+      "description": "ECOSTRESS L3G JET MVS day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L3G_MET_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L3G_MET_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L3G MET day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L3G_MET_38657_006_20250501T125035_0713_01_h5_mvs_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L3G_MET_38657_006_20250501T125035_0713_01.h5_mvs.h5",
+      "description": "ECOSTRESS L3G MET MVS day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L3G_SEB_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L3G_SEB_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L3G SEB day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L3G_SEB_38657_006_20250501T125035_0713_01_h5_mvs_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L3G_SEB_38657_006_20250501T125035_0713_01.h5_mvs.h5",
+      "description": "ECOSTRESS L3G SEB day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L3G_SM_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L3G_SM_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L3G SM day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L3G_SM_38657_006_20250501T125035_0713_01_h5_mvs_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L3G_SM_38657_006_20250501T125035_0713_01.h5_mvs.h5",
+      "description": "ECOSTRESS L3G SM MVS day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L4G_ESI_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L4G_ESI_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L4G ESI day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L4G_ESI_38657_006_20250501T125035_0713_01_h5_mvs_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L4G_ESI_38657_006_20250501T125035_0713_01.h5_mvs.h5",
+      "description": "ECOSTRESS L4G ESI MVS day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L4G_WUE_38657_006_20250501T125035_0713_01_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L4G_WUE_38657_006_20250501T125035_0713_01.h5",
+      "description": "ECOSTRESS L4G WUE day product"
+    },
+    {
+      "id": "v002/day/ECOv002_L4G_WUE_38657_006_20250501T125035_0713_01_h5_mvs_h5",
+      "relativePath": "_ecostress/v002/day/ECOv002_L4G_WUE_38657_006_20250501T125035_0713_01.h5_mvs.h5",
+      "description": "ECOSTRESS L4G WUE MVS day product"
+    },
+    {
+      "id": "v002/night/ECOv002_L1B_ATT_37968_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L1B_ATT_37968_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L1B ATT night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L1B_GEO_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L1B_GEO_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L1B GEO night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L1B_RAD_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L1B_RAD_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L1B RAD night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L1CG_RAD_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L1CG_RAD_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L1CG RAD night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L2_CLOUD_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L2_CLOUD_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L2 CLOUD night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L2_LSTE_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L2_LSTE_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L2 LSTE night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L2G_CLOUD_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L2G_CLOUD_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L2G CLOUD night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L2G_LSTE_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L2G_LSTE_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L2G LSTE night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L3G_JET_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L3G_JET_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L3G JET night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L3G_MET_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L3G_MET_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L3G MET night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L3G_SEB_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L3G_SEB_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L3G SEB night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L3G_SM_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L3G_SM_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L3G SM night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L4G_ESI_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L4G_ESI_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L4G ESI night product"
+    },
+    {
+      "id": "v002/night/ECOv002_L4G_WUE_37968_001_20250318T021016_0713_01_h5",
+      "relativePath": "_ecostress/v002/night/ECOv002_L4G_WUE_37968_001_20250318T021016_0713_01.h5",
+      "description": "ECOSTRESS L4G WUE night product"
     }
   ]
 }

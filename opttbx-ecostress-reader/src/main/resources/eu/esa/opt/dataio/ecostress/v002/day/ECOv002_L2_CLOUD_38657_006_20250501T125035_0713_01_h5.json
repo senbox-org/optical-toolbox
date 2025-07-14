@@ -1,0 +1,115 @@
+{
+  "id": "v002/day/ECOv002_L2_CLOUD_38657_006_20250501T125035_0713_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "01-MAY-2025 12:50:35.536340",
+    "endTime": "01-MAY-2025 12:51:27.506225",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 37.95271563325222,
+          "lon": -92.68223695481944
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 37.360854498646184,
+          "lon": -90.84114990033137
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
+    "bands": [
+      {
+        "name": "SDS_Cloud_confidence",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "0=ConfidentClear\n1=ProbablyClear\n2=ProbablyCloud\n3=ConfidentCloud",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": 2.0
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": 3.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Cloud_final",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "1 = cloudy",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1570,
+            "y": 1446,
+            "value": 1.0
+          },
+          {
+            "x": 3296,
+            "y": 2057,
+            "value": 1.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "L2 CLOUD Metadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "L2 CLOUD Metadata/QAPercentCloudCover",
+        "value": "76"
+      },
+      {
+        "path": "StandardMetadata/ProducerInstitution",
+        "value": "Caltech"
+      },
+      {
+        "path": "L2 CLOUD Metadata/QAPercentCloudCover",
+        "value": "76"
+      },
+      {
+        "path": "L2 CLOUD Metadata/CloudMinTemperature",
+        "value": "267.8054927062988"
+      },
+      {
+        "path": "L2 CLOUD Metadata/CloudMinTemperature",
+        "value": "267.8054927062988"
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO_L2_CLOUD.002"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "2.1.1"
+      },
+      {
+        "path": "StandardMetadata/EastBoundingCoordinate",
+        "value": "-89.31786953977279"
+      },
+      {
+        "path": "StandardMetadata/AutomaticQualityFlag",
+        "value": "PASS"
+      }
+    ]
+  }
+}

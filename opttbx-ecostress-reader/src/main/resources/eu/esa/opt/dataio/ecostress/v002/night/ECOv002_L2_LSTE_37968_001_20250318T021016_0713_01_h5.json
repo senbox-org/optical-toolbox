@@ -1,0 +1,445 @@
+{
+  "id": "v002/night/ECOv002_L2_LSTE_37968_001_20250318T021016_0713_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "18-MAR-2025 02:10:16.467964",
+    "endTime": "18-MAR-2025 02:11:08.437500",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 42.180356366093974,
+          "lon": -125.2757155108014
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 41.628819801959665,
+          "lon": -123.19209128363248
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
+    "bands": [
+      {
+        "name": "SDS_Emis1",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": -27.0
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": -13.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Emis1_err",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1570,
+            "y": 1446,
+            "value": 279.0
+          },
+          {
+            "x": 3296,
+            "y": 2057,
+            "value": 237.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Emis2",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2970,
+            "y": 4197,
+            "value": -26.0
+          },
+          {
+            "x": 3285,
+            "y": 5229,
+            "value": -28.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Emis2_err",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 854,
+            "y": 3751,
+            "value": 175.0
+          },
+          {
+            "x": 2803,
+            "y": 5144,
+            "value": 170.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Emis3",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4083,
+            "y": 2729,
+            "value": -44.0
+          },
+          {
+            "x": 5134,
+            "y": 2736,
+            "value": -55.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Emis3_err",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1838,
+            "y": 5065,
+            "value": 166.0
+          },
+          {
+            "x": 53,
+            "y": 2651,
+            "value": 172.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Emis4",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1768,
+            "y": 1110,
+            "value": -26.0
+          },
+          {
+            "x": 1475,
+            "y": 243,
+            "value": -27.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Emis4_err",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 5245,
+            "y": 3405,
+            "value": 123.0
+          },
+          {
+            "x": 3090,
+            "y": 4036,
+            "value": 127.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Emis5",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1252,
+            "y": 2802,
+            "value": -17.0
+          },
+          {
+            "x": 1733,
+            "y": 4069,
+            "value": -15.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_Emis5_err",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1933,
+            "y": 2805,
+            "value": 100.0
+          },
+          {
+            "x": 2175,
+            "y": 2491,
+            "value": 100.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_EmisWB",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3103,
+            "y": 517,
+            "value": -34.0
+          },
+          {
+            "x": 3484,
+            "y": 89,
+            "value": -43.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_LST",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "K",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 5266,
+            "y": 2068,
+            "value": 13243.0
+          },
+          {
+            "x": 5130,
+            "y": 5330,
+            "value": 14237.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_LST_err",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "K",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 598,
+            "y": 2544,
+            "value": 26.0
+          },
+          {
+            "x": 3082,
+            "y": 3167,
+            "value": 21.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_PWV",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "cm",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2731,
+            "y": 2937,
+            "value": 829.0
+          },
+          {
+            "x": 2433,
+            "y": 3272,
+            "value": 848.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 77,
+            "y": 2391,
+            "value": -30016.0
+          },
+          {
+            "x": 379,
+            "y": 5591,
+            "value": -30016.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_cloud_mask",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "1 = cloudy",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1602,
+            "y": 4196,
+            "value": 0.0
+          },
+          {
+            "x": 4339,
+            "y": 4147,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "SDS_water_mask",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "0=land 1=water",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4506,
+            "y": 5325,
+            "value": 1.0
+          },
+          {
+            "x": 1342,
+            "y": 2995,
+            "value": 1.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "L2 LSTE Metadata/CloudMinTemperature",
+        "value": "259.2192541503906"
+      },
+      {
+        "path": "L2 LSTE Metadata/CloudMaxTemperature",
+        "value": "270.1704316711426"
+      },
+      {
+        "path": "StandardMetadata/ProcessingEnvironment",
+        "value": "Linux 47e51fe19ecd 4.18.0-553.34.1.el8_10.x86_64 #1 SMP Thu Jan 9 10:26:16 PST 2025 x86_64 x86_64 x86_64 GNU/Linux"
+      },
+      {
+        "path": "StandardMetadata/SISVersion",
+        "value": "Version 1"
+      },
+      {
+        "path": "StandardMetadata/BuildID",
+        "value": "0713"
+      },
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2025-03-19T07:04:21.735Z"
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO_L2_LSTE.002"
+      },
+      {
+        "path": "L2 LSTE Metadata/Emis5GoodAvg",
+        "value": "0.9598070061282913"
+      },
+      {
+        "path": "L2 LSTE Metadata/Emis1GoodAvg",
+        "value": "0.9714995560622133"
+      },
+      {
+        "path": "StandardMetadata/PlatformShortName",
+        "value": "ISS"
+      }
+    ]
+  }
+}

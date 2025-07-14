@@ -1,0 +1,93 @@
+{
+  "id": "v001/day/ECOSTRESS_L4_WUE_08355_008_20191226T171130_0601_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "26-DEC-2019 17:11:31.725607",
+    "endTime": "26-DEC-2019 17:16:31.725607",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 41.02075173316674,
+          "lon": -89.8101216185687
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 40.44221899516971,
+          "lon": -87.9298146462127
+        }
+      ],
+      "reverseAccuracy": 7.275957614183426E-12
+    },
+    "bands": [
+      {
+        "name": "Water_Use_Efficiency_WUEavg",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "ratio GPP/ET",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": "NaN"
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": "NaN"
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/ImageLines",
+        "value": "5632"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFileGPP",
+        "value": "MOD17A2H.A2019353.h11v04.006.2019362052032.hdf,MOD17A2H.A2019353.h10v04.006.2019362050807.hdf,MOD17A2H.A2019353.h11v05.006.2019362050952.hdf,MOD17A2H.A2019353.h10v05.006.2019362050253.hdf"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2020-01-31T11:57:54.468Z"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFiles",
+        "value": "1"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFileGPP",
+        "value": "MOD17A2H.A2019353.h11v04.006.2019362052032.hdf,MOD17A2H.A2019353.h10v04.006.2019362050807.hdf,MOD17A2H.A2019353.h11v05.006.2019362050952.hdf,MOD17A2H.A2019353.h10v05.006.2019362050253.hdf"
+      },
+      {
+        "path": "L4_WUE_Metadata/AncillaryFileGPP",
+        "value": "MOD17A2H.A2019353.h11v04.006.2019362052032.hdf,MOD17A2H.A2019353.h10v04.006.2019362050807.hdf,MOD17A2H.A2019353.h11v05.006.2019362050952.hdf,MOD17A2H.A2019353.h10v05.006.2019362050253.hdf"
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO4WUE"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "1.2.0"
+      }
+    ]
+  }
+}
