@@ -1568,7 +1568,7 @@ public abstract class SeadasFileReader {
                     wvl = ncFile.findVariable("wavelength");
                 }
             }
-            // wavenlengths for modis L2 files
+            // wavelengths for modis L2 files
             if (wvl == null) {
                 if (bands == 2 || bands == 3) {
                     wvl = ncFile.findVariable("HDFEOS/SWATHS/Aerosol_NearUV_Swath/Data_Fields/Wavelength");
@@ -1650,8 +1650,16 @@ public abstract class SeadasFileReader {
                         }
                         if (validMinMax[0] != validMinMax[1]) {
                             String validExp;
+                            if (band.getName().contains("Rrs_346") || band.getName().contains("nflh")) {
+                                int junk = 0;
+                            }
+
                             if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
+                                String minStr = formatValidMinMax(validMinMax[0], band);
+                                String maxStr = formatValidMinMax(validMinMax[1], band);
+                                validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
 
                             } else {
                                 double[] minmax = {0.0, 0.0};
@@ -1666,7 +1674,12 @@ public abstract class SeadasFileReader {
                                     minmax[0] += band.getScalingOffset();
                                     minmax[1] += band.getScalingOffset();
                                 }
-                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
+
+                                String minStr = formatValidMinMax(minmax[0], band);
+                                String maxStr = formatValidMinMax(minmax[1], band);
+
+                                validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
 
                             }
                             band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
@@ -1751,13 +1764,18 @@ public abstract class SeadasFileReader {
                     if (validMinMax[0] != validMinMax[1]) {
                         String validExp;
 
-                        if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-//                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+                        if (band.getName().contains("poc") || band.getName().contains("chlor_a") || band.getName().contains("nflh")) {
+                            int junk = 0;
+                        }
 
-                            String minStr = formatValidMinMax(validMinMax[0], true);
-                            String maxStr = formatValidMinMax(validMinMax[1], false);
+                        if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
+
+                            String minStr = formatValidMinMax(validMinMax[0], band);
+                            String maxStr = formatValidMinMax(validMinMax[1], band);
 
                             validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
 
                         } else {
                             double[] minmax = {0.0, 0.0};
@@ -1774,64 +1792,11 @@ public abstract class SeadasFileReader {
                             }
 
 
-//                            validExp = format("%s >= %.06f && %s <= %.06f", safeName, minmax[0], safeName, minmax[1]);
-
-
-
-//                            int precision = 8;
-//
-//
-//                            double min = minmax[0];
-//                            System.out.println("min=" + Double.toString(min));
-//
-//
-//                            BigDecimal minBigDecimal = new BigDecimal(min);
-//                            if (Math.abs(band.getScalingFactor()) < Math.floor((double) precision)) {
-//                                // round down because this is a minimum value in order to be inclusive
-//                                minBigDecimal = minBigDecimal.round(new MathContext(precision, RoundingMode.FLOOR));
-//                            }
-//                            String minStr = minBigDecimal.toString();
-//                            System.out.println("minStr=" + minStr);
-//
-//
-//                            // remove extra padded zeros after decimal
-//                            if (minStr.contains(".")) {
-//                                System.out.println("minStr (contains .)=" + minStr);
-//
-//                                while (minStr.endsWith("0") && !minStr.endsWith(".0")) {
-//                                    minStr = minStr.substring(0,minStr.length()-1);
-//                                    System.out.println("minStr (stripped)=" + minStr);
-//                                }
-//                            }
-//
-//
-//
-//                            double max = minmax[1];
-//                            BigDecimal maxBigDecimal = new BigDecimal(max);
-//                            if (Math.abs(band.getScalingFactor()) < Math.floor((double) precision)) {
-//                                // round up because this is a maximum value in order to be inclusive
-//                                maxBigDecimal = maxBigDecimal.round(new MathContext(precision, RoundingMode.CEILING));
-//                            }
-//                            String maxStr = maxBigDecimal.toString();
-//                            System.out.println("maxStr=" + maxStr);
-//
-//                            // remove extra padded zeros after decimal
-//                            if (maxStr.contains(".")) {
-//                                System.out.println("maxStr (contains .)=" + maxStr);
-//                                while (maxStr.endsWith("0") && !maxStr.endsWith(".0")) {
-//                                    maxStr = maxStr.substring(0,maxStr.length()-1);
-//                                    System.out.println("maxStr (stripped)=" + maxStr);
-//                                }
-//                            }
-
-
-                            String minStr = formatValidMinMax(minmax[0], true);
-                            String maxStr = formatValidMinMax(minmax[1], false);
+                            String minStr = formatValidMinMax(minmax[0], band);
+                            String maxStr = formatValidMinMax(minmax[1], band);
 
                             validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
-
-//                            double rounded = minBigDecimal.doubleValue();
-
+//                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
 
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
@@ -1845,58 +1810,234 @@ public abstract class SeadasFileReader {
         return band;
     }
 
-    public String formatValidMinMax(double value, boolean isMin) {
 
-        String minMaxMsg = (isMin) ? "min" : "max";
 
-        int precision = 7;
+
+    public String formatValidMinMax(double value, Band band) {
+
+        double scalingFactor = band.getScalingFactor();
+        boolean isScaled = band.isScalingApplied();
 
         String valueStr;
 
-
-        // todo evaluate this rounding threshold - the point was to limit rounding large numbers, perhaps decimal point is better for large numbers
-        if (Math.abs(value) < Math.pow(10.0, (double) precision)) {
-            BigDecimal valueBigDecimal = new BigDecimal(value);
-
-            if (isMin) {
-                // round down because this is a minimum value in order to be inclusive
-                valueBigDecimal = valueBigDecimal.round(new MathContext(precision, RoundingMode.FLOOR));
-            } else {
-                // round up because this is a maximum value in order to be inclusive
-                valueBigDecimal = valueBigDecimal.round(new MathContext(precision, RoundingMode.CEILING));
-            }
-            valueStr = valueBigDecimal.toString();
-
-        } else {
-            if (isMin) {
-                // round down because this is a minimum value in order to be inclusive
-                value = Math.floor(value);
-            } else {
-                // round up because this is a maximum value in order to be inclusive
-                value = Math.ceil(value);
-            }
-
+        if (!is_VALID_PIXEL_ROUND()) {
             valueStr = Double.toString(value);
+            return valueStr;
+        }
+
+        int significantFigures = get_VALID_PIXEL_SIG_FIGS();
+        int decimalPlaces = get_VALID_PIXEL_DEC_PLACES();
+
+
+//        if (significantFigures < 0) {
+//            valueStr = Double.toString(value);
+//            return valueStr;
+//        }
+
+
+//        // do not round big numbers so increase significant figure to length of rounded number if needed
+//        double absValue = Math.abs(value);
+//        double logValue = Math.log(absValue) / Math.log(10);  // s
+//        if (logValue > significantFigures) {
+//            significantFigures = (int) Math.ceil(logValue);
+//        }
+//
+
+        // do not round big numbers so increase significant figure to length of rounded number if needed
+        int valueAsInt = (int) Math.round(Math.abs(value));
+        String stringOfInt = Integer.toString(valueAsInt);
+        if (stringOfInt.length() > significantFigures) {
+            significantFigures = stringOfInt.length();
+        }
+
+
+        BigDecimal bdRoundDown = new BigDecimal(Double.toString(value));
+
+        bdRoundDown = bdRoundDown.round(new MathContext(significantFigures, RoundingMode.HALF_EVEN));
+//        bdRoundDown = bdRoundDown.setScale(decimalPlaces, RoundingMode.HALF_EVEN);
+
+
+        double valueDoubleRoundDown = bdRoundDown.doubleValue();
+        String valueStrRoundDown = Double.toString(valueDoubleRoundDown);
+        valueStrRoundDown = cleanUpPaddedDecimalZeros(valueStrRoundDown);
+
+        valueStr = valueStrRoundDown;
+
+
+        return valueStr;
+    }
+
+
+
+
+    public String formatValidMinMaxOld2(double value, Band band) {
+
+        double scalingFactor = band.getScalingFactor();
+        boolean isScaled = band.isScalingApplied();
+
+        String valueStr;
+
+        if (!is_VALID_PIXEL_ROUND()) {
+            valueStr = Double.toString(value);
+            return valueStr;
+        }
+
+        int decimalPlaces = get_VALID_PIXEL_DEC_PLACES();
+        int significantFigures = get_VALID_PIXEL_SIG_FIGS();
+
+
+        if (isScaled) {
+            double decimalPlacesDouble = 1 / Math.abs(scalingFactor);
+            double decimalPlaceByScalingFactor = Math.log(decimalPlacesDouble) / Math.log(10);
+            if (decimalPlaceByScalingFactor > decimalPlaces) {
+                decimalPlaces = (int) Math.ceil(decimalPlaceByScalingFactor) + 2;  // add a couple extra decimal places
+            }
+        }
+
+
+        boolean useSignificantFigureMethod;
+
+//        double size = Math.pow(10,significantFigures);
+//
+//        double absValue = Math.abs(value);
+//        double logValue = Math.log(absValue) / Math.log(10);
+//        if (logValue > significantFigures) {
+//            significantFigures = (int) Math.ceil(logValue);
+//        }
+
+//        if (Math.abs(value) >= size ) {
+//            double valueRounded = Math.round(value);
+//            valueStr = Double.toString(valueRounded);
+//            return valueStr;
+////            useSignificantFigureMethod = false;
+////            decimalPlaces = 0;
+//        } else {
+//            useSignificantFigureMethod = true;
+//        }
+
+        useSignificantFigureMethod = false;
+
+
+        if (useSignificantFigureMethod) {
+            if (significantFigures < 0) {
+                valueStr = Double.toString(value);
+                return valueStr;
+            }
+        } else {
+            if (decimalPlaces < 0) {
+                valueStr = Double.toString(value);
+                return valueStr;
+            }
+        }
+
+
+        BigDecimal bdRoundDown = new BigDecimal(Double.toString(value));
+
+//        bdRoundDown = bdRoundDown.round(new MathContext(significantFigures, RoundingMode.HALF_EVEN));
+        bdRoundDown = bdRoundDown.setScale(decimalPlaces, RoundingMode.HALF_EVEN);
+
+        double valueDoubleRoundDown = bdRoundDown.doubleValue();
+        String valueStrRoundDown = Double.toString(valueDoubleRoundDown);
+        valueStrRoundDown = cleanUpPaddedDecimalZeros(valueStrRoundDown);
+
+        valueStr = valueStrRoundDown;
+
+
+        return valueStr;
+    }
+
+
+
+    public String formatValidMinMaxOld(double value, double scalingFactor) {
+
+        String valueStr;
+
+        if (!is_VALID_PIXEL_ROUND()) {
+            valueStr = Double.toString(value);
+            return valueStr;
         }
 
 
 
-        System.out.println(minMaxMsg + "=" + Double.toString(value));
-        System.out.println(minMaxMsg + "Str=" + valueStr);
 
-
-        // remove extra padded zeros after decimal
-        if (valueStr.contains(".")) {
-            System.out.println(minMaxMsg + "Str (contains .)=" + valueStr);
-
-            while (valueStr.endsWith("0") && !valueStr.endsWith(".0")) {
-                valueStr = valueStr.substring(0,valueStr.length()-1);
-                System.out.println(minMaxMsg + "Str (stripped)=" + valueStr);
+        if (Math.abs(value) >= 1 ) {
+            // value is greater than one using decimal places
+            int decimalPlaces = get_VALID_PIXEL_DEC_PLACES();
+            if (decimalPlaces < 0) {
+                valueStr = Double.toString(value);
+                return valueStr;
             }
+
+            BigDecimal bdRoundUp = new BigDecimal(Double.toString(value));
+            BigDecimal bdRoundDown = new BigDecimal(Double.toString(value));
+
+            bdRoundDown = bdRoundDown.setScale(decimalPlaces, RoundingMode.DOWN);
+            double valueDoubleRoundDown = bdRoundDown.doubleValue();
+            String valueStrRoundDown = Double.toString(valueDoubleRoundDown);
+            valueStrRoundDown = cleanUpPaddedDecimalZeros(valueStrRoundDown);
+
+
+            bdRoundUp = bdRoundUp.setScale(decimalPlaces, RoundingMode.UP);
+            double valueDoubleRoundUp = bdRoundUp.doubleValue();
+            String valueStrRoundUp = Double.toString(valueDoubleRoundUp);
+            valueStrRoundUp = cleanUpPaddedDecimalZeros(valueStrRoundUp);
+
+            if (valueStrRoundDown.length() <= valueStrRoundUp.length()) {
+                valueStr = valueStrRoundDown;
+            } else {
+                valueStr = valueStrRoundUp;
+            }
+
+
+        } else {
+            // value is less than one (using significant figures)
+            int significantFigures = get_VALID_PIXEL_SIG_FIGS();
+            if (significantFigures < 0) {
+                valueStr = Double.toString(value);
+                return valueStr;
+            }
+
+            BigDecimal bdRoundUp = new BigDecimal(value);
+            BigDecimal bdRoundDown = new BigDecimal(value);
+
+            bdRoundDown = bdRoundDown.round(new MathContext(significantFigures, RoundingMode.DOWN));
+            double valueDoubleRoundDown = bdRoundDown.doubleValue();
+            String valueStrRoundDown = Double.toString(valueDoubleRoundDown);
+            valueStrRoundDown = cleanUpPaddedDecimalZeros(valueStrRoundDown);
+
+
+            bdRoundUp = bdRoundUp.round(new MathContext(significantFigures, RoundingMode.UP));
+            double valueDoubleRoundUp = bdRoundUp.doubleValue();
+            String valueStrRoundUp = Double.toString(valueDoubleRoundUp);
+            valueStrRoundUp = cleanUpPaddedDecimalZeros(valueStrRoundUp);
+
+            if (valueStrRoundDown.length() <= valueStrRoundUp.length()) {
+                valueStr = valueStrRoundDown;
+            } else {
+                valueStr = valueStrRoundUp;
+            }
+
         }
 
         return valueStr;
     }
+
+
+
+    private static String  cleanUpPaddedDecimalZeros(String valueStr) {
+        if (valueStr.contains(".") && !valueStr.toLowerCase().contains("e")) {
+            while (valueStr.endsWith("0") && !valueStr.endsWith(".0")) {
+                valueStr = valueStr.substring(0,valueStr.length()-1);
+            }
+        }
+
+        if (valueStr.equals("0")) {
+            valueStr = "0.0";
+        }
+
+        return valueStr;
+    }
+
 
 
     public void addGlobalMetadata(Product product) {
@@ -2724,6 +2865,26 @@ public abstract class SeadasFileReader {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_KEY, SeadasReaderDefaults.PROPERTY_FLIPY_L1B_VIIRS_DEFAULT);
     }
+
+
+
+    public boolean is_VALID_PIXEL_ROUND() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(PROPERTY_VALID_PIXEL_ROUND_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_DEFAULT);
+    }
+
+
+
+    public int get_VALID_PIXEL_SIG_FIGS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyInt(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
+    }
+
+    public int get_VALID_PIXEL_DEC_PLACES() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyInt(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_DEC_PLACES_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_DEC_PLACES_DEFAULT);
+    }
+
 
 
     private interface SkipBadNav {

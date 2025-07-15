@@ -1222,6 +1222,53 @@ public class SeadasReaderDefaults {
 
 
 
+
+
+    // Band Grouping Preferences
+
+    public static final String PROPERTY_BAND_GROUPING_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".band_grouping";
+
+
+    // Flip Preferences
+
+    public static final String PROPERTY_FLIP_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".flip";
+
+
+
+
+
+    // Band Properties Preferences
+
+    public static final String PROPERTY_BAND_PROPERTIES_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".band_properties";
+
+    public static final String PROPERTY_VALID_PIXEL_ROOT_KEY = PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".valid_pixel";
+
+    public static final String PROPERTY_VALID_PIXEL_SECTION_KEY = PROPERTY_VALID_PIXEL_ROOT_KEY + ".section";
+    public static final String PROPERTY_VALID_PIXEL_SECTION_LABEL = "Valid Pixel Expression";
+    public static final String PROPERTY_VALID_PIXEL_SECTION_TOOLTIP = "Formatting for the reader which initializes the valid pixel expression.";
+
+    public static final String PROPERTY_VALID_PIXEL_ROUND_KEY = PROPERTY_VALID_PIXEL_ROOT_KEY + ".round";
+    public static final String PROPERTY_VALID_PIXEL_ROUND_LABEL = "Apply Numeric Rounding";
+    public static final String PROPERTY_VALID_PIXEL_ROUND_TOOLTIP =
+            "<html>When auto-generating the min and max values of the valid pixel expression from the metadata of the input file,<br>" +
+                    "round the values based on the significant figures and decimal places listed here.<br>" +
+                    "Otherwise no rounding will be done and the full values will be presented in the valid pixel expression.";
+    public static final boolean PROPERTY_VALID_PIXEL_ROUND_DEFAULT = true;
+
+    public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_KEY = PROPERTY_VALID_PIXEL_ROOT_KEY + ".significant_figures";
+    public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_LABEL = "Significant Figures";
+    public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_TOOLTIP = "Sets significant figures for min/max values.  Will not round large numbers.";
+//    public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_TOOLTIP = "Sets significant figures for min/max values whose absolute values are less than 1";
+    public static final int PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT = 6;
+
+    public static final String PROPERTY_VALID_PIXEL_DEC_PLACES_KEY = PROPERTY_VALID_PIXEL_ROOT_KEY + ".decimal_places";
+    public static final String PROPERTY_VALID_PIXEL_DEC_PLACES_LABEL = "(DELETE FIELD?) Decimal Places";
+    public static final String PROPERTY_VALID_PIXEL_DEC_PLACES_TOOLTIP = "Sets decimal places for min/max values whose absolute values are greater than or equal to 1";
+    public static final int PROPERTY_VALID_PIXEL_DEC_PLACES_DEFAULT = 6;
+
+
+
+
     public static String getEnabledKey(MaskType maskType) {
         switch (maskType) {
             case WATER: return SeadasReaderDefaults.PROPERTY_MASK_Water_ENABLED_KEY;
