@@ -1144,12 +1144,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".band_grouping.harp2";
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_LABEL = "Band Grouping (HARP2)";
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_TOOLTIP = "Expression to create band groupings into folders for the HARP2 instrument";
-    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT = "I_*_549:I_*_669:I_*_867:I_*_441:Q_*_549:Q_*_669:Q_*_867:Q_*_441:" +
-            "U_*_549:U_*_669:U_*_867:U_*_441:DOLP_*_549:DOLP_*_669:DOLP_*_867:DOLP_*_441:" +
-            "I_noise_*_549:I_noise_*_669:I_noise_*_867:I_noise_*_441:Q_noise_*_549:Q_noise_*_669:Q_noise_*_867:Q_noise_*_441:" +
-            "U_noise_*_549:U_noise_*_669:U_noise_*_867:U_noise_*_441:DOLP_noise_*_549:DOLP_noise_*_669:DOLP_noise_*_867:DOLP_noise_*_441:" +
-            "Sensor_Zenith:Sensor_Azimuth:Solar_Zenith:Solar_Azimuth:view_time_offsets:obs_per_view:number_of_observations:" +
-            "sensor_zenith_angle:sensor_azimuth_angle:solar_zenith_angle:solar_azimuth_angle:scattering_angle:rotation_angle";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT = "i_*_549:i_*_664:i_*_865:i_*_440:q_*_549:q_*_664:q_*_865:q_*_440:" +
+            "qc_*_549:qc_*_664:qc_*_865:qc_*_440:u_*_549:u_*_664:u_*_865:u_*_440:dolp_*_549:dolp_*_664:dolp_*_865:dolp_*_440:aolp_*_549:aolp_*_664:aolp_*_865:aolp_*_440:" +
+            "i_stdev_*_549:i_stdev_*_664:i_stdev_*_865:i_stdev_*_440:q_stdev_*_549:q_stdev_*_664:q_stdev_*_865:q_stdev_*_440:" +
+            "u_stdev_*_549:u_stdev_*_664:u_stdev_*_865:u_stdev_*_440:dolp_stdev_*_549:dolp_stdev_*_664:dolp_stdev_*_865:dolp_stdev_*_440:" +
+            "aolp_stdev_*_549:aolp_stdev_*_664:aolp_stdev_*_865:aolp_stdev_*_440:" +
+            "sensor_zenith_angle:sensor_azimuth_angle:solar_zenith_angle:solar_azimuth_angle:scattering_angle:rotation_angle:" +
+            "view_time_offsets:obs_per_view:number_of_observations" ;
 
 
 
