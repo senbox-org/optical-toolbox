@@ -1650,14 +1650,11 @@ public abstract class SeadasFileReader {
                         }
                         if (validMinMax[0] != validMinMax[1]) {
                             String validExp;
-                            if (band.getName().contains("Rrs_346") || band.getName().contains("nflh")) {
-                                int junk = 0;
-                            }
 
                             if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
 
-                                String minStr = formatValidMinMax(validMinMax[0], band);
-                                String maxStr = formatValidMinMax(validMinMax[1], band);
+                                String minStr = formatValidMinMax(validMinMax[0], false);
+                                String maxStr = formatValidMinMax(validMinMax[1], true);
                                 validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
 //                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
 
@@ -1675,8 +1672,8 @@ public abstract class SeadasFileReader {
                                     minmax[1] += band.getScalingOffset();
                                 }
 
-                                String minStr = formatValidMinMax(minmax[0], band);
-                                String maxStr = formatValidMinMax(minmax[1], band);
+                                String minStr = formatValidMinMax(minmax[0], false);
+                                String maxStr = formatValidMinMax(minmax[1], true);
 
                                 validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
 //                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
@@ -1764,14 +1761,10 @@ public abstract class SeadasFileReader {
                     if (validMinMax[0] != validMinMax[1]) {
                         String validExp;
 
-                        if (band.getName().contains("poc") || band.getName().contains("chlor_a") || band.getName().contains("nflh")) {
-                            int junk = 0;
-                        }
-
                         if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
 
-                            String minStr = formatValidMinMax(validMinMax[0], band);
-                            String maxStr = formatValidMinMax(validMinMax[1], band);
+                            String minStr = formatValidMinMax(validMinMax[0], false);
+                            String maxStr = formatValidMinMax(validMinMax[1], true);
 
                             validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
 //                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
@@ -1792,8 +1785,8 @@ public abstract class SeadasFileReader {
                             }
 
 
-                            String minStr = formatValidMinMax(minmax[0], band);
-                            String maxStr = formatValidMinMax(minmax[1], band);
+                            String minStr = formatValidMinMax(minmax[0], false);
+                            String maxStr = formatValidMinMax(minmax[1], true);
 
                             validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
 //                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
@@ -1813,10 +1806,7 @@ public abstract class SeadasFileReader {
 
 
 
-    public String formatValidMinMax(double value, Band band) {
-
-        double scalingFactor = band.getScalingFactor();
-        boolean isScaled = band.isScalingApplied();
+    public String formatValidMinMax(double value, boolean isMax) {
 
         String valueStr;
 
@@ -1826,201 +1816,57 @@ public abstract class SeadasFileReader {
         }
 
         int significantFigures = get_VALID_PIXEL_SIG_FIGS();
-        int decimalPlaces = get_VALID_PIXEL_DEC_PLACES();
 
 
-//        if (significantFigures < 0) {
-//            valueStr = Double.toString(value);
-//            return valueStr;
-//        }
+        boolean roundBigNumbersToInt = false;
 
-
-//        // do not round big numbers so increase significant figure to length of rounded number if needed
-//        double absValue = Math.abs(value);
-//        double logValue = Math.log(absValue) / Math.log(10);  // s
-//        if (logValue > significantFigures) {
-//            significantFigures = (int) Math.ceil(logValue);
-//        }
-//
-
-        // do not round big numbers so increase significant figure to length of rounded number if needed
-        int valueAsInt = (int) Math.round(Math.abs(value));
-        String stringOfInt = Integer.toString(valueAsInt);
-        if (stringOfInt.length() > significantFigures) {
-            significantFigures = stringOfInt.length();
-        }
-
-
-        BigDecimal bdRoundDown = new BigDecimal(Double.toString(value));
-
-        bdRoundDown = bdRoundDown.round(new MathContext(significantFigures, RoundingMode.HALF_EVEN));
-//        bdRoundDown = bdRoundDown.setScale(decimalPlaces, RoundingMode.HALF_EVEN);
-
-
-        double valueDoubleRoundDown = bdRoundDown.doubleValue();
-        String valueStrRoundDown = Double.toString(valueDoubleRoundDown);
-        valueStrRoundDown = cleanUpPaddedDecimalZeros(valueStrRoundDown);
-
-        valueStr = valueStrRoundDown;
-
-
-        return valueStr;
-    }
-
-
-
-
-    public String formatValidMinMaxOld2(double value, Band band) {
-
-        double scalingFactor = band.getScalingFactor();
-        boolean isScaled = band.isScalingApplied();
-
-        String valueStr;
-
-        if (!is_VALID_PIXEL_ROUND()) {
-            valueStr = Double.toString(value);
-            return valueStr;
-        }
-
-        int decimalPlaces = get_VALID_PIXEL_DEC_PLACES();
-        int significantFigures = get_VALID_PIXEL_SIG_FIGS();
-
-
-        if (isScaled) {
-            double decimalPlacesDouble = 1 / Math.abs(scalingFactor);
-            double decimalPlaceByScalingFactor = Math.log(decimalPlacesDouble) / Math.log(10);
-            if (decimalPlaceByScalingFactor > decimalPlaces) {
-                decimalPlaces = (int) Math.ceil(decimalPlaceByScalingFactor) + 2;  // add a couple extra decimal places
+        // if do not round big numbers, then increase significant figure to length of integer (left side of decimal place)
+        if (roundBigNumbersToInt) {
+            int valueAsInt = (int) Math.round(Math.abs(value));
+            String stringOfInt = Integer.toString(valueAsInt);
+            if (stringOfInt.length() > significantFigures) {
+                significantFigures = stringOfInt.length();
             }
+
+            // Alt version
+//            double absValue = Math.abs(value);
+//            double logValue = Math.log(absValue) / Math.log(10);  // s
+//            if (logValue > significantFigures) {
+//                significantFigures = (int) Math.ceil(logValue);
+//            }
         }
 
 
-        boolean useSignificantFigureMethod;
+        BigDecimal bdRound = new BigDecimal(Double.toString(value));
 
-//        double size = Math.pow(10,significantFigures);
-//
-//        double absValue = Math.abs(value);
-//        double logValue = Math.log(absValue) / Math.log(10);
-//        if (logValue > significantFigures) {
-//            significantFigures = (int) Math.ceil(logValue);
-//        }
-
-//        if (Math.abs(value) >= size ) {
-//            double valueRounded = Math.round(value);
-//            valueStr = Double.toString(valueRounded);
-//            return valueStr;
-////            useSignificantFigureMethod = false;
-////            decimalPlaces = 0;
-//        } else {
-//            useSignificantFigureMethod = true;
-//        }
-
-        useSignificantFigureMethod = false;
-
-
-        if (useSignificantFigureMethod) {
-            if (significantFigures < 0) {
-                valueStr = Double.toString(value);
-                return valueStr;
+        if (value >= 0.0) {
+            if (isMax) {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_UP));
+            } else {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_DOWN));
             }
         } else {
-            if (decimalPlaces < 0) {
-                valueStr = Double.toString(value);
-                return valueStr;
+            if (isMax) {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_DOWN));
+            } else {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_UP));
             }
         }
+//        bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_EVEN));
+//        bdRound = bdRound.setScale(decimalPlaces, RoundingMode.HALF_EVEN);
 
 
-        BigDecimal bdRoundDown = new BigDecimal(Double.toString(value));
+        double valueDoubleRound = bdRound.doubleValue();
+        String valueStrRound = Double.toString(valueDoubleRound);
+        valueStrRound = cleanUpPaddedDecimalZeros(valueStrRound);
 
-//        bdRoundDown = bdRoundDown.round(new MathContext(significantFigures, RoundingMode.HALF_EVEN));
-        bdRoundDown = bdRoundDown.setScale(decimalPlaces, RoundingMode.HALF_EVEN);
-
-        double valueDoubleRoundDown = bdRoundDown.doubleValue();
-        String valueStrRoundDown = Double.toString(valueDoubleRoundDown);
-        valueStrRoundDown = cleanUpPaddedDecimalZeros(valueStrRoundDown);
-
-        valueStr = valueStrRoundDown;
+        valueStr = valueStrRound;
 
 
         return valueStr;
     }
 
 
-
-    public String formatValidMinMaxOld(double value, double scalingFactor) {
-
-        String valueStr;
-
-        if (!is_VALID_PIXEL_ROUND()) {
-            valueStr = Double.toString(value);
-            return valueStr;
-        }
-
-
-
-
-        if (Math.abs(value) >= 1 ) {
-            // value is greater than one using decimal places
-            int decimalPlaces = get_VALID_PIXEL_DEC_PLACES();
-            if (decimalPlaces < 0) {
-                valueStr = Double.toString(value);
-                return valueStr;
-            }
-
-            BigDecimal bdRoundUp = new BigDecimal(Double.toString(value));
-            BigDecimal bdRoundDown = new BigDecimal(Double.toString(value));
-
-            bdRoundDown = bdRoundDown.setScale(decimalPlaces, RoundingMode.DOWN);
-            double valueDoubleRoundDown = bdRoundDown.doubleValue();
-            String valueStrRoundDown = Double.toString(valueDoubleRoundDown);
-            valueStrRoundDown = cleanUpPaddedDecimalZeros(valueStrRoundDown);
-
-
-            bdRoundUp = bdRoundUp.setScale(decimalPlaces, RoundingMode.UP);
-            double valueDoubleRoundUp = bdRoundUp.doubleValue();
-            String valueStrRoundUp = Double.toString(valueDoubleRoundUp);
-            valueStrRoundUp = cleanUpPaddedDecimalZeros(valueStrRoundUp);
-
-            if (valueStrRoundDown.length() <= valueStrRoundUp.length()) {
-                valueStr = valueStrRoundDown;
-            } else {
-                valueStr = valueStrRoundUp;
-            }
-
-
-        } else {
-            // value is less than one (using significant figures)
-            int significantFigures = get_VALID_PIXEL_SIG_FIGS();
-            if (significantFigures < 0) {
-                valueStr = Double.toString(value);
-                return valueStr;
-            }
-
-            BigDecimal bdRoundUp = new BigDecimal(value);
-            BigDecimal bdRoundDown = new BigDecimal(value);
-
-            bdRoundDown = bdRoundDown.round(new MathContext(significantFigures, RoundingMode.DOWN));
-            double valueDoubleRoundDown = bdRoundDown.doubleValue();
-            String valueStrRoundDown = Double.toString(valueDoubleRoundDown);
-            valueStrRoundDown = cleanUpPaddedDecimalZeros(valueStrRoundDown);
-
-
-            bdRoundUp = bdRoundUp.round(new MathContext(significantFigures, RoundingMode.UP));
-            double valueDoubleRoundUp = bdRoundUp.doubleValue();
-            String valueStrRoundUp = Double.toString(valueDoubleRoundUp);
-            valueStrRoundUp = cleanUpPaddedDecimalZeros(valueStrRoundUp);
-
-            if (valueStrRoundDown.length() <= valueStrRoundUp.length()) {
-                valueStr = valueStrRoundDown;
-            } else {
-                valueStr = valueStrRoundUp;
-            }
-
-        }
-
-        return valueStr;
-    }
 
 
 
@@ -2880,10 +2726,6 @@ public abstract class SeadasFileReader {
         return preferences.getPropertyInt(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
     }
 
-    public int get_VALID_PIXEL_DEC_PLACES() {
-        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyInt(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_DEC_PLACES_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_DEC_PLACES_DEFAULT);
-    }
 
 
 
