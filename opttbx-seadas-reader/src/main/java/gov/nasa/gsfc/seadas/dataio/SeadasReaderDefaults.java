@@ -1259,7 +1259,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_KEY = PROPERTY_VALID_PIXEL_ROOT_KEY + ".significant_figures";
     public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_LABEL = "Significant Figures";
     public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_TOOLTIP = "Sets significant figures for min/max values.";
-    public static final int PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT = 6;
+    public static final int PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT = 7;
 
 
 
