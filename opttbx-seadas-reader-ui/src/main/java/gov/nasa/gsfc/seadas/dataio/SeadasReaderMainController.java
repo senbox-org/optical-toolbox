@@ -238,7 +238,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
             }
             propertyValueChangeEventsEnabled = true;
 
-            context.setComponentsEnabled(SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_KEY, false);
+            context.setComponentsEnabled(PROPERTY_RESTORE_DEFAULTS_KEY, false);
         }
     }
 
@@ -300,7 +300,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
             propertyValueChangeEventsEnabled = false;
             try {
                 restoreDefaults.setValue(isDefaults(context));
-                context.setComponentsEnabled(SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_KEY, !isDefaults(context));
+                context.setComponentsEnabled(PROPERTY_RESTORE_DEFAULTS_KEY, !isDefaults(context));
             } catch (ValidationException e) {
                 e.printStackTrace();
             }
@@ -455,15 +455,15 @@ public final class SeadasReaderMainController extends DefaultConfigController {
 
         // Restore Defaults Section
 
-        @Preference(label = SeadasReaderDefaults.PROPERTY_RESTORE_SECTION_LABEL,
-                key = SeadasReaderDefaults.PROPERTY_RESTORE_SECTION_KEY,
-                description = SeadasReaderDefaults.PROPERTY_RESTORE_SECTION_TOOLTIP)
+        @Preference(label = PROPERTY_RESTORE_SECTION_LABEL,
+                key = PROPERTY_RESTORE_SECTION_KEY,
+                description = PROPERTY_RESTORE_SECTION_TOOLTIP)
         boolean restoreDefaultsSection = true;
 
-        @Preference(label = SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_LABEL,
-                key = SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_KEY,
-                description = SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_TOOLTIP)
-        boolean restoreDefaults = SeadasReaderDefaults.PROPERTY_RESTORE_DEFAULTS_DEFAULT;
+        @Preference(label = PROPERTY_RESTORE_DEFAULTS_LABEL,
+                key = PROPERTY_RESTORE_DEFAULTS_KEY,
+                description = PROPERTY_RESTORE_DEFAULTS_TOOLTIP)
+        boolean restoreDefaults = PROPERTY_RESTORE_DEFAULTS_DEFAULT;
 
     }
 
