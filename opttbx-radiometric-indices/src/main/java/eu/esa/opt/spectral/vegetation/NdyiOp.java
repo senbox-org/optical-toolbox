@@ -1,0 +1,82 @@
+package eu.esa.opt.spectral.vegetation;
+
+import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.opt.radiometry.BaseIndexOp;
+import eu.esa.opt.radiometry.annotations.BandParameter;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.gpf.OperatorException;
+import org.esa.snap.core.gpf.OperatorSpi;
+import org.esa.snap.core.gpf.Tile;
+import org.esa.snap.core.gpf.annotations.OperatorMetadata;
+import org.esa.snap.core.gpf.annotations.Parameter;
+
+import java.awt.*;
+import java.util.Map;
+
+@OperatorMetadata(
+        alias = "NdyiOp",
+        version = "1.0",
+        category = "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+        description = "Normalized Difference Yellowness Index",
+        authors = "Adrian Draghici",
+        copyright = "Copyright (C) 2025 by CS Group ROMANIA")
+public class NdyiOp extends BaseIndexOp {
+
+    // constants
+    public static final String BAND_NAME = "ndyi";
+
+	@Parameter(label = "Blue source band",
+			description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+			rasterDataNodeType = Band.class)
+	@BandParameter(minWavelength = 450, maxWavelength = 530)
+	private String blueSourceBand;
+
+	@Parameter(label = "Green source band",
+			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+			rasterDataNodeType = Band.class)
+	@BandParameter(minWavelength = 510, maxWavelength = 600)
+	private String greenSourceBand;
+
+    @Override
+    public String getBandName() {
+        return BAND_NAME;
+    }
+
+    @Override
+    public void computeTileStack(Map<Band, Tile> targetTiles, Rectangle rectangle, ProgressMonitor pm) throws OperatorException {
+        pm.beginTask("Computing Ndyi", rectangle.height);
+        try {
+
+			Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
+			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+
+            // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
+            Tile ndyi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
+            Tile ndyiFlags = targetTiles.get(targetProduct.getBand(FLAGS_BAND_NAME));
+
+            float ndyiValue;
+
+            for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
+                for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
+
+					final float b= blueTile.getSampleFloat(x, y);
+					final float g= greenTile.getSampleFloat(x, y);
+
+                    ndyiValue = (g-b)/(g+b);
+                    ndyi.setSample(x, y, computeFlag(x, y, ndyiValue, ndyiFlags));
+                }
+                checkForCancellation();
+                pm.worked(1);
+            }
+        } finally {
+            pm.done();
+        }
+    }
+    
+    public static class Spi extends OperatorSpi {
+
+        public Spi() {
+            super(NdyiOp.class);
+        }
+    }
+}
