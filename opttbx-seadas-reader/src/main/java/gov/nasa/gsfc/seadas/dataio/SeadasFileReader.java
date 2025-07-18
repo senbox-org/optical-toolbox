@@ -2679,6 +2679,10 @@ public abstract class SeadasFileReader {
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT);
     }
 
+    public String getBandGroupingL1CPaceSPEXONE() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_DEFAULT);
+    }
 
 
     public String getBandGroupingL1B_MODIS() {

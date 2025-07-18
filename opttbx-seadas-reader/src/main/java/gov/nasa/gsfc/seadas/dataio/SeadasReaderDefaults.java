@@ -1125,9 +1125,8 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".band_grouping";
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_LABEL = "Band Grouping (OCI)";
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_TOOLTIP = "Expression to create band groupings into folders for the OCI instrument";
-    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_DEFAULT = "I_-20:I_20:i_20:i_-20:obs_per_view:view_time_offsets:sensor_azimuth:sensor_zenith:" +
-            "solar_azimuth:solar_zenith:scattering_angle:rotation_angle:qc_bitwise_-20:qc_bitwise_20:" +
-            "qc_-20:qc_20:I_stdev_-20:I_stdev_20:i_stdev_20:i_stdev_-20";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_DEFAULT = "i_20:i_-20:qc_-20:qc_20:i_stdev_20:i_stdev_-20:" +
+            "sensor_zenith:sensor_azimuth:solar_azimuth:solar_zenith:scattering_angle:view_time_offsets:number_of_observations";
 
     public static final String PROPERTY_FLIPX_L1C_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".flipx";
     public static final String PROPERTY_FLIPX_L1C_PACE_LABEL = "Flip Horizontal";
@@ -1144,16 +1143,30 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".band_grouping.harp2";
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_LABEL = "Band Grouping (HARP2)";
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_TOOLTIP = "Expression to create band groupings into folders for the HARP2 instrument";
-    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT = "i_*_549:i_*_664:i_*_865:i_*_440:q_*_549:q_*_664:q_*_865:q_*_440:" +
-            "qc_*_549:qc_*_664:qc_*_865:qc_*_440:u_*_549:u_*_664:u_*_865:u_*_440:dolp_*_549:dolp_*_664:dolp_*_865:dolp_*_440:aolp_*_549:aolp_*_664:aolp_*_865:aolp_*_440:" +
-            "i_stdev_*_549:i_stdev_*_664:i_stdev_*_865:i_stdev_*_440:q_stdev_*_549:q_stdev_*_664:q_stdev_*_865:q_stdev_*_440:" +
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT = "i_*_440:i_*_549:i_*_664:i_*_865:q_*_440:q_*_549:q_*_664:q_*_865:" +
+            "qc_*_440:qc_*_549:qc_*_664:qc_*_865:u_*_440:u_*_549:u_*_664:u_*_865:dolp_*_440:dolp_*_549:dolp_*_664:dolp_*_865:aolp_*_440:aolp_*_549:aolp_*_664:aolp_*_865:" +
+            "i_stdev_*_440:i_stdev_*_549:i_stdev_*_664:i_stdev_*_865:q_stdev_*_440:q_stdev_*_549:q_stdev_*_664:q_stdev_*_865:" +
             "u_stdev_*_549:u_stdev_*_664:u_stdev_*_865:u_stdev_*_440:dolp_stdev_*_549:dolp_stdev_*_664:dolp_stdev_*_865:dolp_stdev_*_440:" +
-            "aolp_stdev_*_549:aolp_stdev_*_664:aolp_stdev_*_865:aolp_stdev_*_440:" +
-            "sensor_zenith_angle:sensor_azimuth_angle:solar_zenith_angle:solar_azimuth_angle:scattering_angle:rotation_angle:" +
-            "view_time_offsets:obs_per_view:number_of_observations" ;
+            "aolp_stdev_*_440:aolp_stdev_*_549:aolp_stdev_*_664:aolp_stdev_*_865:" +
+            "sensor_zenith_*_440:sensor_zenith_*_549:sensor_zenith_*_664:sensor_zenith_*_865:sensor_azimuth_*_440:sensor_azimuth_*_549:sensor_azimuth_*_664:sensor_azimuth_*_865:" +
+            "solar_zenith_*_440:solar_zenith_*_549:solar_zenith_*_664:solar_zenith_*_865:solar_azimuth_*_440:solar_azimuth_*_549:solar_azimuth_*_664:solar_azimuth_*_865:" +
+            "scattering_angle_*_440:scattering_angle_*_549:scattering_angle_*_664:scattering_angle_*_865:rotation_angle_*_440:rotation_angle_*_549:rotation_angle_*_664:rotation_angle_*_865:" +
+            "view_time_offsets_*_440:view_time_offsets_*_549:view_time_offsets_*_664:view_time_offsets_*_865:number_of_observations_*_440:number_of_observations_*_549:number_of_observations_*_664:number_of_observations_*_865";
 
-
-
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".band_grouping.spexone";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_LABEL = "Band Grouping (HARP2)";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_TOOLTIP = "Expression to create band groupings into folders for the HARP2 instrument";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_DEFAULT = "i_50:i_20:i_0:i_-20:i_-50:i_stdev_50:i_stdev_20:i_stdev_0:i_stdev_-20:i_stdev_-50:" +
+            "i_polsample_50:i_polsample_20:i_polsample_0:i_polsample_-20:i_polsample_-50:i_polsample_stdev_50:i_polsample_stdev_20:i_polsample_stdev_0:i_polsample_stdev_-20:i_polsample_stdev_-50:" +
+            "aolp_50:aolp_20:aolp_0:aolp_-20:aolp_-50:aolp_stdev_50:aolp_stdev_20:aolp_stdev_0:aolp_stdev_-20:aolp_stdev_-50:" +
+            "dolp_50:dolp_20:dolp_0:dolp_-20:dolp_-50:dolp_stdev_50:dolp_stdev_20:dolp_stdev_0:dolp_stdev_-20:dolp_stdev_-50:" +
+            "q_50:q_20:q_0:q_-20:q_-50:q_stdev_50:q_stdev_20:q_stdev_0:q_stdev_-20:q_stdev_-50:" +
+            "u_50:u_20:u_0:u_-20:u_-50:u_stdev_50:u_stdev_20:u_stdev_0:u_stdev_-20:u_stdev_-50:" +
+            "qc_50:qc_20:qc_0:qc_-20:qc_-50:qc_polsample_50:qc_polsample_20:qc_polsample_0:qc_polsample_-20:qc_polsample_-50:" +
+            "q_over_i_50:q_over_i_20:q_over_i_0:q_over_i_-20:q_over_i_-50:q_over_i_stdev_50:q_over_i_stdev_20:q_over_i_stdev_0:q_over_i_stdev_-20:q_over_i_stdev_-50:" +
+            "u_over_i_50:u_over_i_20:u_over_i_0:u_over_i_-20:u_over_i_-50:u_over_i_stdev_50:u_over_i_stdev_20:u_over_i_stdev_0:u_over_i_stdev_-20:u_over_i_stdev_-50:" +
+            "sensor_zenith:sensor_azimuth:solar_zenith:solar_azimuth:scattering_angle:rotation_angle:" +
+            "view_time_offsets:number_of_observations" ;
 
     // L1B_MODIS FILES
 
