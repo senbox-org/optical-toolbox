@@ -98,6 +98,8 @@ public final class SeadasReaderMainController extends DefaultConfigController {
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT);
 
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_DEFAULT);
+
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_FILE_PROPERTIES_L1B_MODIS_SECTION_KEY, true);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_KEY, SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1B_MODIS_DEFAULT);
@@ -401,7 +403,10 @@ public final class SeadasReaderMainController extends DefaultConfigController {
                 description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_TOOLTIP)
         String bandGroupingL1CPaceHarp2Default = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_HARP2_DEFAULT;
 
-
+        @Preference(key = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_KEY,
+                label = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_TOOLTIP)
+        String bandGroupingL1CPaceSPEXONEDefault = SeadasReaderDefaults.PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_DEFAULT;
 
 
 
