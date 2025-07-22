@@ -1154,8 +1154,8 @@ public class SeadasReaderDefaults {
             "view_time_offsets_*_440:view_time_offsets_*_549:view_time_offsets_*_664:view_time_offsets_*_865:number_of_observations_*_440:number_of_observations_*_549:number_of_observations_*_664:number_of_observations_*_865";
 
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".band_grouping.spexone";
-    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_LABEL = "Band Grouping (HARP2)";
-    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_TOOLTIP = "Expression to create band groupings into folders for the HARP2 instrument";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_LABEL = "Band Grouping (SPEXONE)";
+    public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_TOOLTIP = "Expression to create band groupings into folders for the SPEXONE instrument";
     public static final String PROPERTY_BAND_GROUPING_L1C_PACE_SPEXONE_DEFAULT = "i_50:i_20:i_0:i_-20:i_-50:i_stdev_50:i_stdev_20:i_stdev_0:i_stdev_-20:i_stdev_-50:" +
             "i_polsample_50:i_polsample_20:i_polsample_0:i_polsample_-20:i_polsample_-50:i_polsample_stdev_50:i_polsample_stdev_20:i_polsample_stdev_0:i_polsample_stdev_-20:i_polsample_stdev_-50:" +
             "aolp_50:aolp_20:aolp_0:aolp_-20:aolp_-50:aolp_stdev_50:aolp_stdev_20:aolp_stdev_0:aolp_stdev_-20:aolp_stdev_-50:" +
