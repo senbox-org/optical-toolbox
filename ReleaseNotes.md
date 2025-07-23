@@ -5,6 +5,12 @@ The release notes are provided on the STEP website at https://step.esa.int/main/
 
 # New in SNAP 13.0.0
     [SNAP-1696] Improve open performance of S3 reader
+    [SNAP-3657] S3 SLSTR AOD not opening
+    [SNAP-3769] Issue with decode qualification with ZNAP and S3 in SNAP11
+    [SNAP-3978] OLCI L1 - correct FWHM, frame_offset, lambba0 and solar_flux mapping
+    [SNAP-3984] Investigate overlap in functionality between band extraction and band select
+    [SNAP-3990] Remove misreg option of L1C-SYN processor
+    [SNAP-3994] Evaluation of inclusion in SNAP the L1C Synergy processor
 
 # New in SNAP 12.0.0
     [SNAP-3912] SNAP 12 is unable to read S2 products
