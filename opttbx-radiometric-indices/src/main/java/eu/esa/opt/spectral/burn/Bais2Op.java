@@ -1,0 +1,110 @@
+package eu.esa.opt.spectral.burn;
+
+import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.opt.radiometry.BaseIndexOp;
+import eu.esa.opt.radiometry.annotations.BandParameter;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.gpf.OperatorException;
+import org.esa.snap.core.gpf.OperatorSpi;
+import org.esa.snap.core.gpf.Tile;
+import org.esa.snap.core.gpf.annotations.OperatorMetadata;
+import org.esa.snap.core.gpf.annotations.Parameter;
+
+import java.awt.*;
+import java.util.Map;
+
+@OperatorMetadata(
+        alias = "Bais2Op",
+        version = "1.0",
+        category = "Optical/Thematic Land Processing/Burn Spectral Indices",
+        description = "Burned Area Index for Sentinel 2",
+        authors = "Adrian Draghici",
+        copyright = "Copyright (C) 2025 by CS Group ROMANIA")
+public class Bais2Op extends BaseIndexOp {
+
+    // constants
+    public static final String BAND_NAME = "bais2";
+
+	@Parameter(label = "Red edge 2 source band",
+			description = "The Red Edge 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+			rasterDataNodeType = Band.class)
+	@BandParameter(minWavelength = 730, maxWavelength = 750)
+	private String redEdge2SourceBand;
+
+	@Parameter(label = "Red edge 3 source band",
+			description = "The Red Edge 3 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+			rasterDataNodeType = Band.class)
+	@BandParameter(minWavelength = 765, maxWavelength = 795)
+	private String redEdge3SourceBand;
+
+	@Parameter(label = "Red source band",
+			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+			rasterDataNodeType = Band.class)
+	@BandParameter(minWavelength = 620, maxWavelength = 690)
+	private String redSourceBand;
+
+	@Parameter(label = "Nir 2 source band",
+			description = "The NIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+			rasterDataNodeType = Band.class)
+	@BandParameter(minWavelength = 850, maxWavelength = 880)
+	private String nir2SourceBand;
+
+	@Parameter(label = "Swir 2 source band",
+			description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+			rasterDataNodeType = Band.class)
+	@BandParameter(minWavelength = 2080, maxWavelength = 2350)
+	private String swir2SourceBand;
+
+    @Override
+    public String getBandName() {
+        return BAND_NAME;
+    }
+
+    @Override
+    public void computeTileStack(Map<Band, Tile> targetTiles, Rectangle rectangle, ProgressMonitor pm) throws OperatorException {
+        pm.beginTask("Computing Bais2", rectangle.height);
+        try {
+
+			Tile redEdge2Tile = getSourceTile(getSourceProduct().getBand(redEdge2SourceBand), rectangle);
+			Tile redEdge3Tile = getSourceTile(getSourceProduct().getBand(redEdge3SourceBand), rectangle);
+			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+			Tile nir2Tile = getSourceTile(getSourceProduct().getBand(nir2SourceBand), rectangle);
+			Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
+
+            // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
+            Tile bais2 = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
+            Tile bais2Flags = targetTiles.get(targetProduct.getBand(FLAGS_BAND_NAME));
+
+            float bais2Value;
+
+            for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
+                for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
+
+					final float re2= redEdge2Tile.getSampleFloat(x, y);
+					final float re3= redEdge3Tile.getSampleFloat(x, y);
+					final float r= redTile.getSampleFloat(x, y);
+					final float n2= nir2Tile.getSampleFloat(x, y);
+					final float s2= swir2Tile.getSampleFloat(x, y);
+
+                    bais2Value = (1.0f-pow(((re2*re3*n2)/r),0.5f)*pow((s2-n2)/(s2+n2),0.5f)+1.0f);
+                    bais2.setSample(x, y, computeFlag(x, y, bais2Value, bais2Flags));
+                }
+                checkForCancellation();
+                pm.worked(1);
+            }
+        } finally {
+            pm.done();
+        }
+    }
+    
+	private static float pow(float n, float p) {
+			return (float) Math.pow(n, p);
+	}
+
+    public static class Spi extends OperatorSpi {
+
+        public Spi() {
+            super(Bais2Op.class);
+        }
+    }
+}
