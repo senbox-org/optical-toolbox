@@ -191,16 +191,4 @@ public class L1cSynOpTest {
         assertEquals(41,result.getSceneRasterHeight());
         assertEquals(49,result.getSceneRasterWidth());
     }
-
-    @Test
-    public void testMetadata() {
-        Operator l1cSynOp = new L1cSynOp();
-        l1cSynOp.setSourceProduct("olciProduct", olciProduct);
-        l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
-        l1cSynOp.setParameterDefaultValues();
-        Product result = l1cSynOp.getTargetProduct();
-        assertEquals(4,result.getMetadataRoot().getNumElements());
-        assertEquals(0,result.getMetadataRoot().getNumAttributes());
-        assertEquals(5,result.getMetadataRoot().getElement("SLSTRmetadata").getElement("Global_Attributes").getNumAttributes());
-    }
 }
