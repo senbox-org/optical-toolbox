@@ -25,8 +25,8 @@ public class OcviOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "ocvi";
 
-	@Parameter(label = "C Parameter", defaultValue = "1.0F", description = "The c parameter.")
-	private float c;
+	@Parameter(label = "Cexp Parameter", defaultValue = "1.0F", description = "The cexp parameter.")
+	private float cexp;
 
 	@Parameter(label = "Green source band",
 			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
@@ -73,7 +73,7 @@ public class OcviOp extends BaseIndexOp {
 					final float r= redTile.getSampleFloat(x, y);
 					final float n= nirTile.getSampleFloat(x, y);
 
-                    ocviValue = pow((n/g)*(r/g),c);
+                    ocviValue = pow((n/g)*(r/g),cexp);
                     ocvi.setSample(x, y, computeFlag(x, y, ocviValue, ocviFlags));
                 }
                 checkForCancellation();
