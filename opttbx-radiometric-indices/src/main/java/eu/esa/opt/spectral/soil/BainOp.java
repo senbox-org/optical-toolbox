@@ -14,16 +14,16 @@ import java.awt.*;
 import java.util.Map;
 
 @OperatorMetadata(
-        alias = "BaiOp",
+        alias = "BainOp",
         version = "1.0",
         category = "Optical/Thematic Land Processing/Soil Spectral Indices",
         description = "Bareness Index",
         authors = "Adrian Draghici",
         copyright = "Copyright (C) 2025 by CS Group ROMANIA")
-public class BaiOp extends BaseIndexOp {
+public class BainOp extends BaseIndexOp {
 
     // constants
-    public static final String BAND_NAME = "bai";
+    public static final String BAND_NAME = "bain";
 
 	@Parameter(label = "Red source band",
 			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
@@ -50,7 +50,7 @@ public class BaiOp extends BaseIndexOp {
 
     @Override
     public void computeTileStack(Map<Band, Tile> targetTiles, Rectangle rectangle, ProgressMonitor pm) throws OperatorException {
-        pm.beginTask("Computing Bai", rectangle.height);
+        pm.beginTask("Computing Bain", rectangle.height);
         try {
 
 			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
@@ -58,10 +58,10 @@ public class BaiOp extends BaseIndexOp {
 			Tile swir1Tile = getSourceTile(getSourceProduct().getBand(swir1SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
-            Tile bai = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
-            Tile baiFlags = targetTiles.get(targetProduct.getBand(FLAGS_BAND_NAME));
+            Tile bain = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
+            Tile bainFlags = targetTiles.get(targetProduct.getBand(FLAGS_BAND_NAME));
 
-            float baiValue;
+            float bainValue;
 
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
@@ -70,8 +70,8 @@ public class BaiOp extends BaseIndexOp {
 					final float n= nirTile.getSampleFloat(x, y);
 					final float s1= swir1Tile.getSampleFloat(x, y);
 
-                    baiValue = r+s1-n;
-                    bai.setSample(x, y, computeFlag(x, y, baiValue, baiFlags));
+                    bainValue = r+s1-n;
+                    bain.setSample(x, y, computeFlag(x, y, bainValue, bainFlags));
                 }
                 checkForCancellation();
                 pm.worked(1);
@@ -84,7 +84,7 @@ public class BaiOp extends BaseIndexOp {
     public static class Spi extends OperatorSpi {
 
         public Spi() {
-            super(BaiOp.class);
+            super(BainOp.class);
         }
     }
 }
