@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Nmdi
+ *
+ * @author Adrian Draghici
+ */
+public class NmdiOpTest extends BaseIndexOpTest<NmdiOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"nir", "swir1", "swir2"}, 3, 3, new float[]{760, 1550, 2130}, new float[]{0.15692413f, 0.64874154f, 0.2760535f}, new float[]{0.40541273f, 0.7711076f, 0.9319247f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                -0.40739986f, -0.23890334f, -0.04421332f, 0.1832932f, 0.45267686f, 0.7766719f, 1.1737589f, 1.6718149f, 2.3149629f});
+    }
+}

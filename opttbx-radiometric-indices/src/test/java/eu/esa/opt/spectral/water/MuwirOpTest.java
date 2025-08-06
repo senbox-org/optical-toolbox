@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.water;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Muwir
+ *
+ * @author Adrian Draghici
+ */
+public class MuwirOpTest extends BaseIndexOpTest<MuwirOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"blue", "green", "nir", "swir1", "swir2"}, 3, 3, new float[]{450, 560, 760, 1550, 2130}, new float[]{0.19807786f, 0.79744285f, 0.38173074f, 0.08736485f, 0.16306823f}, new float[]{0.51636356f, 0.87333906f, 0.72600746f, 0.45861137f, 0.2338497f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                3.631726f, 3.3811066f, 3.1491923f, 2.9340003f, 2.7338033f, 2.5470965f, 2.3725605f, 2.2090397f, 2.0555174f});
+    }
+}

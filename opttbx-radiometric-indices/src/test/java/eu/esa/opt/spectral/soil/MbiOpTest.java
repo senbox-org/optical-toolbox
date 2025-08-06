@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.soil;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Mbi
+ *
+ * @author Adrian Draghici
+ */
+public class MbiOpTest extends BaseIndexOpTest<MbiOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"nir", "swir1", "swir2"}, 3, 3, new float[]{760, 1550, 2130}, new float[]{0.37997317f, 0.4738735f, 0.07324785f}, new float[]{0.6153395f, 0.9714137f, 0.4711885f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.5222766f, 0.50344574f, 0.48901543f, 0.4776044f, 0.46835488f, 0.4607058f, 0.45427486f, 0.44879255f, 0.44406337f});
+    }
+}

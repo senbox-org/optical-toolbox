@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Rendvi
+ *
+ * @author Adrian Draghici
+ */
+public class RendviOpTest extends BaseIndexOpTest<RendviOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"redEdge1", "redEdge2", "red"}, 3, 3, new float[]{695, 730, 670}, new float[]{0.2650879f, 0.106337965f, 0.43759775f}, new float[]{0.5202965f, 0.65094596f, 0.5547148f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                -0.4274068f, -0.26002172f, -0.151213f, -0.07481145f, -0.01821551f, 0.025392428f, 0.06002299f, 0.088189624f, 0.11154774f});
+    }
+}

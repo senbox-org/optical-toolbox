@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Mrbvi
+ *
+ * @author Adrian Draghici
+ */
+public class MrbviOpTest extends BaseIndexOpTest<MrbviOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"blue", "red"}, 3, 3, new float[]{450, 670}, new float[]{0.19188154f, 0.42626947f}, new float[]{0.5840054f, 0.5344047f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.6630257f, 0.538414f, 0.4194152f, 0.3096484f, 0.21043693f, 0.12179299f, 0.043059632f, -0.026706975f, -0.08852452f});
+    }
+}

@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Gm1
+ *
+ * @author Adrian Draghici
+ */
+public class Gm1OpTest extends BaseIndexOpTest<Gm1Op> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"green", "redEdge2", "red"}, 3, 3, new float[]{560, 730, 670}, new float[]{0.26376653f, 0.6308703f, 0.10993129f}, new float[]{0.4541453f, 0.78346634f, 0.61408323f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                2.3917754f, 2.2601755f, 2.1486917f, 2.0530393f, 1.9700701f, 1.8974178f, 1.8332707f, 1.776218f, 1.7251446f});
+    }
+}

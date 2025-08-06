@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.urban;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Vgnirbi
+ *
+ * @author Adrian Draghici
+ */
+public class VgnirbiOpTest extends BaseIndexOpTest<VgnirbiOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"green", "nir"}, 3, 3, new float[]{560, 760}, new float[]{0.6266244f, 0.28683513f}, new float[]{0.6558775f, 0.7100422f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.37198064f, 0.29952568f, 0.23505428f, 0.17731588f, 0.12530807f, 0.07821803f, 0.03537966f, -0.0037579234f, -0.03965439f});
+    }
+}

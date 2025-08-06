@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.water;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Aweinsh
+ *
+ * @author Adrian Draghici
+ */
+public class AweinshOpTest extends BaseIndexOpTest<AweinshOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"green", "nir", "swir1", "swir2"}, 3, 3, new float[]{560, 760, 1550, 2130}, new float[]{0.30486917f, 0.5490128f, 0.0042157173f, 0.17422616f}, new float[]{0.8981104f, 0.93318754f, 0.7133869f, 0.35788536f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                1.5444826f, 1.5376449f, 1.5308074f, 1.5239699f, 1.5171322f, 1.5102944f, 1.5034571f, 1.4966195f, 1.4897819f});
+    }
+}

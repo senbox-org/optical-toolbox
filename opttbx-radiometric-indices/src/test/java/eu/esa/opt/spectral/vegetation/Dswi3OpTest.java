@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Dswi3
+ *
+ * @author Adrian Draghici
+ */
+public class Dswi3OpTest extends BaseIndexOpTest<Dswi3Op> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"red", "swir1"}, 3, 3, new float[]{670, 1550}, new float[]{0.23111892f, 0.35967028f}, new float[]{0.87805486f, 0.8627227f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                1.556213f, 1.354394f, 1.235662f, 1.1574665f, 1.1020753f, 1.060782f, 1.028812f, 1.0033283f, 0.98253846f});
+    }
+}

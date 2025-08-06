@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Vari700
+ *
+ * @author Adrian Draghici
+ */
+public class Vari700OpTest extends BaseIndexOpTest<Vari700Op> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"blue", "redEdge1", "red"}, 3, 3, new float[]{450, 695, 670}, new float[]{0.07437658f, 0.342268f, 0.66552854f}, new float[]{0.7896541f, 0.6466245f, 0.9579717f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                -0.6635667f, -0.6467735f, -0.628999f, -0.61015433f, -0.59014004f, -0.56884366f, -0.54613787f, -0.52187806f, -0.49589914f});
+    }
+}

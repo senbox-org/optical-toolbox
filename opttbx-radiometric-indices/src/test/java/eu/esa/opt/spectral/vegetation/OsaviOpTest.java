@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Osavi
+ *
+ * @author Adrian Draghici
+ */
+public class OsaviOpTest extends BaseIndexOpTest<OsaviOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"red", "nir"}, 3, 3, new float[]{670, 760}, new float[]{0.0814206f, 0.2940815f}, new float[]{0.28244668f, 0.93090564f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.39712435f, 0.41724733f, 0.43171236f, 0.4426115f, 0.45111865f, 0.45794347f, 0.46353996f, 0.46821246f, 0.47217235f});
+    }
+}

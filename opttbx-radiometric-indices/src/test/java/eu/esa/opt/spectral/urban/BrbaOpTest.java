@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.urban;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Brba
+ *
+ * @author Adrian Draghici
+ */
+public class BrbaOpTest extends BaseIndexOpTest<BrbaOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"red", "swir1"}, 3, 3, new float[]{670, 1550}, new float[]{0.059958756f, 0.06303197f}, new float[]{0.3267094f, 0.095575094f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.9512435f, 1.3905034f, 1.7795478f, 2.126522f, 2.4378998f, 2.718892f, 2.9737396f, 3.2059286f, 3.4183528f});
+    }
+}

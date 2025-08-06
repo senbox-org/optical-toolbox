@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Nrfir
+ *
+ * @author Adrian Draghici
+ */
+public class NrfirOpTest extends BaseIndexOpTest<NrfirOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"red", "swir2"}, 3, 3, new float[]{670, 2130}, new float[]{0.26479977f, 0.13486248f}, new float[]{0.98967046f, 0.36853486f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.32511774f, 0.36832416f, 0.39533496f, 0.41381907f, 0.42726362f, 0.43748236f, 0.44551185f, 0.4519876f, 0.45732084f});
+    }
+}

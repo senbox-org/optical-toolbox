@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.soil;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Nsdsi2
+ *
+ * @author Adrian Draghici
+ */
+public class Nsdsi2OpTest extends BaseIndexOpTest<Nsdsi2Op> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"swir1", "swir2"}, 3, 3, new float[]{1550, 2130}, new float[]{0.5185051f, 0.6762556f}, new float[]{0.8904119f, 0.7701028f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                -0.23327051f, -0.17877248f, -0.12610179f, -0.07516796f, -0.025886731f, 0.021821458f, 0.06803034f, 0.112809666f, 0.15622474f});
+    }
+}
