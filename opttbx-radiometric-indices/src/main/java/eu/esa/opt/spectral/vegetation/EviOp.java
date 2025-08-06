@@ -37,9 +37,6 @@ public class EviOp extends BaseIndexOp {
 	@Parameter(label = "C2 Parameter", defaultValue = "1.0F", description = "The c2 parameter.")
 	private float c2;
 
-	@Parameter(label = "C Parameter", defaultValue = "1.0F", description = "The c parameter.")
-	private float c;
-
 	@Parameter(label = "Blue source band",
 			description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
 			rasterDataNodeType = Band.class)
