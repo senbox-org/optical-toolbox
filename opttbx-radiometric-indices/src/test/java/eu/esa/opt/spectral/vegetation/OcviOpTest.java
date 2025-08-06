@@ -1,0 +1,43 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Ocvi
+ *
+ * @author Adrian Draghici
+ */
+public class OcviOpTest extends BaseIndexOpTest<OcviOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"green", "red", "nir"}, 3, 3, new float[]{560, 670, 760}, new float[]{0.030337393f, 0.049995303f, 0.51851374f}, new float[]{0.17917812f, 0.83121127f, 0.86034685f});
+        setOperatorParameters(new HashMap<>() {{
+                                  put("cexp", 0.5360303f);
+                              }}
+        );
+        setTargetValues(new float[]{
+                5.985505f, 6.682715f, 6.459611f, 6.1781487f, 5.929861f, 5.7217846f, 5.5481143f, 5.4020743f, 5.2780037f});
+    }
+}

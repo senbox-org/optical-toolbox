@@ -1,0 +1,46 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Ndgi
+ *
+ * @author Adrian Draghici
+ */
+public class NdgiOpTest extends BaseIndexOpTest<NdgiOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"green", "red", "nir"}, 3, 3, new float[]{560, 670, 760}, new float[]{0.3611061f, 0.7010684f, 0.5011067f}, new float[]{0.7107002f, 0.88357f, 0.782816f});
+        setOperatorParameters(new HashMap<>() {{
+                                  put("l", 0.92700356f);
+                                  put("lambdaN", 0.1706444f);
+                                  put("lambdaR", 0.64723283f);
+                                  put("lambdaG", 0.32734156f);
+                              }}
+        );
+        setTargetValues(new float[]{
+                -0.8060194f, -0.683046f, -0.5819137f, -0.49727854f, -0.42540798f, -0.36361715f, -0.30992424f, -0.26283568f, -0.22120294f});
+    }
+}

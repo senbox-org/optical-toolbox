@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.soil;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Nblioli
+ *
+ * @author Adrian Draghici
+ */
+public class NblioliOpTest extends BaseIndexOpTest<NblioliOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"red", "thermal1", "thermal"}, 3, 3, new float[]{670, 10650, 10400}, new float[]{0.29179633f, 0.1661393f, 0.46835607f}, new float[]{0.7996579f, 0.32656693f, 0.9041735f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.27439886f, 0.31227162f, 0.3400205f, 0.36122626f, 0.3779592f, 0.39149934f, 0.40268093f, 0.41207096f, 0.42006797f});
+    }
+}

@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.soil;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Embi
+ *
+ * @author Adrian Draghici
+ */
+public class EmbiOpTest extends BaseIndexOpTest<EmbiOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"green", "nir", "swir1", "swir2"}, 3, 3, new float[]{560, 760, 1550, 2130}, new float[]{0.2900356f, 0.1790402f, 0.5003502f, 0.3122005f}, new float[]{0.68168956f, 0.7929964f, 0.89750797f, 0.9360043f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.15792467f, 0.09338386f, 0.043105677f, 0.0029509235f, -0.02979685f, -0.05698016f, -0.079886205f, -0.09943886f, -0.11631661f});
+    }
+}

@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Tcari
+ *
+ * @author Adrian Draghici
+ */
+public class TcariOpTest extends BaseIndexOpTest<TcariOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"green", "redEdge1", "red"}, 3, 3, new float[]{560, 695, 670}, new float[]{0.03665936f, 0.14626944f, 0.6067749f}, new float[]{0.6203299f, 0.9469719f, 0.8690431f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                -1.39737f, -1.2112066f, -1.0283536f, -0.8483493f, -0.6708138f, -0.49543214f, -0.32194102f, -0.15011753f, 0.020226784f});
+    }
+}

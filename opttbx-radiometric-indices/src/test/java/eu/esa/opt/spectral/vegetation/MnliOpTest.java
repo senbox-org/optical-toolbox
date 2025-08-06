@@ -1,0 +1,43 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Mnli
+ *
+ * @author Adrian Draghici
+ */
+public class MnliOpTest extends BaseIndexOpTest<MnliOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"red", "nir"}, 3, 3, new float[]{670, 760}, new float[]{0.11607921f, 0.23386806f}, new float[]{0.5536844f, 0.38353175f});
+        setOperatorParameters(new HashMap<>() {{
+                                  put("l", 0.9250971f);
+                              }}
+        );
+        setTargetValues(new float[]{
+                -0.10783388f, -0.17759934f, -0.23885061f, -0.29276565f, -0.34031972f, -0.3823271f, -0.41947278f, -0.45233688f, -0.48141435f});
+    }
+}

@@ -1,0 +1,44 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.water;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Mbwi
+ *
+ * @author Adrian Draghici
+ */
+public class MbwiOpTest extends BaseIndexOpTest<MbwiOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"green", "red", "nir", "swir1", "swir2"}, 3, 3, new float[]{560, 670, 760, 1550, 2130}, new float[]{0.14542174f, 0.42636478f, 0.7596312f, 0.028957784f, 0.6622606f}, new float[]{0.7460553f, 0.79935175f, 0.82210207f, 0.19693959f, 0.94907135f});
+        setOperatorParameters(new HashMap<>() {{
+                                  put("g", 0.86485714f);
+                                  put("omega", 0.4339313f);
+                              }}
+        );
+        setTargetValues(new float[]{
+                -1.8141112f, -1.8928134f, -1.9715155f, -2.0502176f, -2.1289196f, -2.2076216f, -2.286324f, -2.3650258f, -2.443728f});
+    }
+}

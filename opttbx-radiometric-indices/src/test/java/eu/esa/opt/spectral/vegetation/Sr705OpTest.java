@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Sr705
+ *
+ * @author Adrian Draghici
+ */
+public class Sr705OpTest extends BaseIndexOpTest<Sr705Op> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"redEdge1", "redEdge2", "red"}, 3, 3, new float[]{695, 730, 670}, new float[]{0.44987297f, 0.20550156f, 0.28160518f}, new float[]{0.8129676f, 0.731131f, 0.33751518f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.45679906f, 0.547602f, 0.6231592f, 0.687013f, 0.7416871f, 0.7890283f, 0.83041906f, 0.8669151f, 0.899336f});
+    }
+}

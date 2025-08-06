@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Fcvi
+ *
+ * @author Adrian Draghici
+ */
+public class FcviOpTest extends BaseIndexOpTest<FcviOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"blue", "green", "red", "nir"}, 3, 3, new float[]{450, 560, 670, 760}, new float[]{0.8290491f, 0.04041314f, 0.3029214f, 0.017597497f}, new float[]{0.9253425f, 0.92584425f, 0.5222592f, 0.9094285f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                -0.37319705f, -0.31176245f, -0.25032783f, -0.18889323f, -0.12745866f, -0.066023946f, -0.004589379f, 0.056845248f, 0.118279815f});
+    }
+}

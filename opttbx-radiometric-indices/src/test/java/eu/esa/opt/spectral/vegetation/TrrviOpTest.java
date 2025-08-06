@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Trrvi
+ *
+ * @author Adrian Draghici
+ */
+public class TrrviOpTest extends BaseIndexOpTest<TrrviOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"redEdge2", "red", "nir"}, 3, 3, new float[]{730, 670, 760}, new float[]{0.41457695f, 0.043741167f, 0.35646212f}, new float[]{0.82614803f, 0.61238265f, 0.5673271f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.45420498f, 0.39299652f, 0.34278426f, 0.30027112f, 0.2635465f, 0.23136882f, 0.20286943f, 0.17740916f, 0.1545005f});
+    }
+}

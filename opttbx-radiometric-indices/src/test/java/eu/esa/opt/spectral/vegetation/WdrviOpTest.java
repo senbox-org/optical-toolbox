@@ -1,0 +1,44 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Wdrvi
+ *
+ * @author Adrian Draghici
+ */
+public class WdrviOpTest extends BaseIndexOpTest<WdrviOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"red", "nir"}, 3, 3, new float[]{670, 760}, new float[]{0.22936803f, 0.36425918f}, new float[]{0.56858325f, 0.85438263f});
+        setOperatorParameters(new HashMap<>() {{
+                                  put("l", 0.32192147f);
+                                  put("alpha", 0.9705117f);
+                              }}
+        );
+        setTargetValues(new float[]{
+                0.21299157f, 0.20621744f, 0.20119773f, 0.19732898f, 0.19425607f, 0.19175638f, 0.18968323f, 0.18793589f, 0.18644327f});
+    }
+}

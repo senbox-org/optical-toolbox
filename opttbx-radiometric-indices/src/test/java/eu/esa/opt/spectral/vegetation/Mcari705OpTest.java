@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Mcari705
+ *
+ * @author Adrian Draghici
+ */
+public class Mcari705OpTest extends BaseIndexOpTest<Mcari705Op> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"green", "redEdge1", "redEdge2", "red"}, 3, 3, new float[]{560, 695, 730, 670}, new float[]{0.21003854f, 0.276075f, 0.2661599f, 0.63857746f}, new float[]{0.4776821f, 0.4457115f, 0.8360727f, 0.6647417f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                -0.020380173f, 0.02421817f, 0.08188083f, 0.15016125f, 0.22718793f, 0.31150472f, 0.4019616f, 0.4976386f, 0.5977908f});
+    }
+}

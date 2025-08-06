@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Gari
+ *
+ * @author Adrian Draghici
+ */
+public class GariOpTest extends BaseIndexOpTest<GariOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"blue", "green", "red", "nir"}, 3, 3, new float[]{450, 560, 670, 760}, new float[]{0.51195955f, 0.10458797f, 0.28624344f, 0.7487495f}, new float[]{0.95059246f, 0.5805456f, 0.46758264f, 0.91867596f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                2.078832f, 2.4819295f, 3.0895154f, 4.1100726f, 6.181394f, 12.648042f, -205.8492f, -11.109181f, -5.667745f});
+    }
+}

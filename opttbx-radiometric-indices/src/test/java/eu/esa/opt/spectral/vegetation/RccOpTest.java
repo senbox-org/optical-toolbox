@@ -1,0 +1,40 @@
+/*
+ *
+ *  * Copyright (C) 2025 CS GROUP ROMANIA
+ *  *
+ *  * This program is free software; you can redistribute it and/or modify it
+ *  * under the terms of the GNU General Public License as published by the Free
+ *  * Software Foundation; either version 3 of the License, or (at your option)
+ *  * any later version.
+ *  * This program is distributed in the hope that it will be useful, but WITHOUT
+ *  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  * more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License along
+ *  *  with this program; if not, see http://www.gnu.org/licenses/
+ *
+ */
+
+package eu.esa.opt.spectral.vegetation;
+
+import eu.esa.opt.radiometry.BaseIndexOpTest;
+import org.junit.Before;
+
+import java.util.HashMap;
+
+/**
+ * Operator test class for Rcc
+ *
+ * @author Adrian Draghici
+ */
+public class RccOpTest extends BaseIndexOpTest<RccOp> {
+
+    @Before
+    public void setUp() throws Exception {
+        setupBands(new String[]{"blue", "green", "red"}, 3, 3, new float[]{450, 560, 670}, new float[]{0.43827492f, 0.46741015f, 0.054805934f}, new float[]{0.8553936f, 0.67494094f, 0.9649354f});
+        setOperatorParameters(new HashMap<>());
+        setTargetValues(new float[]{
+                0.05706033f, 0.14628701f, 0.21004412f, 0.25787497f, 0.29508445f, 0.3248569f, 0.3492194f, 0.3695237f, 0.38670582f});
+    }
+}
