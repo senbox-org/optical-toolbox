@@ -25,6 +25,9 @@ public class GdviOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "gdvi";
 
+	@Parameter(label = "Nexp Parameter", defaultValue = "1.0F", description = "The nexp parameter.")
+	private float nexp;
+
 	@Parameter(label = "Red source band",
 			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
 			rasterDataNodeType = Band.class)
@@ -62,7 +65,7 @@ public class GdviOp extends BaseIndexOp {
 					final float r= redTile.getSampleFloat(x, y);
 					final float n= nirTile.getSampleFloat(x, y);
 
-                    gdviValue = (pow(n,n)-pow(r,n))/(pow(n,n)+pow(r,n));
+                    gdviValue = (pow(n,nexp)-pow(r,nexp))/(pow(n,nexp)+pow(r,nexp));
                     gdvi.setSample(x, y, computeFlag(x, y, gdviValue, gdviFlags));
                 }
                 checkForCancellation();
