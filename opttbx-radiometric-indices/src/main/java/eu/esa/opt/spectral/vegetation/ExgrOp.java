@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Exgr
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "ExgrOp",
         version = "1.0",

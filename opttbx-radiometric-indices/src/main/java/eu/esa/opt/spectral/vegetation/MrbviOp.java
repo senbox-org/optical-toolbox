@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Mrbvi
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "MrbviOp",
         version = "1.0",

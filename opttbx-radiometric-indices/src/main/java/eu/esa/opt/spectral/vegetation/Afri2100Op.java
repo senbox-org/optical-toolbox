@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Afri2100
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Afri2100Op",
         version = "1.0",

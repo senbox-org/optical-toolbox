@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Nstv1
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Nstv1Op",
         version = "1.0",

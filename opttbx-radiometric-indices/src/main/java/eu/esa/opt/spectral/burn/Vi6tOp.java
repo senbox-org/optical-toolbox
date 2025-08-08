@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Vi6t
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Vi6tOp",
         version = "1.0",

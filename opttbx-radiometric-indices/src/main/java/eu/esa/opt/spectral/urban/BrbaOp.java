@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Brba
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "BrbaOp",
         version = "1.0",

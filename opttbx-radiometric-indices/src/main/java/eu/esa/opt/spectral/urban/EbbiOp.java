@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Ebbi
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "EbbiOp",
         version = "1.0",

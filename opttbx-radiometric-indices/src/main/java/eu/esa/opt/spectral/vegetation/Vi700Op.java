@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Vi700
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Vi700Op",
         version = "1.0",

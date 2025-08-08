@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Mcari1
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Mcari1Op",
         version = "1.0",

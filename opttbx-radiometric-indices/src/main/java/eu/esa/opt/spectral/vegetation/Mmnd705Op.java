@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Mmnd705
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Mmnd705Op",
         version = "1.0",

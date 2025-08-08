@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Savi2
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Savi2Op",
         version = "1.0",
