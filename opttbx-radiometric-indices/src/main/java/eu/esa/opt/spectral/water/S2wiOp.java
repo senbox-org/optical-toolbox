@@ -31,17 +31,17 @@ public class S2wiOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "s2wi";
 
-	@Parameter(label = "Red edge 1 source band",
-			description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 695, maxWavelength = 715)
-	private String redEdge1SourceBand;
+    @Parameter(label = "Red edge 1 source band",
+            description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 695, maxWavelength = 715)
+    private String redEdge1SourceBand;
 
-	@Parameter(label = "Swir 2 source band",
-			description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 2080, maxWavelength = 2350)
-	private String swir2SourceBand;
+    @Parameter(label = "Swir 2 source band",
+            description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 2080, maxWavelength = 2350)
+    private String swir2SourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class S2wiOp extends BaseIndexOp {
         pm.beginTask("Computing S2wi", rectangle.height);
         try {
 
-			Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
-			Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
+            Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
+            Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile s2wi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class S2wiOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float re1= redEdge1Tile.getSampleFloat(x, y);
-					final float s2= swir2Tile.getSampleFloat(x, y);
+                    final float re1 = redEdge1Tile.getSampleFloat(x, y);
+                    final float s2 = swir2Tile.getSampleFloat(x, y);
 
-                    s2wiValue = (re1-s2)/(re1+s2);
+                    s2wiValue = (re1 - s2) / (re1 + s2);
                     s2wi.setSample(x, y, computeFlag(x, y, s2wiValue, s2wiFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class S2wiOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

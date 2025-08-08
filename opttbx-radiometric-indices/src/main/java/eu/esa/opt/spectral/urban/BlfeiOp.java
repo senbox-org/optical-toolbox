@@ -31,29 +31,29 @@ public class BlfeiOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "blfei";
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
-	@Parameter(label = "Swir 1 source band",
-			description = "The SWIR 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 1550, maxWavelength = 1750)
-	private String swir1SourceBand;
+    @Parameter(label = "Swir 1 source band",
+            description = "The SWIR 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 1550, maxWavelength = 1750)
+    private String swir1SourceBand;
 
-	@Parameter(label = "Swir 2 source band",
-			description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 2080, maxWavelength = 2350)
-	private String swir2SourceBand;
+    @Parameter(label = "Swir 2 source band",
+            description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 2080, maxWavelength = 2350)
+    private String swir2SourceBand;
 
     @Override
     public String getBandName() {
@@ -65,10 +65,10 @@ public class BlfeiOp extends BaseIndexOp {
         pm.beginTask("Computing Blfei", rectangle.height);
         try {
 
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
-			Tile swir1Tile = getSourceTile(getSourceProduct().getBand(swir1SourceBand), rectangle);
-			Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile swir1Tile = getSourceTile(getSourceProduct().getBand(swir1SourceBand), rectangle);
+            Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile blfei = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -79,12 +79,12 @@ public class BlfeiOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float g= greenTile.getSampleFloat(x, y);
-					final float r= redTile.getSampleFloat(x, y);
-					final float s1= swir1Tile.getSampleFloat(x, y);
-					final float s2= swir2Tile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
+                    final float s1 = swir1Tile.getSampleFloat(x, y);
+                    final float s2 = swir2Tile.getSampleFloat(x, y);
 
-                    blfeiValue = (((g+r+s2)/3.0f)-s1)/(((g+r+s2)/3.0f)+s1);
+                    blfeiValue = (((g + r + s2) / 3.0f) - s1) / (((g + r + s2) / 3.0f) + s1);
                     blfei.setSample(x, y, computeFlag(x, y, blfeiValue, blfeiFlags));
                 }
                 checkForCancellation();
@@ -94,7 +94,7 @@ public class BlfeiOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

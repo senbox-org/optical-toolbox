@@ -31,23 +31,23 @@ public class ExgrOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "exgr";
 
-	@Parameter(label = "Blue source band",
-			description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 450, maxWavelength = 530)
-	private String blueSourceBand;
+    @Parameter(label = "Blue source band",
+            description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 450, maxWavelength = 530)
+    private String blueSourceBand;
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
     @Override
     public String getBandName() {
@@ -59,9 +59,9 @@ public class ExgrOp extends BaseIndexOp {
         pm.beginTask("Computing Exgr", rectangle.height);
         try {
 
-			Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile exgr = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -72,11 +72,11 @@ public class ExgrOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float b= blueTile.getSampleFloat(x, y);
-					final float g= greenTile.getSampleFloat(x, y);
-					final float r= redTile.getSampleFloat(x, y);
+                    final float b = blueTile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
 
-                    exgrValue = (2.0f*g-r-b)-(1.3f*r-g);
+                    exgrValue = (2.0f * g - r - b) - (1.3f * r - g);
                     exgr.setSample(x, y, computeFlag(x, y, exgrValue, exgrFlags));
                 }
                 checkForCancellation();
@@ -86,7 +86,7 @@ public class ExgrOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

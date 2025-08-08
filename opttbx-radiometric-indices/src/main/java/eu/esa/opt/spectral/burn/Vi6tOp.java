@@ -31,17 +31,17 @@ public class Vi6tOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "vi6t";
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
-	@Parameter(label = "Thermal source band",
-			description = "The Thermal band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 10400, maxWavelength = 12500)
-	private String thermalSourceBand;
+    @Parameter(label = "Thermal source band",
+            description = "The Thermal band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 10400, maxWavelength = 12500)
+    private String thermalSourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class Vi6tOp extends BaseIndexOp {
         pm.beginTask("Computing Vi6t", rectangle.height);
         try {
 
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
-			Tile thermalTile = getSourceTile(getSourceProduct().getBand(thermalSourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile thermalTile = getSourceTile(getSourceProduct().getBand(thermalSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile vi6t = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class Vi6tOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float n= nirTile.getSampleFloat(x, y);
-					final float t= thermalTile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
+                    final float t = thermalTile.getSampleFloat(x, y);
 
-                    vi6tValue = (n-t/10000.0f)/(n+t/10000.0f);
+                    vi6tValue = (n - t / 10000.0f) / (n + t / 10000.0f);
                     vi6t.setSample(x, y, computeFlag(x, y, vi6tValue, vi6tFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class Vi6tOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

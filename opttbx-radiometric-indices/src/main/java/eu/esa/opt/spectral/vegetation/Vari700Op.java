@@ -31,23 +31,23 @@ public class Vari700Op extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "vari700";
 
-	@Parameter(label = "Blue source band",
-			description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 450, maxWavelength = 530)
-	private String blueSourceBand;
+    @Parameter(label = "Blue source band",
+            description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 450, maxWavelength = 530)
+    private String blueSourceBand;
 
-	@Parameter(label = "Red edge 1 source band",
-			description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 695, maxWavelength = 715)
-	private String redEdge1SourceBand;
+    @Parameter(label = "Red edge 1 source band",
+            description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 695, maxWavelength = 715)
+    private String redEdge1SourceBand;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
     @Override
     public String getBandName() {
@@ -59,9 +59,9 @@ public class Vari700Op extends BaseIndexOp {
         pm.beginTask("Computing Vari700", rectangle.height);
         try {
 
-			Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
-			Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
+            Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile vari700 = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -72,11 +72,11 @@ public class Vari700Op extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float b= blueTile.getSampleFloat(x, y);
-					final float re1= redEdge1Tile.getSampleFloat(x, y);
-					final float r= redTile.getSampleFloat(x, y);
+                    final float b = blueTile.getSampleFloat(x, y);
+                    final float re1 = redEdge1Tile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
 
-                    vari700Value = (re1-1.7f*r+0.7f*b)/(re1+1.3f*r-1.3f*b);
+                    vari700Value = (re1 - 1.7f * r + 0.7f * b) / (re1 + 1.3f * r - 1.3f * b);
                     vari700.setSample(x, y, computeFlag(x, y, vari700Value, vari700Flags));
                 }
                 checkForCancellation();
@@ -86,7 +86,7 @@ public class Vari700Op extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

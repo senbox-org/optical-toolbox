@@ -31,17 +31,17 @@ public class CigOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "cig";
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class CigOp extends BaseIndexOp {
         pm.beginTask("Computing Cig", rectangle.height);
         try {
 
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile cig = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class CigOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float g= greenTile.getSampleFloat(x, y);
-					final float n= nirTile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
 
-                    cigValue = (n/g)-1.0f;
+                    cigValue = (n / g) - 1.0f;
                     cig.setSample(x, y, computeFlag(x, y, cigValue, cigFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class CigOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

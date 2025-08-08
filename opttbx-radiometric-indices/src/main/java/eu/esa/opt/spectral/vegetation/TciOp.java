@@ -31,23 +31,23 @@ public class TciOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "tci";
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
-	@Parameter(label = "Red edge 1 source band",
-			description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 695, maxWavelength = 715)
-	private String redEdge1SourceBand;
+    @Parameter(label = "Red edge 1 source band",
+            description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 695, maxWavelength = 715)
+    private String redEdge1SourceBand;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
     @Override
     public String getBandName() {
@@ -59,9 +59,9 @@ public class TciOp extends BaseIndexOp {
         pm.beginTask("Computing Tci", rectangle.height);
         try {
 
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
-			Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile tci = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -72,11 +72,11 @@ public class TciOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float g= greenTile.getSampleFloat(x, y);
-					final float re1= redEdge1Tile.getSampleFloat(x, y);
-					final float r= redTile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
+                    final float re1 = redEdge1Tile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
 
-                    tciValue = 1.2f*(re1-g)-1.5f*(r-g)*pow((re1/r),0.5f);
+                    tciValue = 1.2f * (re1 - g) - 1.5f * (r - g) * pow((re1 / r), 0.5f);
                     tci.setSample(x, y, computeFlag(x, y, tciValue, tciFlags));
                 }
                 checkForCancellation();
@@ -86,10 +86,10 @@ public class TciOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
-	private static float pow(float n, float p) {
-			return (float) Math.pow(n, p);
-	}
+
+    private static float pow(float n, float p) {
+        return (float) Math.pow(n, p);
+    }
 
     public static class Spi extends OperatorSpi {
 

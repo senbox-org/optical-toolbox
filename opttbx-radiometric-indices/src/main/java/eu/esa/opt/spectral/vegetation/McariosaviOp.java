@@ -31,29 +31,29 @@ public class McariosaviOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "mcariosavi";
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
-	@Parameter(label = "Red edge 1 source band",
-			description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 695, maxWavelength = 715)
-	private String redEdge1SourceBand;
+    @Parameter(label = "Red edge 1 source band",
+            description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 695, maxWavelength = 715)
+    private String redEdge1SourceBand;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
     @Override
     public String getBandName() {
@@ -65,10 +65,10 @@ public class McariosaviOp extends BaseIndexOp {
         pm.beginTask("Computing Mcariosavi", rectangle.height);
         try {
 
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
-			Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile mcariosavi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -79,12 +79,12 @@ public class McariosaviOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float g= greenTile.getSampleFloat(x, y);
-					final float re1= redEdge1Tile.getSampleFloat(x, y);
-					final float r= redTile.getSampleFloat(x, y);
-					final float n= nirTile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
+                    final float re1 = redEdge1Tile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
 
-                    mcariosaviValue = (((re1-r)-0.2f*(re1-g))*(re1/r))/(1.16f*(n-r)/(n+r+0.16f));
+                    mcariosaviValue = (((re1 - r) - 0.2f * (re1 - g)) * (re1 / r)) / (1.16f * (n - r) / (n + r + 0.16f));
                     mcariosavi.setSample(x, y, computeFlag(x, y, mcariosaviValue, mcariosaviFlags));
                 }
                 checkForCancellation();
@@ -94,7 +94,7 @@ public class McariosaviOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

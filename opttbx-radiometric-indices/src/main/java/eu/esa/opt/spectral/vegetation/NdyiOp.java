@@ -31,17 +31,17 @@ public class NdyiOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "ndyi";
 
-	@Parameter(label = "Blue source band",
-			description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 450, maxWavelength = 530)
-	private String blueSourceBand;
+    @Parameter(label = "Blue source band",
+            description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 450, maxWavelength = 530)
+    private String blueSourceBand;
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class NdyiOp extends BaseIndexOp {
         pm.beginTask("Computing Ndyi", rectangle.height);
         try {
 
-			Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile ndyi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class NdyiOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float b= blueTile.getSampleFloat(x, y);
-					final float g= greenTile.getSampleFloat(x, y);
+                    final float b = blueTile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
 
-                    ndyiValue = (g-b)/(g+b);
+                    ndyiValue = (g - b) / (g + b);
                     ndyi.setSample(x, y, computeFlag(x, y, ndyiValue, ndyiFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class NdyiOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

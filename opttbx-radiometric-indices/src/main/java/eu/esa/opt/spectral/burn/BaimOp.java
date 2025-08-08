@@ -31,17 +31,17 @@ public class BaimOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "baim";
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
-	@Parameter(label = "Swir 2 source band",
-			description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 2080, maxWavelength = 2350)
-	private String swir2SourceBand;
+    @Parameter(label = "Swir 2 source band",
+            description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 2080, maxWavelength = 2350)
+    private String swir2SourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class BaimOp extends BaseIndexOp {
         pm.beginTask("Computing Baim", rectangle.height);
         try {
 
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
-			Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile baim = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class BaimOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float n= nirTile.getSampleFloat(x, y);
-					final float s2= swir2Tile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
+                    final float s2 = swir2Tile.getSampleFloat(x, y);
 
-                    baimValue = 1.0f/pow((0.05f-n),2.0f)+pow((0.2f-s2),2.0f);
+                    baimValue = 1.0f / pow((0.05f - n), 2.0f) + pow((0.2f - s2), 2.0f);
                     baim.setSample(x, y, computeFlag(x, y, baimValue, baimFlags));
                 }
                 checkForCancellation();
@@ -78,10 +78,10 @@ public class BaimOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
-	private static float pow(float n, float p) {
-			return (float) Math.pow(n, p);
-	}
+
+    private static float pow(float n, float p) {
+        return (float) Math.pow(n, p);
+    }
 
     public static class Spi extends OperatorSpi {
 

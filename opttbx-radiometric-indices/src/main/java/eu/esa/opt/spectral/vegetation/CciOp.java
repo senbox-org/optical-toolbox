@@ -31,17 +31,17 @@ public class CciOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "cci";
 
-	@Parameter(label = "Green 1 source band",
-			description = "The Green 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 550)
-	private String green1SourceBand;
+    @Parameter(label = "Green 1 source band",
+            description = "The Green 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 550)
+    private String green1SourceBand;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class CciOp extends BaseIndexOp {
         pm.beginTask("Computing Cci", rectangle.height);
         try {
 
-			Tile green1Tile = getSourceTile(getSourceProduct().getBand(green1SourceBand), rectangle);
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile green1Tile = getSourceTile(getSourceProduct().getBand(green1SourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile cci = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class CciOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float g1= green1Tile.getSampleFloat(x, y);
-					final float r= redTile.getSampleFloat(x, y);
+                    final float g1 = green1Tile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
 
-                    cciValue = (g1-r)/(g1+r);
+                    cciValue = (g1 - r) / (g1 + r);
                     cci.setSample(x, y, computeFlag(x, y, cciValue, cciFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class CciOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

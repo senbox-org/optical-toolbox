@@ -31,23 +31,23 @@ public class Mcari2Op extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "mcari2";
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
     @Override
     public String getBandName() {
@@ -59,9 +59,9 @@ public class Mcari2Op extends BaseIndexOp {
         pm.beginTask("Computing Mcari2", rectangle.height);
         try {
 
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile mcari2 = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -72,11 +72,11 @@ public class Mcari2Op extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float g= greenTile.getSampleFloat(x, y);
-					final float r= redTile.getSampleFloat(x, y);
-					final float n= nirTile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
 
-                    mcari2Value = (1.5f*(2.5f*(n-r)-1.3f*(n-g)))/pow((pow((2.0f*n+1),2)-(6.0f*n-5*pow(r,0.5f))-0.5f),0.5f);
+                    mcari2Value = (1.5f * (2.5f * (n - r) - 1.3f * (n - g))) / pow((pow((2.0f * n + 1), 2) - (6.0f * n - 5 * pow(r, 0.5f)) - 0.5f), 0.5f);
                     mcari2.setSample(x, y, computeFlag(x, y, mcari2Value, mcari2Flags));
                 }
                 checkForCancellation();
@@ -86,10 +86,10 @@ public class Mcari2Op extends BaseIndexOp {
             pm.done();
         }
     }
-    
-	private static float pow(float n, float p) {
-			return (float) Math.pow(n, p);
-	}
+
+    private static float pow(float n, float p) {
+        return (float) Math.pow(n, p);
+    }
 
     public static class Spi extends OperatorSpi {
 

@@ -31,17 +31,17 @@ public class CsiOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "csi";
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
-	@Parameter(label = "Swir 2 source band",
-			description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 2080, maxWavelength = 2350)
-	private String swir2SourceBand;
+    @Parameter(label = "Swir 2 source band",
+            description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 2080, maxWavelength = 2350)
+    private String swir2SourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class CsiOp extends BaseIndexOp {
         pm.beginTask("Computing Csi", rectangle.height);
         try {
 
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
-			Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile csi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class CsiOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float n= nirTile.getSampleFloat(x, y);
-					final float s2= swir2Tile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
+                    final float s2 = swir2Tile.getSampleFloat(x, y);
 
-                    csiValue = n/s2;
+                    csiValue = n / s2;
                     csi.setSample(x, y, computeFlag(x, y, csiValue, csiFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class CsiOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

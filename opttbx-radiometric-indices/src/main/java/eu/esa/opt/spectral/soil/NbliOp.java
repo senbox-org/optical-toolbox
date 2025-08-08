@@ -31,17 +31,17 @@ public class NbliOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "nbli";
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
-	@Parameter(label = "Thermal source band",
-			description = "The Thermal band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 10400, maxWavelength = 12500)
-	private String thermalSourceBand;
+    @Parameter(label = "Thermal source band",
+            description = "The Thermal band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 10400, maxWavelength = 12500)
+    private String thermalSourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class NbliOp extends BaseIndexOp {
         pm.beginTask("Computing Nbli", rectangle.height);
         try {
 
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
-			Tile thermalTile = getSourceTile(getSourceProduct().getBand(thermalSourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile thermalTile = getSourceTile(getSourceProduct().getBand(thermalSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile nbli = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class NbliOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float r= redTile.getSampleFloat(x, y);
-					final float t= thermalTile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
+                    final float t = thermalTile.getSampleFloat(x, y);
 
-                    nbliValue = (r-t)/(r+t);
+                    nbliValue = (r - t) / (r + t);
                     nbli.setSample(x, y, computeFlag(x, y, nbliValue, nbliFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class NbliOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

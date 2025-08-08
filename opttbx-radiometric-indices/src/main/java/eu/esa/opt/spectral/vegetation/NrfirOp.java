@@ -31,17 +31,17 @@ public class NrfirOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "nrfir";
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
-	@Parameter(label = "Swir 2 source band",
-			description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 2080, maxWavelength = 2350)
-	private String swir2SourceBand;
+    @Parameter(label = "Swir 2 source band",
+            description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 2080, maxWavelength = 2350)
+    private String swir2SourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class NrfirOp extends BaseIndexOp {
         pm.beginTask("Computing Nrfir", rectangle.height);
         try {
 
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
-			Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile nrfir = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class NrfirOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float r= redTile.getSampleFloat(x, y);
-					final float s2= swir2Tile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
+                    final float s2 = swir2Tile.getSampleFloat(x, y);
 
-                    nrfirValue = (r-s2)/(r+s2);
+                    nrfirValue = (r - s2) / (r + s2);
                     nrfir.setSample(x, y, computeFlag(x, y, nrfirValue, nrfirFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class NrfirOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

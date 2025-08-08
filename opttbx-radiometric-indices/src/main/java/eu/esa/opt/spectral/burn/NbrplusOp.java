@@ -31,29 +31,29 @@ public class NbrplusOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "nbrplus";
 
-	@Parameter(label = "Blue source band",
-			description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 450, maxWavelength = 530)
-	private String blueSourceBand;
+    @Parameter(label = "Blue source band",
+            description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 450, maxWavelength = 530)
+    private String blueSourceBand;
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
-	@Parameter(label = "Nir 2 source band",
-			description = "The NIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 850, maxWavelength = 880)
-	private String nir2SourceBand;
+    @Parameter(label = "Nir 2 source band",
+            description = "The NIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 850, maxWavelength = 880)
+    private String nir2SourceBand;
 
-	@Parameter(label = "Swir 2 source band",
-			description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 2080, maxWavelength = 2350)
-	private String swir2SourceBand;
+    @Parameter(label = "Swir 2 source band",
+            description = "The SWIR 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 2080, maxWavelength = 2350)
+    private String swir2SourceBand;
 
     @Override
     public String getBandName() {
@@ -65,10 +65,10 @@ public class NbrplusOp extends BaseIndexOp {
         pm.beginTask("Computing Nbrplus", rectangle.height);
         try {
 
-			Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
-			Tile nir2Tile = getSourceTile(getSourceProduct().getBand(nir2SourceBand), rectangle);
-			Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
+            Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile nir2Tile = getSourceTile(getSourceProduct().getBand(nir2SourceBand), rectangle);
+            Tile swir2Tile = getSourceTile(getSourceProduct().getBand(swir2SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile nbrplus = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -79,12 +79,12 @@ public class NbrplusOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float b= blueTile.getSampleFloat(x, y);
-					final float g= greenTile.getSampleFloat(x, y);
-					final float n2= nir2Tile.getSampleFloat(x, y);
-					final float s2= swir2Tile.getSampleFloat(x, y);
+                    final float b = blueTile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
+                    final float n2 = nir2Tile.getSampleFloat(x, y);
+                    final float s2 = swir2Tile.getSampleFloat(x, y);
 
-                    nbrplusValue = (s2-n2-g-b)/(s2+n2+g+b);
+                    nbrplusValue = (s2 - n2 - g - b) / (s2 + n2 + g + b);
                     nbrplus.setSample(x, y, computeFlag(x, y, nbrplusValue, nbrplusFlags));
                 }
                 checkForCancellation();
@@ -94,7 +94,7 @@ public class NbrplusOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

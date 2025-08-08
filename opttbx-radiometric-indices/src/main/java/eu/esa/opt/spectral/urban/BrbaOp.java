@@ -31,17 +31,17 @@ public class BrbaOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "brba";
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
-	@Parameter(label = "Swir 1 source band",
-			description = "The SWIR 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 1550, maxWavelength = 1750)
-	private String swir1SourceBand;
+    @Parameter(label = "Swir 1 source band",
+            description = "The SWIR 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 1550, maxWavelength = 1750)
+    private String swir1SourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class BrbaOp extends BaseIndexOp {
         pm.beginTask("Computing Brba", rectangle.height);
         try {
 
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
-			Tile swir1Tile = getSourceTile(getSourceProduct().getBand(swir1SourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile swir1Tile = getSourceTile(getSourceProduct().getBand(swir1SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile brba = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class BrbaOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float r= redTile.getSampleFloat(x, y);
-					final float s1= swir1Tile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
+                    final float s1 = swir1Tile.getSampleFloat(x, y);
 
-                    brbaValue = r/s1;
+                    brbaValue = r / s1;
                     brba.setSample(x, y, computeFlag(x, y, brbaValue, brbaFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class BrbaOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

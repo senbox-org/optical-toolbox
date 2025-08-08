@@ -31,23 +31,23 @@ public class Mcariosavi705Op extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "mcariosavi705";
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
-	@Parameter(label = "Red edge 1 source band",
-			description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 695, maxWavelength = 715)
-	private String redEdge1SourceBand;
+    @Parameter(label = "Red edge 1 source band",
+            description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 695, maxWavelength = 715)
+    private String redEdge1SourceBand;
 
-	@Parameter(label = "Red edge 2 source band",
-			description = "The Red Edge 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 730, maxWavelength = 750)
-	private String redEdge2SourceBand;
+    @Parameter(label = "Red edge 2 source band",
+            description = "The Red Edge 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 730, maxWavelength = 750)
+    private String redEdge2SourceBand;
 
     @Override
     public String getBandName() {
@@ -59,9 +59,9 @@ public class Mcariosavi705Op extends BaseIndexOp {
         pm.beginTask("Computing Mcariosavi705", rectangle.height);
         try {
 
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
-			Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
-			Tile redEdge2Tile = getSourceTile(getSourceProduct().getBand(redEdge2SourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
+            Tile redEdge2Tile = getSourceTile(getSourceProduct().getBand(redEdge2SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile mcariosavi705 = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -72,11 +72,11 @@ public class Mcariosavi705Op extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float g= greenTile.getSampleFloat(x, y);
-					final float re1= redEdge1Tile.getSampleFloat(x, y);
-					final float re2= redEdge2Tile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
+                    final float re1 = redEdge1Tile.getSampleFloat(x, y);
+                    final float re2 = redEdge2Tile.getSampleFloat(x, y);
 
-                    mcariosavi705Value = (((re2-re1)-0.2f*(re2-g))*(re2/re1))/(1.16f*(re2-re1)/(re2+re1+0.16f));
+                    mcariosavi705Value = (((re2 - re1) - 0.2f * (re2 - g)) * (re2 / re1)) / (1.16f * (re2 - re1) / (re2 + re1 + 0.16f));
                     mcariosavi705.setSample(x, y, computeFlag(x, y, mcariosavi705Value, mcariosavi705Flags));
                 }
                 checkForCancellation();
@@ -86,7 +86,7 @@ public class Mcariosavi705Op extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

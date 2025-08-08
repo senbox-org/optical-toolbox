@@ -31,23 +31,23 @@ public class BwdrviOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "bwdrvi";
 
-	@Parameter(label = "L Parameter", defaultValue = "1.0F", description = "The l parameter.")
-	private float l;
+    @Parameter(label = "L Parameter", defaultValue = "1.0F", description = "The l parameter.")
+    private float l;
 
-	@Parameter(label = "Alpha Parameter", defaultValue = "1.0F", description = "The alpha parameter.")
-	private float alpha;
+    @Parameter(label = "Alpha Parameter", defaultValue = "1.0F", description = "The alpha parameter.")
+    private float alpha;
 
-	@Parameter(label = "Blue source band",
-			description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 450, maxWavelength = 530)
-	private String blueSourceBand;
+    @Parameter(label = "Blue source band",
+            description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 450, maxWavelength = 530)
+    private String blueSourceBand;
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
     @Override
     public String getBandName() {
@@ -59,8 +59,8 @@ public class BwdrviOp extends BaseIndexOp {
         pm.beginTask("Computing Bwdrvi", rectangle.height);
         try {
 
-			Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile bwdrvi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -71,10 +71,10 @@ public class BwdrviOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float b= blueTile.getSampleFloat(x, y);
-					final float n= nirTile.getSampleFloat(x, y);
+                    final float b = blueTile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
 
-                    bwdrviValue = (alpha*n-b)/(alpha*n+b);
+                    bwdrviValue = (alpha * n - b) / (alpha * n + b);
                     bwdrvi.setSample(x, y, computeFlag(x, y, bwdrviValue, bwdrviFlags));
                 }
                 checkForCancellation();
@@ -84,7 +84,7 @@ public class BwdrviOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

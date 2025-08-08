@@ -31,17 +31,17 @@ public class SeliOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "seli";
 
-	@Parameter(label = "Red edge 1 source band",
-			description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 695, maxWavelength = 715)
-	private String redEdge1SourceBand;
+    @Parameter(label = "Red edge 1 source band",
+            description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 695, maxWavelength = 715)
+    private String redEdge1SourceBand;
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class SeliOp extends BaseIndexOp {
         pm.beginTask("Computing Seli", rectangle.height);
         try {
 
-			Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile seli = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class SeliOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float re1= redEdge1Tile.getSampleFloat(x, y);
-					final float n= nirTile.getSampleFloat(x, y);
+                    final float re1 = redEdge1Tile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
 
-                    seliValue = (pow(n,2)-re1)/(pow(n,2)+re1);
+                    seliValue = (pow(n, 2) - re1) / (pow(n, 2) + re1);
                     seli.setSample(x, y, computeFlag(x, y, seliValue, seliFlags));
                 }
                 checkForCancellation();
@@ -78,10 +78,10 @@ public class SeliOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
-	private static float pow(float n, float p) {
-			return (float) Math.pow(n, p);
-	}
+
+    private static float pow(float n, float p) {
+        return (float) Math.pow(n, p);
+    }
 
     public static class Spi extends OperatorSpi {
 
