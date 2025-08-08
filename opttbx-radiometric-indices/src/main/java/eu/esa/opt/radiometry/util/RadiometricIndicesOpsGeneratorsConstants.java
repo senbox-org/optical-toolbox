@@ -8,6 +8,8 @@ package eu.esa.opt.radiometry.util;
 public class RadiometricIndicesOpsGeneratorsConstants {
     static final String RADIOMETRIC_INDICES_TEMPLATE_OP_FILENAME = "RadiometricIndicesTemplateOp.java";
     static final String RADIOMETRIC_INDICES_TEMPLATE_OP_TEST_FILENAME = "RadiometricIndicesTemplateOpTest.java";
+    static final String RADIOMETRIC_INDICES_TEMPLATE_LAYER_XML_FILENAME = "RadiometricIndicesTemplateLayer.xml";
+    static final String RADIOMETRIC_INDICES_NAME_AREA = "/*radiometric_indices_name_area*/";
     static final String OPERATOR_CLASS_NAME_AREA = "/*operator_class_name_area*/";
     static final String OPERATOR_CLASS_NAME_LOWERCASE_AREA = "/*operator_class_name_lowercase_area*/";
     static final String CATEGORY_AREA = "/*category_area*/";
@@ -85,4 +87,46 @@ public class RadiometricIndicesOpsGeneratorsConstants {
             """;
     static final String OPERATOR_PARAMETERS_MAP_AREA = "/*operator_parameters_map_area*/";
     static final String OPERATOR_TARGET_VALUES_AREA = "/*operator_target_values_area*/";
+    static final String OPERATORS_UIS_AREA = "<!--operators_uis_area-->";
+    static final String OPERATORS_UIS_ACTIONS_AREA = "<!--operators_uis_actions_area-->";
+    static final String OPERATORS_UIS_MENU_ENTRY_VEGETATION_AREA = "<!--operators_uis_menu_entry_vegetation_area-->";
+    static final String OPERATORS_UIS_MENU_ENTRY_SOIL_AREA = "<!--operators_uis_menu_entry_soil_area-->";
+    static final String OPERATORS_UIS_MENU_ENTRY_BURN_AREA = "<!--operators_uis_menu_entry_burn_area-->";
+    static final String OPERATORS_UIS_MENU_ENTRY_URBAN_AREA = "<!--operators_uis_menu_entry_urban_area-->";
+    static final String OPERATORS_UIS_MENU_ENTRY_WATER_AREA = "<!--operators_uis_menu_entry_water_area-->";
+    static final String OPERATOR_UI_CONTENT_AREA_TEMPLATE = """
+            <file name="eu.esa.opt.radiometry.""" + OPERATOR_CLASS_NAME_AREA + """
+            ">
+            \t<attr name="operatorUIClass" stringvalue="eu.esa.opt.radiometry.RadiometricIndicesUI"/>
+            \t<attr name="operatorName" stringvalue=\"""" + OPERATOR_CLASS_NAME_AREA + """
+            Op"/>
+            </file>
+            """;
+    static final String OPERATOR_UI_ACTIONS_CONTENT_AREA_TEMPLATE = """
+            <file name="eu-esa-opt-radiometry-""" + OPERATOR_CLASS_NAME_AREA + """
+            OpAction.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="eu.esa.opt.radiometry.RadiometricOperatorAction.create"/>
+                <attr name="displayName" stringvalue=\"""" + RADIOMETRIC_INDICES_NAME_AREA + """
+            Processor"/>
+                <attr name="operatorName" stringvalue=\"""" + OPERATOR_CLASS_NAME_AREA + """
+            Op"/>
+                <attr name="dialogTitle" stringvalue=\"""" + RADIOMETRIC_INDICES_NAME_AREA + """
+            "/>
+                <attr name="helpId" stringvalue=\"""" + RADIOMETRIC_INDICES_NAME_AREA + """
+            Operator"/>
+                <attr name="targetProductNameSuffix" stringvalue="_""" + OPERATOR_CLASS_NAME_LOWERCASE_AREA + """
+            "/>
+                <attr name="ShortDescription" stringvalue="Generates\s""" + RADIOMETRIC_INDICES_NAME_AREA + """
+             from a source product with at least two spectral bands."/>
+            </file>
+            """;
+    static final String OPERATORS_UIS_MENU_ENTRY_CONTENT_AREA_TEMPLATE = """
+            <file name="eu-esa-opt-radiometry-""" + OPERATOR_CLASS_NAME_AREA + """
+            OpAction.shadow">
+                <attr name="originalFile"
+                      stringvalue="Actions/Operators/eu-esa-opt-radiometry-""" + OPERATOR_CLASS_NAME_AREA + """
+            OpAction.instance"/>
+            </file>
+            """;
 }
