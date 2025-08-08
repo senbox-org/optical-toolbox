@@ -12,6 +12,7 @@ public class RadiometricIndicesOpsGeneratorsConstants {
     static final String RADIOMETRIC_INDICES_TEMPLATE_OPERATORS_INDEX_LIST_HTML_FILENAME = "RadiometricIndicesTemplateOperatorsIndexList.html";
     static final String RADIOMETRIC_INDICES_TEMPLATE_OPERATOR_TOOL_HTML_FILENAME = "RadiometricIndicesTemplateOperatorTool.html";
     static final String RADIOMETRIC_INDICES_TEMPLATE_OPERATOR_ALGORITHM_SPECIFICATION_HTML_FILENAME = "RadiometricIndicesTemplateOperatorAlgorithmSpecification.html";
+    static final String RADIOMETRIC_INDICES_TEMPLATE_MAP_JHM_FILENAME = "RadiometricIndicesTemplateMap.jhm";
     static final String RADIOMETRIC_INDICES_NAME_AREA = "/*radiometric_indices_name_area*/";
     static final String OPERATOR_CLASS_NAME_AREA = "/*operator_class_name_area*/";
     static final String OPERATOR_CLASS_NAME_LOWERCASE_AREA = "/*operator_class_name_lowercase_area*/";
@@ -154,5 +155,16 @@ public class RadiometricIndicesOpsGeneratorsConstants {
     static final String PARAMETERS_LIST_CONTENT_AREA_TEMPLATE = """
             and the coefficients are:<br><br>
             """ + PARAMETERS_AREA + """
+            """;
+    static final String OPERATORS_MAP_ENTRY_AREA = "<!--operators_map_entry_area-->";
+    static final String OPERATOR_MAP_ENTRY_CONTENT_AREA_TEMPLATE = """
+            <mapID target=\"""" + RADIOMETRIC_INDICES_NAME_AREA + """
+            Operator" url=\"""" + OPERATOR_CLASS_NAME_LOWERCASE_AREA + """
+            /""" + OPERATOR_CLASS_NAME_AREA + """
+            Tool.html"/>
+            <mapID target=\"""" + RADIOMETRIC_INDICES_NAME_AREA + """
+            Algorithm" url=\"""" + OPERATOR_CLASS_NAME_LOWERCASE_AREA + """
+            /""" + OPERATOR_CLASS_NAME_AREA + """
+            AlgorithmSpecification.html"/>
             """;
 }
