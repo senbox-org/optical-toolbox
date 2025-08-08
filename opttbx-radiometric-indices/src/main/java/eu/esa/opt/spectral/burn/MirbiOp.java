@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Mirbi
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "MirbiOp",
         version = "1.0",

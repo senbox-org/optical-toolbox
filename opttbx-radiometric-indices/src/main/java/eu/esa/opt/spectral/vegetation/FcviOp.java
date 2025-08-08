@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Fcvi
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "FcviOp",
         version = "1.0",

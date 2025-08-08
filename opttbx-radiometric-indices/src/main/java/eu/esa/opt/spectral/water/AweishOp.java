@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Aweish
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "AweishOp",
         version = "1.0",

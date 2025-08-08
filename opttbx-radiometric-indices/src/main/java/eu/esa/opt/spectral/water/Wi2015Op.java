@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Wi2015
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Wi2015Op",
         version = "1.0",

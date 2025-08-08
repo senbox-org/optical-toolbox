@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Ndvi705
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Ndvi705Op",
         version = "1.0",

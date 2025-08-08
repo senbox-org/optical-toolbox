@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Tcari
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "TcariOp",
         version = "1.0",

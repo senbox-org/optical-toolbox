@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Nbrt1
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Nbrt1Op",
         version = "1.0",

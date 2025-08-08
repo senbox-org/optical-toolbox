@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Cig
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "CigOp",
         version = "1.0",

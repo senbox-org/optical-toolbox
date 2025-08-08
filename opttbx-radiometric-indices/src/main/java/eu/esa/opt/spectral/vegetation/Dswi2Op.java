@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Dswi2
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Dswi2Op",
         version = "1.0",

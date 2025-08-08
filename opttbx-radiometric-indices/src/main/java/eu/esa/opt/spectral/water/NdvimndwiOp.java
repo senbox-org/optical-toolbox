@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Ndvimndwi
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "NdvimndwiOp",
         version = "1.0",

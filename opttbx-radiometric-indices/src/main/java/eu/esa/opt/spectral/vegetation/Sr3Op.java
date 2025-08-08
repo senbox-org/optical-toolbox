@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Sr3
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Sr3Op",
         version = "1.0",

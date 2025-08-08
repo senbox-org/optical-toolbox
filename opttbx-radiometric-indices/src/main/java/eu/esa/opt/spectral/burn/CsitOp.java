@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Csit
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "CsitOp",
         version = "1.0",

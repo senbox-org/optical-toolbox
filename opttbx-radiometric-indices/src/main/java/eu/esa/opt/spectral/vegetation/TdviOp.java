@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Tdvi
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "TdviOp",
         version = "1.0",

@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Nddi
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "NddiOp",
         version = "1.0",

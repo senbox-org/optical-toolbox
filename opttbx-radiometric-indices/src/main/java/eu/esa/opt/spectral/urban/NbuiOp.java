@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Nbui
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "NbuiOp",
         version = "1.0",

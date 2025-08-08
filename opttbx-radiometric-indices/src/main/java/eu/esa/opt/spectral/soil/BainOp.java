@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Bain
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "BainOp",
         version = "1.0",

@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Rgri
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "RgriOp",
         version = "1.0",

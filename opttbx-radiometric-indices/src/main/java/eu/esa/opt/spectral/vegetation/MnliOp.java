@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Mnli
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "MnliOp",
         version = "1.0",

@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Ri4xs
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Ri4xsOp",
         version = "1.0",

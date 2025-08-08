@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Sr705
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Sr705Op",
         version = "1.0",

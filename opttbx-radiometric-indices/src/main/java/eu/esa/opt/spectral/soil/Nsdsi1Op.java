@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Nsdsi1
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "Nsdsi1Op",
         version = "1.0",

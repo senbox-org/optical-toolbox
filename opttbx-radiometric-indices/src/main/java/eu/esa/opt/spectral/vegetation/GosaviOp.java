@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Gosavi
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "GosaviOp",
         version = "1.0",

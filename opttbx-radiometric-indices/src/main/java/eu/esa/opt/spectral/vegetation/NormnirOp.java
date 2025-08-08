@@ -13,6 +13,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Operator class for Normnir
+ *
+ * @author Adrian Draghici
+ */
 @OperatorMetadata(
         alias = "NormnirOp",
         version = "1.0",
