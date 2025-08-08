@@ -10,6 +10,7 @@ public class RadiometricIndicesOpsGeneratorsConstants {
     static final String RADIOMETRIC_INDICES_TEMPLATE_OP_TEST_FILENAME = "RadiometricIndicesTemplateOpTest.java";
     static final String RADIOMETRIC_INDICES_TEMPLATE_LAYER_XML_FILENAME = "RadiometricIndicesTemplateLayer.xml";
     static final String RADIOMETRIC_INDICES_TEMPLATE_OPERATORS_INDEX_LIST_HTML_FILENAME = "RadiometricIndicesTemplateOperatorsIndexList.html";
+    static final String RADIOMETRIC_INDICES_TEMPLATE_OPERATOR_TOOL_HTML_FILENAME = "RadiometricIndicesTemplateOperatorTool.html";
     static final String RADIOMETRIC_INDICES_NAME_AREA = "/*radiometric_indices_name_area*/";
     static final String OPERATOR_CLASS_NAME_AREA = "/*operator_class_name_area*/";
     static final String OPERATOR_CLASS_NAME_LOWERCASE_AREA = "/*operator_class_name_lowercase_area*/";
