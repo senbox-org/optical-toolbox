@@ -9,6 +9,7 @@ public class RadiometricIndicesOpsGeneratorsConstants {
     static final String RADIOMETRIC_INDICES_TEMPLATE_OP_FILENAME = "RadiometricIndicesTemplateOp.java";
     static final String RADIOMETRIC_INDICES_TEMPLATE_OP_TEST_FILENAME = "RadiometricIndicesTemplateOpTest.java";
     static final String RADIOMETRIC_INDICES_TEMPLATE_LAYER_XML_FILENAME = "RadiometricIndicesTemplateLayer.xml";
+    static final String RADIOMETRIC_INDICES_TEMPLATE_OPERATORS_INDEX_LIST_HTML_FILENAME = "RadiometricIndicesTemplateOperatorsIndexList.html";
     static final String RADIOMETRIC_INDICES_NAME_AREA = "/*radiometric_indices_name_area*/";
     static final String OPERATOR_CLASS_NAME_AREA = "/*operator_class_name_area*/";
     static final String OPERATOR_CLASS_NAME_LOWERCASE_AREA = "/*operator_class_name_lowercase_area*/";
@@ -128,5 +129,23 @@ public class RadiometricIndicesOpsGeneratorsConstants {
                       stringvalue="Actions/Operators/eu-esa-opt-radiometry-""" + OPERATOR_CLASS_NAME_AREA + """
             OpAction.instance"/>
             </file>
+            """;
+    static final String OPERATORS_INDEX_LIST_ENTRY_VEGETATION_AREA = "<!--operator_index_list_entry_vegetation_area-->";
+    static final String OPERATORS_INDEX_LIST_ENTRY_SOIL_AREA = "<!--operator_index_list_entry_soil_area-->";
+    static final String OPERATORS_INDEX_LIST_ENTRY_BURN_AREA = "<!--operator_index_list_entry_burn_area-->";
+    static final String OPERATORS_INDEX_LIST_ENTRY_URBAN_AREA = "<!--operator_index_list_entry_urban_area-->";
+    static final String OPERATORS_INDEX_LIST_ENTRY_WATER_AREA = "<!--operator_index_list_entry_water_area-->";
+    static final String OPERATOR_INDEX_LIST_ENTRY_CONTENT_AREA_TEMPLATE = """
+            <tr>
+                <td><h3><b><a href=\"""" + OPERATOR_CLASS_NAME_LOWERCASE_AREA + """
+            /""" + OPERATOR_CLASS_NAME_AREA + """
+            AlgorithmSpecification.html">""" + RADIOMETRIC_INDICES_NAME_AREA + """
+            </a></b></h3></td>
+            <td><h5>""" + DESCRIPTION_AREA + """
+            </h5></td>
+            <td><h5></h5></td>
+            <td><h5>""" + DOMAIN_AREA + """
+             Index</h5></td>
+            </tr>
             """;
 }
