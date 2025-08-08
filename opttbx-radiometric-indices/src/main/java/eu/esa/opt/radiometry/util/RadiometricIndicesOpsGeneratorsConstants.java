@@ -13,6 +13,7 @@ public class RadiometricIndicesOpsGeneratorsConstants {
     static final String RADIOMETRIC_INDICES_TEMPLATE_OPERATOR_TOOL_HTML_FILENAME = "RadiometricIndicesTemplateOperatorTool.html";
     static final String RADIOMETRIC_INDICES_TEMPLATE_OPERATOR_ALGORITHM_SPECIFICATION_HTML_FILENAME = "RadiometricIndicesTemplateOperatorAlgorithmSpecification.html";
     static final String RADIOMETRIC_INDICES_TEMPLATE_MAP_JHM_FILENAME = "RadiometricIndicesTemplateMap.jhm";
+    static final String RADIOMETRIC_INDICES_TEMPLATE_TOC_XML_FILENAME = "RadiometricIndicesTemplateToc.xml";
     static final String RADIOMETRIC_INDICES_NAME_AREA = "/*radiometric_indices_name_area*/";
     static final String OPERATOR_CLASS_NAME_AREA = "/*operator_class_name_area*/";
     static final String OPERATOR_CLASS_NAME_LOWERCASE_AREA = "/*operator_class_name_lowercase_area*/";
@@ -167,4 +168,17 @@ public class RadiometricIndicesOpsGeneratorsConstants {
             /""" + OPERATOR_CLASS_NAME_AREA + """
             AlgorithmSpecification.html"/>
             """;
+    static final String OPERATORS_TOC_ENTRY_VEGETATION_AREA = "<!--operators_toc_entry_vegetation_area-->";
+    static final String OPERATORS_TOC_ENTRY_SOIL_AREA = "<!--operators_toc_entry_soil_area-->";
+    static final String OPERATORS_TOC_ENTRY_BURN_AREA = "<!--operators_toc_entry_burn_area-->";
+    static final String OPERATORS_TOC_ENTRY_URBAN_AREA = "<!--operators_toc_entry_urban_area-->";
+    static final String OPERATORS_TOC_ENTRY_WATER_AREA = "<!--operators_toc_entry_water_area-->";
+    static final String OPERATOR_TOC_ENTRY_CONTENT_AREA_TEMPLATE = """
+            <tocitem text=\"""" + RADIOMETRIC_INDICES_NAME_AREA + """ 
+            \sOperator" target=\"""" + RADIOMETRIC_INDICES_NAME_AREA + """
+            Operator">
+               <tocitem text=\"""" + RADIOMETRIC_INDICES_NAME_AREA + """
+            \sAlgorithm Specification" target=\"""" + RADIOMETRIC_INDICES_NAME_AREA + """
+            Algorithm"/>
+            </tocitem>""";
 }
