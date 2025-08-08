@@ -7,6 +7,7 @@ package eu.esa.opt.radiometry.util;
  */
 public class RadiometricIndicesOpsGeneratorsConstants {
     static final String RADIOMETRIC_INDICES_TEMPLATE_OP_FILENAME = "RadiometricIndicesTemplateOp.java";
+    static final String RADIOMETRIC_INDICES_TEMPLATE_OP_TEST_FILENAME = "RadiometricIndicesTemplateOpTest.java";
     static final String OPERATOR_CLASS_NAME_AREA = "/*operator_class_name_area*/";
     static final String OPERATOR_CLASS_NAME_LOWERCASE_AREA = "/*operator_class_name_lowercase_area*/";
     static final String CATEGORY_AREA = "/*category_area*/";
@@ -63,4 +64,25 @@ public class RadiometricIndicesOpsGeneratorsConstants {
             \t\t\treturn (float) Math.sqrt(n);
             \t}
             """;
+    static final String OPERATOR_BANDS_NAMES_AREA = "/*operator_bands_names_area*/";
+    static final String OPERATOR_PRODUCT_WIDTH_AREA = "/*operator_product_width_area*/";
+    static final String OPERATOR_PRODUCT_HEIGHT_AREA = "/*operator_product_height_area*/";
+    static final int OPERATOR_PRODUCT_WIDTH = 3;
+    static final int OPERATOR_PRODUCT_HEIGHT = 3;
+    static final String OPERATOR_BANDS_WAVELENGTHS_AREA = "/*operator_bands_wavelengths_area*/";
+    static final String OPERATOR_BANDS_MIN_VALUES_AREA = "/*operator_bands_min_values_area*/";
+    static final String OPERATOR_BANDS_MAX_VALUES_AREA = "/*operator_bands_max_values_area*/";
+    static final String OPERATOR_PARAMETERS_MAP_VALUES_AREA = "/*operator_parameters_map_values*/";
+    static final String OPERATOR_PARAMETERS_MAP_CONTENT_AREA_TEMPLATE = """
+            {{
+            """ + OPERATOR_PARAMETERS_MAP_VALUES_AREA + """
+            }}
+            """;
+    static final String OPERATOR_PARAMETERS_MAP_VALUES_CONTENT_AREA_TEMPLATE = """
+            put(\"""" + PARAMETER_NAME_AREA + """
+            ",\s""" + PARAMETER_VALUE_AREA + """
+            );
+            """;
+    static final String OPERATOR_PARAMETERS_MAP_AREA = "/*operator_parameters_map_area*/";
+    static final String OPERATOR_TARGET_VALUES_AREA = "/*operator_target_values_area*/";
 }
