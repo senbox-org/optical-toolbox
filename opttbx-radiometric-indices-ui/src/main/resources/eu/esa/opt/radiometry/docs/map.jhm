@@ -113,6 +113,555 @@
     <mapID target="WDVIOperator" url="wdvi/WdviTool.html"/>
     <mapID target="WDVIAlgorithm" url="wdvi/WdviAlgorithmSpecification.html"/>
 
+    <mapID target="AFRI1600Operator" url="afri1600/Afri1600Tool.html"/>
+    <mapID target="AFRI1600Algorithm" url="afri1600/Afri1600AlgorithmSpecification.html"/>
+
+    <mapID target="AFRI2100Operator" url="afri2100/Afri2100Tool.html"/>
+    <mapID target="AFRI2100Algorithm" url="afri2100/Afri2100AlgorithmSpecification.html"/>
+
+    <mapID target="ARIOperator" url="ari/AriTool.html"/>
+    <mapID target="ARIAlgorithm" url="ari/AriAlgorithmSpecification.html"/>
+
+    <mapID target="ARI2Operator" url="ari2/Ari2Tool.html"/>
+    <mapID target="ARI2Algorithm" url="ari2/Ari2AlgorithmSpecification.html"/>
+
+    <mapID target="ATSAVIOperator" url="atsavi/AtsaviTool.html"/>
+    <mapID target="ATSAVIAlgorithm" url="atsavi/AtsaviAlgorithmSpecification.html"/>
+
+    <mapID target="AVIOperator" url="avi/AviTool.html"/>
+    <mapID target="AVIAlgorithm" url="avi/AviAlgorithmSpecification.html"/>
+
+    <mapID target="BCCOperator" url="bcc/BccTool.html"/>
+    <mapID target="BCCAlgorithm" url="bcc/BccAlgorithmSpecification.html"/>
+
+    <mapID target="BNDVIOperator" url="bndvi/BndviTool.html"/>
+    <mapID target="BNDVIAlgorithm" url="bndvi/BndviAlgorithmSpecification.html"/>
+
+    <mapID target="BWDRVIOperator" url="bwdrvi/BwdrviTool.html"/>
+    <mapID target="BWDRVIAlgorithm" url="bwdrvi/BwdrviAlgorithmSpecification.html"/>
+
+    <mapID target="CCIOperator" url="cci/CciTool.html"/>
+    <mapID target="CCIAlgorithm" url="cci/CciAlgorithmSpecification.html"/>
+
+    <mapID target="CIGOperator" url="cig/CigTool.html"/>
+    <mapID target="CIGAlgorithm" url="cig/CigAlgorithmSpecification.html"/>
+
+    <mapID target="CIREOperator" url="cire/CireTool.html"/>
+    <mapID target="CIREAlgorithm" url="cire/CireAlgorithmSpecification.html"/>
+
+    <mapID target="CVIOperator" url="cvi/CviTool.html"/>
+    <mapID target="CVIAlgorithm" url="cvi/CviAlgorithmSpecification.html"/>
+
+    <mapID target="DSIOperator" url="dsi/DsiTool.html"/>
+    <mapID target="DSIAlgorithm" url="dsi/DsiAlgorithmSpecification.html"/>
+
+    <mapID target="DSWI1Operator" url="dswi1/Dswi1Tool.html"/>
+    <mapID target="DSWI1Algorithm" url="dswi1/Dswi1AlgorithmSpecification.html"/>
+
+    <mapID target="DSWI2Operator" url="dswi2/Dswi2Tool.html"/>
+    <mapID target="DSWI2Algorithm" url="dswi2/Dswi2AlgorithmSpecification.html"/>
+
+    <mapID target="DSWI3Operator" url="dswi3/Dswi3Tool.html"/>
+    <mapID target="DSWI3Algorithm" url="dswi3/Dswi3AlgorithmSpecification.html"/>
+
+    <mapID target="DSWI4Operator" url="dswi4/Dswi4Tool.html"/>
+    <mapID target="DSWI4Algorithm" url="dswi4/Dswi4AlgorithmSpecification.html"/>
+
+    <mapID target="DSWI5Operator" url="dswi5/Dswi5Tool.html"/>
+    <mapID target="DSWI5Algorithm" url="dswi5/Dswi5AlgorithmSpecification.html"/>
+
+    <mapID target="DVIplusOperator" url="dviplus/DviplusTool.html"/>
+    <mapID target="DVIplusAlgorithm" url="dviplus/DviplusAlgorithmSpecification.html"/>
+
+    <mapID target="EBIOperator" url="ebi/EbiTool.html"/>
+    <mapID target="EBIAlgorithm" url="ebi/EbiAlgorithmSpecification.html"/>
+
+    <mapID target="EVIOperator" url="evi/EviTool.html"/>
+    <mapID target="EVIAlgorithm" url="evi/EviAlgorithmSpecification.html"/>
+
+    <mapID target="EVI2Operator" url="evi2/Evi2Tool.html"/>
+    <mapID target="EVI2Algorithm" url="evi2/Evi2AlgorithmSpecification.html"/>
+
+    <mapID target="ExGOperator" url="exg/ExgTool.html"/>
+    <mapID target="ExGAlgorithm" url="exg/ExgAlgorithmSpecification.html"/>
+
+    <mapID target="ExGROperator" url="exgr/ExgrTool.html"/>
+    <mapID target="ExGRAlgorithm" url="exgr/ExgrAlgorithmSpecification.html"/>
+
+    <mapID target="ExROperator" url="exr/ExrTool.html"/>
+    <mapID target="ExRAlgorithm" url="exr/ExrAlgorithmSpecification.html"/>
+
+    <mapID target="FCVIOperator" url="fcvi/FcviTool.html"/>
+    <mapID target="FCVIAlgorithm" url="fcvi/FcviAlgorithmSpecification.html"/>
+
+    <mapID target="GARIOperator" url="gari/GariTool.html"/>
+    <mapID target="GARIAlgorithm" url="gari/GariAlgorithmSpecification.html"/>
+
+    <mapID target="GBNDVIOperator" url="gbndvi/GbndviTool.html"/>
+    <mapID target="GBNDVIAlgorithm" url="gbndvi/GbndviAlgorithmSpecification.html"/>
+
+    <mapID target="GCCOperator" url="gcc/GccTool.html"/>
+    <mapID target="GCCAlgorithm" url="gcc/GccAlgorithmSpecification.html"/>
+
+    <mapID target="GDVIOperator" url="gdvi/GdviTool.html"/>
+    <mapID target="GDVIAlgorithm" url="gdvi/GdviAlgorithmSpecification.html"/>
+
+    <mapID target="GLIOperator" url="gli/GliTool.html"/>
+    <mapID target="GLIAlgorithm" url="gli/GliAlgorithmSpecification.html"/>
+
+    <mapID target="GM1Operator" url="gm1/Gm1Tool.html"/>
+    <mapID target="GM1Algorithm" url="gm1/Gm1AlgorithmSpecification.html"/>
+
+    <mapID target="GM2Operator" url="gm2/Gm2Tool.html"/>
+    <mapID target="GM2Algorithm" url="gm2/Gm2AlgorithmSpecification.html"/>
+
+    <mapID target="GOSAVIOperator" url="gosavi/GosaviTool.html"/>
+    <mapID target="GOSAVIAlgorithm" url="gosavi/GosaviAlgorithmSpecification.html"/>
+
+    <mapID target="GRNDVIOperator" url="grndvi/GrndviTool.html"/>
+    <mapID target="GRNDVIAlgorithm" url="grndvi/GrndviAlgorithmSpecification.html"/>
+
+    <mapID target="GRVIOperator" url="grvi/GrviTool.html"/>
+    <mapID target="GRVIAlgorithm" url="grvi/GrviAlgorithmSpecification.html"/>
+
+    <mapID target="GSAVIOperator" url="gsavi/GsaviTool.html"/>
+    <mapID target="GSAVIAlgorithm" url="gsavi/GsaviAlgorithmSpecification.html"/>
+
+    <mapID target="GVMIOperator" url="gvmi/GvmiTool.html"/>
+    <mapID target="GVMIAlgorithm" url="gvmi/GvmiAlgorithmSpecification.html"/>
+
+    <mapID target="IAVIOperator" url="iavi/IaviTool.html"/>
+    <mapID target="IAVIAlgorithm" url="iavi/IaviAlgorithmSpecification.html"/>
+
+    <mapID target="IKAWOperator" url="ikaw/IkawTool.html"/>
+    <mapID target="IKAWAlgorithm" url="ikaw/IkawAlgorithmSpecification.html"/>
+
+    <mapID target="MCARI1Operator" url="mcari1/Mcari1Tool.html"/>
+    <mapID target="MCARI1Algorithm" url="mcari1/Mcari1AlgorithmSpecification.html"/>
+
+    <mapID target="MCARI2Operator" url="mcari2/Mcari2Tool.html"/>
+    <mapID target="MCARI2Algorithm" url="mcari2/Mcari2AlgorithmSpecification.html"/>
+
+    <mapID target="MCARI705Operator" url="mcari705/Mcari705Tool.html"/>
+    <mapID target="MCARI705Algorithm" url="mcari705/Mcari705AlgorithmSpecification.html"/>
+
+    <mapID target="MCARIOSAVIOperator" url="mcariosavi/McariosaviTool.html"/>
+    <mapID target="MCARIOSAVIAlgorithm" url="mcariosavi/McariosaviAlgorithmSpecification.html"/>
+
+    <mapID target="MCARIOSAVI705Operator" url="mcariosavi705/Mcariosavi705Tool.html"/>
+    <mapID target="MCARIOSAVI705Algorithm" url="mcariosavi705/Mcariosavi705AlgorithmSpecification.html"/>
+
+    <mapID target="MGRVIOperator" url="mgrvi/MgrviTool.html"/>
+    <mapID target="MGRVIAlgorithm" url="mgrvi/MgrviAlgorithmSpecification.html"/>
+
+    <mapID target="MNLIOperator" url="mnli/MnliTool.html"/>
+    <mapID target="MNLIAlgorithm" url="mnli/MnliAlgorithmSpecification.html"/>
+
+    <mapID target="MRBVIOperator" url="mrbvi/MrbviTool.html"/>
+    <mapID target="MRBVIAlgorithm" url="mrbvi/MrbviAlgorithmSpecification.html"/>
+
+    <mapID target="MSIOperator" url="msi/MsiTool.html"/>
+    <mapID target="MSIAlgorithm" url="msi/MsiAlgorithmSpecification.html"/>
+
+    <mapID target="MSROperator" url="msr/MsrTool.html"/>
+    <mapID target="MSRAlgorithm" url="msr/MsrAlgorithmSpecification.html"/>
+
+    <mapID target="MSR705Operator" url="msr705/Msr705Tool.html"/>
+    <mapID target="MSR705Algorithm" url="msr705/Msr705AlgorithmSpecification.html"/>
+
+    <mapID target="MTVI1Operator" url="mtvi1/Mtvi1Tool.html"/>
+    <mapID target="MTVI1Algorithm" url="mtvi1/Mtvi1AlgorithmSpecification.html"/>
+
+    <mapID target="MTVI2Operator" url="mtvi2/Mtvi2Tool.html"/>
+    <mapID target="MTVI2Algorithm" url="mtvi2/Mtvi2AlgorithmSpecification.html"/>
+
+    <mapID target="ND705Operator" url="nd705/Nd705Tool.html"/>
+    <mapID target="ND705Algorithm" url="nd705/Nd705AlgorithmSpecification.html"/>
+
+    <mapID target="NDDIOperator" url="nddi/NddiTool.html"/>
+    <mapID target="NDDIAlgorithm" url="nddi/NddiAlgorithmSpecification.html"/>
+
+    <mapID target="NDGIOperator" url="ndgi/NdgiTool.html"/>
+    <mapID target="NDGIAlgorithm" url="ndgi/NdgiAlgorithmSpecification.html"/>
+
+    <mapID target="NDIIOperator" url="ndii/NdiiTool.html"/>
+    <mapID target="NDIIAlgorithm" url="ndii/NdiiAlgorithmSpecification.html"/>
+
+    <mapID target="NDMIOperator" url="ndmi/NdmiTool.html"/>
+    <mapID target="NDMIAlgorithm" url="ndmi/NdmiAlgorithmSpecification.html"/>
+
+    <mapID target="NDREIOperator" url="ndrei/NdreiTool.html"/>
+    <mapID target="NDREIAlgorithm" url="ndrei/NdreiAlgorithmSpecification.html"/>
+
+    <mapID target="NDVI705Operator" url="ndvi705/Ndvi705Tool.html"/>
+    <mapID target="NDVI705Algorithm" url="ndvi705/Ndvi705AlgorithmSpecification.html"/>
+
+    <mapID target="NDYIOperator" url="ndyi/NdyiTool.html"/>
+    <mapID target="NDYIAlgorithm" url="ndyi/NdyiAlgorithmSpecification.html"/>
+
+    <mapID target="NGRDIOperator" url="ngrdi/NgrdiTool.html"/>
+    <mapID target="NGRDIAlgorithm" url="ngrdi/NgrdiAlgorithmSpecification.html"/>
+
+    <mapID target="NIRvOperator" url="nirv/NirvTool.html"/>
+    <mapID target="NIRvAlgorithm" url="nirv/NirvAlgorithmSpecification.html"/>
+
+    <mapID target="NIRvH2Operator" url="nirvh2/Nirvh2Tool.html"/>
+    <mapID target="NIRvH2Algorithm" url="nirvh2/Nirvh2AlgorithmSpecification.html"/>
+
+    <mapID target="NIRvPOperator" url="nirvp/NirvpTool.html"/>
+    <mapID target="NIRvPAlgorithm" url="nirvp/NirvpAlgorithmSpecification.html"/>
+
+    <mapID target="NLIOperator" url="nli/NliTool.html"/>
+    <mapID target="NLIAlgorithm" url="nli/NliAlgorithmSpecification.html"/>
+
+    <mapID target="NMDIOperator" url="nmdi/NmdiTool.html"/>
+    <mapID target="NMDIAlgorithm" url="nmdi/NmdiAlgorithmSpecification.html"/>
+
+    <mapID target="NRFIgOperator" url="nrfig/NrfigTool.html"/>
+    <mapID target="NRFIgAlgorithm" url="nrfig/NrfigAlgorithmSpecification.html"/>
+
+    <mapID target="NRFIrOperator" url="nrfir/NrfirTool.html"/>
+    <mapID target="NRFIrAlgorithm" url="nrfir/NrfirAlgorithmSpecification.html"/>
+
+    <mapID target="NormGOperator" url="normg/NormgTool.html"/>
+    <mapID target="NormGAlgorithm" url="normg/NormgAlgorithmSpecification.html"/>
+
+    <mapID target="NormNIROperator" url="normnir/NormnirTool.html"/>
+    <mapID target="NormNIRAlgorithm" url="normnir/NormnirAlgorithmSpecification.html"/>
+
+    <mapID target="NormROperator" url="normr/NormrTool.html"/>
+    <mapID target="NormRAlgorithm" url="normr/NormrAlgorithmSpecification.html"/>
+
+    <mapID target="OCVIOperator" url="ocvi/OcviTool.html"/>
+    <mapID target="OCVIAlgorithm" url="ocvi/OcviAlgorithmSpecification.html"/>
+
+    <mapID target="OSAVIOperator" url="osavi/OsaviTool.html"/>
+    <mapID target="OSAVIAlgorithm" url="osavi/OsaviAlgorithmSpecification.html"/>
+
+    <mapID target="PSRIOperator" url="psri/PsriTool.html"/>
+    <mapID target="PSRIAlgorithm" url="psri/PsriAlgorithmSpecification.html"/>
+
+    <mapID target="RCCOperator" url="rcc/RccTool.html"/>
+    <mapID target="RCCAlgorithm" url="rcc/RccAlgorithmSpecification.html"/>
+
+    <mapID target="RDVIOperator" url="rdvi/RdviTool.html"/>
+    <mapID target="RDVIAlgorithm" url="rdvi/RdviAlgorithmSpecification.html"/>
+
+    <mapID target="REDSIOperator" url="redsi/RedsiTool.html"/>
+    <mapID target="REDSIAlgorithm" url="redsi/RedsiAlgorithmSpecification.html"/>
+
+    <mapID target="RENDVIOperator" url="rendvi/RendviTool.html"/>
+    <mapID target="RENDVIAlgorithm" url="rendvi/RendviAlgorithmSpecification.html"/>
+
+    <mapID target="RGBVIOperator" url="rgbvi/RgbviTool.html"/>
+    <mapID target="RGBVIAlgorithm" url="rgbvi/RgbviAlgorithmSpecification.html"/>
+
+    <mapID target="RGRIOperator" url="rgri/RgriTool.html"/>
+    <mapID target="RGRIAlgorithm" url="rgri/RgriAlgorithmSpecification.html"/>
+
+    <mapID target="SARVIOperator" url="sarvi/SarviTool.html"/>
+    <mapID target="SARVIAlgorithm" url="sarvi/SarviAlgorithmSpecification.html"/>
+
+    <mapID target="SAVI2Operator" url="savi2/Savi2Tool.html"/>
+    <mapID target="SAVI2Algorithm" url="savi2/Savi2AlgorithmSpecification.html"/>
+
+    <mapID target="SEVIOperator" url="sevi/SeviTool.html"/>
+    <mapID target="SEVIAlgorithm" url="sevi/SeviAlgorithmSpecification.html"/>
+
+    <mapID target="SIOperator" url="si/SiTool.html"/>
+    <mapID target="SIAlgorithm" url="si/SiAlgorithmSpecification.html"/>
+
+    <mapID target="SIPIOperator" url="sipi/SipiTool.html"/>
+    <mapID target="SIPIAlgorithm" url="sipi/SipiAlgorithmSpecification.html"/>
+
+    <mapID target="SLAVIOperator" url="slavi/SlaviTool.html"/>
+    <mapID target="SLAVIAlgorithm" url="slavi/SlaviAlgorithmSpecification.html"/>
+
+    <mapID target="SR2Operator" url="sr2/Sr2Tool.html"/>
+    <mapID target="SR2Algorithm" url="sr2/Sr2AlgorithmSpecification.html"/>
+
+    <mapID target="SR3Operator" url="sr3/Sr3Tool.html"/>
+    <mapID target="SR3Algorithm" url="sr3/Sr3AlgorithmSpecification.html"/>
+
+    <mapID target="SR555Operator" url="sr555/Sr555Tool.html"/>
+    <mapID target="SR555Algorithm" url="sr555/Sr555AlgorithmSpecification.html"/>
+
+    <mapID target="SR705Operator" url="sr705/Sr705Tool.html"/>
+    <mapID target="SR705Algorithm" url="sr705/Sr705AlgorithmSpecification.html"/>
+
+    <mapID target="SeLIOperator" url="seli/SeliTool.html"/>
+    <mapID target="SeLIAlgorithm" url="seli/SeliAlgorithmSpecification.html"/>
+
+    <mapID target="TCARIOperator" url="tcari/TcariTool.html"/>
+    <mapID target="TCARIAlgorithm" url="tcari/TcariAlgorithmSpecification.html"/>
+
+    <mapID target="TCARIOSAVIOperator" url="tcariosavi/TcariosaviTool.html"/>
+    <mapID target="TCARIOSAVIAlgorithm" url="tcariosavi/TcariosaviAlgorithmSpecification.html"/>
+
+    <mapID target="TCARIOSAVI705Operator" url="tcariosavi705/Tcariosavi705Tool.html"/>
+    <mapID target="TCARIOSAVI705Algorithm" url="tcariosavi705/Tcariosavi705AlgorithmSpecification.html"/>
+
+    <mapID target="TCIOperator" url="tci/TciTool.html"/>
+    <mapID target="TCIAlgorithm" url="tci/TciAlgorithmSpecification.html"/>
+
+    <mapID target="TDVIOperator" url="tdvi/TdviTool.html"/>
+    <mapID target="TDVIAlgorithm" url="tdvi/TdviAlgorithmSpecification.html"/>
+
+    <mapID target="TGIOperator" url="tgi/TgiTool.html"/>
+    <mapID target="TGIAlgorithm" url="tgi/TgiAlgorithmSpecification.html"/>
+
+    <mapID target="TRRVIOperator" url="trrvi/TrrviTool.html"/>
+    <mapID target="TRRVIAlgorithm" url="trrvi/TrrviAlgorithmSpecification.html"/>
+
+    <mapID target="TTVIOperator" url="ttvi/TtviTool.html"/>
+    <mapID target="TTVIAlgorithm" url="ttvi/TtviAlgorithmSpecification.html"/>
+
+    <mapID target="TVIOperator" url="tvi/TviTool.html"/>
+    <mapID target="TVIAlgorithm" url="tvi/TviAlgorithmSpecification.html"/>
+
+    <mapID target="TriVIOperator" url="trivi/TriviTool.html"/>
+    <mapID target="TriVIAlgorithm" url="trivi/TriviAlgorithmSpecification.html"/>
+
+    <mapID target="VARIOperator" url="vari/VariTool.html"/>
+    <mapID target="VARIAlgorithm" url="vari/VariAlgorithmSpecification.html"/>
+
+    <mapID target="VARI700Operator" url="vari700/Vari700Tool.html"/>
+    <mapID target="VARI700Algorithm" url="vari700/Vari700AlgorithmSpecification.html"/>
+
+    <mapID target="VI700Operator" url="vi700/Vi700Tool.html"/>
+    <mapID target="VI700Algorithm" url="vi700/Vi700AlgorithmSpecification.html"/>
+
+    <mapID target="VIGOperator" url="vig/VigTool.html"/>
+    <mapID target="VIGAlgorithm" url="vig/VigAlgorithmSpecification.html"/>
+
+    <mapID target="WDRVIOperator" url="wdrvi/WdrviTool.html"/>
+    <mapID target="WDRVIAlgorithm" url="wdrvi/WdrviAlgorithmSpecification.html"/>
+
+    <mapID target="MmND705Operator" url="mmnd705/Mmnd705Tool.html"/>
+    <mapID target="MmND705Algorithm" url="mmnd705/Mmnd705AlgorithmSpecification.html"/>
+
+    <mapID target="MmSR705Operator" url="mmsr705/Mmsr705Tool.html"/>
+    <mapID target="MmSR705Algorithm" url="mmsr705/Mmsr705AlgorithmSpecification.html"/>
+
+    <mapID target="BAIOperator" url="bai/BaiTool.html"/>
+    <mapID target="BAIAlgorithm" url="bai/BaiAlgorithmSpecification.html"/>
+
+    <mapID target="BAIMOperator" url="baim/BaimTool.html"/>
+    <mapID target="BAIMAlgorithm" url="baim/BaimAlgorithmSpecification.html"/>
+
+    <mapID target="BAIS2Operator" url="bais2/Bais2Tool.html"/>
+    <mapID target="BAIS2Algorithm" url="bais2/Bais2AlgorithmSpecification.html"/>
+
+    <mapID target="CSIOperator" url="csi/CsiTool.html"/>
+    <mapID target="CSIAlgorithm" url="csi/CsiAlgorithmSpecification.html"/>
+
+    <mapID target="CSITOperator" url="csit/CsitTool.html"/>
+    <mapID target="CSITAlgorithm" url="csit/CsitAlgorithmSpecification.html"/>
+
+    <mapID target="MIRBIOperator" url="mirbi/MirbiTool.html"/>
+    <mapID target="MIRBIAlgorithm" url="mirbi/MirbiAlgorithmSpecification.html"/>
+
+    <mapID target="NBROperator" url="nbr/NbrTool.html"/>
+    <mapID target="NBRAlgorithm" url="nbr/NbrAlgorithmSpecification.html"/>
+
+    <mapID target="NBR2Operator" url="nbr2/Nbr2Tool.html"/>
+    <mapID target="NBR2Algorithm" url="nbr2/Nbr2AlgorithmSpecification.html"/>
+
+    <mapID target="NBRSWIROperator" url="nbrswir/NbrswirTool.html"/>
+    <mapID target="NBRSWIRAlgorithm" url="nbrswir/NbrswirAlgorithmSpecification.html"/>
+
+    <mapID target="NBRT1Operator" url="nbrt1/Nbrt1Tool.html"/>
+    <mapID target="NBRT1Algorithm" url="nbrt1/Nbrt1AlgorithmSpecification.html"/>
+
+    <mapID target="NBRT2Operator" url="nbrt2/Nbrt2Tool.html"/>
+    <mapID target="NBRT2Algorithm" url="nbrt2/Nbrt2AlgorithmSpecification.html"/>
+
+    <mapID target="NBRT3Operator" url="nbrt3/Nbrt3Tool.html"/>
+    <mapID target="NBRT3Algorithm" url="nbrt3/Nbrt3AlgorithmSpecification.html"/>
+
+    <mapID target="NBRplusOperator" url="nbrplus/NbrplusTool.html"/>
+    <mapID target="NBRplusAlgorithm" url="nbrplus/NbrplusAlgorithmSpecification.html"/>
+
+    <mapID target="NDSWIROperator" url="ndswir/NdswirTool.html"/>
+    <mapID target="NDSWIRAlgorithm" url="ndswir/NdswirAlgorithmSpecification.html"/>
+
+    <mapID target="NDVITOperator" url="ndvit/NdvitTool.html"/>
+    <mapID target="NDVITAlgorithm" url="ndvit/NdvitAlgorithmSpecification.html"/>
+
+    <mapID target="NSTv1Operator" url="nstv1/Nstv1Tool.html"/>
+    <mapID target="NSTv1Algorithm" url="nstv1/Nstv1AlgorithmSpecification.html"/>
+
+    <mapID target="NSTv2Operator" url="nstv2/Nstv2Tool.html"/>
+    <mapID target="NSTv2Algorithm" url="nstv2/Nstv2AlgorithmSpecification.html"/>
+
+    <mapID target="SAVITOperator" url="savit/SavitTool.html"/>
+    <mapID target="SAVITAlgorithm" url="savit/SavitAlgorithmSpecification.html"/>
+
+    <mapID target="VI6TOperator" url="vi6t/Vi6tTool.html"/>
+    <mapID target="VI6TAlgorithm" url="vi6t/Vi6tAlgorithmSpecification.html"/>
+
+    <mapID target="AWEInshOperator" url="aweinsh/AweinshTool.html"/>
+    <mapID target="AWEInshAlgorithm" url="aweinsh/AweinshAlgorithmSpecification.html"/>
+
+    <mapID target="AWEIshOperator" url="aweish/AweishTool.html"/>
+    <mapID target="AWEIshAlgorithm" url="aweish/AweishAlgorithmSpecification.html"/>
+
+    <mapID target="LSWIOperator" url="lswi/LswiTool.html"/>
+    <mapID target="LSWIAlgorithm" url="lswi/LswiAlgorithmSpecification.html"/>
+
+    <mapID target="MBWIOperator" url="mbwi/MbwiTool.html"/>
+    <mapID target="MBWIAlgorithm" url="mbwi/MbwiAlgorithmSpecification.html"/>
+
+    <mapID target="MLSWI26Operator" url="mlswi26/Mlswi26Tool.html"/>
+    <mapID target="MLSWI26Algorithm" url="mlswi26/Mlswi26AlgorithmSpecification.html"/>
+
+    <mapID target="MLSWI27Operator" url="mlswi27/Mlswi27Tool.html"/>
+    <mapID target="MLSWI27Algorithm" url="mlswi27/Mlswi27AlgorithmSpecification.html"/>
+
+    <mapID target="MuWIROperator" url="muwir/MuwirTool.html"/>
+    <mapID target="MuWIRAlgorithm" url="muwir/MuwirAlgorithmSpecification.html"/>
+
+    <mapID target="NDCIOperator" url="ndci/NdciTool.html"/>
+    <mapID target="NDCIAlgorithm" url="ndci/NdciAlgorithmSpecification.html"/>
+
+    <mapID target="NDPonIOperator" url="ndponi/NdponiTool.html"/>
+    <mapID target="NDPonIAlgorithm" url="ndponi/NdponiAlgorithmSpecification.html"/>
+
+    <mapID target="NDVIMNDWIOperator" url="ndvimndwi/NdvimndwiTool.html"/>
+    <mapID target="NDVIMNDWIAlgorithm" url="ndvimndwi/NdvimndwiAlgorithmSpecification.html"/>
+
+    <mapID target="NDWInsOperator" url="ndwins/NdwinsTool.html"/>
+    <mapID target="NDWInsAlgorithm" url="ndwins/NdwinsAlgorithmSpecification.html"/>
+
+    <mapID target="NWIOperator" url="nwi/NwiTool.html"/>
+    <mapID target="NWIAlgorithm" url="nwi/NwiAlgorithmSpecification.html"/>
+
+    <mapID target="S2WIOperator" url="s2wi/S2wiTool.html"/>
+    <mapID target="S2WIAlgorithm" url="s2wi/S2wiAlgorithmSpecification.html"/>
+
+    <mapID target="SWMOperator" url="swm/SwmTool.html"/>
+    <mapID target="SWMAlgorithm" url="swm/SwmAlgorithmSpecification.html"/>
+
+    <mapID target="TWIOperator" url="twi/TwiTool.html"/>
+    <mapID target="TWIAlgorithm" url="twi/TwiAlgorithmSpecification.html"/>
+
+    <mapID target="WI1Operator" url="wi1/Wi1Tool.html"/>
+    <mapID target="WI1Algorithm" url="wi1/Wi1AlgorithmSpecification.html"/>
+
+    <mapID target="WI2Operator" url="wi2/Wi2Tool.html"/>
+    <mapID target="WI2Algorithm" url="wi2/Wi2AlgorithmSpecification.html"/>
+
+    <mapID target="WI2015Operator" url="wi2015/Wi2015Tool.html"/>
+    <mapID target="WI2015Algorithm" url="wi2015/Wi2015AlgorithmSpecification.html"/>
+
+    <mapID target="WRIOperator" url="wri/WriTool.html"/>
+    <mapID target="WRIAlgorithm" url="wri/WriAlgorithmSpecification.html"/>
+
+    <mapID target="BITMOperator" url="bitm/BitmTool.html"/>
+    <mapID target="BITMAlgorithm" url="bitm/BitmAlgorithmSpecification.html"/>
+
+    <mapID target="BIXSOperator" url="bixs/BixsTool.html"/>
+    <mapID target="BIXSAlgorithm" url="bixs/BixsAlgorithmSpecification.html"/>
+
+    <mapID target="BaInOperator" url="bain/BainTool.html"/>
+    <mapID target="BaInAlgorithm" url="bain/BainAlgorithmSpecification.html"/>
+
+    <mapID target="DBSIOperator" url="dbsi/DbsiTool.html"/>
+    <mapID target="DBSIAlgorithm" url="dbsi/DbsiAlgorithmSpecification.html"/>
+
+    <mapID target="EMBIOperator" url="embi/EmbiTool.html"/>
+    <mapID target="EMBIAlgorithm" url="embi/EmbiAlgorithmSpecification.html"/>
+
+    <mapID target="MBIOperator" url="mbi/MbiTool.html"/>
+    <mapID target="MBIAlgorithm" url="mbi/MbiAlgorithmSpecification.html"/>
+
+    <mapID target="NBLIOperator" url="nbli/NbliTool.html"/>
+    <mapID target="NBLIAlgorithm" url="nbli/NbliAlgorithmSpecification.html"/>
+
+    <mapID target="NBLIOLIOperator" url="nblioli/NblioliTool.html"/>
+    <mapID target="NBLIOLIAlgorithm" url="nblioli/NblioliAlgorithmSpecification.html"/>
+
+    <mapID target="NDBaIOperator" url="ndbai/NdbaiTool.html"/>
+    <mapID target="NDBaIAlgorithm" url="ndbai/NdbaiAlgorithmSpecification.html"/>
+
+    <mapID target="NDSIWVOperator" url="ndsiwv/NdsiwvTool.html"/>
+    <mapID target="NDSIWVAlgorithm" url="ndsiwv/NdsiwvAlgorithmSpecification.html"/>
+
+    <mapID target="NDSoiIOperator" url="ndsoii/NdsoiiTool.html"/>
+    <mapID target="NDSoiIAlgorithm" url="ndsoii/NdsoiiAlgorithmSpecification.html"/>
+
+    <mapID target="NSDSOperator" url="nsds/NsdsTool.html"/>
+    <mapID target="NSDSAlgorithm" url="nsds/NsdsAlgorithmSpecification.html"/>
+
+    <mapID target="NSDSI1Operator" url="nsdsi1/Nsdsi1Tool.html"/>
+    <mapID target="NSDSI1Algorithm" url="nsdsi1/Nsdsi1AlgorithmSpecification.html"/>
+
+    <mapID target="NSDSI2Operator" url="nsdsi2/Nsdsi2Tool.html"/>
+    <mapID target="NSDSI2Algorithm" url="nsdsi2/Nsdsi2AlgorithmSpecification.html"/>
+
+    <mapID target="NSDSI3Operator" url="nsdsi3/Nsdsi3Tool.html"/>
+    <mapID target="NSDSI3Algorithm" url="nsdsi3/Nsdsi3AlgorithmSpecification.html"/>
+
+    <mapID target="RI4XSOperator" url="ri4xs/Ri4xsTool.html"/>
+    <mapID target="RI4XSAlgorithm" url="ri4xs/Ri4xsAlgorithmSpecification.html"/>
+
+    <mapID target="BLFEIOperator" url="blfei/BlfeiTool.html"/>
+    <mapID target="BLFEIAlgorithm" url="blfei/BlfeiAlgorithmSpecification.html"/>
+
+    <mapID target="BRBAOperator" url="brba/BrbaTool.html"/>
+    <mapID target="BRBAAlgorithm" url="brba/BrbaAlgorithmSpecification.html"/>
+
+    <mapID target="DBIOperator" url="dbi/DbiTool.html"/>
+    <mapID target="DBIAlgorithm" url="dbi/DbiAlgorithmSpecification.html"/>
+
+    <mapID target="EBBIOperator" url="ebbi/EbbiTool.html"/>
+    <mapID target="EBBIAlgorithm" url="ebbi/EbbiAlgorithmSpecification.html"/>
+
+    <mapID target="IBIOperator" url="ibi/IbiTool.html"/>
+    <mapID target="IBIAlgorithm" url="ibi/IbiAlgorithmSpecification.html"/>
+
+    <mapID target="NBAIOperator" url="nbai/NbaiTool.html"/>
+    <mapID target="NBAIAlgorithm" url="nbai/NbaiAlgorithmSpecification.html"/>
+
+    <mapID target="NBUIOperator" url="nbui/NbuiTool.html"/>
+    <mapID target="NBUIAlgorithm" url="nbui/NbuiAlgorithmSpecification.html"/>
+
+    <mapID target="NDBIOperator" url="ndbi/NdbiTool.html"/>
+    <mapID target="NDBIAlgorithm" url="ndbi/NdbiAlgorithmSpecification.html"/>
+
+    <mapID target="NDISIbOperator" url="ndisib/NdisibTool.html"/>
+    <mapID target="NDISIbAlgorithm" url="ndisib/NdisibAlgorithmSpecification.html"/>
+
+    <mapID target="NDISIgOperator" url="ndisig/NdisigTool.html"/>
+    <mapID target="NDISIgAlgorithm" url="ndisig/NdisigAlgorithmSpecification.html"/>
+
+    <mapID target="NDISImndwiOperator" url="ndisimndwi/NdisimndwiTool.html"/>
+    <mapID target="NDISImndwiAlgorithm" url="ndisimndwi/NdisimndwiAlgorithmSpecification.html"/>
+
+    <mapID target="NDISIndwiOperator" url="ndisindwi/NdisindwiTool.html"/>
+    <mapID target="NDISIndwiAlgorithm" url="ndisindwi/NdisindwiAlgorithmSpecification.html"/>
+
+    <mapID target="NDISIrOperator" url="ndisir/NdisirTool.html"/>
+    <mapID target="NDISIrAlgorithm" url="ndisir/NdisirAlgorithmSpecification.html"/>
+
+    <mapID target="NHFDOperator" url="nhfd/NhfdTool.html"/>
+    <mapID target="NHFDAlgorithm" url="nhfd/NhfdAlgorithmSpecification.html"/>
+
+    <mapID target="PISIOperator" url="pisi/PisiTool.html"/>
+    <mapID target="PISIAlgorithm" url="pisi/PisiAlgorithmSpecification.html"/>
+
+    <mapID target="UIOperator" url="ui/UiTool.html"/>
+    <mapID target="UIAlgorithm" url="ui/UiAlgorithmSpecification.html"/>
+
+    <mapID target="VIBIOperator" url="vibi/VibiTool.html"/>
+    <mapID target="VIBIAlgorithm" url="vibi/VibiAlgorithmSpecification.html"/>
+
+    <mapID target="VgNIRBIOperator" url="vgnirbi/VgnirbiTool.html"/>
+    <mapID target="VgNIRBIAlgorithm" url="vgnirbi/VgnirbiAlgorithmSpecification.html"/>
+
+    <mapID target="VrNIRBIOperator" url="vrnirbi/VrnirbiTool.html"/>
+    <mapID target="VrNIRBIAlgorithm" url="vrnirbi/VrnirbiAlgorithmSpecification.html"/>
+
     <mapID target="OperatorsIndexList" url="OperatorsIndexList.html"/>
 
 </map>
