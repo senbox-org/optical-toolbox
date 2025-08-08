@@ -31,23 +31,23 @@ public class TtviOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "ttvi";
 
-	@Parameter(label = "Red edge 2 source band",
-			description = "The Red Edge 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 730, maxWavelength = 750)
-	private String redEdge2SourceBand;
+    @Parameter(label = "Red edge 2 source band",
+            description = "The Red Edge 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 730, maxWavelength = 750)
+    private String redEdge2SourceBand;
 
-	@Parameter(label = "Red edge 3 source band",
-			description = "The Red Edge 3 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 765, maxWavelength = 795)
-	private String redEdge3SourceBand;
+    @Parameter(label = "Red edge 3 source band",
+            description = "The Red Edge 3 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 765, maxWavelength = 795)
+    private String redEdge3SourceBand;
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
     @Override
     public String getBandName() {
@@ -59,9 +59,9 @@ public class TtviOp extends BaseIndexOp {
         pm.beginTask("Computing Ttvi", rectangle.height);
         try {
 
-			Tile redEdge2Tile = getSourceTile(getSourceProduct().getBand(redEdge2SourceBand), rectangle);
-			Tile redEdge3Tile = getSourceTile(getSourceProduct().getBand(redEdge3SourceBand), rectangle);
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile redEdge2Tile = getSourceTile(getSourceProduct().getBand(redEdge2SourceBand), rectangle);
+            Tile redEdge3Tile = getSourceTile(getSourceProduct().getBand(redEdge3SourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile ttvi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -72,11 +72,11 @@ public class TtviOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float re2= redEdge2Tile.getSampleFloat(x, y);
-					final float re3= redEdge3Tile.getSampleFloat(x, y);
-					final float n= nirTile.getSampleFloat(x, y);
+                    final float re2 = redEdge2Tile.getSampleFloat(x, y);
+                    final float re3 = redEdge3Tile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
 
-                    ttviValue = 0.5f*((865.0f-740.0f)*(re3-re2)-(pow(n,2)-re2)*(783.0f-740));
+                    ttviValue = 0.5f * ((865.0f - 740.0f) * (re3 - re2) - (pow(n, 2) - re2) * (783.0f - 740));
                     ttvi.setSample(x, y, computeFlag(x, y, ttviValue, ttviFlags));
                 }
                 checkForCancellation();
@@ -86,10 +86,10 @@ public class TtviOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
-	private static float pow(float n, float p) {
-			return (float) Math.pow(n, p);
-	}
+
+    private static float pow(float n, float p) {
+        return (float) Math.pow(n, p);
+    }
 
     public static class Spi extends OperatorSpi {
 

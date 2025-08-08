@@ -31,17 +31,17 @@ public class Msr705Op extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "msr705";
 
-	@Parameter(label = "Red edge 1 source band",
-			description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 695, maxWavelength = 715)
-	private String redEdge1SourceBand;
+    @Parameter(label = "Red edge 1 source band",
+            description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 695, maxWavelength = 715)
+    private String redEdge1SourceBand;
 
-	@Parameter(label = "Red edge 2 source band",
-			description = "The Red Edge 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 730, maxWavelength = 750)
-	private String redEdge2SourceBand;
+    @Parameter(label = "Red edge 2 source band",
+            description = "The Red Edge 2 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 730, maxWavelength = 750)
+    private String redEdge2SourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class Msr705Op extends BaseIndexOp {
         pm.beginTask("Computing Msr705", rectangle.height);
         try {
 
-			Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
-			Tile redEdge2Tile = getSourceTile(getSourceProduct().getBand(redEdge2SourceBand), rectangle);
+            Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
+            Tile redEdge2Tile = getSourceTile(getSourceProduct().getBand(redEdge2SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile msr705 = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class Msr705Op extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float re1= redEdge1Tile.getSampleFloat(x, y);
-					final float re2= redEdge2Tile.getSampleFloat(x, y);
+                    final float re1 = redEdge1Tile.getSampleFloat(x, y);
+                    final float re2 = redEdge2Tile.getSampleFloat(x, y);
 
-                    msr705Value = (re2/re1-1)/pow((re2/re1+1),0.5f);
+                    msr705Value = (re2 / re1 - 1) / pow((re2 / re1 + 1), 0.5f);
                     msr705.setSample(x, y, computeFlag(x, y, msr705Value, msr705Flags));
                 }
                 checkForCancellation();
@@ -78,10 +78,10 @@ public class Msr705Op extends BaseIndexOp {
             pm.done();
         }
     }
-    
-	private static float pow(float n, float p) {
-			return (float) Math.pow(n, p);
-	}
+
+    private static float pow(float n, float p) {
+        return (float) Math.pow(n, p);
+    }
 
     public static class Spi extends OperatorSpi {
 

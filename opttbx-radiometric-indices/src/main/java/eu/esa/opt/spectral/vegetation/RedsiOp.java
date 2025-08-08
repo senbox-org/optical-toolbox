@@ -31,23 +31,23 @@ public class RedsiOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "redsi";
 
-	@Parameter(label = "Red edge 1 source band",
-			description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 695, maxWavelength = 715)
-	private String redEdge1SourceBand;
+    @Parameter(label = "Red edge 1 source band",
+            description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 695, maxWavelength = 715)
+    private String redEdge1SourceBand;
 
-	@Parameter(label = "Red edge 3 source band",
-			description = "The Red Edge 3 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 765, maxWavelength = 795)
-	private String redEdge3SourceBand;
+    @Parameter(label = "Red edge 3 source band",
+            description = "The Red Edge 3 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 765, maxWavelength = 795)
+    private String redEdge3SourceBand;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
     @Override
     public String getBandName() {
@@ -59,9 +59,9 @@ public class RedsiOp extends BaseIndexOp {
         pm.beginTask("Computing Redsi", rectangle.height);
         try {
 
-			Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
-			Tile redEdge3Tile = getSourceTile(getSourceProduct().getBand(redEdge3SourceBand), rectangle);
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
+            Tile redEdge3Tile = getSourceTile(getSourceProduct().getBand(redEdge3SourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile redsi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -72,11 +72,11 @@ public class RedsiOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float re1= redEdge1Tile.getSampleFloat(x, y);
-					final float re3= redEdge3Tile.getSampleFloat(x, y);
-					final float r= redTile.getSampleFloat(x, y);
+                    final float re1 = redEdge1Tile.getSampleFloat(x, y);
+                    final float re3 = redEdge3Tile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
 
-                    redsiValue = ((705.0f-665.0f)*(re3-r)-(783.0f-665.0f)*(re1-r))/(2.0f*r);
+                    redsiValue = ((705.0f - 665.0f) * (re3 - r) - (783.0f - 665.0f) * (re1 - r)) / (2.0f * r);
                     redsi.setSample(x, y, computeFlag(x, y, redsiValue, redsiFlags));
                 }
                 checkForCancellation();
@@ -86,7 +86,7 @@ public class RedsiOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

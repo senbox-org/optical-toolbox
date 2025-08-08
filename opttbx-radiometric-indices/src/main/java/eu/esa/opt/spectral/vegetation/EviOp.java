@@ -31,35 +31,35 @@ public class EviOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "evi";
 
-	@Parameter(label = "G Parameter", defaultValue = "1.0F", description = "The g parameter.")
-	private float g;
+    @Parameter(label = "G Parameter", defaultValue = "1.0F", description = "The g parameter.")
+    private float g;
 
-	@Parameter(label = "L Parameter", defaultValue = "1.0F", description = "The l parameter.")
-	private float l;
+    @Parameter(label = "L Parameter", defaultValue = "1.0F", description = "The l parameter.")
+    private float l;
 
-	@Parameter(label = "C1 Parameter", defaultValue = "1.0F", description = "The c1 parameter.")
-	private float c1;
+    @Parameter(label = "C1 Parameter", defaultValue = "1.0F", description = "The c1 parameter.")
+    private float c1;
 
-	@Parameter(label = "C2 Parameter", defaultValue = "1.0F", description = "The c2 parameter.")
-	private float c2;
+    @Parameter(label = "C2 Parameter", defaultValue = "1.0F", description = "The c2 parameter.")
+    private float c2;
 
-	@Parameter(label = "Blue source band",
-			description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 450, maxWavelength = 530)
-	private String blueSourceBand;
+    @Parameter(label = "Blue source band",
+            description = "The Blue band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 450, maxWavelength = 530)
+    private String blueSourceBand;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
     @Override
     public String getBandName() {
@@ -71,9 +71,9 @@ public class EviOp extends BaseIndexOp {
         pm.beginTask("Computing Evi", rectangle.height);
         try {
 
-			Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile blueTile = getSourceTile(getSourceProduct().getBand(blueSourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile evi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -84,11 +84,11 @@ public class EviOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float b= blueTile.getSampleFloat(x, y);
-					final float r= redTile.getSampleFloat(x, y);
-					final float n= nirTile.getSampleFloat(x, y);
+                    final float b = blueTile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
 
-                    eviValue = g*(n-r)/(n+c1*r-c2*b+l);
+                    eviValue = g * (n - r) / (n + c1 * r - c2 * b + l);
                     evi.setSample(x, y, computeFlag(x, y, eviValue, eviFlags));
                 }
                 checkForCancellation();
@@ -98,7 +98,7 @@ public class EviOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

@@ -31,29 +31,29 @@ public class NdisigOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "ndisig";
 
-	@Parameter(label = "Green source band",
-			description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 510, maxWavelength = 600)
-	private String greenSourceBand;
+    @Parameter(label = "Green source band",
+            description = "The Green band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 510, maxWavelength = 600)
+    private String greenSourceBand;
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
-	@Parameter(label = "Swir 1 source band",
-			description = "The SWIR 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 1550, maxWavelength = 1750)
-	private String swir1SourceBand;
+    @Parameter(label = "Swir 1 source band",
+            description = "The SWIR 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 1550, maxWavelength = 1750)
+    private String swir1SourceBand;
 
-	@Parameter(label = "Thermal source band",
-			description = "The Thermal band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 10400, maxWavelength = 12500)
-	private String thermalSourceBand;
+    @Parameter(label = "Thermal source band",
+            description = "The Thermal band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 10400, maxWavelength = 12500)
+    private String thermalSourceBand;
 
     @Override
     public String getBandName() {
@@ -65,10 +65,10 @@ public class NdisigOp extends BaseIndexOp {
         pm.beginTask("Computing Ndisig", rectangle.height);
         try {
 
-			Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
-			Tile swir1Tile = getSourceTile(getSourceProduct().getBand(swir1SourceBand), rectangle);
-			Tile thermalTile = getSourceTile(getSourceProduct().getBand(thermalSourceBand), rectangle);
+            Tile greenTile = getSourceTile(getSourceProduct().getBand(greenSourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile swir1Tile = getSourceTile(getSourceProduct().getBand(swir1SourceBand), rectangle);
+            Tile thermalTile = getSourceTile(getSourceProduct().getBand(thermalSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile ndisig = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -79,12 +79,12 @@ public class NdisigOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float g= greenTile.getSampleFloat(x, y);
-					final float n= nirTile.getSampleFloat(x, y);
-					final float s1= swir1Tile.getSampleFloat(x, y);
-					final float t= thermalTile.getSampleFloat(x, y);
+                    final float g = greenTile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
+                    final float s1 = swir1Tile.getSampleFloat(x, y);
+                    final float t = thermalTile.getSampleFloat(x, y);
 
-                    ndisigValue = (t-(g+n+s1)/3.0f)/(t+(g+n+s1)/3.0f);
+                    ndisigValue = (t - (g + n + s1) / 3.0f) / (t + (g + n + s1) / 3.0f);
                     ndisig.setSample(x, y, computeFlag(x, y, ndisigValue, ndisigFlags));
                 }
                 checkForCancellation();
@@ -94,7 +94,7 @@ public class NdisigOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

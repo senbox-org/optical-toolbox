@@ -31,17 +31,17 @@ public class NhfdOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "nhfd";
 
-	@Parameter(label = "Aerosols source band",
-			description = "The Aerosols band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 400, maxWavelength = 455)
-	private String aerosolsSourceBand;
+    @Parameter(label = "Aerosols source band",
+            description = "The Aerosols band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 400, maxWavelength = 455)
+    private String aerosolsSourceBand;
 
-	@Parameter(label = "Red edge 1 source band",
-			description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 695, maxWavelength = 715)
-	private String redEdge1SourceBand;
+    @Parameter(label = "Red edge 1 source band",
+            description = "The Red Edge 1 band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 695, maxWavelength = 715)
+    private String redEdge1SourceBand;
 
     @Override
     public String getBandName() {
@@ -53,8 +53,8 @@ public class NhfdOp extends BaseIndexOp {
         pm.beginTask("Computing Nhfd", rectangle.height);
         try {
 
-			Tile aerosolsTile = getSourceTile(getSourceProduct().getBand(aerosolsSourceBand), rectangle);
-			Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
+            Tile aerosolsTile = getSourceTile(getSourceProduct().getBand(aerosolsSourceBand), rectangle);
+            Tile redEdge1Tile = getSourceTile(getSourceProduct().getBand(redEdge1SourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile nhfd = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -65,10 +65,10 @@ public class NhfdOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float a= aerosolsTile.getSampleFloat(x, y);
-					final float re1= redEdge1Tile.getSampleFloat(x, y);
+                    final float a = aerosolsTile.getSampleFloat(x, y);
+                    final float re1 = redEdge1Tile.getSampleFloat(x, y);
 
-                    nhfdValue = (re1-a)/(re1+a);
+                    nhfdValue = (re1 - a) / (re1 + a);
                     nhfd.setSample(x, y, computeFlag(x, y, nhfdValue, nhfdFlags));
                 }
                 checkForCancellation();
@@ -78,7 +78,7 @@ public class NhfdOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
+
     public static class Spi extends OperatorSpi {
 
         public Spi() {

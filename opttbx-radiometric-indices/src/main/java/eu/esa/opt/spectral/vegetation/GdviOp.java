@@ -31,20 +31,20 @@ public class GdviOp extends BaseIndexOp {
     // constants
     public static final String BAND_NAME = "gdvi";
 
-	@Parameter(label = "Nexp Parameter", defaultValue = "1.0F", description = "The nexp parameter.")
-	private float nexp;
+    @Parameter(label = "Nexp Parameter", defaultValue = "1.0F", description = "The nexp parameter.")
+    private float nexp;
 
-	@Parameter(label = "Red source band",
-			description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 620, maxWavelength = 690)
-	private String redSourceBand;
+    @Parameter(label = "Red source band",
+            description = "The Red band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 620, maxWavelength = 690)
+    private String redSourceBand;
 
-	@Parameter(label = "Nir source band",
-			description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
-			rasterDataNodeType = Band.class)
-	@BandParameter(minWavelength = 760, maxWavelength = 900)
-	private String nirSourceBand;
+    @Parameter(label = "Nir source band",
+            description = "The NIR band for the Template computation. If not provided, the operator will try to find the best fitting band.",
+            rasterDataNodeType = Band.class)
+    @BandParameter(minWavelength = 760, maxWavelength = 900)
+    private String nirSourceBand;
 
     @Override
     public String getBandName() {
@@ -56,8 +56,8 @@ public class GdviOp extends BaseIndexOp {
         pm.beginTask("Computing Gdvi", rectangle.height);
         try {
 
-			Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
-			Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
+            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
 
             // SIITBX-494 - retrieve bands after suffix (which is the operator band name)
             Tile gdvi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + BAND_NAME));
@@ -68,10 +68,10 @@ public class GdviOp extends BaseIndexOp {
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
 
-					final float r= redTile.getSampleFloat(x, y);
-					final float n= nirTile.getSampleFloat(x, y);
+                    final float r = redTile.getSampleFloat(x, y);
+                    final float n = nirTile.getSampleFloat(x, y);
 
-                    gdviValue = (pow(n,nexp)-pow(r,nexp))/(pow(n,nexp)+pow(r,nexp));
+                    gdviValue = (pow(n, nexp) - pow(r, nexp)) / (pow(n, nexp) + pow(r, nexp));
                     gdvi.setSample(x, y, computeFlag(x, y, gdviValue, gdviFlags));
                 }
                 checkForCancellation();
@@ -81,10 +81,10 @@ public class GdviOp extends BaseIndexOp {
             pm.done();
         }
     }
-    
-	private static float pow(float n, float p) {
-			return (float) Math.pow(n, p);
-	}
+
+    private static float pow(float n, float p) {
+        return (float) Math.pow(n, p);
+    }
 
     public static class Spi extends OperatorSpi {
 
