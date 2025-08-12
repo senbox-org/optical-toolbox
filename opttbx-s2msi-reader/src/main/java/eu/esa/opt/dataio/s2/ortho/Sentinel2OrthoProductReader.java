@@ -1554,8 +1554,10 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
             }
         }
 
-        int columnNumber = (int) Math.ceil(sceneWidth / resolutionX);
-        int rowNumber = (int) Math.ceil(sceneHeight / resolutionY);
+        int columnNumber = (int) Math.ceil(sceneWidth / resolutionX) + 1;
+        int rowNumber = (int) Math.ceil(sceneHeight / resolutionY) + 1;
+        columnNumber = Math.min(columnNumber, planarImage.getWidth());
+        rowNumber = Math.min(rowNumber, planarImage.getHeight());
         return CropDescriptor.create(planarImage, planarImage.getMinX() + 0.0f, planarImage.getMinY() + 0.0f,
                                      (float) columnNumber, (float) rowNumber, null);
     }
