@@ -1,0 +1,93 @@
+{
+  "id": "v001/day/ECOSTRESS_L2_CLOUD_08355_008_20191226T171130_0601_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "26-DEC-2019 17:11:31.725607",
+    "endTime": "26-DEC-2019 17:16:31.725607",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 41.02075222454653,
+          "lon": -89.81012200112781
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 40.44221978676641,
+          "lon": -87.92981359283893
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
+    "bands": [
+      {
+        "name": "SDS_CloudMask",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "Bits: 0 = Determined, 1 = Cloud (includes tests and extended), 2 = Test 1 or Test 2, 3 = Test 1: Thermal Brightness Test, 4 = Test 2: Band 4 - 5 Thermal Difference Test, 5 = Water",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": 15.0
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": 23.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/ImageLines",
+        "value": "5632"
+      },
+      {
+        "path": "L2 CLOUD Metadata/CloudMinTemperature",
+        "value": "268.64456619262694"
+      },
+      {
+        "path": "L2 CLOUD Metadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "L2 CLOUD Metadata/QAPercentCloudCover",
+        "value": "92"
+      },
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2019-12-27T05:42:36.620Z"
+      },
+      {
+        "path": "L2 CLOUD Metadata/QAPercentCloudCover",
+        "value": "92"
+      },
+      {
+        "path": "L2 CLOUD Metadata/CloudMinTemperature",
+        "value": "268.64456619262694"
+      },
+      {
+        "path": "L2 CLOUD Metadata/CloudMinTemperature",
+        "value": "268.64456619262694"
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO2CLD"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "1.2.1"
+      }
+    ]
+  }
+}

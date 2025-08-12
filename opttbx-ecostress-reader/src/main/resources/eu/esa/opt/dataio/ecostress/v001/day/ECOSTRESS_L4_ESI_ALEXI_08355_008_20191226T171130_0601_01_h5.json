@@ -1,0 +1,137 @@
+{
+  "id": "v001/day/ECOSTRESS_L4_ESI_ALEXI_08355_008_20191226T171130_0601_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "26-DEC-2019 17:11:31.725607",
+    "endTime": "26-DEC-2019 17:16:31.725607",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 41.02075222454653,
+          "lon": -89.81012200112781
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 40.44221978676641,
+          "lon": -87.92981359283893
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
+    "bands": [
+      {
+        "name": "EVAPORATIVE_STRESS_INDEX_ALEXI_ESIdaily",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "NA",
+        "noDataValue": "9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": 1.0
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": 1.0
+          }
+        ]
+      },
+      {
+        "name": "EVAPORATIVE_STRESS_INDEX_ALEXI_ESIdailyUncertainty",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "NA",
+        "noDataValue": "9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1570,
+            "y": 1446,
+            "value": 0.3256835
+          },
+          {
+            "x": 3296,
+            "y": 2057,
+            "value": 0.31405196
+          }
+        ]
+      },
+      {
+        "name": "EVAPORATIVE_STRESS_INDEX_ALEXI_QualityFlag",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "NA",
+        "noDataValue": "9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2970,
+            "y": 4197,
+            "value": 0.0
+          },
+          {
+            "x": 3285,
+            "y": 5229,
+            "value": 0.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2020-02-18T19:32:30.866Z"
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/Projection",
+        "value": "ECOSTRESS"
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/AncillaryFileSurfReflectanceFill",
+        "value": ""
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/AncillaryFileSurfReflectanceFill",
+        "value": ""
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO4ESIALEXI"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "1.3.3"
+      },
+      {
+        "path": "StandardMetadata/EastBoundingCoordinate",
+        "value": "-86.37408223121896"
+      },
+      {
+        "path": "StandardMetadata/AutomaticQualityFlag",
+        "value": "PASS"
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/AncillaryFileWindSpeed",
+        "value": "alexi_wind_2019_12_26_ECOSTRESS_08355008.h5"
+      },
+      {
+        "path": "L4_ESI_ALEXI Metadata/AvgETUncertainty",
+        "value": ""
+      }
+    ]
+  }
+}

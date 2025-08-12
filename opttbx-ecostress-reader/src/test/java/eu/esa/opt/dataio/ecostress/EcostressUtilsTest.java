@@ -1,6 +1,5 @@
 package eu.esa.opt.dataio.ecostress;
 
-import eu.esa.opt.dataio.ecostress.l2.cloud.EcostressL2CloudConstants;
 import eu.esa.snap.hdf.HDFLoader;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
@@ -23,6 +22,7 @@ import java.util.List;
 public class EcostressUtilsTest {
 
     private static final String ECOSTRESS_TEST_PRODUCT_FILE_NAME = "ECOSTRESS_L2_CLOUD_32257_019_20240314T205642_0601_01.h5";
+    private static final String ECOSTRESS_TEST_NIGHT_PRODUCT_FILE_NAME = "ECOv002_L2_CLOUD_37968_001_20250318T021016_0713_01.h5";
 
     @Before
     public void loadHdf5Library() {
@@ -65,7 +65,7 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                Assert.assertEquals("14-MAR-2024 20:56:43.163661", EcostressUtils.extractStartTime(ecostressFile).getElemString());
+                Assert.assertEquals("14-MAR-2024 20:56:43.163661", EcostressUtils.extractStartTime(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA).getElemString());
             }
         } catch (Exception e) {
             Assert.fail("Test crashed. Reason: " + e.getMessage());
@@ -77,7 +77,7 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                Assert.assertEquals("14-MAR-2024 21:01:43.163661", EcostressUtils.extractEndTime(ecostressFile).getElemString());
+                Assert.assertEquals("14-MAR-2024 21:01:43.163661", EcostressUtils.extractEndTime(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA).getElemString());
             }
         } catch (Exception e) {
             Assert.fail("Test crashed. Reason: " + e.getMessage());
@@ -89,7 +89,8 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                final Dimension dimension = EcostressUtils.extractEcostressProductDimension(ecostressFile, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
+                final String pathOfGeneralMetadata = EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA;
+                final Dimension dimension = EcostressUtils.extractEcostressProductDimension(ecostressFile, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
                 Assert.assertEquals(5400, dimension.width);
                 Assert.assertEquals(5632, dimension.height);
             }
@@ -103,7 +104,7 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, EcostressL2CloudConstants.ECOSTRESS_L2_CLOUD_PRODUCT_DATA_DEFINITIONS_GROUP_SDS);
+                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, "/SDS");
                 Assert.assertEquals(1, bands.size());
                 final Band band = bands.get(0);
                 Assert.assertEquals("SDS_CloudMask", band.getName());
@@ -123,12 +124,12 @@ public class EcostressUtilsTest {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
             try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
-                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, EcostressL2CloudConstants.ECOSTRESS_L2_CLOUD_PRODUCT_DATA_DEFINITIONS_GROUP_SDS);
+                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, "/SDS");
                 Assert.assertEquals(1, bands.size());
                 final Band band = bands.get(0);
                 final byte[] productDataElements = new byte[100 * 100];
                 final ProductData productData = ProductData.createInstance(productDataElements);
-                EcostressUtils.readEcostressBandData(ecostressFile, band, 100, 100, 400, 3000, productData);
+                EcostressUtils.readEcostressBandData(ecostressFile, band, 100, 100, 400, 3000, productData, false);
                 Assert.assertEquals(100 * 100, productData.getNumElems());
                 Assert.assertEquals(1, productData.getElemIntAt(74 + 31 * 100));
                 Assert.assertEquals(33, productData.getElemIntAt(75 + 31 * 100));
@@ -138,8 +139,36 @@ public class EcostressUtilsTest {
         }
     }
 
+    @Test
+    public void readReversedEcostressBandDataTest() {
+        try {
+            final Path ecostressTestProductFilePath = getEcostressTestNightProductFilePath();
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+                final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, "/SDS");
+                Assert.assertEquals(2, bands.size());
+                final Band band = bands.get(0);
+                final byte[] productDataElements = new byte[100 * 100];
+                final ProductData productData = ProductData.createInstance(productDataElements);
+                EcostressUtils.readEcostressBandData(ecostressFile, band, 100, 100, 400, 3000, productData, true);
+                Assert.assertEquals(100 * 100, productData.getNumElems());
+                Assert.assertEquals(2, productData.getElemIntAt(48 + 31 * 100));
+                Assert.assertEquals(1, productData.getElemIntAt(49 + 31 * 100));
+            }
+        } catch (Exception e) {
+            Assert.fail("Test crashed. Reason: " + e.getMessage());
+        }
+    }
+
     private static Path getEcostressTestProductFilePath() throws URISyntaxException {
-        final URL url = EcostressUtilsTest.class.getResource(ECOSTRESS_TEST_PRODUCT_FILE_NAME);
+        return getEcostressTestProductFilePath(ECOSTRESS_TEST_PRODUCT_FILE_NAME);
+    }
+
+    private static Path getEcostressTestNightProductFilePath() throws URISyntaxException {
+        return getEcostressTestProductFilePath(ECOSTRESS_TEST_NIGHT_PRODUCT_FILE_NAME);
+    }
+
+    private static Path getEcostressTestProductFilePath(String ecostressProductFileName) throws URISyntaxException {
+        final URL url = EcostressUtilsTest.class.getResource(ecostressProductFileName);
         if (url != null) {
             return Paths.get(url.toURI());
         }

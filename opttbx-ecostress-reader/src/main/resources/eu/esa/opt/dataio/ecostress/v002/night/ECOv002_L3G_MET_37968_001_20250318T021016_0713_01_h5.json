@@ -1,0 +1,155 @@
+{
+  "id": "v002/night/ECOv002_L3G_MET_37968_001_20250318T021016_0713_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 9565,
+    "sceneHeight": 7024,
+    "startTime": "18-MAR-2025 02:10:16.467964",
+    "endTime": "18-MAR-2025 02:11:08.437500",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 4125.0,
+          "y": 3775.0,
+          "lat": 42.18041842556373,
+          "lon": -125.27589808657466
+        },
+        {
+          "x": 7101.0,
+          "y": 4557.0,
+          "lat": 41.628922063262664,
+          "lon": -123.19248026976163
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
+    "bands": [
+      {
+        "name": "Data_Fields_RH",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 499,
+            "y": 1251,
+            "value": "NaN"
+          },
+          {
+            "x": 6552,
+            "y": 5974,
+            "value": 0.85659385
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_Ta",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2782,
+            "y": 1804,
+            "value": "NaN"
+          },
+          {
+            "x": 5839,
+            "y": 2565,
+            "value": 3.7269819
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_cloud",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 5261,
+            "y": 5235,
+            "value": 0.0
+          },
+          {
+            "x": 5818,
+            "y": 6521,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_water",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1513,
+            "y": 4678,
+            "value": 0.0
+          },
+          {
+            "x": 4965,
+            "y": 6416,
+            "value": 0.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "ProductMetadata/NumberOfBands",
+        "value": "5"
+      },
+      {
+        "path": "ProductMetadata/NumberOfBands",
+        "value": "5"
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO_L3G_MET"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "v1.12.4"
+      },
+      {
+        "path": "StandardMetadata/FieldOfViewObstruction",
+        "value": "NO"
+      },
+      {
+        "path": "StandardMetadata/AutomaticQualityFlag",
+        "value": "PASS"
+      },
+      {
+        "path": "ProductMetadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "ProductMetadata/QAPercentCloudCover",
+        "value": "24"
+      },
+      {
+        "path": "StandardMetadata/PlatformLongName",
+        "value": "ISS"
+      },
+      {
+        "path": "StandardMetadata/RangeBeginningTime",
+        "value": "02:10:16.467964"
+      }
+    ]
+  }
+}
