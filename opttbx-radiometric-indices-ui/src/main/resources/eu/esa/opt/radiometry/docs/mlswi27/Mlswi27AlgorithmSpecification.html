@@ -1,0 +1,73 @@
+<!--
+  ~ /*
+  ~  * Copyright (C) 2016 CS ROMANIA
+  ~  *
+  ~  * This program is free software; you can redistribute it and/or modify it
+  ~  * under the terms of the GNU General Public License as published by the Free
+  ~  * Software Foundation; either version 3 of the License, or (at your option)
+  ~  * any later version.
+  ~  * This program is distributed in the hope that it will be useful, but WITHOUT
+  ~  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~  * more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License along
+  ~  *  with this program; if not, see http://www.gnu.org/licenses/
+  ~  */
+  -->
+
+<html>
+<head>
+    <title>SNAP MLSWI27 - Algorithm Specification</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+<table class="header">
+    <tr class="header">
+        <td class="header">&nbsp;
+            MLSWI27 Algorithm Specification</td>
+        <td class="header" align="right"><a href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html"><img src="../images/snap_header.jpg" border=0></a></td>
+    </tr>
+</table>
+
+<h3>MLSWI27</h3>
+
+<p>
+    The MLSWI27 operator algorithm computes the <u><b>M</b></u>odified <u><b>L</b></u>and <u><b>S</b></u>urface <u><b>W</b></u>ater <u><b>I</b></u>ndex (MODIS <u><b>B</b></u>ands 2 and 7)  from a given product. <br><br>
+</p>
+
+
+<p>
+    The MLSWI27 results from the following equation:
+</p>
+
+<p>
+    <b>MLSWI27 = (1.0 - N - S2) / (1.0 - N + S2)</b><br><br>
+</p>
+
+<p>
+    , where: <br><br>
+    The bands are: <br><br>
+    - <b>N</b> is the <b>NIR</b> band <br/>- <b>S2</b> is the <b>SWIR 2</b> band <br/>
+    <br><br>
+    
+</p>
+
+<h3>MLSWI27-Flags</h3>
+
+<p>
+    Also the processor computes an additional flags band called 'mlswi27_flags'
+    with the following bit coding:</p>
+<table>
+    <tr><th>Bit Position</th><th>Description</th></tr>
+    <tr><td>Bit 0</td><td>The computed value for MLSWI27 is NAN or is Infinite</td></tr>
+    <tr><td>Bit 1</td><td>The computed value for MLSWI27 is less than -1 (minus one)</td></tr>
+    <tr><td>Bit 2</td><td>The computed value for MLSWI27 is greater than 1 (one)</td></tr>
+</table>
+<p>
+</p>
+<hr>
+</body>
+</html>

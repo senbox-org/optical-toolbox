@@ -1,0 +1,1283 @@
+[
+  {
+    "alias": "AFRI1600",
+    "description": "Aerosol Free Vegetation Index (1600 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-0.66*S1)/(N+0.66*S1)"
+  },
+  {
+    "alias": "AFRI2100",
+    "description": "Aerosol Free Vegetation Index (2100 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-0.5*S2)/(N+0.5*S2)"
+  },
+  {
+    "alias": "ARI",
+    "description": "Anthocyanin Reflectance Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(1.0/G)-(1.0/RE1)"
+  },
+  {
+    "alias": "ARI2",
+    "description": "Anthocyanin Reflectance Index 2",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "N*((1.0/G)-(1.0/RE1))"
+  },
+  {
+    "alias": "ATSAVI",
+    "description": "Adjusted Transformed Soil-Adjusted Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "sla*(N-sla*R-slb)/(sla*N+R-sla*slb+0.08*(1+pow(sla,2.0)))"
+  },
+  {
+    "alias": "AVI",
+    "description": "Advanced Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "pow(N*(1.0-R)*(N-R),1.0/3.0)"
+  },
+  {
+    "alias": "BCC",
+    "description": "Blue Chromatic Coordinate",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "B/(R+G+B)"
+  },
+  {
+    "alias": "BNDVI",
+    "description": "Blue Normalized Difference Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-B)/(N+B)"
+  },
+  {
+    "alias": "BWDRVI",
+    "description": "Blue Wide Dynamic Range Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(alpha*N-B)/(alpha*N+B)"
+  },
+  {
+    "alias": "CCI",
+    "description": "Chlorophyll Carotenoid Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(G1-R)/(G1+R)"
+  },
+  {
+    "alias": "CIG",
+    "description": "Chlorophyll Index Green",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N/G)-1.0"
+  },
+  {
+    "alias": "CIRE",
+    "description": "Chlorophyll Index Red Edge",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N/RE1)-1"
+  },
+  {
+    "alias": "CVI",
+    "description": "Chlorophyll Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N*R)/pow(G,2.0)"
+  },
+  {
+    "alias": "DSI",
+    "description": "Drought Stress Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "S1/N"
+  },
+  {
+    "alias": "DSWI1",
+    "description": "Disease-Water Stress Index 1",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "N/S1"
+  },
+  {
+    "alias": "DSWI2",
+    "description": "Disease-Water Stress Index 2",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "S1/G"
+  },
+  {
+    "alias": "DSWI3",
+    "description": "Disease-Water Stress Index 3",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "S1/R"
+  },
+  {
+    "alias": "DSWI4",
+    "description": "Disease-Water Stress Index 4",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "G/R"
+  },
+  {
+    "alias": "DSWI5",
+    "description": "Disease-Water Stress Index 5",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N+G)/(S1+R)"
+  },
+  {
+    "alias": "DVIplus",
+    "description": "Difference Vegetation Index Plus",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "((lambdaN-lambdaR)/(lambdaN-lambdaG))*G+(1.0-((lambdaN-lambdaR)/(lambdaN-lambdaG)))*N-R"
+  },
+  {
+    "alias": "EBI",
+    "description": "Enhanced Bloom Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(R+G+B)/((G/B)*(R-B+epsilon))"
+  },
+  {
+    "alias": "EVI",
+    "description": "Enhanced Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "g*(N-R)/(N+c1*R-c2*B+l)"
+  },
+  {
+    "alias": "EVI2",
+    "description": "Two-Band Enhanced Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "g*(N-R)/(N+2.4*R+l)"
+  },
+  {
+    "alias": "ExG",
+    "description": "Excess Green Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "2*G-R-B"
+  },
+  {
+    "alias": "ExGR",
+    "description": "ExG - ExR Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(2.0*G-R-B)-(1.3*R-G)"
+  },
+  {
+    "alias": "ExR",
+    "description": "Excess Red Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "1.3*R-G"
+  },
+  {
+    "alias": "FCVI",
+    "description": "Fluorescence Correction Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "N-((R+G+B)/3.0)"
+  },
+  {
+    "alias": "GARI",
+    "description": "Green Atmospherically Resistant Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-(G-(B-R)))/(N-(G+(B-R)))"
+  },
+  {
+    "alias": "GBNDVI",
+    "description": "Green-Blue Normalized Difference Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-(G+B))/(N+(G+B))"
+  },
+  {
+    "alias": "GCC",
+    "description": "Green Chromatic Coordinate",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "G/(R+G+B)"
+  },
+  {
+    "alias": "GDVI",
+    "description": "Generalized Difference Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(pow(N,nexp)-pow(R,nexp))/(pow(N,nexp)+pow(R,nexp))"
+  },
+  {
+    "alias": "GLI",
+    "description": "Green Leaf Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(2.0*G-R-B)/(2.0*G+R+B)"
+  },
+  {
+    "alias": "GM1",
+    "description": "Gitelson and Merzlyak Index 1",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "RE2/G"
+  },
+  {
+    "alias": "GM2",
+    "description": "Gitelson and Merzlyak Index 2",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "RE2/RE1"
+  },
+  {
+    "alias": "GOSAVI",
+    "description": "Green Optimized Soil Adjusted Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-G)/(N+G+0.16)"
+  },
+  {
+    "alias": "GRNDVI",
+    "description": "Green-Red Normalized Difference Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-(G+R))/(N+(G+R))"
+  },
+  {
+    "alias": "GRVI",
+    "description": "Green Ratio Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "N/G"
+  },
+  {
+    "alias": "GSAVI",
+    "description": "Green Soil Adjusted Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(1.0+l)*(N-G)/(N+G+l)"
+  },
+  {
+    "alias": "GVMI",
+    "description": "Global Vegetation Moisture Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "((N+0.1)-(S2+0.02))/((N+0.1)+(S2+0.02))"
+  },
+  {
+    "alias": "IAVI",
+    "description": "New Atmospherically Resistant Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-(R-gamma*(B-R)))/(N+(R-gamma*(B-R)))"
+  },
+  {
+    "alias": "IKAW",
+    "description": "Kawashima Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(R-B)/(R+B)"
+  },
+  {
+    "alias": "MCARI1",
+    "description": "Modified Chlorophyll Absorption in Reflectance Index 1",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "1.2*(2.5*(N-R)-1.3*(N-G))"
+  },
+  {
+    "alias": "MCARI2",
+    "description": "Modified Chlorophyll Absorption in Reflectance Index 2",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(1.5*(2.5*(N-R)-1.3*(N-G)))/pow((pow((2.0*N+1),2)-(6.0*N-5*pow(R,0.5))-0.5),0.5)"
+  },
+  {
+    "alias": "MCARI705",
+    "description": "Modified Chlorophyll Absorption in Reflectance Index (705 and 750 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "((RE2-RE1)-0.2*(RE2-G))*(RE2/RE1)"
+  },
+  {
+    "alias": "MCARIOSAVI",
+    "description": "MCARI/OSAVI Ratio",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(((RE1-R)-0.2*(RE1-G))*(RE1/R))/(1.16*(N-R)/(N+R+0.16))"
+  },
+  {
+    "alias": "MCARIOSAVI705",
+    "description": "MCARI/OSAVI Ratio (705 and 750 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(((RE2-RE1)-0.2*(RE2-G))*(RE2/RE1))/(1.16*(RE2-RE1)/(RE2+RE1+0.16))"
+  },
+  {
+    "alias": "MGRVI",
+    "description": "Modified Green Red Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(pow(G,2.0)-pow(R,2.0))/(pow(G,2.0)+pow(R,2.0))"
+  },
+  {
+    "alias": "MNLI",
+    "description": "Modified Non-Linear Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(1+l)*(pow(N,2)-R)/(pow(N,2)+R+l)"
+  },
+  {
+    "alias": "MRBVI",
+    "description": "Modified Red Blue Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(pow(R,2.0)-pow(B,2.0))/(pow(R,2.0)+pow(B,2.0))"
+  },
+  {
+    "alias": "MSI",
+    "description": "Moisture Stress Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "S1/N"
+  },
+  {
+    "alias": "MSR",
+    "description": "Modified Simple Ratio",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N/R-1)/pow((N/R+1),0.5)"
+  },
+  {
+    "alias": "MSR705",
+    "description": "Modified Simple Ratio (705 and 750 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(RE2/RE1-1)/pow((RE2/RE1+1),0.5)"
+  },
+  {
+    "alias": "MTVI1",
+    "description": "Modified Triangular Vegetation Index 1",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "1.2*(1.2*(N-G)-2.5*(R-G))"
+  },
+  {
+    "alias": "MTVI2",
+    "description": "Modified Triangular Vegetation Index 2",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(1.5*(1.2*(N-G)-2.5*(R-G)))/pow((pow((2.0*N+1),2)-(6.0*N-5*pow(R,0.5))-0.5),0.5)"
+  },
+  {
+    "alias": "ND705",
+    "description": "Normalized Difference (705 and 750 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(RE2-RE1)/(RE2+RE1)"
+  },
+  {
+    "alias": "NDDI",
+    "description": "Normalized Difference Drought Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(((N-R)/(N+R))-((G-N)/(G+N)))/(((N-R)/(N+R))+((G-N)/(G+N)))"
+  },
+  {
+    "alias": "NDGI",
+    "description": "Normalized Difference Greenness Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(((lambdaN-lambdaR)/(lambdaN-lambdaG))*G+(1.0-((lambdaN-lambdaR)/(lambdaN-lambdaG)))*N-R)/(((lambdaN-lambdaR)/(lambdaN-lambdaG))*G+(1.0-((lambdaN-lambdaR)/(lambdaN-lambdaG)))*N+R)"
+  },
+  {
+    "alias": "NDII",
+    "description": "Normalized Difference Infrared Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-S1)/(N+S1)"
+  },
+  {
+    "alias": "NDMI",
+    "description": "Normalized Difference Moisture Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-S1)/(N+S1)"
+  },
+  {
+    "alias": "NDREI",
+    "description": "Normalized Difference Red Edge Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-RE1)/(N+RE1)"
+  },
+  {
+    "alias": "NDVI705",
+    "description": "Normalized Difference Vegetation Index (705 and 750 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(RE2-RE1)/(RE2+RE1)"
+  },
+  {
+    "alias": "NDYI",
+    "description": "Normalized Difference Yellowness Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(G-B)/(G+B)"
+  },
+  {
+    "alias": "NGRDI",
+    "description": "Normalized Green Red Difference Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(G-R)/(G+R)"
+  },
+  {
+    "alias": "NIRv",
+    "description": "Near-Infrared Reflectance of Vegetation",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "((N-R)/(N+R))*N"
+  },
+  {
+    "alias": "NIRvH2",
+    "description": "Hyperspectral Near-Infrared Reflectance of Vegetation",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "N-R-k*(lambdaN-lambdaR)"
+  },
+  {
+    "alias": "NIRvP",
+    "description": "Near-Infrared Reflectance of Vegetation and Incoming PAR",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "((N-R)/(N+R))*N*par"
+  },
+  {
+    "alias": "NLI",
+    "description": "Non-Linear Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "((pow(N,2))-R)/((pow(N,2))+R)"
+  },
+  {
+    "alias": "NMDI",
+    "description": "Normalized Multi-band Drought Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-(S1-S2))/(N+(S1-S2))"
+  },
+  {
+    "alias": "NRFIg",
+    "description": "Normalized Rapeseed Flowering Index Green",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(G-S2)/(G+S2)"
+  },
+  {
+    "alias": "NRFIr",
+    "description": "Normalized Rapeseed Flowering Index Red",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(R-S2)/(R+S2)"
+  },
+  {
+    "alias": "NormG",
+    "description": "Normalized Green",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "G/(N+G+R)"
+  },
+  {
+    "alias": "NormNIR",
+    "description": "Normalized NIR",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "N/(N+G+R)"
+  },
+  {
+    "alias": "NormR",
+    "description": "Normalized Red",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "R/(N+G+R)"
+  },
+  {
+    "alias": "OCVI",
+    "description": "Optimized Chlorophyll Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "pow((N/G)*(R/G),cexp)"
+  },
+  {
+    "alias": "OSAVI",
+    "description": "Optimized Soil-Adjusted Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-R)/(N+R+0.16)"
+  },
+  {
+    "alias": "PSRI",
+    "description": "Plant Senescing Reflectance Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(R-B)/RE2"
+  },
+  {
+    "alias": "RCC",
+    "description": "Red Chromatic Coordinate",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "R/(R+G+B)"
+  },
+  {
+    "alias": "RDVI",
+    "description": "Renormalized Difference Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-R)/pow((N+R),0.5)"
+  },
+  {
+    "alias": "REDSI",
+    "description": "Red-Edge Disease Stress Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "((705.0-665.0)*(RE3-R)-(783.0-665.0)*(RE1-R))/(2.0*R)"
+  },
+  {
+    "alias": "RENDVI",
+    "description": "Red Edge Normalized Difference Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(RE2-RE1)/(RE2+RE1)"
+  },
+  {
+    "alias": "RGBVI",
+    "description": "Red Green Blue Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(pow(G,2.0)-B*R)/(pow(G,2.0)+B*R)"
+  },
+  {
+    "alias": "RGRI",
+    "description": "Red-Green Ratio Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "R/G"
+  },
+  {
+    "alias": "SARVI",
+    "description": "Soil Adjusted and Atmospherically Resistant Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(1+l)*(N-(R-(R-B)))/(N+(R-(R-B))+l)"
+  },
+  {
+    "alias": "SAVI2",
+    "description": "Soil-Adjusted Vegetation Index 2",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "N/(R+(slb/sla))"
+  },
+  {
+    "alias": "SEVI",
+    "description": "Shadow-Eliminated Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N/R)+fdelta*(1.0/R)"
+  },
+  {
+    "alias": "SI",
+    "description": "Shadow Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "pow(((1.0-B)*(1.0-G)*(1.0-R)),(1.0/3.0))"
+  },
+  {
+    "alias": "SIPI",
+    "description": "Structure Insensitive Pigment Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(N-A)/(N-R)"
+  },
+  {
+    "alias": "SLAVI",
+    "description": "Specific Leaf Area Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "N/(R+S2)"
+  },
+  {
+    "alias": "SR2",
+    "description": "Simple Ratio (800 and 550 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "N/G"
+  },
+  {
+    "alias": "SR3",
+    "description": "Simple Ratio (860, 550 and 708 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "pow(N,2)/(G*RE1)"
+  },
+  {
+    "alias": "SR555",
+    "description": "Simple Ratio (555 and 750 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "RE2/G"
+  },
+  {
+    "alias": "SR705",
+    "description": "Simple Ratio (705 and 750 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "RE2/RE1"
+  },
+  {
+    "alias": "SeLI",
+    "description": "Sentinel-2 LAI Green Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(pow(N,2)-RE1)/(pow(N,2)+RE1)"
+  },
+  {
+    "alias": "TCARI",
+    "description": "Transformed Chlorophyll Absorption in Reflectance Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "3*((RE1-R)-0.2*(RE1-G)*(RE1/R))"
+  },
+  {
+    "alias": "TCARIOSAVI",
+    "description": "TCARI/OSAVI Ratio",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(3*((RE1-R)-0.2*(RE1-G)*(RE1/R)))/(1.16*(N-R)/(N+R+0.16))"
+  },
+  {
+    "alias": "TCARIOSAVI705",
+    "description": "TCARI/OSAVI Ratio (705 and 750 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(3*((RE2-RE1)-0.2*(RE2-G)*(RE2/RE1)))/(1.16*(RE2-RE1)/(RE2+RE1+0.16))"
+  },
+  {
+    "alias": "TCI",
+    "description": "Triangular Chlorophyll Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "1.2*(RE1-G)-1.5*(R-G)*pow((RE1/R),0.5)"
+  },
+  {
+    "alias": "TDVI",
+    "description": "Transformed Difference Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "1.5*((N-R)/pow((pow(N,2.0)+R+0.5),0.5))"
+  },
+  {
+    "alias": "TGI",
+    "description": "Triangular Greenness Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "-0.5*(190*(R-G)-120*(R-B))"
+  },
+  {
+    "alias": "TRRVI",
+    "description": "Transformed Red Range Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "((RE2-R)/(RE2+R))/(((N-R)/(N+R))+1.0)"
+  },
+  {
+    "alias": "TTVI",
+    "description": "Transformed Triangular Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "0.5*((865.0-740.0)*(RE3-RE2)-(pow(N,2)-RE2)*(783.0-740))"
+  },
+  {
+    "alias": "TVI",
+    "description": "Transformed Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "pow((((N-R)/(N+R))+0.5),0.5)"
+  },
+  {
+    "alias": "TriVI",
+    "description": "Triangular Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "0.5*(120*(N-G)-200*(R-G))"
+  },
+  {
+    "alias": "VARI",
+    "description": "Visible Atmospherically Resistant Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(G-R)/(G+R-B)"
+  },
+  {
+    "alias": "VARI700",
+    "description": "Visible Atmospherically Resistant Index (700 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(RE1-1.7*R+0.7*B)/(RE1+1.3*R-1.3*B)"
+  },
+  {
+    "alias": "VI700",
+    "description": "Vegetation Index (700 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(RE1-R)/(RE1+R)"
+  },
+  {
+    "alias": "VIG",
+    "description": "Vegetation Index Green",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(G-R)/(G+R)"
+  },
+  {
+    "alias": "WDRVI",
+    "description": "Wide Dynamic Range Vegetation Index",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(alpha*N-R)/(alpha*N+R)"
+  },
+  {
+    "alias": "MmND705",
+    "description": "Modified Normalized Difference (705, 750 and 445 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(RE2-RE1)/(RE2+RE1-A)"
+  },
+  {
+    "alias": "MmSR705",
+    "description": "Modified Simple Ratio (705 and 445 nm)",
+    "category": "Optical/Thematic Land Processing/Vegetation Spectral Indices",
+    "domain": "vegetation",
+    "equation": "(RE2-A)/(RE2+A)"
+  },
+  {
+    "alias": "BAI",
+    "description": "Burned Area Index",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "1.0/(pow((0.1-R),2.0)+pow((0.06-N),2.0))"
+  },
+  {
+    "alias": "BAIM",
+    "description": "Burned Area Index adapted to MODIS",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "1.0/pow((0.05-N),2.0)+pow((0.2-S2),2.0)"
+  },
+  {
+    "alias": "BAIS2",
+    "description": "Burned Area Index for Sentinel 2",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(1.0-pow(((RE2*RE3*N2)/R),0.5)*pow((S2-N2)/(S2+N2),0.5)+1.0)"
+  },
+  {
+    "alias": "CSI",
+    "description": "Char Soil Index",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "N/S2"
+  },
+  {
+    "alias": "CSIT",
+    "description": "Char Soil Index Thermal",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "N/(S2*T/10000.0)"
+  },
+  {
+    "alias": "MIRBI",
+    "description": "Mid-Infrared Burn Index",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "10.0*S2-9.8*S1+2.0"
+  },
+  {
+    "alias": "NBR",
+    "description": "Normalized Burn Ratio",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(N-S2)/(N+S2)"
+  },
+  {
+    "alias": "NBR2",
+    "description": "Normalized Burn Ratio 2",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(S1-S2)/(S1+S2)"
+  },
+  {
+    "alias": "NBRSWIR",
+    "description": "Normalized Burn Ratio SWIR",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(S2-S1-0.02)/(S2+S1+0.1)"
+  },
+  {
+    "alias": "NBRT1",
+    "description": "Normalized Burn Ratio Thermal 1",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(N-(S2*T/10000.0))/(N+(S2*T/10000.0))"
+  },
+  {
+    "alias": "NBRT2",
+    "description": "Normalized Burn Ratio Thermal 2",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "((N/(T/10000.0))-S2)/((N/(T/10000.0))+S2)"
+  },
+  {
+    "alias": "NBRT3",
+    "description": "Normalized Burn Ratio Thermal 3",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "((N-(T/10000.0))-S2)/((N-(T/10000.0))+S2)"
+  },
+  {
+    "alias": "NBRplus",
+    "description": "Normalized Burn Ratio Plus",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(S2-N2-G-B)/(S2+N2+G+B)"
+  },
+  {
+    "alias": "NDSWIR",
+    "description": "Normalized Difference SWIR",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(N-S1)/(N+S1)"
+  },
+  {
+    "alias": "NDVIT",
+    "description": "Normalized Difference Vegetation Index Thermal",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(N-(R*T/10000.0))/(N+(R*T/10000.0))"
+  },
+  {
+    "alias": "NSTv1",
+    "description": "NIR-SWIR-Temperature Version 1",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "((N-S2)/(N+S2))*T"
+  },
+  {
+    "alias": "NSTv2",
+    "description": "NIR-SWIR-Temperature Version 2",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(N-(S2+T))/(N+(S2+T))"
+  },
+  {
+    "alias": "SAVIT",
+    "description": "Soil-Adjusted Vegetation Index Thermal",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(1.0+l)*(N-(R*T/10000.0))/(N+(R*T/10000.0)+l)"
+  },
+  {
+    "alias": "VI6T",
+    "description": "VI6T Index",
+    "category": "Optical/Thematic Land Processing/Burn Spectral Indices",
+    "domain": "burn",
+    "equation": "(N-T/10000.0)/(N+T/10000.0)"
+  },
+  {
+    "alias": "AWEInsh",
+    "description": "Automated Water Extraction Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "4.0*(G-S1)-0.25*N+2.75*S2"
+  },
+  {
+    "alias": "AWEIsh",
+    "description": "Automated Water Extraction Index with Shadows Elimination",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "B+2.5*G-1.5*(N+S1)-0.25*S2"
+  },
+  {
+    "alias": "LSWI",
+    "description": "Land Surface Water Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(N-S1)/(N+S1)"
+  },
+  {
+    "alias": "MBWI",
+    "description": "Multi-Band Water Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(omega*G)-R-N-S1-S2"
+  },
+  {
+    "alias": "MLSWI26",
+    "description": "Modified Land Surface Water Index (MODIS Bands 2 and 6)",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(1.0-N-S1)/(1.0-N+S1)"
+  },
+  {
+    "alias": "MLSWI27",
+    "description": "Modified Land Surface Water Index (MODIS Bands 2 and 7)",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(1.0-N-S2)/(1.0-N+S2)"
+  },
+  {
+    "alias": "MuWIR",
+    "description": "Revised Multi-Spectral Water Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "-4.0*((B-G)/(B+G))+2.0*((G-N)/(G+N))+2.0*((G-S2)/(G+S2))-((G-S1)/(G+S1))"
+  },
+  {
+    "alias": "NDCI",
+    "description": "Normalized Difference Chlorophyll Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(RE1-R)/(RE1+R)"
+  },
+  {
+    "alias": "NDPonI",
+    "description": "Normalized Difference Pond Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(S1-G)/(S1+G)"
+  },
+  {
+    "alias": "NDVIMNDWI",
+    "description": "NDVI-MNDWI Model",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "((N-R)/(N+R))-((G-S1)/(G+S1))"
+  },
+  {
+    "alias": "NDWIns",
+    "description": "Normalized Difference Water Index with no Snow Cover and Glaciers",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(G-alpha*N)/(G+N)"
+  },
+  {
+    "alias": "NWI",
+    "description": "New Water Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(B-(N+S1+S2))/(B+(N+S1+S2))"
+  },
+  {
+    "alias": "S2WI",
+    "description": "Sentinel-2 Water Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(RE1-S2)/(RE1+S2)"
+  },
+  {
+    "alias": "SWM",
+    "description": "Sentinel Water Mask",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(B+G)/(N+S1)"
+  },
+  {
+    "alias": "TWI",
+    "description": "Triangle Water Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(2.84*(RE1-RE2)/(G+S2))+((1.25*(G-B)-(N-B))/(N+1.25*G-0.25*B))"
+  },
+  {
+    "alias": "WI1",
+    "description": "Water Index 1",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(G-S2)/(G+S2)"
+  },
+  {
+    "alias": "WI2",
+    "description": "Water Index 2",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(B-S2)/(B+S2)"
+  },
+  {
+    "alias": "WI2015",
+    "description": "Water Index 2015",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "1.7204+171*G+3*R-70*N-45*S1-71*S2"
+  },
+  {
+    "alias": "WRI",
+    "description": "Water Ratio Index",
+    "category": "Optical/Thematic Water Processing/Water Spectral Indices",
+    "domain": "water",
+    "equation": "(G+R)/(N+S1)"
+  },
+  {
+    "alias": "BITM",
+    "description": "Landsat TM-based Brightness Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "pow(((pow(B,2.0)+pow(G,2.0)+pow(R,2.0))/3.0),0.5)"
+  },
+  {
+    "alias": "BIXS",
+    "description": "SPOT HRV XS-based Brightness Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "pow(((pow(G,2.0)+pow(R,2.0))/2.0),0.5)"
+  },
+  {
+    "alias": "BaIn",
+    "description": "Bareness Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "R+S1-N"
+  },
+  {
+    "alias": "DBSI",
+    "description": "Dry Bareness Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "((S1-G)/(S1+G))-((N-R)/(N+R))"
+  },
+  {
+    "alias": "EMBI",
+    "description": "Enhanced Modified Bare Soil Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "((((S1-S2-N)/(S1+S2+N))+0.5)-((G-S1)/(G+S1))-0.5)/((((S1-S2-N)/(S1+S2+N))+0.5)+((G-S1)/(G+S1))+1.5)"
+  },
+  {
+    "alias": "MBI",
+    "description": "Modified Bare Soil Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "((S1-S2-N)/(S1+S2+N))+0.5"
+  },
+  {
+    "alias": "NBLI",
+    "description": "Normalized Difference Bare Land Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "(R-T)/(R+T)"
+  },
+  {
+    "alias": "NBLIOLI",
+    "description": "Normalized Difference Bare Land Index for Landsat-OLI",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "(R-T1)/(R+T1)"
+  },
+  {
+    "alias": "NDBaI",
+    "description": "Normalized Difference Bareness Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "(S1-T)/(S1+T)"
+  },
+  {
+    "alias": "NDSIWV",
+    "description": "WorldView Normalized Difference Soil Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "(G-Y)/(G+Y)"
+  },
+  {
+    "alias": "NDSoiI",
+    "description": "Normalized Difference Soil Index",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "(S2-G)/(S2+G)"
+  },
+  {
+    "alias": "NSDS",
+    "description": "Normalized Shortwave Infrared Difference Soil-Moisture",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "(S1-S2)/(S1+S2)"
+  },
+  {
+    "alias": "NSDSI1",
+    "description": "Normalized Shortwave-Infrared Difference Bare Soil Moisture Index 1",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "(S1-S2)/S1"
+  },
+  {
+    "alias": "NSDSI2",
+    "description": "Normalized Shortwave-Infrared Difference Bare Soil Moisture Index 2",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "(S1-S2)/S2"
+  },
+  {
+    "alias": "NSDSI3",
+    "description": "Normalized Shortwave-Infrared Difference Bare Soil Moisture Index 3",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "(S1-S2)/(S1+S2)"
+  },
+  {
+    "alias": "RI4XS",
+    "description": "SPOT HRV XS-based Redness Index 4",
+    "category": "Optical/Thematic Land Processing/Soil Spectral Indices",
+    "domain": "soil",
+    "equation": "pow(R,2.0)/pow(G,4.0)"
+  },
+  {
+    "alias": "BLFEI",
+    "description": "Built-Up Land Features Extraction Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(((G+R+S2)/3.0)-S1)/(((G+R+S2)/3.0)+S1)"
+  },
+  {
+    "alias": "BRBA",
+    "description": "Band Ratio for Built-up Area",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "R/S1"
+  },
+  {
+    "alias": "DBI",
+    "description": "Dry Built-Up Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "((B-T1)/(B+T1))-((N-R)/(N+R))"
+  },
+  {
+    "alias": "EBBI",
+    "description": "Enhanced Built-Up and Bareness Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(S1-N)/(10.0*pow((S1+T),0.5))"
+  },
+  {
+    "alias": "IBI",
+    "description": "Index-Based Built-Up Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(((S1-N)/(S1+N))-(((N-R)*(1.0+l)/(N+R+l))+((G-S1)/(G+S1)))/2.0)/(((S1-N)/(S1+N))+(((N-R)*(1.0+l)/(N+R+l))+((G-S1)/(G+S1)))/2.0)"
+  },
+  {
+    "alias": "NBAI",
+    "description": "Normalized Built-up Area Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "((S2-S1)/G)/((S2+S1)/G)"
+  },
+  {
+    "alias": "NBUI",
+    "description": "New Built-Up Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "((S1-N)/(10.0*pow((T+S1),0.5)))-(((N-R)*(1.0+l))/(N-R+l))-(G-S1)/(G+S1)"
+  },
+  {
+    "alias": "NDBI",
+    "description": "Normalized Difference Built-Up Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(S1-N)/(S1+N)"
+  },
+  {
+    "alias": "NDISIb",
+    "description": "Normalized Difference Impervious Surface Index Blue",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(T-(B+N+S1)/3.0)/(T+(B+N+S1)/3.0)"
+  },
+  {
+    "alias": "NDISIg",
+    "description": "Normalized Difference Impervious Surface Index Green",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(T-(G+N+S1)/3.0)/(T+(G+N+S1)/3.0)"
+  },
+  {
+    "alias": "NDISImndwi",
+    "description": "Normalized Difference Impervious Surface Index with MNDWI",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(T-(((G-S1)/(G+S1))+N+S1)/3.0)/(T+(((G-S1)/(G+S1))+N+S1)/3.0)"
+  },
+  {
+    "alias": "NDISIndwi",
+    "description": "Normalized Difference Impervious Surface Index with NDWI",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(T-(((G-N)/(G+N))+N+S1)/3.0)/(T+(((G-N)/(G+N))+N+S1)/3.0)"
+  },
+  {
+    "alias": "NDISIr",
+    "description": "Normalized Difference Impervious Surface Index Red",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(T-(R+N+S1)/3.0)/(T+(R+N+S1)/3.0)"
+  },
+  {
+    "alias": "NHFD",
+    "description": "Non-Homogeneous Feature Difference",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(RE1-A)/(RE1+A)"
+  },
+  {
+    "alias": "PISI",
+    "description": "Perpendicular Impervious Surface Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "0.8192*B-0.5735*N+0.0750"
+  },
+  {
+    "alias": "UI",
+    "description": "Urban Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(S2-N)/(S2+N)"
+  },
+  {
+    "alias": "VIBI",
+    "description": "Vegetation Index Built-up Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "((N-R)/(N+R))/(((N-R)/(N+R))+((S1-N)/(S1+N)))"
+  },
+  {
+    "alias": "VgNIRBI",
+    "description": "Visible Green-Based Built-Up Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(G-N)/(G+N)"
+  },
+  {
+    "alias": "VrNIRBI",
+    "description": "Visible Red-Based Built-Up Index",
+    "category": "Optical/Thematic Land Processing/Urban Spectral Indices",
+    "domain": "urban",
+    "equation": "(R-N)/(R+N)"
+  }
+]
