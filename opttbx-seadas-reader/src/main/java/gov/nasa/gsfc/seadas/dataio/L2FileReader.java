@@ -51,24 +51,25 @@ public class L2FileReader extends SeadasFileReader {
 
         int sceneHeight = 0;
         int sceneWidth = 0;
+        int[] shape;
 
-        List<Dimension> dims = ncFile.getDimensions();
-        for (Dimension d : dims) {
-            if (("number_of_lines".equalsIgnoreCase(d.getShortName()))
-                    || ("Number_of_Scan_Lines".equalsIgnoreCase(d.getShortName()))) {
-                sceneHeight = d.getLength();
-            }
-            if (("pixels_per_line".equalsIgnoreCase(d.getShortName()))
-                    || ("Pixels_per_Scan_Line".equalsIgnoreCase(d.getShortName()))) {
-                sceneWidth = d.getLength();
-            }
-        }
-        if (sceneWidth == 0) {
-            sceneWidth = getIntAttribute("Pixels_per_Scan_Line");
-        }
-        if (sceneHeight == 0) {
-            sceneHeight = getIntAttribute("Number_of_Scan_Lines");
-        }
+//        List<Dimension> dims = ncFile.getDimensions();
+//        for (Dimension d : dims) {
+//            if (("number_of_lines".equalsIgnoreCase(d.getShortName()))
+//                    || ("Number_of_Scan_Lines".equalsIgnoreCase(d.getShortName()))) {
+//                sceneHeight = d.getLength();
+//            }
+//            if (("pixels_per_line".equalsIgnoreCase(d.getShortName()))
+//                    || ("Pixels_per_Scan_Line".equalsIgnoreCase(d.getShortName()))) {
+//                sceneWidth = d.getLength();
+//            }
+//        }
+//        if (sceneWidth == 0) {
+//            sceneWidth = getIntAttribute("Pixels_per_Scan_Line");
+//        }
+//        if (sceneHeight == 0) {
+//            sceneHeight = getIntAttribute("Number_of_Scan_Lines");
+//        }
         try {
             String navGroup = "Navigation_Data";
             final String latitude = "latitude";
@@ -93,6 +94,14 @@ public class L2FileReader extends SeadasFileReader {
                 }
             }
             final Variable variable = ncFile.findVariable(navGroup + "/" + latitude);
+            try {
+                shape = variable.getShape();
+                sceneWidth = shape[1];
+                sceneHeight = shape[0];
+            } catch (Exception e) {
+                throw new ProductIOException(e.getMessage(), e);
+            }
+
             if (!keepBadNavLines) {
                 invalidateLines(LAT_SKIP_BAD_NAV, variable);
             }
