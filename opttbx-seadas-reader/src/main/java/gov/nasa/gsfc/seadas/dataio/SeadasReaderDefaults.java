@@ -49,15 +49,9 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_SEADAS_READER_ROOT_KEY = "opt.toolbox.seadas.reader";
 
 
-    // Band Grouping Preferences
-
+    // Level-2 Masks Preferences Root Prefix
     public static final String PROPERTY_LEVEL_MASKS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".level2_masks";
-
-
-    // Flip Preferences
-
-    public static final String PROPERTY_FLIP_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".flip";
-
+    
 
 
     // ATMFAIL
@@ -1231,17 +1225,17 @@ public class SeadasReaderDefaults {
 
     // Property Setting: Restore Defaults
 
-    private static final String PROPERTY_RESTORE_KEY_SUFFIX = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".restore.defaults";
-
-    public static final String PROPERTY_RESTORE_SECTION_KEY = PROPERTY_RESTORE_KEY_SUFFIX + ".section";
-    public static final String PROPERTY_RESTORE_SECTION_LABEL = "Restore";
-    public static final String PROPERTY_RESTORE_SECTION_TOOLTIP = "Restores preferences to the package defaults";
-
-    public static final String PROPERTY_RESTORE_DEFAULTS_KEY = PROPERTY_RESTORE_KEY_SUFFIX + ".apply";
-    public static final String PROPERTY_RESTORE_DEFAULTS_LABEL = "Default (SeaDAS Reader Level-2 Masks Preferences)";
-    public static final String PROPERTY_RESTORE_DEFAULTS_TOOLTIP = "Restore all color bar legend preferences to the original default";
-    public static final boolean PROPERTY_RESTORE_DEFAULTS_DEFAULT = false;
-
+//    private static final String PROPERTY_RESTORE_KEY_SUFFIX = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".restore.defaults";
+//
+//    public static final String PROPERTY_RESTORE_SECTION_KEY = PROPERTY_RESTORE_KEY_SUFFIX + ".section";
+//    public static final String PROPERTY_RESTORE_SECTION_LABEL = "Restore";
+//    public static final String PROPERTY_RESTORE_SECTION_TOOLTIP = "Restores preferences to the package defaults";
+//
+//    public static final String PROPERTY_RESTORE_DEFAULTS_KEY = PROPERTY_RESTORE_KEY_SUFFIX + ".apply";
+//    public static final String PROPERTY_RESTORE_DEFAULTS_LABEL = "Default (SeaDAS Reader Level-2 Masks Preferences)";
+//    public static final String PROPERTY_RESTORE_DEFAULTS_TOOLTIP = "Restore all color bar legend preferences to the original default";
+//    public static final boolean PROPERTY_RESTORE_DEFAULTS_DEFAULT = false;
+//
 
 
 

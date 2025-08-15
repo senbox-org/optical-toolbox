@@ -65,7 +65,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
 
     // Property Setting: Restore Defaults
 
-    private static final String PROPERTY_RESTORE_KEY_SUFFIX = SeadasReaderDefaults.PROPERTY_SEADAS_READER_ROOT_KEY + ".restore.defaults";
+    private static final String PROPERTY_RESTORE_KEY_SUFFIX = SeadasReaderDefaults.PROPERTY_LEVEL_MASKS_ROOT_KEY + ".restore.defaults";
 
     public static final String PROPERTY_RESTORE_SECTION_KEY = PROPERTY_RESTORE_KEY_SUFFIX + ".section";
     public static final String PROPERTY_RESTORE_SECTION_LABEL = "Restore";
