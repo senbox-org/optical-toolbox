@@ -26,7 +26,6 @@ import com.bc.ceres.swing.binding.PropertyEditorRegistry;
 import com.bc.ceres.swing.binding.PropertyPane;
 import org.esa.snap.rcp.preferences.DefaultConfigController;
 import org.esa.snap.rcp.preferences.Preference;
-import org.netbeans.spi.options.OptionsPanelController;
 import org.openide.util.HelpCtx;
 
 import javax.swing.*;
@@ -39,15 +38,15 @@ import java.awt.*;
  */
 
 
-@OptionsPanelController.SubRegistration(location = "OPTTBX",
-        displayName = "#Options_DisplayName_BandProperties",
-        keywords = "#Options_Keywords_BandProperties",
-        keywordsCategory = "Processors",
-        id = "SeaDAS-BandProperties")
-@org.openide.util.NbBundle.Messages({
-        "Options_DisplayName_BandProperties=Band Properties",
-        "Options_Keywords_BandProperties=valid pixel expression"
-})
+//@OptionsPanelController.SubRegistration(location = "OPTTBX",
+//        displayName = "#Options_DisplayName_BandProperties",
+//        keywords = "#Options_Keywords_BandProperties",
+//        keywordsCategory = "Processors",
+//        id = "SeaDAS-BandProperties")
+//@org.openide.util.NbBundle.Messages({
+//        "Options_DisplayName_BandProperties=Band Properties",
+//        "Options_Keywords_BandProperties=valid pixel expression"
+//})
 public final class SeadasReaderBandPropertiesController extends DefaultConfigController {
 
     Property restoreDefaults;
@@ -63,7 +62,7 @@ public final class SeadasReaderBandPropertiesController extends DefaultConfigCon
 
     // Property Setting: Restore Defaults
 
-    private static final String PROPERTY_RESTORE_KEY_SUFFIX = SeadasReaderDefaults.PROPERTY_BAND_PROPERTIES_ROOT_KEY + ".restore.defaults";
+    private static final String PROPERTY_RESTORE_KEY_SUFFIX = SeadasReaderDefaults.PROPERTY_COMMON_ROOT_KEY + ".restore.defaults";
 
     public static final String PROPERTY_RESTORE_SECTION_KEY = PROPERTY_RESTORE_KEY_SUFFIX + ".section";
     public static final String PROPERTY_RESTORE_SECTION_LABEL = "Restore";
@@ -80,9 +79,9 @@ public final class SeadasReaderBandPropertiesController extends DefaultConfigCon
     protected JPanel createPanel(BindingContext context) {
 
 
-        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SECTION_KEY, true);
-        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_DEFAULT);
-        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
+//        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SECTION_KEY, true);
+//        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_DEFAULT);
+//        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
 
 
         initPropertyDefaults(context, PROPERTY_RESTORE_SECTION_KEY, true);
@@ -127,7 +126,7 @@ public final class SeadasReaderBandPropertiesController extends DefaultConfigCon
     protected void configure(BindingContext context) {
 
 
-        context.bindEnabledState(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_KEY).apply();
+//        context.bindEnabledState(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_KEY).apply();
 
 
         // Handle resetDefaults events - set all other components to defaults
@@ -282,26 +281,26 @@ public final class SeadasReaderBandPropertiesController extends DefaultConfigCon
     static class SeadasToolboxBean {
 
 
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SECTION_KEY,
-                label = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SECTION_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SECTION_TOOLTIP)
-        boolean validPixelSection = true;
-
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_KEY,
-                label = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_TOOLTIP)
-        boolean validPixelRoundDefault = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_DEFAULT;
-
-
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY,
-                label = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_TOOLTIP,
-                interval = "[3,32]")
-        int propertyValidPixelSigFigsDefault = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT;
-
+//
+//        @Preference(key = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SECTION_KEY,
+//                label = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SECTION_LABEL,
+//                description = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SECTION_TOOLTIP)
+//        boolean validPixelSection = true;
+//
+//
+//        @Preference(key = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_KEY,
+//                label = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_LABEL,
+//                description = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_TOOLTIP)
+//        boolean validPixelRoundDefault = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_DEFAULT;
+//
+//
+//
+//        @Preference(key = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY,
+//                label = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_LABEL,
+//                description = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_TOOLTIP,
+//                interval = "[3,32]")
+//        int propertyValidPixelSigFigsDefault = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT;
+//
 
 
 

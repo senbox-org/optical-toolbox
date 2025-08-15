@@ -45,7 +45,7 @@ import java.awt.*;
         keywordsCategory = "Processors",
         id = "SeaDAS-L2-Flag-Masks")
 @org.openide.util.NbBundle.Messages({
-        "Options_DisplayName_SeadasL2Reader=SeaDAS L2 Flag-Masks",
+        "Options_DisplayName_SeadasL2Reader=SeaDAS Level-2 Masks",
         "Options_Keywords_SeadasL2Reader=seadas, ocssw, l2gen"
 })
 public final class SeadasReaderController extends DefaultConfigController {
