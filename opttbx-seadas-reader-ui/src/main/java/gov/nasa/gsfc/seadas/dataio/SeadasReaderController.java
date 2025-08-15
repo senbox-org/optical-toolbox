@@ -511,7 +511,7 @@ public final class SeadasReaderController extends DefaultConfigController {
 
     @Override
     public HelpCtx getHelpCtx() {
-        return new HelpCtx("seadasToolboxPreferences");
+        return new HelpCtx("preferencesSeaDASLevel2Masks");
     }
 
     @SuppressWarnings("UnusedDeclaration")

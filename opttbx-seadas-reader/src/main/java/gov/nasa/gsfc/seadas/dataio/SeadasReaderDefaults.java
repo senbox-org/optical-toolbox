@@ -51,7 +51,7 @@ public class SeadasReaderDefaults {
 
     // Level-2 Masks Preferences Root Prefix
     public static final String PROPERTY_LEVEL_MASKS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".level2_masks";
-    
+
 
 
     // ATMFAIL

@@ -360,7 +360,7 @@ public final class SeadasReaderMainController extends DefaultConfigController {
 
     @Override
     public HelpCtx getHelpCtx() {
-        return new HelpCtx("seadasToolboxPreferences");
+        return new HelpCtx("preferencesSeaDASReaders");
     }
 
     @SuppressWarnings("UnusedDeclaration")
