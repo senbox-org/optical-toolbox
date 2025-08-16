@@ -1046,12 +1046,12 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_DEFAULT = "Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:vgain:BT:tg_sol:tg_sen";
 
     public static final String PROPERTY_FLIPX_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".flipx";
-    public static final String PROPERTY_FLIPX_L3_MAPPED_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L3_MAPPED_LABEL = "Flip-X (Horizontal)";
     public static final String PROPERTY_FLIPX_L3_MAPPED_TOOLTIP = "Flip image horizontally";
     public static final String PROPERTY_FLIPX_L3_MAPPED_DEFAULT = FlIP_NO_L3;
 
     public static final String PROPERTY_FLIPY_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".flipy";
-    public static final String PROPERTY_FLIPY_L3_MAPPED_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L3_MAPPED_LABEL = "Flip-Y (Vertical)";
     public static final String PROPERTY_FLIPY_L3_MAPPED_TOOLTIP = "Flip image vertically";
     public static final String PROPERTY_FLIPY_L3_MAPPED_DEFAULT = FlIP_NO_L3;
 
@@ -1081,12 +1081,12 @@ public class SeadasReaderDefaults {
     public static final boolean PROPERTY_BAND_GROUPING_RESET_DEFAULT = true;
 
     public static final String PROPERTY_FLIPX_LEVEL2_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".flipx";
-    public static final String PROPERTY_FLIPX_LEVEL2_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_LEVEL2_LABEL = "Flip-X (Horizontal)";
     public static final String PROPERTY_FLIPX_LEVEL2_TOOLTIP = "Flip image horizontally";
     public static final String PROPERTY_FLIPX_LEVEL2_DEFAULT = FlIP_MISSION_DEFAULT;
 
     public static final String PROPERTY_FLIPY_LEVEL2_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".flipy";
-    public static final String PROPERTY_FLIPY_LEVEL2_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_LEVEL2_LABEL = "Flip-Y (Vertical)";
     public static final String PROPERTY_FLIPY_LEVEL2_TOOLTIP = "Flip image vertically";
     public static final String PROPERTY_FLIPY_LEVEL2_DEFAULT = FlIP_MISSION_DEFAULT;
 
@@ -1106,12 +1106,12 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_L1B_PACE_DEFAULT = "rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR";
 
     public static final String PROPERTY_FLIPX_L1B_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1B_PACE_ROOT_KEY + ".flipx";
-    public static final String PROPERTY_FLIPX_L1B_PACE_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1B_PACE_LABEL = "Flip-X (Horizontal)";
     public static final String PROPERTY_FLIPX_L1B_PACE_TOOLTIP = "Flip image horizontally";
     public static final String PROPERTY_FLIPX_L1B_PACE_DEFAULT = FlIP_MISSION_DEFAULT;
 
     public static final String PROPERTY_FLIPY_L1B_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1B_PACE_ROOT_KEY + ".flipy";
-    public static final String PROPERTY_FLIPY_L1B_PACE_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1B_PACE_LABEL = "Flip-Y (Vertical)";
     public static final String PROPERTY_FLIPY_L1B_PACE_TOOLTIP = "Flip image vertically";
     public static final String PROPERTY_FLIPY_L1B_PACE_DEFAULT = FlIP_MISSION_DEFAULT;
 
@@ -1132,12 +1132,12 @@ public class SeadasReaderDefaults {
             "sensor_zenith:sensor_azimuth:solar_azimuth:solar_zenith:scattering_angle:view_time_offsets:number_of_observations";
 
     public static final String PROPERTY_FLIPX_L1C_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".flipx";
-    public static final String PROPERTY_FLIPX_L1C_PACE_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1C_PACE_LABEL = "Flip-X (Horizontal)";
     public static final String PROPERTY_FLIPX_L1C_PACE_TOOLTIP = "Flip image horizontally";
     public static final String PROPERTY_FLIPX_L1C_PACE_DEFAULT = FlIP_MISSION_DEFAULT;
 
     public static final String PROPERTY_FLIPY_L1C_PACE_KEY = PROPERTY_FILE_PROPERTIES_L1C_PACE_ROOT_KEY + ".flipy";
-    public static final String PROPERTY_FLIPY_L1C_PACE_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1C_PACE_LABEL = "Flip-Y (Vertical)";
     public static final String PROPERTY_FLIPY_L1C_PACE_TOOLTIP = "Flip image vertically";
     public static final String PROPERTY_FLIPY_L1C_PACE_DEFAULT = FlIP_MISSION_DEFAULT;
 
@@ -1185,12 +1185,12 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_L1B_MODIS_DEFAULT = "RefSB:Emissive";
 
     public static final String PROPERTY_FLIPX_L1B_MODIS_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".flipx";
-    public static final String PROPERTY_FLIPX_L1B_MODIS_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1B_MODIS_LABEL = "Flip-X (Horizontal)";
     public static final String PROPERTY_FLIPX_L1B_MODIS_TOOLTIP = "Flip image horizontally";
     public static final String PROPERTY_FLIPX_L1B_MODIS_DEFAULT = FlIP_MISSION_DEFAULT;
 
     public static final String PROPERTY_FLIPY_L1B_MODIS_KEY = PROPERTY_FILE_PROPERTIES_L1B_MODIS_ROOT_KEY + ".flipy";
-    public static final String PROPERTY_FLIPY_L1B_MODIS_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1B_MODIS_LABEL = "Flip-Y (Vertical)";
     public static final String PROPERTY_FLIPY_L1B_MODIS_TOOLTIP = "Flip image vertically";
     public static final String PROPERTY_FLIPY_L1B_MODIS_DEFAULT = FlIP_MISSION_DEFAULT;
 
@@ -1210,12 +1210,12 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_L1B_VIIRS_DEFAULT = "RefSB:Emissive";
 
     public static final String PROPERTY_FLIPX_L1B_VIIRS_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".flipx";
-    public static final String PROPERTY_FLIPX_L1B_VIIRS_LABEL = "Flip Horizontal";
+    public static final String PROPERTY_FLIPX_L1B_VIIRS_LABEL = "Flip-X (Horizontal)";
     public static final String PROPERTY_FLIPX_L1B_VIIRS_TOOLTIP = "Flip image horizontally";
     public static final String PROPERTY_FLIPX_L1B_VIIRS_DEFAULT = FlIP_MISSION_DEFAULT;
 
     public static final String PROPERTY_FLIPY_L1B_VIIRS_KEY = PROPERTY_FILE_PROPERTIES_L1B_VIIRS_ROOT_KEY + ".flipy";
-    public static final String PROPERTY_FLIPY_L1B_VIIRS_LABEL = "Flip Vertical";
+    public static final String PROPERTY_FLIPY_L1B_VIIRS_LABEL = "Flip-Y (Vertical)";
     public static final String PROPERTY_FLIPY_L1B_VIIRS_TOOLTIP = "Flip image vertically";
     public static final String PROPERTY_FLIPY_L1B_VIIRS_DEFAULT = FlIP_MISSION_DEFAULT;
 
@@ -1251,7 +1251,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_COMMON_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".common";
 
     public static final String PROPERTY_COMMON_SECTION_KEY = PROPERTY_COMMON_ROOT_KEY + ".section";
-    public static final String PROPERTY_COMMON_SECTION_LABEL = "Common (all SeaDAS File Readers)";
+    public static final String PROPERTY_COMMON_SECTION_LABEL = "Common Options (applies to all 'SeaDAS File Readers')";
     public static final String PROPERTY_COMMON_SECTION_TOOLTIP = "Formatting for which applies to all SeaDAS readers (does not include the ESA readers)";
 
     public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_KEY = PROPERTY_COMMON_ROOT_KEY + ".significant_figures";

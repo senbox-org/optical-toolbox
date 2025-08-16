@@ -5,8 +5,8 @@
 
 <map version="2.0">
 
-    <mapID target="preferencesSeaDASReaders" url="preference_files/preferencesSeaDASReaders.html"/>
-    <mapID target="preferencesSeaDASLevel2Masks" url="preference_files/preferencesSeaDASLevel2Masks.html"/>
+    <mapID target="preferencesSeaDASReaders" url="preferences/preferencesSeaDASReaders.html"/>
+    <mapID target="preferencesSeaDASLevel2Masks" url="preferences/preferencesSeaDASLevel2Masks.html"/>
 
     <mapID target="importNasaObpgProduct" url="tools/importNasaObpgProduct.html"/>
     <mapID target="importSeadasL1Product" url="tools/importSeadasL1Product.html"/>
