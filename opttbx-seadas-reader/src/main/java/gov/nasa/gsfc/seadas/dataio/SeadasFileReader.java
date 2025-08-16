@@ -1810,12 +1810,13 @@ public abstract class SeadasFileReader {
 
         String valueStr;
 
-        if (!is_VALID_PIXEL_ROUND()) {
+        int significantFigures = get_VALID_PIXEL_SIG_FIGS();
+
+        if (significantFigures == 0) {
             valueStr = Double.toString(value);
             return valueStr;
         }
 
-        int significantFigures = get_VALID_PIXEL_SIG_FIGS();
 
 
         boolean roundBigNumbersToInt = false;
@@ -2718,16 +2719,21 @@ public abstract class SeadasFileReader {
 
 
 
-    public boolean is_VALID_PIXEL_ROUND() {
-        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyBool(PROPERTY_VALID_PIXEL_ROUND_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_ROUND_DEFAULT);
-    }
-
-
-
     public int get_VALID_PIXEL_SIG_FIGS() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyInt(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
+
+        String sigFixStr = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
+
+        if (PROPERTY_VALID_PIXEL_SIG_FIGS_EXACT.equals(sigFixStr)) {
+            return 0;
+        } else {
+            String[] strArr = sigFixStr.split("\\s+");
+            try {
+                return Integer.parseInt(strArr[0]);
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
     }
 
 
