@@ -2729,7 +2729,6 @@ public abstract class SeadasFileReader {
         } else {
             String[] strArr = sigFixStr.split("\\s+");
             try {
-                System.out.println("Sig Fig = " + strArr[0]);
                 return Integer.parseInt(strArr[0]);
             } catch (NumberFormatException e) {
                 return 0;
