@@ -1043,7 +1043,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".band_grouping";
     public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_LABEL = "Band Grouping";
     public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_TOOLTIP = "Expression to create band groupings into folders";
-    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_DEFAULT = "Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:vgain:BT:tg_sol:tg_sen";
+    public static final String PROPERTY_BAND_GROUPING_L3_MAPPED_DEFAULT = "Rrs:nLw:Lt:La_:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg_:aph_:bbp_:vgain:BT:tg_sol:tg_sen";
 
     public static final String PROPERTY_FLIPX_L3_MAPPED_KEY = PROPERTY_FILE_PROPERTIES_L3_MAPPED_ROOT_KEY + ".flipx";
     public static final String PROPERTY_FLIPX_L3_MAPPED_LABEL = "Flip-X (Horizontal)";
@@ -1069,7 +1069,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_BAND_GROUPING_LEVEL2_KEY = PROPERTY_FILE_PROPERTIES_LEVEL2_ROOT_KEY + ".band_grouping";
     public static final String PROPERTY_BAND_GROUPING_LEVEL2_LABEL = "Band Grouping";
     public static final String PROPERTY_BAND_GROUPING_LEVEL2_TOOLTIP = "Expression to create band groupings into folders";
-    public static final String PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT = "Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:" +
+    public static final String PROPERTY_BAND_GROUPING_LEVEL2_DEFAULT = "Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La_:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:a_:aot:adg_:aph_:bbp_:bb_:vgain:BT:" +
             "tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf:mr_fine:mi_fine:mr_coarse:mi_coarse:angstrom_440:ssa_fine:ssa_coarse::fmf:ssa:mr:mi_:aot_fine:aot_coarse:" +
             "Rrs1_mean:Rrs1_std:Rrs1_model_mean:Rrs1_model_std:Rrs2_mean:Rrs2_std:Rrs2_model_mean:Rrs2_model_std";
 
