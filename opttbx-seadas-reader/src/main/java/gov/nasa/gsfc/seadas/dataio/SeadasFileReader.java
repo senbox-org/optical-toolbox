@@ -1540,6 +1540,8 @@ public abstract class SeadasFileReader {
         Array wavelengths = null;
 
         final int[] dimensions = variable.getShape();
+        List<Dimension> variable_dimensions = variable.getDimensions();
+        String wavelength_name = variable.getDimensionsString().split(" ")[2].trim();
         final int bands = dimensions[2];
         final int height = dimensions[0];
         final int width = dimensions[1];
@@ -1574,6 +1576,9 @@ public abstract class SeadasFileReader {
                     wvl = ncFile.findVariable("HDFEOS/SWATHS/Aerosol_NearUV_Swath/Data_Fields/Wavelength");
                     // wavelenghs for DSCOVR EPIC L2 files
                 }
+            }
+            if (wvl == null){
+                wvl = ncFile.findVariable(wavelength_name);;
             }
             if (wvl != null) {
                 try {
