@@ -1,0 +1,476 @@
+{
+  "id": "v001/day/ECOSTRESS_L1B_MAP_RAD_08355_008_20191226T171130_0601_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "26-DEC-2019 17:11:31.725607",
+    "endTime": "26-DEC-2019 17:12:23.695361",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 41.44724959268454,
+          "lon": -88.75852110458463
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 40.70416283980407,
+          "lon": -89.6254716433024
+        }
+      ],
+      "reverseAccuracy": 0.5
+    },
+    "bands": [
+      {
+        "name": "Mapped_data_quality_1",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 336,
+            "y": 1302,
+            "value": 3.0
+          },
+          {
+            "x": 4422,
+            "y": 6219,
+            "value": 3.0
+          }
+        ]
+      },
+      {
+        "name": "Mapped_data_quality_2",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1877,
+            "y": 1878,
+            "value": 0.0
+          },
+          {
+            "x": 3940,
+            "y": 2670,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Mapped_data_quality_3",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3550,
+            "y": 5449,
+            "value": 3.0
+          },
+          {
+            "x": 3926,
+            "y": 6788,
+            "value": 3.0
+          }
+        ]
+      },
+      {
+        "name": "Mapped_data_quality_4",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1021,
+            "y": 4870,
+            "value": 0.0
+          },
+          {
+            "x": 3351,
+            "y": 6679,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Mapped_data_quality_5",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4880,
+            "y": 3543,
+            "value": 0.0
+          },
+          {
+            "x": 6137,
+            "y": 3552,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Mapped_height",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "m",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2197,
+            "y": 6576,
+            "value": 150.12433
+          },
+          {
+            "x": 64,
+            "y": 3442,
+            "value": 224.34473
+          }
+        ]
+      },
+      {
+        "name": "Mapped_latitude",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2113,
+            "y": 1441,
+            "value": 41.07905
+          },
+          {
+            "x": 1763,
+            "y": 315,
+            "value": 40.927227
+          }
+        ]
+      },
+      {
+        "name": "Mapped_longitude",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 6270,
+            "y": 4421,
+            "value": -90.74942
+          },
+          {
+            "x": 3694,
+            "y": 5241,
+            "value": -90.41284
+          }
+        ]
+      },
+      {
+        "name": "Mapped_radiance_1",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1497,
+            "y": 3637,
+            "value": "NaN"
+          },
+          {
+            "x": 2072,
+            "y": 5283,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Mapped_radiance_2",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2311,
+            "y": 3642,
+            "value": 5.3977895
+          },
+          {
+            "x": 2600,
+            "y": 3234,
+            "value": 7.002772
+          }
+        ]
+      },
+      {
+        "name": "Mapped_radiance_3",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3709,
+            "y": 671,
+            "value": "NaN"
+          },
+          {
+            "x": 4165,
+            "y": 115,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Mapped_radiance_4",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 6294,
+            "y": 2685,
+            "value": 7.2529054
+          },
+          {
+            "x": 6133,
+            "y": 6920,
+            "value": 5.7903347
+          }
+        ]
+      },
+      {
+        "name": "Mapped_radiance_5",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 715,
+            "y": 3304,
+            "value": 6.86715
+          },
+          {
+            "x": 3685,
+            "y": 4112,
+            "value": 6.5960617
+          }
+        ]
+      },
+      {
+        "name": "Mapped_solar_azimuth",
+        "description": "solar_azimuth field. Note that a ground location is in general seen multiple\ntimes. It doesn't make sense to average the data like we do for radiance.\nInstead, we give the angle for the ECOSTRESS image coordinate that has the\nsmallest line and sample number.",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3264,
+            "y": 3813,
+            "value": 348.2548
+          },
+          {
+            "x": 2909,
+            "y": 4248,
+            "value": 348.13388
+          }
+        ]
+      },
+      {
+        "name": "Mapped_solar_zenith",
+        "description": "solar_zenith field. Note that a ground location is in general seen multiple\ntimes. It doesn't make sense to average the data like we do for radiance.\nInstead, we give the angle for the ECOSTRESS image coordinate that has the\nsmallest line and sample number.",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 93,
+            "y": 3104,
+            "value": 66.74599
+          },
+          {
+            "x": 453,
+            "y": 7259,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Mapped_swir_dn",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1915,
+            "y": 5448,
+            "value": "NaN"
+          },
+          {
+            "x": 5186,
+            "y": 5384,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Mapped_view_azimuth",
+        "description": "view_azimuth field. Note that a ground location is in general seen multiple\ntimes. It doesn't make sense to average the data like we do for radiance.\nInstead, we give the angle for the ECOSTRESS image coordinate that has the\nsmallest line and sample number.",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 5386,
+            "y": 6913,
+            "value": 210.19284
+          },
+          {
+            "x": 1604,
+            "y": 3888,
+            "value": 30.543936
+          }
+        ]
+      },
+      {
+        "name": "Mapped_view_zenith",
+        "description": "view_zenith field. Note that a ground location is in general seen multiple\ntimes. It doesn't make sense to average the data like we do for radiance.\nInstead, we give the angle for the ECOSTRESS image coordinate that has the\nsmallest line and sample number.",
+        "bandWidth": 6455,
+        "bandHeight": 7312,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9997.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3944,
+            "y": 1901,
+            "value": 5.99418
+          },
+          {
+            "x": 3568,
+            "y": 1103,
+            "value": 2.3590643
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "L1GEOMetadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "StandardMetadata/SISVersion",
+        "value": "Preliminary"
+      },
+      {
+        "path": "StandardMetadata/BuildID",
+        "value": "0601"
+      },
+      {
+        "path": "L1GEOMetadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "L1GEOMetadata/QAPercentMissingData",
+        "value": "0.0"
+      },
+      {
+        "path": "MapInformation/GeoTransform",
+        "value": "-86.35372760393722,-3.0805553642643957E-4,-5.572842703689629E-4,41.812805163978,-5.572842703689629E-4,3.0805553642643957E-4"
+      },
+      {
+        "path": "MapInformation/GeoTransform",
+        "value": "-86.35372760393722,-3.0805553642643957E-4,-5.572842703689629E-4,41.812805163978,-5.572842703689629E-4,3.0805553642643957E-4"
+      },
+      {
+        "path": "StandardMetadata/PlatformShortName",
+        "value": "ISS"
+      },
+      {
+        "path": "MapInformation/GeoTransform",
+        "value": "-86.35372760393722,-3.0805553642643957E-4,-5.572842703689629E-4,41.812805163978,-5.572842703689629E-4,3.0805553642643957E-4"
+      },
+      {
+        "path": "MapInformation/CoordinateSystem",
+        "value": "GEOGCS[\"WGS 84\",\n    DATUM[\"WGS_1984\",\n        SPHEROID[\"WGS 84\",6378137,298.257223563,\n            AUTHORITY[\"EPSG\",\"7030\"]],\n        AUTHORITY[\"EPSG\",\"6326\"]],\n    PRIMEM[\"Greenwich\",0],\n    UNIT[\"degree\",0.0174532925199433],\n    AUTHORITY[\"EPSG\",\"4326\"]]\n"
+      }
+    ]
+  }
+}

@@ -1,0 +1,323 @@
+{
+  "id": "v002/day/ECOv002_L3G_JET_38657_006_20250501T125035_0713_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 8452,
+    "sceneHeight": 7541,
+    "startTime": "01-MAY-2025 12:50:35.536340",
+    "endTime": "01-MAY-2025 12:51:27.506225",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 3645.0,
+          "y": 4053.0,
+          "lat": 37.9527579808393,
+          "lon": -92.6824980830671
+        },
+        {
+          "x": 6275.0,
+          "y": 4893.0,
+          "lat": 37.36064051092333,
+          "lon": -90.84128023902498
+        }
+      ],
+      "reverseAccuracy": 7.275957614183426E-12
+    },
+    "bands": [
+      {
+        "name": "Data_Fields_BESSinst",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 440,
+            "y": 1343,
+            "value": "NaN"
+          },
+          {
+            "x": 5790,
+            "y": 6414,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_ETdaily",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2458,
+            "y": 1936,
+            "value": "NaN"
+          },
+          {
+            "x": 5160,
+            "y": 2754,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_ETinstUncertainty",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4648,
+            "y": 5620,
+            "value": 32.096664
+          },
+          {
+            "x": 5141,
+            "y": 7001,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_MOD16inst",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1337,
+            "y": 5022,
+            "value": 0.0
+          },
+          {
+            "x": 4387,
+            "y": 6888,
+            "value": 35.206493
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_PTJPLSMcanopy",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 6390,
+            "y": 3654,
+            "value": "NaN"
+          },
+          {
+            "x": 8035,
+            "y": 3663,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_PTJPLSMinst",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2877,
+            "y": 6782,
+            "value": "NaN"
+          },
+          {
+            "x": 84,
+            "y": 3550,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_PTJPLSMinterception",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2767,
+            "y": 1486,
+            "value": "NaN"
+          },
+          {
+            "x": 2308,
+            "y": 325,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_PTJPLSMsoil",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 8210,
+            "y": 4560,
+            "value": "NaN"
+          },
+          {
+            "x": 4837,
+            "y": 5405,
+            "value": 0.306962
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_STICcanopy",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1960,
+            "y": 3751,
+            "value": "NaN"
+          },
+          {
+            "x": 2713,
+            "y": 5448,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_STICinst",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3026,
+            "y": 3757,
+            "value": "NaN"
+          },
+          {
+            "x": 3404,
+            "y": 3335,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_cloud",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4857,
+            "y": 692,
+            "value": 0.0
+          },
+          {
+            "x": 5453,
+            "y": 119,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_water",
+        "bandWidth": 8452,
+        "bandHeight": 7541,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 8242,
+            "y": 2769,
+            "value": 0.0
+          },
+          {
+            "x": 8030,
+            "y": 7136,
+            "value": 0.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/PGEName",
+        "value": "L3G_L4G_JET"
+      },
+      {
+        "path": "ProductMetadata/NumberOfBands",
+        "value": "5"
+      },
+      {
+        "path": "ProductMetadata/NumberOfBands",
+        "value": "5"
+      },
+      {
+        "path": "StandardMetadata/ProcessingLevelDescription",
+        "value": "Level 3 Gridded Evapotranspiration Ensemble"
+      },
+      {
+        "path": "StandardMetadata/NorthBoundingCoordinate",
+        "value": "40.7428"
+      },
+      {
+        "path": "StandardMetadata/WestBoundingCoordinate",
+        "value": "-95.2343"
+      },
+      {
+        "path": "StandardMetadata/RangeEndingDate",
+        "value": "2025-05-01"
+      },
+      {
+        "path": "ProductMetadata/QAPercentCloudCover",
+        "value": "76"
+      },
+      {
+        "path": "ProductMetadata/QAPercentGoodQuality",
+        "value": "98"
+      },
+      {
+        "path": "StandardMetadata/PlatformType",
+        "value": "Spacecraft"
+      }
+    ]
+  }
+}

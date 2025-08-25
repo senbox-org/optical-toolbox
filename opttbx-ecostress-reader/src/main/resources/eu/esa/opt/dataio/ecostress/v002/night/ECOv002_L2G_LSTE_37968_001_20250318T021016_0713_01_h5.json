@@ -1,0 +1,247 @@
+{
+  "id": "v002/night/ECOv002_L2G_LSTE_37968_001_20250318T021016_0713_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 9565,
+    "sceneHeight": 7024,
+    "startTime": "18-MAR-2025 02:10:16.467964",
+    "endTime": "18-MAR-2025 02:11:08.437500",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 4125.0,
+          "y": 3775.0,
+          "lat": 42.18041842556373,
+          "lon": -125.27589808657466
+        },
+        {
+          "x": 7101.0,
+          "y": 4557.0,
+          "lat": 41.628922063262664,
+          "lon": -123.19248026976163
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
+    "bands": [
+      {
+        "name": "Data_Fields_EmisWB",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 499,
+            "y": 1251,
+            "value": "NaN"
+          },
+          {
+            "x": 6552,
+            "y": 5974,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_LST",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "geophysicalUnit": "K",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2782,
+            "y": 1804,
+            "value": 284.72
+          },
+          {
+            "x": 5839,
+            "y": 2565,
+            "value": 277.76
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_LST_err",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "geophysicalUnit": "K",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 5261,
+            "y": 5235,
+            "value": 0.88
+          },
+          {
+            "x": 5818,
+            "y": 6521,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_QC",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "geophysicalUnit": "n/a",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1513,
+            "y": 4678,
+            "value": 0.0
+          },
+          {
+            "x": 4965,
+            "y": 6416,
+            "value": -13632.0
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_cloud",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "geophysicalUnit": "unitless",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 7232,
+            "y": 3403,
+            "value": 0.0
+          },
+          {
+            "x": 9094,
+            "y": 3412,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_height",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "geophysicalUnit": "unitless",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3256,
+            "y": 6317,
+            "value": "NaN"
+          },
+          {
+            "x": 95,
+            "y": 3306,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_view_zenith",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "geophysicalUnit": "unitless",
+        "noDataValue": "NaN",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3131,
+            "y": 1384,
+            "value": 28.146318
+          },
+          {
+            "x": 2613,
+            "y": 303,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_water",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "geophysicalUnit": "unitless",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 9292,
+            "y": 4247,
+            "value": 0.0
+          },
+          {
+            "x": 5474,
+            "y": 5034,
+            "value": 1.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/PlatformLongName",
+        "value": "ISS"
+      },
+      {
+        "path": "StandardMetadata/RangeBeginningTime",
+        "value": "02:10:16.467964"
+      },
+      {
+        "path": "StandardMetadata/PlatformLongName",
+        "value": "ISS"
+      },
+      {
+        "path": "StandardMetadata/PGEName",
+        "value": "L1_L2_RAD_LSTE"
+      },
+      {
+        "path": "ProductMetadata/BandSpecification",
+        "value": "0.0,8.28,8.78,9.07,10.52,12.0"
+      },
+      {
+        "path": "ProductMetadata/AncillaryNWP",
+        "value": "/NWP/GEOS5/2025/GEOS.fp.asm.inst3_3d_asm_Np.20250318_0000.V01.nc4, /NWP/GEOS5/2025/GEOS.fp.asm.inst3_3d_asm_Np.20250318_0300.V01.nc4"
+      },
+      {
+        "path": "ProductMetadata/Emis1GoodAvg",
+        "value": "0.9714995560622133"
+      },
+      {
+        "path": "ProductMetadata/QAPercentGoodQuality",
+        "value": "99"
+      },
+      {
+        "path": "StandardMetadata/PGEName",
+        "value": "L1_L2_RAD_LSTE"
+      },
+      {
+        "path": "ProductMetadata/Emis4GoodAvg",
+        "value": "0.9603466937316812"
+      }
+    ]
+  }
+}
