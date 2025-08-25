@@ -6,7 +6,7 @@
     <parent>
         <groupId>eu.esa.opt</groupId>
         <artifactId>optical-toolbox</artifactId>
-        <version>13.0.0-rc1</version>
+        <version>13.0.0-RC2-SNAPSHOT</version>
     </parent>
 
     <artifactId>opttbx-s2msi-resampler-ui</artifactId>
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-s2msi-resampler</artifactId>
-            <version>13.0.0-rc1</version>
+            <version>13.0.0-RC2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>eu.esa.opt</groupId>
