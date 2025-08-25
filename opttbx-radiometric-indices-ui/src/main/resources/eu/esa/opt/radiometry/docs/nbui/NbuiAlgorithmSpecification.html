@@ -1,0 +1,74 @@
+<!--
+  ~ /*
+  ~  * Copyright (C) 2016 CS ROMANIA
+  ~  *
+  ~  * This program is free software; you can redistribute it and/or modify it
+  ~  * under the terms of the GNU General Public License as published by the Free
+  ~  * Software Foundation; either version 3 of the License, or (at your option)
+  ~  * any later version.
+  ~  * This program is distributed in the hope that it will be useful, but WITHOUT
+  ~  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~  * more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License along
+  ~  *  with this program; if not, see http://www.gnu.org/licenses/
+  ~  */
+  -->
+
+<html>
+<head>
+    <title>SNAP NBUI - Algorithm Specification</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+<table class="header">
+    <tr class="header">
+        <td class="header">&nbsp;
+            NBUI Algorithm Specification</td>
+        <td class="header" align="right"><a href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html"><img src="../images/snap_header.jpg" border=0></a></td>
+    </tr>
+</table>
+
+<h3>NBUI</h3>
+
+<p>
+    The NBUI operator algorithm computes the <u><b>N</b></u>ew <u><b>B</b></u>uilt-Up <u><b>I</b></u>ndex  from a given product. <br><br>
+</p>
+
+
+<p>
+    The NBUI results from the following equation:
+</p>
+
+<p>
+    <b>NBUI = ((S1 - N) / (10.0 * pow((T + S1) , 0.5))) - (((N - R) * (1.0 + l)) / (N - R + l)) - (G - S1) / (G + S1)</b><br><br>
+</p>
+
+<p>
+    , where: <br><br>
+    The bands are: <br><br>
+    - <b>G</b> is the <b>Green</b> band <br/>- <b>R</b> is the <b>Red</b> band <br/>- <b>N</b> is the <b>NIR</b> band <br/>- <b>S1</b> is the <b>SWIR 1</b> band <br/>- <b>T</b> is the <b>Thermal</b> band <br/>
+    <br><br>
+    and the coefficients are:<br><br>
+- <b>l</b> is the <b>Canopy background adjustment</b> coefficient <br/>
+</p>
+
+<h3>NBUI-Flags</h3>
+
+<p>
+    Also the processor computes an additional flags band called 'nbui_flags'
+    with the following bit coding:</p>
+<table>
+    <tr><th>Bit Position</th><th>Description</th></tr>
+    <tr><td>Bit 0</td><td>The computed value for NBUI is NAN or is Infinite</td></tr>
+    <tr><td>Bit 1</td><td>The computed value for NBUI is less than -1 (minus one)</td></tr>
+    <tr><td>Bit 2</td><td>The computed value for NBUI is greater than 1 (one)</td></tr>
+</table>
+<p>
+</p>
+<hr>
+</body>
+</html>

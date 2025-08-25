@@ -1,0 +1,104 @@
+[
+  {
+    "alias": "A",
+    "description": "Aerosols",
+    "minSpectralRange": 400,
+    "maxSpectralRange": 455
+  },
+  {
+    "alias": "B",
+    "description": "Blue",
+    "minSpectralRange": 450,
+    "maxSpectralRange": 530
+  },
+  {
+    "alias": "G1",
+    "description": "Green 1",
+    "minSpectralRange": 510,
+    "maxSpectralRange": 550
+  },
+  {
+    "alias": "G",
+    "description": "Green",
+    "minSpectralRange": 510,
+    "maxSpectralRange": 600
+  },
+  {
+    "alias": "Y",
+    "description": "Yellow",
+    "minSpectralRange": 585,
+    "maxSpectralRange": 625
+  },
+  {
+    "alias": "RE1",
+    "description": "Red Edge 1",
+    "minSpectralRange": 695,
+    "maxSpectralRange": 715
+  },
+  {
+    "alias": "RE2",
+    "description": "Red Edge 2",
+    "minSpectralRange": 730,
+    "maxSpectralRange": 750
+  },
+  {
+    "alias": "RE3",
+    "description": "Red Edge 3",
+    "minSpectralRange": 765,
+    "maxSpectralRange": 795
+  },
+  {
+    "alias": "R",
+    "description": "Red",
+    "minSpectralRange": 620,
+    "maxSpectralRange": 690
+  },
+  {
+    "alias": "N2",
+    "description": "NIR 2",
+    "minSpectralRange": 850,
+    "maxSpectralRange": 880
+  },
+  {
+    "alias": "N",
+    "description": "NIR",
+    "minSpectralRange": 760,
+    "maxSpectralRange": 900
+  },
+  {
+    "alias": "WV",
+    "description": "Water Vapour",
+    "minSpectralRange": 930,
+    "maxSpectralRange": 960
+  },
+  {
+    "alias": "S1",
+    "description": "SWIR 1",
+    "minSpectralRange": 1550,
+    "maxSpectralRange": 1750
+  },
+  {
+    "alias": "S2",
+    "description": "SWIR 2",
+    "minSpectralRange": 2080,
+    "maxSpectralRange": 2350
+  },
+  {
+    "alias": "T1",
+    "description": "Thermal 1",
+    "minSpectralRange": 10600,
+    "maxSpectralRange": 11190
+  },
+  {
+    "alias": "T2",
+    "description": "Thermal 2",
+    "minSpectralRange": 11500,
+    "maxSpectralRange": 12510
+  },
+  {
+    "alias": "T",
+    "description": "Thermal",
+    "minSpectralRange": 10400,
+    "maxSpectralRange": 12500
+  }
+]

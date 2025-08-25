@@ -1,0 +1,78 @@
+[
+  {
+    "alias": "g",
+    "description": "Gain factor"
+  },
+  {
+    "alias": "l",
+    "description": "Canopy background adjustment"
+  },
+  {
+    "alias": "c1",
+    "description": "Coefficient 1 for the aerosol resistance term"
+  },
+  {
+    "alias": "c2",
+    "description": "Coefficient 2 for the aerosol resistance term"
+  },
+  {
+    "alias": "cexp",
+    "description": "Exponent used for OCVI"
+  },
+  {
+    "alias": "nexp",
+    "description": "Exponent used for GDVI"
+  },
+  {
+    "alias": "alpha",
+    "description": "Weighting coefficient used for WDRVI, BWDRVI and NDPI"
+  },
+  {
+    "alias": "beta",
+    "description": "Calibration parameter used for NDSIns"
+  },
+  {
+    "alias": "gamma",
+    "description": "Weighting coefficient used for ARVI"
+  },
+  {
+    "alias": "omega",
+    "description": "Weighting coefficient used for MBWI"
+  },
+  {
+    "alias": "sla",
+    "description": "Soil line slope"
+  },
+  {
+    "alias": "slb",
+    "description": "Soil line intercept"
+  },
+  {
+    "alias": "par",
+    "description": "Photosynthetically Active Radiation"
+  },
+  {
+    "alias": "k",
+    "description": "Slope parameter by soil used for NIRvH2"
+  },
+  {
+    "alias": "lambdaN",
+    "description": "NIR wavelength used for NIRvH2 and NDGI"
+  },
+  {
+    "alias": "lambdaR",
+    "description": "Red wavelength used for NIRvH2 and NDGI"
+  },
+  {
+    "alias": "lambdaG",
+    "description": "Green wavelength used for NDGI"
+  },
+  {
+    "alias": "epsilon",
+    "description": "Epsilon coefficient parameter"
+  },
+  {
+    "alias": "fdelta",
+    "description": "FDelta coefficient parameter"
+  }
+]

@@ -95,8 +95,530 @@
                     <tocitem text="PSSRa Operator" target="PSSRaOperator">
                         <tocitem text="PSSRa Algorithm Specification" target="PSSRaAlgorithm"/>
                     </tocitem>
+                    <tocitem text="AFRI1600 Operator" target="AFRI1600Operator">
+                        <tocitem text="AFRI1600 Algorithm Specification" target="AFRI1600Algorithm"/>
+                    </tocitem>
+                    <tocitem text="AFRI2100 Operator" target="AFRI2100Operator">
+                        <tocitem text="AFRI2100 Algorithm Specification" target="AFRI2100Algorithm"/>
+                    </tocitem>
+                    <tocitem text="ARI Operator" target="ARIOperator">
+                        <tocitem text="ARI Algorithm Specification" target="ARIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="ARI2 Operator" target="ARI2Operator">
+                        <tocitem text="ARI2 Algorithm Specification" target="ARI2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="ATSAVI Operator" target="ATSAVIOperator">
+                        <tocitem text="ATSAVI Algorithm Specification" target="ATSAVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="AVI Operator" target="AVIOperator">
+                        <tocitem text="AVI Algorithm Specification" target="AVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BCC Operator" target="BCCOperator">
+                        <tocitem text="BCC Algorithm Specification" target="BCCAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BNDVI Operator" target="BNDVIOperator">
+                        <tocitem text="BNDVI Algorithm Specification" target="BNDVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BWDRVI Operator" target="BWDRVIOperator">
+                        <tocitem text="BWDRVI Algorithm Specification" target="BWDRVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="CCI Operator" target="CCIOperator">
+                        <tocitem text="CCI Algorithm Specification" target="CCIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="CIG Operator" target="CIGOperator">
+                        <tocitem text="CIG Algorithm Specification" target="CIGAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="CIRE Operator" target="CIREOperator">
+                        <tocitem text="CIRE Algorithm Specification" target="CIREAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="CVI Operator" target="CVIOperator">
+                        <tocitem text="CVI Algorithm Specification" target="CVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="DSI Operator" target="DSIOperator">
+                        <tocitem text="DSI Algorithm Specification" target="DSIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="DSWI1 Operator" target="DSWI1Operator">
+                        <tocitem text="DSWI1 Algorithm Specification" target="DSWI1Algorithm"/>
+                    </tocitem>
+                    <tocitem text="DSWI2 Operator" target="DSWI2Operator">
+                        <tocitem text="DSWI2 Algorithm Specification" target="DSWI2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="DSWI3 Operator" target="DSWI3Operator">
+                        <tocitem text="DSWI3 Algorithm Specification" target="DSWI3Algorithm"/>
+                    </tocitem>
+                    <tocitem text="DSWI4 Operator" target="DSWI4Operator">
+                        <tocitem text="DSWI4 Algorithm Specification" target="DSWI4Algorithm"/>
+                    </tocitem>
+                    <tocitem text="DSWI5 Operator" target="DSWI5Operator">
+                        <tocitem text="DSWI5 Algorithm Specification" target="DSWI5Algorithm"/>
+                    </tocitem>
+                    <tocitem text="DVIplus Operator" target="DVIplusOperator">
+                        <tocitem text="DVIplus Algorithm Specification" target="DVIplusAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="EBI Operator" target="EBIOperator">
+                        <tocitem text="EBI Algorithm Specification" target="EBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="EVI Operator" target="EVIOperator">
+                        <tocitem text="EVI Algorithm Specification" target="EVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="EVI2 Operator" target="EVI2Operator">
+                        <tocitem text="EVI2 Algorithm Specification" target="EVI2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="ExG Operator" target="ExGOperator">
+                        <tocitem text="ExG Algorithm Specification" target="ExGAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="ExGR Operator" target="ExGROperator">
+                        <tocitem text="ExGR Algorithm Specification" target="ExGRAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="ExR Operator" target="ExROperator">
+                        <tocitem text="ExR Algorithm Specification" target="ExRAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="FCVI Operator" target="FCVIOperator">
+                        <tocitem text="FCVI Algorithm Specification" target="FCVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GARI Operator" target="GARIOperator">
+                        <tocitem text="GARI Algorithm Specification" target="GARIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GBNDVI Operator" target="GBNDVIOperator">
+                        <tocitem text="GBNDVI Algorithm Specification" target="GBNDVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GCC Operator" target="GCCOperator">
+                        <tocitem text="GCC Algorithm Specification" target="GCCAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GDVI Operator" target="GDVIOperator">
+                        <tocitem text="GDVI Algorithm Specification" target="GDVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GLI Operator" target="GLIOperator">
+                        <tocitem text="GLI Algorithm Specification" target="GLIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GM1 Operator" target="GM1Operator">
+                        <tocitem text="GM1 Algorithm Specification" target="GM1Algorithm"/>
+                    </tocitem>
+                    <tocitem text="GM2 Operator" target="GM2Operator">
+                        <tocitem text="GM2 Algorithm Specification" target="GM2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="GOSAVI Operator" target="GOSAVIOperator">
+                        <tocitem text="GOSAVI Algorithm Specification" target="GOSAVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GRNDVI Operator" target="GRNDVIOperator">
+                        <tocitem text="GRNDVI Algorithm Specification" target="GRNDVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GRVI Operator" target="GRVIOperator">
+                        <tocitem text="GRVI Algorithm Specification" target="GRVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GSAVI Operator" target="GSAVIOperator">
+                        <tocitem text="GSAVI Algorithm Specification" target="GSAVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="GVMI Operator" target="GVMIOperator">
+                        <tocitem text="GVMI Algorithm Specification" target="GVMIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="IAVI Operator" target="IAVIOperator">
+                        <tocitem text="IAVI Algorithm Specification" target="IAVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="IKAW Operator" target="IKAWOperator">
+                        <tocitem text="IKAW Algorithm Specification" target="IKAWAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MCARI1 Operator" target="MCARI1Operator">
+                        <tocitem text="MCARI1 Algorithm Specification" target="MCARI1Algorithm"/>
+                    </tocitem>
+                    <tocitem text="MCARI2 Operator" target="MCARI2Operator">
+                        <tocitem text="MCARI2 Algorithm Specification" target="MCARI2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="MCARI705 Operator" target="MCARI705Operator">
+                        <tocitem text="MCARI705 Algorithm Specification" target="MCARI705Algorithm"/>
+                    </tocitem>
+                    <tocitem text="MCARIOSAVI Operator" target="MCARIOSAVIOperator">
+                        <tocitem text="MCARIOSAVI Algorithm Specification" target="MCARIOSAVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MCARIOSAVI705 Operator" target="MCARIOSAVI705Operator">
+                        <tocitem text="MCARIOSAVI705 Algorithm Specification" target="MCARIOSAVI705Algorithm"/>
+                    </tocitem>
+                    <tocitem text="MGRVI Operator" target="MGRVIOperator">
+                        <tocitem text="MGRVI Algorithm Specification" target="MGRVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MNLI Operator" target="MNLIOperator">
+                        <tocitem text="MNLI Algorithm Specification" target="MNLIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MRBVI Operator" target="MRBVIOperator">
+                        <tocitem text="MRBVI Algorithm Specification" target="MRBVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MSI Operator" target="MSIOperator">
+                        <tocitem text="MSI Algorithm Specification" target="MSIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MSR Operator" target="MSROperator">
+                        <tocitem text="MSR Algorithm Specification" target="MSRAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MSR705 Operator" target="MSR705Operator">
+                        <tocitem text="MSR705 Algorithm Specification" target="MSR705Algorithm"/>
+                    </tocitem>
+                    <tocitem text="MTVI1 Operator" target="MTVI1Operator">
+                        <tocitem text="MTVI1 Algorithm Specification" target="MTVI1Algorithm"/>
+                    </tocitem>
+                    <tocitem text="MTVI2 Operator" target="MTVI2Operator">
+                        <tocitem text="MTVI2 Algorithm Specification" target="MTVI2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="ND705 Operator" target="ND705Operator">
+                        <tocitem text="ND705 Algorithm Specification" target="ND705Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NDDI Operator" target="NDDIOperator">
+                        <tocitem text="NDDI Algorithm Specification" target="NDDIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDGI Operator" target="NDGIOperator">
+                        <tocitem text="NDGI Algorithm Specification" target="NDGIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDII Operator" target="NDIIOperator">
+                        <tocitem text="NDII Algorithm Specification" target="NDIIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDMI Operator" target="NDMIOperator">
+                        <tocitem text="NDMI Algorithm Specification" target="NDMIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDREI Operator" target="NDREIOperator">
+                        <tocitem text="NDREI Algorithm Specification" target="NDREIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDVI705 Operator" target="NDVI705Operator">
+                        <tocitem text="NDVI705 Algorithm Specification" target="NDVI705Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NDYI Operator" target="NDYIOperator">
+                        <tocitem text="NDYI Algorithm Specification" target="NDYIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NGRDI Operator" target="NGRDIOperator">
+                        <tocitem text="NGRDI Algorithm Specification" target="NGRDIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NIRv Operator" target="NIRvOperator">
+                        <tocitem text="NIRv Algorithm Specification" target="NIRvAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NIRvH2 Operator" target="NIRvH2Operator">
+                        <tocitem text="NIRvH2 Algorithm Specification" target="NIRvH2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NIRvP Operator" target="NIRvPOperator">
+                        <tocitem text="NIRvP Algorithm Specification" target="NIRvPAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NLI Operator" target="NLIOperator">
+                        <tocitem text="NLI Algorithm Specification" target="NLIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NMDI Operator" target="NMDIOperator">
+                        <tocitem text="NMDI Algorithm Specification" target="NMDIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NRFIg Operator" target="NRFIgOperator">
+                        <tocitem text="NRFIg Algorithm Specification" target="NRFIgAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NRFIr Operator" target="NRFIrOperator">
+                        <tocitem text="NRFIr Algorithm Specification" target="NRFIrAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NormG Operator" target="NormGOperator">
+                        <tocitem text="NormG Algorithm Specification" target="NormGAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NormNIR Operator" target="NormNIROperator">
+                        <tocitem text="NormNIR Algorithm Specification" target="NormNIRAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NormR Operator" target="NormROperator">
+                        <tocitem text="NormR Algorithm Specification" target="NormRAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="OCVI Operator" target="OCVIOperator">
+                        <tocitem text="OCVI Algorithm Specification" target="OCVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="OSAVI Operator" target="OSAVIOperator">
+                        <tocitem text="OSAVI Algorithm Specification" target="OSAVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="PSRI Operator" target="PSRIOperator">
+                        <tocitem text="PSRI Algorithm Specification" target="PSRIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="RCC Operator" target="RCCOperator">
+                        <tocitem text="RCC Algorithm Specification" target="RCCAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="RDVI Operator" target="RDVIOperator">
+                        <tocitem text="RDVI Algorithm Specification" target="RDVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="REDSI Operator" target="REDSIOperator">
+                        <tocitem text="REDSI Algorithm Specification" target="REDSIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="RENDVI Operator" target="RENDVIOperator">
+                        <tocitem text="RENDVI Algorithm Specification" target="RENDVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="RGBVI Operator" target="RGBVIOperator">
+                        <tocitem text="RGBVI Algorithm Specification" target="RGBVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="RGRI Operator" target="RGRIOperator">
+                        <tocitem text="RGRI Algorithm Specification" target="RGRIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="SARVI Operator" target="SARVIOperator">
+                        <tocitem text="SARVI Algorithm Specification" target="SARVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="SAVI2 Operator" target="SAVI2Operator">
+                        <tocitem text="SAVI2 Algorithm Specification" target="SAVI2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="SEVI Operator" target="SEVIOperator">
+                        <tocitem text="SEVI Algorithm Specification" target="SEVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="SI Operator" target="SIOperator">
+                        <tocitem text="SI Algorithm Specification" target="SIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="SIPI Operator" target="SIPIOperator">
+                        <tocitem text="SIPI Algorithm Specification" target="SIPIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="SLAVI Operator" target="SLAVIOperator">
+                        <tocitem text="SLAVI Algorithm Specification" target="SLAVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="SR2 Operator" target="SR2Operator">
+                        <tocitem text="SR2 Algorithm Specification" target="SR2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="SR3 Operator" target="SR3Operator">
+                        <tocitem text="SR3 Algorithm Specification" target="SR3Algorithm"/>
+                    </tocitem>
+                    <tocitem text="SR555 Operator" target="SR555Operator">
+                        <tocitem text="SR555 Algorithm Specification" target="SR555Algorithm"/>
+                    </tocitem>
+                    <tocitem text="SR705 Operator" target="SR705Operator">
+                        <tocitem text="SR705 Algorithm Specification" target="SR705Algorithm"/>
+                    </tocitem>
+                    <tocitem text="SeLI Operator" target="SeLIOperator">
+                        <tocitem text="SeLI Algorithm Specification" target="SeLIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TCARI Operator" target="TCARIOperator">
+                        <tocitem text="TCARI Algorithm Specification" target="TCARIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TCARIOSAVI Operator" target="TCARIOSAVIOperator">
+                        <tocitem text="TCARIOSAVI Algorithm Specification" target="TCARIOSAVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TCARIOSAVI705 Operator" target="TCARIOSAVI705Operator">
+                        <tocitem text="TCARIOSAVI705 Algorithm Specification" target="TCARIOSAVI705Algorithm"/>
+                    </tocitem>
+                    <tocitem text="TCI Operator" target="TCIOperator">
+                        <tocitem text="TCI Algorithm Specification" target="TCIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TDVI Operator" target="TDVIOperator">
+                        <tocitem text="TDVI Algorithm Specification" target="TDVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TGI Operator" target="TGIOperator">
+                        <tocitem text="TGI Algorithm Specification" target="TGIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TRRVI Operator" target="TRRVIOperator">
+                        <tocitem text="TRRVI Algorithm Specification" target="TRRVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TTVI Operator" target="TTVIOperator">
+                        <tocitem text="TTVI Algorithm Specification" target="TTVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TVI Operator" target="TVIOperator">
+                        <tocitem text="TVI Algorithm Specification" target="TVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TriVI Operator" target="TriVIOperator">
+                        <tocitem text="TriVI Algorithm Specification" target="TriVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="VARI Operator" target="VARIOperator">
+                        <tocitem text="VARI Algorithm Specification" target="VARIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="VARI700 Operator" target="VARI700Operator">
+                        <tocitem text="VARI700 Algorithm Specification" target="VARI700Algorithm"/>
+                    </tocitem>
+                    <tocitem text="VI700 Operator" target="VI700Operator">
+                        <tocitem text="VI700 Algorithm Specification" target="VI700Algorithm"/>
+                    </tocitem>
+                    <tocitem text="VIG Operator" target="VIGOperator">
+                        <tocitem text="VIG Algorithm Specification" target="VIGAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="WDRVI Operator" target="WDRVIOperator">
+                        <tocitem text="WDRVI Algorithm Specification" target="WDRVIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MmND705 Operator" target="MmND705Operator">
+                        <tocitem text="MmND705 Algorithm Specification" target="MmND705Algorithm"/>
+                    </tocitem>
+                    <tocitem text="MmSR705 Operator" target="MmSR705Operator">
+                        <tocitem text="MmSR705 Algorithm Specification" target="MmSR705Algorithm"/>
+                    </tocitem>
 
                 </tocitem>
+
+                <tocitem text="Soil Radiometric Indices">
+
+                    <tocitem text="BI Operator" target="BIOperator">
+                        <tocitem text="BI Algorithm Specification" target="BIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BI2 Operator" target="BI2Operator">
+                        <tocitem text="BI2 Algorithm Specification" target="BI2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="RI Operator" target="RIOperator">
+                        <tocitem text="RI Algorithm Specification" target="RIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="CI Operator" target="CIOperator">
+                        <tocitem text="CI Algorithm Specification" target="CIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BITM Operator" target="BITMOperator">
+                        <tocitem text="BITM Algorithm Specification" target="BITMAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BIXS Operator" target="BIXSOperator">
+                        <tocitem text="BIXS Algorithm Specification" target="BIXSAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BaIn Operator" target="BaInOperator">
+                        <tocitem text="BaIn Algorithm Specification" target="BaInAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="DBSI Operator" target="DBSIOperator">
+                        <tocitem text="DBSI Algorithm Specification" target="DBSIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="EMBI Operator" target="EMBIOperator">
+                        <tocitem text="EMBI Algorithm Specification" target="EMBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MBI Operator" target="MBIOperator">
+                        <tocitem text="MBI Algorithm Specification" target="MBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NBLI Operator" target="NBLIOperator">
+                        <tocitem text="NBLI Algorithm Specification" target="NBLIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NBLIOLI Operator" target="NBLIOLIOperator">
+                        <tocitem text="NBLIOLI Algorithm Specification" target="NBLIOLIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDBaI Operator" target="NDBaIOperator">
+                        <tocitem text="NDBaI Algorithm Specification" target="NDBaIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDSIWV Operator" target="NDSIWVOperator">
+                        <tocitem text="NDSIWV Algorithm Specification" target="NDSIWVAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDSoiI Operator" target="NDSoiIOperator">
+                        <tocitem text="NDSoiI Algorithm Specification" target="NDSoiIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NSDS Operator" target="NSDSOperator">
+                        <tocitem text="NSDS Algorithm Specification" target="NSDSAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NSDSI1 Operator" target="NSDSI1Operator">
+                        <tocitem text="NSDSI1 Algorithm Specification" target="NSDSI1Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NSDSI2 Operator" target="NSDSI2Operator">
+                        <tocitem text="NSDSI2 Algorithm Specification" target="NSDSI2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NSDSI3 Operator" target="NSDSI3Operator">
+                        <tocitem text="NSDSI3 Algorithm Specification" target="NSDSI3Algorithm"/>
+                    </tocitem>
+                    <tocitem text="RI4XS Operator" target="RI4XSOperator">
+                        <tocitem text="RI4XS Algorithm Specification" target="RI4XSAlgorithm"/>
+                    </tocitem>
+
+                </tocitem>
+
+                <tocitem text="Burn Radiometric Indices">
+
+                    <tocitem text="BAI Operator" target="BAIOperator">
+                        <tocitem text="BAI Algorithm Specification" target="BAIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BAIM Operator" target="BAIMOperator">
+                        <tocitem text="BAIM Algorithm Specification" target="BAIMAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BAIS2 Operator" target="BAIS2Operator">
+                        <tocitem text="BAIS2 Algorithm Specification" target="BAIS2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="CSI Operator" target="CSIOperator">
+                        <tocitem text="CSI Algorithm Specification" target="CSIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="CSIT Operator" target="CSITOperator">
+                        <tocitem text="CSIT Algorithm Specification" target="CSITAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MIRBI Operator" target="MIRBIOperator">
+                        <tocitem text="MIRBI Algorithm Specification" target="MIRBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NBR Operator" target="NBROperator">
+                        <tocitem text="NBR Algorithm Specification" target="NBRAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NBR2 Operator" target="NBR2Operator">
+                        <tocitem text="NBR2 Algorithm Specification" target="NBR2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NBRSWIR Operator" target="NBRSWIROperator">
+                        <tocitem text="NBRSWIR Algorithm Specification" target="NBRSWIRAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NBRT1 Operator" target="NBRT1Operator">
+                        <tocitem text="NBRT1 Algorithm Specification" target="NBRT1Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NBRT2 Operator" target="NBRT2Operator">
+                        <tocitem text="NBRT2 Algorithm Specification" target="NBRT2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NBRT3 Operator" target="NBRT3Operator">
+                        <tocitem text="NBRT3 Algorithm Specification" target="NBRT3Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NBRplus Operator" target="NBRplusOperator">
+                        <tocitem text="NBRplus Algorithm Specification" target="NBRplusAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDSWIR Operator" target="NDSWIROperator">
+                        <tocitem text="NDSWIR Algorithm Specification" target="NDSWIRAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDVIT Operator" target="NDVITOperator">
+                        <tocitem text="NDVIT Algorithm Specification" target="NDVITAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NSTv1 Operator" target="NSTv1Operator">
+                        <tocitem text="NSTv1 Algorithm Specification" target="NSTv1Algorithm"/>
+                    </tocitem>
+                    <tocitem text="NSTv2 Operator" target="NSTv2Operator">
+                        <tocitem text="NSTv2 Algorithm Specification" target="NSTv2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="SAVIT Operator" target="SAVITOperator">
+                        <tocitem text="SAVIT Algorithm Specification" target="SAVITAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="VI6T Operator" target="VI6TOperator">
+                        <tocitem text="VI6T Algorithm Specification" target="VI6TAlgorithm"/>
+                    </tocitem>
+
+                </tocitem>
+
+                <tocitem text="Urban Radiometric Indices">
+
+                    <tocitem text="BLFEI Operator" target="BLFEIOperator">
+                        <tocitem text="BLFEI Algorithm Specification" target="BLFEIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="BRBA Operator" target="BRBAOperator">
+                        <tocitem text="BRBA Algorithm Specification" target="BRBAAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="DBI Operator" target="DBIOperator">
+                        <tocitem text="DBI Algorithm Specification" target="DBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="EBBI Operator" target="EBBIOperator">
+                        <tocitem text="EBBI Algorithm Specification" target="EBBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="IBI Operator" target="IBIOperator">
+                        <tocitem text="IBI Algorithm Specification" target="IBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NBAI Operator" target="NBAIOperator">
+                        <tocitem text="NBAI Algorithm Specification" target="NBAIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NBUI Operator" target="NBUIOperator">
+                        <tocitem text="NBUI Algorithm Specification" target="NBUIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDBI Operator" target="NDBIOperator">
+                        <tocitem text="NDBI Algorithm Specification" target="NDBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDISIb Operator" target="NDISIbOperator">
+                        <tocitem text="NDISIb Algorithm Specification" target="NDISIbAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDISIg Operator" target="NDISIgOperator">
+                        <tocitem text="NDISIg Algorithm Specification" target="NDISIgAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDISImndwi Operator" target="NDISImndwiOperator">
+                        <tocitem text="NDISImndwi Algorithm Specification" target="NDISImndwiAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDISIndwi Operator" target="NDISIndwiOperator">
+                        <tocitem text="NDISIndwi Algorithm Specification" target="NDISIndwiAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDISIr Operator" target="NDISIrOperator">
+                        <tocitem text="NDISIr Algorithm Specification" target="NDISIrAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NHFD Operator" target="NHFDOperator">
+                        <tocitem text="NHFD Algorithm Specification" target="NHFDAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="PISI Operator" target="PISIOperator">
+                        <tocitem text="PISI Algorithm Specification" target="PISIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="UI Operator" target="UIOperator">
+                        <tocitem text="UI Algorithm Specification" target="UIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="VIBI Operator" target="VIBIOperator">
+                        <tocitem text="VIBI Algorithm Specification" target="VIBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="VgNIRBI Operator" target="VgNIRBIOperator">
+                        <tocitem text="VgNIRBI Algorithm Specification" target="VgNIRBIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="VrNIRBI Operator" target="VrNIRBIOperator">
+                        <tocitem text="VrNIRBI Algorithm Specification" target="VrNIRBIAlgorithm"/>
+                    </tocitem>
+
+                </tocitem>
+
+            </tocitem>
+            <tocitem text="Thematic Water Processing">
 
                 <tocitem text="Water Radiometric Indices">
 
@@ -115,22 +637,62 @@
                     <tocitem text="NDTI Operator" target="NDTIOperator">
                         <tocitem text="NDTI Algorithm Specification" target="NDTIAlgorithm"/>
                     </tocitem>
-
-                </tocitem>
-
-                <tocitem text="Soil Radiometric Indices">
-
-                    <tocitem text="BI Operator" target="BIOperator">
-                        <tocitem text="BI Algorithm Specification" target="BIAlgorithm"/>
+                    <tocitem text="AWEInsh Operator" target="AWEInshOperator">
+                        <tocitem text="AWEInsh Algorithm Specification" target="AWEInshAlgorithm"/>
                     </tocitem>
-                    <tocitem text="BI2 Operator" target="BI2Operator">
-                        <tocitem text="BI2 Algorithm Specification" target="BI2Algorithm"/>
+                    <tocitem text="AWEIsh Operator" target="AWEIshOperator">
+                        <tocitem text="AWEIsh Algorithm Specification" target="AWEIshAlgorithm"/>
                     </tocitem>
-                    <tocitem text="RI Operator" target="RIOperator">
-                        <tocitem text="RI Algorithm Specification" target="RIAlgorithm"/>
+                    <tocitem text="LSWI Operator" target="LSWIOperator">
+                        <tocitem text="LSWI Algorithm Specification" target="LSWIAlgorithm"/>
                     </tocitem>
-                    <tocitem text="CI Operator" target="CIOperator">
-                        <tocitem text="CI Algorithm Specification" target="CIAlgorithm"/>
+                    <tocitem text="MBWI Operator" target="MBWIOperator">
+                        <tocitem text="MBWI Algorithm Specification" target="MBWIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="MLSWI26 Operator" target="MLSWI26Operator">
+                        <tocitem text="MLSWI26 Algorithm Specification" target="MLSWI26Algorithm"/>
+                    </tocitem>
+                    <tocitem text="MLSWI27 Operator" target="MLSWI27Operator">
+                        <tocitem text="MLSWI27 Algorithm Specification" target="MLSWI27Algorithm"/>
+                    </tocitem>
+                    <tocitem text="MuWIR Operator" target="MuWIROperator">
+                        <tocitem text="MuWIR Algorithm Specification" target="MuWIRAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDCI Operator" target="NDCIOperator">
+                        <tocitem text="NDCI Algorithm Specification" target="NDCIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDPonI Operator" target="NDPonIOperator">
+                        <tocitem text="NDPonI Algorithm Specification" target="NDPonIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDVIMNDWI Operator" target="NDVIMNDWIOperator">
+                        <tocitem text="NDVIMNDWI Algorithm Specification" target="NDVIMNDWIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NDWIns Operator" target="NDWInsOperator">
+                        <tocitem text="NDWIns Algorithm Specification" target="NDWInsAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="NWI Operator" target="NWIOperator">
+                        <tocitem text="NWI Algorithm Specification" target="NWIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="S2WI Operator" target="S2WIOperator">
+                        <tocitem text="S2WI Algorithm Specification" target="S2WIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="SWM Operator" target="SWMOperator">
+                        <tocitem text="SWM Algorithm Specification" target="SWMAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="TWI Operator" target="TWIOperator">
+                        <tocitem text="TWI Algorithm Specification" target="TWIAlgorithm"/>
+                    </tocitem>
+                    <tocitem text="WI1 Operator" target="WI1Operator">
+                        <tocitem text="WI1 Algorithm Specification" target="WI1Algorithm"/>
+                    </tocitem>
+                    <tocitem text="WI2 Operator" target="WI2Operator">
+                        <tocitem text="WI2 Algorithm Specification" target="WI2Algorithm"/>
+                    </tocitem>
+                    <tocitem text="WI2015 Operator" target="WI2015Operator">
+                        <tocitem text="WI2015 Algorithm Specification" target="WI2015Algorithm"/>
+                    </tocitem>
+                    <tocitem text="WRI Operator" target="WRIOperator">
+                        <tocitem text="WRI Algorithm Specification" target="WRIAlgorithm"/>
                     </tocitem>
 
                 </tocitem>
