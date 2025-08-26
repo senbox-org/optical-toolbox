@@ -1,0 +1,347 @@
+{
+  "id": "v002/night/ECOv002_L1B_RAD_37968_001_20250318T021016_0713_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "18-MAR-2025 02:10:16.467964",
+    "endTime": "18-MAR-2025 02:11:07.430279",
+    "bands": [
+      {
+        "name": "Radiance_data_quality_1",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2329,
+            "y": 3027,
+            "value": 0.0
+          },
+          {
+            "x": 4009,
+            "y": 3654,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Radiance_data_quality_2",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": 0.0
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Radiance_data_quality_3",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1570,
+            "y": 1446,
+            "value": 0.0
+          },
+          {
+            "x": 3296,
+            "y": 2057,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Radiance_data_quality_4",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2970,
+            "y": 4197,
+            "value": 0.0
+          },
+          {
+            "x": 3285,
+            "y": 5229,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Radiance_data_quality_5",
+        "description": "\nData quality indicator. \n  0 - DQI_GOOD, normal data, nothing wrong with it\n  1 - DQI_INTERPOLATED, data was part of instrument \n      'stripe', and we have filled this in with \n      interpolated data (see ATB) \n  2 - DQI_STRIPE_NOT_INTERPOLATED, data was part of\n      instrument 'stripe' and we could not fill in\n      with interpolated data.\n  3 - DQI_BAD_OR_MISSING, indicates data with a bad \n      value (e.g., negative DN) or missing packets.\n  4 - DQI_NOT_SEEN, pixels where because of the \n      difference in time that a sample is seen with \n      each band, the ISS has moved enough we haven't \n      seen the pixel. So data is missing, but by\n      instrument design instead of some problem.\n",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 854,
+            "y": 3751,
+            "value": 0.0
+          },
+          {
+            "x": 2803,
+            "y": 5144,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Radiance_radiance_1",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4083,
+            "y": 2729,
+            "value": 6.0081267
+          },
+          {
+            "x": 5134,
+            "y": 2736,
+            "value": 5.9111223
+          }
+        ]
+      },
+      {
+        "name": "Radiance_radiance_2",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1838,
+            "y": 5065,
+            "value": 5.9010596
+          },
+          {
+            "x": 53,
+            "y": 2651,
+            "value": 4.749432
+          }
+        ]
+      },
+      {
+        "name": "Radiance_radiance_3",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1768,
+            "y": 1110,
+            "value": 6.3978977
+          },
+          {
+            "x": 1475,
+            "y": 243,
+            "value": 6.3227086
+          }
+        ]
+      },
+      {
+        "name": "Radiance_radiance_4",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 5245,
+            "y": 3405,
+            "value": 7.1923676
+          },
+          {
+            "x": 3090,
+            "y": 4036,
+            "value": 6.6186285
+          }
+        ]
+      },
+      {
+        "name": "Radiance_radiance_5",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "W/m^2/sr/um",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1252,
+            "y": 2802,
+            "value": 6.4850526
+          },
+          {
+            "x": 1733,
+            "y": 4069,
+            "value": 5.155396
+          }
+        ]
+      },
+      {
+        "name": "SWIR_swir_dn",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1933,
+            "y": 2805,
+            "value": "NaN"
+          },
+          {
+            "x": 2175,
+            "y": 2491,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "FPIEencoder_EncoderValue",
+        "description": "Mirror encoder value of each focal plane in each scan",
+        "bandWidth": 5400,
+        "bandHeight": 44,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3103,
+            "y": 4,
+            "value": 411098.0
+          },
+          {
+            "x": 3484,
+            "y": 0,
+            "value": 420209.0
+          }
+        ]
+      },
+      {
+        "name": "Time_line_start_time_j2000",
+        "description": "J2000 time of first pixel in line",
+        "bandWidth": 1,
+        "bandHeight": 5632,
+        "geophysicalUnit": "second",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2068,
+            "value": 7.9553594E8
+          },
+          {
+            "x": 0,
+            "y": 5330,
+            "value": 7.9553594E8
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/PGEName",
+        "value": "L1B_RAD_PGE"
+      },
+      {
+        "path": "L1B_RADMetadata/CalibrationOffsetCorrection",
+        "value": "0.968,0.511,0.6181,0.5208,0.5515"
+      },
+      {
+        "path": "L1B_RADMetadata/CalibrationOffsetCorrection",
+        "value": "0.968,0.511,0.6181,0.5208,0.5515"
+      },
+      {
+        "path": "StandardMetadata/ProcessingLevelDescription",
+        "value": "Level 1B Radiance Parameters"
+      },
+      {
+        "path": "StandardMetadata/NorthBoundingCoordinate",
+        "value": "0.0"
+      },
+      {
+        "path": "StandardMetadata/WestBoundingCoordinate",
+        "value": "0.0"
+      },
+      {
+        "path": "StandardMetadata/RangeEndingDate",
+        "value": "2025-03-18"
+      },
+      {
+        "path": "L1B_RADMetadata/QAPercentMissingData",
+        "value": "0.0"
+      },
+      {
+        "path": "L1B_RADMetadata/RadScanLineOrder",
+        "value": "Reverse line order"
+      },
+      {
+        "path": "StandardMetadata/PlatformShortName",
+        "value": "ISS"
+      }
+    ]
+  }
+}

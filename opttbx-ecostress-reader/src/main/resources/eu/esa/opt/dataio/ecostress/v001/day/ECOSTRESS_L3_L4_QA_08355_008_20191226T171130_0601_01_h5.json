@@ -1,0 +1,302 @@
+{
+  "id": "v001/day/ECOSTRESS_L3_L4_QA_08355_008_20191226T171130_0601_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 5400,
+    "sceneHeight": 5632,
+    "startTime": "26-DEC-2019 17:11:31.725607",
+    "endTime": "26-DEC-2019 17:16:31.725607",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2329.0,
+          "y": 3027.0,
+          "lat": 41.02075222454653,
+          "lon": -89.81012200112781
+        },
+        {
+          "x": 4009.0,
+          "y": 3654.0,
+          "lat": 40.44221978676641,
+          "lon": -87.92981359283893
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
+    "bands": [
+      {
+        "name": "L3_L4_QA_ECOSTRESS_L2_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1003,
+            "value": 15.0
+          },
+          {
+            "x": 3699,
+            "y": 4790,
+            "value": 23.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_Landsat8_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1570,
+            "y": 1446,
+            "value": 240.0
+          },
+          {
+            "x": 3296,
+            "y": 2057,
+            "value": 240.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MCD12Q1_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2970,
+            "y": 4197,
+            "value": 0.0
+          },
+          {
+            "x": 3285,
+            "y": 5229,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MCD43A3_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 854,
+            "y": 3751,
+            "value": 1.0
+          },
+          {
+            "x": 2803,
+            "y": 5144,
+            "value": 1.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD04_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4083,
+            "y": 2729,
+            "value": 0.0
+          },
+          {
+            "x": 5134,
+            "y": 2736,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD06_1km_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1838,
+            "y": 5065,
+            "value": -9.0
+          },
+          {
+            "x": 53,
+            "y": 2651,
+            "value": 16.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD06_5km_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1768,
+            "y": 1110,
+            "value": 119.0
+          },
+          {
+            "x": 1475,
+            "y": 243,
+            "value": 119.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD07_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 5245,
+            "y": 3405,
+            "value": 0.0
+          },
+          {
+            "x": 3090,
+            "y": 4036,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD13Q1_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1252,
+            "y": 2802,
+            "value": 20505.0
+          },
+          {
+            "x": 1733,
+            "y": 4069,
+            "value": 2120.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD17A2H_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1933,
+            "y": 2805,
+            "value": 16.0
+          },
+          {
+            "x": 2175,
+            "y": 2491,
+            "value": 8.0
+          }
+        ]
+      },
+      {
+        "name": "L3_L4_QA_MOD44W_QC",
+        "bandWidth": 5400,
+        "bandHeight": 5632,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3103,
+            "y": 517,
+            "value": 1.0
+          },
+          {
+            "x": 3484,
+            "y": 89,
+            "value": 1.0
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_MOD04_QC",
+        "value": "['MOD04_L2.A2019360.1740.061.2019361011718.hdf', 'MOD04_L2.A2019360.1600.061.2019361011621.hdf']"
+      },
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_MOD44W_QC",
+        "value": "['MOD44W.A2015001.h11v05.006.2018033150737.hdf', 'MOD44W.A2015001.h10v04.006.2018033150244.hdf', 'MOD44W.A2015001.h11v04.006.2018033150710.hdf', 'MOD44W.A2015001.h10v05.006.2018033150312.hdf']"
+      },
+      {
+        "path": "StandardMetadata/PGEName",
+        "value": "L3_L4_PP_PGE"
+      },
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_MOD06_5km_QC",
+        "value": "['MOD06_L2.A2019360.1740.061.2019361013212.hdf', 'MOD06_L2.A2019360.1600.061.2019361013034.hdf']"
+      },
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_MOD06_1km_QC",
+        "value": "['MOD06_L2.A2019360.1740.061.2019361013212.hdf', 'MOD06_L2.A2019360.1600.061.2019361013034.hdf']"
+      },
+      {
+        "path": "StandardMetadata/ProcessingLevelDescription",
+        "value": "L3-L4 Ancillary Data Quality Assessment Fields"
+      },
+      {
+        "path": "StandardMetadata/NorthBoundingCoordinate",
+        "value": "43.74269015438378"
+      },
+      {
+        "path": "StandardMetadata/WestBoundingCoordinate",
+        "value": "-92.41681145523782"
+      },
+      {
+        "path": "StandardMetadata/RangeBeginningTime",
+        "value": "17:11:31.725607"
+      },
+      {
+        "path": "L3_L4_QA_Metadata/AncillaryFile_MOD13Q1_QC",
+        "value": "['MOD13Q1.A2019353.h10v05.006.2020004221409.hdf', 'MOD13Q1.A2019353.h11v04.006.2020004221247.hdf', 'MOD13Q1.A2019353.h10v04.006.2020004221321.hdf', 'MOD13Q1.A2019353.h11v05.006.2020004220846.hdf']"
+      }
+    ]
+  }
+}

@@ -1,0 +1,279 @@
+{
+  "id": "v002/night/ECOv002_L1B_ATT_37968_20250318T021016_0713_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 4,
+    "sceneHeight": 1391,
+    "startTime": "18-MAR-2025 01:57:53.402344",
+    "endTime": "18-MAR-2025 03:24:48.222656",
+    "bands": [
+      {
+        "name": "Ephemeris_eci_position",
+        "description": "ECI position (J2000 Inertial Frame)",
+        "bandWidth": 3,
+        "bandHeight": 1391,
+        "geophysicalUnit": "m",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 747,
+            "value": -5274675.0
+          },
+          {
+            "x": 2,
+            "y": 902,
+            "value": -3410839.2
+          }
+        ]
+      },
+      {
+        "name": "Ephemeris_eci_velocity",
+        "description": "ECI velocity (J2000 Inertial Frame)",
+        "bandWidth": 3,
+        "bandHeight": 1391,
+        "geophysicalUnit": "m/s",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 247,
+            "value": -6709.752
+          },
+          {
+            "x": 2,
+            "y": 1183,
+            "value": 4646.466
+          }
+        ]
+      },
+      {
+        "name": "Ephemeris_time_j2000",
+        "bandWidth": 1,
+        "bandHeight": 1391,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 357,
+            "value": 7.9553606E8
+          },
+          {
+            "x": 0,
+            "y": 508,
+            "value": 7.9553626E8
+          }
+        ]
+      },
+      {
+        "name": "Attitude_quaternion",
+        "description": "Attitude quaternion, goes from spacecraft to ECI (J2000 Inertial Frame). The coefficient convention used has the real part in the first column.",
+        "bandWidth": 4,
+        "bandHeight": 1391,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1036,
+            "value": 0.46580175
+          },
+          {
+            "x": 2,
+            "y": 1291,
+            "value": 0.5707927
+          }
+        ]
+      },
+      {
+        "name": "Attitude_time_j2000",
+        "bandWidth": 1,
+        "bandHeight": 1391,
+        "geophysicalUnit": "Seconds",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 926,
+            "value": 7.9553894E8
+          },
+          {
+            "x": 0,
+            "y": 1270,
+            "value": 7.9554003E8
+          }
+        ]
+      },
+      {
+        "name": "Uncorrected_Ephemeris_eci_position",
+        "description": "ECI position (J2000 Inertial Frame). This is the reported position from the ISS, uncorrected.",
+        "bandWidth": 3,
+        "bandHeight": 1391,
+        "geophysicalUnit": "m",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 674,
+            "value": -1686545.2
+          },
+          {
+            "x": 2,
+            "y": 675,
+            "value": -1692249.0
+          }
+        ]
+      },
+      {
+        "name": "Uncorrected_Ephemeris_eci_velocity",
+        "description": "ECI velocity (J2000 Inertial Frame). This is the reported position from the ISS, uncorrected.",
+        "bandWidth": 3,
+        "bandHeight": 1391,
+        "geophysicalUnit": "m/s",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1251,
+            "value": 5759.9297
+          },
+          {
+            "x": 0,
+            "y": 654,
+            "value": 4557.362
+          }
+        ]
+      },
+      {
+        "name": "Uncorrected_Ephemeris_time_j2000",
+        "bandWidth": 1,
+        "bandHeight": 1391,
+        "geophysicalUnit": "Seconds",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 274,
+            "value": 7.95536E8
+          },
+          {
+            "x": 0,
+            "y": 60,
+            "value": 7.955352E8
+          }
+        ]
+      },
+      {
+        "name": "Uncorrected_Attitude_quaternion",
+        "description": "Attitude quaternion, goes from spacecraft to ECI (J2000 Inertial Frame). The coefficient convention used has the real part in the first column. This is the reported attitude from the ISS, without correction",
+        "bandWidth": 4,
+        "bandHeight": 1391,
+        "geophysicalUnit": "dimensionless",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3,
+            "y": 841,
+            "value": -0.12275628
+          },
+          {
+            "x": 2,
+            "y": 997,
+            "value": 0.44721207
+          }
+        ]
+      },
+      {
+        "name": "Uncorrected_Attitude_time_j2000",
+        "bandWidth": 1,
+        "bandHeight": 1391,
+        "geophysicalUnit": "Seconds",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 692,
+            "value": 7.955381E8
+          },
+          {
+            "x": 0,
+            "y": 1005,
+            "value": 7.955398E8
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "7.00"
+      },
+      {
+        "path": "StandardMetadata/NorthBoundingCoordinate",
+        "value": "0.0"
+      },
+      {
+        "path": "L1GEOMetadata/AncillaryFiles",
+        "value": "0"
+      },
+      {
+        "path": "L1GEOMetadata/AncillaryFiles",
+        "value": "0"
+      },
+      {
+        "path": "L1GEOMetadata/AncillaryFiles",
+        "value": "0"
+      },
+      {
+        "path": "L1GEOMetadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "StandardMetadata/NorthBoundingCoordinate",
+        "value": "0.0"
+      },
+      {
+        "path": "L1GEOMetadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "L1GEOMetadata/OrbitCorrectionPerformed",
+        "value": "True"
+      },
+      {
+        "path": "StandardMetadata/ProcessingLevelDescription",
+        "value": "Level 1B Geolocation Parameters"
+      }
+    ]
+  }
+}

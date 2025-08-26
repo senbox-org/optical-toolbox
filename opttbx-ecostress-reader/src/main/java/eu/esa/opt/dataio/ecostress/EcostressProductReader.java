@@ -21,6 +21,9 @@ import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.MetadataAttribute;
+import org.esa.snap.core.util.ArrayUtils;
+import org.esa.snap.core.util.GeoUtils;
 import org.esa.snap.product.library.v2.preferences.RepositoriesCredentialsController;
 import org.esa.snap.product.library.v2.preferences.model.RemoteRepositoryCredentials;
 import org.esa.snap.remote.products.repository.RepositoryProduct;
@@ -28,7 +31,9 @@ import org.esa.snap.remote.products.repository.download.RemoteRepositoriesManage
 import org.esa.snap.remote.products.repository.download.RemoteRepositoryProductImpl;
 import org.esa.snap.remote.products.repository.geometry.Polygon2D;
 import org.esa.snap.runtime.Config;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.awt.*;
 import java.awt.geom.PathIterator;
@@ -93,32 +98,40 @@ public class EcostressProductReader extends AbstractProductReader {
         if (ecostressMetadata == null) {
             return null;
         }
+        String pathOfGeneralMetadata = EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA;
+        for (String metadataElementPath : ecostressMetadata.getMetadataElementsPaths()) {
+            if (metadataElementPath.endsWith(EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA)) {
+                pathOfGeneralMetadata = metadataElementPath;
+            }
+        }
         final List<Band> bandsList = getBandsList(ecostressFile, ecostressMetadata);
-        Dimension productSize = EcostressUtils.extractEcostressProductDimension(ecostressFile, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
+        Dimension productSize = EcostressUtils.extractEcostressProductDimension(ecostressFile, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
         if (productSize.height < 1 || productSize.width < 1) {
             productSize = computeProductDimensionUsingBandsDimensions(bandsList);
         }
-        final Product product = new Product(ecostressFile.getName(), ecostressMetadata.getFormatName(), productSize.width, productSize.height, this);
-        final MetadataElement productMetadataRoot = product.getMetadataRoot();
-        for (MetadataElement commonMetadataElement : getCommonMetadataElementsList(ecostressFile)) {
-            productMetadataRoot.addElement(commonMetadataElement);
-        }
+        final EcostressProduct ecostressProduct = new EcostressProduct(ecostressFile.getName(), ecostressMetadata.getFormatName(), productSize.width, productSize.height, this);
+        final MetadataElement productMetadataRoot = ecostressProduct.getMetadataRoot();
         for (MetadataElement metadataElement : getMetadataElementsList(ecostressFile, ecostressMetadata)) {
             productMetadataRoot.addElement(metadataElement);
+            final MetadataAttribute dayNightFlagAttribute = metadataElement.getAttribute(EcostressConstants.ECOSTRESS_STANDARD_METADATA_DAY_NIGHT_FLAG);
+            if (dayNightFlagAttribute != null) {
+                final boolean isNight = dayNightFlagAttribute.getData().getElemString().equalsIgnoreCase("night");
+                ecostressProduct.setReversed(ecostressMetadata.isReversedOnNight() && isNight);
+            }
         }
         for (Band band : bandsList) {
-            product.addBand(band);
+            ecostressProduct.addBand(band);
         }
-        product.setAutoGrouping(ecostressMetadata.getGroupingPattern());
-        product.setDescription("ECOSTRESS Product");
-        product.setStartTime(EcostressUtils.extractStartTime(ecostressFile));
-        product.setEndTime(EcostressUtils.extractEndTime(ecostressFile));
-        product.setFileLocation(ecostressFile);
-        final GeoCoding geoCoding = buildGeoCoding(ecostressFile, product, ecostressMetadata);
+        ecostressProduct.setAutoGrouping(ecostressMetadata.getGroupingPattern());
+        ecostressProduct.setDescription("ECOSTRESS Product");
+        ecostressProduct.setStartTime(EcostressUtils.extractStartTime(ecostressFile, pathOfGeneralMetadata));
+        ecostressProduct.setEndTime(EcostressUtils.extractEndTime(ecostressFile, pathOfGeneralMetadata));
+        ecostressProduct.setFileLocation(ecostressFile);
+        final GeoCoding geoCoding = buildGeoCoding(ecostressFile, ecostressProduct, ecostressMetadata);
         if (geoCoding != null) {
-            product.setSceneGeoCoding(geoCoding);
+            ecostressProduct.setSceneGeoCoding(geoCoding);
         }
-        return product;
+        return ecostressProduct;
     }
 
     /**
@@ -151,7 +164,8 @@ public class EcostressProductReader extends AbstractProductReader {
         Assert.state(sourceHeight == targetHeight, "sourceHeight != targetHeight");
 
         final EcostressFile ecostressFile = getEcostressFile();
-        EcostressUtils.readEcostressBandData(ecostressFile, targetBand, targetWidth, targetHeight, targetOffsetX, targetOffsetY, targetBuffer);
+        final boolean isBandRasterReversed = isBandRasterReversed(targetBand);
+        EcostressUtils.readEcostressBandData(ecostressFile, targetBand, targetWidth, targetHeight, targetOffsetX, targetOffsetY, targetBuffer, isBandRasterReversed);
     }
 
     /**
@@ -167,22 +181,12 @@ public class EcostressProductReader extends AbstractProductReader {
         return this.ecostressFile;
     }
 
-    /**
-     * Gets the ECOSTRESS product common metadata from ECOSTRESS product file
-     *
-     * @param ecostressFile the ECOSTRESS product file object
-     * @return the ECOSTRESS product common metadata
-     */
-    private List<MetadataElement> getCommonMetadataElementsList(EcostressFile ecostressFile) {
-        return EcostressUtils.extractMetadataElements(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA);
-    }
-
-    private GeoCoding buildGeoCoding(EcostressFile ecostressFile, Product product, EcostressMetadata ecostressMetadata) {
-        GeoCoding productGeoCoding = readPixelBasedGeoCoding(ecostressFile, product);
+    private GeoCoding buildGeoCoding(EcostressFile ecostressFile, EcostressProduct ecostressProduct, EcostressMetadata ecostressMetadata) {
+        GeoCoding productGeoCoding = readPixelBasedGeoCoding(ecostressFile, ecostressProduct);
         if (productGeoCoding != null) {
             return productGeoCoding;
         }
-        productGeoCoding = buildCrsGeoCodingUsingProductMetadata(product);
+        productGeoCoding = buildCrsGeoCodingUsingProductMetadata(ecostressProduct);
         if (productGeoCoding != null) {
             return productGeoCoding;
         }
@@ -190,7 +194,7 @@ public class EcostressProductReader extends AbstractProductReader {
         if (remotePlatformName == null) {
             return null;
         }
-        return buildCrsGeoCodingUsingRemoteRepository(product, remotePlatformName);
+        return buildCrsGeoCodingUsingRemoteRepository(ecostressProduct, remotePlatformName);
     }
 
     /**
@@ -214,12 +218,12 @@ public class EcostressProductReader extends AbstractProductReader {
      * Reads the pixel Geocoding from ECOSTRESS product which contains 'latitude' and 'longitude' bands
      *
      * @param ecostressFile the ECOSTRESS product file object
-     * @param product       the ECOSTRESS product object
+     * @param ecostressProduct       the ECOSTRESS product object
      * @return the pixel Geocoding
      */
-    private static GeoCoding readPixelBasedGeoCoding(EcostressFile ecostressFile, Product product) {
-        final Band lonBand = findBand(product, EcostressConstants.ECOSTRESS_LONGITUDE_BAND_NAME);
-        final Band latBand = findBand(product, EcostressConstants.ECOSTRESS_LATITUDE_BAND_NAME);
+    private static GeoCoding readPixelBasedGeoCoding(EcostressFile ecostressFile, EcostressProduct ecostressProduct) {
+        final Band lonBand = findBand(ecostressProduct, EcostressConstants.ECOSTRESS_LONGITUDE_BAND_NAME);
+        final Band latBand = findBand(ecostressProduct, EcostressConstants.ECOSTRESS_LATITUDE_BAND_NAME);
         if (latBand == null || lonBand == null) {
             return null;
         }
@@ -229,6 +233,14 @@ public class EcostressProductReader extends AbstractProductReader {
 
         final double[] longitudes = (double[]) EcostressUtils.readAndGetEcostressBandData(ecostressFile, lonBand);
         final double[] latitudes = (double[]) EcostressUtils.readAndGetEcostressBandData(ecostressFile, latBand);
+
+        final MetadataElement productMetadata = ecostressProduct.getMetadataRoot().getElementAt(0);
+        final double bottomLeftLat = productMetadata.getAttributeDouble(EcostressConstants.ECOSTRESS_STANDARD_METADATA_SOUTH_BOUNDING_COORDINATE);
+        ecostressProduct.setReversed(latitudes[0] == bottomLeftLat);
+        if (ecostressProduct.isReversed()) {
+            ArrayUtils.swapArray(longitudes);
+            ArrayUtils.swapArray(latitudes);
+        }
 
         final double resolutionInKm = RasterUtils.computeResolutionInKm(longitudes, latitudes, width, height);
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonBand.getName(), latBand.getName(), width, height, resolutionInKm);
@@ -332,11 +344,17 @@ public class EcostressProductReader extends AbstractProductReader {
     private static GeoCoding buildCrsGeoCoding(Product product, double topLeftLon, double topRightLon, double topLeftLat, double bottomLeftLat) {
         final int productWidth = product.getSceneRasterWidth();
         final int productHeight = product.getSceneRasterHeight();
-        final double pixelSizeX = Math.abs(topRightLon - topLeftLon) / (productWidth - 1);
-        final double pixelSizeY = (topLeftLat - bottomLeftLat) / (productHeight - 1);
 
         try {
-            return new CrsGeoCoding(DefaultGeographicCRS.WGS84, productWidth, productHeight, topLeftLon, topLeftLat, pixelSizeX, pixelSizeY);
+            CoordinateReferenceSystem wgs84CRS = DefaultGeographicCRS.WGS84;
+            CoordinateReferenceSystem mercatorCRS = CRS.decode("EPSG:3857");
+            final Point2D.Double originPointWGS84 = new Point2D.Double(topLeftLon, bottomLeftLat);
+            final Point2D.Double endPointWGS84 = new Point2D.Double(topRightLon, topLeftLat);
+            final Point2D.Double originPointMercator = GeoUtils.reprojectPoint(originPointWGS84, wgs84CRS, mercatorCRS);
+            final Point2D.Double endPointMercator = GeoUtils.reprojectPoint(endPointWGS84, wgs84CRS, mercatorCRS);
+            final double pixelSizeX = (endPointMercator.getX() - originPointMercator.getX()) / (productWidth - 1);
+            final double pixelSizeY = (endPointMercator.getY() - originPointMercator.getY()) / (productHeight - 1);
+            return new CrsGeoCoding(mercatorCRS, productWidth, productHeight, originPointMercator.getX(), endPointMercator.getY(), pixelSizeX, pixelSizeY, 0, 0);
         } catch (Exception e) {
             logger.warning("Cannot build CRS geocoding for product '" + product.getName() + "': " + e.getMessage());
         }
@@ -357,5 +375,10 @@ public class EcostressProductReader extends AbstractProductReader {
             }
         }
         return null;
+    }
+
+    private static boolean isBandRasterReversed(Band targetBand){
+        final EcostressProduct ecostressProduct = (EcostressProduct) targetBand.getProduct();
+        return ecostressProduct.isReversed();
     }
 }

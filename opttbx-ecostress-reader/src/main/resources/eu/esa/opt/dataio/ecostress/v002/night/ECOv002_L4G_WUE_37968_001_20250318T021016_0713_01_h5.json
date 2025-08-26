@@ -1,0 +1,113 @@
+{
+  "id": "v002/night/ECOv002_L4G_WUE_37968_001_20250318T021016_0713_01_h5",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 9565,
+    "sceneHeight": 7024,
+    "startTime": "18-MAR-2025 02:10:16.467964",
+    "endTime": "18-MAR-2025 02:11:08.437500",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 4125.0,
+          "y": 3775.0,
+          "lat": 42.18041842556373,
+          "lon": -125.27589808657466
+        },
+        {
+          "x": 7101.0,
+          "y": 4557.0,
+          "lat": 41.628922063262664,
+          "lon": -123.19248026976163
+        }
+      ],
+      "reverseAccuracy": 2.9103830456733704E-11
+    },
+    "bands": [
+      {
+        "name": "Data_Fields_GPP",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 499,
+            "y": 1251,
+            "value": "NaN"
+          },
+          {
+            "x": 6552,
+            "y": 5974,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Data_Fields_WUE",
+        "bandWidth": 9565,
+        "bandHeight": 7024,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2782,
+            "y": 1804,
+            "value": "NaN"
+          },
+          {
+            "x": 5839,
+            "y": 2565,
+            "value": "NaN"
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "ProductMetadata/QAPercentCloudCover",
+        "value": "24"
+      },
+      {
+        "path": "ProductMetadata/QAPercentGoodQuality",
+        "value": "99"
+      },
+      {
+        "path": "StandardMetadata/ProductionDateTime",
+        "value": "2025-03-19T07:04:21.735Z"
+      },
+      {
+        "path": "ProductMetadata/QAPercentGoodQuality",
+        "value": "99"
+      },
+      {
+        "path": "ProductMetadata/NumberOfBands",
+        "value": "5"
+      },
+      {
+        "path": "ProductMetadata/NumberOfBands",
+        "value": "5"
+      },
+      {
+        "path": "StandardMetadata/ShortName",
+        "value": "ECO_L4G_WUE"
+      },
+      {
+        "path": "StandardMetadata/PGEVersion",
+        "value": "v1.12.4"
+      },
+      {
+        "path": "StandardMetadata/FieldOfViewObstruction",
+        "value": "NO"
+      },
+      {
+        "path": "StandardMetadata/AutomaticQualityFlag",
+        "value": "PASS"
+      }
+    ]
+  }
+}
