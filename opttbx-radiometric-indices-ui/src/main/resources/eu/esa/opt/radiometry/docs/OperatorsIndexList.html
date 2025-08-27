@@ -27,7 +27,8 @@
     <tr class="header">
         <td class="header">&nbsp;Thematic Land Processing</td>
         <td class="header" align="right">
-          <a href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html">             <img src="images/snap_header.jpg" border="0"/></a>
+            <a href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html">
+                <img src="images/snap_header.jpg" border="0"/></a>
         </td>
     </tr>
 </table>
@@ -36,285 +37,1675 @@
     features that are not otherwise obvious if using only one band.
 </p>
 <p>The indices provided by the Optical Toolbox, detailed below, are grouped into three categories:</p>
-    <ul>
-        <li>Vegetation indices</li>
-        <li>Soil indices</li>
-        <li>Water indices</li>
-    </ul>
+<ul>
+    <li>Vegetation indices</li>
+    <li>Soil indices</li>
+    <li>Water indices</li>
+    <li>Burn Indices</li>
+    <LI>Urban Indices</LI>
+</ul>
 <p>These indices share the same graphical interface, as in the next figure:</p>
 <table border="0" cellspacing="1" cellpadding="0">
     <tr>
         <td style="border: none;">
-            <img src="images/ri_window.png" />
+            <img src="images/ri_window.png"/>
         </td>
         <td valign="top" style="border: none;">
             <table border="0" cellpadding="1" cellspacing="1">
                 <thead>
-                    <tr>
-                        <th>Parameter</th>
-                        <th>Description</th>
-                    </tr>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Resample Type</strong></td>
-                        <td>In case when the bands involved in the calculus are not of the same resolution,
-                            this represents the choice of resampling the bands: either use the lowest resolution
-                            band as reference, or the highest resolution one.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Upsampling Method</strong></td>
-                        <td>If the resampling will be done for the highest resolution band,
-                            this is the method used for upsampling lower resolution bands.<br/>
-                            Can be one of: <strong>Nearest neighbour, Bilinear, Bicubic</strong>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Downsampling Method</strong></td>
-                        <td>If the resampling will be done for the lowest resolution band,
-                            this is the method used for downsampling higher resolution bands.<br/>
-                            Can be one of: <strong>First, Min, Max, Mean, Median</strong>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>[Bx] factor</strong></td>
-                        <td>The weight given to the [Bx] band pixel value.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>[Bx]</strong></td>
-                        <td>The selected band [Bx]</td>
-                    </tr>
+                <tr>
+                    <td><strong>Resample Type</strong></td>
+                    <td>In case when the bands involved in the calculus are not of the same resolution,
+                        this represents the choice of resampling the bands: either use the lowest resolution
+                        band as reference, or the highest resolution one.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Upsampling Method</strong></td>
+                    <td>If the resampling will be done for the highest resolution band,
+                        this is the method used for upsampling lower resolution bands.<br/>
+                        Can be one of: <strong>Nearest neighbour, Bilinear, Bicubic</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Downsampling Method</strong></td>
+                    <td>If the resampling will be done for the lowest resolution band,
+                        this is the method used for downsampling higher resolution bands.<br/>
+                        Can be one of: <strong>First, Min, Max, Mean, Median</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>[Bx] factor</strong></td>
+                    <td>The weight given to the [Bx] band pixel value.</td>
+                </tr>
+                <tr>
+                    <td><strong>[Bx]</strong></td>
+                    <td>The selected band [Bx]</td>
+                </tr>
                 </tbody>
             </table>
         </td>
     </tr>
 </table>
-<p>In case of bands with different resolutions are employed, a message is displayed at the bottom of the window, as it can be seen on the above figure.<br/>
-    If no resample is needed, the parameters <strong>Resample Type, Upsampling Method</strong> and <strong>Downsampling Method</strong> will be disabled.<br/>
+<p>In case of bands with different resolutions are employed, a message is displayed at the bottom of the window, as it
+    can be seen on the above figure.<br/>
+    If no resample is needed, the parameters <strong>Resample Type, Upsampling Method</strong> and <strong>Downsampling
+        Method</strong> will be disabled.<br/>
     The parameters <strong>Upsampling Method</strong> and <strong>Downsampling Method</strong> are mutually exclusive.
 </p>
 <br/>
 <p>The following table summarizes the radiometric indices provided by the toolbox:</p>
 <table>
-  <tr>
-    <td><h4><b>Name</b></h4></td>
-    <td><h4><b>Purpose/Classification</b></h4></td>
-	<td><h4><b>Short Description</b></h4></td>
-	<td><h4><b>Type</b></h4></td>
-  </tr>
+    <tr>
+        <td><h4><b>Name</b></h4></td>
+        <td><h4><b>Purpose/Classification</b></h4></td>
+        <td><h4><b>Short Description</b></h4></td>
+        <td><h4><b>Type</b></h4></td>
+    </tr>
 
-  <tr>
-    <td><h3><b><a href="ndvi/NdviTool.html">NDVI</a></b></h3></td>
-    <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>The well-known classical vegetation index. The NDVI composes a measurement
-      for the photosynthetic activity and is strongly in correlation with density and vitality of the
-      vegetation</h5></td>
-    <td><h5>Vegetation Index</h5></td>
-  </tr>
+    <tr>
+        <td><h3><b><a href="ndvi/NdviTool.html">NDVI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
+        <td><h5>The well-known classical vegetation index. The NDVI composes a measurement
+            for the photosynthetic activity and is strongly in correlation with density and vitality of the
+            vegetation</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
 
-  <tr>
-    <td><h3><b><a href="dvi/DviAlgorithmSpecification.html">DVI</a></b></h3></td>
-	<td><h5><u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index is sensitive to the amount of vegetation</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="rvi/RviAlgorithmSpecification.html">RVI</a></b></h3></td>
-	<td><h5><u><b>R</b></u>atio <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>The simplest ratio-based index, it is also called the Simple Ratio (SR). It indicates the amount of vegetation. It also reduces the effects of atmosphere and topography</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="pvi/PviAlgorithmSpecification.html">PVI</a></b></h3></td>
-	<td><h5><u><b>P</b></u>erpendicular <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index could be considered a generalization of the DVI, which allows for soil lines of different slopes.</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="ipvi/IpviAlgorithmSpecification.html">IPVI</a></b></h3></td>
-	<td><h5><u><b>I</b></u>nfrared <u><b>P</b></u>ercentage <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index is functionally equivalent to NDVI and RVI, but it only ranges in value from 0.0 - 1.0</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="wdvi/WdviAlgorithmSpecification.html">WDVI</a></b></h3></td>
-	<td><h5><u><b>W</b></u>eighted <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>WDVI is a mathematically simpler version of PVI, but it has an unrestricted range</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="tndvi/TndviAlgorithmSpecification.html">TNDVI</a></b></h3></td>
-	<td><h5><u><b>T</b></u>ransformed <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>TNDVI algorithm indicates a relation between the amount of green biomass that is found in a pixel</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="gndvi/GndviAlgorithmSpecification.html">GNDVI</a></b></h3></td>
-	<td><h5><u><b>G</b></u>reen <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>GNDVI is more sensible than NDVI to identify different concentration rates of chlorophyll, which is highly correlated at nitrogen.</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="gemi/GemiAlgorithmSpecification.html">GEMI</a></b></h3></td>
-	<td><h5><u><b>G</b></u>lobal <u><b>E</b></u>nvironmental <u><b>M</b></u>onitoring <u><b>I</b></u>ndex</h5></td>
-    <td><h5>Was developed to eliminate the need for a detailed atmospheric correction by constructing a <b>stock</b> atmospheric correction for the vegetation index</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="arvi/ArviAlgorithmSpecification.html">ARVI</a></b></h3></td>
-	<td><h5><u><b>A</b></u>tmospherically <u><b>R</b></u>esistant <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index takes advantage of the different scattering responses from the blue and red band to retrieve information regarding the atmosphere opacity</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="ndi45/Ndi45AlgorithmSpecification.html">NDI45</a></b></h3></td>
-	<td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index algorithm is more linear, with less saturation at higher values than the NDVI.</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-    
-  <tr>
-    <td><h3><b><a href="mtci/MtciAlgorithmSpecification.html">MTCI</a></b></h3></td>
-	<td><h5><u><b>M</b></u>eris <u><b>T</b></u>errestrial <u><b>C</b></u>hlorophyll <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index was developed for estimating chlorophyll content from MERIS (Medium Resolution Imaging Spectrometer) data</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="mcari/McariAlgorithmSpecification.html">MCARI</a></b></h3></td>
-	<td><h5><u><b>M</b></u>odified <u><b>C</b></u>hlorophyll <u><b>A</b></u>bsorption <u><b>R</b></u>atio <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index was developed to be responsive to both leaf chlorophyll concentrations and ground reflectance.</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="reip/ReipAlgorithmSpecification.html">REIP</a></b></h3></td>
-	<td><h5><u><b>R</b></u>ed-<u><b>E</b></u>dge <u><b>I</b></u>nflection <u><b>P</b></u>oint index</h5></td>
-    <td><h5>This index was developed for applications in biomass and nitrogen (N) uptake measurment/management in heterogeneous fields.</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="s2rep/S2repAlgorithmSpecification.html">S2REP</a></b></h3></td>
-	<td><h5>The <u><b>S</b></u>entinel-<b>2</b> <u><b>R</b></u>ed-<u><b>E</b></u>dge <u><b>P</b></u>osition index</h5></td>
-    <td><h5>This index is based on linear interpolation as presented by Guyot and Baret (1988). The reflectance at the inflexion point is estimated and in turn, the REP is retrieved through interpolation of S-2 band 5 and 6 which are positioned on the RE slope.</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="ireci/IreciAlgorithmSpecification.html">IRECI</a></b></h3></td>
-	<td><h5><u><b>I</b></u>nverted <u><b>R</b></u>ed-<u><b>E</b></u>dge <u><b>C</b></u>hlorophyll <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index algorithm incorporates the reflectance in four bands to estimate canopy chlorophyll content</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="pssra/PssraAlgorithmSpecification.html">PSSRa</a></b></h3></td>
-	<td><h5><u><b>P</b></u>igment <u><b>S</b></u>pecific <u><b>S</b></u>imple <u><b>Ra</b></u>tio (chlorophyll) index.</h5></td>
-    <td><h5>This index was developed to investigate the potential of a range of spectral approaches for quantifying  pigments  at  the  scale  of  the  whole  plant  canopy.</h5></td>
-	<td><h5>Vegetation Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="savi/SaviAlgorithmSpecification.html">SAVI</a></b></h3></td>
-	<td><h5><u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index attempts to be a hybrid between the ratio-based indices and the perpendicular indices</h5></td>
-	<td><h5>Soil Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="tsavi/TsaviAlgorithmSpecification.html">TSAVI</a></b></h3></td>
-	<td><h5><u><b>T</b></u>ransformed <u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index assumes that the soil line has arbitrary slope and intercept, and it makes use of these values to adjust the vegetation index</h5></td>
-	<td><h5>Soil Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="msavi/MsaviAlgorithmSpecification.html">MSAVI</a></b></h3></td>
-	<td><h5><u><b>M</b></u>odified <u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>The basic idea of <b>MSAVI</b> was to provide a variable correction factor <b>L</b>. The correction factor used is based on the product of <b>NDVI</b> and <b>WDVI</b></h5></td>
-	<td><h5>Soil Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="msavi2/Msavi2AlgorithmSpecification.html">MSAVI2</a></b></h3></td>
-	<td><h5>The <b>second</b> <u><b>M</b></u>odified <u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
-    <td><h5>Basically, it is used an iterative process and substitute 1 - MSAVI(n-1) as the <b>L</b> factor in MSAVI(n). <br> They then inductively solve the iteration where MSAVI(n) = MSAVI(n-1)<br></h5></td>
-	<td><h5>Soil Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="bi/BiAlgorithmSpecification.html">BI</a></b></h3></td>
-	<td><h5><u><b>B</b></u>rightness <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index is representing the average of the brightness of a satellite image</h5></td>
-	<td><h5>Soil Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="bi2/Bi2AlgorithmSpecification.html">BI2</a></b></h3></td>
-	<td><h5>The <b>second</b> <u><b>B</b></u>rightness <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index is representing the average of the brightness of a satellite image. The result looks like a panchromatique image with the same resolution of the original image.</h5></td>
-	<td><h5>Soil Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="ri/RiAlgorithmSpecification.html">RI</a></b></h3></td>
-	<td><h5><u><b>R</b></u>edness <u><b>I</b></u>ndex</h5></td>
-    <td><h5>The Redness Index algorithm was developed to identify soil colour variations</h5></td>
-	<td><h5>Soil Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="ci/CiAlgorithmSpecification.html">CI</a></b></h3></td>
-	<td><h5><u><b>C</b></u>olour <u><b>I</b></u>ndex</h5></td>
-    <td><h5>The Colour Index algorithm was developed to differentiate soils in the field</h5></td>
-	<td><h5>Soil Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="ndwi/NdwiAlgorithmSpecification.html">NDWI</a></b></h3></td>
-	<td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>W</b></u>ater <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index is a measure of liquid water molecules in vegetation canopies that interacted with the incoming solar radiation.</h5></td>
-	<td><h5>Water Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="ndwi2/Ndwi2AlgorithmSpecification.html">NDWI2</a></b></h3></td>
-	<td><h5>The second <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>W</b></u>ater <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index was developed to detect surface waters in wetland environments and to allow for the measurement of surface water extent.</h5></td>
-	<td><h5>Water Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="mndwi/MndwiAlgorithmSpecification.html">MNDWI</a></b></h3></td>
-	<td><h5><u><b>M</b></u>odified <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>W</b></u>ater <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index was developed to enhance open water features, while efficiently suppressing and even removing built-up land noise as well as vegetation and soil noise.</h5></td>
-	<td><h5>Water Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="ndpi/NdpiAlgorithmSpecification.html">NDPI</a></b></h3></td>
-	<td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>P</b></u>ond <u><b>I</b></u>ndex</h5></td>
-    <td><h5>The NDPI algorithm makes it possible not only to distinguish small ponds and water bodies (down to 0.01 ha), but also to differentiate vegetation inside ponds from that in their surroundings</h5></td>
-	<td><h5>Water Index</h5></td>
-  </tr>
-  
-  <tr>
-    <td><h3><b><a href="ndti/NdtiAlgorithmSpecification.html">NDTI</a></b></h3></td>
-	<td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>T</b></u>urbidity <u><b>I</b></u>ndex</h5></td>
-    <td><h5>This index was developed to allow for the measurement of water turbidity.</h5></td>
-	<td><h5>Water Index</h5></td>
-  </tr>
-  
+    <tr>
+        <td><h3><b><a href="dvi/DviAlgorithmSpecification.html">DVI</a></b></h3></td>
+        <td><h5><u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index is sensitive to the amount of vegetation</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="rvi/RviAlgorithmSpecification.html">RVI</a></b></h3></td>
+        <td><h5><u><b>R</b></u>atio <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
+        <td><h5>The simplest ratio-based index, it is also called the Simple Ratio (SR). It indicates the amount of
+            vegetation. It also reduces the effects of atmosphere and topography</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="pvi/PviAlgorithmSpecification.html">PVI</a></b></h3></td>
+        <td><h5><u><b>P</b></u>erpendicular <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index could be considered a generalization of the DVI, which allows for soil lines of different
+            slopes.</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ipvi/IpviAlgorithmSpecification.html">IPVI</a></b></h3></td>
+        <td><h5><u><b>I</b></u>nfrared <u><b>P</b></u>ercentage <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index is functionally equivalent to NDVI and RVI, but it only ranges in value from 0.0 - 1.0</h5>
+        </td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="wdvi/WdviAlgorithmSpecification.html">WDVI</a></b></h3></td>
+        <td><h5><u><b>W</b></u>eighted <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
+        <td><h5>WDVI is a mathematically simpler version of PVI, but it has an unrestricted range</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="tndvi/TndviAlgorithmSpecification.html">TNDVI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>ransformed <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5>TNDVI algorithm indicates a relation between the amount of green biomass that is found in a pixel</h5>
+        </td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gndvi/GndviAlgorithmSpecification.html">GNDVI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>reen <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex</h5></td>
+        <td><h5>GNDVI is more sensible than NDVI to identify different concentration rates of chlorophyll, which is
+            highly correlated at nitrogen.</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gemi/GemiAlgorithmSpecification.html">GEMI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>lobal <u><b>E</b></u>nvironmental <u><b>M</b></u>onitoring <u><b>I</b></u>ndex</h5></td>
+        <td><h5>Was developed to eliminate the need for a detailed atmospheric correction by constructing a <b>stock</b>
+            atmospheric correction for the vegetation index</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="arvi/ArviAlgorithmSpecification.html">ARVI</a></b></h3></td>
+        <td><h5><u><b>A</b></u>tmospherically <u><b>R</b></u>esistant <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5>
+        </td>
+        <td><h5>This index takes advantage of the different scattering responses from the blue and red band to retrieve
+            information regarding the atmosphere opacity</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndi45/Ndi45AlgorithmSpecification.html">NDI45</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index algorithm is more linear, with less saturation at higher values than the NDVI.</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mtci/MtciAlgorithmSpecification.html">MTCI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>eris <u><b>T</b></u>errestrial <u><b>C</b></u>hlorophyll <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index was developed for estimating chlorophyll content from MERIS (Medium Resolution Imaging
+            Spectrometer) data</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mcari/McariAlgorithmSpecification.html">MCARI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>C</b></u>hlorophyll <u><b>A</b></u>bsorption <u><b>R</b></u>atio
+            <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index was developed to be responsive to both leaf chlorophyll concentrations and ground
+            reflectance.</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="reip/ReipAlgorithmSpecification.html">REIP</a></b></h3></td>
+        <td><h5><u><b>R</b></u>ed-<u><b>E</b></u>dge <u><b>I</b></u>nflection <u><b>P</b></u>oint index</h5></td>
+        <td><h5>This index was developed for applications in biomass and nitrogen (N) uptake measurment/management in
+            heterogeneous fields.</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="s2rep/S2repAlgorithmSpecification.html">S2REP</a></b></h3></td>
+        <td><h5>The <u><b>S</b></u>entinel-<b>2</b> <u><b>R</b></u>ed-<u><b>E</b></u>dge <u><b>P</b></u>osition index
+        </h5></td>
+        <td><h5>This index is based on linear interpolation as presented by Guyot and Baret (1988). The reflectance at
+            the inflexion point is estimated and in turn, the REP is retrieved through interpolation of S-2 band 5 and 6
+            which are positioned on the RE slope.</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ireci/IreciAlgorithmSpecification.html">IRECI</a></b></h3></td>
+        <td><h5><u><b>I</b></u>nverted <u><b>R</b></u>ed-<u><b>E</b></u>dge <u><b>C</b></u>hlorophyll <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5>This index algorithm incorporates the reflectance in four bands to estimate canopy chlorophyll
+            content</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="pssra/PssraAlgorithmSpecification.html">PSSRa</a></b></h3></td>
+        <td><h5><u><b>P</b></u>igment <u><b>S</b></u>pecific <u><b>S</b></u>imple <u><b>Ra</b></u>tio (chlorophyll)
+            index.</h5></td>
+        <td><h5>This index was developed to investigate the potential of a range of spectral approaches for quantifying
+            pigments at the scale of the whole plant canopy.</h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="afri1600/Afri1600AlgorithmSpecification.html">AFRI1600</a></b></h3></td>
+        <td><h5><u><b>A</b></u>erosol <u><b>F</b></u>ree <u><b>V</b></u>egetation <u><b>I</b></u>ndex (1600 nm) </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="afri2100/Afri2100AlgorithmSpecification.html">AFRI2100</a></b></h3></td>
+        <td><h5><u><b>A</b></u>erosol <u><b>F</b></u>ree <u><b>V</b></u>egetation <u><b>I</b></u>ndex (2100 nm) </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ari/AriAlgorithmSpecification.html">ARI</a></b></h3></td>
+        <td><h5><u><b>A</b></u>nthocyanin <u><b>R</b></u>eflectance <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ari2/Ari2AlgorithmSpecification.html">ARI2</a></b></h3></td>
+        <td><h5><u><b>A</b></u>nthocyanin <u><b>R</b></u>eflectance <u><b>I</b></u>ndex 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="atsavi/AtsaviAlgorithmSpecification.html">ATSAVI</a></b></h3></td>
+        <td><h5><u><b>A</b></u>djusted <u><b>T</b></u>ransformed <u><b>S</b></u>oil-Adjusted <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="avi/AviAlgorithmSpecification.html">AVI</a></b></h3></td>
+        <td><h5><u><b>A</b></u>dvanced <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="bcc/BccAlgorithmSpecification.html">BCC</a></b></h3></td>
+        <td><h5><u><b>B</b></u>lue <u><b>C</b></u>hromatic <u><b>C</b></u>oordinate </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="bndvi/BndviAlgorithmSpecification.html">BNDVI</a></b></h3></td>
+        <td><h5><u><b>B</b></u>lue <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="bwdrvi/BwdrviAlgorithmSpecification.html">BWDRVI</a></b></h3></td>
+        <td><h5><u><b>B</b></u>lue <u><b>W</b></u>ide <u><b>D</b></u>ynamic <u><b>R</b></u>ange <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="cci/CciAlgorithmSpecification.html">CCI</a></b></h3></td>
+        <td><h5><u><b>C</b></u>hlorophyll <u><b>C</b></u>arotenoid <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="cig/CigAlgorithmSpecification.html">CIG</a></b></h3></td>
+        <td><h5><u><b>C</b></u>hlorophyll <u><b>I</b></u>ndex <u><b>G</b></u>reen </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="cire/CireAlgorithmSpecification.html">CIRE</a></b></h3></td>
+        <td><h5><u><b>C</b></u>hlorophyll <u><b>I</b></u>ndex <u><b>R</b></u>ed <u><b>E</b></u>dge </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="cvi/CviAlgorithmSpecification.html">CVI</a></b></h3></td>
+        <td><h5><u><b>C</b></u>hlorophyll <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="dsi/DsiAlgorithmSpecification.html">DSI</a></b></h3></td>
+        <td><h5><u><b>D</b></u>rought <u><b>S</b></u>tress <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="dswi1/Dswi1AlgorithmSpecification.html">DSWI1</a></b></h3></td>
+        <td><h5><u><b>D</b></u>isease-Water <u><b>S</b></u>tress <u><b>I</b></u>ndex 1 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="dswi2/Dswi2AlgorithmSpecification.html">DSWI2</a></b></h3></td>
+        <td><h5><u><b>D</b></u>isease-Water <u><b>S</b></u>tress <u><b>I</b></u>ndex 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="dswi3/Dswi3AlgorithmSpecification.html">DSWI3</a></b></h3></td>
+        <td><h5><u><b>D</b></u>isease-Water <u><b>S</b></u>tress <u><b>I</b></u>ndex 3 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="dswi4/Dswi4AlgorithmSpecification.html">DSWI4</a></b></h3></td>
+        <td><h5><u><b>D</b></u>isease-Water <u><b>S</b></u>tress <u><b>I</b></u>ndex 4 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="dswi5/Dswi5AlgorithmSpecification.html">DSWI5</a></b></h3></td>
+        <td><h5><u><b>D</b></u>isease-Water <u><b>S</b></u>tress <u><b>I</b></u>ndex 5 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="dviplus/DviplusAlgorithmSpecification.html">DVIplus</a></b></h3></td>
+        <td><h5><u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex <u><b>P</b></u>lus </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ebi/EbiAlgorithmSpecification.html">EBI</a></b></h3></td>
+        <td><h5><u><b>E</b></u>nhanced <u><b>B</b></u>loom <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="evi/EviAlgorithmSpecification.html">EVI</a></b></h3></td>
+        <td><h5><u><b>E</b></u>nhanced <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="evi2/Evi2AlgorithmSpecification.html">EVI2</a></b></h3></td>
+        <td><h5><u><b>T</b></u>wo-Band <u><b>E</b></u>nhanced <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="exg/ExgAlgorithmSpecification.html">ExG</a></b></h3></td>
+        <td><h5><u><b>E</b></u>xcess <u><b>G</b></u>reen <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="exgr/ExgrAlgorithmSpecification.html">ExGR</a></b></h3></td>
+        <td><h5><u><b>E</b></u>xG - <u><b>E</b></u>xR <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="exr/ExrAlgorithmSpecification.html">ExR</a></b></h3></td>
+        <td><h5><u><b>E</b></u>xcess <u><b>R</b></u>ed <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="fcvi/FcviAlgorithmSpecification.html">FCVI</a></b></h3></td>
+        <td><h5><u><b>F</b></u>luorescence <u><b>C</b></u>orrection <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gari/GariAlgorithmSpecification.html">GARI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>reen <u><b>A</b></u>tmospherically <u><b>R</b></u>esistant <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gbndvi/GbndviAlgorithmSpecification.html">GBNDVI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>reen-Blue <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gcc/GccAlgorithmSpecification.html">GCC</a></b></h3></td>
+        <td><h5><u><b>G</b></u>reen <u><b>C</b></u>hromatic <u><b>C</b></u>oordinate </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gdvi/GdviAlgorithmSpecification.html">GDVI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>eneralized <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gli/GliAlgorithmSpecification.html">GLI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>reen <u><b>L</b></u>eaf <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gm1/Gm1AlgorithmSpecification.html">GM1</a></b></h3></td>
+        <td><h5><u><b>G</b></u>itelson and <u><b>M</b></u>erzlyak <u><b>I</b></u>ndex 1 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gm2/Gm2AlgorithmSpecification.html">GM2</a></b></h3></td>
+        <td><h5><u><b>G</b></u>itelson and <u><b>M</b></u>erzlyak <u><b>I</b></u>ndex 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gosavi/GosaviAlgorithmSpecification.html">GOSAVI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>reen <u><b>O</b></u>ptimized <u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="grndvi/GrndviAlgorithmSpecification.html">GRNDVI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>reen-Red <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="grvi/GrviAlgorithmSpecification.html">GRVI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>reen <u><b>R</b></u>atio <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gsavi/GsaviAlgorithmSpecification.html">GSAVI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>reen <u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="gvmi/GvmiAlgorithmSpecification.html">GVMI</a></b></h3></td>
+        <td><h5><u><b>G</b></u>lobal <u><b>V</b></u>egetation <u><b>M</b></u>oisture <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="iavi/IaviAlgorithmSpecification.html">IAVI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ew <u><b>A</b></u>tmospherically <u><b>R</b></u>esistant <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ikaw/IkawAlgorithmSpecification.html">IKAW</a></b></h3></td>
+        <td><h5><u><b>K</b></u>awashima <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mcari1/Mcari1AlgorithmSpecification.html">MCARI1</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>C</b></u>hlorophyll <u><b>A</b></u>bsorption in <u><b>R</b></u>eflectance
+            <u><b>I</b></u>ndex 1 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mcari2/Mcari2AlgorithmSpecification.html">MCARI2</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>C</b></u>hlorophyll <u><b>A</b></u>bsorption in <u><b>R</b></u>eflectance
+            <u><b>I</b></u>ndex 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mcari705/Mcari705AlgorithmSpecification.html">MCARI705</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>C</b></u>hlorophyll <u><b>A</b></u>bsorption in <u><b>R</b></u>eflectance
+            <u><b>I</b></u>ndex (705 and 750 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mcariosavi/McariosaviAlgorithmSpecification.html">MCARIOSAVI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>CARI/OSAVI <u><b>R</b></u>atio </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mcariosavi705/Mcariosavi705AlgorithmSpecification.html">MCARIOSAVI705</a></b></h3></td>
+        <td><h5><u><b>M</b></u>CARI/OSAVI <u><b>R</b></u>atio (705 and 750 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mgrvi/MgrviAlgorithmSpecification.html">MGRVI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>G</b></u>reen <u><b>R</b></u>ed <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mnli/MnliAlgorithmSpecification.html">MNLI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>N</b></u>on-Linear <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mrbvi/MrbviAlgorithmSpecification.html">MRBVI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>R</b></u>ed <u><b>B</b></u>lue <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="msi/MsiAlgorithmSpecification.html">MSI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>oisture <u><b>S</b></u>tress <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="msr/MsrAlgorithmSpecification.html">MSR</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>S</b></u>imple <u><b>R</b></u>atio </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="msr705/Msr705AlgorithmSpecification.html">MSR705</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>S</b></u>imple <u><b>R</b></u>atio (705 and 750 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mtvi1/Mtvi1AlgorithmSpecification.html">MTVI1</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>T</b></u>riangular <u><b>V</b></u>egetation <u><b>I</b></u>ndex 1 </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mtvi2/Mtvi2AlgorithmSpecification.html">MTVI2</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>T</b></u>riangular <u><b>V</b></u>egetation <u><b>I</b></u>ndex 2 </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nd705/Nd705AlgorithmSpecification.html">ND705</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference (705 and 750 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nddi/NddiAlgorithmSpecification.html">NDDI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>D</b></u>rought <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndgi/NdgiAlgorithmSpecification.html">NDGI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>G</b></u>reenness <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndii/NdiiAlgorithmSpecification.html">NDII</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>I</b></u>nfrared <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndmi/NdmiAlgorithmSpecification.html">NDMI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>M</b></u>oisture <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndrei/NdreiAlgorithmSpecification.html">NDREI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>R</b></u>ed <u><b>E</b></u>dge <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndvi705/Ndvi705AlgorithmSpecification.html">NDVI705</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex (705 and
+            750 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndyi/NdyiAlgorithmSpecification.html">NDYI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>Y</b></u>ellowness <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ngrdi/NgrdiAlgorithmSpecification.html">NGRDI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>G</b></u>reen <u><b>R</b></u>ed <u><b>D</b></u>ifference <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nirv/NirvAlgorithmSpecification.html">NIRv</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ear-Infrared <u><b>R</b></u>eflectance of <u><b>V</b></u>egetation </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nirvh2/Nirvh2AlgorithmSpecification.html">NIRvH2</a></b></h3></td>
+        <td><h5><u><b>H</b></u>yperspectral <u><b>N</b></u>ear-Infrared <u><b>R</b></u>eflectance of <u><b>V</b></u>egetation
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nirvp/NirvpAlgorithmSpecification.html">NIRvP</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ear-Infrared <u><b>R</b></u>eflectance of <u><b>V</b></u>egetation and <u><b>I</b></u>ncoming
+            <u><b>P</b></u>AR </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nli/NliAlgorithmSpecification.html">NLI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>on-Linear <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nmdi/NmdiAlgorithmSpecification.html">NMDI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>M</b></u>ulti-band <u><b>D</b></u>rought <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nrfig/NrfigAlgorithmSpecification.html">NRFIg</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>R</b></u>apeseed <u><b>F</b></u>lowering <u><b>I</b></u>ndex <u><b>G</b></u>reen
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nrfir/NrfirAlgorithmSpecification.html">NRFIr</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>R</b></u>apeseed <u><b>F</b></u>lowering <u><b>I</b></u>ndex <u><b>R</b></u>ed
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="normg/NormgAlgorithmSpecification.html">NormG</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>G</b></u>reen </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="normnir/NormnirAlgorithmSpecification.html">NormNIR</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>N</b></u>IR </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="normr/NormrAlgorithmSpecification.html">NormR</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>R</b></u>ed </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ocvi/OcviAlgorithmSpecification.html">OCVI</a></b></h3></td>
+        <td><h5><u><b>O</b></u>ptimized <u><b>C</b></u>hlorophyll <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="osavi/OsaviAlgorithmSpecification.html">OSAVI</a></b></h3></td>
+        <td><h5><u><b>O</b></u>ptimized <u><b>S</b></u>oil-Adjusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="psri/PsriAlgorithmSpecification.html">PSRI</a></b></h3></td>
+        <td><h5><u><b>P</b></u>lant <u><b>S</b></u>enescing <u><b>R</b></u>eflectance <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="rcc/RccAlgorithmSpecification.html">RCC</a></b></h3></td>
+        <td><h5><u><b>R</b></u>ed <u><b>C</b></u>hromatic <u><b>C</b></u>oordinate </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="rdvi/RdviAlgorithmSpecification.html">RDVI</a></b></h3></td>
+        <td><h5><u><b>R</b></u>enormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="redsi/RedsiAlgorithmSpecification.html">REDSI</a></b></h3></td>
+        <td><h5><u><b>R</b></u>ed-Edge <u><b>D</b></u>isease <u><b>S</b></u>tress <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="rendvi/RendviAlgorithmSpecification.html">RENDVI</a></b></h3></td>
+        <td><h5><u><b>R</b></u>ed <u><b>E</b></u>dge <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="rgbvi/RgbviAlgorithmSpecification.html">RGBVI</a></b></h3></td>
+        <td><h5><u><b>R</b></u>ed <u><b>G</b></u>reen <u><b>B</b></u>lue <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="rgri/RgriAlgorithmSpecification.html">RGRI</a></b></h3></td>
+        <td><h5><u><b>R</b></u>ed-Green <u><b>R</b></u>atio <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="sarvi/SarviAlgorithmSpecification.html">SARVI</a></b></h3></td>
+        <td><h5><u><b>S</b></u>oil <u><b>A</b></u>djusted and <u><b>A</b></u>tmospherically <u><b>R</b></u>esistant
+            <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="savi2/Savi2AlgorithmSpecification.html">SAVI2</a></b></h3></td>
+        <td><h5><u><b>S</b></u>oil-Adjusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="sevi/SeviAlgorithmSpecification.html">SEVI</a></b></h3></td>
+        <td><h5><u><b>S</b></u>hadow-Eliminated <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="si/SiAlgorithmSpecification.html">SI</a></b></h3></td>
+        <td><h5><u><b>S</b></u>hadow <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="sipi/SipiAlgorithmSpecification.html">SIPI</a></b></h3></td>
+        <td><h5><u><b>S</b></u>tructure <u><b>I</b></u>nsensitive <u><b>P</b></u>igment <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="slavi/SlaviAlgorithmSpecification.html">SLAVI</a></b></h3></td>
+        <td><h5><u><b>S</b></u>pecific <u><b>L</b></u>eaf <u><b>A</b></u>rea <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="sr2/Sr2AlgorithmSpecification.html">SR2</a></b></h3></td>
+        <td><h5><u><b>S</b></u>imple <u><b>R</b></u>atio (800 and 550 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="sr3/Sr3AlgorithmSpecification.html">SR3</a></b></h3></td>
+        <td><h5><u><b>S</b></u>imple <u><b>R</b></u>atio (860, 550 and 708 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="sr555/Sr555AlgorithmSpecification.html">SR555</a></b></h3></td>
+        <td><h5><u><b>S</b></u>imple <u><b>R</b></u>atio (555 and 750 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="sr705/Sr705AlgorithmSpecification.html">SR705</a></b></h3></td>
+        <td><h5><u><b>S</b></u>imple <u><b>R</b></u>atio (705 and 750 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="seli/SeliAlgorithmSpecification.html">SeLI</a></b></h3></td>
+        <td><h5><u><b>S</b></u>entinel-2 <u><b>L</b></u>AI <u><b>G</b></u>reen <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="tcari/TcariAlgorithmSpecification.html">TCARI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>ransformed <u><b>C</b></u>hlorophyll <u><b>A</b></u>bsorption in <u><b>R</b></u>eflectance
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="tcariosavi/TcariosaviAlgorithmSpecification.html">TCARIOSAVI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>CARI/OSAVI <u><b>R</b></u>atio </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="tcariosavi705/Tcariosavi705AlgorithmSpecification.html">TCARIOSAVI705</a></b></h3></td>
+        <td><h5><u><b>T</b></u>CARI/OSAVI <u><b>R</b></u>atio (705 and 750 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="tci/TciAlgorithmSpecification.html">TCI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>riangular <u><b>C</b></u>hlorophyll <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="tdvi/TdviAlgorithmSpecification.html">TDVI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>ransformed <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="tgi/TgiAlgorithmSpecification.html">TGI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>riangular <u><b>G</b></u>reenness <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="trrvi/TrrviAlgorithmSpecification.html">TRRVI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>ransformed <u><b>R</b></u>ed <u><b>R</b></u>ange <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ttvi/TtviAlgorithmSpecification.html">TTVI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>ransformed <u><b>T</b></u>riangular <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="tvi/TviAlgorithmSpecification.html">TVI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>ransformed <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="trivi/TriviAlgorithmSpecification.html">TriVI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>riangular <u><b>V</b></u>egetation <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="vari/VariAlgorithmSpecification.html">VARI</a></b></h3></td>
+        <td><h5><u><b>V</b></u>isible <u><b>A</b></u>tmospherically <u><b>R</b></u>esistant <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="vari700/Vari700AlgorithmSpecification.html">VARI700</a></b></h3></td>
+        <td><h5><u><b>V</b></u>isible <u><b>A</b></u>tmospherically <u><b>R</b></u>esistant <u><b>I</b></u>ndex (700 nm)
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="vi700/Vi700AlgorithmSpecification.html">VI700</a></b></h3></td>
+        <td><h5><u><b>V</b></u>egetation <u><b>I</b></u>ndex (700 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="vig/VigAlgorithmSpecification.html">VIG</a></b></h3></td>
+        <td><h5><u><b>V</b></u>egetation <u><b>I</b></u>ndex <u><b>G</b></u>reen </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="wdrvi/WdrviAlgorithmSpecification.html">WDRVI</a></b></h3></td>
+        <td><h5><u><b>W</b></u>ide <u><b>D</b></u>ynamic <u><b>R</b></u>ange <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mmnd705/Mmnd705AlgorithmSpecification.html">MmND705</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>N</b></u>ormalized <u><b>D</b></u>ifference (705, 750 and 445 nm) </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mmsr705/Mmsr705AlgorithmSpecification.html">MmSR705</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>S</b></u>imple <u><b>R</b></u>atio (705 and 445 nm) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Vegetation Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="savi/SaviAlgorithmSpecification.html">SAVI</a></b></h3></td>
+        <td><h5><u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index attempts to be a hybrid between the ratio-based indices and the perpendicular indices</h5>
+        </td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="tsavi/TsaviAlgorithmSpecification.html">TSAVI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>ransformed <u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5>This index assumes that the soil line has arbitrary slope and intercept, and it makes use of these
+            values to adjust the vegetation index</h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="msavi/MsaviAlgorithmSpecification.html">MSAVI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex</h5></td>
+        <td><h5>The basic idea of <b>MSAVI</b> was to provide a variable correction factor <b>L</b>. The correction
+            factor used is based on the product of <b>NDVI</b> and <b>WDVI</b></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="msavi2/Msavi2AlgorithmSpecification.html">MSAVI2</a></b></h3></td>
+        <td><h5>The <b>second</b> <u><b>M</b></u>odified <u><b>S</b></u>oil <u><b>A</b></u>djusted <u><b>V</b></u>egetation
+            <u><b>I</b></u>ndex</h5></td>
+        <td><h5>Basically, it is used an iterative process and substitute 1 - MSAVI(n-1) as the <b>L</b> factor in
+            MSAVI(n). <br> They then inductively solve the iteration where MSAVI(n) = MSAVI(n-1)<br></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="bi/BiAlgorithmSpecification.html">BI</a></b></h3></td>
+        <td><h5><u><b>B</b></u>rightness <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index is representing the average of the brightness of a satellite image</h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="bi2/Bi2AlgorithmSpecification.html">BI2</a></b></h3></td>
+        <td><h5>The <b>second</b> <u><b>B</b></u>rightness <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index is representing the average of the brightness of a satellite image. The result looks like a
+            panchromatique image with the same resolution of the original image.</h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ri/RiAlgorithmSpecification.html">RI</a></b></h3></td>
+        <td><h5><u><b>R</b></u>edness <u><b>I</b></u>ndex</h5></td>
+        <td><h5>The Redness Index algorithm was developed to identify soil colour variations</h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ci/CiAlgorithmSpecification.html">CI</a></b></h3></td>
+        <td><h5><u><b>C</b></u>olour <u><b>I</b></u>ndex</h5></td>
+        <td><h5>The Colour Index algorithm was developed to differentiate soils in the field</h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="bitm/BitmAlgorithmSpecification.html">BITM</a></b></h3></td>
+        <td><h5><u><b>L</b></u>andsat <u><b>T</b></u>M-based <u><b>B</b></u>rightness <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="bixs/BixsAlgorithmSpecification.html">BIXS</a></b></h3></td>
+        <td><h5><u><b>S</b></u>POT <u><b>H</b></u>RV <u><b>X</b></u>S-based <u><b>B</b></u>rightness <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="bain/BainAlgorithmSpecification.html">BaIn</a></b></h3></td>
+        <td><h5><u><b>B</b></u>areness <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="dbsi/DbsiAlgorithmSpecification.html">DBSI</a></b></h3></td>
+        <td><h5><u><b>D</b></u>ry <u><b>B</b></u>areness <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="embi/EmbiAlgorithmSpecification.html">EMBI</a></b></h3></td>
+        <td><h5><u><b>E</b></u>nhanced <u><b>M</b></u>odified <u><b>B</b></u>are <u><b>S</b></u>oil <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mbi/MbiAlgorithmSpecification.html">MBI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>B</b></u>are <u><b>S</b></u>oil <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbli/NbliAlgorithmSpecification.html">NBLI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>B</b></u>are <u><b>L</b></u>and <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nblioli/NblioliAlgorithmSpecification.html">NBLIOLI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>B</b></u>are <u><b>L</b></u>and <u><b>I</b></u>ndex
+            for <u><b>L</b></u>andsat-OLI </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndbai/NdbaiAlgorithmSpecification.html">NDBaI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>B</b></u>areness <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndsiwv/NdsiwvAlgorithmSpecification.html">NDSIWV</a></b></h3></td>
+        <td><h5><u><b>W</b></u>orldView <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>S</b></u>oil <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndsoii/NdsoiiAlgorithmSpecification.html">NDSoiI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>S</b></u>oil <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nsds/NsdsAlgorithmSpecification.html">NSDS</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>S</b></u>hortwave <u><b>I</b></u>nfrared <u><b>D</b></u>ifference
+            <u><b>S</b></u>oil-Moisture </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nsdsi1/Nsdsi1AlgorithmSpecification.html">NSDSI1</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>S</b></u>hortwave-Infrared <u><b>D</b></u>ifference <u><b>B</b></u>are
+            <u><b>S</b></u>oil <u><b>M</b></u>oisture <u><b>I</b></u>ndex 1 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nsdsi2/Nsdsi2AlgorithmSpecification.html">NSDSI2</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>S</b></u>hortwave-Infrared <u><b>D</b></u>ifference <u><b>B</b></u>are
+            <u><b>S</b></u>oil <u><b>M</b></u>oisture <u><b>I</b></u>ndex 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nsdsi3/Nsdsi3AlgorithmSpecification.html">NSDSI3</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>S</b></u>hortwave-Infrared <u><b>D</b></u>ifference <u><b>B</b></u>are
+            <u><b>S</b></u>oil <u><b>M</b></u>oisture <u><b>I</b></u>ndex 3 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ri4xs/Ri4xsAlgorithmSpecification.html">RI4XS</a></b></h3></td>
+        <td><h5><u><b>S</b></u>POT <u><b>H</b></u>RV <u><b>X</b></u>S-based <u><b>R</b></u>edness <u><b>I</b></u>ndex 4
+        </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Soil Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndwi/NdwiAlgorithmSpecification.html">NDWI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>W</b></u>ater <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index is a measure of liquid water molecules in vegetation canopies that interacted with the
+            incoming solar radiation.</h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndwi2/Ndwi2AlgorithmSpecification.html">NDWI2</a></b></h3></td>
+        <td><h5>The second <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>W</b></u>ater <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5>This index was developed to detect surface waters in wetland environments and to allow for the
+            measurement of surface water extent.</h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mndwi/MndwiAlgorithmSpecification.html">MNDWI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>W</b></u>ater <u><b>I</b></u>ndex
+        </h5></td>
+        <td><h5>This index was developed to enhance open water features, while efficiently suppressing and even removing
+            built-up land noise as well as vegetation and soil noise.</h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndpi/NdpiAlgorithmSpecification.html">NDPI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>P</b></u>ond <u><b>I</b></u>ndex</h5></td>
+        <td><h5>The NDPI algorithm makes it possible not only to distinguish small ponds and water bodies (down to 0.01
+            ha), but also to differentiate vegetation inside ponds from that in their surroundings</h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndti/NdtiAlgorithmSpecification.html">NDTI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>T</b></u>urbidity <u><b>I</b></u>ndex</h5></td>
+        <td><h5>This index was developed to allow for the measurement of water turbidity.</h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="aweinsh/AweinshAlgorithmSpecification.html">AWEInsh</a></b></h3></td>
+        <td><h5><u><b>A</b></u>utomated <u><b>W</b></u>ater <u><b>E</b></u>xtraction <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="aweish/AweishAlgorithmSpecification.html">AWEIsh</a></b></h3></td>
+        <td><h5><u><b>A</b></u>utomated <u><b>W</b></u>ater <u><b>E</b></u>xtraction <u><b>I</b></u>ndex with
+            <u><b>S</b></u>hadows <u><b>E</b></u>limination </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="lswi/LswiAlgorithmSpecification.html">LSWI</a></b></h3></td>
+        <td><h5><u><b>L</b></u>and <u><b>S</b></u>urface <u><b>W</b></u>ater <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mbwi/MbwiAlgorithmSpecification.html">MBWI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>ulti-Band <u><b>W</b></u>ater <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mlswi26/Mlswi26AlgorithmSpecification.html">MLSWI26</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>L</b></u>and <u><b>S</b></u>urface <u><b>W</b></u>ater <u><b>I</b></u>ndex
+            (MODIS <u><b>B</b></u>ands 2 and 6) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mlswi27/Mlswi27AlgorithmSpecification.html">MLSWI27</a></b></h3></td>
+        <td><h5><u><b>M</b></u>odified <u><b>L</b></u>and <u><b>S</b></u>urface <u><b>W</b></u>ater <u><b>I</b></u>ndex
+            (MODIS <u><b>B</b></u>ands 2 and 7) </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="muwir/MuwirAlgorithmSpecification.html">MuWIR</a></b></h3></td>
+        <td><h5><u><b>R</b></u>evised <u><b>M</b></u>ulti-Spectral <u><b>W</b></u>ater <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndci/NdciAlgorithmSpecification.html">NDCI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>C</b></u>hlorophyll <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndponi/NdponiAlgorithmSpecification.html">NDPonI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>P</b></u>ond <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndvimndwi/NdvimndwiAlgorithmSpecification.html">NDVIMNDWI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>DVI-MNDWI <u><b>M</b></u>odel </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndwins/NdwinsAlgorithmSpecification.html">NDWIns</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>W</b></u>ater <u><b>I</b></u>ndex with no <u><b>S</b></u>now
+            <u><b>C</b></u>over and <u><b>G</b></u>laciers </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nwi/NwiAlgorithmSpecification.html">NWI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ew <u><b>W</b></u>ater <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="s2wi/S2wiAlgorithmSpecification.html">S2WI</a></b></h3></td>
+        <td><h5><u><b>S</b></u>entinel-2 <u><b>W</b></u>ater <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="swm/SwmAlgorithmSpecification.html">SWM</a></b></h3></td>
+        <td><h5><u><b>S</b></u>entinel <u><b>W</b></u>ater <u><b>M</b></u>ask </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="twi/TwiAlgorithmSpecification.html">TWI</a></b></h3></td>
+        <td><h5><u><b>T</b></u>riangle <u><b>W</b></u>ater <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="wi1/Wi1AlgorithmSpecification.html">WI1</a></b></h3></td>
+        <td><h5><u><b>W</b></u>ater <u><b>I</b></u>ndex 1 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="wi2/Wi2AlgorithmSpecification.html">WI2</a></b></h3></td>
+        <td><h5><u><b>W</b></u>ater <u><b>I</b></u>ndex 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="wi2015/Wi2015AlgorithmSpecification.html">WI2015</a></b></h3></td>
+        <td><h5><u><b>W</b></u>ater <u><b>I</b></u>ndex 2015 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="wri/WriAlgorithmSpecification.html">WRI</a></b></h3></td>
+        <td><h5><u><b>W</b></u>ater <u><b>R</b></u>atio <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Water Index</h5></td>
+    </tr>
+
+
+    <tr>
+        <td><h3><b><a href="bai/BaiAlgorithmSpecification.html">BAI</a></b></h3></td>
+        <td><h5><u><b>B</b></u>urned <u><b>A</b></u>rea <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="baim/BaimAlgorithmSpecification.html">BAIM</a></b></h3></td>
+        <td><h5><u><b>B</b></u>urned <u><b>A</b></u>rea <u><b>I</b></u>ndex adapted to <u><b>M</b></u>ODIS </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="bais2/Bais2AlgorithmSpecification.html">BAIS2</a></b></h3></td>
+        <td><h5><u><b>B</b></u>urned <u><b>A</b></u>rea <u><b>I</b></u>ndex for <u><b>S</b></u>entinel 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="csi/CsiAlgorithmSpecification.html">CSI</a></b></h3></td>
+        <td><h5><u><b>C</b></u>har <u><b>S</b></u>oil <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="csit/CsitAlgorithmSpecification.html">CSIT</a></b></h3></td>
+        <td><h5><u><b>C</b></u>har <u><b>S</b></u>oil <u><b>I</b></u>ndex <u><b>T</b></u>hermal </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="mirbi/MirbiAlgorithmSpecification.html">MIRBI</a></b></h3></td>
+        <td><h5><u><b>M</b></u>id-Infrared <u><b>B</b></u>urn <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbr/NbrAlgorithmSpecification.html">NBR</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>B</b></u>urn <u><b>R</b></u>atio </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbr2/Nbr2AlgorithmSpecification.html">NBR2</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>B</b></u>urn <u><b>R</b></u>atio 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbrswir/NbrswirAlgorithmSpecification.html">NBRSWIR</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>B</b></u>urn <u><b>R</b></u>atio <u><b>S</b></u>WIR </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbrt1/Nbrt1AlgorithmSpecification.html">NBRT1</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>B</b></u>urn <u><b>R</b></u>atio <u><b>T</b></u>hermal 1 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbrt2/Nbrt2AlgorithmSpecification.html">NBRT2</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>B</b></u>urn <u><b>R</b></u>atio <u><b>T</b></u>hermal 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbrt3/Nbrt3AlgorithmSpecification.html">NBRT3</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>B</b></u>urn <u><b>R</b></u>atio <u><b>T</b></u>hermal 3 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbrplus/NbrplusAlgorithmSpecification.html">NBRplus</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>B</b></u>urn <u><b>R</b></u>atio <u><b>P</b></u>lus </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndswir/NdswirAlgorithmSpecification.html">NDSWIR</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>S</b></u>WIR </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndvit/NdvitAlgorithmSpecification.html">NDVIT</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>V</b></u>egetation <u><b>I</b></u>ndex
+            <u><b>T</b></u>hermal </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nstv1/Nstv1AlgorithmSpecification.html">NSTv1</a></b></h3></td>
+        <td><h5><u><b>N</b></u>IR-SWIR-Temperature <u><b>V</b></u>ersion 1 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nstv2/Nstv2AlgorithmSpecification.html">NSTv2</a></b></h3></td>
+        <td><h5><u><b>N</b></u>IR-SWIR-Temperature <u><b>V</b></u>ersion 2 </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="savit/SavitAlgorithmSpecification.html">SAVIT</a></b></h3></td>
+        <td><h5><u><b>S</b></u>oil-Adjusted <u><b>V</b></u>egetation <u><b>I</b></u>ndex <u><b>T</b></u>hermal </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="vi6t/Vi6tAlgorithmSpecification.html">VI6T</a></b></h3></td>
+        <td><h5><u><b>V</b></u>I6T <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Burn Index</h5></td>
+    </tr>
+
+
+    <tr>
+        <td><h3><b><a href="blfei/BlfeiAlgorithmSpecification.html">BLFEI</a></b></h3></td>
+        <td><h5><u><b>B</b></u>uilt-Up <u><b>L</b></u>and <u><b>F</b></u>eatures <u><b>E</b></u>xtraction
+            <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="brba/BrbaAlgorithmSpecification.html">BRBA</a></b></h3></td>
+        <td><h5><u><b>B</b></u>and <u><b>R</b></u>atio for <u><b>B</b></u>uilt-up <u><b>A</b></u>rea </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="dbi/DbiAlgorithmSpecification.html">DBI</a></b></h3></td>
+        <td><h5><u><b>D</b></u>ry <u><b>B</b></u>uilt-Up <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ebbi/EbbiAlgorithmSpecification.html">EBBI</a></b></h3></td>
+        <td><h5><u><b>E</b></u>nhanced <u><b>B</b></u>uilt-Up and <u><b>B</b></u>areness <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ibi/IbiAlgorithmSpecification.html">IBI</a></b></h3></td>
+        <td><h5><u><b>I</b></u>ndex-Based <u><b>B</b></u>uilt-Up <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbai/NbaiAlgorithmSpecification.html">NBAI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>B</b></u>uilt-up <u><b>A</b></u>rea <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nbui/NbuiAlgorithmSpecification.html">NBUI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ew <u><b>B</b></u>uilt-Up <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndbi/NdbiAlgorithmSpecification.html">NDBI</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>B</b></u>uilt-Up <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndisib/NdisibAlgorithmSpecification.html">NDISIb</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>I</b></u>mpervious <u><b>S</b></u>urface
+            <u><b>I</b></u>ndex <u><b>B</b></u>lue </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndisig/NdisigAlgorithmSpecification.html">NDISIg</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>I</b></u>mpervious <u><b>S</b></u>urface
+            <u><b>I</b></u>ndex <u><b>G</b></u>reen </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndisimndwi/NdisimndwiAlgorithmSpecification.html">NDISImndwi</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>I</b></u>mpervious <u><b>S</b></u>urface
+            <u><b>I</b></u>ndex with <u><b>M</b></u>NDWI </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndisindwi/NdisindwiAlgorithmSpecification.html">NDISIndwi</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>I</b></u>mpervious <u><b>S</b></u>urface
+            <u><b>I</b></u>ndex with <u><b>N</b></u>DWI </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ndisir/NdisirAlgorithmSpecification.html">NDISIr</a></b></h3></td>
+        <td><h5><u><b>N</b></u>ormalized <u><b>D</b></u>ifference <u><b>I</b></u>mpervious <u><b>S</b></u>urface
+            <u><b>I</b></u>ndex <u><b>R</b></u>ed </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="nhfd/NhfdAlgorithmSpecification.html">NHFD</a></b></h3></td>
+        <td><h5><u><b>N</b></u>on-Homogeneous <u><b>F</b></u>eature <u><b>D</b></u>ifference </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="pisi/PisiAlgorithmSpecification.html">PISI</a></b></h3></td>
+        <td><h5><u><b>P</b></u>erpendicular <u><b>I</b></u>mpervious <u><b>S</b></u>urface <u><b>I</b></u>ndex </h5>
+        </td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="ui/UiAlgorithmSpecification.html">UI</a></b></h3></td>
+        <td><h5><u><b>U</b></u>rban <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="vibi/VibiAlgorithmSpecification.html">VIBI</a></b></h3></td>
+        <td><h5><u><b>V</b></u>egetation <u><b>I</b></u>ndex <u><b>B</b></u>uilt-up <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="vgnirbi/VgnirbiAlgorithmSpecification.html">VgNIRBI</a></b></h3></td>
+        <td><h5><u><b>V</b></u>isible <u><b>G</b></u>reen-Based <u><b>B</b></u>uilt-Up <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
+    <tr>
+        <td><h3><b><a href="vrnirbi/VrnirbiAlgorithmSpecification.html">VrNIRBI</a></b></h3></td>
+        <td><h5><u><b>V</b></u>isible <u><b>R</b></u>ed-Based <u><b>B</b></u>uilt-Up <u><b>I</b></u>ndex </h5></td>
+        <td><h5></h5></td>
+        <td><h5>Urban Index</h5></td>
+    </tr>
+
 </table>
 <hr/>
 </body>

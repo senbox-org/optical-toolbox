@@ -1,0 +1,73 @@
+<!--
+  ~ /*
+  ~  * Copyright (C) 2016 CS ROMANIA
+  ~  *
+  ~  * This program is free software; you can redistribute it and/or modify it
+  ~  * under the terms of the GNU General Public License as published by the Free
+  ~  * Software Foundation; either version 3 of the License, or (at your option)
+  ~  * any later version.
+  ~  * This program is distributed in the hope that it will be useful, but WITHOUT
+  ~  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~  * more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License along
+  ~  *  with this program; if not, see http://www.gnu.org/licenses/
+  ~  */
+  -->
+
+<html>
+<head>
+    <title>SNAP NSDSI3 - Algorithm Specification</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+<table class="header">
+    <tr class="header">
+        <td class="header">&nbsp;
+            NSDSI3 Algorithm Specification</td>
+        <td class="header" align="right"><a href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html"><img src="../images/snap_header.jpg" border=0></a></td>
+    </tr>
+</table>
+
+<h3>NSDSI3</h3>
+
+<p>
+    The NSDSI3 operator algorithm computes the <u><b>N</b></u>ormalized <u><b>S</b></u>hortwave-Infrared <u><b>D</b></u>ifference <u><b>B</b></u>are <u><b>S</b></u>oil <u><b>M</b></u>oisture <u><b>I</b></u>ndex 3  from a given product. <br><br>
+</p>
+
+
+<p>
+    The NSDSI3 results from the following equation:
+</p>
+
+<p>
+    <b>NSDSI3 = (S1 - S2) / (S1 + S2)</b><br><br>
+</p>
+
+<p>
+    , where: <br><br>
+    The bands are: <br><br>
+    - <b>S1</b> is the <b>SWIR 1</b> band <br/>- <b>S2</b> is the <b>SWIR 2</b> band <br/>
+    <br><br>
+    
+</p>
+
+<h3>NSDSI3-Flags</h3>
+
+<p>
+    Also the processor computes an additional flags band called 'nsdsi3_flags'
+    with the following bit coding:</p>
+<table>
+    <tr><th>Bit Position</th><th>Description</th></tr>
+    <tr><td>Bit 0</td><td>The computed value for NSDSI3 is NAN or is Infinite</td></tr>
+    <tr><td>Bit 1</td><td>The computed value for NSDSI3 is less than -1 (minus one)</td></tr>
+    <tr><td>Bit 2</td><td>The computed value for NSDSI3 is greater than 1 (one)</td></tr>
+</table>
+<p>
+</p>
+<hr>
+</body>
+</html>
