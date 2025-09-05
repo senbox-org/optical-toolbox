@@ -1516,8 +1516,10 @@ public abstract class SeadasFileReader {
                 }
 
                 final float wavelength = Float.parseFloat(wvlstr);
-                band.setSpectralWavelength(wavelength);
-                band.setSpectralBandIndex(spectralBandIndex++);
+                if (band.getSpectralBandIndex() == -1) {
+                    band.setSpectralWavelength(wavelength);
+                    band.setSpectralBandIndex(spectralBandIndex++);
+                }
             }
         }
     }
@@ -1540,6 +1542,8 @@ public abstract class SeadasFileReader {
         Array wavelengths = null;
 
         final int[] dimensions = variable.getShape();
+//        List<Dimension> variable_dimensions = variable.getDimensions();
+        String wavelength_name = variable.getDimensionsString().split(" ")[2].trim();
         final int bands = dimensions[2];
         final int height = dimensions[0];
         final int width = dimensions[1];
@@ -1554,25 +1558,33 @@ public abstract class SeadasFileReader {
                     dim = d.getLength();
                 }
             }
-            if (dim == bands) {
-                wvl = ncFile.findVariable("sensor_band_parameters/wavelength_3d");
-                if (wvl == null) {
-                    wvl = ncFile.findVariable("wavelength_3d");
-                }
-                if (wvl == null) {
-                    wvl = ncFile.findVariable("wavelength");
-                }
-            } else {
-                wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
-                if (wvl == null) {
-                    wvl = ncFile.findVariable("wavelength");
-                }
-            }
-            // wavelengths for modis L2 files
+            // find wvl variable for  OCI L2 UAA files
+            wvl = ncFile.findVariable(wavelength_name);
+            //find wvl variable from new format of L2 files
             if (wvl == null) {
-                if (bands == 2 || bands == 3) {
-                    wvl = ncFile.findVariable("HDFEOS/SWATHS/Aerosol_NearUV_Swath/Data_Fields/Wavelength");
-                    // wavelenghs for DSCOVR EPIC L2 files
+                wvl = ncFile.findVariable("geophysical_data/" + wavelength_name);
+            }
+            if (wvl == null) {
+                if (dim == bands) {
+                    wvl = ncFile.findVariable("sensor_band_parameters/wavelength_3d");
+                    if (wvl == null) {
+                        wvl = ncFile.findVariable("wavelength_3d");
+                    }
+                    if (wvl == null) {
+                        wvl = ncFile.findVariable("wavelength");
+                    }
+                } else {
+                    wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+                    if (wvl == null) {
+                        wvl = ncFile.findVariable("wavelength");
+                    }
+                }
+                // wavelengths for modis L2 files
+                if (wvl == null) {
+                    if (bands == 2 || bands == 3) {
+                        wvl = ncFile.findVariable("HDFEOS/SWATHS/Aerosol_NearUV_Swath/Data_Fields/Wavelength");
+                        // wavelenghs for DSCOVR EPIC L2 files
+                    }
                 }
             }
             if (wvl != null) {
@@ -1610,6 +1622,8 @@ public abstract class SeadasFileReader {
                             }
                             band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
                             band.setNoDataValueUsed(true);
+                            band.setSpectralWavelength(wavelengths.getFloat(i));
+                            band.setSpectralBandIndex(1);
                         } catch (Exception ignored) {
                         }
 
