@@ -1044,7 +1044,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_LABEL = "Band Grouping";
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_TOOLTIP = "<html>NASA Level-2 File Reader:<br>Expression to create a group of bands</html>";
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT = "Rrs_*:Rrs_unc_*:Rrs_raman:" +
-            "nLw:Lt:La_:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:" +
+            "nLw:Lt_interp:Lt:La_:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:" +
             "Taua:taua:Kd:" +
             "a_*:aot_*:adg_*:aph_*:bbp_*:bb_*:vgain_*:BT_*:" +
             "tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf:mr_fine:mi_fine:mr_coarse:" +
