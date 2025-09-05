@@ -41,17 +41,12 @@ public class SeadasReaderDefaults {
     final static Color MiscFlags = Purple;
 
 
-
-
-
-
     // Preferences property prefix
     public static final String PROPERTY_SEADAS_READER_ROOT_KEY = "opt.toolbox.seadas.reader";
 
 
     // Level-2 Masks Preferences Root Prefix
     public static final String PROPERTY_LEVEL_MASKS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".level2_masks";
-
 
 
     // ATMFAIL
@@ -79,9 +74,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_ATMFAIL_COLOR_TOOLTIP = "Set default color of the ATMFAIL mask";
     //    public static final Color PROPERTY_MASK_ATMFAIL_COLOR_DEFAULT = Failures;
     public static final Color PROPERTY_MASK_ATMFAIL_COLOR_DEFAULT = FailRed;
-
-
-
 
 
     // LAND
@@ -112,8 +104,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandBrown;
 
 
-
-
     // PRODWARN
 
     public static final String PROPERTY_MASK_PRODWARN_NAME = "PRODWARN";
@@ -139,7 +129,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_PRODWARN_COLOR_TOOLTIP = "Set default color of the PRODWARN mask";
     //    public static final Color PROPERTY_MASK_PRODWARN_COLOR_DEFAULT = Warnings;
     public static final Color PROPERTY_MASK_PRODWARN_COLOR_DEFAULT = DeepBlue;
-
 
 
     // HIGLINT
@@ -169,7 +158,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_HIGLINT_COLOR_DEFAULT = BrightPink;
 
 
-
     // HILT
 
     public static final String PROPERTY_MASK_HILT_NAME = "HILT";
@@ -194,9 +182,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HILT_COLOR_LABEL = "HILT: Color";
     public static final String PROPERTY_MASK_HILT_COLOR_TOOLTIP = "Set default color of the HILT mask";
     //    public static final Color PROPERTY_MASK_HILT_COLOR_DEFAULT = BrightFlags;
-    public static final Color PROPERTY_MASK_HILT_COLOR_DEFAULT =  Color.GRAY;
-
-
+    public static final Color PROPERTY_MASK_HILT_COLOR_DEFAULT = Color.GRAY;
 
 
     // HISATZEN
@@ -226,7 +212,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = LightCyan;
 
 
-
     // COASTZ
 
     public static final String PROPERTY_MASK_COASTZ_NAME = "COASTZ";
@@ -252,8 +237,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COASTZ_COLOR_TOOLTIP = "Set default color of the COASTZ mask";
     //    public static final Color PROPERTY_MASK_COASTZ_COLOR_DEFAULT = MiscFlags;
     public static final Color PROPERTY_MASK_COASTZ_COLOR_DEFAULT = BurntUmber;
-
-
 
 
     // STRAYLIGHT
@@ -283,7 +266,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_STRAYLIGHT_COLOR_DEFAULT = Color.YELLOW;
 
 
-
     // CLDICE
 
     public static final String PROPERTY_MASK_CLDICE_NAME = "CLDICE";
@@ -309,8 +291,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_CLDICE_COLOR_TOOLTIP = "Set default color of the CLDICE mask";
     //    public static final Color PROPERTY_MASK_CLDICE_COLOR_DEFAULT = Gray240;
     public static final Color PROPERTY_MASK_CLDICE_COLOR_DEFAULT = Color.WHITE;
-
-
 
 
     // COCCOLITH
@@ -340,7 +320,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_COCCOLITH_COLOR_DEFAULT = Color.CYAN;
 
 
-
     // TURBIDW
 
     public static final String PROPERTY_MASK_TURBIDW_NAME = "TURBIDW";
@@ -366,7 +345,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_TURBIDW_COLOR_TOOLTIP = "Set default color of the TURBIDW mask";
     //    public static final Color PROPERTY_MASK_TURBIDW_COLOR_DEFAULT = MiscFlags;
     public static final Color PROPERTY_MASK_TURBIDW_COLOR_DEFAULT = LightBrown;
-
 
 
     // HISOLZEN
@@ -396,7 +374,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = Purple;
 
 
-
     // LOWLW
 
     public static final String PROPERTY_MASK_LOWLW_NAME = "LOWLW";
@@ -422,7 +399,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_LOWLW_COLOR_TOOLTIP = "Set default color of the LOWLW mask";
     //    public static final Color PROPERTY_MASK_LOWLW_COLOR_DEFAULT = Gray75;
     public static final Color PROPERTY_MASK_LOWLW_COLOR_DEFAULT = Cornflower;
-
 
 
     // CHLFAIL
@@ -452,7 +428,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_CHLFAIL_COLOR_DEFAULT = FailRed;
 
 
-
     // NAVWARN
 
     public static final String PROPERTY_MASK_NAVWARN_NAME = "NAVWARN";
@@ -478,8 +453,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_NAVWARN_COLOR_TOOLTIP = "Set default color of the NAVWARN mask";
     //    public static final Color PROPERTY_MASK_NAVWARN_COLOR_DEFAULT = Warnings;
     public static final Color PROPERTY_MASK_NAVWARN_COLOR_DEFAULT = Color.MAGENTA;
-
-
 
 
     // ABSAER
@@ -509,8 +482,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_ABSAER_COLOR_DEFAULT = Color.ORANGE;
 
 
-
-
     // MAXAERITER
 
     public static final String PROPERTY_MASK_MAXAERITER_NAME = "MAXAERITER";
@@ -536,8 +507,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_MAXAERITER_COLOR_TOOLTIP = "Set default color of the MAXAERITER mask";
     //    public static final Color PROPERTY_MASK_MAXAERITER_COLOR_DEFAULT = MiscFlags;
     public static final Color PROPERTY_MASK_MAXAERITER_COLOR_DEFAULT = MediumGray;
-
-
 
 
     // MODGLINT
@@ -567,8 +536,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_MODGLINT_COLOR_DEFAULT = LightPurple;
 
 
-
-
     // CHLWARN
 
     public static final String PROPERTY_MASK_CHLWARN_NAME = "CHLWARN";
@@ -594,7 +561,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_CHLWARN_COLOR_TOOLTIP = "Set default color of the CHLWARN mask";
     //    public static final Color PROPERTY_MASK_CHLWARN_COLOR_DEFAULT = Warnings;
     public static final Color PROPERTY_MASK_CHLWARN_COLOR_DEFAULT = Color.LIGHT_GRAY;
-
 
 
     // ATMWARN
@@ -624,8 +590,6 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_ATMWARN_COLOR_DEFAULT = Color.MAGENTA;
 
 
-
-
     // SEAICE
 
     public static final String PROPERTY_MASK_SEAICE_NAME = "SEAICE";
@@ -651,7 +615,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_SEAICE_COLOR_TOOLTIP = "Set default color of the SEAICE mask";
     //    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = BrightFlags;
     public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = Color.DARK_GRAY;
-
 
 
     // NAVFAIL
@@ -1081,11 +1044,14 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_LABEL = "Band Grouping";
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_TOOLTIP = "<html>NASA Level-2 File Reader:<br>Expression to create a group of bands</html>";
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT = "Rrs_*:Rrs_unc_*:Rrs_raman:" +
-            "nLw:Lt:La_:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:" +
+            "nLw:Lt_interp:Lt:La_:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:" +
             "Taua:taua:Kd:" +
             "a_*:aot_*:adg_*:aph_*:bbp_*:bb_*:vgain_*:BT_*:" +
             "tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf:mr_fine:mi_fine:mr_coarse:" +
             "mi_coarse:angstrom_440:ssa_fine:ssa_coarse::fmf:ssa:mr:mi_:aot_fine:aot_coarse:" +
+            "NUV_UncertaintyCODToSSA:Aerosol_Optical_Depth:Mean_Gas_Corrected_Reflectance:Mean_Reflectance:" +
+            "DT_AerosolSingleScattAlbedo:NUV_AerosolSingleScattAlbedo:NUV_Reflectivity:" +
+            "NUV_AerosolOpticalDepthOverCloud:NUV_UncertaintyACAODToSSA:AAOD:" +
             "Rrs1_mean:Rrs1_std:Rrs1_model_mean:Rrs1_model_std:" +
             "Rrs2_mean:Rrs2_std:Rrs2_model_mean:Rrs2_model_std";
 
@@ -1142,7 +1108,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_L1C_PACE_OCI_BAND_GROUPING_KEY = PROPERTY_L1C_PACE_ROOT_KEY + ".band_grouping.oci";
     public static final String PROPERTY_L1C_PACE_OCI_BAND_GROUPING_LABEL = "Band Grouping (OCI)";
     public static final String PROPERTY_L1C_PACE_OCI_BAND_GROUPING_TOOLTIP = "<html>NASA Level-1C PACE-OCI File Reader:<br>Expression to create a group of bands</html>";
-    public static final String PROPERTY_L1C_PACE_OCI_BAND_GROUPING_DEFAULT = "i_20:i_-20:qc_-20:qc_20:i_stdev_20:i_stdev_-20:" +
+    public static final String PROPERTY_L1C_PACE_OCI_BAND_GROUPING_DEFAULT = "i_-20:i_20:qc_-20:qc_20:i_stdev_-20:i_stdev_20:" +
             "sensor_zenith:sensor_azimuth:solar_azimuth:solar_zenith:scattering_angle:view_time_offsets:number_of_observations";
 
 
