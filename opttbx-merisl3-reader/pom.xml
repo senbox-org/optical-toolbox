@@ -20,7 +20,7 @@
     <parent>
         <artifactId>optical-toolbox</artifactId>
         <groupId>eu.esa.opt</groupId>
-        <version>13.0.0-rc2</version>
+        <version>13.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>opttbx-merisl3-reader</artifactId>
