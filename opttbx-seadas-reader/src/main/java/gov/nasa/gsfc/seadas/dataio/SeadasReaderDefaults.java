@@ -1046,7 +1046,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT = "Rrs_*:Rrs_unc_*:Rrs_raman:" +
             "nLw:Lt_interp:Lt:La_:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:" +
             "Taua:taua:Kd:" +
-            "a_*:aot_*:adg_*:aph_*:bbp_*:bb_*:vgain_*:BT_*:" +
+            "a_*:aot_*:adg_*:aph_*:bbp_*:bb_*:vgain_*:BT_*:aph_unc:" +
             "tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf:mr_fine:mi_fine:mr_coarse:" +
             "mi_coarse:angstrom:ssa_fine:ssa_coarse::fmf:ssa:mr:mi_:aot_fine:aot_coarse:water_albedo_correction_first_guess:" +
             "f_isotropic:f_isotropic_first_guess:lidar_p11_pi:lidar_bsca_total:lidar_depol_ratio:lidar_ratio:refr_coefs_mode1:refr_coefs_mode2:refr_coefs_mode3:" +
