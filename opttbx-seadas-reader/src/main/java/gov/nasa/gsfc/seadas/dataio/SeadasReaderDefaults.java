@@ -1046,9 +1046,16 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT = "Rrs_*:Rrs_unc_*:Rrs_raman:" +
             "nLw:Lt_interp:Lt:La_:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:" +
             "Taua:taua:Kd:" +
-            "a_*:aot_*:adg_*:aph_*:bbp_*:bb_*:vgain_*:BT_*:" +
+            "a_*:aot_*:adg_*:aph_*:bbp_*:bb_*:vgain_*:BT_*:aph_unc:" +
             "tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf:mr_fine:mi_fine:mr_coarse:" +
-            "mi_coarse:angstrom_440:ssa_fine:ssa_coarse::fmf:ssa:mr:mi_:aot_fine:aot_coarse:" +
+            "mi_coarse:angstrom:ssa_fine:ssa_coarse::fmf:ssa:mr:mi_:aot_fine:aot_coarse:water_albedo_correction_first_guess:" +
+            "f_isotropic:f_isotropic_first_guess:lidar_p11_pi:lidar_bsca_total:lidar_depol_ratio:lidar_ratio:refr_coefs_mode1:refr_coefs_mode2:refr_coefs_mode3:" +
+            "mr_mode1:mr_mode2:mr_mode3:mi_mode1:mi_mode2:mi_mode3:aot_mode1:aot_mode2:aot_mode3:ssa_mode1:ssa_mode2:ssa_mode3:" +
+            "sensor_zenith_angle:scattering_angle:relative_azimuth_angle:timing:iteration:" +
+            "aot_uncertainty:aot_fine_uncertainty:aot_coarse_uncertainty:angstrom_*_uncertainty:" +
+            "ssa_uncertainty:ssa_fine_uncertainty:ssa_coarse_uncertainty:ssa_mode1_uncertainty:ssa_mode2_uncertainty:ssa_mode3_uncertainty:" +
+            "mr_mode1_uncertainty:mr_mode2_uncertainty:mr_mode3_uncertainty:mi_mode1_uncertainty:mi_mode2_uncertainty:mi_mode3_uncertainty:" +
+            "aot_mode1_uncertainty:aot_mode2_uncertainty:aot_mode3_uncertainty:ssa_mode1_uncertainty:ssa_mode2_uncertainty:ssa_mode3_uncertainty:" +
             "NUV_UncertaintyCODToSSA:Aerosol_Optical_Depth:Mean_Gas_Corrected_Reflectance:Mean_Reflectance:" +
             "DT_AerosolSingleScattAlbedo:NUV_AerosolSingleScattAlbedo:NUV_Reflectivity:" +
             "NUV_AerosolOpticalDepthOverCloud:NUV_UncertaintyACAODToSSA:AAOD:" +
