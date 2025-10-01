@@ -127,8 +127,8 @@
     <properties>
         <snap.version>13.0.0-SNAPSHOT</snap.version>
         <opttbx.version>13.0.0-SNAPSHOT</opttbx.version>
-        <seadas.reader.version>1.10.2</seadas.reader.version>
-        <seadas.reader.ui.version>1.10.2</seadas.reader.ui.version>
+        <seadas.reader.version>1.10.3</seadas.reader.version>
+        <seadas.reader.ui.version>1.10.3</seadas.reader.ui.version>
         <snap-help-system.version>1.0.2</snap-help-system.version>
         <netbeans.version>RELEASE210</netbeans.version>
         <geotools.version>28.6</geotools.version>
