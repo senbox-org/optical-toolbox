@@ -93,7 +93,13 @@ public class L2FileReader extends SeadasFileReader {
                     navGroup = "geolocation";
                 }
             }
-            final Variable variable = ncFile.findVariable(navGroup + "/" + latitude);
+            Variable variable = ncFile.findVariable(navGroup + "/" + latitude);
+            if (variable == null ) {
+                String  title = getStringAttribute("title");
+                if (title.contains("PACE OCI Level-2 Data UAA 1x1")) {
+                    variable = ncFile.findVariable(navGroup + "/Latitude");
+                }
+            }
             try {
                 shape = variable.getShape();
                 sceneWidth = shape[1];
