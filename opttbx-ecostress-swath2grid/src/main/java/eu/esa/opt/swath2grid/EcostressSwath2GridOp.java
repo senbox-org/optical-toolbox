@@ -55,8 +55,8 @@ public class EcostressSwath2GridOp extends Operator {
 
     public static final String ECOSTRESS_LATITUDE_BAND_NAME = "latitude";
     public static final String ECOSTRESS_LONGITUDE_BAND_NAME = "longitude";
-    public static final String ECOSTRESS_GEO_FORMAT = "ECOSTRESS-L1B-GEO";
-    public static final String ECOSTRESS_ECO_FORMAT = "ECOSTRESS-.*";
+    public static final String ECOSTRESS_GEO_FORMAT = "ECOSTRESS_L1B_GEO";
+    public static final String ECOSTRESS_ECO_FORMAT = "ECOSTRESS_.*";
     public static final String ECOSTRESS_SWATH2GRID_OP_AUXDATA_DIR = "EcostressSwath2Grid";
     public static final String ECOSTRESS_BT_PROUCT_BAND_NAME_PATTERN = ".*radiance_(\\d+)";
     private static final String OP_ERROR_SIGNAL = "Swath2GridExecError";
