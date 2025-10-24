@@ -314,7 +314,6 @@ public class ProbaVUtils {
      */
     public static H5ScalarDS getH5ScalarDS(HObject level3BandsChildNode) {
         H5ScalarDS scalarDS = (H5ScalarDS) level3BandsChildNode;
-        scalarDS.open();
         scalarDS.init();
         return scalarDS;
     }
