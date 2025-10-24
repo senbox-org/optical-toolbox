@@ -249,7 +249,7 @@ public class ProbaVProductReader extends AbstractProductReader {
         final MetadataElement rootMetadataElement = product.getMetadataRoot().getElement(ProbaVConstants.GEOMETRY_BAND_GROUP_NAME);
 
         for (int j = childNodeStartIndex; j < parentNode.getNumberOfMembersInFile(); j++) {
-            final Group geometryChildNode = (Group) parentNode.getMember(j);
+            final HObject geometryChildNode = parentNode.getMember(j);
             final String geometryChildNodeName = geometryChildNode.getName();
 
             if (ProbaVUtils.isProbaVSunAngleDataNode(geometryChildNodeName)) {
@@ -271,8 +271,9 @@ public class ProbaVProductReader extends AbstractProductReader {
                 final List<?> childGeometryMetadata = sunAngleDs.getMetadata();
                 ProbaVUtils.addMetadataElementWithAttributes(childGeometryMetadata, rootMetadataElement, geometryChildNodeName);
             } else if (ProbaVUtils.isProbaVViewAngleGroupNode(geometryChildNodeName)) {
-                for (int k = 0; k < geometryChildNode.getNumberOfMembersInFile(); k++) {
-                    final HObject geometryViewAngleChildNode = geometryChildNode.getMember(k);
+                final Group geometryViewAngleGroupNode = (Group) geometryChildNode;
+                for (int k = 0; k < geometryViewAngleGroupNode.getNumberOfMembersInFile(); k++) {
+                    final HObject geometryViewAngleChildNode = geometryViewAngleGroupNode.getMember(k);
                     final H5ScalarDS viewAngleDS = ProbaVUtils.getH5ScalarDS(geometryViewAngleChildNode);
                     final String geometryViewAngleChildNodeName =
                             geometryViewAngleChildNode.getName();
