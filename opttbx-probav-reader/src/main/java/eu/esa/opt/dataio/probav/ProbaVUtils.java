@@ -553,35 +553,35 @@ public class ProbaVUtils {
      * @throws HDF5Exception if an error occurs
      */
     private static int extractDataTypeOfProductData(H5ScalarDS h5ScalarDS) throws Exception {
-        final Object h5ScalarDSValueObject = h5ScalarDS.read();
-        switch (h5ScalarDS.getDatatype().getDatatypeClass()) {
+        final Datatype dt = h5ScalarDS.getDatatype();
+        final long size = dt.getDatatypeSize();
+
+        switch (dt.getDatatypeClass()) {
             case Datatype.CLASS_INTEGER:
-                if (h5ScalarDSValueObject.getClass() == long[].class) {
+                if (size == 8) {
                     return ProductData.TYPE_INT64;
                 }
-                if (h5ScalarDSValueObject.getClass() == int[].class) {
+                if (size == 4) {
                     return ProductData.TYPE_INT32;
                 }
-                if (h5ScalarDSValueObject.getClass() == short[].class) {
+                if (size == 2) {
                     return ProductData.TYPE_INT16;
                 }
-                if (h5ScalarDSValueObject.getClass() == byte[].class) {
+                if (size == 1) {
                     return ProductData.TYPE_INT8;
                 }
                 break;
             case Datatype.CLASS_FLOAT:
-                if (h5ScalarDSValueObject.getClass() == float[].class) {
+                if (size == 4) {
                     return ProductData.TYPE_FLOAT32;
                 }
-                if (h5ScalarDSValueObject.getClass() == double[].class) {
+                if (size == 8) {
                     return ProductData.TYPE_FLOAT64;
                 }
                 break;
             case Datatype.CLASS_CHAR:
-                if (h5ScalarDSValueObject.getClass() == byte[].class) {
-                    return ProductData.TYPE_INT8;
-                }
-                break;
+            case Datatype.CLASS_STRING:
+                return ProductData.TYPE_INT8;
             default:
                 break;
         }
