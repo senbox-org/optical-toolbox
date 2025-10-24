@@ -289,16 +289,17 @@ public class ProbaVUtils {
      * Creates a target band matching given metadata information
      *
      * @param product  - the target product
-     * @param metadata - the HDF metadata attributes
+     * @param bandDS   - the HDF dataset
      * @param bandName - band name
-     * @param dataType - data type
      * @return the target band
      */
-    public static Band createTargetBand(Product product, List<Attribute> metadata, String bandName, int dataType) {
+    public static Band createTargetBand(Product product, H5ScalarDS bandDS, String bandName) throws Exception {
+        final List<Attribute> metadata = bandDS.getMetadata();
         final double scaleFactorAttr = ProbaVUtils.getDoubleAttributeValue(metadata, "SCALE");
         final double scaleFactor = Double.isNaN(scaleFactorAttr) ? 1.0f : scaleFactorAttr;
         final double scaleOffsetAttr = ProbaVUtils.getDoubleAttributeValue(metadata, "OFFSET");
         final double scaleOffset = Double.isNaN(scaleOffsetAttr) ? 0.0f : scaleOffsetAttr;
+        final int dataType = extractDataTypeOfProductData(bandDS);
         final Band band = product.addBand(bandName, dataType);
         band.setScalingFactor(1.0 / scaleFactor);
         band.setScalingOffset(-1.0 * scaleOffset / scaleFactor);
@@ -545,4 +546,45 @@ public class ProbaVUtils {
         return -1;
     }
 
+    /**
+     * Extracts the SNAP band object data type from a Prova-V product file HDF5 scalar object
+     * @param h5ScalarDS the Prova-V product file HDF5 scalar object
+     * @return the SNAP band object data type from a Prova-V product file
+     * @throws HDF5Exception if an error occurs
+     */
+    private static int extractDataTypeOfProductData(H5ScalarDS h5ScalarDS) throws Exception {
+        final Object h5ScalarDSValueObject = h5ScalarDS.read();
+        switch (h5ScalarDS.getDatatype().getDatatypeClass()) {
+            case Datatype.CLASS_INTEGER:
+                if (h5ScalarDSValueObject.getClass() == long[].class) {
+                    return ProductData.TYPE_INT64;
+                }
+                if (h5ScalarDSValueObject.getClass() == int[].class) {
+                    return ProductData.TYPE_INT32;
+                }
+                if (h5ScalarDSValueObject.getClass() == short[].class) {
+                    return ProductData.TYPE_INT16;
+                }
+                if (h5ScalarDSValueObject.getClass() == byte[].class) {
+                    return ProductData.TYPE_INT8;
+                }
+                break;
+            case Datatype.CLASS_FLOAT:
+                if (h5ScalarDSValueObject.getClass() == float[].class) {
+                    return ProductData.TYPE_FLOAT32;
+                }
+                if (h5ScalarDSValueObject.getClass() == double[].class) {
+                    return ProductData.TYPE_FLOAT64;
+                }
+                break;
+            case Datatype.CLASS_CHAR:
+                if (h5ScalarDSValueObject.getClass() == byte[].class) {
+                    return ProductData.TYPE_INT8;
+                }
+                break;
+            default:
+                break;
+        }
+        return ProductData.TYPE_UNDEFINED;
+    }
 }
