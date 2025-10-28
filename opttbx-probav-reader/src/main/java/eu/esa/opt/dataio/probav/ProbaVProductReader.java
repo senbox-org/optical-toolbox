@@ -100,6 +100,7 @@ public class ProbaVProductReader extends AbstractProductReader {
                         targetOffsetX, targetOffsetY,
                         datasetVar.name(),
                         datasetVar.type(),
+                        datasetVar.size(),
                         tmpBuffer);
                 ProbaVFlags.setSmFlagBuffer(targetBuffer, tmpBuffer, probavProductType);
             } else {
@@ -108,6 +109,7 @@ public class ProbaVProductReader extends AbstractProductReader {
                         targetOffsetX, targetOffsetY,
                         datasetVar.name(),
                         datasetVar.type(),
+                        datasetVar.size(),
                         targetBuffer);
             }
         }
@@ -202,7 +204,7 @@ public class ProbaVProductReader extends AbstractProductReader {
 
         final String timeDatasetName = "/LEVEL3/TIME/TIME";
         datasetVars.put(timeBand.getName(), new Hdf5DatasetVar(timeDatasetName,
-                timeDatatypeClass));
+                timeDatatypeClass, timeDS.getDatatype().getDatatypeSize()));
 
         ProbaVUtils.addBandSubGroupMetadata(product, parentNode, ProbaVConstants.TIME_BAND_GROUPNAME);
     }
@@ -229,7 +231,7 @@ public class ProbaVProductReader extends AbstractProductReader {
         final int qualityDatatypeClass = qualityDS.getDatatype().getDatatypeClass();
         datasetVars.put(smFlagBand.getName(),
                 new Hdf5DatasetVar(qualityDatasetName,
-                        qualityDatatypeClass));
+                        qualityDatatypeClass, qualityDS.getDatatype().getDatatypeSize()));
 
         ProbaVUtils.addBandSubGroupMetadata(product, parentNode, ProbaVConstants.QUALITY_BAND_GROUP_NAME);
     }
@@ -264,7 +266,7 @@ public class ProbaVProductReader extends AbstractProductReader {
                 final String sunAngleDatasetName = "/" + probavProductType + "/GEOMETRY/" + geometryChildNodeName;
                 final int sunAngleDatatypeClass = sunAngleDS.getDatatype().getDatatypeClass();   // 0
                 datasetVars.put(sunAngleBand.getName(), new Hdf5DatasetVar(sunAngleDatasetName,
-                        sunAngleDatatypeClass));
+                        sunAngleDatatypeClass, sunAngleDS.getDatatype().getDatatypeSize()));
 
                 final H5ScalarDS sunAngleDs = ProbaVUtils.getH5ScalarDS(geometryChildNode);
                 final List<?> childGeometryMetadata = sunAngleDs.getMetadata();
@@ -289,7 +291,7 @@ public class ProbaVProductReader extends AbstractProductReader {
                             geometryChildNodeName + "/" + geometryViewAngleChildNodeName;
                     final int viewAngleDatatypeClass = viewAngleDS.getDatatype().getDatatypeClass();   // 0
                     datasetVars.put(viewAngleBand.getName(), new Hdf5DatasetVar(viewAngleDatasetName,
-                            viewAngleDatatypeClass));
+                            viewAngleDatatypeClass, viewAngleDS.getDatatype().getDatatypeSize()));
 
                     final H5ScalarDS viewAngleDs = ProbaVUtils.getH5ScalarDS(geometryViewAngleChildNode);
                     final List<?> childGeometryMetadata = viewAngleDs.getMetadata();
@@ -329,7 +331,7 @@ public class ProbaVProductReader extends AbstractProductReader {
             final int radiometryDatatypeClass = radiometryDS.getDatatype().getDatatypeClass();
             datasetVars.put(radiometryBand.getName(),
                     new Hdf5DatasetVar(radiometryDatasetName,
-                            radiometryDatatypeClass));
+                            radiometryDatatypeClass, radiometryDS.getDatatype().getDatatypeSize()));
 
             // add metadata:
             final MetadataElement childMetadataElement = new MetadataElement(radiometryChildNodeName);
@@ -361,12 +363,12 @@ public class ProbaVProductReader extends AbstractProductReader {
         final int ndviDatatypeClass = ndviDS.getDatatype().getDatatypeClass();
 
         datasetVars.put(ndviBand.getName(), new Hdf5DatasetVar(ndviDatasetName,
-                ndviDatatypeClass));
+                ndviDatatypeClass, ndviDS.getDatatype().getDatatypeSize()));
 
         ProbaVUtils.addBandSubGroupMetadata(product, parentNode, ProbaVConstants.NDVI_BAND_GROUP_NAME);
     }
 
-    private record Hdf5DatasetVar(String name, int type) {
+    private record Hdf5DatasetVar(String name, int type, long size) {
 
     }
 
