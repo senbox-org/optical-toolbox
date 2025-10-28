@@ -100,6 +100,7 @@ public class ProbaVProductReader extends AbstractProductReader {
                         targetOffsetX, targetOffsetY,
                         datasetVar.name(),
                         datasetVar.type(),
+                        datasetVar.size(),
                         tmpBuffer);
                 ProbaVFlags.setSmFlagBuffer(targetBuffer, tmpBuffer, probavProductType);
             } else {
@@ -108,6 +109,7 @@ public class ProbaVProductReader extends AbstractProductReader {
                         targetOffsetX, targetOffsetY,
                         datasetVar.name(),
                         datasetVar.type(),
+                        datasetVar.size(),
                         targetBuffer);
             }
         }
@@ -190,11 +192,11 @@ public class ProbaVProductReader extends AbstractProductReader {
         final int timeDatatypeClass = timeDS.getDatatype().getDatatypeClass();   // 0
         if (timeDatatypeClass == H5Datatype.CLASS_CHAR) {
             // 8-bit unsigned character in this case
-            timeBand = ProbaVUtils.createTargetBand(product, timeDS.getMetadata(), "TIME", ProductData.TYPE_UINT8);
+            timeBand = ProbaVUtils.createTargetBand(product, timeDS, "TIME");
             timeBand.setNoDataValue(ProbaVConstants.TIME_NO_DATA_VALUE_UINT8);
         } else {
             // 16-bit unsigned integer
-            timeBand = ProbaVUtils.createTargetBand(product, timeDS.getMetadata(), "TIME", ProductData.TYPE_UINT16);
+            timeBand = ProbaVUtils.createTargetBand(product, timeDS, "TIME");
             timeBand.setNoDataValue(ProbaVConstants.TIME_NO_DATA_VALUE_UINT16);
         }
         ProbaVUtils.setBandUnitAndDescription(timeDS.getMetadata(), timeBand);
@@ -202,7 +204,7 @@ public class ProbaVProductReader extends AbstractProductReader {
 
         final String timeDatasetName = "/LEVEL3/TIME/TIME";
         datasetVars.put(timeBand.getName(), new Hdf5DatasetVar(timeDatasetName,
-                timeDatatypeClass));
+                timeDatatypeClass, timeDS.getDatatype().getDatatypeSize()));
 
         ProbaVUtils.addBandSubGroupMetadata(product, parentNode, ProbaVConstants.TIME_BAND_GROUPNAME);
     }
@@ -229,7 +231,7 @@ public class ProbaVProductReader extends AbstractProductReader {
         final int qualityDatatypeClass = qualityDS.getDatatype().getDatatypeClass();
         datasetVars.put(smFlagBand.getName(),
                 new Hdf5DatasetVar(qualityDatasetName,
-                        qualityDatatypeClass));
+                        qualityDatatypeClass, qualityDS.getDatatype().getDatatypeSize()));
 
         ProbaVUtils.addBandSubGroupMetadata(product, parentNode, ProbaVConstants.QUALITY_BAND_GROUP_NAME);
     }
@@ -249,15 +251,14 @@ public class ProbaVProductReader extends AbstractProductReader {
         final MetadataElement rootMetadataElement = product.getMetadataRoot().getElement(ProbaVConstants.GEOMETRY_BAND_GROUP_NAME);
 
         for (int j = childNodeStartIndex; j < parentNode.getNumberOfMembersInFile(); j++) {
-            final Group geometryChildNode = (Group) parentNode.getMember(j);
+            final HObject geometryChildNode = parentNode.getMember(j);
             final String geometryChildNodeName = geometryChildNode.getName();
 
             if (ProbaVUtils.isProbaVSunAngleDataNode(geometryChildNodeName)) {
                 final H5ScalarDS sunAngleDS = ProbaVUtils.getH5ScalarDS(geometryChildNode);
                 final Band sunAngleBand = ProbaVUtils.createTargetBand(product,
-                        sunAngleDS.getMetadata(),
-                        geometryChildNodeName,
-                        ProductData.TYPE_UINT8);
+                        sunAngleDS,
+                        geometryChildNodeName);
                 ProbaVUtils.setBandUnitAndDescription(sunAngleDS.getMetadata(), sunAngleBand);
                 sunAngleBand.setNoDataValue(ProbaVConstants.GEOMETRY_NO_DATA_VALUE);
                 sunAngleBand.setNoDataValueUsed(true);
@@ -265,23 +266,23 @@ public class ProbaVProductReader extends AbstractProductReader {
                 final String sunAngleDatasetName = "/" + probavProductType + "/GEOMETRY/" + geometryChildNodeName;
                 final int sunAngleDatatypeClass = sunAngleDS.getDatatype().getDatatypeClass();   // 0
                 datasetVars.put(sunAngleBand.getName(), new Hdf5DatasetVar(sunAngleDatasetName,
-                        sunAngleDatatypeClass));
+                        sunAngleDatatypeClass, sunAngleDS.getDatatype().getDatatypeSize()));
 
                 final H5ScalarDS sunAngleDs = ProbaVUtils.getH5ScalarDS(geometryChildNode);
                 final List<?> childGeometryMetadata = sunAngleDs.getMetadata();
                 ProbaVUtils.addMetadataElementWithAttributes(childGeometryMetadata, rootMetadataElement, geometryChildNodeName);
             } else if (ProbaVUtils.isProbaVViewAngleGroupNode(geometryChildNodeName)) {
-                for (int k = 0; k < geometryChildNode.getNumberOfMembersInFile(); k++) {
-                    final HObject geometryViewAngleChildNode = geometryChildNode.getMember(k);
+                final Group geometryViewAngleGroupNode = (Group) geometryChildNode;
+                for (int k = 0; k < geometryViewAngleGroupNode.getNumberOfMembersInFile(); k++) {
+                    final HObject geometryViewAngleChildNode = geometryViewAngleGroupNode.getMember(k);
                     final H5ScalarDS viewAngleDS = ProbaVUtils.getH5ScalarDS(geometryViewAngleChildNode);
                     final String geometryViewAngleChildNodeName =
                             geometryViewAngleChildNode.getName();
                     final String viewAngleBandName = geometryViewAngleChildNodeName + "_" +
                             geometryChildNodeName;
                     final Band viewAngleBand = ProbaVUtils.createTargetBand(product,
-                            viewAngleDS.getMetadata(),
-                            viewAngleBandName,
-                            ProductData.TYPE_UINT8);
+                            viewAngleDS,
+                            viewAngleBandName);
                     ProbaVUtils.setBandUnitAndDescription(viewAngleDS.getMetadata(), viewAngleBand);
                     viewAngleBand.setNoDataValue(ProbaVConstants.GEOMETRY_NO_DATA_VALUE);
                     viewAngleBand.setNoDataValueUsed(true);
@@ -290,7 +291,7 @@ public class ProbaVProductReader extends AbstractProductReader {
                             geometryChildNodeName + "/" + geometryViewAngleChildNodeName;
                     final int viewAngleDatatypeClass = viewAngleDS.getDatatype().getDatatypeClass();   // 0
                     datasetVars.put(viewAngleBand.getName(), new Hdf5DatasetVar(viewAngleDatasetName,
-                            viewAngleDatatypeClass));
+                            viewAngleDatatypeClass, viewAngleDS.getDatatype().getDatatypeSize()));
 
                     final H5ScalarDS viewAngleDs = ProbaVUtils.getH5ScalarDS(geometryViewAngleChildNode);
                     final List<?> childGeometryMetadata = viewAngleDs.getMetadata();
@@ -318,9 +319,8 @@ public class ProbaVProductReader extends AbstractProductReader {
             final String radiometryBandPrefix = radiometryBandPrePrefix + "_REFL_";
             final String reflBandName = radiometryBandPrefix + radiometryChildNodeName;
             final Band radiometryBand = ProbaVUtils.createTargetBand(product,
-                    radiometryDS.getMetadata(),
-                    reflBandName,
-                    ProductData.TYPE_INT16);
+                    radiometryDS,
+                    reflBandName);
             ProbaVUtils.setBandUnitAndDescription(radiometryDS.getMetadata(), radiometryBand);
             ProbaVUtils.setSpectralBandProperties(radiometryChildNode, radiometryBand);
             radiometryBand.setNoDataValue(ProbaVConstants.RADIOMETRY_NO_DATA_VALUE);
@@ -331,7 +331,7 @@ public class ProbaVProductReader extends AbstractProductReader {
             final int radiometryDatatypeClass = radiometryDS.getDatatype().getDatatypeClass();
             datasetVars.put(radiometryBand.getName(),
                     new Hdf5DatasetVar(radiometryDatasetName,
-                            radiometryDatatypeClass));
+                            radiometryDatatypeClass, radiometryDS.getDatatype().getDatatypeSize()));
 
             // add metadata:
             final MetadataElement childMetadataElement = new MetadataElement(radiometryChildNodeName);
@@ -352,7 +352,7 @@ public class ProbaVProductReader extends AbstractProductReader {
         // 8-bit unsigned character
         final Group parentNode = (Group) productTypeChildNode;
         final H5ScalarDS ndviDS = (H5ScalarDS) parentNode.getMember(0);
-        final Band ndviBand = ProbaVUtils.createTargetBand(product, ndviDS.getMetadata(), "NDVI", ProductData.TYPE_UINT8);
+        final Band ndviBand = ProbaVUtils.createTargetBand(product, ndviDS, "NDVI");
 
         ndviBand.setDescription("Normalized Difference Vegetation Index");
         ndviBand.setUnit("dl");
@@ -363,12 +363,12 @@ public class ProbaVProductReader extends AbstractProductReader {
         final int ndviDatatypeClass = ndviDS.getDatatype().getDatatypeClass();
 
         datasetVars.put(ndviBand.getName(), new Hdf5DatasetVar(ndviDatasetName,
-                ndviDatatypeClass));
+                ndviDatatypeClass, ndviDS.getDatatype().getDatatypeSize()));
 
         ProbaVUtils.addBandSubGroupMetadata(product, parentNode, ProbaVConstants.NDVI_BAND_GROUP_NAME);
     }
 
-    private record Hdf5DatasetVar(String name, int type) {
+    private record Hdf5DatasetVar(String name, int type, long size) {
 
     }
 

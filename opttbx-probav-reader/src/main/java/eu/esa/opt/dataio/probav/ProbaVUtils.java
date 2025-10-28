@@ -177,7 +177,7 @@ public class ProbaVUtils {
      */
     public static void readProbaVData(long file_id,
                                       int width, int height, long offsetX, long offsetY,
-                                      String datasetName, int datatypeClass,
+                                      String datasetName, int datatypeClass, long datatypeSize,
                                       ProductData destBuffer) {
         try {
             final long dataset_id = H5.H5Dopen(file_id,                       // Location identifier
@@ -208,7 +208,7 @@ public class ProbaVUtils {
                     count,                              // Number of blocks included in hyperslab.
                     null);                          // Size of block in hyperslab.
 
-            long dataType = ProbaVUtils.getAttributeDatatypeForH5Dread(datatypeClass);
+            long dataType = ProbaVUtils.getAttributeDatatypeForH5Dread(datatypeClass, datatypeSize);
 
             if (destBuffer != null) {
                 H5.H5Dread(dataset_id,                    // Identifier of the dataset read from.
@@ -289,16 +289,17 @@ public class ProbaVUtils {
      * Creates a target band matching given metadata information
      *
      * @param product  - the target product
-     * @param metadata - the HDF metadata attributes
+     * @param bandDS   - the HDF dataset
      * @param bandName - band name
-     * @param dataType - data type
      * @return the target band
      */
-    public static Band createTargetBand(Product product, List<Attribute> metadata, String bandName, int dataType) {
+    public static Band createTargetBand(Product product, H5ScalarDS bandDS, String bandName) throws Exception {
+        final List<Attribute> metadata = bandDS.getMetadata();
         final double scaleFactorAttr = ProbaVUtils.getDoubleAttributeValue(metadata, "SCALE");
         final double scaleFactor = Double.isNaN(scaleFactorAttr) ? 1.0f : scaleFactorAttr;
         final double scaleOffsetAttr = ProbaVUtils.getDoubleAttributeValue(metadata, "OFFSET");
         final double scaleOffset = Double.isNaN(scaleOffsetAttr) ? 0.0f : scaleOffsetAttr;
+        final int dataType = extractDataTypeOfProductData(bandDS);
         final Band band = product.addBand(bandName, dataType);
         band.setScalingFactor(1.0 / scaleFactor);
         band.setScalingOffset(-1.0 * scaleOffset / scaleFactor);
@@ -314,7 +315,6 @@ public class ProbaVUtils {
      */
     public static H5ScalarDS getH5ScalarDS(HObject level3BandsChildNode) {
         H5ScalarDS scalarDS = (H5ScalarDS) level3BandsChildNode;
-        scalarDS.open();
         scalarDS.init();
         return scalarDS;
     }
@@ -529,16 +529,32 @@ public class ProbaVUtils {
         return false;
     }
 
-    private static long getAttributeDatatypeForH5Dread(int datatypeClass) {
+    private static long getAttributeDatatypeForH5Dread(int datatypeClass, long datatypeSize) {
         switch (datatypeClass) {
-            case H5Datatype.CLASS_BITFIELD, H5Datatype.CLASS_CHAR -> {
+            case H5Datatype.CLASS_BITFIELD, H5Datatype.CLASS_CHAR, H5Datatype.CLASS_STRING -> {
                 return HDF5Constants.H5T_NATIVE_UINT8;
             }
             case H5Datatype.CLASS_FLOAT -> {
-                return HDF5Constants.H5T_NATIVE_FLOAT;
+                if (datatypeSize == 4) {
+                    return HDF5Constants.H5T_NATIVE_FLOAT;
+                }
+                if (datatypeSize == 8) {
+                    return HDF5Constants.H5T_NATIVE_DOUBLE;
+                }
             }
             case H5Datatype.CLASS_INTEGER -> {
-                return HDF5Constants.H5T_NATIVE_INT16;
+                if (datatypeSize == 8) {
+                    return HDF5Constants.H5T_NATIVE_INT64;
+                }
+                if (datatypeSize == 4) {
+                    return HDF5Constants.H5T_NATIVE_INT32;
+                }
+                if (datatypeSize == 2) {
+                    return HDF5Constants.H5T_NATIVE_INT16;
+                }
+                if (datatypeSize == 1) {
+                    return HDF5Constants.H5T_NATIVE_INT8;
+                }
             }
             default -> {
             }
@@ -546,4 +562,45 @@ public class ProbaVUtils {
         return -1;
     }
 
+    /**
+     * Extracts the SNAP band object data type from a Prova-V product file HDF5 scalar object
+     * @param h5ScalarDS the Prova-V product file HDF5 scalar object
+     * @return the SNAP band object data type from a Prova-V product file
+     * @throws HDF5Exception if an error occurs
+     */
+    private static int extractDataTypeOfProductData(H5ScalarDS h5ScalarDS) throws Exception {
+        final Datatype dt = h5ScalarDS.getDatatype();
+        final long size = dt.getDatatypeSize();
+
+        switch (dt.getDatatypeClass()) {
+            case Datatype.CLASS_INTEGER:
+                if (size == 8) {
+                    return ProductData.TYPE_INT64;
+                }
+                if (size == 4) {
+                    return ProductData.TYPE_INT32;
+                }
+                if (size == 2) {
+                    return ProductData.TYPE_INT16;
+                }
+                if (size == 1) {
+                    return ProductData.TYPE_INT8;
+                }
+                break;
+            case Datatype.CLASS_FLOAT:
+                if (size == 4) {
+                    return ProductData.TYPE_FLOAT32;
+                }
+                if (size == 8) {
+                    return ProductData.TYPE_FLOAT64;
+                }
+                break;
+            case Datatype.CLASS_CHAR:
+            case Datatype.CLASS_STRING:
+                return ProductData.TYPE_INT8;
+            default:
+                break;
+        }
+        return ProductData.TYPE_UNDEFINED;
+    }
 }
