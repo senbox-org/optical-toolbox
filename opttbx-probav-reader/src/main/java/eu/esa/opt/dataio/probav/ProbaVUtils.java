@@ -177,7 +177,7 @@ public class ProbaVUtils {
      */
     public static void readProbaVData(long file_id,
                                       int width, int height, long offsetX, long offsetY,
-                                      String datasetName, int datatypeClass,
+                                      String datasetName, int datatypeClass, long datatypeSize,
                                       ProductData destBuffer) {
         try {
             final long dataset_id = H5.H5Dopen(file_id,                       // Location identifier
@@ -208,7 +208,7 @@ public class ProbaVUtils {
                     count,                              // Number of blocks included in hyperslab.
                     null);                          // Size of block in hyperslab.
 
-            long dataType = ProbaVUtils.getAttributeDatatypeForH5Dread(datatypeClass);
+            long dataType = ProbaVUtils.getAttributeDatatypeForH5Dread(datatypeClass, datatypeSize);
 
             if (destBuffer != null) {
                 H5.H5Dread(dataset_id,                    // Identifier of the dataset read from.
@@ -529,16 +529,32 @@ public class ProbaVUtils {
         return false;
     }
 
-    private static long getAttributeDatatypeForH5Dread(int datatypeClass) {
+    private static long getAttributeDatatypeForH5Dread(int datatypeClass, long datatypeSize) {
         switch (datatypeClass) {
-            case H5Datatype.CLASS_BITFIELD, H5Datatype.CLASS_CHAR -> {
+            case H5Datatype.CLASS_BITFIELD, H5Datatype.CLASS_CHAR, H5Datatype.CLASS_STRING -> {
                 return HDF5Constants.H5T_NATIVE_UINT8;
             }
             case H5Datatype.CLASS_FLOAT -> {
-                return HDF5Constants.H5T_NATIVE_FLOAT;
+                if (datatypeSize == 4) {
+                    return HDF5Constants.H5T_NATIVE_FLOAT;
+                }
+                if (datatypeSize == 8) {
+                    return HDF5Constants.H5T_NATIVE_DOUBLE;
+                }
             }
             case H5Datatype.CLASS_INTEGER -> {
-                return HDF5Constants.H5T_NATIVE_INT16;
+                if (datatypeSize == 8) {
+                    return HDF5Constants.H5T_NATIVE_INT64;
+                }
+                if (datatypeSize == 4) {
+                    return HDF5Constants.H5T_NATIVE_INT32;
+                }
+                if (datatypeSize == 2) {
+                    return HDF5Constants.H5T_NATIVE_INT16;
+                }
+                if (datatypeSize == 1) {
+                    return HDF5Constants.H5T_NATIVE_INT8;
+                }
             }
             default -> {
             }
