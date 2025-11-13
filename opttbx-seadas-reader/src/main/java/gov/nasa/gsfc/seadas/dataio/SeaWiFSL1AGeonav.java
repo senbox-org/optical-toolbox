@@ -30,8 +30,10 @@ import ucar.nc2.Attribute;
 import ucar.nc2.Group;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
+import ucar.nc2.Dimension;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SeaWiFSL1AGeonav {
     // Constants - the Fortran version defines pi, but Java has Math.PI.
@@ -101,7 +103,7 @@ public class SeaWiFSL1AGeonav {
     private float[][] solarAzimuths;
     private float[][] solarZeniths;
 
-    private NetcdfFile ncFile;
+    public static NetcdfFile ncFile;
 
     public SeaWiFSL1AGeonav(NetcdfFile netcdfFile) {
         ncFile = netcdfFile;
@@ -112,7 +114,7 @@ public class SeaWiFSL1AGeonav {
         scanStartPix  = determineStartPixel();
         pixIncr = determinePixelIncrement();
 
-        numScanLines = determineNumberScanLines(ncFile);
+        numScanLines = determineNumberScanLines();
 
         latitudes = new float[numScanLines][pixPerScanLine];
         longitudes = new float[numScanLines][pixPerScanLine];
@@ -144,12 +146,28 @@ public class SeaWiFSL1AGeonav {
         Group navGroup = ncFile.findGroup("Navigation");
         Group scanLineAttrGroup = ncFile.findGroup("Scan-Line_Attributes");
 
-        ArrayFloat orbitData = readNetcdfDataArray("orb_vec", navGroup);
-        ArrayFloat sensorData = readNetcdfDataArray("sen_mat", navGroup);
-        ArrayFloat sunData = readNetcdfDataArray("sun_ref", navGroup);
-        ArrayFloat attAngleData = readNetcdfDataArray("att_ang", navGroup);
-        ArrayFloat scanTrackEllipseCoefData = readNetcdfDataArray("scan_ell", navGroup);
-        ArrayFloat tiltData = readNetcdfDataArray("tilt", scanLineAttrGroup);
+        ArrayFloat orbitData;
+        ArrayFloat sensorData;
+        ArrayFloat sunData;
+        ArrayFloat attAngleData;
+        ArrayFloat scanTrackEllipseCoefData;
+        ArrayFloat tiltData;
+
+        if (navGroup != null) {
+            orbitData = readNetcdfDataArray("orb_vec", navGroup);
+            sensorData = readNetcdfDataArray("sen_mat", navGroup);
+            sunData = readNetcdfDataArray("sun_ref", navGroup);
+            attAngleData = readNetcdfDataArray("att_ang", navGroup);
+            scanTrackEllipseCoefData = readNetcdfDataArray("scan_ell", navGroup);
+            tiltData = readNetcdfDataArray("tilt", scanLineAttrGroup);
+        } else {
+            orbitData = readNetcdfArray("orb_vec");
+            sensorData = readNetcdfArray("sen_mat");
+            sunData = readNetcdfArray("sun_ref");
+            attAngleData = readNetcdfArray("att_ang");
+            scanTrackEllipseCoefData = readNetcdfArray("scan_ell");
+            tiltData = readNetcdfArray("tilt");
+        }
 
         //  Compute elevation (out-of-plane) angle
         elev = SINC * 1.2;
@@ -395,23 +413,31 @@ public class SeaWiFSL1AGeonav {
         return v3;
     }
 
-    public static int determineNumberScanLines(NetcdfFile ncFile) {
+    public static int determineNumberScanLines() {
         Attribute numScanLinesAttr = ncFile.findGlobalAttribute("Number_of_Scan_Lines");
-        return numScanLinesAttr.getNumericValue().intValue();
+        if (numScanLinesAttr != null) {
+            return numScanLinesAttr.getNumericValue().intValue();
+        } else {
+            return getDimension("scans");
+        }
     }
 
     private int determinePixelIncrement() {
-        return ncFile.findGlobalAttribute("LAC_Pixel_Subsampling").getNumericValue().intValue();
+        return ncFile.findGlobalAttributeIgnoreCase("LAC_Pixel_Subsampling").getNumericValue().intValue();
     }
 
-    private int determinePixelsPerScanLine() {
-        return ncFile.findGlobalAttribute("Pixels_per_Scan_Line").getNumericValue().intValue();
+    public static int determinePixelsPerScanLine() {
+        Attribute pixelPerScanLinesAttr = ncFile.findGlobalAttribute("Pixels_per_Scan_Line");
+        if (pixelPerScanLinesAttr != null) {
+            return pixelPerScanLinesAttr.getNumericValue().intValue();  //Old format
+        } else {
+            return getDimension("pixels");
+        }
     }
 
     public static SeaWiFSL1AGeonav.DataType determineSeawifsDataType(NetcdfFile ncFile) {
         SeaWiFSL1AGeonav.DataType dataType = SeaWiFSL1AGeonav.DataType.LAC;
-        Attribute dataTypeAttr = ncFile.findGlobalAttribute("Data_Type");
-        Attribute numScanLinesAttr = ncFile.findGlobalAttribute("Number_of_Scan_Lines");
+        Attribute dataTypeAttr = ncFile.findGlobalAttributeIgnoreCase("Data_Type");
         if (dataTypeAttr.getStringValue().equals("GAC")) {
             dataType = SeaWiFSL1AGeonav.DataType.GAC;
         }
@@ -419,7 +445,7 @@ public class SeaWiFSL1AGeonav {
     }
 
     private int determineStartPixel() {
-        return ncFile.findGlobalAttribute("LAC_Pixel_Start_Number").getNumericValue().intValue();
+        return ncFile.findGlobalAttributeIgnoreCase("LAC_Pixel_Start_Number").getNumericValue().intValue();
     }
 
     public void doComputations() {
@@ -622,6 +648,52 @@ public class SeaWiFSL1AGeonav {
         return dataArray;
     }
 
+    private ArrayFloat readNetcdfArray(String varName) {
+        ArrayFloat dataArray = null;
+        int[] startPts;
+        Variable varToRead = ncFile.findVariable(varName);
+        if (varToRead.getRank() == 1) {
+            try {
+                dataArray = (ArrayFloat) varToRead.read();
+            } catch(IOException ioe) {
+                System.out.println("Encountered IOException reading the data array: " + varToRead.getShortName());
+                System.out.println(ioe.getMessage());
+                ioe.printStackTrace();
+                System.out.println();
+                System.exit(-43);
+            }
+        } else {
+            if (varToRead.getRank() == 2) {
+                startPts = new int[2];
+                startPts[0] = 0;
+                startPts[1] = 0;
+            } else {
+                // Assuming nothing with more than rank 3.
+                startPts = new int[3];
+                startPts[0] = 0;
+                startPts[1] = 0;
+                startPts[2] = 0;
+            }
+            try {
+                dataArray = (ArrayFloat) varToRead.read(startPts, varToRead.getShape());
+                return dataArray;
+            } catch(IOException ioe) {
+                System.out.println("Encountered IOException reading the data array: " + varToRead.getShortName());
+                System.out.println(ioe.getMessage());
+                ioe.printStackTrace();
+                System.out.println();
+                System.exit(-44);
+            } catch(InvalidRangeException ire) {
+                System.out.println("Encountered InvalidRangeException reading the data array: " + varToRead.getShortName());
+                System.out.println(ire.getMessage());
+                ire.printStackTrace();
+                System.out.println();
+                System.exit(-45);
+            }
+        }
+        return dataArray;
+    }
+
     public static float[][] transposeMatrix(float[][] matrix) {
         /**
          * Create the transpose of a 3 x 3 matrix, adapted from
@@ -635,5 +707,13 @@ public class SeaWiFSL1AGeonav {
         }
         return transpose;
     }
-
+    public static int getDimension(String dimensionName) {
+        final List<Dimension> dimensions = ncFile.getDimensions();
+        for (Dimension dimension : dimensions) {
+            if (dimension.getShortName().equals(dimensionName)) {
+                return dimension.getLength();
+            }
+        }
+        return -1;
+    }
 }

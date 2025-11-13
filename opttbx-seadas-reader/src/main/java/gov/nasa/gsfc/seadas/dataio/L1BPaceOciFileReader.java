@@ -26,6 +26,7 @@ import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
 import ucar.nc2.Group;
 import ucar.nc2.Variable;
+import ucar.nc2.Dimension;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -61,11 +62,18 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     @Override
     public Product createProduct() throws ProductIOException {
-
-        int sceneHeight = ncFile.findDimension("number_of_scans").getLength();
-        int sceneWidth = ncFile.findDimension("ccd_pixels").getLength();
-
+        
+        int[] shape;
+        int sceneWidth, sceneHeight ;
         String productName;
+
+        try {
+            shape = ncFile.findVariable("geolocation_data/latitude").getShape();
+            sceneWidth = shape[1];
+            sceneHeight = shape[0];
+        } catch (Exception e) {
+            throw new ProductIOException(e.getMessage(), e);
+        }
 
         try {
             productName = getStringAttribute("product_name");
@@ -79,19 +87,31 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         try {
             blue_wavlengths = blueWvl.read();
             red_wavlengths = redWvl.read();
-            //swir_wavlengths = swirWvl.read();
-
-
-            // somehow there are duplicate bands in the test file.
-            // fixme
-            swir_wavlengths = Array.makeArray(DataType.DOUBLE, new String[] {"940", "1038", "1250", "1251", "1378", "1615", "1616", "2130", "2260"});
+            swir_wavlengths = swirWvl.read();
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage(), e);
         }
-//        mustFlipX = mustFlipY = getDefaultFlip();
-//        mustFlipY = getDefaultFlip();
-        mustFlipY = true;
-        mustFlipX = false;
+//        mustFlipY = true;
+//        mustFlipX = false;
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL1BPace())) {
+            mustFlipX = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL1BPace())) {
+            mustFlipX = false;
+        } else {
+            mustFlipX = false; // default flipX
+        }
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYL1BPace())) {
+            mustFlipY = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYL1BPace())) {
+            mustFlipY = false;
+        } else {
+            mustFlipY = true; // default flipY
+        }
+
+
+
         SeadasProductReader.ProductType productType = productReader.getProductType();
 
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
@@ -119,7 +139,8 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         addMetadata(product, "products", "Band_Metadata");
         addMetadata(product, "navigation", "Navigation_Metadata");
 
-        product.setAutoGrouping("rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR");
+//        product.setAutoGrouping("rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR");
+        product.setAutoGrouping(getBandGroupingL1BPace());
 
         return product;
     }
@@ -345,5 +366,14 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
                 throw new ProductIOException(e.getMessage());
             }
         }
+    }
+    private int getDimension(String dimensionName) {
+        final List<Dimension> dimensions = ncFile.getDimensions();
+        for (Dimension dimension : dimensions) {
+            if (dimension.getShortName().equals(dimensionName)) {
+                return dimension.getLength();
+            }
+        }
+        return -1;
     }
 }
