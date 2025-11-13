@@ -38,6 +38,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
@@ -1513,8 +1516,10 @@ public abstract class SeadasFileReader {
                 }
 
                 final float wavelength = Float.parseFloat(wvlstr);
-                band.setSpectralWavelength(wavelength);
-                band.setSpectralBandIndex(spectralBandIndex++);
+                if (band.getSpectralBandIndex() == -1) {
+                    band.setSpectralWavelength(wavelength);
+                    band.setSpectralBandIndex(spectralBandIndex++);
+                }
             }
         }
     }
@@ -1537,6 +1542,8 @@ public abstract class SeadasFileReader {
         Array wavelengths = null;
 
         final int[] dimensions = variable.getShape();
+//        List<Dimension> variable_dimensions = variable.getDimensions();
+        String wavelength_name = variable.getDimensionsString().split(" ")[2].trim();
         final int bands = dimensions[2];
         final int height = dimensions[0];
         final int width = dimensions[1];
@@ -1551,25 +1558,33 @@ public abstract class SeadasFileReader {
                     dim = d.getLength();
                 }
             }
-            if (dim == bands) {
-                wvl = ncFile.findVariable("sensor_band_parameters/wavelength_3d");
-                if (wvl == null) {
-                    wvl = ncFile.findVariable("wavelength_3d");
-                }
-                if (wvl == null) {
-                    wvl = ncFile.findVariable("wavelength");
-                }
-            } else {
-                wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
-                if (wvl == null) {
-                    wvl = ncFile.findVariable("wavelength");
-                }
-            }
-            // wavenlengths for modis L2 files
+            // find wvl variable for  OCI L2 UAA files
+            wvl = ncFile.findVariable(wavelength_name);
+            //find wvl variable from new format of L2 files
             if (wvl == null) {
-                if (bands == 2 || bands == 3) {
-                    wvl = ncFile.findVariable("HDFEOS/SWATHS/Aerosol_NearUV_Swath/Data_Fields/Wavelength");
-                    // wavelenghs for DSCOVR EPIC L2 files
+                wvl = ncFile.findVariable("geophysical_data/" + wavelength_name);
+            }
+            if (wvl == null) {
+                if (dim == bands) {
+                    wvl = ncFile.findVariable("sensor_band_parameters/wavelength_3d");
+                    if (wvl == null) {
+                        wvl = ncFile.findVariable("wavelength_3d");
+                    }
+                    if (wvl == null) {
+                        wvl = ncFile.findVariable("wavelength");
+                    }
+                } else {
+                    wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+                    if (wvl == null) {
+                        wvl = ncFile.findVariable("wavelength");
+                    }
+                }
+                // wavelengths for modis L2 files
+                if (wvl == null) {
+                    if (bands == 2 || bands == 3) {
+                        wvl = ncFile.findVariable("HDFEOS/SWATHS/Aerosol_NearUV_Swath/Data_Fields/Wavelength");
+                        // wavelenghs for DSCOVR EPIC L2 files
+                    }
                 }
             }
             if (wvl != null) {
@@ -1607,6 +1622,8 @@ public abstract class SeadasFileReader {
                             }
                             band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
                             band.setNoDataValueUsed(true);
+                            band.setSpectralWavelength(wavelengths.getFloat(i));
+                            band.setSpectralBandIndex(1);
                         } catch (Exception ignored) {
                         }
 
@@ -1647,8 +1664,13 @@ public abstract class SeadasFileReader {
                         }
                         if (validMinMax[0] != validMinMax[1]) {
                             String validExp;
+
                             if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
+                                String minStr = formatValidMinMax(validMinMax[0], false);
+                                String maxStr = formatValidMinMax(validMinMax[1], true);
+                                validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
 
                             } else {
                                 double[] minmax = {0.0, 0.0};
@@ -1663,7 +1685,12 @@ public abstract class SeadasFileReader {
                                     minmax[0] += band.getScalingOffset();
                                     minmax[1] += band.getScalingOffset();
                                 }
-                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
+
+                                String minStr = formatValidMinMax(minmax[0], false);
+                                String maxStr = formatValidMinMax(minmax[1], true);
+
+                                validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
 
                             }
                             band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
@@ -1749,7 +1776,13 @@ public abstract class SeadasFileReader {
                         String validExp;
 
                         if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
+                            String minStr = formatValidMinMax(validMinMax[0], false);
+                            String maxStr = formatValidMinMax(validMinMax[1], true);
+
+                            validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
 
                         } else {
                             double[] minmax = {0.0, 0.0};
@@ -1765,7 +1798,13 @@ public abstract class SeadasFileReader {
                                 minmax[1] += band.getScalingOffset();
                             }
 
-                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
+
+                            String minStr = formatValidMinMax(minmax[0], false);
+                            String maxStr = formatValidMinMax(minmax[1], true);
+
+                            validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
+
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
@@ -1777,6 +1816,90 @@ public abstract class SeadasFileReader {
         }
         return band;
     }
+
+
+
+
+    public String formatValidMinMax(double value, boolean isMax) {
+
+        String valueStr;
+
+        int significantFigures = get_VALID_PIXEL_SIG_FIGS();
+
+        if (significantFigures == 0) {
+            valueStr = Double.toString(value);
+            return valueStr;
+        }
+
+
+
+        boolean roundBigNumbersToInt = false;
+
+        // if do not round big numbers, then increase significant figure to length of integer (left side of decimal place)
+        if (roundBigNumbersToInt) {
+            int valueAsInt = (int) Math.round(Math.abs(value));
+            String stringOfInt = Integer.toString(valueAsInt);
+            if (stringOfInt.length() > significantFigures) {
+                significantFigures = stringOfInt.length();
+            }
+
+            // Alt version
+//            double absValue = Math.abs(value);
+//            double logValue = Math.log(absValue) / Math.log(10);  // s
+//            if (logValue > significantFigures) {
+//                significantFigures = (int) Math.ceil(logValue);
+//            }
+        }
+
+
+        BigDecimal bdRound = new BigDecimal(Double.toString(value));
+
+        if (value >= 0.0) {
+            if (isMax) {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_UP));
+            } else {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_DOWN));
+            }
+        } else {
+            if (isMax) {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_DOWN));
+            } else {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_UP));
+            }
+        }
+//        bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_EVEN));
+//        bdRound = bdRound.setScale(decimalPlaces, RoundingMode.HALF_EVEN);
+
+
+        double valueDoubleRound = bdRound.doubleValue();
+        String valueStrRound = Double.toString(valueDoubleRound);
+        valueStrRound = cleanUpPaddedDecimalZeros(valueStrRound);
+
+        valueStr = valueStrRound;
+
+
+        return valueStr;
+    }
+
+
+
+
+
+    private static String  cleanUpPaddedDecimalZeros(String valueStr) {
+        if (valueStr.contains(".") && !valueStr.toLowerCase().contains("e")) {
+            while (valueStr.endsWith("0") && !valueStr.endsWith(".0")) {
+                valueStr = valueStr.substring(0,valueStr.length()-1);
+            }
+        }
+
+        if (valueStr.equals("0")) {
+            valueStr = "0.0";
+        }
+
+        return valueStr;
+    }
+
+
 
     public void addGlobalMetadata(Product product) {
         final MetadataElement globalElement = new MetadataElement("Global_Attributes");
@@ -1922,9 +2045,16 @@ public abstract class SeadasFileReader {
         }
     }
 
+
+
     public boolean getDefaultFlip() throws ProductIOException {
-        boolean startNodeAscending = false;
-        boolean endNodeAscending = false;
+        return getDefaultFlip(false);
+    }
+
+
+    public boolean getDefaultFlip(boolean defaultFlip) throws ProductIOException {
+        boolean startNodeAscending = defaultFlip;
+        boolean endNodeAscending = defaultFlip;
         try {
             Attribute start_node = findAttribute("Start_Node");
             if (start_node == null) {
@@ -1950,6 +2080,8 @@ public abstract class SeadasFileReader {
 
         return (startNodeAscending && endNodeAscending);
     }
+
+
 
     protected static HashMap<String, String> readTwoColumnTable(String resourceName) {
         final InputStream stream = SeadasProductReader.class.getResourceAsStream(resourceName);
@@ -2485,6 +2617,139 @@ public abstract class SeadasFileReader {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(getStringsKey(maskType), getDefaultStrings(maskType));
     }
+
+
+
+
+
+    public String getBandGroupingLevel2() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXLevel2() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYLevel2() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_DEFAULT);
+    }
+
+
+    public String getBandGroupingL1BPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_PACE_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1B_PACE_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL1BPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL1BPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPY_DEFAULT);
+    }
+
+
+
+    public String getBandGroupingL3Mapped() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL3Mapped() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL3Mapped() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_DEFAULT);
+    }
+
+
+
+
+    public String getBandGroupingL1CPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_OCI_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_OCI_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL1CPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL1CPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPY_DEFAULT);
+    }
+
+
+    public String getBandGroupingL1CPaceHarp2() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandGroupingL1CPaceSPEXONE() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_DEFAULT);
+    }
+
+
+    public String getBandGroupingL1B_MODIS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_MODIS_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1B_MODIS_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL1B_MODIS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL1B_MODIS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPY_DEFAULT);
+    }
+
+
+    public String getBandGroupingL1B_VIIRS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_VIIRS_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1B_VIIRS_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL1B_VIIRS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL1B_VIIRS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPY_DEFAULT);
+    }
+
+
+
+    public int get_VALID_PIXEL_SIG_FIGS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+
+        String sigFixStr = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
+
+        if (PROPERTY_VALID_PIXEL_SIG_FIGS_EXACT.equals(sigFixStr)) {
+            return 0;
+        } else {
+            String[] strArr = sigFixStr.split("\\s+");
+            try {
+                return Integer.parseInt(strArr[0]);
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+    }
+
 
 
 
