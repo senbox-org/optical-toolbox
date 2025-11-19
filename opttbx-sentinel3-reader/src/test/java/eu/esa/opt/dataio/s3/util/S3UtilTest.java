@@ -1,18 +1,24 @@
 package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.olci.OlciContext;
+import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelGeoIndexInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.dataio.netcdf.util.Constants;
+import org.junit.Assert;
 import org.junit.Test;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
+
+import java.io.File;
+import java.io.IOException;
 
 import static eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory.SLSTR_L1B_PIXEL_GEOCODING_INVERSE;
 import static junit.framework.TestCase.assertEquals;
@@ -801,5 +807,41 @@ public class S3UtilTest {
         final ProductNodeGroup<FlagCoding> flagCodingGroup = product.getFlagCodingGroup();
         final FlagCoding codingFromProduct = flagCodingGroup.get("test_band");
         assertSame(sampleCoding, codingFromProduct);
+    }
+
+    @Test
+    @STTM("SNAP-3755,SNAP-4093")
+    public void testGetFileFromVirtualDir() throws IOException {
+        final VirtualDir virtualDir = mock(VirtualDir.class);
+        when(virtualDir.listAllFiles()).thenReturn(new String[]{"one", "be_two", "two", "three"});
+        when(virtualDir.getFile("be_two")).thenReturn(new File("be_two"));
+
+        final File notExisting = S3Util.getFileFromVirtualDir("not_existing", virtualDir);
+        assertNull(notExisting);
+
+        final File beTwo = S3Util.getFileFromVirtualDir("be_two", virtualDir);
+        assertNotNull(beTwo);
+        Assert.assertEquals("be_two", beTwo.getName());
+
+        final File eTwo = S3Util.getFileFromVirtualDir("e_two", virtualDir);
+        assertNull(eTwo);
+    }
+
+    @Test
+    @STTM("SNAP-3755,SNAP-4093")
+    public void testGetFileFromVirtualDir_includesPath() throws IOException {
+        final VirtualDir virtualDir = mock(VirtualDir.class);
+        when(virtualDir.listAllFiles()).thenReturn(new String[]{"the_zip_file_name/one", "the_zip_file_name/be_two", "the_zip_file_name/two", "the_zip_file_name/three"});
+        when(virtualDir.getFile("the_zip_file_name/be_two")).thenReturn(new File("be_two"));
+
+        final File notExisting = S3Util.getFileFromVirtualDir("not_existing", virtualDir);
+        assertNull(notExisting);
+
+        final File beTwo = S3Util.getFileFromVirtualDir("be_two", virtualDir);
+        assertNotNull(beTwo);
+        Assert.assertEquals("be_two", beTwo.getName());
+
+        final File eTwo = S3Util.getFileFromVirtualDir("e_two", virtualDir);
+        assertNull(eTwo);
     }
 }

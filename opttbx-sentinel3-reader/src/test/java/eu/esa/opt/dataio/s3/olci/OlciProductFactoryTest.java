@@ -69,42 +69,6 @@ public class OlciProductFactoryTest {
 
     @Test
     @STTM("SNAP-3755")
-    public void testGetFileFromVirtualDir() throws IOException {
-        final VirtualDir virtualDir = mock(VirtualDir.class);
-        when(virtualDir.listAllFiles()).thenReturn(new String[]{"one", "be_two", "two", "three"});
-        when(virtualDir.getFile("be_two")).thenReturn(new File("be_two"));
-
-        final File notExisting = OlciProductFactory.getFileFromVirtualDir("not_existing", virtualDir);
-        assertNull(notExisting);
-
-        final File beTwo = OlciProductFactory.getFileFromVirtualDir("be_two", virtualDir);
-        assertNotNull(beTwo);
-        assertEquals("be_two", beTwo.getName());
-
-        final File eTwo = OlciProductFactory.getFileFromVirtualDir("e_two", virtualDir);
-        assertNull(eTwo);
-    }
-
-    @Test
-    @STTM("SNAP-3755")
-    public void testGetFileFromVirtualDir_includesPath() throws IOException {
-        final VirtualDir virtualDir = mock(VirtualDir.class);
-        when(virtualDir.listAllFiles()).thenReturn(new String[]{"the_zip_file_name/one", "the_zip_file_name/be_two", "the_zip_file_name/two", "the_zip_file_name/three"});
-        when(virtualDir.getFile("the_zip_file_name/be_two")).thenReturn(new File("be_two"));
-
-        final File notExisting = OlciProductFactory.getFileFromVirtualDir("not_existing", virtualDir);
-        assertNull(notExisting);
-
-        final File beTwo = OlciProductFactory.getFileFromVirtualDir("be_two", virtualDir);
-        assertNotNull(beTwo);
-        assertEquals("be_two", beTwo.getName());
-
-        final File eTwo = OlciProductFactory.getFileFromVirtualDir("e_two", virtualDir);
-        assertNull(eTwo);
-    }
-
-    @Test
-    @STTM("SNAP-3755")
     public void testIsUncertaintyBand() {
         assertTrue(OlciProductFactory.isUncertaintyBand("Oa03_radiance_unc"));
         assertTrue(OlciProductFactory.isUncertaintyBand("Oa11_radiance_unc"));

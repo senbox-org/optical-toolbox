@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
+import static eu.esa.opt.dataio.s3.util.S3Util.getFileFromVirtualDir;
 
 /**
  * @author Tonio Fincke
