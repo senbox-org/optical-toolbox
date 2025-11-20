@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.s3.util;
 
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.olci.OlciContext;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
@@ -8,6 +9,7 @@ import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
+import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.dataio.netcdf.util.Constants;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.runtime.Config;
@@ -15,6 +17,8 @@ import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.prefs.Preferences;
 
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
@@ -380,5 +384,16 @@ public class S3Util {
                 flagCodingGroup.add(flagCoding);
             }
         }
+    }
+
+    public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
+        final String[] allFiles = virtualDir.listAllFiles();
+        for (String dirFileName : allFiles) {
+            final String filenameFromVirtualDir = FileUtils.getFilenameFromPath(dirFileName);
+            if (filenameFromVirtualDir.equalsIgnoreCase(fileName)) {
+                return virtualDir.getFile(dirFileName);
+            }
+        }
+        return null;
     }
 }

@@ -657,7 +657,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         synchronized (filesMap) {
             netcdfFile = filesMap.get(fileName);
             if (netcdfFile == null) {
-                final File file = virtualDir.getFile(fileName);
+                final File file = getFileFromVirtualDir(fileName, virtualDir);
                 if (file == null) {
                     throw new IOException("File not found: " + fileName);
                 }

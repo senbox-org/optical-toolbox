@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static eu.esa.opt.dataio.s3.util.S3Util.getFileFromVirtualDir;
 import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePointCoding;
 
 /**
@@ -130,17 +131,6 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
 
         final String trimmed = description.trim();
         return trimmed.replace("log10 scaled ", "");
-    }
-
-    public static File getFileFromVirtualDir(String fileName, VirtualDir virtualDir) throws IOException {
-        final String[] allFiles = virtualDir.listAllFiles();
-        for (String dirFileName : allFiles) {
-            final String filenameFromVirtualDir = FileUtils.getFilenameFromPath(dirFileName);
-            if (filenameFromVirtualDir.equalsIgnoreCase(fileName)) {
-                return virtualDir.getFile(dirFileName);
-            }
-        }
-        return null;
     }
 
     @Override
