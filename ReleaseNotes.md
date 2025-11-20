@@ -3,6 +3,9 @@ Optical Toolbox Release Notes
 
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
+# New in SNAP 13.0.1
+    [SNAP-4093] Zipped Sentinel-3 products from EUMETSAT not read correctly in SNAP 13
+
 # New in SNAP 13.0.0
     [SNAP-1696] Improve open performance of S3 reader
     [SNAP-3657] S3 SLSTR AOD not opening

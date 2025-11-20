@@ -60,6 +60,13 @@ public class Sentinel3Level1ReaderPlugIn extends S3ReaderPlugIn {
             inputString = inputString + File.separator + MANIFEST_BASE + ".xml";
         }
 
+        if (".zip".equalsIgnoreCase(fileExtension)) {
+            String zipName = FileUtils.getFilenameWithoutExtension(filename);
+            if( isValidSourceName(zipName)) {
+                return DecodeQualification.INTENDED;
+            }
+        }
+
         path = Paths.get(inputString);
         String parentFileName;
         if (path.getParent() == null) {

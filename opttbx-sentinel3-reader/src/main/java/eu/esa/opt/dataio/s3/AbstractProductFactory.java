@@ -50,7 +50,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
+import static eu.esa.opt.dataio.s3.util.S3Util.getFileFromVirtualDir;
+
 
 public abstract class AbstractProductFactory implements ProductFactory {
 

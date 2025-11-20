@@ -37,7 +37,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.getFileFromVirtualDir;
+import static eu.esa.opt.dataio.s3.util.S3Util.getFileFromVirtualDir;
+
 
 public class SynLevel2ProductFactory extends AbstractProductFactory {
 
