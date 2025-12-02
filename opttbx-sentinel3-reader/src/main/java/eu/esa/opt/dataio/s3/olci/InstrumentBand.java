@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.s3.olci;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.opt.dataio.s3.BandUsingReaderDirectly;
+import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import eu.esa.opt.dataio.s3.Sentinel3Level1Reader;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.datamodel.ProductData;
