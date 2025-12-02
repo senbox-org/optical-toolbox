@@ -371,7 +371,7 @@ public class SeadasProductReader extends AbstractProductReader {
             instrument = getStringAttributeValue(instrumentAttr);
             if ("Oceansat OCM2 Level-1B Data".equals(title)) {
                 return ProductType.Level1B_OCM2;
-            } else if ("CZCS Level-2 Data".equals(title)) {
+            } else if (title.contains("CZCS Level-2 Data")) {
                 return ProductType.Level2_CZCS;
             } else if (title.contains("Aquarius Level 1A Data")) {
                 return ProductType.Level1A_Aquarius;
