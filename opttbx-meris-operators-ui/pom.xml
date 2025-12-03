@@ -20,7 +20,7 @@
     <parent>
         <groupId>eu.esa.opt</groupId>
         <artifactId>optical-toolbox</artifactId>
-        <version>13.0.0</version>
+        <version>13.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>opttbx-meris-operators-ui</artifactId>
