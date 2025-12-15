@@ -77,6 +77,7 @@ public abstract class SeadasFileReader {
     protected String sensor = null;
 
     protected String[] flagNames = null;
+    protected String[] flagValuesString = null;
     protected String flagMeanings = null;
 
 
@@ -367,6 +368,13 @@ public abstract class SeadasFileReader {
             case "GEOREGION":
                 flagDescription = GEOREGION_Description;
                 break;
+            case "OPSHAL":
+                flagDescription = "Optically shallow water determined";
+                break;
+            case "CLOUD":
+                flagDescription = "Cloud determined";
+                break;
+
         }
 
 
@@ -549,6 +557,25 @@ public abstract class SeadasFileReader {
                 }
                 break;
 
+            case SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME, getMaskColor(MaskType.OPSHAL), getMaskTransparency(MaskType.OPSHAL));
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME, getMaskColor(MaskType.CLOUD), getMaskTransparency(MaskType.CLOUD));
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME, getMaskColor(MaskType.SNOWICE), getMaskTransparency(MaskType.SNOWICE));
+                }
+                break;
+
+
             default:
                 if (flagName.startsWith("SPARE")) {
                     if (isMaskEnabled(MaskType.SPARE)) {
@@ -608,9 +635,43 @@ public abstract class SeadasFileReader {
 
 
                 FlagCoding flagCoding = new FlagCoding("L2Flags");
-                int flagBits[] = {0x01,0x02,0x04,0x08,0x010,0x020,0x040,0x080,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}; //todo finish this list
 
-                if (flagNames != null) {
+                if (flagNames != null && flagValuesString != null && (flagNames.length == flagValuesString.length)) {
+                    for (int i = 0; i < flagValuesString.length; i++) {
+                        String flagValueString = flagValuesString[i];
+
+                        int flagValue;
+                        try {
+                           flagValue = Integer.parseInt(flagValueString);
+                        } catch (NumberFormatException e) {
+                            continue;
+                        }
+
+                        int flagBitPosition = getFlagBitPosition(flagValue) + 1;  // shifting from bit index to 1-based bit
+
+                        if (flagBitPosition >= 1) {
+                            String flagName = flagNames[i];
+//                            System.out.println("flagname=" + flagName +  "flags=" + flagValue + " bitPosition=" + flagBitPosition);
+
+
+                            if (flagName.startsWith("SPARE")) {
+                                flagName = flagName + flagBitPosition;
+                            }
+
+                            if (!flagCoding.containsAttribute(flagName)) {
+                                flagCoding.addFlag(flagName, flagValue, getFlagDescription(flagName));
+                            } else {
+                                flagName = flagName + flagBitPosition;
+                                flagCoding.addFlag(flagName, flagValue, getFlagDescription(flagName));
+                            }
+                        }
+                    }
+
+                } else if (flagNames != null) {
+
+                    // this is the old way of doing this --- leaving in case possibly needed for heritage files.
+                    int flagBits[] = {0x01,0x02,0x04,0x08,0x010,0x020,0x040,0x080,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}; //todo finish this list
+
                     for (int bit = 0; (bit < flagNames.length && bit < flagBits.length); bit++) {
                         String flagName = flagNames[bit];
                         if (flagName.startsWith("SPARE")) {
@@ -804,6 +865,18 @@ public abstract class SeadasFileReader {
 
                     if (isMaskEnabled(MaskType.GEOREGION) && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME)) {
                         raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME));
+                    }
+
+                    if (isMaskEnabled(MaskType.OPSHAL) && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME));
+                    }
+
+                    if (isMaskEnabled(MaskType.CLOUD) && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME));
+                    }
+
+                    if (isMaskEnabled(MaskType.SNOWICE) && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME));
                     }
 
 
@@ -1183,12 +1256,48 @@ public abstract class SeadasFileReader {
         }
     }
 
+
+    private int getFlagBitPosition(int flags) {
+
+        int bitPosition = -1; // not set if equals -1
+        System.out.println("Checking flags=" + flags);
+
+        for (int currBitPosition=0; currBitPosition < 32; currBitPosition++) {
+            if (isBitSet(flags, currBitPosition)) {
+                bitPosition = currBitPosition;
+//                System.out.println("flags=" +flags + " currBitPosition=" + currBitPosition);
+            }
+        }
+
+        return bitPosition;
+    }
+
+
+    public boolean isBitSet(int n, int i) {
+        // Create a mask by left shifting 1 by i positions
+        int mask = (1 << i);
+
+        // Perform bitwise AND between n and mask
+        // If result is non-zero, the ith bit is set
+        return (n & mask) != 0;
+    }
+
+
+
+
     private void setFlagMeaningsAndNames(Product product, MetadataElement metadataElementL2Flags) {
-        final MetadataAttribute flagMeaningsAttribute = metadataElementL2Flags.getAttribute("FLAG_MEANINGS");
-        if (flagMeaningsAttribute != null) {
+        final MetadataAttribute flagMeaningsAttribute = metadataElementL2Flags.getAttribute(FLAG_MEANINGS);
+        final MetadataAttribute flagMasksAttribute = metadataElementL2Flags.getAttribute(FLAG_MASKS);
+
+
+        if (flagMeaningsAttribute != null && flagMasksAttribute != null) {
             flagMeanings = flagMeaningsAttribute.getData().getElemString();
             flagNames = flagMeanings.split(" ");
+            String flagBitsStr = flagMasksAttribute.getData().getElemString();
+            flagValuesString = flagBitsStr.split("\\s+|,");
+
         } else {
+            // todo not sure if this gets used anymore and this does not set flagValuesString
             final MetadataElement global = product.getMetadataRoot().getElement("Global_Attributes");
             if (global != null) {
                 final MetadataAttribute maskNamesAttribute = global.getAttribute("Mask_Names");

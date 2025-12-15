@@ -371,7 +371,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HISOLZEN_COLOR_LABEL = "HISOLZEN: Color";
     public static final String PROPERTY_MASK_HISOLZEN_COLOR_TOOLTIP = "Set default color of the HISOLZEN mask";
     //    public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = MiscFlags;
-    public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = Purple;
+    public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = new Color(255, 170, 94);;
 
 
     // LOWLW
@@ -614,7 +614,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_SEAICE_COLOR_LABEL = "SEAICE: Color";
     public static final String PROPERTY_MASK_SEAICE_COLOR_TOOLTIP = "Set default color of the SEAICE mask";
     //    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = BrightFlags;
-    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = Color.DARK_GRAY;
+    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = new Color(161, 217, 255);
 
 
     // NAVFAIL
@@ -781,9 +781,90 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_GEOREGION_COLOR_KEY = PROPERTY_MASK_GEOREGION_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_GEOREGION_COLOR_LABEL = "GEOREGION: Color";
     public static final String PROPERTY_MASK_GEOREGION_COLOR_TOOLTIP = "Set default color of the GEOREGION mask";
-    public static final Color PROPERTY_MASK_GEOREGION_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_GEOREGION_COLOR_DEFAULT = new Color(38, 143, 210);;
 
 
+
+    // OPSHAL
+
+    public static final String PROPERTY_MASK_OPSHAL_NAME = "OPSHAL";
+
+    public static final String PROPERTY_MASK_OPSHAL_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.OPSHAL";
+
+    public static final String PROPERTY_MASK_OPSHAL_SECTION_KEY = PROPERTY_MASK_OPSHAL_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_OPSHAL_SECTION_LABEL = "L2 Flag Mask: OPSHAL";
+    public static final String PROPERTY_MASK_OPSHAL_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask OPSHAL";
+
+    public static final String PROPERTY_MASK_OPSHAL_ENABLED_KEY = PROPERTY_MASK_OPSHAL_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_OPSHAL_ENABLED_LABEL = "OPSHAL: Set as Selected";
+    public static final String PROPERTY_MASK_OPSHAL_ENABLED_TOOLTIP = "Set OPSHAL mask as selected by default";
+    public static final boolean PROPERTY_MASK_OPSHAL_ENABLED_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_OPSHAL_TRANSPARENCY_KEY = PROPERTY_MASK_OPSHAL_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_OPSHAL_TRANSPARENCY_LABEL = "OPSHAL: Transparency";
+    public static final String PROPERTY_MASK_OPSHAL_TRANSPARENCY_TOOLTIP = "Set default transparency of the OPSHAL mask";
+    public static final double PROPERTY_MASK_OPSHAL_TRANSPARENCY_DEFAULT = 0.5;
+
+    public static final String PROPERTY_MASK_OPSHAL_COLOR_KEY = PROPERTY_MASK_OPSHAL_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_OPSHAL_COLOR_LABEL = "OPSHAL: Color";
+    public static final String PROPERTY_MASK_OPSHAL_COLOR_TOOLTIP = "Set default color of the OPSHAL mask";
+    public static final Color PROPERTY_MASK_OPSHAL_COLOR_DEFAULT = new Color(180, 100, 0);
+
+
+    // CLOUD
+
+    public static final String PROPERTY_MASK_CLOUD_NAME = "CLOUD";
+
+    public static final String PROPERTY_MASK_CLOUD_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.CLOUD";
+
+    public static final String PROPERTY_MASK_CLOUD_SECTION_KEY = PROPERTY_MASK_CLOUD_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_CLOUD_SECTION_LABEL = "L2 Flag Mask: CLOUD";
+    public static final String PROPERTY_MASK_CLOUD_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask CLOUD";
+
+    public static final String PROPERTY_MASK_CLOUD_ENABLED_KEY = PROPERTY_MASK_CLOUD_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_CLOUD_ENABLED_LABEL = "CLOUD: Set as Selected";
+    public static final String PROPERTY_MASK_CLOUD_ENABLED_TOOLTIP = "Set CLOUD mask as selected by default";
+    public static final boolean PROPERTY_MASK_CLOUD_ENABLED_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_CLOUD_TRANSPARENCY_KEY = PROPERTY_MASK_CLOUD_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_CLOUD_TRANSPARENCY_LABEL = "CLOUD: Transparency";
+    public static final String PROPERTY_MASK_CLOUD_TRANSPARENCY_TOOLTIP = "Set default transparency of the CLOUD mask";
+    public static final double PROPERTY_MASK_CLOUD_TRANSPARENCY_DEFAULT = 0.0;
+
+    public static final String PROPERTY_MASK_CLOUD_COLOR_KEY = PROPERTY_MASK_CLOUD_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_CLOUD_COLOR_LABEL = "CLOUD: Color";
+    public static final String PROPERTY_MASK_CLOUD_COLOR_TOOLTIP = "Set default color of the CLOUD mask";
+    public static final Color PROPERTY_MASK_CLOUD_COLOR_DEFAULT = new Color(245, 245, 255);;
+
+
+
+    // SNOWICE
+
+    public static final String PROPERTY_MASK_SNOWICE_NAME = "SNOWICE";
+
+    public static final String PROPERTY_MASK_SNOWICE_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.SNOWICE";
+
+    public static final String PROPERTY_MASK_SNOWICE_SECTION_KEY = PROPERTY_MASK_SNOWICE_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_SNOWICE_SECTION_LABEL = "L2 Flag Mask: SNOWICE";
+    public static final String PROPERTY_MASK_SNOWICE_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask SNOWICE";
+
+    public static final String PROPERTY_MASK_SNOWICE_ENABLED_KEY = PROPERTY_MASK_SNOWICE_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_SNOWICE_ENABLED_LABEL = "SNOWICE: Set as Selected";
+    public static final String PROPERTY_MASK_SNOWICE_ENABLED_TOOLTIP = "Set SNOWICE mask as selected by default";
+    public static final boolean PROPERTY_MASK_SNOWICE_ENABLED_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_SNOWICE_TRANSPARENCY_KEY = PROPERTY_MASK_SNOWICE_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_SNOWICE_TRANSPARENCY_LABEL = "SNOWICE: Transparency";
+    public static final String PROPERTY_MASK_SNOWICE_TRANSPARENCY_TOOLTIP = "Set default transparency of the SNOWICE mask";
+    public static final double PROPERTY_MASK_SNOWICE_TRANSPARENCY_DEFAULT = 0.0;
+
+    public static final String PROPERTY_MASK_SNOWICE_COLOR_KEY = PROPERTY_MASK_SNOWICE_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_SNOWICE_COLOR_LABEL = "SNOWICE: Color";
+    public static final String PROPERTY_MASK_SNOWICE_COLOR_TOOLTIP = "Set default color of the SNOWICE mask";
+    public static final Color PROPERTY_MASK_SNOWICE_COLOR_DEFAULT = new Color(200, 245, 255);;
+
+
+    
 
 
 
@@ -801,7 +882,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_SORT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.sort";
     public static final String PROPERTY_MASK_SORT_LABEL = "Ordered Flag List";
     public static final String PROPERTY_MASK_SORT_TOOLTIP = "Ordered Flags (any flags not included in this list will still be loaded at bottom of Mask Manager)";
-    public static final String PROPERTY_MASK_SORT_DEFAULT = "LAND ABSAER ATMFAIL ATMWARN BOWTIEDEL CHLFAIL CHLWARN CLDICE COASTZ COCCOLITH FILTER GEOREGION HIGLINT HILT HIPOL HISATZEN HISOLZEN LOWLW MAXAERITER MODGLINT NAVFAIL NAVWARN PRODFAIL PRODWARN SEAICE STRAYLIGHT TURBIDW";
+    public static final String PROPERTY_MASK_SORT_DEFAULT = "LAND ABSAER ATMFAIL ATMWARN BOWTIEDEL CHLFAIL CHLWARN CLDICE CLOUD COASTZ COCCOLITH FILTER GEOREGION HIGLINT HILT HIPOL HISATZEN HISOLZEN LOWLW MAXAERITER MODGLINT NAVFAIL NAVWARN OPSHAL PRODFAIL PRODWARN SEAICE SNOWICE STRAYLIGHT TURBIDW";
 
 
 
@@ -1266,6 +1347,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_ENABLED_KEY;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_ENABLED_KEY;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_KEY;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_KEY;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_KEY;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_KEY;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_ENABLED_KEY;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_ENABLED_KEY;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_ENABLED_KEY;
@@ -1307,6 +1391,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_COLOR_KEY;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_KEY;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_KEY;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_KEY;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_KEY;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_KEY;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_COLOR_KEY;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_COLOR_KEY;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_COLOR_KEY;
@@ -1345,6 +1432,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_TRANSPARENCY_KEY;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_KEY;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_KEY;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_KEY;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_KEY;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_KEY;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_TRANSPARENCY_KEY;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_TRANSPARENCY_KEY;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_TRANSPARENCY_KEY;
@@ -1385,6 +1475,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_ENABLED_DEFAULT;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_ENABLED_DEFAULT;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_DEFAULT;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_DEFAULT;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_DEFAULT;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_DEFAULT;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_ENABLED_DEFAULT;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_ENABLED_DEFAULT;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_ENABLED_DEFAULT;
@@ -1426,6 +1519,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_COLOR_DEFAULT;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_DEFAULT;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_DEFAULT;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_DEFAULT;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_DEFAULT;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_DEFAULT;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_COLOR_DEFAULT;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_COLOR_DEFAULT;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_COLOR_DEFAULT;
@@ -1464,6 +1560,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_TRANSPARENCY_DEFAULT;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_DEFAULT;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_DEFAULT;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_DEFAULT;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_DEFAULT;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_DEFAULT;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_TRANSPARENCY_DEFAULT;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_TRANSPARENCY_DEFAULT;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT;
@@ -1506,7 +1605,7 @@ public class SeadasReaderDefaults {
     public enum MaskType {
         WATER, SPARE, COASTZ, STRAYLIGHT, CLDICE, COCCOLITH, TURBIDW,
         HISOLZEN, LOWLW, CHLFAIL, NAVWARN, ABSAER, MAXAERITER, MODGLINT,
-        CHLWARN, ATMWARN, SEAICE, NAVFAIL, FILTER, BOWTIEDEL, HIPOL, PRODFAIL, GEOREGION,
+        CHLWARN, ATMWARN, SEAICE, NAVFAIL, FILTER, BOWTIEDEL, HIPOL, PRODFAIL, GEOREGION, CLOUD, OPSHAL, SNOWICE,
         HIGLINT, HILT, HISATZEN, PRODWARN, LAND, ATMFAIL,
         COMPOSITE1, COMPOSITE1_INCLUDE, COMPOSITE1_NAME, COMPOSITE1_EXPRESSION,
         COMPOSITE2, COMPOSITE2_INCLUDE, COMPOSITE2_NAME, COMPOSITE2_EXPRESSION,
