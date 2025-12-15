@@ -235,6 +235,23 @@ public final class SeadasReaderController extends DefaultConfigController {
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_DEFAULT);
 
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_SECTION_KEY, true);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_DEFAULT);
+
+
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_CLOUD_SECTION_KEY, true);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_DEFAULT);
+
+
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_SECTION_KEY, true);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_KEY, SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_DEFAULT);
+
 
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_COMPOSITE1_SECTION_KEY, true);
@@ -1230,10 +1247,85 @@ public final class SeadasReaderController extends DefaultConfigController {
 
 
 
-        
-        
+        // OPSHAL
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_SECTION_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_SECTION_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_SECTION_TOOLTIP)
+        boolean mask_OPSHAL_Section = true;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_TOOLTIP)
+        boolean mask_OPSHAL_EnabledDefault = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_TOOLTIP,
+                interval = "[0.0,1.0]")
+        double mask_OPSHAL_TransparencyDefault = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_TOOLTIP)
+        Color mask_OPSHAL_ColorDefault = SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_DEFAULT;
 
 
+
+
+        // CLOUD
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_SECTION_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_SECTION_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_SECTION_TOOLTIP)
+        boolean mask_CLOUD_Section = true;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_TOOLTIP)
+        boolean mask_CLOUD_EnabledDefault = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_TOOLTIP,
+                interval = "[0.0,1.0]")
+        double mask_CLOUD_TransparencyDefault = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_TOOLTIP)
+        Color mask_CLOUD_ColorDefault = SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_DEFAULT;
+
+
+
+
+        // SNOWICE
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_SECTION_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_SECTION_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_SECTION_TOOLTIP)
+        boolean mask_SNOWICE_Section = true;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_TOOLTIP)
+        boolean mask_SNOWICE_EnabledDefault = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_TOOLTIP,
+                interval = "[0.0,1.0]")
+        double mask_SNOWICE_TransparencyDefault = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_TOOLTIP)
+        Color mask_SNOWICE_ColorDefault = SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_DEFAULT;
+
+
+
+        
+        
 
         // Composite1
 
