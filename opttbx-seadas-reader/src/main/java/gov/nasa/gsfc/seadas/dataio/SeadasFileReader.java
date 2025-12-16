@@ -374,6 +374,9 @@ public abstract class SeadasFileReader {
             case "CLOUD":
                 flagDescription = "Cloud determined";
                 break;
+            case "SNOWICE":
+                flagDescription = "Snow ice determined";
+                break;
 
         }
 
@@ -655,7 +658,11 @@ public abstract class SeadasFileReader {
 
 
                             if (flagName.startsWith("SPARE")) {
-                                flagName = flagName + flagBitPosition;
+                                if (flagBitPosition < 10) {
+                                    flagName = flagName + "0" + flagBitPosition;
+                                } else {
+                                    flagName = flagName + flagBitPosition;
+                                }
                             }
 
                             if (!flagCoding.containsAttribute(flagName)) {
@@ -700,10 +707,13 @@ public abstract class SeadasFileReader {
 
 
 
+                String flagNamesOrdered = getMaskSort();
+                String[] flagNamesOrderedArray = flagNamesOrdered.split("\\s+|,");
 
-                if (isMaskSort()) {
-                    String flagNamesOrdered = getMaskSort();
-                    String[] flagNamesOrderedArray = flagNamesOrdered.split("\\s+|,");
+
+                if (flagNamesOrderedArray.length > 0) {
+//                    String flagNamesOrdered = getMaskSort();
+//                    String[] flagNamesOrderedArray = flagNamesOrdered.split("\\s+|,");
                     for (String flagName : flagNamesOrderedArray) {
 
                         if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
@@ -727,13 +737,20 @@ public abstract class SeadasFileReader {
                     }
                 }
 
+                String[] flagNames = flagCoding.getFlagNames();
+                if (isMaskSort()) {
+                    Arrays.sort(flagNames);
+                }
 
-//                System.out.println("Looping on flagNames");
-                for (String flagName : flagCoding.getFlagNames()) {
+                for (String flagName : flagNames) {
 //                    System.out.println("flagName=" + flagName);
-
                     addFlagMask(product, flagName, flagCoding);
                 }
+
+
+
+
+
 
 
                 if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null) {
