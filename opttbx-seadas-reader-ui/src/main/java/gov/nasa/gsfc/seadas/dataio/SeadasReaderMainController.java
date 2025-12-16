@@ -281,15 +281,15 @@ public final class SeadasReaderMainController extends DefaultConfigController {
      */
     private Property initPropertyDefaults(BindingContext context, String propertyName, Object propertyDefault) {
 
-        System.out.println("propertyName=" + propertyName);
+//        System.out.println("propertyName=" + propertyName);
 
         if (context == null) {
-            System.out.println("WARNING: context is null");
+//            System.out.println("WARNING: context is null");
         }
 
         Property property = context.getPropertySet().getProperty(propertyName);
         if (property == null) {
-            System.out.println("WARNING: property is null");
+//            System.out.println("WARNING: property is null");
         }
 
         property.getDescriptor().setDefaultValue(propertyDefault);

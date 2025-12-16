@@ -203,13 +203,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HISATZEN_TRANSPARENCY_KEY = PROPERTY_MASK_HISATZEN_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_HISATZEN_TRANSPARENCY_LABEL = "HISATZEN: Transparency";
     public static final String PROPERTY_MASK_HISATZEN_TRANSPARENCY_TOOLTIP = "Set default transparency of the HISATZEN mask";
-    public static final double PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT = 0.5;
+    public static final double PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT = 0.3;
 
     public static final String PROPERTY_MASK_HISATZEN_COLOR_KEY = PROPERTY_MASK_HISATZEN_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_HISATZEN_COLOR_LABEL = "HISATZEN: Color";
     public static final String PROPERTY_MASK_HISATZEN_COLOR_TOOLTIP = "Set default color of the HISATZEN mask";
     //    public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = MiscFlags;
-    public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = LightCyan;
+    public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = new Color(128, 110, 130);
 
 
     // COASTZ
@@ -880,9 +880,9 @@ public class SeadasReaderDefaults {
     public static final boolean PROPERTY_MASK_SORT_ENABLED_DEFAULT = true;
 
     public static final String PROPERTY_MASK_SORT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.sort";
-    public static final String PROPERTY_MASK_SORT_LABEL = "Ordered Flag List";
-    public static final String PROPERTY_MASK_SORT_TOOLTIP = "Ordered Flags (any flags not included in this list will still be loaded at bottom of Mask Manager)";
-    public static final String PROPERTY_MASK_SORT_DEFAULT = "LAND ABSAER ATMFAIL ATMWARN BOWTIEDEL CHLFAIL CHLWARN CLDICE CLOUD COASTZ COCCOLITH FILTER GEOREGION HIGLINT HILT HIPOL HISATZEN HISOLZEN LOWLW MAXAERITER MODGLINT NAVFAIL NAVWARN OPSHAL PRODFAIL PRODWARN SEAICE SNOWICE STRAYLIGHT TURBIDW";
+    public static final String PROPERTY_MASK_SORT_LABEL = "Flags at Top of Stack";
+    public static final String PROPERTY_MASK_SORT_TOOLTIP = "These flags (space delimited) get put at top of the Mask Manager stack ";
+    public static final String PROPERTY_MASK_SORT_DEFAULT = "LAND";
 
 
 
