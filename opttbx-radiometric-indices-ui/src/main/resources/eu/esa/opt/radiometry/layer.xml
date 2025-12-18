@@ -3225,910 +3225,944 @@
             <folder name="Thematic Land Processing">
                 <folder name="Vegetation Radiometric Indices">
                     <attr name="position" intvalue="3"/>
-                    <file name="eu-esa-opt-radiometry-NdviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdviOpAction.instance"/>
-                        <attr name="position" intvalue="0"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-SaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-SaviOpAction.instance"/>
-                        <attr name="position" intvalue="1"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TsaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TsaviOpAction.instance"/>
-                        <attr name="position" intvalue="2"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MsaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MsaviOpAction.instance"/>
-                        <attr name="position" intvalue="3"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Msavi2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Msavi2OpAction.instance"/>
-                        <attr name="position" intvalue="4"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-DviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-DviOpAction.instance"/>
-                        <attr name="position" intvalue="5"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-RviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-RviOpAction.instance"/>
-                        <attr name="position" intvalue="6"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-PviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-PviOpAction.instance"/>
-                        <attr name="position" intvalue="7"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-IpviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-IpviOpAction.instance"/>
-                        <attr name="position" intvalue="8"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-WdviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-WdviOpAction.instance"/>
-                        <attr name="position" intvalue="9"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TndviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TndviOpAction.instance"/>
-                        <attr name="position" intvalue="10"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GndviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GndviOpAction.instance"/>
-                        <attr name="position" intvalue="11"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GemiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GemiOpAction.instance"/>
-                        <attr name="position" intvalue="12"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-ArviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-ArviOpAction.instance"/>
-                        <attr name="position" intvalue="13"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Ndi45OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ndi45OpAction.instance"/>
-                        <attr name="position" intvalue="14"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MtciOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MtciOpAction.instance"/>
-                        <attr name="position" intvalue="15"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-McariOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-McariOpAction.instance"/>
-                        <attr name="position" intvalue="16"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-ReipOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-ReipOpAction.instance"/>
-                        <attr name="position" intvalue="17"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-S2repOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-S2repOpAction.instance"/>
-                        <attr name="position" intvalue="18"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-IreciOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-IreciOpAction.instance"/>
-                        <attr name="position" intvalue="19"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-PssraOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-PssraOpAction.instance"/>
-                        <attr name="position" intvalue="20"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Afri1600OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Afri1600OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Afri2100OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Afri2100OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-AriOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-AriOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Ari2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ari2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-AtsaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-AtsaviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-AviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-AviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-BccOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BccOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-BndviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BndviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-BwdrviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BwdrviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-CciOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-CciOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-CigOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-CigOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-CireOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-CireOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-CviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-CviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-DsiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-DsiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Dswi1OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi1OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Dswi2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Dswi3OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi3OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Dswi4OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi4OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Dswi5OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi5OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-DviplusOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-DviplusOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-EbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-EbiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-EviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-EviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Evi2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Evi2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-ExgOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-ExgOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-ExgrOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-ExgrOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-ExrOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-ExrOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-FcviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-FcviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GariOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GariOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GbndviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GbndviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GccOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GccOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GdviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GdviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GliOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GliOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Gm1OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Gm1OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Gm2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Gm2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GosaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GosaviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GrndviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GrndviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GrviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GrviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GsaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GsaviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-GvmiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-GvmiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-IaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-IaviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-IkawOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-IkawOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mcari1OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mcari1OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mcari2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mcari2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mcari705OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mcari705OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-McariosaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-McariosaviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mcariosavi705OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mcariosavi705OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MgrviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MgrviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MnliOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MnliOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MrbviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MrbviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MsiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MsiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MsrOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MsrOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Msr705OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Msr705OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mtvi1OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mtvi1OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mtvi2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mtvi2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nd705OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nd705OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NddiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NddiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdgiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdgiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdiiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdiiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdmiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdmiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdreiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdreiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Ndvi705OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ndvi705OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdyiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdyiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NgrdiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NgrdiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NirvOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NirvOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nirvh2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nirvh2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NirvpOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NirvpOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NliOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NliOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NmdiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NmdiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NrfigOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NrfigOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NrfirOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NrfirOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NormgOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NormgOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NormnirOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NormnirOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NormrOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NormrOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-OcviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-OcviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-OsaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-OsaviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-PsriOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-PsriOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-RccOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-RccOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-RdviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-RdviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-RedsiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-RedsiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-RendviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-RendviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-RgbviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-RgbviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-RgriOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-RgriOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-SarviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-SarviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Savi2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Savi2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-SeviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-SeviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-SiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-SiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-SipiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-SipiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-SlaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-SlaviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Sr2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Sr2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Sr3OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Sr3OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Sr555OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Sr555OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Sr705OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Sr705OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-SeliOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-SeliOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TcariOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TcariOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TcariosaviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TcariosaviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Tcariosavi705OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Tcariosavi705OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TciOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TciOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TdviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TdviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TgiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TgiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TrrviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TrrviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TtviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TtviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TriviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TriviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-VariOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-VariOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Vari700OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Vari700OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Vi700OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Vi700OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-VigOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-VigOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-WdrviOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-WdrviOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mmnd705OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mmnd705OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mmsr705OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mmsr705OpAction.instance"/>
-                    </file>
-
+                    <folder name="A* -> C*">
+                        <file name="eu-esa-opt-radiometry-Afri1600OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Afri1600OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Afri2100OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Afri2100OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Ari2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ari2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-AriOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-AriOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-ArviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-ArviOpAction.instance"/>
+                            <attr name="position" intvalue="13"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-AtsaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-AtsaviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-AviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-AviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-BccOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BccOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-BndviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BndviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-BwdrviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BwdrviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-CciOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-CciOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-CigOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-CigOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-CireOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-CireOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-CviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-CviOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="D* -> F*">
+                        <file name="eu-esa-opt-radiometry-DsiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-DsiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Dswi1OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi1OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Dswi2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Dswi3OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi3OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Dswi4OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi4OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Dswi5OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Dswi5OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-DviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-DviOpAction.instance"/>
+                            <attr name="position" intvalue="5"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-DviplusOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-DviplusOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-EbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-EbiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Evi2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Evi2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-EviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-EviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-ExgOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-ExgOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-ExgrOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-ExgrOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-ExrOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-ExrOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-FcviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-FcviOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="G* -> I*">
+                        <file name="eu-esa-opt-radiometry-GariOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GariOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GbndviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GbndviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GccOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GccOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GdviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GdviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GemiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GemiOpAction.instance"/>
+                            <attr name="position" intvalue="12"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GliOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GliOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Gm1OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Gm1OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Gm2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Gm2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GndviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GndviOpAction.instance"/>
+                            <attr name="position" intvalue="11"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GosaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GosaviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GrndviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GrndviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GrviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GrviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GsaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GsaviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-GvmiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-GvmiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-IaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-IaviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-IkawOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-IkawOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-IpviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-IpviOpAction.instance"/>
+                            <attr name="position" intvalue="8"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-IreciOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-IreciOpAction.instance"/>
+                            <attr name="position" intvalue="19"/>
+                        </file>
+                    </folder>
+                    <folder name="M*">
+                        <file name="eu-esa-opt-radiometry-Mcari1OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mcari1OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Mcari2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mcari2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Mcari705OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mcari705OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-McariOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-McariOpAction.instance"/>
+                            <attr name="position" intvalue="16"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Mcariosavi705OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mcariosavi705OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-McariosaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-McariosaviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MgrviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MgrviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Mmnd705OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mmnd705OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Mmsr705OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mmsr705OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MnliOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MnliOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MrbviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MrbviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Msavi2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Msavi2OpAction.instance"/>
+                            <attr name="position" intvalue="4"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MsaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MsaviOpAction.instance"/>
+                            <attr name="position" intvalue="3"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MsiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MsiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Msr705OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Msr705OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MsrOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MsrOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MtciOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MtciOpAction.instance"/>
+                            <attr name="position" intvalue="15"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Mtvi1OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mtvi1OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Mtvi2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mtvi2OpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="N*">
+                        <file name="eu-esa-opt-radiometry-Nd705OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nd705OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NddiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NddiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdgiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdgiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Ndi45OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ndi45OpAction.instance"/>
+                            <attr name="position" intvalue="14"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdiiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdiiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdmiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdmiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdreiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdreiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Ndvi705OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ndvi705OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdviOpAction.instance"/>
+                            <attr name="position" intvalue="0"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdyiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdyiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NgrdiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NgrdiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Nirvh2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nirvh2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NirvOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NirvOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NirvpOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NirvpOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NliOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NliOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NmdiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NmdiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NormgOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NormgOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NormnirOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NormnirOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NormrOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NormrOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NrfigOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NrfigOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NrfirOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NrfirOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="O* -> R*">
+                        <file name="eu-esa-opt-radiometry-OcviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-OcviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-OsaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-OsaviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-PsriOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-PsriOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-PssraOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-PssraOpAction.instance"/>
+                            <attr name="position" intvalue="20"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-PviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-PviOpAction.instance"/>
+                            <attr name="position" intvalue="7"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-RccOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-RccOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-RdviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-RdviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-RedsiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-RedsiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-ReipOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-ReipOpAction.instance"/>
+                            <attr name="position" intvalue="17"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-RendviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-RendviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-RgbviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-RgbviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-RgriOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-RgriOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-RviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-RviOpAction.instance"/>
+                            <attr name="position" intvalue="6"/>
+                        </file>
+                    </folder>
+                    <folder name="S*">
+                        <file name="eu-esa-opt-radiometry-S2repOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-S2repOpAction.instance"/>
+                            <attr name="position" intvalue="18"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-SarviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-SarviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Savi2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Savi2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-SaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-SaviOpAction.instance"/>
+                            <attr name="position" intvalue="1"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-SeliOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-SeliOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-SeviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-SeviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-SiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-SiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-SipiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-SipiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-SlaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-SlaviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Sr2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Sr2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Sr3OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Sr3OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Sr555OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Sr555OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Sr705OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Sr705OpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="T*">
+                        <file name="eu-esa-opt-radiometry-TcariOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TcariOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Tcariosavi705OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Tcariosavi705OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TcariosaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TcariosaviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TciOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TciOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TdviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TdviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TgiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TgiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TndviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TndviOpAction.instance"/>
+                            <attr name="position" intvalue="10"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TriviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TriviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TrrviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TrrviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TsaviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TsaviOpAction.instance"/>
+                            <attr name="position" intvalue="2"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TtviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TtviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TviOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="V* -> W*">
+                        <file name="eu-esa-opt-radiometry-Vari700OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Vari700OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-VariOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-VariOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Vi700OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Vi700OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-VigOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-VigOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-WdrviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-WdrviOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-WdviOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-WdviOpAction.instance"/>
+                            <attr name="position" intvalue="9"/>
+                        </file>
+                    </folder>
                 </folder>
                 <folder name="Soil Radiometric Indices">
                     <attr name="position" intvalue="2"/>
-                    <file name="eu-esa-opt-radiometry-BiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BiOpAction.instance"/>
-                        <attr name="position" intvalue="0"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Bi2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Bi2OpAction.instance"/>
-                        <attr name="position" intvalue="1"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-RiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-RiOpAction.instance"/>
-                        <attr name="position" intvalue="2"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-CiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-CiOpAction.instance"/>
-                        <attr name="position" intvalue="3"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-BitmOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BitmOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-BixsOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BixsOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-BainOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BainOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-DbsiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-DbsiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-EmbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-EmbiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MbiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NbliOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbliOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NblioliOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NblioliOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdbaiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdbaiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdsiwvOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdsiwvOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdsoiiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdsoiiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NsdsOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NsdsOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nsdsi1OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nsdsi1OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nsdsi2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nsdsi2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nsdsi3OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nsdsi3OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Ri4xsOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ri4xsOpAction.instance"/>
-                    </file>
-
+                    <folder name="B* -> M*">
+                        <file name="eu-esa-opt-radiometry-BainOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BainOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Bi2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Bi2OpAction.instance"/>
+                            <attr name="position" intvalue="1"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-BiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BiOpAction.instance"/>
+                            <attr name="position" intvalue="0"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-BitmOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BitmOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-BixsOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BixsOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-CiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-CiOpAction.instance"/>
+                            <attr name="position" intvalue="3"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-DbsiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-DbsiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-EmbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-EmbiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MbiOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="N* -> R*">
+                        <file name="eu-esa-opt-radiometry-NblioliOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NblioliOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NbliOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbliOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdbaiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdbaiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdsiwvOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdsiwvOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdsoiiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdsoiiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Nsdsi1OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nsdsi1OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Nsdsi2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nsdsi2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Nsdsi3OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nsdsi3OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NsdsOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NsdsOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Ri4xsOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ri4xsOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-RiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-RiOpAction.instance"/>
+                            <attr name="position" intvalue="2"/>
+                        </file>
+                    </folder>
                 </folder>
                 <folder name="Burn Radiometric Indices">
                     <attr name="position" intvalue="2"/>
-                    <file name="eu-esa-opt-radiometry-BaiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BaiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-BaimOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BaimOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Bais2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Bais2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-CsiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-CsiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-CsitOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-CsitOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MirbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MirbiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NbrOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbrOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nbr2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nbr2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NbrswirOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbrswirOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nbrt1OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nbrt1OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nbrt2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nbrt2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nbrt3OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nbrt3OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NbrplusOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbrplusOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdswirOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdswirOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdvitOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdvitOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nstv1OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nstv1OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Nstv2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nstv2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-SavitOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-SavitOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Vi6tOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Vi6tOpAction.instance"/>
-                    </file>
-
+                    <folder name="B* -> M*">
+                        <file name="eu-esa-opt-radiometry-BaimOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BaimOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-BaiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BaiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Bais2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Bais2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-CsiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-CsiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-CsitOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-CsitOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MirbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MirbiOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="N* -> V*">
+                        <file name="eu-esa-opt-radiometry-Nbr2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nbr2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NbrOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbrOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NbrplusOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbrplusOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NbrswirOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbrswirOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Nbrt1OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nbrt1OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Nbrt2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nbrt2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Nbrt3OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nbrt3OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdswirOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdswirOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdvitOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdvitOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Nstv1OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nstv1OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Nstv2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Nstv2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-SavitOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-SavitOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Vi6tOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Vi6tOpAction.instance"/>
+                        </file>
+                    </folder>
                 </folder>
                 <folder name="Urban Radiometric Indices">
                     <attr name="position" intvalue="2"/>
-                    <file name="eu-esa-opt-radiometry-BlfeiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BlfeiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-BrbaOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-BrbaOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-DbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-DbiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-EbbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-EbbiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-IbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-IbiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NbaiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbaiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NbuiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbuiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdbiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdisibOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisibOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdisigOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisigOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdisimndwiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisimndwiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdisindwiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisindwiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdisirOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisirOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NhfdOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NhfdOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-PisiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-PisiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-UiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-UiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-VibiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-VibiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-VgnirbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-VgnirbiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-VrnirbiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-VrnirbiOpAction.instance"/>
-                    </file>
-
+                    <folder name="B* -> I*">
+                        <file name="eu-esa-opt-radiometry-BlfeiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BlfeiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-BrbaOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-BrbaOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-DbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-DbiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-EbbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-EbbiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-IbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-IbiOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="N*">
+                        <file name="eu-esa-opt-radiometry-NbaiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbaiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NbuiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NbuiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdbiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdisibOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisibOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdisigOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisigOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdisimndwiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisimndwiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdisindwiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisindwiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdisirOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdisirOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NhfdOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NhfdOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="P* -> V*">
+                        <file name="eu-esa-opt-radiometry-PisiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-PisiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-UiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-UiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-VibiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-VibiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-VgnirbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-VgnirbiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-VrnirbiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-VrnirbiOpAction.instance"/>
+                        </file>
+                    </folder>
                 </folder>
             </folder>
             <folder name="Thematic Water Processing">
                 <folder name="Water Radiometric Indices">
                     <attr name="position" intvalue="4"/>
-                    <file name="eu-esa-opt-radiometry-NdwiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdwiOpAction.instance"/>
-                        <attr name="position" intvalue="0"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Ndwi2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ndwi2OpAction.instance"/>
-                        <attr name="position" intvalue="1"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MndwiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MndwiOpAction.instance"/>
-                        <attr name="position" intvalue="2"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdpiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdpiOpAction.instance"/>
-                        <attr name="position" intvalue="3"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdtiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdtiOpAction.instance"/>
-                        <attr name="position" intvalue="4"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-AweinshOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-AweinshOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-AweishOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-AweishOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-LswiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-LswiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MbwiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MbwiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mlswi26OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mlswi26OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Mlswi27OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mlswi27OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MndwiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MndwiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-MuwirOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-MuwirOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdciOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdciOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdponiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdponiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdvimndwiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdvimndwiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NdwinsOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdwinsOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-NwiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-NwiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-S2wiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-S2wiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-SwmOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-SwmOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-TwiOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-TwiOpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Wi1OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Wi1OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Wi2OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Wi2OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-Wi2015OpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-Wi2015OpAction.instance"/>
-                    </file>
-                    <file name="eu-esa-opt-radiometry-WriOpAction.shadow">
-                        <attr name="originalFile"
-                              stringvalue="Actions/Operators/eu-esa-opt-radiometry-WriOpAction.instance"/>
-                    </file>
+                    <folder name="A* -> M*">
+                        <file name="eu-esa-opt-radiometry-AweinshOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-AweinshOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-AweishOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-AweishOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-LswiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-LswiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MbwiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MbwiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Mlswi26OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mlswi26OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Mlswi27OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Mlswi27OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MndwiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MndwiOpAction.instance"/>
+                            <attr name="position" intvalue="2"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MndwiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MndwiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-MuwirOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-MuwirOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="N*">
+                        <file name="eu-esa-opt-radiometry-NdciOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdciOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdpiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdpiOpAction.instance"/>
+                            <attr name="position" intvalue="3"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdponiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdponiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdtiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdtiOpAction.instance"/>
+                            <attr name="position" intvalue="4"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdvimndwiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdvimndwiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Ndwi2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Ndwi2OpAction.instance"/>
+                            <attr name="position" intvalue="1"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdwinsOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdwinsOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NdwiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NdwiOpAction.instance"/>
+                            <attr name="position" intvalue="0"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-NwiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-NwiOpAction.instance"/>
+                        </file>
+                    </folder>
+                    <folder name="S* -> W*">
+                        <file name="eu-esa-opt-radiometry-S2wiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-S2wiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-SwmOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-SwmOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-TwiOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-TwiOpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Wi1OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Wi1OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Wi2015OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Wi2015OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-Wi2OpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-Wi2OpAction.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-radiometry-WriOpAction.shadow">
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Operators/eu-esa-opt-radiometry-WriOpAction.instance"/>
+                        </file>
+                    </folder>
                 </folder>
             </folder>
         </folder>
