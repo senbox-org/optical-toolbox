@@ -878,6 +878,9 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                     maskBandName = String.format("B_%s", maskInfo.getSnapNameForOneBand(bandName));
 
                 S2SpatialResolution res = bandInfo.getBandInformation().getResolution();
+                if (maskBandName.contains("detector_footprint")) {
+                    quantificationValue = 1.0;
+                }
                 S2SpectralInformation spectralI = new S2SpectralInformation(
                         maskBandName, res,
                         maskPath.getParent().toString(), maskInfo.getDescriptionForBand(bandName, i),
