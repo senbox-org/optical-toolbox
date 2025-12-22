@@ -60,7 +60,7 @@ import static java.lang.System.arraycopy;
  * @since
  */
 //APR2021 - Bing Yang - added capability to read 3d products
-    //AUG 2024 - Daniel Knowles - added PACE OCI actual center wavelengths lookup in resources
+//AUG 2024 - Daniel Knowles - added PACE OCI actual center wavelengths lookup in resources
 
 
 public abstract class SeadasFileReader {
@@ -645,17 +645,19 @@ public abstract class SeadasFileReader {
 
                         int flagValue;
                         try {
-                           flagValue = Integer.parseInt(flagValueString);
+                            flagValue = Integer.parseInt(flagValueString);
                         } catch (NumberFormatException e) {
                             continue;
                         }
 
-                        int flagBitPosition = getFlagBitPosition(flagValue) + 1;  // shifting from bit index to 1-based bit
+                        int flagBitPosition = getFlagBitPosition(flagValue);
 
-                        if (flagBitPosition >= 1) {
+                        if (flagBitPosition >= 0) {
                             String flagName = flagNames[i];
 //                            System.out.println("flagname=" + flagName +  "flags=" + flagValue + " bitPosition=" + flagBitPosition);
 
+
+                            boolean includeBitLocation = false;  // this is primarily just for testing diagnostics, it could be added to preferences in the future.
 
                             if (flagName.startsWith("SPARE")) {
                                 if (flagBitPosition < 10) {
@@ -663,7 +665,16 @@ public abstract class SeadasFileReader {
                                 } else {
                                     flagName = flagName + flagBitPosition;
                                 }
+                            } else if (includeBitLocation) {
+                                if (flagBitPosition < 10) {
+                                    flagName = flagName + "_0" + flagBitPosition;
+                                } else {
+                                    flagName = flagName + "_" + flagBitPosition;
+                                }
                             }
+
+                            // set to new value of flagname
+                            flagNames[i] = flagName;
 
                             if (!flagCoding.containsAttribute(flagName)) {
                                 flagCoding.addFlag(flagName, flagValue, getFlagDescription(flagName));
@@ -684,6 +695,7 @@ public abstract class SeadasFileReader {
                         if (flagName.startsWith("SPARE")) {
                             flagName = flagName + Integer.toString(bit + 1);
                         }
+                        flagNames[bit] = flagName;
 //                    System.out.println("flag=" + flagName);
                         if (!flagCoding.containsAttribute(flagName)) {
 //                        System.out.println("Adding flag=" + flagName);
@@ -717,19 +729,19 @@ public abstract class SeadasFileReader {
                     for (String flagName : flagNamesOrderedArray) {
 
                         if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
-                            composite1Mask = createMaskComposite1(product, composite1Description);
+                            composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
                             continue;
                         }
                         if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null && flagName.equals(getComposite2MaskName())) {
-                            composite2Mask = createMaskComposite2(product, composite2Description);
+                            composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
                             continue;
                         }
                         if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null && flagName.equals(getComposite3MaskName())) {
-                            composite3Mask = createMaskComposite3(product, composite3Description);
+                            composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
                             continue;
                         }
                         if (Water_Mask == null && flagName.equals("Water")) {
-                            Water_Mask = createWaterMask(product, Water_Description);
+                            Water_Mask = createWaterMask(product, Water_Description, flagCoding);
                             continue;
                         }
 
@@ -754,19 +766,19 @@ public abstract class SeadasFileReader {
 
 
                 if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null) {
-                    composite1Mask = createMaskComposite1(product, composite1Description);
+                    composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
                 }
 
                 if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null) {
-                    composite2Mask = createMaskComposite2(product, composite2Description);
+                    composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
                 }
 
                 if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null) {
-                    composite3Mask = createMaskComposite3(product, composite3Description);
+                    composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
                 }
 
                 if (Water_Mask == null) {
-                    Water_Mask = createWaterMask(product, Water_Description);
+                    Water_Mask = createWaterMask(product, Water_Description, flagCoding);
                 }
 
 
@@ -1360,10 +1372,10 @@ public abstract class SeadasFileReader {
 
 
 
-    private Mask createMaskComposite1(Product product, String composite1Description) {
+    private Mask createMaskComposite1(Product product, String composite1Description, FlagCoding flagCoding) {
 
         Mask composite1Mask = null;
-        String composite1Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE1_EXPRESSION));
+        String composite1Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE1_EXPRESSION), flagCoding);
         String composite1MaskName = getComposite1MaskName();
         if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) &&
                 composite1Expression != null && composite1Expression.trim().length() > 1 &&
@@ -1382,10 +1394,10 @@ public abstract class SeadasFileReader {
 
 
 
-    private Mask createMaskComposite2(Product product, String composite2Description) {
+    private Mask createMaskComposite2(Product product, String composite2Description, FlagCoding flagCoding) {
 
         Mask composite2Mask = null;
-        String composite2Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE1_EXPRESSION));
+        String composite2Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE1_EXPRESSION), flagCoding);
         String composite2MaskName = getComposite2MaskName();
         if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) &&
                 composite2Expression != null && composite2Expression.trim().length() > 1 &&
@@ -1403,10 +1415,10 @@ public abstract class SeadasFileReader {
     }
 
 
-    private Mask createMaskComposite3(Product product, String composite3Description) {
+    private Mask createMaskComposite3(Product product, String composite3Description, FlagCoding flagCoding) {
 
         Mask composite3Mask = null;
-        String composite3Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE3_EXPRESSION));
+        String composite3Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE3_EXPRESSION), flagCoding);
         String composite3MaskName = getComposite3MaskName();
         if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) &&
                 composite3Expression != null && composite3Expression.trim().length() > 1 &&
@@ -1426,14 +1438,18 @@ public abstract class SeadasFileReader {
 
 
 
-    private Mask createWaterMask(Product product, String Water_Description) {
+    private Mask createWaterMask(Product product, String Water_Description, FlagCoding flagCoding) {
 
-        Mask Water_Mask = Mask.BandMathsType.create("Water", Water_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "!l2_flags.LAND",
-                getMaskColor(MaskType.WATER), getMaskTransparency(MaskType.WATER));
-        product.getMaskGroup().add(Water_Mask);
-        return Water_Mask;
+        if (flagCoding.containsAttribute("LAND")) {
+            Mask Water_Mask = Mask.BandMathsType.create("Water", Water_Description,
+                    product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                    "!l2_flags.LAND",
+                    getMaskColor(MaskType.WATER), getMaskTransparency(MaskType.WATER));
+            product.getMaskGroup().add(Water_Mask);
+            return Water_Mask;
+        }
+
+        return null;
     }
 
 
@@ -2652,7 +2668,7 @@ public abstract class SeadasFileReader {
         return compositeMaskName;
     }
 
-    private String getCompositeFlagsExpression(String flags) {
+    private String getCompositeFlagsExpression(String flags, FlagCoding flagCoding) {
 
         String[] flagsArray = flags.split("\\s+|,");
 
@@ -2661,7 +2677,7 @@ public abstract class SeadasFileReader {
                 flagsArray[i] = flagsArray[i].replace("l2_flags.", "");
             }
         }
-        ArrayList<String> flagsCompositeArray = getValidFlagsComposite(flagsArray);
+        ArrayList<String> flagsCompositeArray = getValidFlagsComposite(flagsArray, flagCoding);
 
         if (flagsCompositeArray == null || flagsCompositeArray.size() == 0) {
             return null;
@@ -2672,7 +2688,7 @@ public abstract class SeadasFileReader {
         return expression;
     }
 
-    private ArrayList<String> getValidFlagsComposite(String[] flagsArray) {
+    private ArrayList<String> getValidFlagsComposite(String[] flagsArray, FlagCoding flagCoding) {
         ArrayList<String> validFlagComposite = null;
 
         if (flagsArray != null) {
@@ -2694,10 +2710,12 @@ public abstract class SeadasFileReader {
                     for (String validFlag : flagNames) {
                         if (validFlag != null) {
                             if (flag.equals(validFlag)) {
-                                if (flagIsComplement) {
-                                    validFlagComposite.add("!l2_flags." + flag);
-                                } else {
-                                    validFlagComposite.add("l2_flags." + flag);
+                                if (flagCoding.containsAttribute(validFlag)) {
+                                    if (flagIsComplement) {
+                                        validFlagComposite.add("!l2_flags." + flag);
+                                    } else {
+                                        validFlagComposite.add("l2_flags." + flag);
+                                    }
                                 }
                                 continue;
                             }
