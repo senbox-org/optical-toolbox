@@ -101,7 +101,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_LAND_COLOR_LABEL = "LAND: Color";
     public static final String PROPERTY_MASK_LAND_COLOR_TOOLTIP = "Set default color of the LAND mask";
     //    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandDarkGreenBrown;
-    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandBrown;
+    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT =  new Color(40, 30, 0);;
 
 
     // PRODWARN
