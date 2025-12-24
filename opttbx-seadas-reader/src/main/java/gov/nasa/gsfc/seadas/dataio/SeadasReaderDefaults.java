@@ -1047,7 +1047,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_Water_COLOR_KEY = PROPERTY_MASK_Water_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_Water_COLOR_LABEL = "Water: Color";
     public static final String PROPERTY_MASK_Water_COLOR_TOOLTIP = "Set default color of the Water mask";
-    public static final Color PROPERTY_MASK_Water_COLOR_DEFAULT = DeepBlue;
+    public static final Color PROPERTY_MASK_Water_COLOR_DEFAULT = new Color(0, 75, 150);;
 
 
 
