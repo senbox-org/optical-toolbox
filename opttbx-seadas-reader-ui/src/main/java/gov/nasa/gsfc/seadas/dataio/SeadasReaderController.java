@@ -96,8 +96,9 @@ public final class SeadasReaderController extends DefaultConfigController {
 
 
 //        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_OVERRIDE_COLOR_KEY, SeadasReaderDefaults.PROPERTY_MASK_OVERRIDE_COLOR_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_KEY, SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_KEY, SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SORT_ENABLED_KEY, SeadasReaderDefaults.PROPERTY_MASK_SORT_ENABLED_DEFAULT);
-        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_SORT_KEY, SeadasReaderDefaults.PROPERTY_MASK_SORT_DEFAULT);
 
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_MASK_ATMFAIL_SECTION_KEY, true);
@@ -543,17 +544,22 @@ public final class SeadasReaderController extends DefaultConfigController {
 
 
 
+
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_TOOLTIP)
+        String masksTopOfStackDefault = SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_KEY,
+                label = SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_TOOLTIP)
+        String masksBottomOfStackDefault = SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_DEFAULT;
+
         @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_SORT_ENABLED_KEY,
                 label = SeadasReaderDefaults.PROPERTY_MASK_SORT_ENABLED_LABEL,
                 description = SeadasReaderDefaults.PROPERTY_MASK_SORT_ENABLED_TOOLTIP)
         boolean maskSortEnabledDefault = SeadasReaderDefaults.PROPERTY_MASK_SORT_ENABLED_DEFAULT;
-
-        @Preference(key = SeadasReaderDefaults.PROPERTY_MASK_SORT_KEY,
-                label = SeadasReaderDefaults.PROPERTY_MASK_SORT_LABEL,
-                description = SeadasReaderDefaults.PROPERTY_MASK_SORT_TOOLTIP)
-        String maskSortDefault = SeadasReaderDefaults.PROPERTY_MASK_SORT_DEFAULT;
-
-
 
 
 
