@@ -879,10 +879,15 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_SORT_ENABLED_TOOLTIP = "Sort Level-2 Flag Masks";
     public static final boolean PROPERTY_MASK_SORT_ENABLED_DEFAULT = true;
 
-    public static final String PROPERTY_MASK_SORT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.sort";
-    public static final String PROPERTY_MASK_SORT_LABEL = "Flags at Top of Stack";
-    public static final String PROPERTY_MASK_SORT_TOOLTIP = "These flags (space delimited) get put at top of the Mask Manager stack ";
-    public static final String PROPERTY_MASK_SORT_DEFAULT = "LAND";
+    public static final String PROPERTY_MASKS_TOP_OF_STACK_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".masks.top_of_stack";
+    public static final String PROPERTY_MASKS_TOP_OF_STACK_LABEL = "Flags at Top of Stack";
+    public static final String PROPERTY_MASKS_TOP_OF_STACK_TOOLTIP = "These flags (space delimited) get put at top of the Mask Manager stack ";
+    public static final String PROPERTY_MASKS_TOP_OF_STACK_DEFAULT = "LAND";
+
+    public static final String PROPERTY_MASKS_BOTTOM_OF_STACK_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".masks.bottom_of_stack";
+    public static final String PROPERTY_MASKS_BOTTOM_OF_STACK_LABEL = "Flags at Bottom of Stack";
+    public static final String PROPERTY_MASKS_BOTTOM_OF_STACK_TOOLTIP = "These flags (space delimited) get put at bottom of the Mask Manager stack ";
+    public static final String PROPERTY_MASKS_BOTTOM_OF_STACK_DEFAULT = "";
 
 
 

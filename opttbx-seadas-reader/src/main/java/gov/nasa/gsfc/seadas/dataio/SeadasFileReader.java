@@ -77,7 +77,7 @@ public abstract class SeadasFileReader {
     protected String sensor = null;
 
     protected String[] flagNames = null;
-    protected String[] flagValuesString = null;
+    protected String[] flagValuesStringArray = null;
     protected String flagMeanings = null;
 
 
@@ -639,9 +639,9 @@ public abstract class SeadasFileReader {
 
                 FlagCoding flagCoding = new FlagCoding("L2Flags");
 
-                if (flagNames != null && flagValuesString != null && (flagNames.length == flagValuesString.length)) {
-                    for (int i = 0; i < flagValuesString.length; i++) {
-                        String flagValueString = flagValuesString[i];
+                if (flagNames != null && flagValuesStringArray != null && (flagNames.length == flagValuesStringArray.length)) {
+                    for (int i = 0; i < flagValuesStringArray.length; i++) {
+                        String flagValueString = flagValuesStringArray[i];
 
                         int flagValue;
                         try {
@@ -654,8 +654,6 @@ public abstract class SeadasFileReader {
 
                         if (flagBitPosition >= 0) {
                             String flagName = flagNames[i];
-//                            System.out.println("flagname=" + flagName +  "flags=" + flagValue + " bitPosition=" + flagBitPosition);
-
 
                             boolean includeBitLocation = false;  // this is primarily just for testing diagnostics, it could be added to preferences in the future.
 
@@ -719,14 +717,16 @@ public abstract class SeadasFileReader {
 
 
 
-                String flagNamesOrdered = getMaskSort();
-                String[] flagNamesOrderedArray = flagNamesOrdered.split("\\s+|,");
+                String masksTopOfStack = getMasksTopOfStack();
+                String[] masksTopOfStackArray = masksTopOfStack.split("\\s+|,");
+
+                String masksBottomOfStack = getMasksBottomOfStack();
+                String[] masksBottomOfStackArray = masksBottomOfStack.split("\\s+|,");
 
 
-                if (flagNamesOrderedArray.length > 0) {
-//                    String flagNamesOrdered = getMaskSort();
-//                    String[] flagNamesOrderedArray = flagNamesOrdered.split("\\s+|,");
-                    for (String flagName : flagNamesOrderedArray) {
+                if (masksTopOfStackArray.length > 0) {
+
+                    for (String flagName : masksTopOfStackArray) {
 
                         if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
                             composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
@@ -755,34 +755,93 @@ public abstract class SeadasFileReader {
                 }
 
                 for (String flagName : flagNames) {
-//                    System.out.println("flagName=" + flagName);
-                    addFlagMask(product, flagName, flagCoding);
+                    boolean bottomOfStackFound = false;
+                    for (String bottomOfStack : masksBottomOfStackArray) {
+                        if (flagName.equals(bottomOfStack)) {
+                            bottomOfStackFound = true;
+                            break;
+                        }
+
+                    }
+
+                    if (!bottomOfStackFound) {
+                        addFlagMask(product, flagName, flagCoding);
+                    }
                 }
 
 
 
 
 
+                boolean bottomOfStackComposite1 = false;
+                boolean bottomOfStackComposite2 = false;
+                boolean bottomOfStackComposite3 = false;
+                boolean bottomOfStackWater = false;
+
+                for (String bottomOfStack : masksBottomOfStackArray) {
+                    if (bottomOfStack.equals(bottomOfStackComposite1)) {
+                        bottomOfStackComposite1 = true;
+                    }
+
+                    if (bottomOfStack.equals(bottomOfStackComposite2)) {
+                        bottomOfStackComposite2 = true;
+                    }
+
+                    if (bottomOfStack.equals(bottomOfStackComposite3)) {
+                        bottomOfStackComposite3 = true;
+                    }
+
+                    if (bottomOfStack.equals(bottomOfStackWater)) {
+                        bottomOfStackWater = true;
+                    }
+                }
 
 
-                if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null) {
+                if (!bottomOfStackComposite1 && isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null) {
                     composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
                 }
 
-                if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null) {
+                if (!bottomOfStackComposite2 && isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null) {
                     composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
                 }
 
-                if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null) {
+                if (!bottomOfStackComposite3 && isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null) {
                     composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
                 }
 
-                if (Water_Mask == null) {
+                if (!bottomOfStackWater && Water_Mask == null) {
                     Water_Mask = createWaterMask(product, Water_Description, flagCoding);
                 }
 
 
 
+
+                if (masksBottomOfStackArray.length > 0) {
+
+                    for (String flagName : masksBottomOfStackArray) {
+
+                        if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
+                            composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
+                            continue;
+                        }
+                        if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null && flagName.equals(getComposite2MaskName())) {
+                            composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
+                            continue;
+                        }
+                        if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null && flagName.equals(getComposite3MaskName())) {
+                            composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
+                            continue;
+                        }
+                        if (Water_Mask == null && flagName.equals("Water")) {
+                            Water_Mask = createWaterMask(product, Water_Description, flagCoding);
+                            continue;
+                        }
+
+                        addFlagMask(product, flagName, flagCoding);
+                    }
+                }
+                
+                
 
                 String[] bandNames = product.getBandNames();
                 for (String bandName : bandNames) {
@@ -1289,7 +1348,7 @@ public abstract class SeadasFileReader {
     private int getFlagBitPosition(int flags) {
 
         int bitPosition = -1; // not set if equals -1
-        System.out.println("Checking flags=" + flags);
+//        System.out.println("Checking flags=" + flags);
 
         for (int currBitPosition=0; currBitPosition < 32; currBitPosition++) {
             if (isBitSet(flags, currBitPosition)) {
@@ -1321,9 +1380,14 @@ public abstract class SeadasFileReader {
 
         if (flagMeaningsAttribute != null && flagMasksAttribute != null) {
             flagMeanings = flagMeaningsAttribute.getData().getElemString();
-            flagNames = flagMeanings.split(" ");
-            String flagBitsStr = flagMasksAttribute.getData().getElemString();
-            flagValuesString = flagBitsStr.split("\\s+|,");
+            if (flagMeanings != null && !flagMeanings.isEmpty()) {
+                flagNames = flagMeanings.split(" ");
+            }
+
+            String flagValuesStr = flagMasksAttribute.getData().getElemString();
+            if (flagValuesStr != null && !flagValuesStr.isEmpty()) {
+                flagValuesStringArray = flagValuesStr.split("\\s+|,");
+            }
 
         } else {
             // todo not sure if this gets used anymore and this does not set flagValuesString
@@ -1440,7 +1504,7 @@ public abstract class SeadasFileReader {
 
     private Mask createWaterMask(Product product, String Water_Description, FlagCoding flagCoding) {
 
-        if (flagCoding.containsAttribute("LAND")) {
+        if (flagCoding != null && flagCoding.containsAttribute("LAND")) {
             Mask Water_Mask = Mask.BandMathsType.create("Water", Water_Description,
                     product.getSceneRasterWidth(), product.getSceneRasterHeight(),
                     "!l2_flags.LAND",
@@ -1468,97 +1532,6 @@ public abstract class SeadasFileReader {
 
         return null;
     }
-
-
-    private Mask createSPARE8Mask(Product product, String SPARE8_Description) {
-        Mask SPARE8_Mask = Mask.BandMathsType.create("SPARE8", SPARE8_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE8",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE8_Mask);
-            return SPARE8_Mask;
-        }
-
-        return null;
-    }
-
-
-    private Mask createSPARE14Mask(Product product, String SPARE14_Description) {
-        Mask SPARE14_Mask = Mask.BandMathsType.create("SPARE14", SPARE14_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE14",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE14_Mask);
-            return SPARE14_Mask;
-        }
-
-        return null;
-    }
-
-
-
-
-    private Mask createSPARE19Mask(Product product, String SPARE19_Description) {
-        Mask SPARE19_Mask = Mask.BandMathsType.create("SPARE19", SPARE19_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE19",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE19_Mask);
-            return SPARE19_Mask;
-        }
-
-        return null;
-    }
-
-
-
-    private Mask createSPARE24Mask(Product product, String SPARE24_Description) {
-        Mask SPARE24_Mask = Mask.BandMathsType.create("SPARE24", SPARE24_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE24",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE24_Mask);
-            return SPARE24_Mask;
-        }
-
-        return null;
-    }
-
-
-
-    private Mask createSPARE28Mask(Product product, String SPARE28_Description) {
-        Mask SPARE28_Mask = Mask.BandMathsType.create("SPARE28", SPARE28_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE28",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE28_Mask);
-            return SPARE28_Mask;
-        }
-
-        return null;
-    }
-
-
-
-
-    private Mask createSPARE32Mask(Product product, String SPARE32_Description) {
-        Mask SPARE32_Mask = Mask.BandMathsType.create("SPARE32", SPARE32_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE32",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE32_Mask);
-            return SPARE32_Mask;
-        }
-
-        return null;
-    }
-
 
 
 
@@ -2550,12 +2523,20 @@ public abstract class SeadasFileReader {
     }
 
 
-    private String getMaskSort() {
+    private String getMasksTopOfStack() {
         if (this.isHeadless) {
-            return SeadasReaderDefaults.PROPERTY_MASK_SORT_DEFAULT;
+            return SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_DEFAULT;
         }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_SORT_KEY, SeadasReaderDefaults.PROPERTY_MASK_SORT_DEFAULT);
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_KEY, SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_DEFAULT);
+    }
+
+    private String getMasksBottomOfStack() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_DEFAULT;
+        }
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_KEY, SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_DEFAULT);
     }
 
 
@@ -2690,6 +2671,10 @@ public abstract class SeadasFileReader {
 
     private ArrayList<String> getValidFlagsComposite(String[] flagsArray, FlagCoding flagCoding) {
         ArrayList<String> validFlagComposite = null;
+
+        if (flagCoding == null) {
+            return null;
+        }
 
         if (flagsArray != null) {
             validFlagComposite = new ArrayList<>();
