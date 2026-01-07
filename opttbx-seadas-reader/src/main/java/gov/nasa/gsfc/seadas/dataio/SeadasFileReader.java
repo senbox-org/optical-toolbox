@@ -1562,56 +1562,59 @@ public abstract class SeadasFileReader {
 
     protected void setSpectralBand(Product product) {
 
-        HashMap<String, String> ociWavelengths = new HashMap<String, String>();
+        // todo Later Possibly Delete: but for now commenting out code which used decimal wavelength lookup file
+//        HashMap<String, String> ociWavelengths = new HashMap<String, String>();
+//
+//        String sensor = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
+//        String platform = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
+//        String processing_level = ProductUtils.getMetaData(product, "processing_level");
+//
+//        String SENSOR_INFO = "sensor_info";
+//        String AUXDATA = "auxdata";
+//        String OCI_BANDPASS_CSV = "oci_bandpass.csv";
+//
+//        if (SeadasProductReader.Mission.OCI.toString().equals(sensor)) {
+//
+//            File sensorInfoAuxDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO).toFile();
+//            File ociBandPassFile = new File(sensorInfoAuxDir, OCI_BANDPASS_CSV);
+//
+//            if (ociBandPassFile == null ||  !ociBandPassFile.exists()) {
+//                try {
+//                    Path auxdataDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO);
+//
+//                    Path sourceBasePath = ResourceInstaller.findModuleCodeBasePath(SeadasFileReader.class);
+//                    Path auxdirSource = sourceBasePath.resolve(AUXDATA);
+//                    Path sourceDirPath = auxdirSource.resolve(SENSOR_INFO);
+//
+//                    final ResourceInstaller resourceInstaller = new ResourceInstaller(sourceDirPath, auxdataDir);
+//
+//                    resourceInstaller.install(".*." + OCI_BANDPASS_CSV, ProgressMonitor.NULL);
+//
+//                } catch (IOException e) {
+//                    SnapApp.getDefault().handleError("Unable to install " + AUXDATA + "/" + SENSOR_INFO + "/" + OCI_BANDPASS_CSV, e);
+//                }
+//            }
+//
+//            if (sensorInfoAuxDir != null && sensorInfoAuxDir.exists()) {
+//
+//                if (ociBandPassFile != null && ociBandPassFile.exists()) {
+//
+//                    try (BufferedReader br = new BufferedReader(new FileReader(ociBandPassFile))) {
+//                        String line;
+//                        while ((line = br.readLine()) != null) {
+//                            String[] values = line.split(",");
+//                            if (values != null && values.length > 3) {
+//                                ociWavelengths.put(values[1].trim(), values[2].trim());
+//                            }
+//                        }
+//                    } catch (Exception e) {
+//
+//                    }
+//                }
+//            }
+//        }
+        // todo END todo block
 
-        String sensor = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
-        String platform = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
-        String processing_level = ProductUtils.getMetaData(product, "processing_level");
-
-        String SENSOR_INFO = "sensor_info";
-        String AUXDATA = "auxdata";
-        String OCI_BANDPASS_CSV = "oci_bandpass.csv";
-
-        if (SeadasProductReader.Mission.OCI.toString().equals(sensor)) {
-
-            File sensorInfoAuxDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO).toFile();
-            File ociBandPassFile = new File(sensorInfoAuxDir, OCI_BANDPASS_CSV);
-
-            if (ociBandPassFile == null ||  !ociBandPassFile.exists()) {
-                try {
-                    Path auxdataDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO);
-
-                    Path sourceBasePath = ResourceInstaller.findModuleCodeBasePath(SeadasFileReader.class);
-                    Path auxdirSource = sourceBasePath.resolve(AUXDATA);
-                    Path sourceDirPath = auxdirSource.resolve(SENSOR_INFO);
-
-                    final ResourceInstaller resourceInstaller = new ResourceInstaller(sourceDirPath, auxdataDir);
-
-                    resourceInstaller.install(".*." + OCI_BANDPASS_CSV, ProgressMonitor.NULL);
-
-                } catch (IOException e) {
-                    SnapApp.getDefault().handleError("Unable to install " + AUXDATA + "/" + SENSOR_INFO + "/" + OCI_BANDPASS_CSV, e);
-                }
-            }
-
-            if (sensorInfoAuxDir != null && sensorInfoAuxDir.exists()) {
-
-                if (ociBandPassFile != null && ociBandPassFile.exists()) {
-
-                    try (BufferedReader br = new BufferedReader(new FileReader(ociBandPassFile))) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            String[] values = line.split(",");
-                            if (values != null && values.length > 3) {
-                                ociWavelengths.put(values[1].trim(), values[2].trim());
-                            }
-                        }
-                    } catch (Exception e) {
-
-                    }
-                }
-            }
-        }
 
         int spectralBandIndex = 0;
         for (String name : product.getBandNames()) {
@@ -1624,11 +1627,13 @@ public abstract class SeadasFileReader {
                     wvlstr = parts[parts.length - 2].trim();
                 }
 
-                if (SeadasProductReader.Mission.OCI.toString().equals(sensor) &&
-                        (SeadasProductReader.ProcessingLevel.L2.toString().equals(processing_level) ||
-                                SeadasProductReader.ProcessingLevel.L3m.toString().equals(processing_level))) {
-                    wvlstr = getPaceOCIWavelengths(wvlstr, ociWavelengths);
-                }
+                // todo Later Possibly Delete: but for now commenting out code which used decimal wavelength lookup file
+//                if (SeadasProductReader.Mission.OCI.toString().equals(sensor) &&
+//                        (SeadasProductReader.ProcessingLevel.L2.toString().equals(processing_level) ||
+//                                SeadasProductReader.ProcessingLevel.L3m.toString().equals(processing_level))) {
+//                    wvlstr = getPaceOCIWavelengths(wvlstr, ociWavelengths);
+//                }
+                // todo END todo block
 
                 final float wavelength = Float.parseFloat(wvlstr);
                 if (band.getSpectralBandIndex() == -1) {
@@ -1639,15 +1644,19 @@ public abstract class SeadasFileReader {
         }
     }
 
-    protected String getPaceOCIWavelengths(String wvlstr, HashMap<String, String> ociWavelengths) {
-        String wvlstr_oci = ociWavelengths.get(wvlstr);
 
-        if (wvlstr_oci != null && wvlstr_oci.length() > 0) {
-            wvlstr = wvlstr_oci;
-        }
+    // todo Later Possibly Delete: but for now commenting out code which used decimal wavelength lookup file
+//    protected String getPaceOCIWavelengths(String wvlstr, HashMap<String, String> ociWavelengths) {
+//        String wvlstr_oci = ociWavelengths.get(wvlstr);
+//
+//        if (wvlstr_oci != null && wvlstr_oci.length() > 0) {
+//            wvlstr = wvlstr_oci;
+//        }
+//
+//        return wvlstr;
+//    }
+    // todo END todo block
 
-        return wvlstr;
-    }
 
     protected Map<Band, Variable> add3DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
