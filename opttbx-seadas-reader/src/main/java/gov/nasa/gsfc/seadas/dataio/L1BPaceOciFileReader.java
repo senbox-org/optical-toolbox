@@ -97,17 +97,18 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
         product.setDescription(productName);
 
-        Attribute startTime = findAttribute("time_coverage_start");
-        ProductData.UTC utcStart = getUTCAttribute("time_coverage_start");
-        ProductData.UTC utcEnd = getUTCAttribute("time_coverage_end");
-        if (startTime == null) {
-            utcStart = getUTCAttribute("Start_Time");
-            utcEnd = getUTCAttribute("End_Time");
-        }
+        // @todo 3 this is obviously never used again - remove? tb 2026-01-13
+        //Attribute startTime = findAttribute("time_coverage_start");
+        //ProductData.UTC utcStart = getUTCAttribute("time_coverage_start");
+        //ProductData.UTC utcEnd = getUTCAttribute("time_coverage_end");
+        //if (startTime == null) {
+         //   utcStart = getUTCAttribute("Start_Time");
+        //   utcEnd = getUTCAttribute("End_Time");
+        //}
         // only needed as a stop-gap to handle an intermediate version of l2gen metadata
-        if (utcEnd == null) {
-            utcEnd = getUTCAttribute("time_coverage_stop");
-        }
+        //if (utcEnd == null) {
+        //    utcEnd = getUTCAttribute("time_coverage_stop");
+        //}
 
         product.setFileLocation(productReader.getInputFile());
         product.setProductReader(productReader);
