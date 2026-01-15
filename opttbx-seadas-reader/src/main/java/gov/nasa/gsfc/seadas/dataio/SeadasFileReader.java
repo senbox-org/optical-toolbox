@@ -1664,6 +1664,8 @@ public abstract class SeadasFileReader {
 
         int spectralBandIndex = 0;
         Array wavelengths = null;
+        Array band_indices = null;
+        Array intWavelengths = null;
 
         final int[] dimensions = variable.getShape();
 //        List<Dimension> variable_dimensions = variable.getDimensions();
@@ -1673,6 +1675,8 @@ public abstract class SeadasFileReader {
         final int width = dimensions[1];
         int dim = 0;
         Variable wvl = null;
+        Variable bandIdx = null;
+        Variable intWvl = null;
 
         if (height == sceneRasterHeight && width == sceneRasterWidth) {
             // final List<Attribute> list = variable.getAttributes();
@@ -1716,12 +1720,30 @@ public abstract class SeadasFileReader {
                     wavelengths = wvl.read();
                 } catch (IOException e) {
                 }
+                bandIdx = ncFile.findVariable("geophysical_data/band_index");
+                if (bandIdx != null) {
+                    try {
+                        band_indices = bandIdx.read();
+                    } catch (IOException e) {
+                    }
+                }
+                intWvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+                if (intWvl != null) {
+                    try {
+                        intWavelengths = intWvl.read();
+                    } catch (IOException e) {
+                    }
+                }
 
                 for (int i = 0; i < bands; i++) {
                     final String shortname = variable.getShortName();
                     StringBuilder longname = new StringBuilder(shortname);
                     longname.append("_");
-                    longname.append(wavelengths.getInt(i));
+                    if (intWvl != null && bandIdx != null) {
+                        longname.append(intWavelengths.getInt(band_indices.getInt(i)));
+                    } else {
+                        longname.append(wavelengths.getInt(i));
+                    }
                     String name = longname.toString();
                     String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                     final int dataType = getProductDataType(variable);
