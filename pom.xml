@@ -114,6 +114,7 @@
         <module>opttbx-enmap-reader</module>
         <module>opttbx-seadas-reader</module>
         <module>opttbx-seadas-reader-ui</module>
+        <module>opttbx-flex-reader</module>
 
         <module>opttbx-unmix-ui</module>
         <module>opttbx-unmix</module>
@@ -454,6 +455,12 @@
                 <version>${snap.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>2.2</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
