@@ -119,9 +119,13 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         addSmiMetadata(product);
 //        variableMap = addBands(product, ncFile.getVariables());
         variableMap = addBands(product, ncFile.getVariables());
-        try {
-            addGeocoding(product);
-        } catch (Exception ignored) {
+        if (productReader.checkEqcProjection()) {
+            addEqcGeocoding(product);
+        } else {
+            try {
+                addGeocoding(product);
+            } catch (Exception ignored) {
+            }
         }
         addFlagsAndMasks(product);
         if (productReader.getProductType() == SeadasProductReader.ProductType.Bathy) {
@@ -132,6 +136,65 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
         product.setAutoGrouping(getBandGroupingL3Mapped());
         return product;
+    }
+
+    public void addEqcGeocoding(final Product product) throws ProductIOException {
+        double pixelX = 0.5;
+        double pixelY = 0.5;
+        double easting;
+        double northing;
+        double pixelSizeX;
+        double pixelSizeY;
+        boolean pixelRegistered = true;
+        String east = "Easternmost_Longitude";
+        String west = "Westernmost_Longitude";
+        String north = "Northernmost_Latitude";
+        String south = "Southernmost_Latitude";
+        Attribute latmax = ncFile.findGlobalAttributeIgnoreCase("geospatial_lat_max");
+        if (latmax != null) {
+            east = "geospatial_lon_max";
+            west = "geospatial_lon_min";
+            north = "geospatial_lat_max";
+            south = "geospatial_lat_min";
+        } else {
+            latmax = ncFile.findGlobalAttributeIgnoreCase("upper_lat");
+            if (latmax != null) {
+                east = "right_lon";
+                west = "left_lon";
+                north = "upper_lat";
+                south = "lower_lat";
+            }
+        }
+
+        final MetadataElement globalAttributes = product.getMetadataRoot().getElement("Global_Attributes");
+        easting = (float) globalAttributes.getAttribute(east).getData().getElemDouble();
+        float westing = (float) globalAttributes.getAttribute(west).getData().getElemDouble();
+        pixelSizeX = Math.abs(easting - westing) / product.getSceneRasterWidth();
+        northing = (float) globalAttributes.getAttribute(north).getData().getElemDouble();
+        float southing = (float) globalAttributes.getAttribute(south).getData().getElemDouble();
+        if (northing < southing) {
+            mustFlipY = true;
+            northing = (float) globalAttributes.getAttribute(south).getData().getElemDouble();
+            southing = (float) globalAttributes.getAttribute(north).getData().getElemDouble();
+        }
+        pixelSizeY = Math.abs(northing - southing) / product.getSceneRasterHeight();
+        if (pixelRegistered) {
+            northing -= pixelSizeY / 2.0;
+            westing += pixelSizeX / 2.0;
+        } else {
+            pixelX = 0.0;
+            pixelY = 0.0;
+        }
+        try {
+            product.setSceneGeoCoding(new CrsGeoCoding(DefaultGeographicCRS.WGS84,
+                    product.getSceneRasterWidth(),
+                    product.getSceneRasterHeight(),
+                    westing, northing,
+                    pixelSizeX, pixelSizeY,
+                    pixelX, pixelY));
+        } catch (FactoryException | TransformException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public void addGeocoding(final Product product) throws ProductIOException {
