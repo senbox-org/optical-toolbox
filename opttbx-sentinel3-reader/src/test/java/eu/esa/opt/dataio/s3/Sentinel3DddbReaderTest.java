@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("AnonymousInnerClass")
-public class Sentinel3Level1ReaderTest {
+public class Sentinel3DddbReaderTest {
 
     private static Manifest createManifest() {
         return new Manifest() {
@@ -95,7 +95,7 @@ public class Sentinel3Level1ReaderTest {
         productDescriptor.setHeight(38);
 
         final Manifest manifest = createManifest();
-        Sentinel3Level1Reader.ensureWidthAndHeight(productDescriptor, manifest);
+        Sentinel3DddbReader.ensureWidthAndHeight(productDescriptor, manifest);
 
         assertEquals(27, productDescriptor.getWidth());
         assertEquals(38, productDescriptor.getHeight());
@@ -109,7 +109,7 @@ public class Sentinel3Level1ReaderTest {
         productDescriptor.setHeightXPath("/data/simple/height");
 
         final Manifest manifest = createManifest();
-        Sentinel3Level1Reader.ensureWidthAndHeight(productDescriptor, manifest);
+        Sentinel3DddbReader.ensureWidthAndHeight(productDescriptor, manifest);
 
         assertEquals(108, productDescriptor.getWidth());
         assertEquals(176, productDescriptor.getHeight());
@@ -126,7 +126,7 @@ public class Sentinel3Level1ReaderTest {
         variableDescriptor.setType('t');
 
         final Manifest manifest = createManifest();
-        Sentinel3Level1Reader.ensureWidthAndHeight(variableDescriptor, manifest);
+        Sentinel3DddbReader.ensureWidthAndHeight(variableDescriptor, manifest);
 
         assertEquals(14, variableDescriptor.getWidth());
         assertEquals(28, variableDescriptor.getHeight());
@@ -145,7 +145,7 @@ public class Sentinel3Level1ReaderTest {
         variableDescriptor.setType('t');
 
         final Manifest manifest = createManifest();
-        Sentinel3Level1Reader.ensureWidthAndHeight(variableDescriptor, manifest);
+        Sentinel3DddbReader.ensureWidthAndHeight(variableDescriptor, manifest);
 
         assertEquals(36, variableDescriptor.getWidth());
         assertEquals(44, variableDescriptor.getHeight());
@@ -159,13 +159,13 @@ public class Sentinel3Level1ReaderTest {
         final VariableDescriptor descriptor = new VariableDescriptor();
         descriptor.setName("Elfriede");
 
-        assertEquals("Elfriede", Sentinel3Level1Reader.createDescriptorKey(descriptor));
+        assertEquals("Elfriede", Sentinel3DddbReader.createDescriptorKey(descriptor));
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testClose() throws IOException {
-        Sentinel3Level1Reader sentinel3DDDBReader = new Sentinel3Level1Reader(new Sentinel3ProductReaderPlugIn());
+        Sentinel3DddbReader sentinel3DDDBReader = new Sentinel3DddbReader(new Sentinel3ProductReaderPlugIn());
 
         sentinel3DDDBReader.close();
     }
@@ -177,12 +177,12 @@ public class Sentinel3Level1ReaderTest {
         final Array rawArray = Array.factory(DataType.INT, new int[]{2, 2}, rawData);
 
         final ProductData productDataDouble = ProductData.createInstance(ProductData.TYPE_FLOAT64, 4);
-        Sentinel3Level1Reader.assignResultData(productDataDouble, rawArray);
+        Sentinel3DddbReader.assignResultData(productDataDouble, rawArray);
         assertEquals(12.0, productDataDouble.getElemDoubleAt(0), 1e-8);
         assertEquals(14.0, productDataDouble.getElemDoubleAt(2), 1e-8);
 
         final ProductData productDataInt = ProductData.createInstance(ProductData.TYPE_INT32, 4);
-        Sentinel3Level1Reader.assignResultData(productDataInt, rawArray);
+        Sentinel3DddbReader.assignResultData(productDataInt, rawArray);
         assertEquals(13, productDataInt.getElemIntAt(1));
         assertEquals(15, productDataInt.getElemIntAt(3));
     }
@@ -190,62 +190,62 @@ public class Sentinel3Level1ReaderTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testGetLayerName() throws IOException {
-        assertEquals("FWHM_band_11", Sentinel3Level1Reader.getLayerName("FWHM", 11));
-        assertEquals("Gandasum_band_6", Sentinel3Level1Reader.getLayerName("Gandasum", 6));
+        assertEquals("FWHM_band_11", Sentinel3DddbReader.getLayerName("FWHM", 11));
+        assertEquals("Gandasum_band_6", Sentinel3DddbReader.getLayerName("Gandasum", 6));
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testIsLayerName() throws IOException {
-        assertTrue(Sentinel3Level1Reader.isLayerName("FWHM_band_11"));
-        assertTrue(Sentinel3Level1Reader.isLayerName("Gandasum_band_6"));
+        assertTrue(Sentinel3DddbReader.isLayerName("FWHM_band_11"));
+        assertTrue(Sentinel3DddbReader.isLayerName("Gandasum_band_6"));
 
-        assertFalse(Sentinel3Level1Reader.isLayerName("OaRadiance"));
+        assertFalse(Sentinel3DddbReader.isLayerName("OaRadiance"));
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testVariableNameFromLayerName() throws IOException {
-        assertEquals("FWHM", Sentinel3Level1Reader.getVariableNameFromLayerName("FWHM_band_11"));
-        assertEquals("Gandasum", Sentinel3Level1Reader.getVariableNameFromLayerName("Gandasum_band_6"));
+        assertEquals("FWHM", Sentinel3DddbReader.getVariableNameFromLayerName("FWHM_band_11"));
+        assertEquals("Gandasum", Sentinel3DddbReader.getVariableNameFromLayerName("Gandasum_band_6"));
 
-        assertEquals("Heffalump", Sentinel3Level1Reader.getVariableNameFromLayerName("Heffalump"));
+        assertEquals("Heffalump", Sentinel3DddbReader.getVariableNameFromLayerName("Heffalump"));
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testLayerIndexFromLayerName() throws IOException {
-        assertEquals(11, Sentinel3Level1Reader.getLayerIndexFromLayerName("FWHM_band_11"));
-        assertEquals(6, Sentinel3Level1Reader.getLayerIndexFromLayerName("Gandasum_band_6"));
+        assertEquals(11, Sentinel3DddbReader.getLayerIndexFromLayerName("FWHM_band_11"));
+        assertEquals(6, Sentinel3DddbReader.getLayerIndexFromLayerName("Gandasum_band_6"));
 
-        assertEquals(-1, Sentinel3Level1Reader.getLayerIndexFromLayerName("Heffalump"));
+        assertEquals(-1, Sentinel3DddbReader.getLayerIndexFromLayerName("Heffalump"));
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testIsPressureLevelName() throws IOException {
-        assertTrue(Sentinel3Level1Reader.isPressureLevelName("atmospheric_temperature_profile_pressure_level_14"));
+        assertTrue(Sentinel3DddbReader.isPressureLevelName("atmospheric_temperature_profile_pressure_level_14"));
 
-        assertFalse(Sentinel3Level1Reader.isPressureLevelName("Gandasum_band_6"));
-        assertFalse(Sentinel3Level1Reader.isPressureLevelName("OnTheAirTonight"));
+        assertFalse(Sentinel3DddbReader.isPressureLevelName("Gandasum_band_6"));
+        assertFalse(Sentinel3DddbReader.isPressureLevelName("OnTheAirTonight"));
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testVariableNameFromPressureLevelName() throws IOException {
-        assertEquals("whatever_measured", Sentinel3Level1Reader.getVariableNameFromPressureLevelName("whatever_measured_pressure_level_11"));
+        assertEquals("whatever_measured", Sentinel3DddbReader.getVariableNameFromPressureLevelName("whatever_measured_pressure_level_11"));
 
-        assertEquals("Gandasum_band_6", Sentinel3Level1Reader.getVariableNameFromPressureLevelName("Gandasum_band_6"));
-        assertEquals("Heffalump", Sentinel3Level1Reader.getVariableNameFromPressureLevelName("Heffalump"));
+        assertEquals("Gandasum_band_6", Sentinel3DddbReader.getVariableNameFromPressureLevelName("Gandasum_band_6"));
+        assertEquals("Heffalump", Sentinel3DddbReader.getVariableNameFromPressureLevelName("Heffalump"));
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testLayerIndexFromPressureLevelName() throws IOException {
-        assertEquals(10, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("whatever_measured_pressure_level_10"));
-        assertEquals(6, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("Gandasum_pressure_level_6"));
+        assertEquals(10, Sentinel3DddbReader.getLayerIndexFromPressureLevelName("whatever_measured_pressure_level_10"));
+        assertEquals(6, Sentinel3DddbReader.getLayerIndexFromPressureLevelName("Gandasum_pressure_level_6"));
 
-        assertEquals(-1, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("Nasenmann.org"));
+        assertEquals(-1, Sentinel3DddbReader.getLayerIndexFromPressureLevelName("Nasenmann.org"));
     }
 
     @Test
@@ -253,9 +253,9 @@ public class Sentinel3Level1ReaderTest {
     public void testLayerIndexFromTiePointName() {
         final VariableDescriptor variableDescriptor = new VariableDescriptor();
         variableDescriptor.setDepthPrefixToken("_pressure_level_");
-        assertEquals(10, Sentinel3Level1Reader.getLayerIndexFromTiePointName("whatever_measured_pressure_level_10", variableDescriptor));
-        assertEquals(6, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("Gandasum_pressure_level_6"));
+        assertEquals(10, Sentinel3DddbReader.getLayerIndexFromTiePointName("whatever_measured_pressure_level_10", variableDescriptor));
+        assertEquals(6, Sentinel3DddbReader.getLayerIndexFromPressureLevelName("Gandasum_pressure_level_6"));
 
-        assertEquals(-1, Sentinel3Level1Reader.getLayerIndexFromPressureLevelName("Nasenmann.org"));
+        assertEquals(-1, Sentinel3DddbReader.getLayerIndexFromPressureLevelName("Nasenmann.org"));
     }
 }

@@ -16,13 +16,13 @@ import static eu.esa.opt.dataio.s3.S3ReaderPlugInTest.createManifestFilePath;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 
-public class Sentinel3Level1ReaderPlugInTest {
+public class Sentinel3DddbReaderPlugInTest {
 
-    private Sentinel3Level1ReaderPlugIn plugIn;
+    private Sentinel3DddbReaderPlugIn plugIn;
 
     @Before
     public void setUp() {
-        plugIn = new Sentinel3Level1ReaderPlugIn();
+        plugIn = new Sentinel3DddbReaderPlugIn();
     }
 
     @Test
@@ -46,10 +46,10 @@ public class Sentinel3Level1ReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4149")
     public void testDecodeQualification_OlciLevel2W() {
         final String path = createManifestFilePath("OL", "2", "WFR", ".SEN3");
-        assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(path));
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
     }
 
     @Test
@@ -131,11 +131,11 @@ public class Sentinel3Level1ReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4149")
     public void testGetFormatNames() {
         final String[] formatNames = plugIn.getFormatNames();
         assertEquals(1, formatNames.length);
-        assertEquals("Sen3L1", formatNames[0]);
+        assertEquals("Sen3_DDDB", formatNames[0]);
     }
 
     @Test
@@ -148,32 +148,34 @@ public class Sentinel3Level1ReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4149")
     public void testGetDescription() {
         final String description = plugIn.getDescription(null);
-        assertEquals("Sentinel-3 Level 1 products", description);
+        assertEquals("Sentinel-3 products", description);
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4149")
     public void testGetProductFileFilter() {
         final SnapFileFilter productFileFilter = plugIn.getProductFileFilter();
         assertNotNull(productFileFilter);
 
-        assertEquals("Sen3L1", productFileFilter.getFormatName());
+        assertEquals("Sen3_DDDB", productFileFilter.getFormatName());
         final String[] extensions = productFileFilter.getExtensions();
         assertEquals(2, extensions.length);
         assertEquals(".xml", extensions[0]);
         assertEquals(".zip", extensions[1]);
-        assertEquals("Sentinel-3 Level 1 products (*.xml,*.zip)", productFileFilter.getDescription());
+        assertEquals("Sentinel-3 products (*.xml,*.zip)", productFileFilter.getDescription());
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4149")
     public void testIsValidSourceName() {
         assertTrue(plugIn.isValidSourceName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3"));
         assertTrue(plugIn.isValidSourceName("S3A_OL_1_EFR____20240526T155849_20240526T160149_20240526T174356_0179_112_382_2700_PS1_O_NR_004.SEN3.zip"));
         assertTrue(plugIn.isValidSourceName("S3B_OL_1_EFR____20231214T092214_20231214T092514_20231214T204604_0179_087_207_2340_PS2_O_NT_003.SEN3"));
+        assertTrue(plugIn.isValidSourceName("S3A_OL_2_WRR____20250712T104943_20250712T113404_20251129T124016_2661_128_094______MAR_F_NT_004.SEN3"));
+        assertTrue(plugIn.isValidSourceName("S3B_OL_2_WFR____20221216T131616_20221216T131916_20260119T163602_0180_074_038______MAR_F_NT_004.SEN3"));
 
         assertFalse(plugIn.isValidSourceName("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.zip"));
         assertFalse(plugIn.isValidSourceName("S2A_OPER_PRD_MSIL1C_PDMC_20160918T063540_R022_V20160916T101022_20160916T101045.SAFE"));
@@ -219,11 +221,11 @@ public class Sentinel3Level1ReaderPlugInTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4149")
     public void testIfPlugInIsLoaded() {
         final ProductIOPlugInManager ioPlugInManager = ProductIOPlugInManager.getInstance();
-        final Iterator<ProductReaderPlugIn> readerPlugIns = ioPlugInManager.getReaderPlugIns("Sen3L1");
+        final Iterator<ProductReaderPlugIn> readerPlugIns = ioPlugInManager.getReaderPlugIns("Sen3_DDDB");
         assertTrue(readerPlugIns.hasNext());
-        assertTrue(readerPlugIns.next() instanceof Sentinel3Level1ReaderPlugIn);
+        assertTrue(readerPlugIns.next() instanceof Sentinel3DddbReaderPlugIn);
     }
 }

@@ -12,18 +12,18 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-public class Sentinel3Level1ReaderPlugIn extends S3ReaderPlugIn {
+public class Sentinel3DddbReaderPlugIn extends S3ReaderPlugIn {
 
     private static final String[] FILE_EXTENSIONS = {".xml", ".zip"};
-    private static final String FORMAT_NAME = "Sen3L1";
-    private static final String DESCRIPTION = "Sentinel-3 Level 1 products";
+    private static final String FORMAT_NAME = "Sen3_DDDB";
+    private static final String DESCRIPTION = "Sentinel-3 products";
 
     private final Pattern sourceNamePattern;
     private final String manifestName;
     private final String altManifestName;
 
-    public Sentinel3Level1ReaderPlugIn() {
-        sourceNamePattern = Pattern.compile("S3.?_(OL_1_E[FR]R|ER1_AT_1_RBT|ER2_AT_1_RBT|ENV_AT_1_RBT)_.*(?:.SEN3|.zip|.SEN3.zip)$");
+    public Sentinel3DddbReaderPlugIn() {
+        sourceNamePattern = Pattern.compile("S3.?_(OL_1_E[FR]R|OL_2_W[FR]R|ER1_AT_1_RBT|ER2_AT_1_RBT|ENV_AT_1_RBT)_.*(?:.SEN3|.zip|.SEN3.zip)$");
         manifestName = MANIFEST_BASE + ".xml";
         altManifestName = ALTERNATIVE_MANIFEST_BASE + ".xml";
     }
@@ -138,6 +138,6 @@ public class Sentinel3Level1ReaderPlugIn extends S3ReaderPlugIn {
 
     @Override
     public ProductReader createReaderInstance() {
-        return new Sentinel3Level1Reader(this);
+        return new Sentinel3DddbReader(this);
     }
 }

@@ -49,7 +49,7 @@ import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
 import static eu.esa.opt.dataio.s3.util.S3Util.*;
 
-public class Sentinel3Level1Reader extends AbstractProductReader implements MetadataProvider, ReaderContext {
+public class Sentinel3DddbReader extends AbstractProductReader implements MetadataProvider, ReaderContext {
 
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
@@ -67,7 +67,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private ColorProvider colorProvider;
     private SensorContext sensorContext;
 
-    protected Sentinel3Level1Reader(ProductReaderPlugIn readerPlugIn) {
+    protected Sentinel3DddbReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         virtualDir = null;
         manifest = null;
@@ -399,32 +399,50 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     private void addVariables(Product product) throws IOException {
         for (VariableDescriptor descriptor : variablesMap.values()) {
             final int dataType = ProductData.getType(descriptor.getDataType());
-            final String bandname = descriptor.getName();
 
-            final Band band = new BandUsingReaderDirectly(bandname, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
-            product.addBand(band);
-
-            final String bandKey = sensorContext.bandNameToKey(bandname);
-            if (nameToWavelengthMap.containsKey(bandKey)) {
-                band.setSpectralWavelength(nameToWavelengthMap.get(bandKey));
+            if (dataType == ProductData.TYPE_INT64 || dataType == ProductData.TYPE_UINT64) {
+                addSplittedBands(product, descriptor);
+            } else {
+                addBand(product, descriptor, dataType);
             }
-            if (nameToBandwidthMap.containsKey(bandKey)) {
-                band.setSpectralBandwidth(nameToBandwidthMap.get(bandKey));
-            }
-            if (nameToIndexMap.containsKey(bandKey)) {
-                band.setSpectralBandIndex(nameToIndexMap.get(bandKey));
-            }
-
-            final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
-            S3Util.addSampleCodings(product, band, netCDFVariable, false);
-            band.setScalingFactor(getScalingFactor(netCDFVariable));
-            band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
-            band.setValidPixelExpression(descriptor.getValidExpression());
-            S3Util.addFillValue(band, netCDFVariable);
-
-            sensorContext.applyCalibration(band);
-            sensorContext.addDescriptionAndUnit(band, descriptor);
         }
+    }
+
+    private void addSplittedBands(Product product, VariableDescriptor descriptor) {
+        final String bandname = descriptor.getName();
+        final Band lowerBand = new BandUsingReaderDirectly(bandname + "_lsb", ProductData.TYPE_UINT32, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+        product.addBand(lowerBand);
+
+        final Band upperBand = new BandUsingReaderDirectly(bandname + "_msb", ProductData.TYPE_UINT32, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+        product.addBand(upperBand);
+    }
+
+    private void addBand(Product product, VariableDescriptor descriptor, int dataType) throws IOException {
+        final String bandname = descriptor.getName();
+
+        final Band band = new BandUsingReaderDirectly(bandname, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+        product.addBand(band);
+
+        final String bandKey = sensorContext.bandNameToKey(bandname);
+        if (nameToWavelengthMap.containsKey(bandKey)) {
+            band.setSpectralWavelength(nameToWavelengthMap.get(bandKey));
+        }
+        if (nameToBandwidthMap.containsKey(bandKey)) {
+            band.setSpectralBandwidth(nameToBandwidthMap.get(bandKey));
+        }
+        if (nameToIndexMap.containsKey(bandKey)) {
+            band.setSpectralBandIndex(nameToIndexMap.get(bandKey));
+        }
+
+        final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
+        S3Util.addSampleCodings(product, band, netCDFVariable, false);
+        band.setScalingFactor(getScalingFactor(netCDFVariable));
+        band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
+        band.setValidPixelExpression(descriptor.getValidExpression());
+        S3Util.addFillValue(band, netCDFVariable);
+
+        sensorContext.applyCalibration(band);
+        sensorContext.addDescriptionAndUnit(band, descriptor);
     }
 
     private void addTiePointGrids(Product product, Manifest manifest) {

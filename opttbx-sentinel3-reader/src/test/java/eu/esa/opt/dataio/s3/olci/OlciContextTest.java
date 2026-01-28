@@ -61,10 +61,11 @@ public class OlciContextTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4149")
     public void testBandNameToKey() {
         assertEquals("Oa01", olciContext.bandNameToKey("Oa01_radiance"));
         assertEquals("Oa02", olciContext.bandNameToKey("Oa02_radiance_unc"));
+        assertEquals("IWV", olciContext.bandNameToKey("IWV"));
     }
 
     @Test

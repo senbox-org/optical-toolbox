@@ -47,7 +47,7 @@ public class DDDBTest {
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
-    public void testGetProductDescriptor_invalidResource() throws IOException {
+    public void testGetProductDescriptor_invalidResource() {
         try {
             dddb.getProductDescriptor("IN_V_ALI", "D");
             fail("IOException expected");

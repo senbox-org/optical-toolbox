@@ -96,7 +96,10 @@ public class OlciContext extends AbstractSensorContext {
 
     @Override
     public String bandNameToKey(String bandName) {
-        return bandName.substring(0, 4);
+        if (bandName.length() > 4) {
+            return bandName.substring(0, 4);
+        }
+        return bandName;
     }
 
     @Override
