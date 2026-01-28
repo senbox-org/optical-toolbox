@@ -276,6 +276,20 @@ public class SeadasProductReader extends AbstractProductReader {
         return productType;
     }
 
+    public boolean checkEqcProjection() {
+        try {
+            String projection = ncfile.findGlobalAttribute("map_projection").getStringValue();
+            if (projection.contains("proj=eqc")){
+                return true;
+            }
+            else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public boolean checkSeadasMapped() {
         try {
             List<Variable> seadasMappedVariables = ncfile.getVariables();
