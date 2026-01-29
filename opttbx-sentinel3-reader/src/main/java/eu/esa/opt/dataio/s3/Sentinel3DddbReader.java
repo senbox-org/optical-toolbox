@@ -401,20 +401,28 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
             final int dataType = ProductData.getType(descriptor.getDataType());
 
             if (dataType == ProductData.TYPE_INT64 || dataType == ProductData.TYPE_UINT64) {
-                addSplittedBands(product, descriptor);
+                addSplittedBand(product, descriptor);
             } else {
                 addBand(product, descriptor, dataType);
             }
         }
     }
 
-    private void addSplittedBands(Product product, VariableDescriptor descriptor) {
+    private void addSplittedBand(Product product, VariableDescriptor descriptor) throws IOException {
         final String bandname = descriptor.getName();
-        final Band lowerBand = new BandUsingReaderDirectly(bandname + "_lsb", ProductData.TYPE_UINT32, product.getSceneRasterWidth(), product.getSceneRasterHeight());
-        product.addBand(lowerBand);
+        final boolean isMsb = bandname.contains("_msb");
+        final Band band = new BandUsingReaderDirectly(bandname, ProductData.TYPE_UINT32, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+        product.addBand(band);
+        setSpectralProperties(bandname, band);
 
-        final Band upperBand = new BandUsingReaderDirectly(bandname + "_msb", ProductData.TYPE_UINT32, product.getSceneRasterWidth(), product.getSceneRasterHeight());
-        product.addBand(upperBand);
+        Variable netCDFVariable = getNetCDFVariable(descriptor, descriptor.getNcVarName());
+        S3Util.addSampleCodings(product, band, netCDFVariable, isMsb);
+        setScalefactorAndOffset(band, netCDFVariable);
+        band.setValidPixelExpression(descriptor.getValidExpression());
+        S3Util.addFillValue(band, netCDFVariable);
+
+        sensorContext.applyCalibration(band);
+        sensorContext.addDescriptionAndUnit(band, descriptor);
     }
 
     private void addBand(Product product, VariableDescriptor descriptor, int dataType) throws IOException {
@@ -423,6 +431,24 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         final Band band = new BandUsingReaderDirectly(bandname, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         product.addBand(band);
 
+        setSpectralProperties(bandname, band);
+
+        final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
+        S3Util.addSampleCodings(product, band, netCDFVariable, false);
+        setScalefactorAndOffset(band, netCDFVariable);
+        band.setValidPixelExpression(descriptor.getValidExpression());
+        S3Util.addFillValue(band, netCDFVariable);
+
+        sensorContext.applyCalibration(band);
+        sensorContext.addDescriptionAndUnit(band, descriptor);
+    }
+
+    private static void setScalefactorAndOffset(Band band, Variable netCDFVariable) {
+        band.setScalingFactor(getScalingFactor(netCDFVariable));
+        band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
+    }
+
+    private void setSpectralProperties(String bandname, Band band) {
         final String bandKey = sensorContext.bandNameToKey(bandname);
         if (nameToWavelengthMap.containsKey(bandKey)) {
             band.setSpectralWavelength(nameToWavelengthMap.get(bandKey));
@@ -433,16 +459,6 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         if (nameToIndexMap.containsKey(bandKey)) {
             band.setSpectralBandIndex(nameToIndexMap.get(bandKey));
         }
-
-        final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
-        S3Util.addSampleCodings(product, band, netCDFVariable, false);
-        band.setScalingFactor(getScalingFactor(netCDFVariable));
-        band.setScalingOffset(S3Util.getAddOffset(netCDFVariable));
-        band.setValidPixelExpression(descriptor.getValidExpression());
-        S3Util.addFillValue(band, netCDFVariable);
-
-        sensorContext.applyCalibration(band);
-        sensorContext.addDescriptionAndUnit(band, descriptor);
     }
 
     private void addTiePointGrids(Product product, Manifest manifest) {
@@ -504,8 +520,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         final InstrumentBand band = new InstrumentBand(variableName, type, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(variable.getDescription());
         band.setUnit(variable.getUnitsString());
-        band.setScalingFactor(getScalingFactor(variable));
-        band.setScalingOffset(S3Util.getAddOffset(variable));
+        setScalefactorAndOffset(band, variable);
         band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
         band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
         band.setSynthetic(synthetic);
@@ -564,11 +579,9 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         final VariableDescriptor descriptor;
         final RasterExtract rasterExtract;
 
-        String destBandName = destBand.getName();
-        String variableName = destBandName;
-
+        final String destBandName = destBand.getName();
         if (destBand instanceof InstrumentBand instrumentBand) {
-            variableName = getVariableNameFromLayerName(destBandName);
+            final String variableName = getVariableNameFromLayerName(destBandName);
             descriptor = specialsMap.get(variableName);
             instrumentBand.readRasterDataFully();
         } else {
@@ -664,10 +677,28 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
             fullDataArray = dataMap.get(name);
             if (fullDataArray == null) {
                 fullDataArray = variable.read();
+
+                final ArrayConverter converter = getArrayConverter(name);
+                fullDataArray = converter.convert(fullDataArray);
+
                 dataMap.put(name, fullDataArray);
             }
         }
         return fullDataArray;
+    }
+
+    private static ArrayConverter getArrayConverter(String name) {
+        ArrayConverter converter;
+        converter = ArrayConverter.IDENTITY;
+
+        if (name.endsWith("_msb")) {
+            converter = ArrayConverter.MSB;
+        }
+
+        if (name.endsWith("_lsb")) {
+            converter = ArrayConverter.LSB;
+        }
+        return converter;
     }
 
     private NetcdfFile getNetcdfFile(String fileName) throws IOException {

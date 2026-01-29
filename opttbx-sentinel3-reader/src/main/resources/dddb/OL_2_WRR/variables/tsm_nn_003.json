@@ -1,18 +1,18 @@
 [
   {
-    "name": "WQSF_lsb",
-    "ncVarName": "WQSF",
-    "dataType": "uint64",
+    "name": "TSM_NN",
+    "dataType": "uint8",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "description": "Classification flags, quality and science flags for Marine and Inland Waters pixels(least significant bytes)"
+    "units": "lg(re g.m-3)",
+    "description": "log10 scaled (Neural Net) Total suspended matter concentration"
   },
   {
-    "name": "WQSF_msb",
-    "ncVarName": "WQSF",
-    "dataType": "uint64",
+    "name": "TSM_NN_unc",
+    "dataType": "uint8",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "description": "Classification flags, quality and science flags for Marine and Inland Waters pixels(most significant bytes)"
+    "units": "lg(re g.m-3)",
+    "description": "log10 scaled Uncertainty estimate for (Neural Net) Total suspended matter concentration"
   }
 ]

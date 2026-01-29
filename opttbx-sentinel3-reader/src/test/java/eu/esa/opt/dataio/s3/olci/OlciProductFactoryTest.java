@@ -78,10 +78,11 @@ public class OlciProductFactoryTest {
     }
 
     @Test
-    @STTM("SNAP-3755")
+    @STTM("SNAP-3755,SNAP-4149")
     public void testIsLogScaledUnit() {
         assertTrue(OlciProductFactory.isLogScaledUnit("lg(firlefanz)"));
         assertTrue(OlciProductFactory.isLogScaledUnit("lg(re mW.m-2.sr-1.nm-1)"));
+        assertTrue(OlciProductFactory.isLogScaledUnit("lg"));
 
         assertFalse(OlciProductFactory.isLogScaledUnit("mW.m-2.sr-1.nm-1"));
         assertFalse(OlciProductFactory.isLogScaledUnit("K"));

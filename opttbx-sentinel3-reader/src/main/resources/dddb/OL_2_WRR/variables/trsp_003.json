@@ -1,0 +1,18 @@
+[
+  {
+  "name": "KD490_M07",
+  "dataType": "uint8",
+  "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+  "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+  "units" : "lg(re m-1)",
+  "description" : "log10 scaled (M07) Diffuse attenuation coefficient"
+},
+  {
+    "name": "KD490_M07_unc",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re m-1)",
+    "description" : "log10 scaled Uncertainty estimate (M07) Diffuse attenuation coefficient"
+  }
+]

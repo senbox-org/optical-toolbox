@@ -939,7 +939,7 @@
       },
       {
         "name": "humidity",
-        "description": "Relative humidity at 950 hPa",
+        "description": "Relative humidity",
         "offsetX": "0.0",
         "offsetY": "0.0",
         "subSamplingX": "64.0",

@@ -2,5 +2,5 @@
   "excludedIds" : "removedPixelsData",
   "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
   "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-  "bandGroupingPattern" : "Oa*_reflectance:Oa*_reflectance_err"
+  "bandGroupingPattern" : "Oa*_reflectance:Oa*_reflectance_err:Oa*_reflectance_unc"
 }

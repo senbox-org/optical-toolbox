@@ -34,6 +34,31 @@
       "id": "S3B_OL_1_EFR____20251106T152316",
       "relativePath": "sensors_platforms/SENTINEL-3/olci/L1/S3B_OL_1_EFR____20251106T152316_20251106T152616_20251106T165041_0179_113_082_3780_MAR_O_NR_004.SEN3.zip",
       "description": "S3B_OL_1_EFR zipped, processed by EUMETSAT"
+    },
+    {
+      "id": "S3A_OL_2_WRR____20070910T095130",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_WRR____20070910T095130_20070910T095442_20140610T110535_0192_000_000______MAR_D_NR____.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_2_WRR v1"
+    },
+    {
+      "id": "S3A_OL_2_WRR____20170608T000346",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_WRR____20170608T000346_20170608T000546_20171031T064505_0119_018_287______MR1_R_NT_002.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_2_WRR v2"
+    },
+    {
+      "id": "S3A_OL_2_WFR____20070425T152940",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_WFR____20070425T152940_20070425T153025_20140610T112151_0045_000_000______MAR_D_NR____.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_2_WFR v1"
+    },
+    {
+      "id": "S3A_OL_2_WFR____20180707T081143",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_WFR____20180707T081143_20180707T081443_20180708T142606_0179_033_135_2520_MAR_O_NT_002.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_2_WFR v2"
+    },
+    {
+      "id": "S3B_OL_2_WFR____20240806T055947",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3B_OL_2_WFR____20240806T055947_20240806T060247_20240806T074819_0179_096_105_3420_MAR_O_NR_003.SEN3/xfdumanifest.xml",
+      "description": "OL__L2M.003.05.00"
     }
   ]
 }
