@@ -19,7 +19,6 @@ import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
-import eu.esa.opt.dataio.s3.olci.OlciLevel2WProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
 import eu.esa.opt.dataio.s3.synergy.SynAodProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynL1CProductFactory;

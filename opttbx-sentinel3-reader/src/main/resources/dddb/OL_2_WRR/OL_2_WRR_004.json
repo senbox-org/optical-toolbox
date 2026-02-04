@@ -1,0 +1,53 @@
+{
+  "excludedIds" : "removedPixelsData",
+  "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+  "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+  "bandGroupingPattern" : "Oa*_reflectance:Oa*_reflectance_err:Oa*_reflectance_unc:A865:ADG443_NN:CHL_NN:IWV:PAR:T865:TSM_NN:FWHM:lambda0:solar_flux",
+  "flagMasks": [
+    {
+      "name": "WQSF_REFLECTANCE_RECOM",
+      "expression": "not ((WQSF_lsb.WATER or WQSF_lsb.INLAND_WATER) and not (WQSF_lsb.CLOUD or WQSF_lsb.CLOUD_AMBIGUOUS or WQSF_lsb.CLOUD_MARGIN or WQSF_lsb.INVALID or WQSF_lsb.COSMETIC or WQSF_lsb.SATURATED or WQSF_lsb.SUSPECT or WQSF_lsb.HISOLZEN or WQSF_lsb.HIGHGLINT or WQSF_lsb.SNOW_ICE) and not (WQSF_lsb.AC_FAIL or WQSF_lsb.WHITECAPS or WQSF_lsb.ADJAC or WQSF_msb.RWNEG_O2 or WQSF_msb.RWNEG_O3 or WQSF_msb.RWNEG_O4 or WQSF_msb.RWNEG_O5 or WQSF_msb.RWNEG_O6 or WQSF_msb.RWNEG_O7 or WQSF_msb.RWNEG_O8))",
+      "description": "Excluding pixels that are deemed unreliable for Water Leaving Reflectances. Flag recommended by QWG."
+    },
+    {
+      "name": "WQSF_CHL_OC4ME_RECOM",
+      "expression": "not ((WQSF_lsb.WATER or WQSF_lsb.INLAND_WATER) and not (WQSF_lsb.CLOUD or WQSF_lsb.CLOUD_AMBIGUOUS or WQSF_lsb.CLOUD_MARGIN or WQSF_lsb.INVALID or WQSF_lsb.COSMETIC or WQSF_lsb.SATURATED or WQSF_lsb.SUSPECT or WQSF_lsb.HISOLZEN or WQSF_lsb.HIGHGLINT or WQSF_lsb.SNOW_ICE) and not (WQSF_lsb.AC_FAIL or WQSF_lsb.WHITECAPS or WQSF_lsb.ADJAC or WQSF_msb.RWNEG_O2 or WQSF_msb.RWNEG_O3 or WQSF_msb.RWNEG_O4 or WQSF_msb.RWNEG_O5 or WQSF_msb.RWNEG_O6 or WQSF_msb.RWNEG_O7 or WQSF_msb.RWNEG_O8)) or WQSF_lsb.CHLOR_A_FAIL",
+      "description": "Excluding pixels that are deemed unreliable for Algal Pigment Concentration. Flag recommended by QWG."
+    },
+    {
+      "name": "WQSF_KD490_M07_RECOM",
+      "expression": "not ((WQSF_lsb.WATER or WQSF_lsb.INLAND_WATER) and not (WQSF_lsb.CLOUD or WQSF_lsb.CLOUD_AMBIGUOUS or WQSF_lsb.CLOUD_MARGIN or WQSF_lsb.INVALID or WQSF_lsb.COSMETIC or WQSF_lsb.SATURATED or WQSF_lsb.SUSPECT or WQSF_lsb.HISOLZEN or WQSF_lsb.HIGHGLINT or WQSF_lsb.SNOW_ICE) and not (WQSF_lsb.AC_FAIL or WQSF_lsb.WHITECAPS or WQSF_lsb.ADJAC or WQSF_msb.RWNEG_O2 or WQSF_msb.RWNEG_O3 or WQSF_msb.RWNEG_O4 or WQSF_msb.RWNEG_O5 or WQSF_msb.RWNEG_O6 or WQSF_msb.RWNEG_O7 or WQSF_msb.RWNEG_O8)) or WQSF_lsb.KD_FAIL",
+      "description": "Excluding pixels that are deemed unreliable for Diffuse Attenuation Coefficient. Flag recommended by QWG."
+    },
+    {
+      "name": "WQSF_PAR_RECOM",
+      "expression": "not ((WQSF_lsb.WATER or WQSF_lsb.INLAND_WATER) and not (WQSF_lsb.CLOUD or WQSF_lsb.CLOUD_AMBIGUOUS or WQSF_lsb.CLOUD_MARGIN or WQSF_lsb.INVALID or WQSF_lsb.COSMETIC or WQSF_lsb.SATURATED or WQSF_lsb.SUSPECT or WQSF_lsb.HISOLZEN or WQSF_lsb.HIGHGLINT or WQSF_lsb.SNOW_ICE) and not (WQSF_lsb.AC_FAIL or WQSF_lsb.WHITECAPS or WQSF_lsb.ADJAC or WQSF_msb.RWNEG_O2 or WQSF_msb.RWNEG_O3 or WQSF_msb.RWNEG_O4 or WQSF_msb.RWNEG_O5 or WQSF_msb.RWNEG_O6 or WQSF_msb.RWNEG_O7 or WQSF_msb.RWNEG_O8)) or WQSF_lsb.PAR_FAIL",
+      "description": "Excluding pixels that are deemed unreliable for Photosynthetically Active Radiation. Flag recommended by QWG."
+    },
+    {
+      "name": "WQSF_W_AER_RECOM",
+      "expression": "not ((WQSF_lsb.WATER or WQSF_lsb.INLAND_WATER) and not (WQSF_lsb.CLOUD or WQSF_lsb.CLOUD_AMBIGUOUS or WQSF_lsb.CLOUD_MARGIN or WQSF_lsb.INVALID or WQSF_lsb.COSMETIC or WQSF_lsb.SATURATED or WQSF_lsb.SUSPECT or WQSF_lsb.HISOLZEN or WQSF_lsb.HIGHGLINT or WQSF_lsb.SNOW_ICE) and not (WQSF_lsb.AC_FAIL or WQSF_lsb.WHITECAPS or WQSF_lsb.ADJAC or WQSF_msb.RWNEG_O2 or WQSF_msb.RWNEG_O3 or WQSF_msb.RWNEG_O4 or WQSF_msb.RWNEG_O5 or WQSF_msb.RWNEG_O6 or WQSF_msb.RWNEG_O7 or WQSF_msb.RWNEG_O8))",
+      "description": "Excluding pixels that are deemed unreliable for Aerosol Optical Thickness (T865) and Angstrom exponent (A865). Flag recommended by QWG."
+    },
+    {
+      "name": "WQSF_CHL_NN_RECOM",
+      "expression": "not (WQSF_lsb.WATER or WQSF_lsb.INLAND_WATER) and not (WQSF_lsb.CLOUD or WQSF_lsb.CLOUD_AMBIGUOUS or WQSF_lsb.CLOUD_MARGIN or WQSF_lsb.INVALID or WQSF_lsb.COSMETIC or WQSF_lsb.SATURATED or WQSF_lsb.SUSPECT or WQSF_lsb.HISOLZEN or WQSF_lsb.HIGHGLINT or WQSF_lsb.SNOW_ICE) or WQSF_lsb.OCNN_FAIL",
+      "description": "Excluding pixels that are deemed unreliable for Algal Pigment Concentration. Flag recommended by QWG."
+    },
+    {
+      "name": "WQSF_TSM_NN_RECOM",
+      "expression": "not (WQSF_lsb.WATER or WQSF_lsb.INLAND_WATER) and not (WQSF_lsb.CLOUD or WQSF_lsb.CLOUD_AMBIGUOUS or WQSF_lsb.CLOUD_MARGIN or WQSF_lsb.INVALID or WQSF_lsb.COSMETIC or WQSF_lsb.SATURATED or WQSF_lsb.SUSPECT or WQSF_lsb.HISOLZEN or WQSF_lsb.HIGHGLINT or WQSF_lsb.SNOW_ICE) or WQSF_lsb.OCNN_FAIL",
+      "description": "Excluding pixels that are deemed unreliable for Total Suspended Matter Concentration. Flag recommended by QWG."
+    },
+    {
+      "name": "WQSF_ADG443_NN_RECOM",
+      "expression": "not (WQSF_lsb.WATER or WQSF_lsb.INLAND_WATER) and not (WQSF_lsb.CLOUD or WQSF_lsb.CLOUD_AMBIGUOUS or WQSF_lsb.CLOUD_MARGIN or WQSF_lsb.INVALID or WQSF_lsb.COSMETIC or WQSF_lsb.SATURATED or WQSF_lsb.SUSPECT or WQSF_lsb.HISOLZEN or WQSF_lsb.HIGHGLINT or WQSF_lsb.SNOW_ICE) or WQSF_lsb.OCNN_FAIL",
+      "description": "Excluding pixels that are deemed unreliable for Coloured Detrital and Dissolved Material Absorption. Flag recommended by QWG."
+    },
+    {
+      "name": "WQSF_IWV_RECOM",
+      "expression": "WQSF_lsb.MEGLINT or WQSF_lsb.WV_FAIL",
+      "description": "Excluding pixels that are deemed unreliable for Integrated Water Vapour Column. Flag recommended by QWG."
+    }
+  ]
+}

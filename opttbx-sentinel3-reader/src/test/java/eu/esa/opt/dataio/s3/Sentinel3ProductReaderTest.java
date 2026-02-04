@@ -2,7 +2,6 @@ package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
-import eu.esa.opt.dataio.s3.olci.OlciLevel2WProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
 import eu.esa.opt.dataio.s3.synergy.SynAodProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynL1CProductFactory;
@@ -10,7 +9,8 @@ import eu.esa.opt.dataio.s3.synergy.SynLevel2ProductFactory;
 import eu.esa.opt.dataio.s3.synergy.VgtProductFactory;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class Sentinel3ProductReaderTest {
 
