@@ -9,7 +9,7 @@
   },
   {
     "name": "Oa18_reflectance_unc",
-    "dataType": "uint16",
+    "dataType": "uint8",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
     "validExpression" : "!WQSF_lsb.INVALID",

@@ -1088,7 +1088,7 @@
       },
       {
         "name": "Oa02_reflectance_unc",
-        "description": "Uncertainty estimates for OLCI acquisition band Oa01",
+        "description": "Uncertainty estimates for OLCI acquisition band Oa02",
         "bandWidth": 4865,
         "bandHeight": 4091,
         "geophysicalUnit": "",
@@ -3535,7 +3535,7 @@
         "description": "(Loisel et al 2018) bbp spectral slope",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "nm-1",
+        "geophysicalUnit": "m-1",
         "noDataValue": "1.0004282823910908E10",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -3965,37 +3965,37 @@
       {
         "name": "iop_flags_FAIL_Rrs",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,0,255",
+        "color": "63,127,0",
         "description": "iop_flags.FAIL_Rrs"
       },
       {
         "name": "iop_flags_FAIL_bbp",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,255,0",
+        "color": "63,127,63",
         "description": "iop_flags.FAIL_bbp"
       },
       {
         "name": "iop_flags_FAIL_acdm",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,255,255",
+        "color": "63,127,127",
         "description": "iop_flags.FAIL_acdm"
       },
       {
         "name": "iop_flags_FAIL_aphy",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "255,0,255",
+        "color": "63,127,191",
         "description": "iop_flags.FAIL_aphy"
       },
       {
         "name": "iop_flags_FAIL_Kd",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "255,255,0",
+        "color": "63,127,255",
         "description": "iop_flags.FAIL_Kd"
       },
       {
         "name": "WQSF_lsb_INVALID",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,0,127",
+        "color": "0,0,255",
         "description": "WQSF_lsb.INVALID"
       },
       {
@@ -4019,7 +4019,7 @@
       {
         "name": "WQSF_lsb_TURBID_ATM",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,127,0",
+        "color": "0,255,0",
         "description": "WQSF_lsb.TURBID_ATM"
       },
       {
@@ -4055,265 +4055,265 @@
       {
         "name": "WQSF_lsb_TIDAL",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,127,127",
+        "color": "0,255,255",
         "description": "WQSF_lsb.TIDAL"
       },
       {
         "name": "WQSF_lsb_COSMETIC",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,255,127",
+        "color": "255,0,255",
         "description": "WQSF_lsb.COSMETIC"
       },
       {
         "name": "WQSF_lsb_SUSPECT",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "127,0,0",
+        "color": "255,255,0",
         "description": "WQSF_lsb.SUSPECT"
       },
       {
         "name": "WQSF_lsb_HISOLZEN",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "127,0,127",
+        "color": "0,0,127",
         "description": "WQSF_lsb.HISOLZEN"
       },
       {
         "name": "WQSF_lsb_SATURATED",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "127,0,255",
+        "color": "0,127,0",
         "description": "WQSF_lsb.SATURATED"
       },
       {
         "name": "WQSF_lsb_MEGLINT",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "127,127,0",
+        "color": "0,127,127",
         "description": "WQSF_lsb.MEGLINT"
       },
       {
         "name": "WQSF_lsb_HIGHGLINT",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "127,127,127",
+        "color": "0,255,127",
         "description": "WQSF_lsb.HIGHGLINT"
       },
       {
         "name": "WQSF_lsb_WHITECAPS",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "127,127,255",
+        "color": "127,0,0",
         "description": "WQSF_lsb.WHITECAPS"
       },
       {
         "name": "WQSF_lsb_ADJAC",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "127,255,0",
+        "color": "127,0,127",
         "description": "WQSF_lsb.ADJAC"
       },
       {
         "name": "WQSF_lsb_WV_FAIL",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "127,255,127",
+        "color": "127,0,255",
         "description": "WQSF_lsb.WV_FAIL"
       },
       {
         "name": "WQSF_lsb_PAR_FAIL",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "127,255,255",
+        "color": "127,127,0",
         "description": "WQSF_lsb.PAR_FAIL"
       },
       {
         "name": "WQSF_lsb_AC_FAIL",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "255,0,127",
+        "color": "127,127,127",
         "description": "WQSF_lsb.AC_FAIL"
       },
       {
         "name": "WQSF_lsb_OC4ME_FAIL",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "255,127,0",
+        "color": "127,127,255",
         "description": "WQSF_lsb.OC4ME_FAIL"
       },
       {
         "name": "WQSF_lsb_OCNN_FAIL",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "255,127,127",
+        "color": "127,255,0",
         "description": "WQSF_lsb.OCNN_FAIL"
       },
       {
         "name": "WQSF_lsb_KDM_FAIL",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "255,127,255",
+        "color": "127,255,127",
         "description": "WQSF_lsb.KDM_FAIL"
       },
       {
         "name": "WQSF_lsb_BPAC_ON",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "255,255,127",
+        "color": "127,255,255",
         "description": "WQSF_lsb.BPAC_ON"
       },
       {
         "name": "WQSF_lsb_WHITE_SCATT",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,0,63",
+        "color": "255,0,127",
         "description": "WQSF_lsb.WHITE_SCATT"
       },
       {
         "name": "WQSF_lsb_LOWRW",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,63,0",
+        "color": "255,127,0",
         "description": "WQSF_lsb.LOWRW"
       },
       {
         "name": "WQSF_lsb_HIGHRW",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,63,63",
+        "color": "255,127,127",
         "description": "WQSF_lsb.HIGHRW"
       },
       {
         "name": "WQSF_lsb_IOP_LSD_FAIL",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,63,127",
+        "color": "255,127,255",
         "description": "WQSF_lsb.IOP_LSD_FAIL"
       },
       {
         "name": "WQSF_msb_ANNOT_ANGSTROM",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,63,191",
+        "color": "255,255,127",
         "description": "WQSF_msb.ANNOT_ANGSTROM"
       },
       {
         "name": "WQSF_msb_ANNOT_AERO_B",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,127,191",
+        "color": "0,0,63",
         "description": "WQSF_msb.ANNOT_AERO_B"
       },
       {
         "name": "WQSF_msb_ANNOT_ABSO_D",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,191,0",
+        "color": "0,63,0",
         "description": "WQSF_msb.ANNOT_ABSO_D"
       },
       {
         "name": "WQSF_msb_ANNOT_ACLIM",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,191,63",
+        "color": "0,63,63",
         "description": "WQSF_msb.ANNOT_ACLIM"
       },
       {
         "name": "WQSF_msb_ANNOT_ABSOA",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,191,127",
+        "color": "0,63,127",
         "description": "WQSF_msb.ANNOT_ABSOA"
       },
       {
         "name": "WQSF_msb_ANNOT_MIXR1",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,191,191",
+        "color": "0,63,191",
         "description": "WQSF_msb.ANNOT_MIXR1"
       },
       {
         "name": "WQSF_msb_ANNOT_DROUT",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,191,255",
+        "color": "0,127,191",
         "description": "WQSF_msb.ANNOT_DROUT"
       },
       {
         "name": "WQSF_msb_ANNOT_TAU06",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,255,63",
+        "color": "0,191,0",
         "description": "WQSF_msb.ANNOT_TAU06"
       },
       {
         "name": "WQSF_msb_RWNEG_O1",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "0,255,191",
+        "color": "0,191,63",
         "description": "WQSF_msb.RWNEG_O1"
       },
       {
         "name": "WQSF_msb_RWNEG_O2",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,0,0",
+        "color": "0,191,127",
         "description": "WQSF_msb.RWNEG_O2"
       },
       {
         "name": "WQSF_msb_RWNEG_O3",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,0,63",
+        "color": "0,191,191",
         "description": "WQSF_msb.RWNEG_O3"
       },
       {
         "name": "WQSF_msb_RWNEG_O4",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,0,127",
+        "color": "0,191,255",
         "description": "WQSF_msb.RWNEG_O4"
       },
       {
         "name": "WQSF_msb_RWNEG_O5",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,0,191",
+        "color": "0,255,63",
         "description": "WQSF_msb.RWNEG_O5"
       },
       {
         "name": "WQSF_msb_RWNEG_O6",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,0,255",
+        "color": "0,255,191",
         "description": "WQSF_msb.RWNEG_O6"
       },
       {
         "name": "WQSF_msb_RWNEG_O7",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,63,0",
+        "color": "63,0,0",
         "description": "WQSF_msb.RWNEG_O7"
       },
       {
         "name": "WQSF_msb_RWNEG_O8",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,63,63",
+        "color": "63,0,63",
         "description": "WQSF_msb.RWNEG_O8"
       },
       {
         "name": "WQSF_msb_RWNEG_O9",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,63,127",
+        "color": "63,0,127",
         "description": "WQSF_msb.RWNEG_O9"
       },
       {
         "name": "WQSF_msb_RWNEG_O10",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,63,191",
+        "color": "63,0,191",
         "description": "WQSF_msb.RWNEG_O10"
       },
       {
         "name": "WQSF_msb_RWNEG_O11",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,63,255",
+        "color": "63,0,255",
         "description": "WQSF_msb.RWNEG_O11"
       },
       {
         "name": "WQSF_msb_RWNEG_O12",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,127,0",
+        "color": "63,63,0",
         "description": "WQSF_msb.RWNEG_O12"
       },
       {
         "name": "WQSF_msb_RWNEG_O16",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,127,63",
+        "color": "63,63,63",
         "description": "WQSF_msb.RWNEG_O16"
       },
       {
         "name": "WQSF_msb_RWNEG_O17",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,127,127",
+        "color": "63,63,127",
         "description": "WQSF_msb.RWNEG_O17"
       },
       {
         "name": "WQSF_msb_RWNEG_O18",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,127,191",
+        "color": "63,63,191",
         "description": "WQSF_msb.RWNEG_O18"
       },
       {
         "name": "WQSF_msb_RWNEG_O21",
         "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
-        "color": "63,127,255",
+        "color": "63,63,255",
         "description": "WQSF_msb.RWNEG_O21"
       },
       {
@@ -4385,20 +4385,8 @@
         "value": "-1.0"
       },
       {
-        "path": "relative_spectral_covariance/Covariances for band 8/Covariance",
-        "value": "0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0"
-      },
-      {
         "path": "time_stamp/units",
         "value": "microseconds since 2000-01-01 00:00:00 "
-      },
-      {
-        "path": "relative_spectral_covariance/Covariances for band 7/Covariance",
-        "value": "0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0"
-      },
-      {
-        "path": "atmospheric_temperature_profile/reference_pressure_level",
-        "value": "1000.0,950.0,925.0,900.0,850.0,800.0,700.0,600.0,500.0,400.0,300.0,250.0,200.0,150.0,100.0,70.0,50.0,30.0,20.0,10.0,7.0,5.0,3.0,2.0,1.0"
       },
       {
         "path": "Manifest/metadataSection/frameSet/footPrint/srsName",

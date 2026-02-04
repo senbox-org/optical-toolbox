@@ -1050,7 +1050,7 @@
       },
       {
         "name": "Oa02_reflectance_err",
-        "description": "Error estimates for OLCI acquisition band Oa01",
+        "description": "Error estimates for OLCI acquisition band Oa02",
         "bandWidth": 4865,
         "bandHeight": 4091,
         "noDataValue": "1.0000183308493433",
@@ -3437,7 +3437,7 @@
         "description": "Photosynthetically active radiation",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "microeinstein.m-2.s",
+        "geophysicalUnit": "microeinstein.m-2.s-1",
         "noDataValue": "2206.6929507255554",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -3460,7 +3460,7 @@
         "description": "Error estimate for Photosynthetically active radiation",
         "bandWidth": 4865,
         "bandHeight": 4091,
-        "geophysicalUnit": "microeinstein.m-2.s",
+        "geophysicalUnit": "microeinstein.m-2.s-1",
         "noDataValue": "2206.6929507255554",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -4069,10 +4069,6 @@
       {
         "path": "time_stamp/_ChunkSizes",
         "value": "4091"
-      },
-      {
-        "path": "atmospheric_temperature_profile/reference_pressure_level",
-        "value": "1000.0,950.0,925.0,900.0,850.0,800.0,700.0,600.0,500.0,400.0,300.0,250.0,200.0,150.0,100.0,70.0,50.0,30.0,20.0,10.0,7.0,5.0,3.0,2.0,1.0"
       },
       {
         "path": "time_stamp/units",

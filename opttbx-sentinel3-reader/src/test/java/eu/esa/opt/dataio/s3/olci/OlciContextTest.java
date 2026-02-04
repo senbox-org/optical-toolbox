@@ -110,7 +110,7 @@ public class OlciContextTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4149")
     public void testAddDescriptionAndUnit_uncertaintyVariable() {
         final Band band = new Band("Oa04_radiance_unc", ProductData.TYPE_UINT16, 3, 4);
         final VariableDescriptor descriptor = new VariableDescriptor();
@@ -121,6 +121,7 @@ public class OlciContextTest {
 
         assertEquals("the description we want", band.getDescription());
         assertEquals("squareinchperminute", band.getUnit());
+        assertTrue(band.isLog10Scaled());
     }
 
     @Test

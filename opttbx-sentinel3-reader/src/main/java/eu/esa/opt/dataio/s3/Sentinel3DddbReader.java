@@ -2,10 +2,7 @@ package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
-import eu.esa.opt.dataio.s3.dddb.DDDB;
-import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
-import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
-import eu.esa.opt.dataio.s3.dddb.VariableType;
+import eu.esa.opt.dataio.s3.dddb.*;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.ManifestUtil;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
@@ -294,6 +291,12 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         addSpecialBands(product);
         setMasks(product);
 
+        for (FlagMask flagMask : productDescriptor.getFlagMasks()) {
+            final Color maskColor = colorProvider.getMaskColor(flagMask.getName());
+            product.addMask(flagMask.getName(), flagMask.getExpression(), flagMask.getDescription(), maskColor, 0.5);
+        }
+
+
         // metadata
         final MetadataElement metadataRoot = product.getMetadataRoot();
         metadataRoot.addElement(manifest.getMetadata());
@@ -419,10 +422,9 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         S3Util.addSampleCodings(product, band, netCDFVariable, isMsb);
         setScalefactorAndOffset(band, netCDFVariable);
         band.setValidPixelExpression(descriptor.getValidExpression());
-        S3Util.addFillValue(band, netCDFVariable);
-
         sensorContext.applyCalibration(band);
         sensorContext.addDescriptionAndUnit(band, descriptor);
+        S3Util.addFillValue(band, netCDFVariable);
     }
 
     private void addBand(Product product, VariableDescriptor descriptor, int dataType) throws IOException {
@@ -437,10 +439,9 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         S3Util.addSampleCodings(product, band, netCDFVariable, false);
         setScalefactorAndOffset(band, netCDFVariable);
         band.setValidPixelExpression(descriptor.getValidExpression());
-        S3Util.addFillValue(band, netCDFVariable);
-
         sensorContext.applyCalibration(band);
         sensorContext.addDescriptionAndUnit(band, descriptor);
+        S3Util.addFillValue(band, netCDFVariable);
     }
 
     private static void setScalefactorAndOffset(Band band, Variable netCDFVariable) {
@@ -737,6 +738,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
         manifest = null;
         sensorContext = null;
+        colorProvider = null;
 
         super.close();
     }
@@ -766,6 +768,10 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
     private void setMasks(Product targetProduct) {
         final Band[] bands = targetProduct.getBands();
+
+        ColorProvider colorProvider = getColorProvider();
+        colorProvider.reset();
+
         for (Band band : bands) {
             final SampleCoding sampleCoding = band.getSampleCoding();
             if (sampleCoding != null) {
@@ -785,7 +791,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
                             expression = bandName + " == " + sampleValue;
                         }
                         final String maskName = bandName + "_" + sampleName;
-                        final Color maskColor = getColorProvider().getMaskColor(sampleName);
+
+                        final Color maskColor = colorProvider.getMaskColor(sampleName);
                         targetProduct.addMask(maskName, expression, expression, maskColor, 0.5);
                     }
                 }

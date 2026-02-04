@@ -4,17 +4,10 @@ import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.util.AbstractSensorContext;
 import eu.esa.opt.dataio.s3.util.GeoLocationNames;
-import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.runtime.Config;
-import ucar.ma2.Array;
-import ucar.ma2.DataType;
-import ucar.ma2.InvalidRangeException;
-import ucar.nc2.Variable;
 
-import java.io.IOException;
 import java.util.prefs.Preferences;
 
 import static eu.esa.opt.dataio.s3.olci.OlciProductFactory.isLogScaledUnit;
@@ -105,6 +98,7 @@ public class OlciContext extends AbstractSensorContext {
     @Override
     public void addDescriptionAndUnit(Band band, VariableDescriptor descriptor) {
         final String bandName = band.getName();
+        // @todo 1 tb maybe check for log unit string is sufficietn? 2026-01-30
         if (OlciProductFactory.isUncertaintyBand(bandName) || isLogScaledGeophysicalData(bandName)) {
             final String unit = descriptor.getUnits();
             if (isLogScaledUnit(unit)) {
@@ -113,6 +107,8 @@ public class OlciContext extends AbstractSensorContext {
 
                 final String description = descriptor.getDescription();
                 band.setDescription(stripLogFromDescription(description));
+            } else {
+                super.addDescriptionAndUnit(band, descriptor);
             }
         } else {
             super.addDescriptionAndUnit(band, descriptor);
