@@ -405,6 +405,8 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
             band.setSpectralBandIndex(spectralInfo.getBandId());
             band.setNoDataValueUsed(false);
             band.setNoDataValue(0);
+            band.setValidPixelExpression(
+                    String.format("%s.raw > %s", bandInfo.getBandName(), S2Config.RAW_NO_DATA_THRESHOLD));
         } else if (bandInformation instanceof S2IndexBandInformation) {
             S2IndexBandInformation indexBandInfo = (S2IndexBandInformation) bandInformation;
             band.setSpectralWavelength(0);
