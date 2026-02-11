@@ -24,6 +24,10 @@ public class ColorProvider {
         setupReservedColors();
     }
 
+    public void reset() {
+        colourCounter = 0;
+    }
+
     private void setupReservedColors() {
         predefinedColors = new HashMap<>();
         predefinedColors.put("coastline", new Color(255, 0, 0));

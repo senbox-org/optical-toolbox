@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Oa05_reflectance",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "validExpression" : "!WQSF_lsb.INVALID",
+    "description" : "Reflectance for OLCI acquisition band Oa05"
+  },
+  {
+    "name": "Oa05_reflectance_unc",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "validExpression" : "!WQSF_lsb.INVALID",
+    "units" : "lg",
+    "description" : "log10 scaled Uncertainty estimates for OLCI acquisition band Oa05"
+  }
+]

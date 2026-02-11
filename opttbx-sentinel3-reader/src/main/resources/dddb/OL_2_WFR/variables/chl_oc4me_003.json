@@ -1,0 +1,18 @@
+[
+  {
+    "name": "CHL_OC4ME",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re mg.m-3)",
+    "description" : "log10 scaled (OC4ME) Algal pigment concentration"
+  },
+  {
+    "name": "CHL_OC4ME_unc",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re mg.m-3)",
+    "description" : "log10 scaled Uncertainty estimate for (OC4ME) algal pigment concentration"
+  }
+]

@@ -64,9 +64,10 @@ public class Sentinel3ProductReaderPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-4149")
     public void testDecodeQualification_OlciLevel2W() {
         final String path = createManifestFilePath("OL", "2", "WFR", ".SEN3");
-        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(path));
+        assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(path));
     }
 
     @Test

@@ -78,10 +78,11 @@ public class OlciProductFactoryTest {
     }
 
     @Test
-    @STTM("SNAP-3755")
+    @STTM("SNAP-3755,SNAP-4149")
     public void testIsLogScaledUnit() {
         assertTrue(OlciProductFactory.isLogScaledUnit("lg(firlefanz)"));
         assertTrue(OlciProductFactory.isLogScaledUnit("lg(re mW.m-2.sr-1.nm-1)"));
+        assertTrue(OlciProductFactory.isLogScaledUnit("lg"));
 
         assertFalse(OlciProductFactory.isLogScaledUnit("mW.m-2.sr-1.nm-1"));
         assertFalse(OlciProductFactory.isLogScaledUnit("K"));
@@ -95,11 +96,12 @@ public class OlciProductFactoryTest {
     }
 
     @Test
-    @STTM("SNAP-3728")
+    @STTM("SNAP-3728,SNAP-4149")
     public void testStripLogFromUnit() {
         assertEquals("kgm-3", OlciProductFactory.stripLogFromUnit("lg(kgm-3)"));
         assertEquals("m-1", OlciProductFactory.stripLogFromUnit("lg(re m-1)"));
         assertEquals("g.m-3", OlciProductFactory.stripLogFromUnit("lg(re g.m-3)\n"));
+        assertEquals("nm-1", OlciProductFactory.stripLogFromUnit("lg(re nm-1)\n"));
         assertEquals("", OlciProductFactory.stripLogFromUnit("lg"));
         assertEquals("", OlciProductFactory.stripLogFromUnit(""));
         assertEquals("", OlciProductFactory.stripLogFromUnit(null));
