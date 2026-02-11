@@ -308,7 +308,7 @@ public class Sentinel2L1BProductReader extends Sentinel2ProductReader {
                     }
                     if (!bandBounds.isEmpty()) {
                         // there is an intersection
-                        Band band = buildBand(tileBandInfo, bandBounds.width, bandBounds.height, dataBufferType);
+                        Band band = buildBand(tileBandInfo, bandBounds.width, bandBounds.height, dataBufferType, false);
                         band.setDescription(tileBandInfo.getBandInformation().getDescription());
 
                         JP2MatrixBandMultiLevelSource multiLevelSource = new JP2MatrixBandMultiLevelSource(resolutionCount, mosaicMatrix, bandBounds, imageToModelTransform,
