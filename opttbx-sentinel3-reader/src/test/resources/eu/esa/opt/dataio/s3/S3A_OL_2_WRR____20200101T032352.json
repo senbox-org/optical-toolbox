@@ -2362,6 +2362,29 @@
         ]
       },
       {
+        "name": "chlor_a_unc",
+        "description": "Uncertainty estimate for algal pigment concentration. (OC4_OLCI, MuBR, CI and NDCI blend)",
+        "bandWidth": 1217,
+        "bandHeight": 15001,
+        "geophysicalUnit": "mg.m-3",
+        "noDataValue": "99.9997263686211",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 88,
+            "y": 592,
+            "value": "NaN"
+          },
+          {
+            "x": 332,
+            "y": 4681,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
         "name": "detector_index",
         "description": "Detector index",
         "bandWidth": 1217,
