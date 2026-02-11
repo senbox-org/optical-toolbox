@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 public class ProductDescriptorTest {
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4149")
     public void testConstruction() {
         final ProductDescriptor productDescriptor = new ProductDescriptor();
 
@@ -17,6 +17,7 @@ public class ProductDescriptorTest {
         assertEquals(-1, productDescriptor.getHeight());
         assertEquals("", productDescriptor.getExcludedIds());
         assertEquals("", productDescriptor.getBandGroupingPattern());
+        assertEquals(0, productDescriptor.getFlagMasks().length);
     }
 
     @Test

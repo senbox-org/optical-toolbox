@@ -2,7 +2,7 @@ package eu.esa.opt.dataio.s3.olci;
 
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.dataio.s3.BandUsingReaderDirectly;
-import eu.esa.opt.dataio.s3.Sentinel3Level1Reader;
+import eu.esa.opt.dataio.s3.Sentinel3DddbReader;
 import eu.esa.snap.core.dataio.RasterExtract;
 import org.esa.snap.core.datamodel.ProductData;
 import ucar.ma2.Array;
@@ -43,7 +43,7 @@ public class InstrumentBand extends BandUsingReaderDirectly {
 
         // Define subset to requested region
         final RasterExtract rasterExtract = new RasterExtract(offsetX, offsetY, width, height, 1, 1);
-        Sentinel3Level1Reader.extractSubset(rasterExtract, rasterData, productData, getScalingFactor(), getScalingOffset(), true);
+        Sentinel3DddbReader.extractSubset(rasterExtract, rasterData, productData, getScalingFactor(), getScalingOffset(), true);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class InstrumentBand extends BandUsingReaderDirectly {
         synchronized (this) {
             if (!readerContext.hasData(bandName)) {
                 // extract variable name from band name and layer index
-                final String instrumentVariableName = Sentinel3Level1Reader.getVariableNameFromLayerName(bandName);
-                final int layerIndex = Sentinel3Level1Reader.getLayerIndexFromLayerName(bandName) - 1;
+                final String instrumentVariableName = Sentinel3DddbReader.getVariableNameFromLayerName(bandName);
+                final int layerIndex = Sentinel3DddbReader.getLayerIndexFromLayerName(bandName) - 1;
 
                 final Array instrumentDataArray = readerContext.readData(instrumentVariableName);
 

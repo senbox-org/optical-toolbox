@@ -1,0 +1,72 @@
+[
+  {
+    "name": "OWC",
+    "dataType": "uint8",
+    "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description": "Optical Water Classes. Spectral OCR classification (Vantrepotte et al RSE 2012)"
+  },
+  {
+    "name": "acdm_443",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re m-1)",
+    "description" : "log10 scaled (Zhang et al modified) CDM absorption coefficient"
+  },
+  {
+    "name": "acdom_443",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re m-1)",
+    "description" : "log10 scaled (Bonelli et al 2021) Colored dissolved organic matters coefficient"
+  },
+  {
+    "name": "anw_443",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re m-1)",
+    "description" : "log10 scaled (Loisel et al 2018) Non water absorption coefficient"
+  },
+  {
+    "name": "aphy_443",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re m-1)",
+    "description" : "log10 scaled (Zhang et al modified) Phytoplankton absorption coefficient"
+  },
+  {
+    "name": "bbp_443",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re m-1)",
+    "description" : "log10 scaled (Loisel et al 2018) Particulate back-scattering coefficient"
+  },
+  {
+    "name": "bbp_slope",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re m-1)",
+    "description" : "(Loisel et al 2018) bbp spectral slope"
+  },
+  {
+    "name": "iop_flags",
+    "dataType": "uint8",
+    "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description": "IOP retrieval processing failure flags"
+  },
+  {
+    "name": "kd_490",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re m-1)",
+    "description" : "log10 scaled (Jamet et al 2012) Attenuation coefficient"
+  }
+]

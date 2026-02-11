@@ -34,8 +34,8 @@ import static eu.esa.opt.dataio.s3.util.S3Util.getForwardAndInverseKeys_tiePoint
 public abstract class OlciProductFactory extends AbstractProductFactory {
 
     private final static String[] excludedIDs = {"removedPixelsData"};
-    private static final String UNCERTAINTY_REGEX = ".*_unc";
-    private static final String LOG10_REGEX = "lg(.*)";
+    private static final String UNCERTAINTY_REGEX = ".*_(unc|err)";
+    private static final String LOG10_REGEX = "lg.*";
     private static final Pattern uncertaintyRegEx = Pattern.compile(UNCERTAINTY_REGEX);
     private static final Pattern log10RegEx = Pattern.compile(LOG10_REGEX);
 

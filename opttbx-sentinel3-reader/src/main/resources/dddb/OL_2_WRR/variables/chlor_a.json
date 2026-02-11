@@ -1,0 +1,18 @@
+[
+  {
+    "name": "chlor_a",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re mg.m-3)",
+    "description" : "log10 scaled Algal pigment concentration. (OC4_OLCI, MuBR, CI and NDCI blend)"
+  },
+  {
+    "name": "chlor_a_unc",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re mg.m-3)",
+    "description" : "log10 scaled Uncertainty estimate for algal pigment concentration. (OC4_OLCI, MuBR, CI and NDCI blend)"
+  }
+]
