@@ -391,7 +391,7 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
         return buildBandMatrix(bandMatrixTileIds, sceneDescription, tileBandInfo, mosaicMatrixCellCallback);
     }
 
-    protected static Band buildBand(BandInfo bandInfo, int bandWidth, int bandHeight, int dataBufferType) {
+    protected static Band buildBand(BandInfo bandInfo, int bandWidth, int bandHeight, int dataBufferType, boolean usingRasterMasks) {
         int bandDataType = ImageManager.getProductDataType(dataBufferType);
         Band band = new Band(bandInfo.getBandName(), bandDataType, bandWidth, bandHeight);
 
@@ -405,8 +405,13 @@ public abstract class Sentinel2ProductReader extends AbstractProductReader {
             band.setSpectralBandIndex(spectralInfo.getBandId());
             band.setNoDataValueUsed(false);
             band.setNoDataValue(0);
-            band.setValidPixelExpression(
-                    String.format("%s.raw > %s", bandInfo.getBandName(), S2Config.RAW_NO_DATA_THRESHOLD));
+            if (usingRasterMasks) {
+                band.setValidPixelExpression(
+                        String.format("%s.raw >= %s && B_detector_footprint_%s.raw > 0 && B_nodata_%s == 0", bandInfo.getBandName(), S2Config.RAW_NO_DATA_THRESHOLD, bandInfo.getBandName(), bandInfo.getBandName()));
+            } else {
+                band.setValidPixelExpression(
+                        String.format("%s.raw >= %s", bandInfo.getBandName(), S2Config.RAW_NO_DATA_THRESHOLD));
+            }
         } else if (bandInformation instanceof S2IndexBandInformation) {
             S2IndexBandInformation indexBandInfo = (S2IndexBandInformation) bandInformation;
             band.setSpectralWavelength(0);
