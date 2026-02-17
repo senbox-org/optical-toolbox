@@ -3,6 +3,7 @@ package eu.esa.opt.dataio.enmap.imgReader;
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.enmap.EnmapMetadata;
 import eu.esa.opt.dataio.enmap.ProductFormat;
+import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.runtime.Config;
 
 import java.awt.*;
@@ -96,6 +97,18 @@ public abstract class EnmapImageReader {
      * @throws IllegalArgumentException in case the index is less than zero or higher than the maximum number of images minus one
      */
     abstract public RenderedImage getImageAt(int index) throws IOException;
+
+    /**
+     * Reads a contiguous spectral layer block into {@code targetData}. The resulting buffer order is
+     * layer-major, row-major, column-major.
+     */
+    abstract public void readLayerBlock(int startLayer, int numLayers, int x, int y, int width, int height,
+                                        ProductData targetData) throws IOException;
+
+    /**
+     * @return {@code true} if this reader can efficiently read multiple layers in one backend access.
+     */
+    abstract public boolean isInterleavedReadOptimized();
 
     /**
      * Closes any open resource

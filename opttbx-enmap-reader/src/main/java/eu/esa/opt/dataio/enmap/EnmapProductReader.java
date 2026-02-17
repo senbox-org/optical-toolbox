@@ -4,6 +4,12 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.TarUtils;
 import eu.esa.opt.dataio.enmap.imgReader.EnmapImageReader;
+import eu.esa.snap.core.dataio.cache.CacheDataProvider;
+import eu.esa.snap.core.dataio.cache.CacheManager;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.ProductCache;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
+import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.ProductReader;
@@ -35,9 +41,11 @@ import java.util.stream.IntStream;
 
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
 
-class EnmapProductReader extends AbstractProductReader {
+class EnmapProductReader extends AbstractProductReader implements CacheDataProvider {
 
     private static final int KM_IN_METERS = 1000;
+    private static final int MAX_CACHE_TILE_SIZE = 256;
+    static final String SPECTRAL_CACHE_VARIABLE_NAME = "ENMAP_SPECTRAL_CUBE";
     private static final String SCENE_AZIMUTH_TPG_NAME = "scene_azimuth";
     private static final String SUN_AZIMUTH_TPG_NAME = "sun_azimuth";
     private static final String SUN_ELEVATION_TPG_NAME = "sun_elevation";
@@ -47,7 +55,10 @@ class EnmapProductReader extends AbstractProductReader {
     private static final String CANNOT_READ_PRODUCT_MSG = "Cannot read product";
     private final Object syncObject;
     private final Map<String, RenderedImage> bandImageMap = new TreeMap<>();
+    private final Map<String, Integer> spectralBandLayerIndexMap = new HashMap<>();
     private final List<EnmapImageReader> imageReaderList = new ArrayList<>();
+    private ProductCache productCache;
+    private EnmapSpectralCacheProvider spectralCacheProvider;
     private VirtualDir dataDir;
     private VirtualDir tgzDataDir;
 
@@ -111,6 +122,23 @@ class EnmapProductReader extends AbstractProductReader {
             throw new IllegalArgumentException(String.format("Cannot decode EPSG code from projection string '%s'", projection));
         }
         return "EPSG:" + code;
+    }
+
+    static Dimension normalizeCacheTileDimension(Dimension sourceTileDimension, int sceneWidth, int sceneHeight) {
+        final int tileWidth = normalizeCacheTileSize(sourceTileDimension.width, sceneWidth);
+        final int tileHeight = normalizeCacheTileSize(sourceTileDimension.height, sceneHeight);
+        return new Dimension(tileWidth, tileHeight);
+    }
+
+    private static int normalizeCacheTileSize(int sourceTileSize, int sceneSize) {
+        if (sceneSize <= 0) {
+            return 1;
+        }
+        final int upperBound = Math.min(MAX_CACHE_TILE_SIZE, sceneSize);
+        if (sourceTileSize <= 1 || sourceTileSize >= sceneSize) {
+            return upperBound;
+        }
+        return Math.min(sourceTileSize, upperBound);
     }
 
     @Override
@@ -415,12 +443,20 @@ class EnmapProductReader extends AbstractProductReader {
 
         product.setPreferredTileSize(spectralImageReader.getTileDimension());
         int[] spectralIndices = meta.getSpectralIndices();
+        final int numSpectralLayers = spectralImageReader.getNumImages();
+        final int sceneWidth = product.getSceneRasterWidth();
+        final int sceneHeight = product.getSceneRasterHeight();
 
         int dataType = meta.getSpectralDataType();
-        for (int i = 0; i < spectralImageReader.getNumImages(); i++) {
+        spectralCacheProvider = new EnmapSpectralCacheProvider(SPECTRAL_CACHE_VARIABLE_NAME, spectralImageReader,
+                                                               sceneWidth, sceneHeight, numSpectralLayers, dataType);
+        productCache = new ProductCache(this);
+        CacheManager.getInstance().register(productCache);
+
+        for (int i = 0; i < numSpectralLayers; i++) {
             int spectralIndex = spectralIndices[i];
             String bandName = String.format("band_%03d", spectralIndex);
-            Band band = new Band(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+            Band band = new BandUsingReaderDirectly(bandName, dataType, sceneWidth, sceneHeight);
             band.setSpectralBandIndex(spectralIndex - 1);
             band.setSpectralWavelength(meta.getCentralWavelength(i));
             band.setSpectralBandwidth(meta.getBandwidth(i));
@@ -430,7 +466,7 @@ class EnmapProductReader extends AbstractProductReader {
             band.setScalingOffset(meta.getBandOffset(i));
             band.setNoDataValue(meta.getSpectralBackgroundValue());
             band.setNoDataValueUsed(true);
-            bandImageMap.put(bandName, spectralImageReader.getImageAt(i));
+            spectralBandLayerIndexMap.put(bandName, i);
             product.addBand(band);
         }
 
@@ -452,10 +488,27 @@ class EnmapProductReader extends AbstractProductReader {
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight,
                                           int sourceStepX, int sourceStepY,
                                           Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight,
-                                          ProductData destBuffer, ProgressMonitor pm) {
+                                          ProductData destBuffer, ProgressMonitor pm) throws IOException {
+        final Integer layerIndex = spectralBandLayerIndexMap.get(destBand.getName());
+        if (layerIndex != null) {
+            if (productCache == null) {
+                throw new IOException("Spectral product cache not initialized");
+            }
+            final int[] offsets = new int[]{layerIndex, destOffsetY, destOffsetX};
+            final int[] shapes = new int[]{1, destHeight, destWidth};
+            final int[] targetOffsets = new int[]{destOffsetY, destOffsetX};
+            final int[] targetShapes = new int[]{destHeight, destWidth};
+            final DataBuffer targetBuffer = new DataBuffer(destBuffer, targetOffsets, targetShapes);
+            productCache.read(SPECTRAL_CACHE_VARIABLE_NAME, offsets, shapes, targetBuffer);
+            return;
+        }
+
         int[] samples;
         synchronized (syncObject) {
             RenderedImage renderedImage = bandImageMap.get(destBand.getName());
+            if (renderedImage == null) {
+                throw new IOException("No image available for band '" + destBand.getName() + "'");
+            }
             Raster data = renderedImage.getData(new Rectangle(destOffsetX, destOffsetY, destWidth, destHeight));
             samples = data.getSamples(destOffsetX, destOffsetY, destWidth, destHeight, 0, (int[]) null);
         }
@@ -464,11 +517,35 @@ class EnmapProductReader extends AbstractProductReader {
     }
 
     @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        if (spectralCacheProvider == null) {
+            throw new IOException("Spectral cache provider not initialized");
+        }
+        return spectralCacheProvider.getVariableDescriptor(variableName);
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        if (spectralCacheProvider == null) {
+            throw new IOException("Spectral cache provider not initialized");
+        }
+        return spectralCacheProvider.readCacheBlock(variableName, offsets, shapes, targetData);
+    }
+
+    @Override
     public void close() {
+        if (productCache != null) {
+            CacheManager.getInstance().remove(productCache);
+            productCache = null;
+        }
+        spectralCacheProvider = null;
+        spectralBandLayerIndexMap.clear();
+
         for (EnmapImageReader geoTiffImageReader : imageReaderList) {
             geoTiffImageReader.close();
         }
         imageReaderList.clear();
+        bandImageMap.clear();
 
         if (dataDir != null) {
             dataDir.close();
