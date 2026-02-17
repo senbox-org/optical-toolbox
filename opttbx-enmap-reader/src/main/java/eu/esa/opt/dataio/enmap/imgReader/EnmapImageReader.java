@@ -14,9 +14,11 @@ import java.util.prefs.Preferences;
 
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
 
+
 public abstract class EnmapImageReader {
 
-    private static String ENMAP_GEOTIFF_USE_JAI = "enmap.geotiff.useJai";
+
+    static final String ENMAP_GEOTIFF_USE_JAI = "enmap.geotiff.useJai";
 
     // todo - should be private but this is only possible with Java 9
     public static EnmapImageReader createSpectralReader(VirtualDir dataDir, EnmapMetadata meta) throws IOException {
@@ -57,18 +59,21 @@ public abstract class EnmapImageReader {
         String productFormat = meta.getProductFormat();
         ProductFormat format = ProductFormat.valueOf(ProductFormat.toEnumName(productFormat));
         if (ProductFormat.GeoTIFF_Metadata == format) {
-            boolean useJai = preferences.getBoolean(ENMAP_GEOTIFF_USE_JAI, false);
+            boolean useJai = isJaiGeoTiffPreferred(preferences);
             Map<String, String> fileNameMap = meta.getFileNameMap();
             if (useJai) {
                 return JaiGeoTiffImageReader.createImageReader(dataDir, fileNameMap.get(imageKey), meta.isNonCompliantProduct());
             } else {
-                return GdalGeoTiffImageReader.createImageReader(dataDir, fileNameMap.get(imageKey), meta.isNonCompliantProduct());
-
+                return GdalDirectGeoTiffImageReader.createImageReader(dataDir, fileNameMap.get(imageKey), meta.isNonCompliantProduct());
             }
         } else {
             throw new IllegalStateException(String.format("The product format '%s' is not supported", productFormat));
         }
 
+    }
+
+    static boolean isJaiGeoTiffPreferred(Preferences preferences) {
+        return preferences.getBoolean(ENMAP_GEOTIFF_USE_JAI, false);
     }
 
 

@@ -46,6 +46,11 @@
             <version>${snap.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>lib-gdal</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+        <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-commons</artifactId>
             <version>${snap.version}</version>
@@ -106,4 +111,3 @@
     </build>
 
 </project>
-
