@@ -13,7 +13,7 @@ import java.io.IOException;
 class EnmapSpectralCacheProvider implements CacheDataProvider {
 
 
-    private static final int INTERLEAVED_TILE_LAYERS = 16;
+    private static final int INTERLEAVED_TILE_LAYERS = 32;
 
     private final String variableName;
     private final EnmapImageReader spectralImageReader;
@@ -58,8 +58,7 @@ class EnmapSpectralCacheProvider implements CacheDataProvider {
 
     private VariableDescriptor createVariableDescriptor(int sceneWidth, int sceneHeight, int numLayers, int dataType,
                                                         EnmapImageReader imageReader) throws IOException {
-        final Dimension sourceTileDimension = imageReader.getTileDimension();
-        final Dimension tileDimension = EnmapProductReader.normalizeCacheTileDimension(sourceTileDimension, sceneWidth, sceneHeight);
+        final Dimension tileDimension = imageReader.getTileDimension();
 
         final VariableDescriptor descriptor = new VariableDescriptor();
         descriptor.name = variableName;
@@ -69,7 +68,7 @@ class EnmapSpectralCacheProvider implements CacheDataProvider {
         descriptor.layers = numLayers;
         descriptor.tileWidth = tileDimension.width;
         descriptor.tileHeight = tileDimension.height;
-        descriptor.tileLayers = imageReader.isInterleavedReadOptimized() ? Math.min(numLayers, INTERLEAVED_TILE_LAYERS) : 1;
+        descriptor.tileLayers = Math.min(numLayers, INTERLEAVED_TILE_LAYERS);
         return descriptor;
     }
 

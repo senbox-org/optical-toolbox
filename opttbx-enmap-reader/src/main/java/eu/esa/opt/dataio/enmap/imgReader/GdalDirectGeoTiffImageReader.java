@@ -17,9 +17,10 @@ import java.util.Arrays;
 
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.getRelativePath;
 
+
 class GdalDirectGeoTiffImageReader extends EnmapImageReader {
 
-    private static final int MAX_CACHE_TILE_SIZE = 256;
+
     private static final int CE_NONE = 0;
 
     private final Dataset dataset;
@@ -29,6 +30,7 @@ class GdalDirectGeoTiffImageReader extends EnmapImageReader {
     private final int gdalDataType;
     private final int bytesPerSample;
     private final Object readLock;
+
 
     private GdalDirectGeoTiffImageReader(Dataset dataset, DatasetRasterReader datasetRasterReader, int numImages,
                                          Dimension tileDimension, int gdalDataType, int bytesPerSample) {
@@ -46,6 +48,7 @@ class GdalDirectGeoTiffImageReader extends EnmapImageReader {
         this(null, datasetRasterReader, numImages, tileDimension, gdalDataType, bytesPerSample);
     }
 
+
     static EnmapImageReader createImageReader(VirtualDir dataDir, String fileName, boolean isNonCompliantProduct) throws IOException {
         Dataset dataset = null;
         try {
@@ -54,8 +57,6 @@ class GdalDirectGeoTiffImageReader extends EnmapImageReader {
             if (dataset == null) {
                 throw new IOException(String.format("Could not open GDAL dataset for '%s'.", fileName));
             }
-            final int sceneWidth = dataset.getRasterXSize();
-            final int sceneHeight = dataset.getRasterYSize();
             final int numImages = dataset.getRasterCount();
             if (numImages < 1) {
                 throw new IOException(String.format("Dataset '%s' has no raster bands.", fileName));
@@ -67,10 +68,7 @@ class GdalDirectGeoTiffImageReader extends EnmapImageReader {
                     throw new IOException(String.format("Dataset '%s' has no first raster band.", fileName));
                 }
                 gdalDataType = firstBand.getDataType();
-                tileDimension = new Dimension(
-                        normalizeTileSize(firstBand.getBlockXSize(), sceneWidth),
-                        normalizeTileSize(firstBand.getBlockYSize(), sceneHeight)
-                );
+                tileDimension = new Dimension(firstBand.getBlockXSize(), firstBand.getBlockYSize());
             }
             final int bytesPerSample = Math.max(1, GDAL.getDataTypeSize(gdalDataType) >> 3);
             DatasetRasterReader rasterReader = ReflectionDatasetRasterReader.create(dataset.getJniDatasetInstance());
@@ -131,11 +129,6 @@ class GdalDirectGeoTiffImageReader extends EnmapImageReader {
                     returnCode, x, y, width, height, Arrays.toString(bandMap), getLastErrorMessageSuffix()));
         }
         copyBufferToTarget(nioBuffer, targetData, elementCount);
-    }
-
-    @Override
-    public boolean isInterleavedReadOptimized() {
-        return true;
     }
 
     @Override
@@ -242,17 +235,6 @@ class GdalDirectGeoTiffImageReader extends EnmapImageReader {
             // no-op
         }
         return "";
-    }
-
-    static int normalizeTileSize(int sourceTileSize, int sceneSize) {
-        if (sceneSize <= 0) {
-            return 1;
-        }
-        final int upperBound = Math.min(MAX_CACHE_TILE_SIZE, sceneSize);
-        if (sourceTileSize <= 1 || sourceTileSize >= sceneSize) {
-            return upperBound;
-        }
-        return Math.min(sourceTileSize, upperBound);
     }
 
     interface DatasetRasterReader {

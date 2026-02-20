@@ -111,11 +111,6 @@ public abstract class EnmapImageReader {
                                         ProductData targetData) throws IOException;
 
     /**
-     * @return {@code true} if this reader can efficiently read multiple layers in one backend access.
-     */
-    abstract public boolean isInterleavedReadOptimized();
-
-    /**
      * Closes any open resource
      */
     abstract public void close();

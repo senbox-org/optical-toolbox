@@ -1,9 +1,7 @@
 package eu.esa.opt.dataio.enmap;
 
-import com.bc.ceres.annotation.STTM;
 import org.junit.Test;
 
-import java.awt.Dimension;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -27,32 +25,5 @@ public class EnmapProductReaderTest {
             fail("IllegalArgumentException expected");
         } catch (IllegalArgumentException expected) {
         }
-    }
-
-    @Test
-    @STTM("SNAP-4123")
-    public void testNormalizeCacheTileDimension_fullSceneTileIsLimitedTo256() {
-        Dimension normalized = EnmapProductReader.normalizeCacheTileDimension(new Dimension(1128, 1212), 1128, 1212);
-
-        assertEquals(256, normalized.width);
-        assertEquals(256, normalized.height);
-    }
-
-    @Test
-    @STTM("SNAP-4123")
-    public void testNormalizeCacheTileDimension_invalidTileFallsBackToBoundedDefault() {
-        Dimension normalized = EnmapProductReader.normalizeCacheTileDimension(new Dimension(1, 0), 200, 180);
-
-        assertEquals(200, normalized.width);
-        assertEquals(180, normalized.height);
-    }
-
-    @Test
-    @STTM("SNAP-4123")
-    public void testNormalizeCacheTileDimension_validTileIsKept() {
-        Dimension normalized = EnmapProductReader.normalizeCacheTileDimension(new Dimension(128, 64), 1128, 1212);
-
-        assertEquals(128, normalized.width);
-        assertEquals(64, normalized.height);
     }
 }

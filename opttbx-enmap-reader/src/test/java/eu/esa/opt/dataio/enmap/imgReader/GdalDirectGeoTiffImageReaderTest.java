@@ -17,13 +17,13 @@ import static org.junit.Assert.fail;
 
 public class GdalDirectGeoTiffImageReaderTest {
 
+
     @Test
     @STTM("SNAP-4123")
     public void testReadLayerBlockBuildsContiguousOneBasedBandMapAndStrides() throws Exception {
         FakeDatasetRasterReader fakeReader = new FakeDatasetRasterReader();
         fakeReader.mode = FakeDatasetRasterReader.Mode.INT_SEQUENCE;
-        GdalDirectGeoTiffImageReader reader = new GdalDirectGeoTiffImageReader(
-                fakeReader, 224, new Dimension(256, 3), 5, 4);
+        GdalDirectGeoTiffImageReader reader = new GdalDirectGeoTiffImageReader(fakeReader, 224, new Dimension(256, 3), 5, 4);
 
         ProductData targetData = ProductData.createInstance(ProductData.TYPE_INT32, 24);
         reader.readLayerBlock(5, 2, 10, 20, 4, 3, targetData);
@@ -42,8 +42,7 @@ public class GdalDirectGeoTiffImageReaderTest {
     public void testReadLayerBlockPreservesLayerMajorLayout() throws Exception {
         FakeDatasetRasterReader fakeReader = new FakeDatasetRasterReader();
         fakeReader.mode = FakeDatasetRasterReader.Mode.SHORT_LAYER_MAJOR_PATTERN;
-        GdalDirectGeoTiffImageReader reader = new GdalDirectGeoTiffImageReader(
-                fakeReader, 10, new Dimension(128, 128), 2, 2);
+        GdalDirectGeoTiffImageReader reader = new GdalDirectGeoTiffImageReader(fakeReader, 10, new Dimension(128, 128), 2, 2);
 
         ProductData targetData = ProductData.createInstance(ProductData.TYPE_UINT16, 8);
         reader.readLayerBlock(0, 2, 0, 0, 2, 2, targetData);
@@ -57,11 +56,10 @@ public class GdalDirectGeoTiffImageReaderTest {
 
     @Test
     @STTM("SNAP-4123")
-    public void testReadLayerBlockThrowsOnGdalError() throws Exception {
+    public void testReadLayerBlockThrowsOnGdalError() {
         FakeDatasetRasterReader fakeReader = new FakeDatasetRasterReader();
         fakeReader.returnCode = 7;
-        GdalDirectGeoTiffImageReader reader = new GdalDirectGeoTiffImageReader(
-                fakeReader, 10, new Dimension(64, 64), 2, 2);
+        GdalDirectGeoTiffImageReader reader = new GdalDirectGeoTiffImageReader(fakeReader, 10, new Dimension(64, 64), 2, 2);
 
         ProductData targetData = ProductData.createInstance(ProductData.TYPE_UINT16, 4);
         try {

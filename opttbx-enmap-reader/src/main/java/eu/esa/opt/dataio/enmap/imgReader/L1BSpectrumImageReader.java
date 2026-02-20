@@ -89,11 +89,6 @@ class L1BSpectrumImageReader extends EnmapImageReader {
     }
 
     @Override
-    public boolean isInterleavedReadOptimized() {
-        return vnirImageReader.isInterleavedReadOptimized() && swirImageReader.isInterleavedReadOptimized();
-    }
-
-    @Override
     public void close() {
         vnirImageReader.close();
         swirImageReader.close();

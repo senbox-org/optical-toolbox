@@ -64,11 +64,6 @@ class JaiGeoTiffImageReader extends EnmapImageReader {
     }
 
     @Override
-    public boolean isInterleavedReadOptimized() {
-        return true;
-    }
-
-    @Override
     public void close() {
         geoTiffImageReader.close();
     }

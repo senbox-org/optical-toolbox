@@ -44,7 +44,6 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
 
 
     private static final int KM_IN_METERS = 1000;
-    private static final int MAX_CACHE_TILE_SIZE = 256;
     static final String SPECTRAL_CACHE_VARIABLE_NAME = "ENMAP_SPECTRAL_CUBE";
     private static final String SCENE_AZIMUTH_TPG_NAME = "scene_azimuth";
     private static final String SUN_AZIMUTH_TPG_NAME = "sun_azimuth";
@@ -122,23 +121,6 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
             throw new IllegalArgumentException(String.format("Cannot decode EPSG code from projection string '%s'", projection));
         }
         return "EPSG:" + code;
-    }
-
-    static Dimension normalizeCacheTileDimension(Dimension sourceTileDimension, int sceneWidth, int sceneHeight) {
-        final int tileWidth = normalizeCacheTileSize(sourceTileDimension.width, sceneWidth);
-        final int tileHeight = normalizeCacheTileSize(sourceTileDimension.height, sceneHeight);
-        return new Dimension(tileWidth, tileHeight);
-    }
-
-    private static int normalizeCacheTileSize(int sourceTileSize, int sceneSize) {
-        if (sceneSize <= 0) {
-            return 1;
-        }
-        final int upperBound = Math.min(MAX_CACHE_TILE_SIZE, sceneSize);
-        if (sourceTileSize <= 1 || sourceTileSize >= sceneSize) {
-            return upperBound;
-        }
-        return Math.min(sourceTileSize, upperBound);
     }
 
     @Override

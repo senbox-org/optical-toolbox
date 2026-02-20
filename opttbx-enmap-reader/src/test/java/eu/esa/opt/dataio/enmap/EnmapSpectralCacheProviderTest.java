@@ -15,48 +15,34 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+
 public class EnmapSpectralCacheProviderTest {
+
 
     private static final String VARIABLE_NAME = "ENMAP_SPECTRAL_CUBE";
 
     @Test
     @STTM("SNAP-4123")
     public void testGetVariableDescriptor_interleavedAndNormalizedTiles() throws IOException {
-        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(218, new Dimension(1128, 1212), true);
-        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader,
-                                                                             1128, 1212, 218, ProductData.TYPE_INT32);
+        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(218, new Dimension(512, 512));
+        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader, 512, 512, 218, ProductData.TYPE_INT32);
 
         VariableDescriptor descriptor = provider.getVariableDescriptor(VARIABLE_NAME);
 
-        assertEquals(1128, descriptor.width);
-        assertEquals(1212, descriptor.height);
+        assertEquals(512, descriptor.width);
+        assertEquals(512, descriptor.height);
         assertEquals(218, descriptor.layers);
-        assertEquals(256, descriptor.tileWidth);
-        assertEquals(256, descriptor.tileHeight);
-        assertEquals(16, descriptor.tileLayers);
+        assertEquals(512, descriptor.tileWidth);
+        assertEquals(512, descriptor.tileHeight);
+        assertEquals(32, descriptor.tileLayers);
         assertEquals(ProductData.TYPE_INT32, descriptor.dataType);
     }
 
     @Test
     @STTM("SNAP-4123")
-    public void testGetVariableDescriptor_nonInterleavedUsesSingleLayerTiles() throws IOException {
-        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(218, new Dimension(128, 64), false);
-        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader,
-                                                                             1128, 1212, 218, ProductData.TYPE_INT32);
-
-        VariableDescriptor descriptor = provider.getVariableDescriptor(VARIABLE_NAME);
-
-        assertEquals(128, descriptor.tileWidth);
-        assertEquals(64, descriptor.tileHeight);
-        assertEquals(1, descriptor.tileLayers);
-    }
-
-    @Test
-    @STTM("SNAP-4123")
     public void testReadCacheBlock_returnsLayerMajorDataForPartialCube() throws IOException {
-        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(10, new Dimension(64, 64), true);
-        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader,
-                                                                             300, 200, 10, ProductData.TYPE_INT32);
+        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(10, new Dimension(64, 64));
+        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader, 300, 200, 10, ProductData.TYPE_INT32);
 
         int[] offsets = {2, 3, 4};
         int[] shapes = {2, 2, 3};
@@ -73,9 +59,8 @@ public class EnmapSpectralCacheProviderTest {
     @Test
     @STTM("SNAP-4123")
     public void testReadCacheBlock_reusesProvidedTargetData() throws IOException {
-        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(10, new Dimension(64, 64), true);
-        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader,
-                                                                             300, 200, 10, ProductData.TYPE_INT32);
+        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(10, new Dimension(64, 64));
+        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader, 300, 200, 10, ProductData.TYPE_INT32);
 
         int[] offsets = {1, 5, 6};
         int[] shapes = {1, 2, 2};
@@ -90,9 +75,8 @@ public class EnmapSpectralCacheProviderTest {
     @Test(expected = IOException.class)
     @STTM("SNAP-4123")
     public void testGetVariableDescriptor_unknownVariableThrows() throws IOException {
-        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(10, new Dimension(64, 64), true);
-        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader,
-                                                                             300, 200, 10, ProductData.TYPE_INT32);
+        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(10, new Dimension(64, 64));
+        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader, 300, 200, 10, ProductData.TYPE_INT32);
 
         provider.getVariableDescriptor("UNKNOWN");
     }
@@ -100,9 +84,8 @@ public class EnmapSpectralCacheProviderTest {
     @Test(expected = IOException.class)
     @STTM("SNAP-4123")
     public void testReadCacheBlock_unknownVariableThrows() throws IOException {
-        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(10, new Dimension(64, 64), true);
-        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader,
-                                                                             300, 200, 10, ProductData.TYPE_INT32);
+        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(10, new Dimension(64, 64));
+        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader, 300, 200, 10, ProductData.TYPE_INT32);
 
         provider.readCacheBlock("UNKNOWN", new int[]{0, 0, 0}, new int[]{1, 1, 1}, null);
     }
@@ -111,9 +94,8 @@ public class EnmapSpectralCacheProviderTest {
     @STTM("SNAP-4123")
     public void testSpectrumViewPattern_usesCeilLayersPerInterleavedCacheTile() throws IOException {
         int layerCount = 33;
-        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(layerCount, new Dimension(128, 128), true);
-        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader,
-                                                                             512, 512, layerCount, ProductData.TYPE_INT32);
+        FakeEnmapImageReader imageReader = new FakeEnmapImageReader(layerCount, new Dimension(128, 128));
+        EnmapSpectralCacheProvider provider = new EnmapSpectralCacheProvider(VARIABLE_NAME, imageReader, 512, 512, layerCount, ProductData.TYPE_INT32);
         ProductCache productCache = new ProductCache(provider);
 
         for (int layer = 0; layer < layerCount; layer++) {
@@ -122,24 +104,23 @@ public class EnmapSpectralCacheProviderTest {
             productCache.read(VARIABLE_NAME, new int[]{layer, 10, 20}, new int[]{1, 1, 1}, targetBuffer);
         }
 
-        assertEquals(3, imageReader.getReadLayerBlockCount());
+        assertEquals(2, imageReader.getReadLayerBlockCount());
     }
 
     private static int expectedValue(int layer, int y, int x) {
         return layer * 1_000_000 + y * 1_000 + x;
     }
 
+
     private static class FakeEnmapImageReader extends EnmapImageReader {
 
         private final int numImages;
         private final Dimension tileDimension;
-        private final boolean interleavedReadOptimized;
         private int readLayerBlockCount;
 
-        private FakeEnmapImageReader(int numImages, Dimension tileDimension, boolean interleavedReadOptimized) {
+        private FakeEnmapImageReader(int numImages, Dimension tileDimension) {
             this.numImages = numImages;
             this.tileDimension = tileDimension;
-            this.interleavedReadOptimized = interleavedReadOptimized;
         }
 
         @Override
@@ -172,11 +153,6 @@ public class EnmapSpectralCacheProviderTest {
                     }
                 }
             }
-        }
-
-        @Override
-        public boolean isInterleavedReadOptimized() {
-            return interleavedReadOptimized;
         }
 
         @Override
