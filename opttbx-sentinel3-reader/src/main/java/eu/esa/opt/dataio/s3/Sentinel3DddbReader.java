@@ -10,6 +10,7 @@ import eu.esa.opt.dataio.s3.olci.InstrumentBand;
 import eu.esa.opt.dataio.s3.olci.ReaderContext;
 import eu.esa.opt.dataio.s3.util.*;
 import eu.esa.snap.core.dataio.RasterExtract;
+import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.geocoding.*;

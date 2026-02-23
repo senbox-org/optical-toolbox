@@ -4,6 +4,12 @@ import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.TarUtils;
 import eu.esa.opt.dataio.enmap.imgReader.EnmapImageReader;
+import eu.esa.snap.core.dataio.cache.CacheDataProvider;
+import eu.esa.snap.core.dataio.cache.CacheManager;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.ProductCache;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
+import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.ProductReader;
@@ -23,21 +29,22 @@ import org.opengis.referencing.operation.MathTransform;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
 
-class EnmapProductReader extends AbstractProductReader {
+
+class EnmapProductReader extends AbstractProductReader implements CacheDataProvider {
+
 
     private static final int KM_IN_METERS = 1000;
+    static final String SPECTRAL_CACHE_VARIABLE_NAME = "ENMAP_SPECTRAL_CUBE";
     private static final String SCENE_AZIMUTH_TPG_NAME = "scene_azimuth";
     private static final String SUN_AZIMUTH_TPG_NAME = "sun_azimuth";
     private static final String SUN_ELEVATION_TPG_NAME = "sun_elevation";
@@ -45,20 +52,28 @@ class EnmapProductReader extends AbstractProductReader {
     private static final String ALONG_OFF_NADIR_TPG_NAME = "along_off_nadir";
 
     private static final String CANNOT_READ_PRODUCT_MSG = "Cannot read product";
-    private final Object syncObject;
-    private final Map<String, RenderedImage> bandImageMap = new TreeMap<>();
+
+    private final Map<String, Integer> spectralBandLayerIndexMap = new HashMap<>();
+    private final Map<String, CachedBandBinding> cachedBandBindings = new HashMap<>();
+    private final Set<String> registeredCacheVariables = new HashSet<>();
     private final List<EnmapImageReader> imageReaderList = new ArrayList<>();
+    private ProductCache productCache;
+    private EnmapMultiCubeCacheProvider cacheProvider;
     private VirtualDir dataDir;
     private VirtualDir tgzDataDir;
 
     private boolean isNonCompliantProduct = false;
 
+
     EnmapProductReader(EnmapProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
-        syncObject = new Object();
         dataDir = null;
         tgzDataDir = null;
+        cacheProvider = new EnmapMultiCubeCacheProvider();
+        productCache = new ProductCache(this);
+        CacheManager.getInstance().register(productCache);
     }
+
 
     private static TiePointGrid addTPG(Product product, String tpgName, double[] tpgValue) {
         int gridWidth = 2;
@@ -199,8 +214,7 @@ class EnmapProductReader extends AbstractProductReader {
         EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
         imageReaderList.add(qualityReader);
 
-        RenderedImage imageAt = qualityReader.getImageAt(0);
-        addFlagBand(product, qualityKey, flagCoding, imageAt);
+        addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
 
     private void addCloudQl(Product product, EnmapMetadata meta) throws IOException {
@@ -211,9 +225,9 @@ class EnmapProductReader extends AbstractProductReader {
         QualityLayerInfo.QL_CLOUD_CLOUD.addMaskTo(product);
 
         EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader); // prevents finalising the reader
+        imageReaderList.add(qualityReader);
 
-        addFlagBand(product, qualityKey, flagCoding, qualityReader.getImageAt(0));
+        addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
 
     private void addCloudShadowQl(Product product, EnmapMetadata meta) throws IOException {
@@ -224,9 +238,9 @@ class EnmapProductReader extends AbstractProductReader {
         QualityLayerInfo.QL_CLOUDSHADOW_SHADOW.addMaskTo(product);
 
         EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader); // prevents finalising the reader
+        imageReaderList.add(qualityReader);
 
-        addFlagBand(product, qualityKey, flagCoding, qualityReader.getImageAt(0));
+        addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
 
     private void addHazeQl(Product product, EnmapMetadata meta) throws IOException {
@@ -237,9 +251,9 @@ class EnmapProductReader extends AbstractProductReader {
         QualityLayerInfo.QL_HAZE_HAZE.addMaskTo(product);
 
         EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader); // prevents finalising the reader
+        imageReaderList.add(qualityReader);
 
-        addFlagBand(product, qualityKey, flagCoding, qualityReader.getImageAt(0));
+        addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
 
     private void addCirrusQl(Product product, EnmapMetadata meta) throws IOException {
@@ -254,9 +268,9 @@ class EnmapProductReader extends AbstractProductReader {
         QualityLayerInfo.QL_CIRRUS_THICK.addMaskTo(product);
 
         EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader); // prevents finalising the reader
+        imageReaderList.add(qualityReader);
 
-        addFlagBand(product, qualityKey, flagCoding, qualityReader.getImageAt(0));
+        addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
 
     private void addSnowQl(Product product, EnmapMetadata meta) throws IOException {
@@ -267,25 +281,32 @@ class EnmapProductReader extends AbstractProductReader {
         QualityLayerInfo.QL_SNOW_SNOW.addMaskTo(product);
 
         EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader); // prevents finalising the reader
+        imageReaderList.add(qualityReader);
 
-        addFlagBand(product, qualityKey, flagCoding, qualityReader.getImageAt(0));
+        addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
 
     private void addPixelMasksQl(Product product, VirtualDir dataDir, EnmapMetadata meta) throws IOException {
         EnmapImageReader pixelMaskReader = EnmapImageReader.createPixelMaskReader(dataDir, meta);
         imageReaderList.add(pixelMaskReader);
+
         FlagCoding flagCoding = new FlagCoding(QUALITY_PIXELMASK_KEY);
         flagCoding.addFlag("Defective", 1, "Defective pixel");
         product.getFlagCodingGroup().add(flagCoding);
 
+        ensureCubeRegistered(cubeVar(QUALITY_PIXELMASK_KEY), pixelMaskReader, product.getSceneRasterWidth(), product.getSceneRasterHeight(), pixelMaskReader.getNumImages(), ProductData.TYPE_UINT8);
+
         int[] spectralIndices = meta.getSpectralIndices();
         for (int i = 0; i < meta.getNumSpectralBands(); i++) {
-            RenderedImage imageAt = pixelMaskReader.getImageAt(i);
             String flagBandName = String.format("%s_%03d", QUALITY_PIXELMASK_KEY, spectralIndices[i]);
-            Band flagBand = addFlagBand(product, flagBandName, flagCoding, imageAt);
+            Band flagBand = new BandUsingReaderDirectly(flagBandName, ProductData.TYPE_UINT8, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+
+            flagBand.setSampleCoding(flagCoding);
             flagBand.setNoDataValueUsed(true);
             flagBand.setNoDataValue(meta.getPixelmaskBackgroundValue());
+
+            product.addBand(flagBand);
+            cachedBandBindings.put(flagBandName, new CachedBandBinding(cubeVar(QUALITY_PIXELMASK_KEY), i));
         }
         QualityLayerInfo.QL_PM_DEFECTIVE_SERIES.addMasksTo(product, meta);
 
@@ -319,9 +340,9 @@ class EnmapProductReader extends AbstractProductReader {
             QualityLayerInfo.QL_TF_VNIR_ARTEFACT_VNIR.addMaskTo(product);
 
             EnmapImageReader qualityVnirReader = EnmapImageReader.createImageReader(dataDir, meta, vnirQualityKey);
-            imageReaderList.add(qualityVnirReader); // prevents finalising the reader
+            imageReaderList.add(qualityVnirReader);
 
-            addFlagBand(product, vnirQualityKey, vnirFlagCoding, qualityVnirReader.getImageAt(0));
+            addCachedFlagBand(product, vnirQualityKey, vnirFlagCoding, qualityVnirReader, 0, cubeVar(vnirQualityKey), ProductData.TYPE_UINT8, 1);
 
             String swirQualityKey = QUALITY_TESTFLAGS_SWIR_KEY;
             FlagCoding swirFlagCoding = new FlagCoding(swirQualityKey);
@@ -349,9 +370,9 @@ class EnmapProductReader extends AbstractProductReader {
             QualityLayerInfo.QL_TF_SWIR_ARTEFACT_VNIR.addMaskTo(product);
 
             EnmapImageReader qualitySwirReader = EnmapImageReader.createImageReader(dataDir, meta, swirQualityKey);
-            imageReaderList.add(qualitySwirReader); // prevents finalising the reader
+            imageReaderList.add(qualitySwirReader);
 
-            addFlagBand(product, swirQualityKey, swirFlagCoding, qualitySwirReader.getImageAt(0));
+            addCachedFlagBand(product, swirQualityKey, swirFlagCoding, qualitySwirReader, 0, cubeVar(swirQualityKey), ProductData.TYPE_UINT8, 1);
         } else {
             String qualityKey = QUALITY_TESTFLAGS_KEY;
             FlagCoding flagCoding = new FlagCoding(qualityKey);
@@ -378,21 +399,12 @@ class EnmapProductReader extends AbstractProductReader {
             QualityLayerInfo.QL_TF_ARTEFACT_VNIR.addMaskTo(product);
 
             EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-            imageReaderList.add(qualityReader); // prevents finalising the reader
+            imageReaderList.add(qualityReader);
 
-            addFlagBand(product, qualityKey, flagCoding, qualityReader.getImageAt(0));
+            addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
         }
     }
 
-    private Band addFlagBand(Product product, String bandName, FlagCoding flagCoding, RenderedImage dataImage) {
-        Band flagBand = new Band(bandName, ProductData.TYPE_UINT8, dataImage.getWidth(), dataImage.getHeight());
-        flagBand.setSampleCoding(flagCoding);
-        // first the band needs to be added to the product and only then the source mage set
-        // see: https://senbox.atlassian.net/browse/SNAP-935
-        product.addBand(flagBand);
-        bandImageMap.put(bandName, dataImage);
-        return flagBand;
-    }
 
     private static void addTiePointGrids(Product product, EnmapMetadata meta) throws IOException {
         addTPG(product, SCENE_AZIMUTH_TPG_NAME, meta.getSceneAzimuthAngles());
@@ -402,25 +414,26 @@ class EnmapProductReader extends AbstractProductReader {
         addTPG(product, ALONG_OFF_NADIR_TPG_NAME, meta.getAlongOffNadirAngles());
     }
 
-    /* NOTE!
-    Using the images provided by the GeoTiffImageReader leads to threading artifacts in the image. When using
-    the GeoTiffProductReader the data handling is very slow, because of bad tiling. 512x512 tile-size is too big for
-    more than 200 bands. The solution is to use the image in the readBandRasterData method to read the data by
-    synchronize the access to the GeoTiffImageReader.
-     */
+
     private void addSpectralBands(Product product, EnmapMetadata meta) throws IOException {
 
         EnmapImageReader spectralImageReader = EnmapImageReader.createSpectralReader(dataDir, meta);
         imageReaderList.add(spectralImageReader);
 
         product.setPreferredTileSize(spectralImageReader.getTileDimension());
-        int[] spectralIndices = meta.getSpectralIndices();
 
+        int[] spectralIndices = meta.getSpectralIndices();
+        final int numSpectralLayers = spectralImageReader.getNumImages();
+        final int sceneWidth = product.getSceneRasterWidth();
+        final int sceneHeight = product.getSceneRasterHeight();
         int dataType = meta.getSpectralDataType();
-        for (int i = 0; i < spectralImageReader.getNumImages(); i++) {
+
+        ensureCubeRegistered(SPECTRAL_CACHE_VARIABLE_NAME, spectralImageReader, product.getSceneRasterWidth(), product.getSceneRasterHeight(), spectralImageReader.getNumImages(), dataType);
+
+        for (int i = 0; i < numSpectralLayers; i++) {
             int spectralIndex = spectralIndices[i];
             String bandName = String.format("band_%03d", spectralIndex);
-            Band band = new Band(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+            Band band = new BandUsingReaderDirectly(bandName, dataType, sceneWidth, sceneHeight);
             band.setSpectralBandIndex(spectralIndex - 1);
             band.setSpectralWavelength(meta.getCentralWavelength(i));
             band.setSpectralBandwidth(meta.getBandwidth(i));
@@ -430,7 +443,7 @@ class EnmapProductReader extends AbstractProductReader {
             band.setScalingOffset(meta.getBandOffset(i));
             band.setNoDataValue(meta.getSpectralBackgroundValue());
             band.setNoDataValueUsed(true);
-            bandImageMap.put(bandName, spectralImageReader.getImageAt(i));
+            spectralBandLayerIndexMap.put(bandName, i);
             product.addBand(band);
         }
 
@@ -452,21 +465,54 @@ class EnmapProductReader extends AbstractProductReader {
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight,
                                           int sourceStepX, int sourceStepY,
                                           Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight,
-                                          ProductData destBuffer, ProgressMonitor pm) {
-        int[] samples;
-        synchronized (syncObject) {
-            RenderedImage renderedImage = bandImageMap.get(destBand.getName());
-            Raster data = renderedImage.getData(new Rectangle(destOffsetX, destOffsetY, destWidth, destHeight));
-            samples = data.getSamples(destOffsetX, destOffsetY, destWidth, destHeight, 0, (int[]) null);
+                                          ProductData destBuffer, ProgressMonitor pm) throws IOException {
+        final Integer spectralLayer = spectralBandLayerIndexMap.get(destBand.getName());
+        if (spectralLayer != null) {
+            readFromCache(SPECTRAL_CACHE_VARIABLE_NAME, spectralLayer, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer);
+            return;
         }
-        IntStream.range(0, samples.length).parallel().forEach(i -> destBuffer.setElemIntAt(i, samples[i]));
 
+        CachedBandBinding cb = cachedBandBindings.get(destBand.getName());
+        if (cb != null) {
+            readFromCache(cb.variableName, cb.layerIndex, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer);
+            return;
+        }
+
+        throw new IOException("No cache binding for band " + destBand.getName());
+    }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        if (cacheProvider == null) {
+            throw new IOException("Cache provider not initialized");
+        }
+        return cacheProvider.getVariableDescriptor(variableName);
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        if (cacheProvider == null) {
+            throw new IOException("Cache provider not initialized");
+        }
+        return cacheProvider.readCacheBlock(variableName, offsets, shapes, targetData);
     }
 
     @Override
     public void close() {
-        for (EnmapImageReader geoTiffImageReader : imageReaderList) {
-            geoTiffImageReader.close();
+        if (productCache != null) {
+            CacheManager.getInstance().remove(productCache);
+            productCache = null;
+        }
+        if (cacheProvider != null) {
+            cacheProvider.clear();
+            cacheProvider = null;
+        }
+        registeredCacheVariables.clear();
+        cachedBandBindings.clear();
+        spectralBandLayerIndexMap.clear();
+
+        for (EnmapImageReader reader : imageReaderList) {
+            reader.close();
         }
         imageReaderList.clear();
 
@@ -535,5 +581,54 @@ class EnmapProductReader extends AbstractProductReader {
     private static String getMetadataFile(String[] fileNames) throws IOException {
         Optional<String> first = Arrays.stream(fileNames).filter(s -> s.endsWith(METADATA_SUFFIX)).findFirst();
         return first.orElseThrow(() -> new IOException("Metadata file not found"));
+    }
+
+    private void readFromCache(String variableName, int layerIndex, int x, int y, int w, int h, ProductData destBuffer) throws IOException {
+        VariableDescriptor desc = cacheProvider.getVariableDescriptor(variableName);
+        int[] offsets = (desc.layers <= 1) ? new int[]{y, x} : new int[]{layerIndex, y, x};
+        int[] shapes  = (desc.layers <= 1) ? new int[]{h, w} : new int[]{1, h, w};
+
+        DataBuffer target = new DataBuffer(destBuffer, new int[]{y, x}, new int[]{h, w});
+        productCache.read(variableName, offsets, shapes, target);
+    }
+
+    private void addCachedFlagBand(Product product, String bandName, FlagCoding flagCoding, EnmapImageReader reader, int layerIndex, String variableName, int dataType, int tileLayers) throws IOException {
+        if (layerIndex < 0 || layerIndex >= reader.getNumImages()) {
+            throw new IOException(String.format("Layer index %d out of range for band '%s'.", layerIndex, bandName));
+        }
+
+        ensureCubeRegistered(variableName, reader, product.getSceneRasterWidth(), product.getSceneRasterHeight(), reader.getNumImages(), dataType, tileLayers);
+
+        Band b = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+        b.setSampleCoding(flagCoding);
+        product.addBand(b);
+
+        cachedBandBindings.put(bandName, new CachedBandBinding(variableName, layerIndex));
+    }
+
+    private static String cubeVar(String key) {
+        return "ENMAP_" + key + "_CUBE";
+    }
+
+    private void ensureCubeRegistered(String variableName, EnmapImageReader reader, int sceneWidth, int sceneHeight, int numLayers, int dataType, int tileLayers) throws IOException {
+        if (registeredCacheVariables.add(variableName)) {
+            cacheProvider.addCube(variableName, reader, sceneWidth, sceneHeight, numLayers, dataType, tileLayers);
+        }
+    }
+
+    private void ensureCubeRegistered(String variableName, EnmapImageReader reader, int sceneWidth, int sceneHeight, int numLayers, int dataType) throws IOException {
+        if (registeredCacheVariables.add(variableName)) {
+            cacheProvider.addCube(variableName, reader, sceneWidth, sceneHeight, numLayers, dataType);
+        }
+    }
+
+    private static final class CachedBandBinding {
+        final String variableName;
+        final int layerIndex;
+
+        CachedBandBinding(String variableName, int layerIndex) {
+            this.variableName = variableName;
+            this.layerIndex = layerIndex;
+        }
     }
 }
