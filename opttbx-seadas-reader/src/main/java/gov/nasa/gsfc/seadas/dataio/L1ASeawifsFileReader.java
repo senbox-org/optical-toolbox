@@ -24,6 +24,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Variable;
+import ucar.nc2.Dimension;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,9 +42,17 @@ public class L1ASeawifsFileReader extends SeadasFileReader {
     @Override
     public Product createProduct() throws ProductIOException {
 
-        int sceneWidth = getIntAttribute("Pixels_per_Scan_Line");
-        int sceneHeight = getIntAttribute("Number_of_Scan_Lines");
-        String productName = getStringAttribute("Product_Name");
+        int sceneWidth = getDimension("pixels");
+        int sceneHeight = getDimension("scans");
+        ProductData.UTC utcStart = getUTCAttribute("time_coverage_start");
+        ProductData.UTC utcEnd = getUTCAttribute("time_coverage_end");
+        if (sceneWidth == -1) {                              // Old format
+            sceneWidth = getIntAttribute("Pixels_per_Scan_Line");
+            sceneHeight = getIntAttribute("Number_of_Scan_Lines");
+            utcStart = getUTCAttribute("Start_Time");
+            utcEnd = getUTCAttribute("End_Time");
+        }
+        String productName = productReader.getInputFile().getName();
 
         mustFlipX = mustFlipY = getDefaultFlip();
         SeadasProductReader.ProductType productType = productReader.getProductType();
@@ -51,11 +60,10 @@ public class L1ASeawifsFileReader extends SeadasFileReader {
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
         product.setDescription(productName);
 
-        ProductData.UTC utcStart = getUTCAttribute("Start_Time");
         if (utcStart != null) {
             product.setStartTime(utcStart);
         }
-        ProductData.UTC utcEnd = getUTCAttribute("End_Time");
+
         if (utcEnd != null) {
             product.setEndTime(utcEnd);
         }
@@ -112,7 +120,7 @@ public class L1ASeawifsFileReader extends SeadasFileReader {
                 final int width = dimensions[1];
 
                 if (height == sceneRasterHeight && width == sceneRasterWidth) {
-                   // final List<Attribute> list = variable.getAttributes();
+                    // final List<Attribute> list = variable.getAttributes();
 
                     String units = "radiance counts";
                     String description = "Level-1A data";
@@ -148,4 +156,13 @@ public class L1ASeawifsFileReader extends SeadasFileReader {
         return bandToVariableMap;
     }
 
+    private int getDimension(String dimensionName) {
+        final List<Dimension> dimensions = ncFile.getDimensions();
+        for (Dimension dimension : dimensions) {
+            if (dimension.getShortName().equals(dimensionName)) {
+                return dimension.getLength();
+            }
+        }
+        return -1;
+    }
 }

@@ -1,8 +1,5 @@
 package gov.nasa.gsfc.seadas.dataio;
 
-import org.esa.snap.core.datamodel.Mask;
-import org.esa.snap.core.jexp.impl.AbstractSymbol;
-
 import java.awt.*;
 
 public class SeadasReaderDefaults {
@@ -44,21 +41,19 @@ public class SeadasReaderDefaults {
     final static Color MiscFlags = Purple;
 
 
-
-
-
-
     // Preferences property prefix
-    private static final String PROPERTY_SEADAS_READER_ROOT_KEY = "opt.toolbox.seadas.reader";
+    public static final String PROPERTY_SEADAS_READER_ROOT_KEY = "opt.toolbox.seadas.reader";
 
 
+    // Level-2 Masks Preferences Root Prefix
+    public static final String PROPERTY_LEVEL_MASKS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".level2_masks";
 
 
     // ATMFAIL
 
     public static final String PROPERTY_MASK_ATMFAIL_NAME = "ATMFAIL";
 
-    public static final String PROPERTY_MASK_ATMFAIL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.ATMFAIL";
+    public static final String PROPERTY_MASK_ATMFAIL_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.ATMFAIL";
 
     public static final String PROPERTY_MASK_ATMFAIL_SECTION_KEY = PROPERTY_MASK_ATMFAIL_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_ATMFAIL_SECTION_LABEL = "L2 Flag Mask: ATMFAIL";
@@ -81,15 +76,12 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_ATMFAIL_COLOR_DEFAULT = FailRed;
 
 
-
-
-
     // LAND
 
 
     public static final String PROPERTY_MASK_LAND_NAME = "LAND";
 
-    public static final String PROPERTY_MASK_LAND_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.LAND";
+    public static final String PROPERTY_MASK_LAND_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.LAND";
 
     public static final String PROPERTY_MASK_LAND_SECTION_KEY = PROPERTY_MASK_LAND_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_LAND_SECTION_LABEL = "L2 Flag Mask: LAND";
@@ -109,16 +101,14 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_LAND_COLOR_LABEL = "LAND: Color";
     public static final String PROPERTY_MASK_LAND_COLOR_TOOLTIP = "Set default color of the LAND mask";
     //    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandDarkGreenBrown;
-    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT = LandBrown;
-
-
+    public static final Color PROPERTY_MASK_LAND_COLOR_DEFAULT =  new Color(40, 30, 0);;
 
 
     // PRODWARN
 
     public static final String PROPERTY_MASK_PRODWARN_NAME = "PRODWARN";
 
-    public static final String PROPERTY_MASK_PRODWARN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.PRODWARN";
+    public static final String PROPERTY_MASK_PRODWARN_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.PRODWARN";
 
     public static final String PROPERTY_MASK_PRODWARN_SECTION_KEY = PROPERTY_MASK_PRODWARN_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_PRODWARN_SECTION_LABEL = "L2 Flag Mask: PRODWARN";
@@ -141,12 +131,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_PRODWARN_COLOR_DEFAULT = DeepBlue;
 
 
-
     // HIGLINT
 
     public static final String PROPERTY_MASK_HIGLINT_NAME = "HIGLINT";
 
-    public static final String PROPERTY_MASK_HIGLINT_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HIGLINT";
+    public static final String PROPERTY_MASK_HIGLINT_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.HIGLINT";
 
     public static final String PROPERTY_MASK_HIGLINT_SECTION_KEY = PROPERTY_MASK_HIGLINT_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_HIGLINT_SECTION_LABEL = "L2 Flag Mask: HIGLINT";
@@ -169,12 +158,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_HIGLINT_COLOR_DEFAULT = BrightPink;
 
 
-
     // HILT
 
     public static final String PROPERTY_MASK_HILT_NAME = "HILT";
 
-    public static final String PROPERTY_MASK_HILT_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HILT";
+    public static final String PROPERTY_MASK_HILT_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.HILT";
 
     public static final String PROPERTY_MASK_HILT_SECTION_KEY = PROPERTY_MASK_HILT_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_HILT_SECTION_LABEL = "L2 Flag Mask: HILT";
@@ -194,16 +182,14 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HILT_COLOR_LABEL = "HILT: Color";
     public static final String PROPERTY_MASK_HILT_COLOR_TOOLTIP = "Set default color of the HILT mask";
     //    public static final Color PROPERTY_MASK_HILT_COLOR_DEFAULT = BrightFlags;
-    public static final Color PROPERTY_MASK_HILT_COLOR_DEFAULT =  Color.GRAY;
-
-
+    public static final Color PROPERTY_MASK_HILT_COLOR_DEFAULT = Color.GRAY;
 
 
     // HISATZEN
 
     public static final String PROPERTY_MASK_HISATZEN_NAME = "HISATZEN";
 
-    public static final String PROPERTY_MASK_HISATZEN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HISATZEN";
+    public static final String PROPERTY_MASK_HISATZEN_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.HISATZEN";
 
     public static final String PROPERTY_MASK_HISATZEN_SECTION_KEY = PROPERTY_MASK_HISATZEN_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_HISATZEN_SECTION_LABEL = "L2 Flag Mask: HISATZEN";
@@ -217,21 +203,20 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HISATZEN_TRANSPARENCY_KEY = PROPERTY_MASK_HISATZEN_ROOT_KEY + ".transparency";
     public static final String PROPERTY_MASK_HISATZEN_TRANSPARENCY_LABEL = "HISATZEN: Transparency";
     public static final String PROPERTY_MASK_HISATZEN_TRANSPARENCY_TOOLTIP = "Set default transparency of the HISATZEN mask";
-    public static final double PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT = 0.5;
+    public static final double PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT = 0.3;
 
     public static final String PROPERTY_MASK_HISATZEN_COLOR_KEY = PROPERTY_MASK_HISATZEN_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_HISATZEN_COLOR_LABEL = "HISATZEN: Color";
     public static final String PROPERTY_MASK_HISATZEN_COLOR_TOOLTIP = "Set default color of the HISATZEN mask";
     //    public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = MiscFlags;
-    public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = LightCyan;
-
+    public static final Color PROPERTY_MASK_HISATZEN_COLOR_DEFAULT = new Color(128, 110, 130);
 
 
     // COASTZ
 
     public static final String PROPERTY_MASK_COASTZ_NAME = "COASTZ";
 
-    public static final String PROPERTY_MASK_COASTZ_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.COASTZ";
+    public static final String PROPERTY_MASK_COASTZ_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.COASTZ";
 
     public static final String PROPERTY_MASK_COASTZ_SECTION_KEY = PROPERTY_MASK_COASTZ_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_COASTZ_SECTION_LABEL = "L2 Flag Mask: COASTZ";
@@ -254,13 +239,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_COASTZ_COLOR_DEFAULT = BurntUmber;
 
 
-
-
     // STRAYLIGHT
 
     public static final String PROPERTY_MASK_STRAYLIGHT_NAME = "STRAYLIGHT";
 
-    public static final String PROPERTY_MASK_STRAYLIGHT_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.STRAYLIGHT";
+    public static final String PROPERTY_MASK_STRAYLIGHT_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.STRAYLIGHT";
 
     public static final String PROPERTY_MASK_STRAYLIGHT_SECTION_KEY = PROPERTY_MASK_STRAYLIGHT_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_STRAYLIGHT_SECTION_LABEL = "L2 Flag Mask: STRAYLIGHT";
@@ -283,12 +266,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_STRAYLIGHT_COLOR_DEFAULT = Color.YELLOW;
 
 
-
     // CLDICE
 
     public static final String PROPERTY_MASK_CLDICE_NAME = "CLDICE";
 
-    public static final String PROPERTY_MASK_CLDICE_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.CLDICE";
+    public static final String PROPERTY_MASK_CLDICE_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.CLDICE";
 
     public static final String PROPERTY_MASK_CLDICE_SECTION_KEY = PROPERTY_MASK_CLDICE_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_CLDICE_SECTION_LABEL = "L2 Flag Mask: CLDICE";
@@ -311,13 +293,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_CLDICE_COLOR_DEFAULT = Color.WHITE;
 
 
-
-
     // COCCOLITH
 
     public static final String PROPERTY_MASK_COCCOLITH_NAME = "COCCOLITH";
 
-    public static final String PROPERTY_MASK_COCCOLITH_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.COCCOLITH";
+    public static final String PROPERTY_MASK_COCCOLITH_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.COCCOLITH";
 
     public static final String PROPERTY_MASK_COCCOLITH_SECTION_KEY = PROPERTY_MASK_COCCOLITH_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_COCCOLITH_SECTION_LABEL = "L2 Flag Mask: COCCOLITH";
@@ -340,12 +320,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_COCCOLITH_COLOR_DEFAULT = Color.CYAN;
 
 
-
     // TURBIDW
 
     public static final String PROPERTY_MASK_TURBIDW_NAME = "TURBIDW";
 
-    public static final String PROPERTY_MASK_TURBIDW_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.TURBIDW";
+    public static final String PROPERTY_MASK_TURBIDW_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.TURBIDW";
 
     public static final String PROPERTY_MASK_TURBIDW_SECTION_KEY = PROPERTY_MASK_TURBIDW_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_TURBIDW_SECTION_LABEL = "L2 Flag Mask: TURBIDW";
@@ -368,12 +347,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_TURBIDW_COLOR_DEFAULT = LightBrown;
 
 
-
     // HISOLZEN
 
     public static final String PROPERTY_MASK_HISOLZEN_NAME = "HISOLZEN";
 
-    public static final String PROPERTY_MASK_HISOLZEN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HISOLZEN";
+    public static final String PROPERTY_MASK_HISOLZEN_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.HISOLZEN";
 
     public static final String PROPERTY_MASK_HISOLZEN_SECTION_KEY = PROPERTY_MASK_HISOLZEN_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_HISOLZEN_SECTION_LABEL = "L2 Flag Mask: HISOLZEN";
@@ -393,15 +371,14 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_HISOLZEN_COLOR_LABEL = "HISOLZEN: Color";
     public static final String PROPERTY_MASK_HISOLZEN_COLOR_TOOLTIP = "Set default color of the HISOLZEN mask";
     //    public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = MiscFlags;
-    public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = Purple;
-
+    public static final Color PROPERTY_MASK_HISOLZEN_COLOR_DEFAULT = new Color(255, 170, 94);;
 
 
     // LOWLW
 
     public static final String PROPERTY_MASK_LOWLW_NAME = "LOWLW";
 
-    public static final String PROPERTY_MASK_LOWLW_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.LOWLW";
+    public static final String PROPERTY_MASK_LOWLW_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.LOWLW";
 
     public static final String PROPERTY_MASK_LOWLW_SECTION_KEY = PROPERTY_MASK_LOWLW_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_LOWLW_SECTION_LABEL = "L2 Flag Mask: LOWLW";
@@ -424,12 +401,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_LOWLW_COLOR_DEFAULT = Cornflower;
 
 
-
     // CHLFAIL
 
     public static final String PROPERTY_MASK_CHLFAIL_NAME = "CHLFAIL";
 
-    public static final String PROPERTY_MASK_CHLFAIL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.CHLFAIL";
+    public static final String PROPERTY_MASK_CHLFAIL_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.CHLFAIL";
 
     public static final String PROPERTY_MASK_CHLFAIL_SECTION_KEY = PROPERTY_MASK_CHLFAIL_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_CHLFAIL_SECTION_LABEL = "L2 Flag Mask: CHLFAIL";
@@ -452,12 +428,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_CHLFAIL_COLOR_DEFAULT = FailRed;
 
 
-
     // NAVWARN
 
     public static final String PROPERTY_MASK_NAVWARN_NAME = "NAVWARN";
 
-    public static final String PROPERTY_MASK_NAVWARN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.NAVWARN";
+    public static final String PROPERTY_MASK_NAVWARN_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.NAVWARN";
 
     public static final String PROPERTY_MASK_NAVWARN_SECTION_KEY = PROPERTY_MASK_NAVWARN_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_NAVWARN_SECTION_LABEL = "L2 Flag Mask: NAVWARN";
@@ -480,13 +455,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_NAVWARN_COLOR_DEFAULT = Color.MAGENTA;
 
 
-
-
     // ABSAER
 
     public static final String PROPERTY_MASK_ABSAER_NAME = "ABSAER";
 
-    public static final String PROPERTY_MASK_ABSAER_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.ABSAER";
+    public static final String PROPERTY_MASK_ABSAER_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.ABSAER";
 
     public static final String PROPERTY_MASK_ABSAER_SECTION_KEY = PROPERTY_MASK_ABSAER_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_ABSAER_SECTION_LABEL = "L2 Flag Mask: ABSAER";
@@ -509,13 +482,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_ABSAER_COLOR_DEFAULT = Color.ORANGE;
 
 
-
-
     // MAXAERITER
 
     public static final String PROPERTY_MASK_MAXAERITER_NAME = "MAXAERITER";
 
-    public static final String PROPERTY_MASK_MAXAERITER_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.MAXAERITER";
+    public static final String PROPERTY_MASK_MAXAERITER_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.MAXAERITER";
 
     public static final String PROPERTY_MASK_MAXAERITER_SECTION_KEY = PROPERTY_MASK_MAXAERITER_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_MAXAERITER_SECTION_LABEL = "L2 Flag Mask: MAXAERITER";
@@ -538,13 +509,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_MAXAERITER_COLOR_DEFAULT = MediumGray;
 
 
-
-
     // MODGLINT
 
     public static final String PROPERTY_MASK_MODGLINT_NAME = "MODGLINT";
 
-    public static final String PROPERTY_MASK_MODGLINT_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.MODGLINT";
+    public static final String PROPERTY_MASK_MODGLINT_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.MODGLINT";
 
     public static final String PROPERTY_MASK_MODGLINT_SECTION_KEY = PROPERTY_MASK_MODGLINT_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_MODGLINT_SECTION_LABEL = "L2 Flag Mask: MODGLINT";
@@ -567,13 +536,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_MODGLINT_COLOR_DEFAULT = LightPurple;
 
 
-
-
     // CHLWARN
 
     public static final String PROPERTY_MASK_CHLWARN_NAME = "CHLWARN";
 
-    public static final String PROPERTY_MASK_CHLWARN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.CHLWARN";
+    public static final String PROPERTY_MASK_CHLWARN_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.CHLWARN";
 
     public static final String PROPERTY_MASK_CHLWARN_SECTION_KEY = PROPERTY_MASK_CHLWARN_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_CHLWARN_SECTION_LABEL = "L2 Flag Mask: CHLWARN";
@@ -596,12 +563,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_CHLWARN_COLOR_DEFAULT = Color.LIGHT_GRAY;
 
 
-
     // ATMWARN
 
     public static final String PROPERTY_MASK_ATMWARN_NAME = "ATMWARN";
 
-    public static final String PROPERTY_MASK_ATMWARN_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.ATMWARN";
+    public static final String PROPERTY_MASK_ATMWARN_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.ATMWARN";
 
     public static final String PROPERTY_MASK_ATMWARN_SECTION_KEY = PROPERTY_MASK_ATMWARN_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_ATMWARN_SECTION_LABEL = "L2 Flag Mask: ATMWARN";
@@ -624,13 +590,11 @@ public class SeadasReaderDefaults {
     public static final Color PROPERTY_MASK_ATMWARN_COLOR_DEFAULT = Color.MAGENTA;
 
 
-
-
     // SEAICE
 
     public static final String PROPERTY_MASK_SEAICE_NAME = "SEAICE";
 
-    public static final String PROPERTY_MASK_SEAICE_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.SEAICE";
+    public static final String PROPERTY_MASK_SEAICE_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.SEAICE";
 
     public static final String PROPERTY_MASK_SEAICE_SECTION_KEY = PROPERTY_MASK_SEAICE_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_SEAICE_SECTION_LABEL = "L2 Flag Mask: SEAICE";
@@ -650,15 +614,14 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_SEAICE_COLOR_LABEL = "SEAICE: Color";
     public static final String PROPERTY_MASK_SEAICE_COLOR_TOOLTIP = "Set default color of the SEAICE mask";
     //    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = BrightFlags;
-    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = Color.DARK_GRAY;
-
+    public static final Color PROPERTY_MASK_SEAICE_COLOR_DEFAULT = new Color(161, 217, 255);
 
 
     // NAVFAIL
 
     public static final String PROPERTY_MASK_NAVFAIL_NAME = "NAVFAIL";
 
-    public static final String PROPERTY_MASK_NAVFAIL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.NAVFAIL";
+    public static final String PROPERTY_MASK_NAVFAIL_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.NAVFAIL";
 
     public static final String PROPERTY_MASK_NAVFAIL_SECTION_KEY = PROPERTY_MASK_NAVFAIL_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_NAVFAIL_SECTION_LABEL = "L2 Flag Mask: NAVFAIL";
@@ -686,7 +649,7 @@ public class SeadasReaderDefaults {
 
     public static final String PROPERTY_MASK_FILTER_NAME = "FILTER";
 
-    public static final String PROPERTY_MASK_FILTER_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.FILTER";
+    public static final String PROPERTY_MASK_FILTER_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.FILTER";
 
     public static final String PROPERTY_MASK_FILTER_SECTION_KEY = PROPERTY_MASK_FILTER_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_FILTER_SECTION_LABEL = "L2 Flag Mask: FILTER";
@@ -714,7 +677,7 @@ public class SeadasReaderDefaults {
 
     public static final String PROPERTY_MASK_BOWTIEDEL_NAME = "BOWTIEDEL";
 
-    public static final String PROPERTY_MASK_BOWTIEDEL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.BOWTIEDEL";
+    public static final String PROPERTY_MASK_BOWTIEDEL_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.BOWTIEDEL";
 
     public static final String PROPERTY_MASK_BOWTIEDEL_SECTION_KEY = PROPERTY_MASK_BOWTIEDEL_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_BOWTIEDEL_SECTION_LABEL = "L2 Flag Mask: BOWTIEDEL";
@@ -742,7 +705,7 @@ public class SeadasReaderDefaults {
 
     public static final String PROPERTY_MASK_HIPOL_NAME = "HIPOL";
 
-    public static final String PROPERTY_MASK_HIPOL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.HIPOL";
+    public static final String PROPERTY_MASK_HIPOL_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.HIPOL";
 
     public static final String PROPERTY_MASK_HIPOL_SECTION_KEY = PROPERTY_MASK_HIPOL_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_HIPOL_SECTION_LABEL = "L2 Flag Mask: HIPOL";
@@ -771,7 +734,7 @@ public class SeadasReaderDefaults {
 
     public static final String PROPERTY_MASK_PRODFAIL_NAME = "PRODFAIL";
 
-    public static final String PROPERTY_MASK_PRODFAIL_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.PRODFAIL";
+    public static final String PROPERTY_MASK_PRODFAIL_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.PRODFAIL";
 
     public static final String PROPERTY_MASK_PRODFAIL_SECTION_KEY = PROPERTY_MASK_PRODFAIL_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_PRODFAIL_SECTION_LABEL = "L2 Flag Mask: PRODFAIL";
@@ -799,7 +762,7 @@ public class SeadasReaderDefaults {
 
     public static final String PROPERTY_MASK_GEOREGION_NAME = "GEOREGION";
 
-    public static final String PROPERTY_MASK_GEOREGION_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.GEOREGION";
+    public static final String PROPERTY_MASK_GEOREGION_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.GEOREGION";
 
     public static final String PROPERTY_MASK_GEOREGION_SECTION_KEY = PROPERTY_MASK_GEOREGION_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_GEOREGION_SECTION_LABEL = "L2 Flag Mask: GEOREGION";
@@ -818,27 +781,113 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_GEOREGION_COLOR_KEY = PROPERTY_MASK_GEOREGION_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_GEOREGION_COLOR_LABEL = "GEOREGION: Color";
     public static final String PROPERTY_MASK_GEOREGION_COLOR_TOOLTIP = "Set default color of the GEOREGION mask";
-    public static final Color PROPERTY_MASK_GEOREGION_COLOR_DEFAULT = MiscFlags;
+    public static final Color PROPERTY_MASK_GEOREGION_COLOR_DEFAULT = new Color(38, 143, 210);;
 
 
 
+    // OPSHAL
+
+    public static final String PROPERTY_MASK_OPSHAL_NAME = "OPSHAL";
+
+    public static final String PROPERTY_MASK_OPSHAL_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.OPSHAL";
+
+    public static final String PROPERTY_MASK_OPSHAL_SECTION_KEY = PROPERTY_MASK_OPSHAL_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_OPSHAL_SECTION_LABEL = "L2 Flag Mask: OPSHAL";
+    public static final String PROPERTY_MASK_OPSHAL_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask OPSHAL";
+
+    public static final String PROPERTY_MASK_OPSHAL_ENABLED_KEY = PROPERTY_MASK_OPSHAL_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_OPSHAL_ENABLED_LABEL = "OPSHAL: Set as Selected";
+    public static final String PROPERTY_MASK_OPSHAL_ENABLED_TOOLTIP = "Set OPSHAL mask as selected by default";
+    public static final boolean PROPERTY_MASK_OPSHAL_ENABLED_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_OPSHAL_TRANSPARENCY_KEY = PROPERTY_MASK_OPSHAL_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_OPSHAL_TRANSPARENCY_LABEL = "OPSHAL: Transparency";
+    public static final String PROPERTY_MASK_OPSHAL_TRANSPARENCY_TOOLTIP = "Set default transparency of the OPSHAL mask";
+    public static final double PROPERTY_MASK_OPSHAL_TRANSPARENCY_DEFAULT = 0.5;
+
+    public static final String PROPERTY_MASK_OPSHAL_COLOR_KEY = PROPERTY_MASK_OPSHAL_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_OPSHAL_COLOR_LABEL = "OPSHAL: Color";
+    public static final String PROPERTY_MASK_OPSHAL_COLOR_TOOLTIP = "Set default color of the OPSHAL mask";
+    public static final Color PROPERTY_MASK_OPSHAL_COLOR_DEFAULT = new Color(180, 100, 0);
 
 
-    public static final String PROPERTY_MASK_OVERRIDE_COLOR_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".override.color";
+    // CLOUD
+
+    public static final String PROPERTY_MASK_CLOUD_NAME = "CLOUD";
+
+    public static final String PROPERTY_MASK_CLOUD_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.CLOUD";
+
+    public static final String PROPERTY_MASK_CLOUD_SECTION_KEY = PROPERTY_MASK_CLOUD_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_CLOUD_SECTION_LABEL = "L2 Flag Mask: CLOUD";
+    public static final String PROPERTY_MASK_CLOUD_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask CLOUD";
+
+    public static final String PROPERTY_MASK_CLOUD_ENABLED_KEY = PROPERTY_MASK_CLOUD_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_CLOUD_ENABLED_LABEL = "CLOUD: Set as Selected";
+    public static final String PROPERTY_MASK_CLOUD_ENABLED_TOOLTIP = "Set CLOUD mask as selected by default";
+    public static final boolean PROPERTY_MASK_CLOUD_ENABLED_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_CLOUD_TRANSPARENCY_KEY = PROPERTY_MASK_CLOUD_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_CLOUD_TRANSPARENCY_LABEL = "CLOUD: Transparency";
+    public static final String PROPERTY_MASK_CLOUD_TRANSPARENCY_TOOLTIP = "Set default transparency of the CLOUD mask";
+    public static final double PROPERTY_MASK_CLOUD_TRANSPARENCY_DEFAULT = 0.0;
+
+    public static final String PROPERTY_MASK_CLOUD_COLOR_KEY = PROPERTY_MASK_CLOUD_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_CLOUD_COLOR_LABEL = "CLOUD: Color";
+    public static final String PROPERTY_MASK_CLOUD_COLOR_TOOLTIP = "Set default color of the CLOUD mask";
+    public static final Color PROPERTY_MASK_CLOUD_COLOR_DEFAULT = new Color(245, 245, 255);;
+
+
+
+    // SNOWICE
+
+    public static final String PROPERTY_MASK_SNOWICE_NAME = "SNOWICE";
+
+    public static final String PROPERTY_MASK_SNOWICE_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.SNOWICE";
+
+    public static final String PROPERTY_MASK_SNOWICE_SECTION_KEY = PROPERTY_MASK_SNOWICE_ROOT_KEY + ".section";
+    public static final String PROPERTY_MASK_SNOWICE_SECTION_LABEL = "L2 Flag Mask: SNOWICE";
+    public static final String PROPERTY_MASK_SNOWICE_SECTION_TOOLTIP = "SeaDAS Level-2 reader options for mask SNOWICE";
+
+    public static final String PROPERTY_MASK_SNOWICE_ENABLED_KEY = PROPERTY_MASK_SNOWICE_ROOT_KEY + ".show";
+    public static final String PROPERTY_MASK_SNOWICE_ENABLED_LABEL = "SNOWICE: Set as Selected";
+    public static final String PROPERTY_MASK_SNOWICE_ENABLED_TOOLTIP = "Set SNOWICE mask as selected by default";
+    public static final boolean PROPERTY_MASK_SNOWICE_ENABLED_DEFAULT = false;
+
+    public static final String PROPERTY_MASK_SNOWICE_TRANSPARENCY_KEY = PROPERTY_MASK_SNOWICE_ROOT_KEY + ".transparency";
+    public static final String PROPERTY_MASK_SNOWICE_TRANSPARENCY_LABEL = "SNOWICE: Transparency";
+    public static final String PROPERTY_MASK_SNOWICE_TRANSPARENCY_TOOLTIP = "Set default transparency of the SNOWICE mask";
+    public static final double PROPERTY_MASK_SNOWICE_TRANSPARENCY_DEFAULT = 0.0;
+
+    public static final String PROPERTY_MASK_SNOWICE_COLOR_KEY = PROPERTY_MASK_SNOWICE_ROOT_KEY + ".color";
+    public static final String PROPERTY_MASK_SNOWICE_COLOR_LABEL = "SNOWICE: Color";
+    public static final String PROPERTY_MASK_SNOWICE_COLOR_TOOLTIP = "Set default color of the SNOWICE mask";
+    public static final Color PROPERTY_MASK_SNOWICE_COLOR_DEFAULT = new Color(200, 245, 255);;
+
+
+    
+
+
+
+    public static final String PROPERTY_MASK_OVERRIDE_COLOR_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".override.color";
     public static final String PROPERTY_MASK_OVERRIDE_COLOR_LABEL = "Quality_L2: Color Override";
     public static final String PROPERTY_MASK_OVERRIDE_COLOR_TOOLTIP = "Override all masks with this color";
     public static final Color PROPERTY_MASK_OVERRIDE_COLOR_DEFAULT = Color.darkGray;
 
 
-    public static final String PROPERTY_MASK_SORT_ENABLED_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + "mask.sort.enabled";
+    public static final String PROPERTY_MASK_SORT_ENABLED_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + "mask.sort.enabled";
     public static final String PROPERTY_MASK_SORT_ENABLED_LABEL = "Sort Level-2 Flag Masks";
     public static final String PROPERTY_MASK_SORT_ENABLED_TOOLTIP = "Sort Level-2 Flag Masks";
     public static final boolean PROPERTY_MASK_SORT_ENABLED_DEFAULT = true;
 
-    public static final String PROPERTY_MASK_SORT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.sort";
-    public static final String PROPERTY_MASK_SORT_LABEL = "Ordered Flag List";
-    public static final String PROPERTY_MASK_SORT_TOOLTIP = "Ordered Flags (any flags not included in this list will still be loaded at bottom of Mask Manager)";
-    public static final String PROPERTY_MASK_SORT_DEFAULT = "LAND ABSAER ATMFAIL ATMWARN BOWTIEDEL CHLFAIL CHLWARN CLDICE COASTZ COCCOLITH FILTER GEOREGION HIGLINT HILT HIPOL HISATZEN HISOLZEN LOWLW MAXAERITER MODGLINT NAVFAIL NAVWARN PRODFAIL PRODWARN SEAICE STRAYLIGHT TURBIDW";
+    public static final String PROPERTY_MASKS_TOP_OF_STACK_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".masks.top_of_stack";
+    public static final String PROPERTY_MASKS_TOP_OF_STACK_LABEL = "Flags at Top of Stack";
+    public static final String PROPERTY_MASKS_TOP_OF_STACK_TOOLTIP = "These flags (space delimited) get put at top of the Mask Manager stack ";
+    public static final String PROPERTY_MASKS_TOP_OF_STACK_DEFAULT = "LAND";
+
+    public static final String PROPERTY_MASKS_BOTTOM_OF_STACK_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".masks.bottom_of_stack";
+    public static final String PROPERTY_MASKS_BOTTOM_OF_STACK_LABEL = "Flags at Bottom of Stack";
+    public static final String PROPERTY_MASKS_BOTTOM_OF_STACK_TOOLTIP = "These flags (space delimited) get put at bottom of the Mask Manager stack ";
+    public static final String PROPERTY_MASKS_BOTTOM_OF_STACK_DEFAULT = "";
 
 
 
@@ -852,7 +901,7 @@ public class SeadasReaderDefaults {
 
     // COMPOSITE1
 
-    public static final String PROPERTY_MASK_COMPOSITE1_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Composite1";
+    public static final String PROPERTY_MASK_COMPOSITE1_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.Composite1";
 
     public static final String PROPERTY_MASK_COMPOSITE1_SECTION_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_COMPOSITE1_SECTION_LABEL = "Derived Mask: Composite1";
@@ -872,11 +921,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COMPOSITE1_NAME_LABEL = "Composite1: Mask Name";
     public static final String PROPERTY_MASK_COMPOSITE1_NAME_TOOLTIP = "Set name of Composite1 mask";
     public static final String PROPERTY_MASK_COMPOSITE1_NAME_DEFAULT = "Composite1";
-
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".flag.presets";
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_LABEL = "Composite1: Flag Presets";
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_TOOLTIP = "Set flags for Composite1 mask";
-    public static final String PROPERTY_MASK_COMPOSITE1_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
 
     public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_KEY = PROPERTY_MASK_COMPOSITE1_ROOT_KEY + ".flags";
     public static final String PROPERTY_MASK_COMPOSITE1_FLAGS_LABEL = "Composite1: Flags";
@@ -900,7 +944,7 @@ public class SeadasReaderDefaults {
 
     // COMPOSITE2
 
-    public static final String PROPERTY_MASK_COMPOSITE2_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Composite2";
+    public static final String PROPERTY_MASK_COMPOSITE2_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.Composite2";
 
     public static final String PROPERTY_MASK_COMPOSITE2_SECTION_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_COMPOSITE2_SECTION_LABEL = "Derived Mask: Composite2";
@@ -920,11 +964,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COMPOSITE2_NAME_LABEL = "Composite2: Mask Name";
     public static final String PROPERTY_MASK_COMPOSITE2_NAME_TOOLTIP = "Set name of Composite2 mask";
     public static final String PROPERTY_MASK_COMPOSITE2_NAME_DEFAULT = "Composite2";
-
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".flag.presets";
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_LABEL = "Composite2: Flag Presets";
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_TOOLTIP = "Set flags for Composite2 mask";
-    public static final String PROPERTY_MASK_COMPOSITE2_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
 
     public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_KEY = PROPERTY_MASK_COMPOSITE2_ROOT_KEY + ".flags";
     public static final String PROPERTY_MASK_COMPOSITE2_FLAGS_LABEL = "Composite2: Flags";
@@ -947,7 +986,7 @@ public class SeadasReaderDefaults {
 
     // COMPOSITE3
 
-    public static final String PROPERTY_MASK_COMPOSITE3_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Composite3";
+    public static final String PROPERTY_MASK_COMPOSITE3_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.Composite3";
 
     public static final String PROPERTY_MASK_COMPOSITE3_SECTION_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_COMPOSITE3_SECTION_LABEL = "Derived Mask: Composite3";
@@ -968,10 +1007,6 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_COMPOSITE3_NAME_TOOLTIP = "Set name of Composite3 mask";
     public static final String PROPERTY_MASK_COMPOSITE3_NAME_DEFAULT = "Composite3";
 
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".flag.presets";
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_LABEL = "Composite3: Flag Presets";
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_TOOLTIP = "Set flags for Composite3 mask";
-    public static final String PROPERTY_MASK_COMPOSITE3_FLAG_PRESETS_DEFAULT = PROPERTY_MASK_COMPOSITE_FLAG_PRESETS_OPTION1;
 
     public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_KEY = PROPERTY_MASK_COMPOSITE3_ROOT_KEY + ".flags";
     public static final String PROPERTY_MASK_COMPOSITE3_FLAGS_LABEL = "Composite3: Flags";
@@ -993,7 +1028,7 @@ public class SeadasReaderDefaults {
 
     // Water
 
-    public static final String PROPERTY_MASK_Water_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.Water";
+    public static final String PROPERTY_MASK_Water_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.Water";
 
     public static final String PROPERTY_MASK_Water_SECTION_KEY = PROPERTY_MASK_Water_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_Water_SECTION_LABEL = "Derived Mask: Water";
@@ -1012,13 +1047,13 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_MASK_Water_COLOR_KEY = PROPERTY_MASK_Water_ROOT_KEY + ".color";
     public static final String PROPERTY_MASK_Water_COLOR_LABEL = "Water: Color";
     public static final String PROPERTY_MASK_Water_COLOR_TOOLTIP = "Set default color of the Water mask";
-    public static final Color PROPERTY_MASK_Water_COLOR_DEFAULT = DeepBlue;
+    public static final Color PROPERTY_MASK_Water_COLOR_DEFAULT = new Color(0, 75, 150);;
 
 
 
     // SPARE
 
-    public static final String PROPERTY_MASK_SPARE_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".mask.SPARE";
+    public static final String PROPERTY_MASK_SPARE_ROOT_KEY = PROPERTY_LEVEL_MASKS_ROOT_KEY + ".mask.SPARE";
 
     public static final String PROPERTY_MASK_SPARE_SECTION_KEY = PROPERTY_MASK_SPARE_ROOT_KEY + ".section";
     public static final String PROPERTY_MASK_SPARE_SECTION_LABEL = "L2 Flag Mask: Developer Unused SPARE Masks";
@@ -1041,18 +1076,253 @@ public class SeadasReaderDefaults {
 
 
 
-    // Property Setting: Restore Defaults
 
-    private static final String PROPERTY_RESTORE_KEY_SUFFIX = PROPERTY_SEADAS_READER_ROOT_KEY + ".restore.defaults";
 
-    public static final String PROPERTY_RESTORE_SECTION_KEY = PROPERTY_RESTORE_KEY_SUFFIX + ".section";
-    public static final String PROPERTY_RESTORE_SECTION_LABEL = "Restore";
-    public static final String PROPERTY_RESTORE_SECTION_TOOLTIP = "Restores preferences to the package defaults";
+    public static final String FlIP_MISSION_DEFAULT = "MISSION DEFAULT: (Earth Orientation)";
+    public static final String FlIP_YES = "YES";
+    public static final String FlIP_NO = "NO: (Native Sensor Orientation)";
+    public static final String FlIP_NO_L3 = "NO: (Native Orientation)";
 
-    public static final String PROPERTY_RESTORE_DEFAULTS_KEY = PROPERTY_RESTORE_KEY_SUFFIX + ".apply";
-    public static final String PROPERTY_RESTORE_DEFAULTS_LABEL = "Default (SeaDAS Toolbox Preferences)";
-    public static final String PROPERTY_RESTORE_DEFAULTS_TOOLTIP = "Restore all color bar legend preferences to the original default";
-    public static final boolean PROPERTY_RESTORE_DEFAULTS_DEFAULT = false;
+
+
+    // L3_MAPPED FILE READER
+
+    public static final String PROPERTY_L3_MAPPED_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".L3_MAPPED";
+
+
+    public static final String PROPERTY_L3_MAPPED_SECTION_KEY = PROPERTY_L3_MAPPED_ROOT_KEY + ".section";
+    public static final String PROPERTY_L3_MAPPED_SECTION_LABEL = "Level-3 Mapped File Reader";
+    public static final String PROPERTY_L3_MAPPED_SECTION_TOOLTIP = "SeaDAS File Reader options for NASA Level-3 Mapped files";
+
+
+    public static final String PROPERTY_L3_MAPPED_BAND_GROUPING_KEY = PROPERTY_L3_MAPPED_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_L3_MAPPED_BAND_GROUPING_LABEL = "Band Grouping";
+    public static final String PROPERTY_L3_MAPPED_BAND_GROUPING_TOOLTIP = "<html>NASA Level-3 Mapped File Reader:<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_L3_MAPPED_BAND_GROUPING_DEFAULT = "Rrs:nLw:Lt:La_:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg_:aph_:bbp_:vgain:BT:tg_sol:tg_sen";
+
+
+    public static final String PROPERTY_L3_MAPPED_FLIPX_KEY = PROPERTY_L3_MAPPED_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_L3_MAPPED_FLIPX_LABEL = "Flip-X (Horizontal)";
+    public static final String PROPERTY_L3_MAPPED_FLIPX_TOOLTIP = "<html>NASA Level-3 Mapped Reader:<br>Flip image about the X-axis (horizontally)</html>";
+    public static final String PROPERTY_L3_MAPPED_FLIPX_DEFAULT = FlIP_NO_L3;
+
+
+    public static final String PROPERTY_L3_MAPPED_FLIPY_KEY = PROPERTY_L3_MAPPED_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_L3_MAPPED_FLIPY_LABEL = "Flip-Y (Vertical)";
+    public static final String PROPERTY_L3_MAPPED_FLIPY_TOOLTIP = "<html>NASA Level-3 Mapped Reader:<br>Flip image about the Y-axis (vertically)</html>";
+    public static final String PROPERTY_L3_MAPPED_FLIPY_DEFAULT = FlIP_NO_L3;
+
+
+
+
+
+    // LEVEL2 FILE READER
+
+    public static final String PROPERTY_LEVEL2_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".level2";
+
+
+    public static final String PROPERTY_LEVEL2_SECTION_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".section";
+    public static final String PROPERTY_LEVEL2_SECTION_LABEL = "Level-2 File Reader";
+    public static final String PROPERTY_LEVEL2_SECTION_TOOLTIP = "SeaDAS File Reader options for NASA Level-2 files";
+
+
+    public static final String PROPERTY_LEVEL2_BAND_GROUPING_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_LEVEL2_BAND_GROUPING_LABEL = "Band Grouping";
+    public static final String PROPERTY_LEVEL2_BAND_GROUPING_TOOLTIP = "<html>NASA Level-2 File Reader:<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT = "Rrs_*:Rrs_unc_*:Rrs_raman:" +
+            "nLw:Lt_interp:Lt:La_:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:" +
+            "Taua:taua:Kd:" +
+            "a_*:aot_*:adg_*:aph_*:bbp_*:bb_*:vgain_*:BT_*:aph_unc:" +
+            "tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf:mr_fine:mi_fine:mr_coarse:" +
+            "mi_coarse:angstrom:ssa_fine:ssa_coarse::fmf:ssa:mr:mi_:aot_fine:aot_coarse:water_albedo_correction_first_guess:" +
+            "f_isotropic:f_isotropic_first_guess:lidar_p11_pi:lidar_bsca_total:lidar_depol_ratio:lidar_ratio:refr_coefs_mode1:refr_coefs_mode2:refr_coefs_mode3:" +
+            "mr_mode1:mr_mode2:mr_mode3:mi_mode1:mi_mode2:mi_mode3:aot_mode1:aot_mode2:aot_mode3:ssa_mode1:ssa_mode2:ssa_mode3:" +
+            "sensor_zenith_angle:scattering_angle:relative_azimuth_angle:timing:iteration:" +
+            "aot_uncertainty:aot_fine_uncertainty:aot_coarse_uncertainty:angstrom_*_uncertainty:" +
+            "ssa_uncertainty:ssa_fine_uncertainty:ssa_coarse_uncertainty:ssa_mode1_uncertainty:ssa_mode2_uncertainty:ssa_mode3_uncertainty:" +
+            "mr_mode1_uncertainty:mr_mode2_uncertainty:mr_mode3_uncertainty:mi_mode1_uncertainty:mi_mode2_uncertainty:mi_mode3_uncertainty:" +
+            "aot_mode1_uncertainty:aot_mode2_uncertainty:aot_mode3_uncertainty:ssa_mode1_uncertainty:ssa_mode2_uncertainty:ssa_mode3_uncertainty:" +
+            "NUV_UncertaintyCODToSSA:Aerosol_Optical_Depth:Mean_Gas_Corrected_Reflectance:Mean_Reflectance:" +
+            "DT_AerosolSingleScattAlbedo:NUV_AerosolSingleScattAlbedo:NUV_Reflectivity:" +
+            "NUV_AerosolOpticalDepthOverCloud:NUV_UncertaintyACAODToSSA:AAOD:" +
+            "Rrs1_mean:Rrs1_std:Rrs1_model_mean:Rrs1_model_std:" +
+            "Rrs2_mean:Rrs2_std:Rrs2_model_mean:Rrs2_model_std";
+
+
+    public static final String PROPERTY_LEVEL2_FLIPX_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_LEVEL2_FLIPX_LABEL = "Flip-X (Horizontal)";
+    public static final String PROPERTY_LEVEL2_FLIPX_TOOLTIP = "<html>NASA Level-2 Reader:<br>Flip image about the X-axis (horizontally)</html>";
+    public static final String PROPERTY_LEVEL2_FLIPX_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_LEVEL2_FLIPY_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_LEVEL2_FLIPY_LABEL = "Flip-Y (Vertical)";
+    public static final String PROPERTY_LEVEL2_FLIPY_TOOLTIP = "<html>NASA Level-2 Reader:<br>Flip image about the Y-axis (vertically)</html>";
+    public static final String PROPERTY_LEVEL2_FLIPY_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+
+    // L1B_PACE FILE READER
+
+    public static final String PROPERTY_L1B_PACE_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".l1b_pace";
+
+    public static final String PROPERTY_L1B_PACE_SECTION_KEY = PROPERTY_L1B_PACE_ROOT_KEY + ".section";
+    public static final String PROPERTY_L1B_PACE_SECTION_LABEL = "Level-1B PACE File Reader";
+    public static final String PROPERTY_L1B_PACE_SECTION_TOOLTIP = "SeaDAS File Reader options for NASA Level-1B PACE files";
+
+    public static final String PROPERTY_L1B_PACE_BAND_GROUPING_KEY = PROPERTY_L1B_PACE_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_L1B_PACE_BAND_GROUPING_LABEL = "Band Grouping (OCI)";
+    public static final String PROPERTY_L1B_PACE_BAND_GROUPING_TOOLTIP = "<html>NASA Level-1B PACE-OCI File Reader:<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_L1B_PACE_BAND_GROUPING_DEFAULT = "rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR";
+
+    public static final String PROPERTY_L1B_PACE_FLIPX_KEY = PROPERTY_L1B_PACE_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_L1B_PACE_FLIPX_LABEL = "Flip-X (Horizontal)";
+    public static final String PROPERTY_L1B_PACE_FLIPX_TOOLTIP = "<html>NASA Level-1B PACE Reader:<br>Flip image about the X-axis (horizontally)</html>";
+    public static final String PROPERTY_L1B_PACE_FLIPX_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_L1B_PACE_FLIPY_KEY = PROPERTY_L1B_PACE_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_L1B_PACE_FLIPY_LABEL = "Flip-Y (Vertical)";
+    public static final String PROPERTY_L1B_PACE_FLIPY_TOOLTIP = "<html>NASA Level-1B PACE Reader:<br>Flip image about the Y-axis (vertically)</html>";
+    public static final String PROPERTY_L1B_PACE_FLIPY_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+
+    // L1C_PACE FILE READER
+
+    public static final String PROPERTY_L1C_PACE_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".l1c_pace";
+
+
+    public static final String PROPERTY_L1C_PACE_SECTION_KEY = PROPERTY_L1C_PACE_ROOT_KEY + ".section";
+    public static final String PROPERTY_L1C_PACE_SECTION_LABEL = "Level-1C PACE File Reader";
+    public static final String PROPERTY_L1C_PACE_SECTION_TOOLTIP = "SeaDAS File Reader options for NASA Level-1C PACE files";
+
+
+    public static final String PROPERTY_L1C_PACE_OCI_BAND_GROUPING_KEY = PROPERTY_L1C_PACE_ROOT_KEY + ".band_grouping.oci";
+    public static final String PROPERTY_L1C_PACE_OCI_BAND_GROUPING_LABEL = "Band Grouping (OCI)";
+    public static final String PROPERTY_L1C_PACE_OCI_BAND_GROUPING_TOOLTIP = "<html>NASA Level-1C PACE-OCI File Reader:<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_L1C_PACE_OCI_BAND_GROUPING_DEFAULT = "i_-20:i_20:qc_-20:qc_20:i_stdev_-20:i_stdev_20:" +
+            "sensor_zenith:sensor_azimuth:solar_azimuth:solar_zenith:scattering_angle:view_time_offsets:number_of_observations";
+
+
+    public static final String PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_KEY = PROPERTY_L1C_PACE_ROOT_KEY + ".band_grouping.harp2";
+    public static final String PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_LABEL = "Band Grouping (HARP2)";
+    public static final String PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_TOOLTIP = "<html>NASA Level-1C PACE-HARP2 File Reader<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_DEFAULT = "i_*_440:i_*_549:i_*_664:i_*_865:q_*_440:q_*_549:q_*_664:q_*_865:" +
+            "qc_*_440:qc_*_549:qc_*_664:qc_*_865:u_*_440:u_*_549:u_*_664:u_*_865:dolp_*_440:dolp_*_549:dolp_*_664:dolp_*_865:aolp_*_440:aolp_*_549:aolp_*_664:aolp_*_865:" +
+            "i_stdev_*_440:i_stdev_*_549:i_stdev_*_664:i_stdev_*_865:q_stdev_*_440:q_stdev_*_549:q_stdev_*_664:q_stdev_*_865:" +
+            "u_stdev_*_440:u_stdev_*_549:u_stdev_*_664:u_stdev_*_865:dolp_stdev_*_440:dolp_stdev_*_549:dolp_stdev_*_664:dolp_stdev_*_865:" +
+            "aolp_stdev_*_440:aolp_stdev_*_549:aolp_stdev_*_664:aolp_stdev_*_865:" +
+            "sensor_zenith_*_440:sensor_zenith_*_549:sensor_zenith_*_664:sensor_zenith_*_865:sensor_azimuth_*_440:sensor_azimuth_*_549:sensor_azimuth_*_664:sensor_azimuth_*_865:" +
+            "solar_zenith_*_440:solar_zenith_*_549:solar_zenith_*_664:solar_zenith_*_865:solar_azimuth_*_440:solar_azimuth_*_549:solar_azimuth_*_664:solar_azimuth_*_865:" +
+            "scattering_angle_*_440:scattering_angle_*_549:scattering_angle_*_664:scattering_angle_*_865:rotation_angle_*_440:rotation_angle_*_549:rotation_angle_*_664:rotation_angle_*_865:" +
+            "view_time_offsets_*_440:view_time_offsets_*_549:view_time_offsets_*_664:view_time_offsets_*_865:number_of_observations_*_440:number_of_observations_*_549:number_of_observations_*_664:number_of_observations_*_865";
+
+
+    public static final String PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_KEY = PROPERTY_L1C_PACE_ROOT_KEY + ".band_grouping.spexone";
+    public static final String PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_LABEL = "Band Grouping (SPEXONE)";
+    public static final String PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_TOOLTIP = "<html>NASA Level-1C PACE-SPEXone File Reader<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_DEFAULT = "i_-50:i_-20:i_0:i_20:i_50:i_stdev_-50:i_stdev_-20:i_stdev_0:i_stdev_20:i_stdev_50:" +
+            "i_polsample_-50:i_polsample_-20:i_polsample_0:i_polsample_20:i_polsample_50:i_polsample_stdev_-50:i_polsample_stdev_-20:i_polsample_stdev_0:i_polsample_stdev_20:i_polsample_stdev_50:" +
+            "aolp_-50:aolp_-20:aolp_0:aolp_20:aolp_50:aolp_stdev_-50:aolp_stdev_-20:aolp_stdev_0:aolp_stdev_20:aolp_stdev_50:" +
+            "dolp_-50:dolp_-20:dolp_0:dolp_20:dolp_50:dolp_stdev_-50:dolp_stdev_-20:dolp_stdev_0:dolp_stdev_20:dolp_stdev_50:" +
+            "q_-50:q_-20:q_0:q_20:q_50:q_stdev_-50:q_stdev_-20:q_stdev_0:q_stdev_20:q_stdev_50:" +
+            "u_-50:u_-20:u_0:u_20:u_50:u_stdev_-50:u_stdev_-20:u_stdev_0:u_stdev_20:u_stdev_50:" +
+            "qc_-50:qc_-20:qc_0:qc_20:qc_50:qc_polsample_-50:qc_polsample_-20:qc_polsample_0:qc_polsample_20:qc_polsample_50:" +
+            "q_over_i_-50:q_over_i_-20:q_over_i_0:q_over_i_20:q_over_i_50:q_over_i_stdev_-50:q_over_i_stdev_-20:q_over_i_stdev_0:q_over_i_stdev_20:q_over_i_stdev_50:" +
+            "u_over_i_-50:u_over_i_-20:u_over_i_0:u_over_i_20:u_over_i_50:u_over_i_stdev_-50:u_over_i_stdev_-20:u_over_i_stdev_0:u_over_i_stdev_20:u_over_i_stdev_50:" +
+            "sensor_zenith:sensor_azimuth:solar_zenith:solar_azimuth:scattering_angle:rotation_angle:" +
+            "view_time_offsets:number_of_observations" ;
+
+
+    public static final String PROPERTY_L1C_PACE_FLIPX_KEY = PROPERTY_L1C_PACE_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_L1C_PACE_FLIPX_LABEL = "Flip-X (Horizontal)";
+    public static final String PROPERTY_L1C_PACE_FLIPX_TOOLTIP = "<html>NASA Level-1C PACE Reader:<br>Flip image about the X-axis (horizontally)</html>";
+    public static final String PROPERTY_L1C_PACE_FLIPX_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+    public static final String PROPERTY_L1C_PACE_FLIPY_KEY = PROPERTY_L1C_PACE_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_L1C_PACE_FLIPY_LABEL = "Flip-Y (Vertical)";
+    public static final String PROPERTY_L1C_PACE_FLIPY_TOOLTIP = "<html>NASA Level-1C PACE Reader:<br>Flip image about the Y-axis (vertically)</html>";
+    public static final String PROPERTY_L1C_PACE_FLIPY_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+
+    // L1B_MODIS FILE READER
+
+    public static final String PROPERTY_L1B_MODIS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".l1b_modis";
+
+    public static final String PROPERTY_L1B_MODIS_SECTION_KEY = PROPERTY_L1B_MODIS_ROOT_KEY + ".section";
+    public static final String PROPERTY_L1B_MODIS_SECTION_LABEL = "Level-1B MODIS File Reader";
+    public static final String PROPERTY_L1B_MODIS_SECTION_TOOLTIP = "SeaDAS File Reader options for NASA Level-1B MODIS files";
+
+    public static final String PROPERTY_L1B_MODIS_BAND_GROUPING_KEY = PROPERTY_L1B_MODIS_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_L1B_MODIS_BAND_GROUPING_LABEL = "Band Grouping";
+    public static final String PROPERTY_L1B_MODIS_BAND_GROUPING_TOOLTIP = "<html>NASA Level-1B MODIS File Reader:<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_L1B_MODIS_BAND_GROUPING_DEFAULT = "RefSB:Emissive";
+
+    public static final String PROPERTY_L1B_MODIS_FLIPX_KEY = PROPERTY_L1B_MODIS_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_L1B_MODIS_FLIPX_LABEL = "Flip-X (Horizontal)";
+    public static final String PROPERTY_L1B_MODIS_FLIPX_TOOLTIP = "<html>NASA Level-1B MODIS Reader:<br>Flip image about the X-axis (horizontally)</html>";
+    public static final String PROPERTY_L1B_MODIS_FLIPX_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_L1B_MODIS_FLIPY_KEY = PROPERTY_L1B_MODIS_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_L1B_MODIS_FLIPY_LABEL = "Flip-Y (Vertical)";
+    public static final String PROPERTY_L1B_MODIS_FLIPY_TOOLTIP = "<html>NASA Level-1B MODIS Reader:<br>Flip image about the Y-axis (vertically)</html>";
+    public static final String PROPERTY_L1B_MODIS_FLIPY_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+    // L1B_VIIRS FILE READER
+
+    public static final String PROPERTY_L1B_VIIRS_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".l1b_viirs";
+
+    public static final String PROPERTY_L1B_VIIRS_SECTION_KEY = PROPERTY_L1B_VIIRS_ROOT_KEY + ".section";
+    public static final String PROPERTY_L1B_VIIRS_SECTION_LABEL = "Level-1B VIIRS File Reader";
+    public static final String PROPERTY_L1B_VIIRS_SECTION_TOOLTIP = "SeaDAS File Reader options for NASA Level-1B VIIRS files";
+
+    public static final String PROPERTY_L1B_VIIRS_BAND_GROUPING_KEY = PROPERTY_L1B_VIIRS_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_L1B_VIIRS_BAND_GROUPING_LABEL = "Band Grouping";
+    public static final String PROPERTY_L1B_VIIRS_BAND_GROUPING_TOOLTIP = "<html>NASA Level-1B VIIRS File Reader:<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_L1B_VIIRS_BAND_GROUPING_DEFAULT = "RefSB:Emissive";
+
+    public static final String PROPERTY_L1B_VIIRS_FLIPX_KEY = PROPERTY_L1B_VIIRS_ROOT_KEY + ".flipx";
+    public static final String PROPERTY_L1B_VIIRS_FLIPX_LABEL = "Flip-X (Horizontal)";
+    public static final String PROPERTY_L1B_VIIRS_FLIPX_TOOLTIP = "<html>NASA Level-1B VIIRS Reader:<br>Flip image about the X-axis (horizontally)</html>";
+    public static final String PROPERTY_L1B_VIIRS_FLIPX_DEFAULT = FlIP_MISSION_DEFAULT;
+
+    public static final String PROPERTY_L1B_VIIRS_FLIPY_KEY = PROPERTY_L1B_VIIRS_ROOT_KEY + ".flipy";
+    public static final String PROPERTY_L1B_VIIRS_FLIPY_LABEL = "Flip-Y (Vertical)";
+    public static final String PROPERTY_L1B_VIIRS_FLIPY_TOOLTIP = "<html>NASA Level-1B VIIRS Reader:<br>Flip image about the Y-axis (vertically)</html>";
+    public static final String PROPERTY_L1B_VIIRS_FLIPY_DEFAULT = FlIP_MISSION_DEFAULT;
+
+
+
+
+
+
+
+
+
+
+    // Common Reader Preferences
+
+    public static final String PROPERTY_COMMON_ROOT_KEY = PROPERTY_SEADAS_READER_ROOT_KEY + ".common";
+
+    public static final String PROPERTY_COMMON_SECTION_KEY = PROPERTY_COMMON_ROOT_KEY + ".section";
+    public static final String PROPERTY_COMMON_SECTION_LABEL = "Common Options (applies to all 'SeaDAS File Readers')";
+    public static final String PROPERTY_COMMON_SECTION_TOOLTIP = "Formatting for which applies to all SeaDAS readers (does not include the ESA readers)";
+
+    public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_KEY = PROPERTY_COMMON_ROOT_KEY + ".significant_figures";
+    public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_LABEL = "Valid Pixel Rounding";
+    public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_TOOLTIP = "<html>Sets significant figures for min/max values in the valid pixel expression.<br>" +
+            "When auto-generating the min and max values of the valid pixel expression from the metadata of the input file,<br>" +
+            "round the values based on the significant figures listed here.<br>" +
+            "Otherwise no rounding will be done and the full values will be presented in the valid pixel expression.";
+    public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT = "7 (Significant Figures)";
+    public static final String PROPERTY_VALID_PIXEL_SIG_FIGS_EXACT = "EXACT: No Rounding";
+
 
 
 
@@ -1082,6 +1352,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_ENABLED_KEY;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_ENABLED_KEY;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_KEY;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_KEY;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_KEY;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_KEY;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_ENABLED_KEY;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_ENABLED_KEY;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_ENABLED_KEY;
@@ -1123,6 +1396,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_COLOR_KEY;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_KEY;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_KEY;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_KEY;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_KEY;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_KEY;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_COLOR_KEY;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_COLOR_KEY;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_COLOR_KEY;
@@ -1161,6 +1437,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_TRANSPARENCY_KEY;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_KEY;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_KEY;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_KEY;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_KEY;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_KEY;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_TRANSPARENCY_KEY;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_TRANSPARENCY_KEY;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_TRANSPARENCY_KEY;
@@ -1201,6 +1480,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_ENABLED_DEFAULT;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_ENABLED_DEFAULT;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_ENABLED_DEFAULT;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_ENABLED_DEFAULT;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_ENABLED_DEFAULT;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_ENABLED_DEFAULT;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_ENABLED_DEFAULT;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_ENABLED_DEFAULT;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_ENABLED_DEFAULT;
@@ -1242,6 +1524,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_COLOR_DEFAULT;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_COLOR_DEFAULT;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_COLOR_DEFAULT;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_COLOR_DEFAULT;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_COLOR_DEFAULT;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_COLOR_DEFAULT;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_COLOR_DEFAULT;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_COLOR_DEFAULT;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_COLOR_DEFAULT;
@@ -1280,6 +1565,9 @@ public class SeadasReaderDefaults {
             case HIPOL: return SeadasReaderDefaults.PROPERTY_MASK_HIPOL_TRANSPARENCY_DEFAULT;
             case PRODFAIL: return SeadasReaderDefaults.PROPERTY_MASK_PRODFAIL_TRANSPARENCY_DEFAULT;
             case GEOREGION: return SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_TRANSPARENCY_DEFAULT;
+            case OPSHAL: return SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_TRANSPARENCY_DEFAULT;
+            case CLOUD: return SeadasReaderDefaults.PROPERTY_MASK_CLOUD_TRANSPARENCY_DEFAULT;
+            case SNOWICE: return SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_TRANSPARENCY_DEFAULT;
             case HIGLINT: return SeadasReaderDefaults.PROPERTY_MASK_HIGLINT_TRANSPARENCY_DEFAULT;
             case HILT: return SeadasReaderDefaults.PROPERTY_MASK_HILT_TRANSPARENCY_DEFAULT;
             case HISATZEN: return SeadasReaderDefaults.PROPERTY_MASK_HISATZEN_TRANSPARENCY_DEFAULT;
@@ -1322,7 +1610,7 @@ public class SeadasReaderDefaults {
     public enum MaskType {
         WATER, SPARE, COASTZ, STRAYLIGHT, CLDICE, COCCOLITH, TURBIDW,
         HISOLZEN, LOWLW, CHLFAIL, NAVWARN, ABSAER, MAXAERITER, MODGLINT,
-        CHLWARN, ATMWARN, SEAICE, NAVFAIL, FILTER, BOWTIEDEL, HIPOL, PRODFAIL, GEOREGION,
+        CHLWARN, ATMWARN, SEAICE, NAVFAIL, FILTER, BOWTIEDEL, HIPOL, PRODFAIL, GEOREGION, CLOUD, OPSHAL, SNOWICE,
         HIGLINT, HILT, HISATZEN, PRODWARN, LAND, ATMFAIL,
         COMPOSITE1, COMPOSITE1_INCLUDE, COMPOSITE1_NAME, COMPOSITE1_EXPRESSION,
         COMPOSITE2, COMPOSITE2_INCLUDE, COMPOSITE2_NAME, COMPOSITE2_EXPRESSION,
