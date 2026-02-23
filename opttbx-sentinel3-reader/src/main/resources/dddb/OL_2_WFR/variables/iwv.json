@@ -1,0 +1,18 @@
+[
+  {
+    "name": "IWV",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "kg.m-2",
+    "description" : "Integrated water vapour column above the current pixel"
+  },
+  {
+    "name": "IWV_err",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "kg.m-2",
+    "description" : "Error estimate for Integrated water vapour column above the current pixel"
+  }
+]

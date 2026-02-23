@@ -96,7 +96,7 @@ public class S3MultiLevelOpSource extends LazyMultiLevelSource {
                 rasterDataNode.getDataType() == ProductData.TYPE_UINT32) {
             return new S3VariableOpImage(variable, DataBuffer.TYPE_FLOAT, sceneRasterWidth, sceneRasterHeight, imageTileSize,
                                          resolutionLevel, dimensionNames, dimensionIndexes, xIndex, yIndex,
-                                         S3VariableOpImage.ArrayConverter.UINTCONVERTER);
+                                         ArrayConverter.UINTCONVERTER);
         } else {
             return new S3VariableOpImage(variable, dataBufferType, sceneRasterWidth, sceneRasterHeight, imageTileSize,
                                          resolutionLevel, dimensionNames, dimensionIndexes, xIndex, yIndex);
