@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.ecostress;
 
 import hdf.object.FileFormat;
+import org.esa.snap.core.util.io.FileUtils;
 
 import java.io.File;
 
@@ -35,7 +36,7 @@ public class EcostressFile extends File implements AutoCloseable {
      * @param inputFile the ECOSTRESS file path object
      */
     public EcostressFile(File inputFile) {
-        this(inputFile.getAbsolutePath());
+        this(FileUtils.getCachedFilePath(inputFile));
     }
 
     /**

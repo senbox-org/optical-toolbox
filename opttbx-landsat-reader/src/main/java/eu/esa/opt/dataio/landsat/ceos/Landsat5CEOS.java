@@ -181,9 +181,8 @@ public final class Landsat5CEOS extends Landsat5CEOSConstants implements Landsat
         return null;
     }
 
-    private static List<File> getHeaderFiles(final String path) {
+    private static List<File> getHeaderFiles(final File folder) {
         List<File> headerFiles = new Vector<File>();
-        File folder = new File(path);
         if (!folder.exists() || !folder.isDirectory()) {
             return null;
         }

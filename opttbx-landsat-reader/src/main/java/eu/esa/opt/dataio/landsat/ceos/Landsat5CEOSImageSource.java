@@ -44,7 +44,7 @@ public final class Landsat5CEOSImageSource extends AbstractLandsatImageSources {
 
     @Override
     protected final void setImageFiles() {
-        final File folder = new File(file.getFileLocation());
+        final File folder = file.getFileLocation();
         File[] files = folder.listFiles(new FileFilter() {
             Pattern bandFilenamePattern = Pattern.compile("dat_0[\\d].001");
 

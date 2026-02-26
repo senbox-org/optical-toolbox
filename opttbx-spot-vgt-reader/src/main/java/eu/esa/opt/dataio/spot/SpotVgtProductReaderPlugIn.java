@@ -25,6 +25,7 @@ import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.RGBImageProfile;
 import org.esa.snap.core.datamodel.RGBImageProfileManager;
+import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
 import java.io.*;
@@ -51,7 +52,7 @@ public class SpotVgtProductReaderPlugIn implements ProductReaderPlugIn {
             return DecodeQualification.UNABLE;
         }
 
-        VirtualDir virtualDir = VirtualDir.create(file);
+        VirtualDir virtualDir = FileUtils.getVirtualDir(file);
         if (virtualDir == null) {
             return DecodeQualification.UNABLE;
         }

@@ -50,14 +50,13 @@ public class Sentinel3Level1ReaderPlugIn extends S3ReaderPlugIn {
 
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        String inputString = input.toString();
-        Path path = Paths.get(inputString);
+        Path path = getProductPath(input);
         final String filename = FileUtils.getFilenameFromPath(path.toString());
 
         // check if we have a directory name (not ending on xml)
         final String fileExtension = FileUtils.getExtension(filename);
         if (isDirectory(fileExtension)) {
-            inputString = inputString + File.separator + MANIFEST_BASE + ".xml";
+            path = path.resolve(MANIFEST_BASE + ".xml");
         }
 
         if (".zip".equalsIgnoreCase(fileExtension)) {
@@ -67,7 +66,6 @@ public class Sentinel3Level1ReaderPlugIn extends S3ReaderPlugIn {
             }
         }
 
-        path = Paths.get(inputString);
         String parentFileName;
         if (path.getParent() == null) {
             parentFileName = path.getFileName().toString();

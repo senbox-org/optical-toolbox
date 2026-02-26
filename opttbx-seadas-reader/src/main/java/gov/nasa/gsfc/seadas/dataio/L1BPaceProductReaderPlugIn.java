@@ -45,7 +45,7 @@ public class L1BPaceProductReaderPlugIn implements ProductReaderPlugIn {
         H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
 
         try {
-            ncfile = NetcdfFileOpener.open(inputFile.getPath());
+            ncfile = NetcdfFileOpener.open(inputFile);
             if (ncfile != null) {
                 Attribute scene_title = ncfile.findGlobalAttribute("title");
 

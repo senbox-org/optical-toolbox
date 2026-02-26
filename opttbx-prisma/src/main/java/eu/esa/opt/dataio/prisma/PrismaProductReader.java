@@ -82,7 +82,7 @@ public class PrismaProductReader extends AbstractProductReader {
         if (!PRISMA_FILENAME_PATTERN.matcher(fileName).matches()) {
             throw new ProductIOException(_prefixErrorMessage + "The file name: '" + fileName + "' does not match the regular expression: " + PRISMA_FILENAME_REGEX);
         }
-        _hdfFile = NetcdfFileOpener.open(inputFile.getAbsolutePath());
+        _hdfFile = NetcdfFileOpener.open(inputFile);
         if (_hdfFile == null) {
             throw new ProductIOException(_prefixErrorMessage + "HDF could not be opened.");
         }

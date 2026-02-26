@@ -20,8 +20,8 @@ import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
 
 import java.awt.Dimension;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.regex.Pattern;
 
 /**
@@ -53,8 +53,8 @@ class LandsatReprocessedMetadata extends AbstractLandsatMetadata {
     private final Landsat8Metadata landsat8MetadataDelegate;
     private final String sensorId;
 
-    public LandsatReprocessedMetadata(FileReader fileReader) throws IOException {
-        super(fileReader);
+    public LandsatReprocessedMetadata(Reader reader) throws IOException {
+        super(reader);
         landsatLegacyMetadataDelegate = new LandsatLegacyMetadata(getMetaDataElementRoot());
         landsat8MetadataDelegate = new Landsat8Metadata(getMetaDataElementRoot());
         sensorId = getMetaDataElementRoot().getElement("PRODUCT_METADATA").getAttribute("SENSOR_ID").getData().getElemString();

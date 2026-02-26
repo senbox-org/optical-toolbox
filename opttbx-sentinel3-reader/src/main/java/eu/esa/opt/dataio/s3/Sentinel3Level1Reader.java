@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -525,7 +524,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
     }
 
     private void initalizeInput() {
-        final Path inputPath = getInputPath();
+        final Path inputPath = getProductPath();
         virtualDir = getVirtualDir(inputPath);
     }
 
@@ -662,7 +661,7 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
                     throw new IOException("File not found: " + fileName);
                 }
 
-                netcdfFile = NetcdfFileOpener.open(file.getAbsolutePath());
+                netcdfFile = NetcdfFileOpener.open(file);
                 filesMap.put(fileName, netcdfFile);
             }
         }
@@ -690,10 +689,6 @@ public class Sentinel3Level1Reader extends AbstractProductReader implements Meta
         sensorContext = null;
 
         super.close();
-    }
-
-    private Path getInputPath() {
-        return Paths.get(getInput().toString());
     }
 
 

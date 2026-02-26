@@ -26,6 +26,7 @@ import com.bc.ceres.binio.SimpleType;
 import com.bc.ceres.binio.util.RandomAccessFileIOHandler;
 import eu.esa.opt.dataio.avhrr.AvhrrConstants;
 import org.esa.snap.core.dataio.DecodeQualification;
+import org.esa.snap.core.util.io.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,7 +59,8 @@ class KlmFormatDetector {
     private IOHandler ioHandler;
 
     KlmFormatDetector(File file) throws FileNotFoundException {
-        raf = new RandomAccessFile(file, "r");
+        final File localCachedFile = new File(FileUtils.getCachedFilePath(file));
+        raf = new RandomAccessFile(localCachedFile, "r");
         ioHandler = new RandomAccessFileIOHandler(raf);
         detectArsHeader();
     }

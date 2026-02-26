@@ -39,10 +39,7 @@ import org.esa.snap.core.dataop.maptransf.MapTransform;
 import org.esa.snap.core.dataop.maptransf.MapTransformFactory;
 import org.esa.snap.core.dataop.maptransf.StereographicDescriptor;
 import org.esa.snap.core.dataop.maptransf.UTM;
-import org.esa.snap.core.util.Debug;
-import org.esa.snap.core.util.Guardian;
-import org.esa.snap.core.util.StringUtils;
-import org.esa.snap.core.util.TreeNode;
+import org.esa.snap.core.util.*;
 import org.esa.snap.core.util.math.FXYSum;
 
 import javax.imageio.stream.FileImageInputStream;
@@ -604,6 +601,6 @@ class PrismProductDirectory {
 
 
     private ImageInputStream createInputStream(final String fileName) throws IOException {
-        return new FileImageInputStream(new File(baseDir, fileName));
+        return ImageUtils.getImageInputStream(baseDir.toPath().resolve(fileName));
     }
 }

@@ -161,7 +161,7 @@ public class LandsatGeotiffReaderPlugin implements ProductReaderPlugIn {
             }
         }
 
-        VirtualDir virtualDir = VirtualDir.create(inputFile);
+        VirtualDir virtualDir = FileUtils.getVirtualDir(inputFile);
         if (virtualDir == null) {
             virtualDir = new VirtualDirTgz(inputFile.toPath());
         }

@@ -54,7 +54,7 @@ public class ViirsProductReaderPlugIn implements ProductReaderPlugIn {
             return decodeQualification;
         }
 
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
                 Attribute platformShortName = ncfile.findGlobalAttribute("Platform_Short_Name");
                 if (platformShortName != null) {

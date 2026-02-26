@@ -158,7 +158,7 @@ public class Sentinel3ProductReader extends AbstractProductReader {
     }
 
     public final File getInputFile() {
-        return new File(getInput().toString());
+        return getProductFile();
     }
 
     public final File getInputFileParentDirectory() {

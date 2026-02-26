@@ -60,7 +60,7 @@ public class L1BGociProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
 
         H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
 
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
                 Attribute scene_title = ncfile.findGlobalAttribute("HDFEOS_POINTS_Scene_Header_Scene_Title");
 

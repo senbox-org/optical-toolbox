@@ -2,6 +2,7 @@ package eu.esa.opt.dataio.s2;
 
 import org.apache.commons.io.FileUtils;
 import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.SystemUtils;
 
 import ucar.ma2.InvalidRangeException;
@@ -10,6 +11,7 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,7 +42,8 @@ public class ECMWFTReader {
             	Files.createDirectories(copyPath);
             } catch (FileAlreadyExistsException exc) {
             }
-            Files.copy(path, copyPath, StandardCopyOption.REPLACE_EXISTING);
+            final InputStream inputFileStream = ProductUtils.getProductInputStream(path);
+            Files.copy(inputFileStream, copyPath, StandardCopyOption.REPLACE_EXISTING);
             ncfile = NetcdfFile.openInMemory(copyPath.toString());
             List<GridPair> gridList = new ArrayList<GridPair>();
             gridList.add(new GridPair("Total_column_water_vapour_surface","tcwv"+tileId));

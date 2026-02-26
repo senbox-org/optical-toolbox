@@ -23,6 +23,7 @@ import eu.esa.opt.dataio.alos.ceos.records.FilePointerRecord;
 import eu.esa.opt.dataio.alos.ceos.records.TextRecord;
 import eu.esa.opt.dataio.alos.ceos.records.VolumeDescriptorRecord;
 import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.util.ImageUtils;
 
 import javax.imageio.stream.FileImageInputStream;
 import java.io.File;
@@ -45,7 +46,7 @@ class Avnir2VolumeDirectoryFile {
     public Avnir2VolumeDirectoryFile(final File baseDir) throws IOException,
             IllegalCeosFormatException {
         final File volumeFile = CeosHelper.getVolumeFile(baseDir);
-        _ceosReader = new CeosFileReader(new FileImageInputStream(volumeFile));
+        _ceosReader = new CeosFileReader(ImageUtils.getImageInputStream(volumeFile));
         _volumeDescriptorRecord = new VolumeDescriptorRecord(_ceosReader);
         _filePointerRecords = CeosHelper.readFilePointers(_volumeDescriptorRecord);
         _textRecord = new TextRecord(_ceosReader);

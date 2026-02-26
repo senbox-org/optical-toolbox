@@ -17,6 +17,7 @@
 package eu.esa.opt.dataio.landsat;
 
 import org.esa.snap.core.util.Guardian;
+import org.esa.snap.core.util.ImageUtils;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
@@ -210,7 +211,7 @@ public final class Landsat5TMBand implements LandsatTMBand {
 
         if (bandSource instanceof File) {
             final File file = (File) bandSource;
-            inputstream = new FileImageInputStream(file);
+            inputstream = ImageUtils.getImageInputStream(file);
         }
         if (bandSource instanceof ZipEntry) {
             final ZipEntry entry = (ZipEntry) bandSource;

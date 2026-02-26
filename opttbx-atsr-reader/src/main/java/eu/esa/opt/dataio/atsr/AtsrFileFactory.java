@@ -17,9 +17,11 @@ package eu.esa.opt.dataio.atsr;
 
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.util.Debug;
+import org.esa.snap.core.util.ImageUtils;
 
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageInputStreamImpl;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +54,7 @@ class AtsrFileFactory implements AtsrConstants {
         DecodeQualification bRet = DecodeQualification.UNABLE;
 
         try {
-            bRet = getDecodeQualification(new FileImageInputStream(file));
+            bRet = getDecodeQualification(ImageUtils.getImageInputStream(file));
         } catch (IOException e) {
             // ignored
         }
@@ -71,7 +73,7 @@ class AtsrFileFactory implements AtsrConstants {
         final byte[] headerBegin = new byte[BYTE_ORDER_SIZE + PRODUCT_FILE_NAME_SIZE + INSTRUMENT_NAME_SIZE];
 
         try {
-            if (inStream.length() < headerBegin.length) {
+            if (!(inStream instanceof ImageInputStreamImpl) && inStream.length() < headerBegin.length) {
                 bRet = DecodeQualification.UNABLE;
             } else {
                 inStream.readFully(headerBegin, 0, headerBegin.length);
@@ -109,7 +111,7 @@ class AtsrFileFactory implements AtsrConstants {
      * Opens an ATSR file at the location strored in the file.
      */
     public AtsrFile open(File file) throws IOException {
-        return open(new FileImageInputStream(file), file);
+        return open(ImageUtils.getImageInputStream(file), file);
     }
 
     /**

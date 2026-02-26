@@ -28,6 +28,7 @@ import eu.esa.opt.dataio.avhrr.calibration.VisibleRadianceCalibrator;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.Debug;
+import org.esa.snap.core.util.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class KlmAvhrrFile extends AvhrrFile implements AvhrrConstants {
     private boolean hasArsHeader;
 
     public KlmAvhrrFile(File file) {
-        this.file = file;
+        this.file = new File(FileUtils.getCachedFilePath(file));
     }
 
     public static boolean canDecode(File file) {
