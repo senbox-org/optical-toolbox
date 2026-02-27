@@ -116,19 +116,17 @@ public class L1CPaceFileReader extends SeadasFileReader {
             mustFlipY = true;
             if (view_angle != null && wvl != null) {
                 try {
-                        view_Angles = view_angle.read();
+                    view_Angles = view_angle.read();
+                    for (int i = 0; i < view_Angles.getSize(); i++) {
+                        view_Angles.setInt(i, Math.round(view_Angles.getFloat(i)));
+                    }
+
                     try {
-                        wvl_sliced = wvl.slice(0,1);
+                        wvl_sliced = wvl.slice(0,0);
                     } catch (InvalidRangeException e) {
                         e.printStackTrace();  //Todo change body of catch statement.
                     }
                     waveLengths = wvl_sliced.read();
-                    waveLengths.setInt(120, waveLengths.getInt(120) + 1);
-                    waveLengths.setInt(121, waveLengths.getInt(121) + 1);
-                    waveLengths.setInt(122, waveLengths.getInt(122) + 1);
-                    waveLengths.setInt(123, waveLengths.getInt(123) + 1);
-                    waveLengths.setInt(243, waveLengths.getInt(243) + 1);
-                    waveLengths.setInt(246, waveLengths.getInt(246) + 1);
 
                 } catch (IOException e) {
                 }
@@ -222,9 +220,6 @@ public class L1CPaceFileReader extends SeadasFileReader {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
-
-//        Array wavelengths = null;
-//        Array view_angles = null;
 
         Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
         int spectralBandIndex = 0;
@@ -337,25 +332,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String description = variable.getShortName();
 
-//                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
-//                    Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
-//                    if (wvl == null) {
-//                       wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelength");
-//                    }
-//                    Variable wvl_sliced = null;
-//
-//                    if (view_angle != null && wvl != null) {
                     if (view_angles != null && wavelengths != null) {
-//                        try {
-////                            view_angles = view_angle.read();
-//                            try {
-//                                wvl_sliced = wvl.slice(0,0);
-//                            } catch (InvalidRangeException e) {
-//                                e.printStackTrace();  //Todo change body of catch statement.
-//                            }
-//                            wavelengths = wvl_sliced.read();
-//                        } catch (IOException e) {
-//                        }
                         ArrayList wavelength_list = new ArrayList();
                         for (int i = 0; i < views; i++) {
                             StringBuilder longname = new StringBuilder(description);
@@ -710,15 +687,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String description = variable.getShortName();
 
-//                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
-
-//                    if (view_angle != null) {
                     if (view_angles != null) {
-//                        try {
-//                            view_angles = view_angle.read();
-//                        } catch (IOException e) {
-//                        }
-
                         for (int i = 0; i < views; i++) {
                             StringBuilder longname = new StringBuilder(description);
                             longname.append("_");
@@ -821,29 +790,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String description = variable.getShortName();
 
-//                    Variable view_angle = ncFile.findVariable("sensor_views_bands/view_angles");
-//                    Variable wvl = ncFile.findVariable("sensor_views_bands/intensity_wavelengths");
-//                    Variable wvl_sliced = null;
-
-//                    if (view_angle != null && wvl != null) {
                     if (view_angles != null && wavelengths != null) {
-//                        try {
-////                            view_angles = view_angle.read();
-//                            try {
-//                                wvl_sliced = wvl.slice(0,1);
-//                            } catch (InvalidRangeException e) {
-//                                e.printStackTrace();  //Todo change body of catch statement.
-//                            }
-//                            wavelengths = wvl_sliced.read();
-//                            wavelengths.setInt(120, wavelengths.getInt(120) + 1);
-//                            wavelengths.setInt(121, wavelengths.getInt(121) + 1);
-//                            wavelengths.setInt(122, wavelengths.getInt(122) + 1);
-//                            wavelengths.setInt(123, wavelengths.getInt(123) + 1);
-//                            wavelengths.setInt(243, wavelengths.getInt(243) + 1);
-//                            wavelengths.setInt(246, wavelengths.getInt(246) + 1);
-//
-//                        } catch (IOException e) {
-//                        }
 
                         for (int i = 0; i < views; i++) {
                             for (int j = 0; j < bands; j++) {
@@ -851,7 +798,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 longname.append("_");
                                 longname.append(view_angles.getInt(i));
                                 longname.append("_");
-                                longname.append(wavelengths.getInt(j));
+                                longname.append(Math.round(wavelengths.getFloat(j)));
                                 String name = longname.toString();
                                 String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
 
