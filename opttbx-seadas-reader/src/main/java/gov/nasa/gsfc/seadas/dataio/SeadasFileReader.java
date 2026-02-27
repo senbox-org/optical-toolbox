@@ -38,6 +38,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
@@ -57,7 +60,7 @@ import static java.lang.System.arraycopy;
  * @since
  */
 //APR2021 - Bing Yang - added capability to read 3d products
-    //AUG 2024 - Daniel Knowles - added PACE OCI actual center wavelengths lookup in resources
+//AUG 2024 - Daniel Knowles - added PACE OCI actual center wavelengths lookup in resources
 
 
 public abstract class SeadasFileReader {
@@ -74,6 +77,7 @@ public abstract class SeadasFileReader {
     protected String sensor = null;
 
     protected String[] flagNames = null;
+    protected String[] flagValuesStringArray = null;
     protected String flagMeanings = null;
 
 
@@ -364,6 +368,16 @@ public abstract class SeadasFileReader {
             case "GEOREGION":
                 flagDescription = GEOREGION_Description;
                 break;
+            case "OPSHAL":
+                flagDescription = "Optically shallow water determined";
+                break;
+            case "CLOUD":
+                flagDescription = "Cloud determined";
+                break;
+            case "SNOWICE":
+                flagDescription = "Snow ice determined";
+                break;
+
         }
 
 
@@ -546,6 +560,25 @@ public abstract class SeadasFileReader {
                 }
                 break;
 
+            case SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME, getMaskColor(MaskType.OPSHAL), getMaskTransparency(MaskType.OPSHAL));
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME, getMaskColor(MaskType.CLOUD), getMaskTransparency(MaskType.CLOUD));
+                }
+                break;
+
+            case SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME:
+                if (flagCoding.getFlag(SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME) != null && !product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME)) {
+                    createMask(product, SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME, getMaskColor(MaskType.SNOWICE), getMaskTransparency(MaskType.SNOWICE));
+                }
+                break;
+
+
             default:
                 if (flagName.startsWith("SPARE")) {
                     if (isMaskEnabled(MaskType.SPARE)) {
@@ -605,14 +638,62 @@ public abstract class SeadasFileReader {
 
 
                 FlagCoding flagCoding = new FlagCoding("L2Flags");
-                int flagBits[] = {0x01,0x02,0x04,0x08,0x010,0x020,0x040,0x080,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}; //todo finish this list
 
-                if (flagNames != null) {
+                if (flagNames != null && flagValuesStringArray != null && (flagNames.length == flagValuesStringArray.length)) {
+                    for (int i = 0; i < flagValuesStringArray.length; i++) {
+                        String flagValueString = flagValuesStringArray[i];
+
+                        int flagValue;
+                        try {
+                            flagValue = Integer.parseInt(flagValueString);
+                        } catch (NumberFormatException e) {
+                            continue;
+                        }
+
+                        int flagBitPosition = getFlagBitPosition(flagValue);
+
+                        if (flagBitPosition >= 0) {
+                            String flagName = flagNames[i];
+
+                            boolean includeBitLocation = false;  // this is primarily just for testing diagnostics, it could be added to preferences in the future.
+
+                            if (flagName.startsWith("SPARE")) {
+                                if (flagBitPosition < 10) {
+                                    flagName = flagName + "0" + flagBitPosition;
+                                } else {
+                                    flagName = flagName + flagBitPosition;
+                                }
+                            } else if (includeBitLocation) {
+                                if (flagBitPosition < 10) {
+                                    flagName = flagName + "_0" + flagBitPosition;
+                                } else {
+                                    flagName = flagName + "_" + flagBitPosition;
+                                }
+                            }
+
+                            // set to new value of flagname
+                            flagNames[i] = flagName;
+
+                            if (!flagCoding.containsAttribute(flagName)) {
+                                flagCoding.addFlag(flagName, flagValue, getFlagDescription(flagName));
+                            } else {
+                                flagName = flagName + flagBitPosition;
+                                flagCoding.addFlag(flagName, flagValue, getFlagDescription(flagName));
+                            }
+                        }
+                    }
+
+                } else if (flagNames != null) {
+
+                    // this is the old way of doing this --- leaving in case possibly needed for heritage files.
+                    int flagBits[] = {0x01,0x02,0x04,0x08,0x010,0x020,0x040,0x080,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}; //todo finish this list
+
                     for (int bit = 0; (bit < flagNames.length && bit < flagBits.length); bit++) {
                         String flagName = flagNames[bit];
                         if (flagName.startsWith("SPARE")) {
                             flagName = flagName + Integer.toString(bit + 1);
                         }
+                        flagNames[bit] = flagName;
 //                    System.out.println("flag=" + flagName);
                         if (!flagCoding.containsAttribute(flagName)) {
 //                        System.out.println("Adding flag=" + flagName);
@@ -636,26 +717,31 @@ public abstract class SeadasFileReader {
 
 
 
+                String masksTopOfStack = getMasksTopOfStack();
+                String[] masksTopOfStackArray = masksTopOfStack.split("\\s+|,");
 
-                if (isMaskSort()) {
-                    String flagNamesOrdered = getMaskSort();
-                    String[] flagNamesOrderedArray = flagNamesOrdered.split("\\s+|,");
-                    for (String flagName : flagNamesOrderedArray) {
+                String masksBottomOfStack = getMasksBottomOfStack();
+                String[] masksBottomOfStackArray = masksBottomOfStack.split("\\s+|,");
+
+
+                if (masksTopOfStackArray.length > 0) {
+
+                    for (String flagName : masksTopOfStackArray) {
 
                         if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
-                            composite1Mask = createMaskComposite1(product, composite1Description);
+                            composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
                             continue;
                         }
                         if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null && flagName.equals(getComposite2MaskName())) {
-                            composite2Mask = createMaskComposite2(product, composite2Description);
+                            composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
                             continue;
                         }
                         if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null && flagName.equals(getComposite3MaskName())) {
-                            composite3Mask = createMaskComposite3(product, composite3Description);
+                            composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
                             continue;
                         }
                         if (Water_Mask == null && flagName.equals("Water")) {
-                            Water_Mask = createWaterMask(product, Water_Description);
+                            Water_Mask = createWaterMask(product, Water_Description, flagCoding);
                             continue;
                         }
 
@@ -663,33 +749,99 @@ public abstract class SeadasFileReader {
                     }
                 }
 
-
-//                System.out.println("Looping on flagNames");
-                for (String flagName : flagCoding.getFlagNames()) {
-//                    System.out.println("flagName=" + flagName);
-
-                    addFlagMask(product, flagName, flagCoding);
+                String[] flagNames = flagCoding.getFlagNames();
+                if (isMaskSort()) {
+                    Arrays.sort(flagNames);
                 }
 
+                for (String flagName : flagNames) {
+                    boolean bottomOfStackFound = false;
+                    for (String bottomOfStack : masksBottomOfStackArray) {
+                        if (flagName.equals(bottomOfStack)) {
+                            bottomOfStackFound = true;
+                            break;
+                        }
 
-                if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null) {
-                    composite1Mask = createMaskComposite1(product, composite1Description);
-                }
+                    }
 
-                if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null) {
-                    composite2Mask = createMaskComposite2(product, composite2Description);
-                }
-
-                if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null) {
-                    composite3Mask = createMaskComposite3(product, composite3Description);
-                }
-
-                if (Water_Mask == null) {
-                    Water_Mask = createWaterMask(product, Water_Description);
+                    if (!bottomOfStackFound) {
+                        addFlagMask(product, flagName, flagCoding);
+                    }
                 }
 
 
 
+
+
+                boolean bottomOfStackComposite1 = false;
+                boolean bottomOfStackComposite2 = false;
+                boolean bottomOfStackComposite3 = false;
+                boolean bottomOfStackWater = false;
+
+                for (String bottomOfStack : masksBottomOfStackArray) {
+                    if (bottomOfStack.equals(bottomOfStackComposite1)) {
+                        bottomOfStackComposite1 = true;
+                    }
+
+                    if (bottomOfStack.equals(bottomOfStackComposite2)) {
+                        bottomOfStackComposite2 = true;
+                    }
+
+                    if (bottomOfStack.equals(bottomOfStackComposite3)) {
+                        bottomOfStackComposite3 = true;
+                    }
+
+                    if (bottomOfStack.equals(bottomOfStackWater)) {
+                        bottomOfStackWater = true;
+                    }
+                }
+
+
+                if (!bottomOfStackComposite1 && isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null) {
+                    composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
+                }
+
+                if (!bottomOfStackComposite2 && isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null) {
+                    composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
+                }
+
+                if (!bottomOfStackComposite3 && isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null) {
+                    composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
+                }
+
+                if (!bottomOfStackWater && Water_Mask == null) {
+                    Water_Mask = createWaterMask(product, Water_Description, flagCoding);
+                }
+
+
+
+
+                if (masksBottomOfStackArray.length > 0) {
+
+                    for (String flagName : masksBottomOfStackArray) {
+
+                        if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
+                            composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
+                            continue;
+                        }
+                        if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null && flagName.equals(getComposite2MaskName())) {
+                            composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
+                            continue;
+                        }
+                        if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null && flagName.equals(getComposite3MaskName())) {
+                            composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
+                            continue;
+                        }
+                        if (Water_Mask == null && flagName.equals("Water")) {
+                            Water_Mask = createWaterMask(product, Water_Description, flagCoding);
+                            continue;
+                        }
+
+                        addFlagMask(product, flagName, flagCoding);
+                    }
+                }
+                
+                
 
                 String[] bandNames = product.getBandNames();
                 for (String bandName : bandNames) {
@@ -801,6 +953,18 @@ public abstract class SeadasFileReader {
 
                     if (isMaskEnabled(MaskType.GEOREGION) && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME)) {
                         raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_GEOREGION_NAME));
+                    }
+
+                    if (isMaskEnabled(MaskType.OPSHAL) && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_OPSHAL_NAME));
+                    }
+
+                    if (isMaskEnabled(MaskType.CLOUD) && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_CLOUD_NAME));
+                    }
+
+                    if (isMaskEnabled(MaskType.SNOWICE) && product.getMaskGroup().contains(SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME)) {
+                        raster.getOverlayMaskGroup().add(product.getMaskGroup().get(SeadasReaderDefaults.PROPERTY_MASK_SNOWICE_NAME));
                     }
 
 
@@ -1180,12 +1344,53 @@ public abstract class SeadasFileReader {
         }
     }
 
+
+    private int getFlagBitPosition(int flags) {
+
+        int bitPosition = -1; // not set if equals -1
+//        System.out.println("Checking flags=" + flags);
+
+        for (int currBitPosition=0; currBitPosition < 32; currBitPosition++) {
+            if (isBitSet(flags, currBitPosition)) {
+                bitPosition = currBitPosition;
+//                System.out.println("flags=" +flags + " currBitPosition=" + currBitPosition);
+            }
+        }
+
+        return bitPosition;
+    }
+
+
+    public boolean isBitSet(int n, int i) {
+        // Create a mask by left shifting 1 by i positions
+        int mask = (1 << i);
+
+        // Perform bitwise AND between n and mask
+        // If result is non-zero, the ith bit is set
+        return (n & mask) != 0;
+    }
+
+
+
+
     private void setFlagMeaningsAndNames(Product product, MetadataElement metadataElementL2Flags) {
-        final MetadataAttribute flagMeaningsAttribute = metadataElementL2Flags.getAttribute("FLAG_MEANINGS");
-        if (flagMeaningsAttribute != null) {
+        final MetadataAttribute flagMeaningsAttribute = metadataElementL2Flags.getAttribute(FLAG_MEANINGS);
+        final MetadataAttribute flagMasksAttribute = metadataElementL2Flags.getAttribute(FLAG_MASKS);
+
+
+        if (flagMeaningsAttribute != null && flagMasksAttribute != null) {
             flagMeanings = flagMeaningsAttribute.getData().getElemString();
-            flagNames = flagMeanings.split(" ");
+            if (flagMeanings != null && !flagMeanings.isEmpty()) {
+                flagNames = flagMeanings.split(" ");
+            }
+
+            String flagValuesStr = flagMasksAttribute.getData().getElemString();
+            if (flagValuesStr != null && !flagValuesStr.isEmpty()) {
+                flagValuesStringArray = flagValuesStr.split("\\s+|,");
+            }
+
         } else {
+            // todo not sure if this gets used anymore and this does not set flagValuesString
             final MetadataElement global = product.getMetadataRoot().getElement("Global_Attributes");
             if (global != null) {
                 final MetadataAttribute maskNamesAttribute = global.getAttribute("Mask_Names");
@@ -1231,10 +1436,10 @@ public abstract class SeadasFileReader {
 
 
 
-    private Mask createMaskComposite1(Product product, String composite1Description) {
+    private Mask createMaskComposite1(Product product, String composite1Description, FlagCoding flagCoding) {
 
         Mask composite1Mask = null;
-        String composite1Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE1_EXPRESSION));
+        String composite1Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE1_EXPRESSION), flagCoding);
         String composite1MaskName = getComposite1MaskName();
         if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) &&
                 composite1Expression != null && composite1Expression.trim().length() > 1 &&
@@ -1253,10 +1458,10 @@ public abstract class SeadasFileReader {
 
 
 
-    private Mask createMaskComposite2(Product product, String composite2Description) {
+    private Mask createMaskComposite2(Product product, String composite2Description, FlagCoding flagCoding) {
 
         Mask composite2Mask = null;
-        String composite2Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE1_EXPRESSION));
+        String composite2Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE1_EXPRESSION), flagCoding);
         String composite2MaskName = getComposite2MaskName();
         if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) &&
                 composite2Expression != null && composite2Expression.trim().length() > 1 &&
@@ -1274,10 +1479,10 @@ public abstract class SeadasFileReader {
     }
 
 
-    private Mask createMaskComposite3(Product product, String composite3Description) {
+    private Mask createMaskComposite3(Product product, String composite3Description, FlagCoding flagCoding) {
 
         Mask composite3Mask = null;
-        String composite3Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE3_EXPRESSION));
+        String composite3Expression = getCompositeFlagsExpression(getMaskComposite(MaskType.COMPOSITE3_EXPRESSION), flagCoding);
         String composite3MaskName = getComposite3MaskName();
         if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) &&
                 composite3Expression != null && composite3Expression.trim().length() > 1 &&
@@ -1297,14 +1502,18 @@ public abstract class SeadasFileReader {
 
 
 
-    private Mask createWaterMask(Product product, String Water_Description) {
+    private Mask createWaterMask(Product product, String Water_Description, FlagCoding flagCoding) {
 
-        Mask Water_Mask = Mask.BandMathsType.create("Water", Water_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "!l2_flags.LAND",
-                getMaskColor(MaskType.WATER), getMaskTransparency(MaskType.WATER));
-        product.getMaskGroup().add(Water_Mask);
-        return Water_Mask;
+        if (flagCoding != null && flagCoding.containsAttribute("LAND")) {
+            Mask Water_Mask = Mask.BandMathsType.create("Water", Water_Description,
+                    product.getSceneRasterWidth(), product.getSceneRasterHeight(),
+                    "!l2_flags.LAND",
+                    getMaskColor(MaskType.WATER), getMaskTransparency(MaskType.WATER));
+            product.getMaskGroup().add(Water_Mask);
+            return Water_Mask;
+        }
+
+        return null;
     }
 
 
@@ -1323,97 +1532,6 @@ public abstract class SeadasFileReader {
 
         return null;
     }
-
-
-    private Mask createSPARE8Mask(Product product, String SPARE8_Description) {
-        Mask SPARE8_Mask = Mask.BandMathsType.create("SPARE8", SPARE8_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE8",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE8_Mask);
-            return SPARE8_Mask;
-        }
-
-        return null;
-    }
-
-
-    private Mask createSPARE14Mask(Product product, String SPARE14_Description) {
-        Mask SPARE14_Mask = Mask.BandMathsType.create("SPARE14", SPARE14_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE14",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE14_Mask);
-            return SPARE14_Mask;
-        }
-
-        return null;
-    }
-
-
-
-
-    private Mask createSPARE19Mask(Product product, String SPARE19_Description) {
-        Mask SPARE19_Mask = Mask.BandMathsType.create("SPARE19", SPARE19_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE19",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE19_Mask);
-            return SPARE19_Mask;
-        }
-
-        return null;
-    }
-
-
-
-    private Mask createSPARE24Mask(Product product, String SPARE24_Description) {
-        Mask SPARE24_Mask = Mask.BandMathsType.create("SPARE24", SPARE24_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE24",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE24_Mask);
-            return SPARE24_Mask;
-        }
-
-        return null;
-    }
-
-
-
-    private Mask createSPARE28Mask(Product product, String SPARE28_Description) {
-        Mask SPARE28_Mask = Mask.BandMathsType.create("SPARE28", SPARE28_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE28",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE28_Mask);
-            return SPARE28_Mask;
-        }
-
-        return null;
-    }
-
-
-
-
-    private Mask createSPARE32Mask(Product product, String SPARE32_Description) {
-        Mask SPARE32_Mask = Mask.BandMathsType.create("SPARE32", SPARE32_Description,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight(),
-                "l2_flags.SPARE32",
-                getMaskColor(MaskType.SPARE), getMaskTransparency(MaskType.SPARE));
-        if (isMaskEnabled(MaskType.SPARE)) {
-            product.getMaskGroup().add(SPARE32_Mask);
-            return SPARE32_Mask;
-        }
-
-        return null;
-    }
-
 
 
 
@@ -1444,56 +1562,59 @@ public abstract class SeadasFileReader {
 
     protected void setSpectralBand(Product product) {
 
-        HashMap<String, String> ociWavelengths = new HashMap<String, String>();
+        // todo Later Possibly Delete: but for now commenting out code which used decimal wavelength lookup file
+//        HashMap<String, String> ociWavelengths = new HashMap<String, String>();
+//
+//        String sensor = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
+//        String platform = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
+//        String processing_level = ProductUtils.getMetaData(product, "processing_level");
+//
+//        String SENSOR_INFO = "sensor_info";
+//        String AUXDATA = "auxdata";
+//        String OCI_BANDPASS_CSV = "oci_bandpass.csv";
+//
+//        if (SeadasProductReader.Mission.OCI.toString().equals(sensor)) {
+//
+//            File sensorInfoAuxDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO).toFile();
+//            File ociBandPassFile = new File(sensorInfoAuxDir, OCI_BANDPASS_CSV);
+//
+//            if (ociBandPassFile == null ||  !ociBandPassFile.exists()) {
+//                try {
+//                    Path auxdataDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO);
+//
+//                    Path sourceBasePath = ResourceInstaller.findModuleCodeBasePath(SeadasFileReader.class);
+//                    Path auxdirSource = sourceBasePath.resolve(AUXDATA);
+//                    Path sourceDirPath = auxdirSource.resolve(SENSOR_INFO);
+//
+//                    final ResourceInstaller resourceInstaller = new ResourceInstaller(sourceDirPath, auxdataDir);
+//
+//                    resourceInstaller.install(".*." + OCI_BANDPASS_CSV, ProgressMonitor.NULL);
+//
+//                } catch (IOException e) {
+//                    SnapApp.getDefault().handleError("Unable to install " + AUXDATA + "/" + SENSOR_INFO + "/" + OCI_BANDPASS_CSV, e);
+//                }
+//            }
+//
+//            if (sensorInfoAuxDir != null && sensorInfoAuxDir.exists()) {
+//
+//                if (ociBandPassFile != null && ociBandPassFile.exists()) {
+//
+//                    try (BufferedReader br = new BufferedReader(new FileReader(ociBandPassFile))) {
+//                        String line;
+//                        while ((line = br.readLine()) != null) {
+//                            String[] values = line.split(",");
+//                            if (values != null && values.length > 3) {
+//                                ociWavelengths.put(values[1].trim(), values[2].trim());
+//                            }
+//                        }
+//                    } catch (Exception e) {
+//
+//                    }
+//                }
+//            }
+//        }
+        // todo END todo block
 
-        String sensor = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
-        String platform = ProductUtils.getMetaData(product, ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
-        String processing_level = ProductUtils.getMetaData(product, "processing_level");
-
-        String SENSOR_INFO = "sensor_info";
-        String AUXDATA = "auxdata";
-        String OCI_BANDPASS_CSV = "oci_bandpass.csv";
-
-        if (SeadasProductReader.Mission.OCI.toString().equals(sensor)) {
-
-            File sensorInfoAuxDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO).toFile();
-            File ociBandPassFile = new File(sensorInfoAuxDir, OCI_BANDPASS_CSV);
-
-            if (ociBandPassFile == null ||  !ociBandPassFile.exists()) {
-                try {
-                    Path auxdataDir = SystemUtils.getAuxDataPath().resolve(SENSOR_INFO);
-
-                    Path sourceBasePath = ResourceInstaller.findModuleCodeBasePath(SeadasFileReader.class);
-                    Path auxdirSource = sourceBasePath.resolve(AUXDATA);
-                    Path sourceDirPath = auxdirSource.resolve(SENSOR_INFO);
-
-                    final ResourceInstaller resourceInstaller = new ResourceInstaller(sourceDirPath, auxdataDir);
-
-                    resourceInstaller.install(".*." + OCI_BANDPASS_CSV, ProgressMonitor.NULL);
-
-                } catch (IOException e) {
-                    SnapApp.getDefault().handleError("Unable to install " + AUXDATA + "/" + SENSOR_INFO + "/" + OCI_BANDPASS_CSV, e);
-                }
-            }
-
-            if (sensorInfoAuxDir != null && sensorInfoAuxDir.exists()) {
-
-                if (ociBandPassFile != null && ociBandPassFile.exists()) {
-
-                    try (BufferedReader br = new BufferedReader(new FileReader(ociBandPassFile))) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            String[] values = line.split(",");
-                            if (values != null && values.length > 3) {
-                                ociWavelengths.put(values[1].trim(), values[2].trim());
-                            }
-                        }
-                    } catch (Exception e) {
-
-                    }
-                }
-            }
-        }
 
         int spectralBandIndex = 0;
         for (String name : product.getBandNames()) {
@@ -1506,28 +1627,36 @@ public abstract class SeadasFileReader {
                     wvlstr = parts[parts.length - 2].trim();
                 }
 
-                if (SeadasProductReader.Mission.OCI.toString().equals(sensor) &&
-                        (SeadasProductReader.ProcessingLevel.L2.toString().equals(processing_level) ||
-                                SeadasProductReader.ProcessingLevel.L3m.toString().equals(processing_level))) {
-                    wvlstr = getPaceOCIWavelengths(wvlstr, ociWavelengths);
-                }
+                // todo Later Possibly Delete: but for now commenting out code which used decimal wavelength lookup file
+//                if (SeadasProductReader.Mission.OCI.toString().equals(sensor) &&
+//                        (SeadasProductReader.ProcessingLevel.L2.toString().equals(processing_level) ||
+//                                SeadasProductReader.ProcessingLevel.L3m.toString().equals(processing_level))) {
+//                    wvlstr = getPaceOCIWavelengths(wvlstr, ociWavelengths);
+//                }
+                // todo END todo block
 
                 final float wavelength = Float.parseFloat(wvlstr);
-                band.setSpectralWavelength(wavelength);
-                band.setSpectralBandIndex(spectralBandIndex++);
+                if (band.getSpectralBandIndex() == -1) {
+                    band.setSpectralWavelength(wavelength);
+                    band.setSpectralBandIndex(spectralBandIndex++);
+                }
             }
         }
     }
 
-    protected String getPaceOCIWavelengths(String wvlstr, HashMap<String, String> ociWavelengths) {
-        String wvlstr_oci = ociWavelengths.get(wvlstr);
 
-        if (wvlstr_oci != null && wvlstr_oci.length() > 0) {
-            wvlstr = wvlstr_oci;
-        }
+    // todo Later Possibly Delete: but for now commenting out code which used decimal wavelength lookup file
+//    protected String getPaceOCIWavelengths(String wvlstr, HashMap<String, String> ociWavelengths) {
+//        String wvlstr_oci = ociWavelengths.get(wvlstr);
+//
+//        if (wvlstr_oci != null && wvlstr_oci.length() > 0) {
+//            wvlstr = wvlstr_oci;
+//        }
+//
+//        return wvlstr;
+//    }
+    // todo END todo block
 
-        return wvlstr;
-    }
 
     protected Map<Band, Variable> add3DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
@@ -1535,13 +1664,19 @@ public abstract class SeadasFileReader {
 
         int spectralBandIndex = 0;
         Array wavelengths = null;
+        Array band_indices = null;
+        Array intWavelengths = null;
 
         final int[] dimensions = variable.getShape();
+//        List<Dimension> variable_dimensions = variable.getDimensions();
+        String wavelength_name = variable.getDimensionsString().split(" ")[2].trim();
         final int bands = dimensions[2];
         final int height = dimensions[0];
         final int width = dimensions[1];
         int dim = 0;
         Variable wvl = null;
+        Variable bandIdx = null;
+        Variable intWvl = null;
 
         if (height == sceneRasterHeight && width == sceneRasterWidth) {
             // final List<Attribute> list = variable.getAttributes();
@@ -1551,25 +1686,33 @@ public abstract class SeadasFileReader {
                     dim = d.getLength();
                 }
             }
-            if (dim == bands) {
-                wvl = ncFile.findVariable("sensor_band_parameters/wavelength_3d");
-                if (wvl == null) {
-                    wvl = ncFile.findVariable("wavelength_3d");
-                }
-                if (wvl == null) {
-                    wvl = ncFile.findVariable("wavelength");
-                }
-            } else {
-                wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
-                if (wvl == null) {
-                    wvl = ncFile.findVariable("wavelength");
-                }
-            }
-            // wavenlengths for modis L2 files
+            // find wvl variable for  OCI L2 UAA files
+            wvl = ncFile.findVariable(wavelength_name);
+            //find wvl variable from new format of L2 files
             if (wvl == null) {
-                if (bands == 2 || bands == 3) {
-                    wvl = ncFile.findVariable("HDFEOS/SWATHS/Aerosol_NearUV_Swath/Data_Fields/Wavelength");
-                    // wavelenghs for DSCOVR EPIC L2 files
+                wvl = ncFile.findVariable("geophysical_data/" + wavelength_name);
+            }
+            if (wvl == null) {
+                if (dim == bands) {
+                    wvl = ncFile.findVariable("sensor_band_parameters/wavelength_3d");
+                    if (wvl == null) {
+                        wvl = ncFile.findVariable("wavelength_3d");
+                    }
+                    if (wvl == null) {
+                        wvl = ncFile.findVariable("wavelength");
+                    }
+                } else {
+                    wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+                    if (wvl == null) {
+                        wvl = ncFile.findVariable("wavelength");
+                    }
+                }
+                // wavelengths for modis L2 files
+                if (wvl == null) {
+                    if (bands == 2 || bands == 3) {
+                        wvl = ncFile.findVariable("HDFEOS/SWATHS/Aerosol_NearUV_Swath/Data_Fields/Wavelength");
+                        // wavelenghs for DSCOVR EPIC L2 files
+                    }
                 }
             }
             if (wvl != null) {
@@ -1577,12 +1720,30 @@ public abstract class SeadasFileReader {
                     wavelengths = wvl.read();
                 } catch (IOException e) {
                 }
+                bandIdx = ncFile.findVariable("geophysical_data/band_index");
+                if (bandIdx != null) {
+                    try {
+                        band_indices = bandIdx.read();
+                    } catch (IOException e) {
+                    }
+                }
+                intWvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+                if (intWvl != null) {
+                    try {
+                        intWavelengths = intWvl.read();
+                    } catch (IOException e) {
+                    }
+                }
 
                 for (int i = 0; i < bands; i++) {
                     final String shortname = variable.getShortName();
                     StringBuilder longname = new StringBuilder(shortname);
                     longname.append("_");
-                    longname.append(wavelengths.getInt(i));
+                    if (intWvl != null && bandIdx != null) {
+                        longname.append(intWavelengths.getInt(band_indices.getInt(i)));
+                    } else {
+                        longname.append(wavelengths.getInt(i));
+                    }
                     String name = longname.toString();
                     String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                     final int dataType = getProductDataType(variable);
@@ -1607,6 +1768,8 @@ public abstract class SeadasFileReader {
                             }
                             band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
                             band.setNoDataValueUsed(true);
+                            band.setSpectralWavelength(wavelengths.getFloat(i));
+                            band.setSpectralBandIndex(1);
                         } catch (Exception ignored) {
                         }
 
@@ -1647,8 +1810,13 @@ public abstract class SeadasFileReader {
                         }
                         if (validMinMax[0] != validMinMax[1]) {
                             String validExp;
+
                             if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
+                                String minStr = formatValidMinMax(validMinMax[0], false);
+                                String maxStr = formatValidMinMax(validMinMax[1], true);
+                                validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
 
                             } else {
                                 double[] minmax = {0.0, 0.0};
@@ -1663,7 +1831,12 @@ public abstract class SeadasFileReader {
                                     minmax[0] += band.getScalingOffset();
                                     minmax[1] += band.getScalingOffset();
                                 }
-                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
+
+                                String minStr = formatValidMinMax(minmax[0], false);
+                                String maxStr = formatValidMinMax(minmax[1], true);
+
+                                validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
 
                             }
                             band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
@@ -1749,7 +1922,13 @@ public abstract class SeadasFileReader {
                         String validExp;
 
                         if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
-                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
+                            String minStr = formatValidMinMax(validMinMax[0], false);
+                            String maxStr = formatValidMinMax(validMinMax[1], true);
+
+                            validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
 
                         } else {
                             double[] minmax = {0.0, 0.0};
@@ -1765,7 +1944,13 @@ public abstract class SeadasFileReader {
                                 minmax[1] += band.getScalingOffset();
                             }
 
-                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
+
+                            String minStr = formatValidMinMax(minmax[0], false);
+                            String maxStr = formatValidMinMax(minmax[1], true);
+
+                            validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                            validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
+
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
@@ -1777,6 +1962,90 @@ public abstract class SeadasFileReader {
         }
         return band;
     }
+
+
+
+
+    public String formatValidMinMax(double value, boolean isMax) {
+
+        String valueStr;
+
+        int significantFigures = get_VALID_PIXEL_SIG_FIGS();
+
+        if (significantFigures == 0) {
+            valueStr = Double.toString(value);
+            return valueStr;
+        }
+
+
+
+        boolean roundBigNumbersToInt = false;
+
+        // if do not round big numbers, then increase significant figure to length of integer (left side of decimal place)
+        if (roundBigNumbersToInt) {
+            int valueAsInt = (int) Math.round(Math.abs(value));
+            String stringOfInt = Integer.toString(valueAsInt);
+            if (stringOfInt.length() > significantFigures) {
+                significantFigures = stringOfInt.length();
+            }
+
+            // Alt version
+//            double absValue = Math.abs(value);
+//            double logValue = Math.log(absValue) / Math.log(10);  // s
+//            if (logValue > significantFigures) {
+//                significantFigures = (int) Math.ceil(logValue);
+//            }
+        }
+
+
+        BigDecimal bdRound = new BigDecimal(Double.toString(value));
+
+        if (value >= 0.0) {
+            if (isMax) {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_UP));
+            } else {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_DOWN));
+            }
+        } else {
+            if (isMax) {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_DOWN));
+            } else {
+                bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_UP));
+            }
+        }
+//        bdRound = bdRound.round(new MathContext(significantFigures, RoundingMode.HALF_EVEN));
+//        bdRound = bdRound.setScale(decimalPlaces, RoundingMode.HALF_EVEN);
+
+
+        double valueDoubleRound = bdRound.doubleValue();
+        String valueStrRound = Double.toString(valueDoubleRound);
+        valueStrRound = cleanUpPaddedDecimalZeros(valueStrRound);
+
+        valueStr = valueStrRound;
+
+
+        return valueStr;
+    }
+
+
+
+
+
+    private static String  cleanUpPaddedDecimalZeros(String valueStr) {
+        if (valueStr.contains(".") && !valueStr.toLowerCase().contains("e")) {
+            while (valueStr.endsWith("0") && !valueStr.endsWith(".0")) {
+                valueStr = valueStr.substring(0,valueStr.length()-1);
+            }
+        }
+
+        if (valueStr.equals("0")) {
+            valueStr = "0.0";
+        }
+
+        return valueStr;
+    }
+
+
 
     public void addGlobalMetadata(Product product) {
         final MetadataElement globalElement = new MetadataElement("Global_Attributes");
@@ -1922,9 +2191,16 @@ public abstract class SeadasFileReader {
         }
     }
 
+
+
     public boolean getDefaultFlip() throws ProductIOException {
-        boolean startNodeAscending = false;
-        boolean endNodeAscending = false;
+        return getDefaultFlip(false);
+    }
+
+
+    public boolean getDefaultFlip(boolean defaultFlip) throws ProductIOException {
+        boolean startNodeAscending = defaultFlip;
+        boolean endNodeAscending = defaultFlip;
         try {
             Attribute start_node = findAttribute("Start_Node");
             if (start_node == null) {
@@ -1950,6 +2226,8 @@ public abstract class SeadasFileReader {
 
         return (startNodeAscending && endNodeAscending);
     }
+
+
 
     protected static HashMap<String, String> readTwoColumnTable(String resourceName) {
         final InputStream stream = SeadasProductReader.class.getResourceAsStream(resourceName);
@@ -2276,12 +2554,20 @@ public abstract class SeadasFileReader {
     }
 
 
-    private String getMaskSort() {
+    private String getMasksTopOfStack() {
         if (this.isHeadless) {
-            return SeadasReaderDefaults.PROPERTY_MASK_SORT_DEFAULT;
+            return SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_DEFAULT;
         }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASK_SORT_KEY, SeadasReaderDefaults.PROPERTY_MASK_SORT_DEFAULT);
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_KEY, SeadasReaderDefaults.PROPERTY_MASKS_TOP_OF_STACK_DEFAULT);
+    }
+
+    private String getMasksBottomOfStack() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_DEFAULT;
+        }
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_KEY, SeadasReaderDefaults.PROPERTY_MASKS_BOTTOM_OF_STACK_DEFAULT);
     }
 
 
@@ -2394,7 +2680,7 @@ public abstract class SeadasFileReader {
         return compositeMaskName;
     }
 
-    private String getCompositeFlagsExpression(String flags) {
+    private String getCompositeFlagsExpression(String flags, FlagCoding flagCoding) {
 
         String[] flagsArray = flags.split("\\s+|,");
 
@@ -2403,7 +2689,7 @@ public abstract class SeadasFileReader {
                 flagsArray[i] = flagsArray[i].replace("l2_flags.", "");
             }
         }
-        ArrayList<String> flagsCompositeArray = getValidFlagsComposite(flagsArray);
+        ArrayList<String> flagsCompositeArray = getValidFlagsComposite(flagsArray, flagCoding);
 
         if (flagsCompositeArray == null || flagsCompositeArray.size() == 0) {
             return null;
@@ -2414,8 +2700,12 @@ public abstract class SeadasFileReader {
         return expression;
     }
 
-    private ArrayList<String> getValidFlagsComposite(String[] flagsArray) {
+    private ArrayList<String> getValidFlagsComposite(String[] flagsArray, FlagCoding flagCoding) {
         ArrayList<String> validFlagComposite = null;
+
+        if (flagCoding == null) {
+            return null;
+        }
 
         if (flagsArray != null) {
             validFlagComposite = new ArrayList<>();
@@ -2436,10 +2726,12 @@ public abstract class SeadasFileReader {
                     for (String validFlag : flagNames) {
                         if (validFlag != null) {
                             if (flag.equals(validFlag)) {
-                                if (flagIsComplement) {
-                                    validFlagComposite.add("!l2_flags." + flag);
-                                } else {
-                                    validFlagComposite.add("l2_flags." + flag);
+                                if (flagCoding.containsAttribute(validFlag)) {
+                                    if (flagIsComplement) {
+                                        validFlagComposite.add("!l2_flags." + flag);
+                                    } else {
+                                        validFlagComposite.add("l2_flags." + flag);
+                                    }
                                 }
                                 continue;
                             }
@@ -2485,6 +2777,139 @@ public abstract class SeadasFileReader {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(getStringsKey(maskType), getDefaultStrings(maskType));
     }
+
+
+
+
+
+    public String getBandGroupingLevel2() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXLevel2() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYLevel2() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_DEFAULT);
+    }
+
+
+    public String getBandGroupingL1BPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_PACE_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1B_PACE_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL1BPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL1BPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPY_DEFAULT);
+    }
+
+
+
+    public String getBandGroupingL3Mapped() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL3Mapped() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL3Mapped() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_DEFAULT);
+    }
+
+
+
+
+    public String getBandGroupingL1CPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_OCI_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_OCI_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL1CPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL1CPace() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPY_DEFAULT);
+    }
+
+
+    public String getBandGroupingL1CPaceHarp2() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandGroupingL1CPaceSPEXONE() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_DEFAULT);
+    }
+
+
+    public String getBandGroupingL1B_MODIS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_MODIS_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1B_MODIS_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL1B_MODIS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL1B_MODIS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPY_DEFAULT);
+    }
+
+
+    public String getBandGroupingL1B_VIIRS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_VIIRS_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1B_VIIRS_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandFlipXL1B_VIIRS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPX_DEFAULT);
+    }
+
+    public String getBandFlipYL1B_VIIRS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPY_DEFAULT);
+    }
+
+
+
+    public int get_VALID_PIXEL_SIG_FIGS() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+
+        String sigFixStr = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
+
+        if (PROPERTY_VALID_PIXEL_SIG_FIGS_EXACT.equals(sigFixStr)) {
+            return 0;
+        } else {
+            String[] strArr = sigFixStr.split("\\s+");
+            try {
+                return Integer.parseInt(strArr[0]);
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+    }
+
 
 
 
