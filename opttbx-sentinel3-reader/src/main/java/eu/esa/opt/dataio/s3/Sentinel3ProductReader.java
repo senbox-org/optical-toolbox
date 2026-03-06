@@ -19,7 +19,6 @@ import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
-import eu.esa.opt.dataio.s3.olci.OlciLevel2WProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
 import eu.esa.opt.dataio.s3.synergy.SynAodProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynL1CProductFactory;
@@ -72,9 +71,15 @@ public class Sentinel3ProductReader extends AbstractProductReader {
         ProductFactory factory = null;
         if (dirName.matches("S3.?_OL_2_(L[FR]R)_.*(.SEN3)?")) { // OLCI L2 L -
             factory = new OlciLevel2LProductFactory(this);
-        } else if (dirName.matches("S3.?_OL_2_(W[FR]R)_.*(.SEN3)?")) { // OLCI L2 W -
+        }
+        /*
+        disabled - using new reader now tb 2026-01-28
+        else if (dirName.matches("S3.?_OL_2_(W[FR]R)_.*(.SEN3)?")) { // OLCI L2 W -
             factory = new OlciLevel2WProductFactory(this);
-        } else if (dirName.matches("S3.?_SL_1_RBT.*(.SEN3)?")) { // SLSTR L1b
+        }
+
+         */
+        else if (dirName.matches("S3.?_SL_1_RBT.*(.SEN3)?")) { // SLSTR L1b
             final ProductReaderPlugIn readerPlugIn = getReaderPlugIn();
             if (readerPlugIn instanceof SlstrLevel1B1kmProductReaderPlugIn) {
                 factory = new SlstrLevel1B1kmProductFactory(this);

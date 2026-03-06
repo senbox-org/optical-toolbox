@@ -1,0 +1,46 @@
+[
+  {
+    "name": "OAA",
+    "type" : "t",
+    "dataType": "int32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "units" : "degrees",
+    "description" : "Observation (Viewing) Azimuth Angle"
+  },
+  {
+    "name": "OZA",
+    "type" : "t",
+    "dataType": "int32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "units" : "degrees",
+    "description" : "Observation (Viewing) Zenith Angle"
+  },
+  {
+    "name": "SAA",
+    "type" : "t",
+    "dataType": "int32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "units" : "degrees",
+    "description" : "Sun Azimuth Angle"
+  },
+  {
+    "name": "SZA",
+    "type" : "t",
+    "dataType": "int32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "units" : "degrees",
+    "description" : "Sun Zenith Angle"
+  }
+]

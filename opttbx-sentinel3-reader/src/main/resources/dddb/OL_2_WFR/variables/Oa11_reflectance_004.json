@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Oa11_reflectance",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "validExpression" : "!WQSF_lsb.INVALID",
+    "units": "sr^-1",
+    "description" : "BRDF-corrected water remote-sensing reflectance for OLCI acquisition band Oa11 (708.75 nm)"
+  },
+  {
+    "name": "Oa11_reflectance_unc",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "validExpression" : "!WQSF_lsb.INVALID",
+    "units": "lg(sr^-1)",
+    "description" : "log10 scaled uncertainty estimates on BRDF-corrected water remote-sensing reflectance for OLCI acquisition band Oa11 (708.75 nm)"
+  }
+]

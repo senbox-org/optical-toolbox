@@ -10,12 +10,14 @@ public class ProductDescriptor {
     private int width;
     private int height;
     private String bandGroupingPattern;
+    private FlagMask[] flagMasks;
 
     public ProductDescriptor() {
         excludedIds = "";
         bandGroupingPattern = "";
         width = -1;
         height = -1;
+        flagMasks = new FlagMask[0];
     }
 
     public String getExcludedIds() {
@@ -74,5 +76,13 @@ public class ProductDescriptor {
 
     public void setBandGroupingPattern(String bandGroupingPattern) {
         this.bandGroupingPattern = bandGroupingPattern;
+    }
+
+    public FlagMask[] getFlagMasks() {
+        return flagMasks;
+    }
+
+    public void setFlagMasks(FlagMask[] flagMasks) {
+        this.flagMasks = flagMasks;
     }
 }

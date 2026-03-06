@@ -23,6 +23,7 @@ import java.util.prefs.Preferences;
 
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
 import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERPOLATING;
+import static org.geotools.gml3.GML.stringValue;
 
 public class S3Util {
 
@@ -137,7 +138,22 @@ public class S3Util {
         final Attribute fillValueAttribute = variable.findAttribute(CFConstants.FILL_VALUE);
         if (fillValueAttribute != null) {
             band.setNoDataValueUsed(!band.isFlagBand());
-            band.setNoDataValue(fillValueAttribute.getNumericValue().doubleValue());
+            final int dataType = band.getDataType();
+            double uintFill = fillValueAttribute.getNumericValue().doubleValue();
+            if (ProductData.isUIntType(dataType) && uintFill < 0) {
+                if (dataType == ProductData.TYPE_UINT32) {
+                    uintFill = 4294967295.;
+                } else if (dataType == ProductData.TYPE_UINT16) {
+                    uintFill = 65535.;
+                } else if (dataType == ProductData.TYPE_UINT8) {
+                    uintFill = 255.;
+                } else {
+                    throw new RuntimeException("Unsupported unsigned integer");
+                }
+                band.setNoDataValue(uintFill);
+            } else {
+                band.setNoDataValue(uintFill);
+            }
         }
     }
 
