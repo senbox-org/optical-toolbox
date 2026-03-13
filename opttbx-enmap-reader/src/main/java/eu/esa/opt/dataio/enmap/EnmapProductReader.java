@@ -2,6 +2,8 @@ package eu.esa.opt.dataio.enmap;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
+import com.bc.ceres.util.CleanUpState;
+import com.bc.ceres.util.CleanerRegistry;
 import eu.esa.opt.dataio.TarUtils;
 import eu.esa.opt.dataio.enmap.imgReader.EnmapImageReader;
 import eu.esa.snap.core.dataio.cache.CacheDataProvider;
@@ -40,7 +42,7 @@ import java.util.stream.IntStream;
 import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
 
 
-class EnmapProductReader extends AbstractProductReader implements CacheDataProvider {
+class EnmapProductReader extends AbstractProductReader {
 
 
     private static final int KM_IN_METERS = 1000;
@@ -52,26 +54,16 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
     private static final String ALONG_OFF_NADIR_TPG_NAME = "along_off_nadir";
 
     private static final String CANNOT_READ_PRODUCT_MSG = "Cannot read product";
-
-    private final Map<String, Integer> spectralBandLayerIndexMap = new HashMap<>();
-    private final Map<String, CachedBandBinding> cachedBandBindings = new HashMap<>();
-    private final Set<String> registeredCacheVariables = new HashSet<>();
-    private final List<EnmapImageReader> imageReaderList = new ArrayList<>();
-    private ProductCache productCache;
-    private EnmapMultiCubeCacheProvider cacheProvider;
-    private VirtualDir dataDir;
-    private VirtualDir tgzDataDir;
-
     private boolean isNonCompliantProduct = false;
+
+    private final EnmapProductReaderState state;
 
 
     EnmapProductReader(EnmapProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
-        dataDir = null;
-        tgzDataDir = null;
-        cacheProvider = new EnmapMultiCubeCacheProvider();
-        productCache = new ProductCache(this);
-        CacheManager.getInstance().register(productCache);
+        this.state = new EnmapProductReaderState();
+        CacheManager.getInstance().register(this.state.productCache);
+        CleanerRegistry.getInstance().register(this, state);
     }
 
 
@@ -132,8 +124,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
     protected Product readProductNodesImpl() throws IOException {
         Path path = InputTypes.toPath(getInput());
         if (TarUtils.isTar(path)) {
-            tgzDataDir = new VirtualDirTgz(path);
-            final String[] fileNames = tgzDataDir.listAllFiles();
+            state.tgzDataDir = new VirtualDirTgz(path);
+            final String[] fileNames = state.tgzDataDir.listAllFiles();
 
             String zipFileName = null;
             for (final String fileName : fileNames) {
@@ -143,22 +135,22 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
                 }
             }
 
-            final File tgzDataDirFile = tgzDataDir.getFile(zipFileName);
+            final File tgzDataDirFile = state.tgzDataDir.getFile(zipFileName);
             path = tgzDataDirFile.toPath();
         } else if (!isZip(path)) {
             path = path.getParent();
         }
 
-        dataDir = VirtualDir.create(path.toFile());
-        if (dataDir == null) {
+        state.dataDir = VirtualDir.create(path.toFile());
+        if (state.dataDir == null) {
             throw new IOException(String.format("%s%nVirtual directory could not be created", CANNOT_READ_PRODUCT_MSG));
         }
 
-        String[] fileNames = dataDir.listAllFiles();
+        String[] fileNames = state.dataDir.listAllFiles();
         String metadataFile = getMetadataFile(fileNames);
-        EnmapMetadata meta = EnmapMetadata.create(dataDir.getInputStream(metadataFile));
+        EnmapMetadata meta = EnmapMetadata.create(state.dataDir.getInputStream(metadataFile));
 
-        this.isNonCompliantProduct = checkIfProductIsNonCompliant(dataDir);
+        this.isNonCompliantProduct = checkIfProductIsNonCompliant(state.dataDir);
         if (this.isNonCompliantProduct) {
             meta.setNonCompliantProduct(true);
         }
@@ -197,7 +189,7 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         addCloudShadowQl(product, meta);
         addSnowQl(product, meta);
         addTestFlagsQl(product, meta);
-        addPixelMasksQl(product, dataDir, meta);
+        addPixelMasksQl(product, state.dataDir, meta);
     }
 
     private void addClassesQl(Product product, EnmapMetadata meta) throws IOException {
@@ -211,8 +203,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         QualityLayerInfo.QL_CLASSES_BG.addFlagTo(flagCoding);
         QualityLayerInfo.QL_CLASSES_BG.addMaskTo(product);
 
-        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader);
+        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(state.dataDir, meta, qualityKey);
+        state.imageReaderList.add(qualityReader);
 
         addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
@@ -224,8 +216,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         QualityLayerInfo.QL_CLOUD_CLOUD.addFlagTo(flagCoding);
         QualityLayerInfo.QL_CLOUD_CLOUD.addMaskTo(product);
 
-        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader);
+        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(state.dataDir, meta, qualityKey);
+        state.imageReaderList.add(qualityReader);
 
         addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
@@ -237,8 +229,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         QualityLayerInfo.QL_CLOUDSHADOW_SHADOW.addFlagTo(flagCoding);
         QualityLayerInfo.QL_CLOUDSHADOW_SHADOW.addMaskTo(product);
 
-        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader);
+        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(state.dataDir, meta, qualityKey);
+        state.imageReaderList.add(qualityReader);
 
         addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
@@ -250,8 +242,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         QualityLayerInfo.QL_HAZE_HAZE.addFlagTo(flagCoding);
         QualityLayerInfo.QL_HAZE_HAZE.addMaskTo(product);
 
-        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader);
+        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(state.dataDir, meta, qualityKey);
+        state.imageReaderList.add(qualityReader);
 
         addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
@@ -267,8 +259,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         QualityLayerInfo.QL_CIRRUS_THICK.addFlagTo(flagCoding);
         QualityLayerInfo.QL_CIRRUS_THICK.addMaskTo(product);
 
-        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader);
+        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(state.dataDir, meta, qualityKey);
+        state.imageReaderList.add(qualityReader);
 
         addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
@@ -280,15 +272,15 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         QualityLayerInfo.QL_SNOW_SNOW.addFlagTo(flagCoding);
         QualityLayerInfo.QL_SNOW_SNOW.addMaskTo(product);
 
-        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-        imageReaderList.add(qualityReader);
+        EnmapImageReader qualityReader = EnmapImageReader.createImageReader(state.dataDir, meta, qualityKey);
+        state.imageReaderList.add(qualityReader);
 
         addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
     }
 
     private void addPixelMasksQl(Product product, VirtualDir dataDir, EnmapMetadata meta) throws IOException {
         EnmapImageReader pixelMaskReader = EnmapImageReader.createPixelMaskReader(dataDir, meta);
-        imageReaderList.add(pixelMaskReader);
+        state.imageReaderList.add(pixelMaskReader);
 
         FlagCoding flagCoding = new FlagCoding(QUALITY_PIXELMASK_KEY);
         flagCoding.addFlag("Defective", 1, "Defective pixel");
@@ -306,7 +298,7 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
             flagBand.setNoDataValue(meta.getPixelmaskBackgroundValue());
 
             product.addBand(flagBand);
-            cachedBandBindings.put(flagBandName, new CachedBandBinding(cubeVar(QUALITY_PIXELMASK_KEY), i));
+            state.cachedBandBindings.put(flagBandName, new CachedBandBinding(cubeVar(QUALITY_PIXELMASK_KEY), i));
         }
         QualityLayerInfo.QL_PM_DEFECTIVE_SERIES.addMasksTo(product, meta);
 
@@ -339,8 +331,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
             QualityLayerInfo.QL_TF_VNIR_ARTEFACT_VNIR.addFlagTo(vnirFlagCoding);
             QualityLayerInfo.QL_TF_VNIR_ARTEFACT_VNIR.addMaskTo(product);
 
-            EnmapImageReader qualityVnirReader = EnmapImageReader.createImageReader(dataDir, meta, vnirQualityKey);
-            imageReaderList.add(qualityVnirReader);
+            EnmapImageReader qualityVnirReader = EnmapImageReader.createImageReader(state.dataDir, meta, vnirQualityKey);
+            state.imageReaderList.add(qualityVnirReader);
 
             addCachedFlagBand(product, vnirQualityKey, vnirFlagCoding, qualityVnirReader, 0, cubeVar(vnirQualityKey), ProductData.TYPE_UINT8, 1);
 
@@ -369,8 +361,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
             QualityLayerInfo.QL_TF_SWIR_ARTEFACT_VNIR.addFlagTo(swirFlagCoding);
             QualityLayerInfo.QL_TF_SWIR_ARTEFACT_VNIR.addMaskTo(product);
 
-            EnmapImageReader qualitySwirReader = EnmapImageReader.createImageReader(dataDir, meta, swirQualityKey);
-            imageReaderList.add(qualitySwirReader);
+            EnmapImageReader qualitySwirReader = EnmapImageReader.createImageReader(state.dataDir, meta, swirQualityKey);
+            state.imageReaderList.add(qualitySwirReader);
 
             addCachedFlagBand(product, swirQualityKey, swirFlagCoding, qualitySwirReader, 0, cubeVar(swirQualityKey), ProductData.TYPE_UINT8, 1);
         } else {
@@ -398,8 +390,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
             QualityLayerInfo.QL_TF_ARTEFACT_VNIR.addFlagTo(flagCoding);
             QualityLayerInfo.QL_TF_ARTEFACT_VNIR.addMaskTo(product);
 
-            EnmapImageReader qualityReader = EnmapImageReader.createImageReader(dataDir, meta, qualityKey);
-            imageReaderList.add(qualityReader);
+            EnmapImageReader qualityReader = EnmapImageReader.createImageReader(state.dataDir, meta, qualityKey);
+            state.imageReaderList.add(qualityReader);
 
             addCachedFlagBand(product, qualityKey, flagCoding, qualityReader, 0, cubeVar(qualityKey), ProductData.TYPE_UINT8, 1);
         }
@@ -417,8 +409,8 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
 
     private void addSpectralBands(Product product, EnmapMetadata meta) throws IOException {
 
-        EnmapImageReader spectralImageReader = EnmapImageReader.createSpectralReader(dataDir, meta);
-        imageReaderList.add(spectralImageReader);
+        EnmapImageReader spectralImageReader = EnmapImageReader.createSpectralReader(state.dataDir, meta);
+        state.imageReaderList.add(spectralImageReader);
 
         product.setPreferredTileSize(spectralImageReader.getTileDimension());
 
@@ -443,7 +435,7 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
             band.setScalingOffset(meta.getBandOffset(i));
             band.setNoDataValue(meta.getSpectralBackgroundValue());
             band.setNoDataValueUsed(true);
-            spectralBandLayerIndexMap.put(bandName, i);
+            state.spectralBandLayerIndexMap.put(bandName, i);
             product.addBand(band);
         }
 
@@ -466,13 +458,13 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
                                           int sourceStepX, int sourceStepY,
                                           Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight,
                                           ProductData destBuffer, ProgressMonitor pm) throws IOException {
-        final Integer spectralLayer = spectralBandLayerIndexMap.get(destBand.getName());
+        final Integer spectralLayer = state.spectralBandLayerIndexMap.get(destBand.getName());
         if (spectralLayer != null) {
             readFromCache(SPECTRAL_CACHE_VARIABLE_NAME, spectralLayer, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer);
             return;
         }
 
-        CachedBandBinding cb = cachedBandBindings.get(destBand.getName());
+        CachedBandBinding cb = state.cachedBandBindings.get(destBand.getName());
         if (cb != null) {
             readFromCache(cb.variableName, cb.layerIndex, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer);
             return;
@@ -481,56 +473,12 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         throw new IOException("No cache binding for band " + destBand.getName());
     }
 
-    @Override
-    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
-        if (cacheProvider == null) {
-            throw new IOException("Cache provider not initialized");
-        }
-        return cacheProvider.getVariableDescriptor(variableName);
-    }
-
-    @Override
-    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
-        if (cacheProvider == null) {
-            throw new IOException("Cache provider not initialized");
-        }
-        return cacheProvider.readCacheBlock(variableName, offsets, shapes, targetData);
-    }
 
     @Override
     public void close() {
-        if (productCache != null) {
-            CacheManager.getInstance().remove(productCache);
-            productCache = null;
-        }
-        if (cacheProvider != null) {
-            cacheProvider.clear();
-            cacheProvider = null;
-        }
-        registeredCacheVariables.clear();
-        cachedBandBindings.clear();
-        spectralBandLayerIndexMap.clear();
-
-        for (EnmapImageReader reader : imageReaderList) {
-            reader.close();
-        }
-        imageReaderList.clear();
-
-        if (dataDir != null) {
-            dataDir.close();
-            dataDir = null;
-        }
-        if (tgzDataDir != null) {
-            tgzDataDir.close();
-            tgzDataDir = null;
-        }
+        CleanerRegistry.getInstance().cleanup(this);
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        close();
-    }
 
     private void addCrsGeoCoding(Product product, EnmapMetadata meta) throws IOException {
         GeoReferencing geoReferencing = meta.getGeoReferencing();
@@ -559,7 +507,7 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
     private Point2D getEastingNorthing(EnmapMetadata meta) throws IOException {
         Map<String, String> fileNameMap = meta.getFileNameMap();
         String dataFileName = fileNameMap.get(QUALITY_CLASSES_KEY);
-        InputStream inputStream = getInputStream(dataDir, dataFileName, this.isNonCompliantProduct);
+        InputStream inputStream = getInputStream(state.dataDir, dataFileName, this.isNonCompliantProduct);
         ProductReader reader = null;
         try {
             reader = ProductIO.getProductReader("GeoTIFF");
@@ -584,12 +532,12 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
     }
 
     private void readFromCache(String variableName, int layerIndex, int x, int y, int w, int h, ProductData destBuffer) throws IOException {
-        VariableDescriptor desc = cacheProvider.getVariableDescriptor(variableName);
+        VariableDescriptor desc = state.cacheProvider.getVariableDescriptor(variableName);
         int[] offsets = (desc.layers <= 1) ? new int[]{y, x} : new int[]{layerIndex, y, x};
         int[] shapes  = (desc.layers <= 1) ? new int[]{h, w} : new int[]{1, h, w};
 
         DataBuffer target = new DataBuffer(destBuffer, new int[]{y, x}, new int[]{h, w});
-        productCache.read(variableName, offsets, shapes, target);
+        state.productCache.read(variableName, offsets, shapes, target);
     }
 
     private void addCachedFlagBand(Product product, String bandName, FlagCoding flagCoding, EnmapImageReader reader, int layerIndex, String variableName, int dataType, int tileLayers) throws IOException {
@@ -603,7 +551,7 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         b.setSampleCoding(flagCoding);
         product.addBand(b);
 
-        cachedBandBindings.put(bandName, new CachedBandBinding(variableName, layerIndex));
+        state.cachedBandBindings.put(bandName, new CachedBandBinding(variableName, layerIndex));
     }
 
     private static String cubeVar(String key) {
@@ -611,14 +559,14 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
     }
 
     private void ensureCubeRegistered(String variableName, EnmapImageReader reader, int sceneWidth, int sceneHeight, int numLayers, int dataType, int tileLayers) throws IOException {
-        if (registeredCacheVariables.add(variableName)) {
-            cacheProvider.addCube(variableName, reader, sceneWidth, sceneHeight, numLayers, dataType, tileLayers);
+        if (state.registeredCacheVariables.add(variableName)) {
+            state.cacheProvider.addCube(variableName, reader, sceneWidth, sceneHeight, numLayers, dataType, tileLayers);
         }
     }
 
     private void ensureCubeRegistered(String variableName, EnmapImageReader reader, int sceneWidth, int sceneHeight, int numLayers, int dataType) throws IOException {
-        if (registeredCacheVariables.add(variableName)) {
-            cacheProvider.addCube(variableName, reader, sceneWidth, sceneHeight, numLayers, dataType);
+        if (state.registeredCacheVariables.add(variableName)) {
+            state.cacheProvider.addCube(variableName, reader, sceneWidth, sceneHeight, numLayers, dataType);
         }
     }
 
@@ -629,6 +577,71 @@ class EnmapProductReader extends AbstractProductReader implements CacheDataProvi
         CachedBandBinding(String variableName, int layerIndex) {
             this.variableName = variableName;
             this.layerIndex = layerIndex;
+        }
+    }
+
+
+    private static final class EnmapProductReaderState implements CleanUpState, CacheDataProvider {
+        private final Map<String, Integer> spectralBandLayerIndexMap = new HashMap<>();
+        private final Map<String, CachedBandBinding> cachedBandBindings = new HashMap<>();
+        private final Set<String> registeredCacheVariables = new HashSet<>();
+        private final List<EnmapImageReader> imageReaderList = new ArrayList<>();
+
+        private final EnmapMultiCubeCacheProvider cacheProvider = new EnmapMultiCubeCacheProvider();
+        private final ProductCache productCache = new ProductCache(this);
+
+        private VirtualDir dataDir;
+        private VirtualDir tgzDataDir;
+
+
+        @Override
+        public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+            return cacheProvider.getVariableDescriptor(variableName);
+        }
+
+        @Override
+        public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+            return cacheProvider.readCacheBlock(variableName, offsets, shapes, targetData);
+        }
+
+        @Override
+        public synchronized void run() {
+            if (productCache != null) {
+                CacheManager.getInstance().remove(productCache);
+            }
+
+            cacheProvider.clear();
+            registeredCacheVariables.clear();
+            cachedBandBindings.clear();
+            spectralBandLayerIndexMap.clear();
+
+            for (EnmapImageReader reader : imageReaderList) {
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (Exception ignore) {
+                }
+            }
+            imageReaderList.clear();
+
+            if (dataDir != null) {
+                try {
+                    dataDir.close();
+                } catch (Exception ignore) {
+                } finally {
+                    dataDir = null;
+                }
+            }
+
+            if (tgzDataDir != null) {
+                try {
+                    tgzDataDir.close();
+                } catch (Exception ignore) {
+                } finally {
+                    tgzDataDir = null;
+                }
+            }
         }
     }
 }
