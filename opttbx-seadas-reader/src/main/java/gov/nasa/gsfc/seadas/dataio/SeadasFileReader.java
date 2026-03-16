@@ -1552,6 +1552,13 @@ public abstract class SeadasFileReader {
                 }
             } else if (variableRank == 3) {
                 add3DNewBands(product, variable, bandToVariableMap);
+            } else if (variableRank == 4) {
+                add4DNewBands(product, variable,bandToVariableMap);
+            } else if (variableRank == 1) {
+                Band band = add1DNewBand(product, variable);
+                if (band != null) {
+                    bandToVariableMap.put(band, variable);
+                }
             }
 
         }
@@ -1849,6 +1856,159 @@ public abstract class SeadasFileReader {
             }
         }
         return bandToVariableMap;
+    }
+
+    protected Map<Band, Variable> add4DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
+        final int sceneRasterWidth = product.getSceneRasterWidth();
+        final int sceneRasterHeight = product.getSceneRasterHeight();
+
+        final int[] dimensions = variable.getShape();
+        final int height = dimensions[2];
+        final int width = dimensions[3];
+        if (height == sceneRasterHeight && width == sceneRasterWidth) {
+            String name = variable.getShortName();
+
+            final int dataType = getProductDataType(variable);
+            final Band band = new Band(name, dataType, width, height);
+//                    band = new Band(name, dataType, width, height);
+
+            Variable sliced = null;
+            try {
+                sliced = variable.slice(0, 0).slice(0, 0);
+            } catch (InvalidRangeException e) {
+                e.printStackTrace();  //Todo change body of catch statement.
+            }
+
+            bandToVariableMap.put(band, sliced);
+            product.addBand(band);
+
+            try {
+                Attribute fillvalue = variable.findAttribute("_FillValue");
+                if (fillvalue != null) {
+                    band.setNoDataValue(fillvalue.getNumericValue().doubleValue());
+                    band.setNoDataValueUsed(true);
+                }
+            } catch (Exception ignored) {
+
+            }
+            // Set units, if defined
+            try {
+                band.setUnit(getStringAttribute("units"));
+            } catch (Exception ignored) {
+
+            }
+
+            final List<Attribute> list = variable.getAttributes();
+            for (Attribute hdfAttribute : list) {
+                final String attribName = hdfAttribute.getShortName();
+                if ("scale_factor".equals(attribName)) {
+                    band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
+                } else if ("add_offset".equals(attribName)) {
+                    band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
+                }
+            }
+        }
+        return bandToVariableMap;
+    }
+
+    protected Band add1DNewBand(Product product, Variable variable) {
+        final int sceneRasterWidth = product.getSceneRasterWidth();
+        final int sceneRasterHeight = product.getSceneRasterHeight();
+        Band band = null;
+
+        final String name = variable.getShortName();
+
+        // Only handle lat or lon variables
+        if (name == null || (!name.equalsIgnoreCase("lat") &&
+                !name.equalsIgnoreCase("lon") &&
+                !name.equalsIgnoreCase("latitude") &&
+                !name.equalsIgnoreCase("longitude"))) {
+            return null;
+        }
+
+        final int size = variable.getShape()[0];
+        final int dataType = getProductDataType(variable);
+
+        // Auto-detect: lat matches height, lon matches width
+        boolean isLat = name.equalsIgnoreCase("lat") || name.equalsIgnoreCase("latitude");
+        boolean isLon = name.equalsIgnoreCase("lon") || name.equalsIgnoreCase("longitude");
+
+        if ((isLat && size != sceneRasterHeight) || (isLon && size != sceneRasterWidth)) {
+            logger.log(Level.WARNING, "1D variable '" + name + "' size " + size +
+                    " does not match expected scene dimension, skipping.");
+            return null;
+        }
+
+        if (product.containsBand(name)) {
+            logger.log(Level.WARNING, "The Product '" + product.getName() +
+                    "' contains duplicate bands with the name '" + name +
+                    "', one will be ignored.");
+            return null;
+        }
+
+        // Create the 2D band
+        band = new Band(name, dataType, sceneRasterWidth, sceneRasterHeight);
+        product.addBand(band);
+
+        // Read 1D data and expand to 2D
+        try {
+            ucar.ma2.Array data1D = variable.read();
+            int totalSize = sceneRasterWidth * sceneRasterHeight;
+            ProductData productData = ProductData.createInstance(dataType, totalSize);
+
+            if (isLat) {
+                // Lat: repeat each value across all columns (same value per row)
+                for (int i = 0; i < sceneRasterHeight; i++) {
+                    double val = data1D.getDouble(i);
+                    for (int j = 0; j < sceneRasterWidth; j++) {
+                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
+                    }
+                }
+            } else {
+                // Lon: repeat each value across all rows (same value per column)
+                for (int j = 0; j < sceneRasterWidth; j++) {
+                    double val = data1D.getDouble(j);
+                    for (int i = 0; i < sceneRasterHeight; i++) {
+                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
+                    }
+                }
+            }
+
+            band.setData(productData);
+
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Could not read 1D variable: " + name, e);
+            product.removeBand(band);
+            return null;
+        }
+
+        // Apply attributes
+        final List<Attribute> list = variable.getAttributes();
+        for (Attribute attribute : list) {
+            final String attribName = attribute.getShortName();
+            if ("units".equals(attribName)) {
+                band.setUnit(attribute.getStringValue());
+            } else if ("long_name".equals(attribName)) {
+                band.setDescription(attribute.getStringValue());
+            } else if ("scale_factor".equals(attribName)) {
+                band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
+            } else if ("add_offset".equals(attribName)) {
+                band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
+            }
+        }
+
+        // Handle fill value
+        try {
+            Attribute fillValue = variable.findAttribute("_FillValue");
+            if (fillValue == null) {
+                fillValue = variable.findAttribute("bad_value_scaled");
+            }
+            band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
+            band.setNoDataValueUsed(true);
+        } catch (Exception ignored) {
+        }
+
+        return band;
     }
 
     protected Band addNewBand(Product product, Variable variable) {
