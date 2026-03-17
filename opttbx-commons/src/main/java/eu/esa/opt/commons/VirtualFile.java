@@ -1,6 +1,8 @@
 package eu.esa.opt.commons;
 
 import com.bc.ceres.core.VirtualDir;
+import com.bc.ceres.util.CleanUpState;
+import com.bc.ceres.util.CleanerRegistry;
 import org.esa.snap.engine_utilities.file.AbstractFile;
 
 import java.io.Closeable;
@@ -14,36 +16,38 @@ import java.nio.file.Path;
  */
 public class VirtualFile extends AbstractFile implements Closeable {
 
-    private File localTempFolder;
+    private final VirtualFileState state;
 
     public VirtualFile(Path file) {
         super(file);
+        this.state = new VirtualFileState();
+        CleanerRegistry.getInstance().register(this, state);
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-
-        cleanup();
-    }
 
     @Override
     protected Path getLocalTempFolder() throws IOException {
-        if (this.localTempFolder == null) {
-            this.localTempFolder = VirtualDir.createUniqueTempDir();
+        if (state.localTempFolder == null) {
+            state.localTempFolder = VirtualDir.createUniqueTempDir();
         }
-        return this.localTempFolder.toPath();
+        return state.localTempFolder.toPath();
     }
 
     @Override
     public void close() {
-        cleanup();
+        CleanerRegistry.getInstance().cleanup(this);
     }
 
-    private void cleanup() {
-        if (this.localTempFolder != null) {
-            VirtualDir.deleteFileTree(this.localTempFolder);
-            this.localTempFolder = null;
+
+    private static final class VirtualFileState implements CleanUpState {
+        private File localTempFolder;
+
+        @Override
+        public synchronized void run() {
+            if (localTempFolder != null) {
+                VirtualDir.deleteFileTree(localTempFolder);
+                localTempFolder = null;
+            }
         }
     }
 }
