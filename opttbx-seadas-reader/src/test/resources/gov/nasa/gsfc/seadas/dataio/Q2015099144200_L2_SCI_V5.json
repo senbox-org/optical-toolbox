@@ -1,0 +1,4662 @@
+{
+  "id": "Q2015099144200_L2_SCI_V5",
+  "decodeQualification": "SUITABLE",
+  "expectedContent": {
+    "sceneWidth": 3,
+    "sceneHeight": 4084,
+    "bands": [
+      {
+        "name": "EIA_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to boresight Earth Incidence Angle random error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2195,
+            "value": "NaN"
+          },
+          {
+            "x": 2,
+            "y": 2650,
+            "value": 0.3366089
+          }
+        ]
+      },
+      {
+        "name": "EIA_err",
+        "description": "Estimated random error in boresight Earth Incidence Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Degress",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 727,
+            "value": -0.008358002
+          },
+          {
+            "x": 2,
+            "y": 3473,
+            "value": 8.659363E-4
+          }
+        ]
+      },
+      {
+        "name": "IU_coupling_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to IU coupling correction",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1048,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 1491,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "IU_coupling_err",
+        "description": "Estimated systematic error in computing first (I) and third (U) stokes coupling",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3044,
+            "value": 0.0015091479
+          },
+          {
+            "x": 1,
+            "y": 3791,
+            "value": -0.0027175816
+          }
+        ]
+      },
+      {
+        "name": "Kpc_HH_ant",
+        "description": "Kpc statistical uncertainty for ANT HH NRCS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2720,
+            "value": 0.0117332
+          },
+          {
+            "x": 1,
+            "y": 3730,
+            "value": 0.00987606
+          }
+        ]
+      },
+      {
+        "name": "Kpc_HH_toa",
+        "description": "Kpc statistical uncertainty for TOA HH NRCS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1979,
+            "value": 0.0105327
+          },
+          {
+            "x": 2,
+            "y": 1984,
+            "value": 0.00984764
+          }
+        ]
+      },
+      {
+        "name": "Kpc_HV_ant",
+        "description": "Kpc statistical uncertainty for ANT HV NRCS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3673,
+            "value": 0.0603459
+          },
+          {
+            "x": 0,
+            "y": 1922,
+            "value": 0.0130275
+          }
+        ]
+      },
+      {
+        "name": "Kpc_HV_toa",
+        "description": "Kpc statistical uncertainty for TOA HV NRCS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 805,
+            "value": 0.741674
+          },
+          {
+            "x": 0,
+            "y": 176,
+            "value": 0.126158
+          }
+        ]
+      },
+      {
+        "name": "Kpc_VH_ant",
+        "description": "Kpc statistical uncertainty for ANT VH NRCS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2469,
+            "value": 0.0784948
+          },
+          {
+            "x": 1,
+            "y": 2927,
+            "value": 0.0598768
+          }
+        ]
+      },
+      {
+        "name": "Kpc_VH_toa",
+        "description": "Kpc statistical uncertainty for TOA VH NRCS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2031,
+            "value": 0.234623
+          },
+          {
+            "x": 0,
+            "y": 2950,
+            "value": 1.68902
+          }
+        ]
+      },
+      {
+        "name": "Kpc_VV_ant",
+        "description": "Kpc statistical uncertainty for ANT VV NRCS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2034,
+            "value": 0.0107693
+          },
+          {
+            "x": 1,
+            "y": 1806,
+            "value": 0.0107451
+          }
+        ]
+      },
+      {
+        "name": "Kpc_VV_toa",
+        "description": "Kpc statistical uncertainty for TOA VV NRCS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 375,
+            "value": 0.00937622
+          },
+          {
+            "x": 1,
+            "y": 64,
+            "value": 0.00977097
+          }
+        ]
+      },
+      {
+        "name": "Kpc_total",
+        "description": "Statistical uncertainty for total power NRCS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1500,
+            "value": 0.0122046
+          },
+          {
+            "x": 2,
+            "y": 3865,
+            "value": 0.00650392
+          }
+        ]
+      },
+      {
+        "name": "NEDT_3_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT input (3rd Stokes)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1845,
+            "value": -0.12964249
+          },
+          {
+            "x": 1,
+            "y": 2297,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "NEDT_3_err",
+        "description": "Estimated radiometer NEDT random error (3rd Stokes)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2130,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 2372,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "NEDT_H_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT input (H pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1734,
+            "value": "NaN"
+          },
+          {
+            "x": 0,
+            "y": 4054,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "NEDT_H_err",
+        "description": "Estimated radiometer NEDT random error (H pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3042,
+            "value": 0.12843616
+          },
+          {
+            "x": 2,
+            "y": 3007,
+            "value": 0.11686561
+          }
+        ]
+      },
+      {
+        "name": "NEDT_V_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT input (V pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3861,
+            "value": -2.3658562
+          },
+          {
+            "x": 0,
+            "y": 2171,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "NEDT_V_err",
+        "description": "Estimated radiometer NEDT random error (V pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1062,
+            "value": 0.49297714
+          },
+          {
+            "x": 1,
+            "y": 616,
+            "value": 0.14152098
+          }
+        ]
+      },
+      {
+        "name": "RFI_level_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to RFI level",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2283,
+            "value": 1.0
+          },
+          {
+            "x": 0,
+            "y": 3470,
+            "value": 1.0
+          }
+        ]
+      },
+      {
+        "name": "RFI_level_err",
+        "description": "Estimated systematic error in RFI level calculation",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 317,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 2762,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "SSS",
+        "description": "Sea Surface Salinity",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3656,
+            "value": 34.277107
+          },
+          {
+            "x": 2,
+            "y": 2450,
+            "value": 29.176682
+          }
+        ]
+      },
+      {
+        "name": "SSS_matchup",
+        "description": "Sea Surface Salinity matchup value",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1556,
+            "value": "NaN"
+          },
+          {
+            "x": 0,
+            "y": 2175,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_nolc",
+        "description": "Sea Surface Salinity (nolc)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2429,
+            "value": 32.003616
+          },
+          {
+            "x": 2,
+            "y": 759,
+            "value": 26.523298
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc",
+        "description": "Estimated total uncertainty in SSS including random and systematic components",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1065,
+            "value": 0.5284171
+          },
+          {
+            "x": 0,
+            "y": 2645,
+            "value": 0.38351977
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_EIA",
+        "description": "Estimated SSS retrieval uncertainty due to boresight Earth Incidence Angle random error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1786,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 2316,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_IU_coupling",
+        "description": "Estimated SSS retrieval uncertainty due to IU coupling systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 873,
+            "value": 6.5306613E-6
+          },
+          {
+            "x": 0,
+            "y": 3629,
+            "value": 0.028660225
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_NEDT_3",
+        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT random error (3rd Stokes)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2368,
+            "value": "NaN"
+          },
+          {
+            "x": 2,
+            "y": 1340,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_NEDT_H",
+        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT random error (H pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1187,
+            "value": "NaN"
+          },
+          {
+            "x": 2,
+            "y": 3556,
+            "value": 0.15745105
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_NEDT_V",
+        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT random error (V pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3622,
+            "value": 0.1348742
+          },
+          {
+            "x": 1,
+            "y": 3324,
+            "value": 0.09203146
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_RFI_level",
+        "description": "Estimated SSS retrieval uncertainty due to RFI level systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2827,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 2242,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_TbV_ice_contam",
+        "description": "Estimated SSS retrieval uncertainty due to ocean surface Tb sea-ice contamination systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1250,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 3527,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_TbV_land_contam",
+        "description": "Estimated SSS retrieval uncertainty due to ocean surface Tb land contamination systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3665,
+            "value": 0.0
+          },
+          {
+            "x": 0,
+            "y": 4054,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_galact_Ta",
+        "description": "Estimated SSS retrieval uncertainty due to galactic effect systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 476,
+            "value": 0.0747493
+          },
+          {
+            "x": 0,
+            "y": 2291,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_moon_Ta",
+        "description": "Estimated SSS retrieval uncertainty due to lunar effect systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 526,
+            "value": 0.0
+          },
+          {
+            "x": 2,
+            "y": 2339,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_ran",
+        "description": "Estimated random component of uncertainty in SSS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2763,
+            "value": 0.19129637
+          },
+          {
+            "x": 2,
+            "y": 1928,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_surface_temp",
+        "description": "Estimated SSS retrieval uncertainty due to sea surface temperature systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 272,
+            "value": 0.508044
+          },
+          {
+            "x": 2,
+            "y": 1224,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_sys",
+        "description": "Estimated systematic component of uncertainty in SSS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3969,
+            "value": "NaN"
+          },
+          {
+            "x": 2,
+            "y": 112,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_wind_dir_rand",
+        "description": "Estimated SSS retrieval uncertainty due to wind direction random error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1006,
+            "value": 8.1507367E-4
+          },
+          {
+            "x": 0,
+            "y": 791,
+            "value": 0.011521657
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_wind_speed_rand",
+        "description": "Estimated SSS retrieval uncertainty due to wind speed random error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3607,
+            "value": 0.4793425
+          },
+          {
+            "x": 2,
+            "y": 308,
+            "value": 0.23575315
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_wind_speed_syst",
+        "description": "Estimated SSS retrieval uncertainty due to wind speed systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2048,
+            "value": "NaN"
+          },
+          {
+            "x": 0,
+            "y": 1574,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "anc_SSS_argo",
+        "description": "Sea surface salinity (ARGO)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2377,
+            "value": -9999.0
+          },
+          {
+            "x": 2,
+            "y": 567,
+            "value": 35.52395
+          }
+        ]
+      },
+      {
+        "name": "anc_SSS_hycom",
+        "description": "Sea surface salinity (HYCOM)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 594,
+            "value": 35.524475
+          },
+          {
+            "x": 2,
+            "y": 435,
+            "value": 33.786983
+          }
+        ]
+      },
+      {
+        "name": "anc_Tb_dw",
+        "description": "Downwelling atmospheric brightness temperature",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3599,
+            "value": 2.7388458
+          },
+          {
+            "x": 1,
+            "y": 2350,
+            "value": 2.189148
+          }
+        ]
+      },
+      {
+        "name": "anc_Tb_up",
+        "description": "Upwelling atmospheric brightness temperature",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1331,
+            "value": 2.195466
+          },
+          {
+            "x": 1,
+            "y": 3496,
+            "value": 2.7228038
+          }
+        ]
+      },
+      {
+        "name": "anc_cwat",
+        "description": "Cloud Water",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "kg m-2",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2797,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 2758,
+            "value": 0.05755058
+          }
+        ]
+      },
+      {
+        "name": "anc_sm",
+        "description": "Soil Moisture",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "fraction",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 532,
+            "value": 9.999999E14
+          },
+          {
+            "x": 1,
+            "y": 3269,
+            "value": 1.0E15
+          }
+        ]
+      },
+      {
+        "name": "anc_subsurf_temp",
+        "description": "Sub-Surface Temperature",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3684,
+            "value": 9.999E20
+          },
+          {
+            "x": 0,
+            "y": 2852,
+            "value": 9.999E20
+          }
+        ]
+      },
+      {
+        "name": "anc_surface_pressure",
+        "description": "Surface Pressure",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Pascals",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2352,
+            "value": 87596.32
+          },
+          {
+            "x": 1,
+            "y": 3706,
+            "value": 99686.91
+          }
+        ]
+      },
+      {
+        "name": "anc_surface_temp",
+        "description": "Surface Temperature",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1318,
+            "value": 304.75867
+          },
+          {
+            "x": 1,
+            "y": 21,
+            "value": 221.10983
+          }
+        ]
+      },
+      {
+        "name": "anc_surface_temp_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to ancillary sea surface temperature input",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2324,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 1625,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "anc_surface_temp_err",
+        "description": "Estimated systematic error in ancillary sea surface temperature input",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 4036,
+            "value": "NaN"
+          },
+          {
+            "x": 0,
+            "y": 2928,
+            "value": 0.1635437
+          }
+        ]
+      },
+      {
+        "name": "anc_swe",
+        "description": "Snow Water Equivalent",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "kg/m^2",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1178,
+            "value": 0.0
+          },
+          {
+            "x": 0,
+            "y": 3479,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "anc_swh",
+        "description": "Significant wave height",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2159,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 3266,
+            "value": 1.609968
+          }
+        ]
+      },
+      {
+        "name": "anc_trans",
+        "description": "Atmospheric Transmittance",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 890,
+            "value": 0.9900977
+          },
+          {
+            "x": 0,
+            "y": 2877,
+            "value": 0.9909245
+          }
+        ]
+      },
+      {
+        "name": "anc_wind_dir",
+        "description": "Ancillary Wind Direction 10m above surface",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3247,
+            "value": 39.80197
+          },
+          {
+            "x": 2,
+            "y": 277,
+            "value": 86.98442
+          }
+        ]
+      },
+      {
+        "name": "anc_wind_speed",
+        "description": "Ancillary Wind Speed 10m above surface",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters/sec",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 927,
+            "value": 2.4510493
+          },
+          {
+            "x": 1,
+            "y": 3799,
+            "value": 12.087373
+          }
+        ]
+      },
+      {
+        "name": "density",
+        "description": "Derived Surface Density based on TEOS-10",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "kg/m^3",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3518,
+            "value": 1024.4698
+          },
+          {
+            "x": 1,
+            "y": 1514,
+            "value": 1008.05365
+          }
+        ]
+      },
+      {
+        "name": "rad_Ta3",
+        "description": "Radiometer Ta 3rd Stokes",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2779,
+            "value": -0.9268827
+          },
+          {
+            "x": 2,
+            "y": 1746,
+            "value": -6.43434
+          }
+        ]
+      },
+      {
+        "name": "rad_Ta30",
+        "description": "Radiometer Ta 3rd Stokes (no exp drift)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 567,
+            "value": 4.791604
+          },
+          {
+            "x": 2,
+            "y": 555,
+            "value": 7.355419
+          }
+        ]
+      },
+      {
+        "name": "rad_TaH",
+        "description": "Radiometer Ta H polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2270,
+            "value": 213.32874
+          },
+          {
+            "x": 2,
+            "y": 4042,
+            "value": 182.12071
+          }
+        ]
+      },
+      {
+        "name": "rad_TaH0",
+        "description": "Radiometer Ta H polar (no exp drift)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3700,
+            "value": 83.68892
+          },
+          {
+            "x": 2,
+            "y": 2168,
+            "value": 225.08705
+          }
+        ]
+      },
+      {
+        "name": "rad_TaV",
+        "description": "Radiometer Ta V polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3797,
+            "value": 116.50438
+          },
+          {
+            "x": 1,
+            "y": 3154,
+            "value": 114.76172
+          }
+        ]
+      },
+      {
+        "name": "rad_TaV0",
+        "description": "Radiometer Ta V polar (no exp drift)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 160,
+            "value": 219.28557
+          },
+          {
+            "x": 2,
+            "y": 2952,
+            "value": 125.71796
+          }
+        ]
+      },
+      {
+        "name": "rad_TbH",
+        "description": "Tb H polarization (no rough corr)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 28,
+            "value": 197.07489
+          },
+          {
+            "x": 0,
+            "y": 3514,
+            "value": 85.48022
+          }
+        ]
+      },
+      {
+        "name": "rad_TbH_nolc",
+        "description": "Earth surface Tb H polarization (nolc)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 414,
+            "value": 87.69658
+          },
+          {
+            "x": 0,
+            "y": 467,
+            "value": 86.453316
+          }
+        ]
+      },
+      {
+        "name": "rad_TbH_rc",
+        "description": "Tb H polarization (rough corr)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 285,
+            "value": 67.144936
+          },
+          {
+            "x": 1,
+            "y": 3545,
+            "value": 75.633354
+          }
+        ]
+      },
+      {
+        "name": "rad_TbH_rc_nolc",
+        "description": "Tb H polarization (roughness corr, nolc)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 966,
+            "value": 80.86022
+          },
+          {
+            "x": 0,
+            "y": 3966,
+            "value": 212.66371
+          }
+        ]
+      },
+      {
+        "name": "rad_TbV",
+        "description": "Tb V polarization (no rough corr)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1387,
+            "value": 296.992
+          },
+          {
+            "x": 1,
+            "y": 2085,
+            "value": 257.50644
+          }
+        ]
+      },
+      {
+        "name": "rad_TbV_ice_contam_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to ocean surface Tb sea-ice contamination correction",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2078,
+            "value": "NaN"
+          },
+          {
+            "x": 2,
+            "y": 2281,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rad_TbV_ice_contam_err",
+        "description": "Estimated systematic error in ocean surface Tb sea-ice contamination calculation",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3109,
+            "value": 0.0
+          },
+          {
+            "x": 2,
+            "y": 3005,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_TbV_land_contam_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to ocean surface Tb land contamination correction",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1740,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 3117,
+            "value": -1.3016088
+          }
+        ]
+      },
+      {
+        "name": "rad_TbV_land_contam_err",
+        "description": "Estimated systematic error in ocean surface Tb land contamination calculation",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 620,
+            "value": 0.0
+          },
+          {
+            "x": 2,
+            "y": 1286,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rad_TbV_nolc",
+        "description": "Earth surface Tb V polarization (no lc)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1570,
+            "value": 228.3613
+          },
+          {
+            "x": 2,
+            "y": 761,
+            "value": 132.61357
+          }
+        ]
+      },
+      {
+        "name": "rad_TbV_rc",
+        "description": "Tb V polarization (rough corr)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 4030,
+            "value": 212.4917
+          },
+          {
+            "x": 1,
+            "y": 3078,
+            "value": 111.21054
+          }
+        ]
+      },
+      {
+        "name": "rad_TbV_rc_nolc",
+        "description": "Tb V polarization (roughness corr, nolc)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2846,
+            "value": 102.61539
+          },
+          {
+            "x": 1,
+            "y": 3524,
+            "value": 112.587074
+          }
+        ]
+      },
+      {
+        "name": "rad_Tb_consistency",
+        "description": "Tb consistency check",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1357,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 70,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_Tb_consistency_nolc",
+        "description": "Tb consistency check (nolc)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2726,
+            "value": 0.08317893
+          },
+          {
+            "x": 2,
+            "y": 364,
+            "value": 0.02094798
+          }
+        ]
+      },
+      {
+        "name": "rad_Tf3",
+        "description": "Radiometer Ta 3rd Stokes (rfi filtered)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 338,
+            "value": 8.97794
+          },
+          {
+            "x": 0,
+            "y": 3365,
+            "value": 0.5807267
+          }
+        ]
+      },
+      {
+        "name": "rad_Tf30",
+        "description": "Radiometer Ta 3 (rfi filtered/no exp drift)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3730,
+            "value": 1.3747305
+          },
+          {
+            "x": 0,
+            "y": 1315,
+            "value": -3.1490026
+          }
+        ]
+      },
+      {
+        "name": "rad_TfH",
+        "description": "Radiometer Ta H polarization (rfi filtered)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2914,
+            "value": 83.50204
+          },
+          {
+            "x": 0,
+            "y": 891,
+            "value": 87.14187
+          }
+        ]
+      },
+      {
+        "name": "rad_TfH0",
+        "description": "Radiometer Ta H (rfi filtered/no exp drift)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3075,
+            "value": 81.18353
+          },
+          {
+            "x": 0,
+            "y": 3055,
+            "value": 86.88753
+          }
+        ]
+      },
+      {
+        "name": "rad_TfV",
+        "description": "Radiometer Ta V polarization (rfi filtered)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 868,
+            "value": 125.25739
+          },
+          {
+            "x": 2,
+            "y": 2869,
+            "value": 126.602165
+          }
+        ]
+      },
+      {
+        "name": "rad_TfV0",
+        "description": "Radiometer Ta V (rfi filtered/no exp drift)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 111,
+            "value": 198.28342
+          },
+          {
+            "x": 0,
+            "y": 3753,
+            "value": 107.63604
+          }
+        ]
+      },
+      {
+        "name": "rad_dtb_sst_wspd_H",
+        "description": "Radiometer SST bias emissivity correction H",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2956,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 1932,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_dtb_sst_wspd_V",
+        "description": "Radiometer SST bias emissivity correction V",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 624,
+            "value": 0.0
+          },
+          {
+            "x": 0,
+            "y": 3245,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_Ta3",
+        "description": "Radiometer Ta 3rd Stokes (expected)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2887,
+            "value": 0.26559272
+          },
+          {
+            "x": 0,
+            "y": 803,
+            "value": 2.3443387
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_Ta3_hhh",
+        "description": "Radiometer Ta 3rd Stokes (expected/HHH winds)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2285,
+            "value": -0.38798985
+          },
+          {
+            "x": 1,
+            "y": 2654,
+            "value": -2.2882302
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_TaH",
+        "description": "Radiometer Ta H (expected)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 347,
+            "value": 82.46499
+          },
+          {
+            "x": 2,
+            "y": 1339,
+            "value": 248.96626
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_TaH_hhh",
+        "description": "Radiometer Ta H (expected/HHH winds)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3758,
+            "value": 76.737404
+          },
+          {
+            "x": 1,
+            "y": 2250,
+            "value": 230.16948
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_TaV",
+        "description": "Radiometer Ta V (expected)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3876,
+            "value": 117.75762
+          },
+          {
+            "x": 2,
+            "y": 762,
+            "value": 126.28054
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_TaV_hhh",
+        "description": "Radiometer Ta V (expected/HHH winds)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3020,
+            "value": 106.90955
+          },
+          {
+            "x": 0,
+            "y": 2216,
+            "value": 246.25359
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_TbH",
+        "description": "Radiometer Tb H (expected)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3528,
+            "value": 71.22273
+          },
+          {
+            "x": 1,
+            "y": 3588,
+            "value": 79.76247
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_TbH0",
+        "description": "Radiometer Tb H (expected smooth)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3832,
+            "value": 74.6222
+          },
+          {
+            "x": 2,
+            "y": 1005,
+            "value": 66.17372
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_TbV",
+        "description": "Radiometer Tb V (expected)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2968,
+            "value": 104.772484
+          },
+          {
+            "x": 0,
+            "y": 2777,
+            "value": 103.50834
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_TbV0",
+        "description": "Radiometer Tb V (expected smooth)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 161,
+            "value": 213.13168
+          },
+          {
+            "x": 0,
+            "y": 1274,
+            "value": 289.57928
+          }
+        ]
+      },
+      {
+        "name": "rad_far_rot_ang",
+        "description": "Radiometer Faraday Rotation Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1722,
+            "value": -45.728405
+          },
+          {
+            "x": 0,
+            "y": 2796,
+            "value": -0.9243187
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to galactic effects (I/2)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1828,
+            "value": -0.0013892725
+          },
+          {
+            "x": 1,
+            "y": 215,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_dir_3",
+        "description": "Radiometer Galactic Direct Corr 3rd Stokes",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 941,
+            "value": 0.0077026817
+          },
+          {
+            "x": 1,
+            "y": 1451,
+            "value": 0.0061115352
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_dir_H",
+        "description": "Radiometer Galactic Direct Corr H polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 384,
+            "value": 0.17427944
+          },
+          {
+            "x": 2,
+            "y": 2555,
+            "value": 0.22162566
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_dir_V",
+        "description": "Radiometer Galactic Direct Corr V polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 271,
+            "value": 0.15885098
+          },
+          {
+            "x": 1,
+            "y": 488,
+            "value": 0.18686692
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_err",
+        "description": "Estimated systematic error in galactic effects (I/2)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1705,
+            "value": "NaN"
+          },
+          {
+            "x": 0,
+            "y": 1380,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_ref_3",
+        "description": "Radiometer Galactic Reflect Corr 3rd Stokes",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 501,
+            "value": -0.013070559
+          },
+          {
+            "x": 0,
+            "y": 1228,
+            "value": 0.0035322942
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_ref_GO_H",
+        "description": "Radiometer Gal Reflect Corr H polar (GO)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 989,
+            "value": 0.25882584
+          },
+          {
+            "x": 0,
+            "y": 4,
+            "value": 0.29065382
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_ref_GO_V",
+        "description": "Radiometer Gal Reflect Corr V polar (GO)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1865,
+            "value": 0.2230208
+          },
+          {
+            "x": 1,
+            "y": 1993,
+            "value": 0.01704106
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_ref_H",
+        "description": "Radiometer Galactic Reflect Corr H polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2568,
+            "value": 0.36466694
+          },
+          {
+            "x": 1,
+            "y": 3158,
+            "value": 0.8215519
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_Ta_ref_V",
+        "description": "Radiometer Galactic Reflect Corr V polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1438,
+            "value": 0.063962325
+          },
+          {
+            "x": 1,
+            "y": 3708,
+            "value": 1.011997
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_dTa_H",
+        "description": "Empirical Gal Reflect Adj H polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 725,
+            "value": -0.007315681
+          },
+          {
+            "x": 0,
+            "y": 2461,
+            "value": 0.009706902
+          }
+        ]
+      },
+      {
+        "name": "rad_galact_dTa_V",
+        "description": "Empirical Gal Reflect Adj V polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 242,
+            "value": -0.009370354
+          },
+          {
+            "x": 1,
+            "y": 2023,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_geo_rot_ang",
+        "description": "Radiometer Geometric Rotation Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2371,
+            "value": 0.08127064
+          },
+          {
+            "x": 1,
+            "y": 814,
+            "value": 0.4401202
+          }
+        ]
+      },
+      {
+        "name": "rad_hh_wind_speed",
+        "description": "Radiometer HH wind speed",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters/sec",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2616,
+            "value": 8.763932
+          },
+          {
+            "x": 0,
+            "y": 503,
+            "value": 16.118034
+          }
+        ]
+      },
+      {
+        "name": "rad_hhh_wind_speed",
+        "description": "Radiometer HHH wind speed",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters/sec",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1844,
+            "value": "NaN"
+          },
+          {
+            "x": 0,
+            "y": 1877,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rad_ice_frac",
+        "description": "Fraction of ice contamination (radiometer)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 860,
+            "value": 0.0
+          },
+          {
+            "x": 2,
+            "y": 3670,
+            "value": 1.3500722E-5
+          }
+        ]
+      },
+      {
+        "name": "rad_land_frac",
+        "description": "Fraction of land contamination (radiometer)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2375,
+            "value": 0.9894646
+          },
+          {
+            "x": 1,
+            "y": 1583,
+            "value": 0.9982684
+          }
+        ]
+      },
+      {
+        "name": "rad_moon_Ta_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to lunar effects (I/2)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3345,
+            "value": 1.7128754
+          },
+          {
+            "x": 1,
+            "y": 2116,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rad_moon_Ta_err",
+        "description": "Estimated systematic error in lunar effects (I/2)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3308,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 3555,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_moon_Ta_ref_3",
+        "description": "Radiometer Lunar Reflect Corr 3rd Stokes",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2372,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 1720,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_moon_Ta_ref_H",
+        "description": "Radiometer Lunar Reflect Corr H polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2634,
+            "value": 0.0
+          },
+          {
+            "x": 2,
+            "y": 389,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_moon_Ta_ref_V",
+        "description": "Radiometer Lunar Reflect Corr V polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1781,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 3613,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_pol_rot_ang",
+        "description": "Radiometer Polarization Rotation Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2483,
+            "value": -2.380135
+          },
+          {
+            "x": 1,
+            "y": 80,
+            "value": 3.596147
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_bak_3",
+        "description": "Radiometer Solar Back Scattered 3rd Stokes",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 394,
+            "value": 0.0
+          },
+          {
+            "x": 0,
+            "y": 1087,
+            "value": 6.738608E-8
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_bak_H",
+        "description": "Radiometer Solar Back Scattered H polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 180,
+            "value": 0.0
+          },
+          {
+            "x": 0,
+            "y": 236,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_bak_V",
+        "description": "Radiometer Solar Back Scattered V polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1291,
+            "value": 2.111874E-4
+          },
+          {
+            "x": 2,
+            "y": 1261,
+            "value": 9.2164155E-5
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_dir_3",
+        "description": "Radiometer Solar Direct Corr 3rd Stokes",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3213,
+            "value": -7.0732116E-4
+          },
+          {
+            "x": 2,
+            "y": 285,
+            "value": 0.0029309106
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_dir_H",
+        "description": "Radiometer Solar Direct Corr H polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2519,
+            "value": 0.007932276
+          },
+          {
+            "x": 0,
+            "y": 3290,
+            "value": 0.016506705
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_dir_V",
+        "description": "Radiometer Solar Direct Corr V polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2638,
+            "value": 0.01376481
+          },
+          {
+            "x": 2,
+            "y": 3321,
+            "value": 0.00628676
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_ref_3",
+        "description": "Radiometer Solar Reflect Corr 3rd Stokes",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 4054,
+            "value": -9.3701696E-5
+          },
+          {
+            "x": 0,
+            "y": 3820,
+            "value": 9.056834E-6
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_ref_H",
+        "description": "Radiometer Solar Reflect Corr H polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 626,
+            "value": 1.4822357E-4
+          },
+          {
+            "x": 1,
+            "y": 1033,
+            "value": 3.4679388E-4
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_ref_V",
+        "description": "Radiometer Solar Reflect Corr V polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3749,
+            "value": 1.2155688E-4
+          },
+          {
+            "x": 2,
+            "y": 1154,
+            "value": 6.917772E-4
+          }
+        ]
+      },
+      {
+        "name": "rad_toa_H",
+        "description": "Radiometer TOA Tb H polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1565,
+            "value": 154.67192
+          },
+          {
+            "x": 0,
+            "y": 2053,
+            "value": 246.86665
+          }
+        ]
+      },
+      {
+        "name": "rad_toa_H_nolc",
+        "description": "Radiometer TOA Tb H polarization (nolc)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 794,
+            "value": 89.3381
+          },
+          {
+            "x": 0,
+            "y": 3581,
+            "value": 93.06865
+          }
+        ]
+      },
+      {
+        "name": "rad_toa_V",
+        "description": "Radiometer TOA Tb V polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3881,
+            "value": 237.57385
+          },
+          {
+            "x": 1,
+            "y": 2980,
+            "value": 119.25571
+          }
+        ]
+      },
+      {
+        "name": "rad_toa_V_nolc",
+        "description": "Radiometer TOA Tb V polarization (nolc)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3207,
+            "value": 128.85013
+          },
+          {
+            "x": 2,
+            "y": 2468,
+            "value": 131.98831
+          }
+        ]
+      },
+      {
+        "name": "rad_toi_3",
+        "description": "Radiometer TOI Tb 3rd Stokes",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1968,
+            "value": -2.0456445
+          },
+          {
+            "x": 1,
+            "y": 169,
+            "value": -0.3365826
+          }
+        ]
+      },
+      {
+        "name": "rad_toi_H",
+        "description": "Radiometer TOI Tb H polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3290,
+            "value": 82.64153
+          },
+          {
+            "x": 2,
+            "y": 3981,
+            "value": 193.54121
+          }
+        ]
+      },
+      {
+        "name": "rad_toi_V",
+        "description": "Radiometer TOI Tb V polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3902,
+            "value": 253.22922
+          },
+          {
+            "x": 1,
+            "y": 959,
+            "value": 116.02026
+          }
+        ]
+      },
+      {
+        "name": "rad_wind_dir_rand_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to random error in wind direction",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1075,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 2291,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rad_wind_dir_rand_err",
+        "description": "Estimated random error in radiometer derived wind direction",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1240,
+            "value": "NaN"
+          },
+          {
+            "x": 0,
+            "y": 1250,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rad_wind_speed_rand_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to random error in wind speed",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 4005,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 1513,
+            "value": 1.3510704
+          }
+        ]
+      },
+      {
+        "name": "rad_wind_speed_rand_err",
+        "description": "Estimated random error in radiometer derived wind speed",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters/sec",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2432,
+            "value": 0.30873185
+          },
+          {
+            "x": 0,
+            "y": 3176,
+            "value": 0.27264094
+          }
+        ]
+      },
+      {
+        "name": "rad_wind_speed_syst_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to systematic error in wind speed",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1491,
+            "value": 1.0861254
+          },
+          {
+            "x": 0,
+            "y": 206,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rad_wind_speed_syst_err",
+        "description": "Estimated systematic error in radiometer derived wind speed",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters/sec",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3751,
+            "value": 0.028296193
+          },
+          {
+            "x": 0,
+            "y": 948,
+            "value": -0.11468042
+          }
+        ]
+      },
+      {
+        "name": "rim_anom",
+        "description": "Sea Surface Salinity Anomoly (RIM)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1379,
+            "value": 0.0
+          },
+          {
+            "x": 0,
+            "y": 375,
+            "value": -5.0735474E-4
+          }
+        ]
+      },
+      {
+        "name": "rim_anom1",
+        "description": "Sea Surface Salinity Anomoly (RIM) 1m",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3341,
+            "value": -1.9073486E-5
+          },
+          {
+            "x": 2,
+            "y": 3767,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rim_anom3",
+        "description": "Sea Surface Salinity (RIM) Anomoly 3m",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3237,
+            "value": -0.010356903
+          },
+          {
+            "x": 2,
+            "y": 578,
+            "value": -3.8146973E-6
+          }
+        ]
+      },
+      {
+        "name": "rim_anom5",
+        "description": "Sea Surface Salinity (RIM) Anomoly 5m",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3145,
+            "value": -1.5258789E-5
+          },
+          {
+            "x": 0,
+            "y": 3937,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rim_bf_irr",
+        "description": "Rain Beam Fill Fraction (IRR)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1649,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 470,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rim_irr",
+        "description": "Instantaneous Rain Rate (RIM)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "millimeter/hour",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2881,
+            "value": 0.0
+          },
+          {
+            "x": 2,
+            "y": 1673,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "rim_pss",
+        "description": "Probablility of Salinity Stratification",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1909,
+            "value": "NaN"
+          },
+          {
+            "x": 0,
+            "y": 242,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "rim_sss",
+        "description": "Sea Surface Salinity (RIM)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 197,
+            "value": "NaN"
+          },
+          {
+            "x": 1,
+            "y": 1865,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "scat_HH_ant",
+        "description": "ANT Scatterometer NRCS for HH polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3036,
+            "value": -13.7554
+          },
+          {
+            "x": 0,
+            "y": 2470,
+            "value": -11.9843
+          }
+        ]
+      },
+      {
+        "name": "scat_HH_exp",
+        "description": "Expected Sigma0 for HH polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 288,
+            "value": -21.6949
+          },
+          {
+            "x": 0,
+            "y": 595,
+            "value": -10.4276
+          }
+        ]
+      },
+      {
+        "name": "scat_HH_toa",
+        "description": "TOA Scatterometer NRCS for HH polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3765,
+            "value": -10.8198
+          },
+          {
+            "x": 0,
+            "y": 1721,
+            "value": -6.55743
+          }
+        ]
+      },
+      {
+        "name": "scat_HV_ant",
+        "description": "ANT Scatterometer NRCS for HV polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2578,
+            "value": -32.8343
+          },
+          {
+            "x": 1,
+            "y": 689,
+            "value": -29.7432
+          }
+        ]
+      },
+      {
+        "name": "scat_HV_exp",
+        "description": "Expected Sigma0 for HV polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1799,
+            "value": "NaN"
+          },
+          {
+            "x": 2,
+            "y": 1196,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "scat_HV_toa",
+        "description": "TOA Scatterometer NRCS for HV polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2131,
+            "value": -24.6114
+          },
+          {
+            "x": 0,
+            "y": 3373,
+            "value": -34.3476
+          }
+        ]
+      },
+      {
+        "name": "scat_VH_ant",
+        "description": "ANT Scatterometer NRCS for VH polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3490,
+            "value": -33.5643
+          },
+          {
+            "x": 0,
+            "y": 1267,
+            "value": -27.8605
+          }
+        ]
+      },
+      {
+        "name": "scat_VH_exp",
+        "description": "Expected Sigma0 for VH polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2895,
+            "value": -33.7498
+          },
+          {
+            "x": 0,
+            "y": 3044,
+            "value": -33.5676
+          }
+        ]
+      },
+      {
+        "name": "scat_VH_toa",
+        "description": "TOA Scatterometer NRCS for VH polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3525,
+            "value": -34.8223
+          },
+          {
+            "x": 2,
+            "y": 825,
+            "value": -34.9417
+          }
+        ]
+      },
+      {
+        "name": "scat_VV_ant",
+        "description": "ANT Scatterometer NRCS for VV polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3019,
+            "value": -17.8573
+          },
+          {
+            "x": 0,
+            "y": 2904,
+            "value": -9.82629
+          }
+        ]
+      },
+      {
+        "name": "scat_VV_exp",
+        "description": "Expected Sigma0 for VV polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1626,
+            "value": "NaN"
+          },
+          {
+            "x": 2,
+            "y": 48,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "scat_VV_toa",
+        "description": "TOA Scatterometer NRCS for VV polarization",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1857,
+            "value": -11.4923
+          },
+          {
+            "x": 2,
+            "y": 3398,
+            "value": -17.6496
+          }
+        ]
+      },
+      {
+        "name": "scat_esurf_H",
+        "description": "excess surface scatterometer emissivity (H pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3611,
+            "value": 0.0189122
+          },
+          {
+            "x": 1,
+            "y": 693,
+            "value": 0.00881055
+          }
+        ]
+      },
+      {
+        "name": "scat_esurf_H_uncertainty",
+        "description": "Uncertainty in surface emmissivity (H-pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3854,
+            "value": 5.07614E-4
+          },
+          {
+            "x": 1,
+            "y": 1344,
+            "value": 2.62827E-4
+          }
+        ]
+      },
+      {
+        "name": "scat_esurf_V",
+        "description": "excess surface scatterometer emissivity (V pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3678,
+            "value": 0.0097
+          },
+          {
+            "x": 0,
+            "y": 2054,
+            "value": 0.00334795
+          }
+        ]
+      },
+      {
+        "name": "scat_esurf_V_uncertainty",
+        "description": "Uncertainty in surface emmissivity (V-pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1455,
+            "value": 0.00115392
+          },
+          {
+            "x": 1,
+            "y": 1706,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "scat_ice_frac",
+        "description": "Fraction of ice contamination (scatterometer)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 4031,
+            "value": 0.0
+          },
+          {
+            "x": 0,
+            "y": 3606,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "scat_land_frac",
+        "description": "Fraction of land contamination (scatterometer)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3281,
+            "value": 0.0
+          },
+          {
+            "x": 0,
+            "y": 485,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "scat_tot_toa",
+        "description": "TOA Scatterometer (Total)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "db",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1112,
+            "value": -12.1165
+          },
+          {
+            "x": 2,
+            "y": 83,
+            "value": -11.2107
+          }
+        ]
+      },
+      {
+        "name": "scat_wind_speed",
+        "description": "Scatterometer Wind Speed",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters/sec",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 275,
+            "value": 10.6782
+          },
+          {
+            "x": 1,
+            "y": 1417,
+            "value": 1.14662
+          }
+        ]
+      },
+      {
+        "name": "spiciness",
+        "description": "Derived Surface Spiciness based on TEOS-10",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "kg/m^3",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3792,
+            "value": -1.0253055
+          },
+          {
+            "x": 1,
+            "y": 1536,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "wind_uncertainty",
+        "description": "Estimated wind speed error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters/sec",
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1070,
+            "value": 0.143959
+          },
+          {
+            "x": 1,
+            "y": 1169,
+            "value": 0.126304
+          }
+        ]
+      },
+      {
+        "name": "rim_status_flag",
+        "description": "RIM processing status",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 809,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 1188,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "scatterometer_flags",
+        "description": "Scatterometer data quality flags",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3667,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 3679,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "scat_samples",
+        "description": "Number of scatterometer samples per average",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3624,
+            "value": 7.0
+          },
+          {
+            "x": 1,
+            "y": 825,
+            "value": 8.0
+          }
+        ]
+      },
+      {
+        "name": "rad_ghh",
+        "description": "Radiometer HH gain",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 123,
+            "value": 1.3743963
+          },
+          {
+            "x": 1,
+            "y": 1611,
+            "value": 1.3749151
+          }
+        ]
+      },
+      {
+        "name": "rad_gmm",
+        "description": "Radiometer MM gain",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3125,
+            "value": 1.0466344
+          },
+          {
+            "x": 0,
+            "y": 1058,
+            "value": 1.1910123
+          }
+        ]
+      },
+      {
+        "name": "rad_gpp",
+        "description": "Radiometer PP gain",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1233,
+            "value": 1.0621648
+          },
+          {
+            "x": 0,
+            "y": 2397,
+            "value": 1.0619662
+          }
+        ]
+      },
+      {
+        "name": "rad_gvv",
+        "description": "Radiometer VV gain",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1117,
+            "value": 1.6082165
+          },
+          {
+            "x": 1,
+            "y": 3005,
+            "value": 1.4624169
+          }
+        ]
+      },
+      {
+        "name": "rad_oh",
+        "description": "Radiometer H offset",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2955,
+            "value": 482.25375
+          },
+          {
+            "x": 2,
+            "y": 1851,
+            "value": 482.18768
+          }
+        ]
+      },
+      {
+        "name": "rad_om",
+        "description": "Radiometer M offset",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1264,
+            "value": 437.00348
+          },
+          {
+            "x": 0,
+            "y": 1590,
+            "value": 342.1559
+          }
+        ]
+      },
+      {
+        "name": "rad_op",
+        "description": "Radiometer P offset",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3999,
+            "value": 456.22995
+          },
+          {
+            "x": 2,
+            "y": 2186,
+            "value": 260.95383
+          }
+        ]
+      },
+      {
+        "name": "rad_ov",
+        "description": "Radiometer V offset",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2540,
+            "value": 549.15625
+          },
+          {
+            "x": 0,
+            "y": 1266,
+            "value": 549.2834
+          }
+        ]
+      },
+      {
+        "name": "att_ang",
+        "description": "Spacecraft roll, pitch, yaw",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3648,
+            "value": 2.3841953
+          },
+          {
+            "x": 2,
+            "y": 2173,
+            "value": 0.7556177
+          }
+        ]
+      },
+      {
+        "name": "beam_clat",
+        "description": "Beam Center Latitude",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2156,
+            "value": 79.332466
+          },
+          {
+            "x": 1,
+            "y": 3588,
+            "value": -43.822395
+          }
+        ]
+      },
+      {
+        "name": "beam_clon",
+        "description": "Beam Center Longitude",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1846,
+            "value": 27.445784
+          },
+          {
+            "x": 1,
+            "y": 589,
+            "value": 57.7057
+          }
+        ]
+      },
+      {
+        "name": "celphi",
+        "description": "Boresight Earth Azimuth Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1024,
+            "value": 71.598274
+          },
+          {
+            "x": 2,
+            "y": 607,
+            "value": 66.689476
+          }
+        ]
+      },
+      {
+        "name": "celtht",
+        "description": "Boresight Earth Incidence Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1748,
+            "value": 46.25111
+          },
+          {
+            "x": 0,
+            "y": 664,
+            "value": 29.35537
+          }
+        ]
+      },
+      {
+        "name": "glxlat",
+        "description": "Galaxy Declination (J2000)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 660,
+            "value": -24.334797
+          },
+          {
+            "x": 0,
+            "y": 1469,
+            "value": 44.01905
+          }
+        ]
+      },
+      {
+        "name": "glxlon",
+        "description": "Galaxy Right Ascention (J2000)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 943,
+            "value": 151.34569
+          },
+          {
+            "x": 0,
+            "y": 3553,
+            "value": 240.12225
+          }
+        ]
+      },
+      {
+        "name": "moond",
+        "description": "Earth-to-Moon unit vector (eci)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2474,
+            "value": -0.19983298
+          },
+          {
+            "x": 0,
+            "y": 1220,
+            "value": -0.20446134
+          }
+        ]
+      },
+      {
+        "name": "moonglt",
+        "description": "Moon Glint Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 303,
+            "value": 83.903625
+          },
+          {
+            "x": 0,
+            "y": 212,
+            "value": 77.442505
+          }
+        ]
+      },
+      {
+        "name": "orb_pos",
+        "description": "Orbital position vector",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3254,
+            "value": -2035495.9
+          },
+          {
+            "x": 1,
+            "y": 3788,
+            "value": -3205402.5
+          }
+        ]
+      },
+      {
+        "name": "orb_vel",
+        "description": "Orbital velocity vector",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters per second",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3814,
+            "value": -2985.815
+          },
+          {
+            "x": 1,
+            "y": 1250,
+            "value": -2146.4263
+          }
+        ]
+      },
+      {
+        "name": "scat_beam_clat",
+        "description": "Scatterometer Beam Center Latitude",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1911,
+            "value": 76.7532
+          },
+          {
+            "x": 1,
+            "y": 86,
+            "value": -76.4834
+          }
+        ]
+      },
+      {
+        "name": "scat_beam_clon",
+        "description": "Scatterometer Beam Center Longitude",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 232,
+            "value": 80.2801
+          },
+          {
+            "x": 1,
+            "y": 3577,
+            "value": -165.023
+          }
+        ]
+      },
+      {
+        "name": "scat_polarization_roll",
+        "description": "Scatterometer Polarization Roll Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2395,
+            "value": -0.0680119
+          },
+          {
+            "x": 0,
+            "y": 2329,
+            "value": -0.0524525
+          }
+        ]
+      },
+      {
+        "name": "sund",
+        "description": "Earth-to-Sun unit vector (eci)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 3963,
+            "value": 0.13275737
+          },
+          {
+            "x": 0,
+            "y": 3859,
+            "value": 0.9426652
+          }
+        ]
+      },
+      {
+        "name": "sunglt",
+        "description": "Sun Glint Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1850,
+            "value": 117.03987
+          },
+          {
+            "x": 2,
+            "y": 1412,
+            "value": 128.07463
+          }
+        ]
+      },
+      {
+        "name": "sunphi",
+        "description": "Sun Vector Earth Azimuth Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 177,
+            "value": 239.47807
+          },
+          {
+            "x": 0,
+            "y": 699,
+            "value": 273.51093
+          }
+        ]
+      },
+      {
+        "name": "sunr",
+        "description": "Sun reflection unit vector (eci)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3853,
+            "value": 0.3586077
+          },
+          {
+            "x": 2,
+            "y": 1381,
+            "value": -0.22185487
+          }
+        ]
+      },
+      {
+        "name": "suntht",
+        "description": "Sun Vector Earth Incidence Angle",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 2674,
+            "value": 86.814835
+          },
+          {
+            "x": 0,
+            "y": 1097,
+            "value": 90.53592
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "Global_Attributes/creator_name",
+        "value": "NASA/GSFC/OBPG"
+      },
+      {
+        "path": "Global_Attributes/scatterometer_history",
+        "value": "-limits /sdps/sdpsoper/Science/OCSSW/AQ_V5.0/data/aquarius/scatterometer/L1B_limits_flA_05-08-2012.txt -debug -1 -L2_filter_rfi -param_file /sdps/sdpsoper/Science/OCSSW/AQ_V5.0/data/aquarius/scatterometer/params_pointing_fix_10-31-2012.txt -dir_dat /sdps/sdpsoper/Science/OCSSW/AQ_V5.0/data/aquarius/scatterometer -dir_out /data3/sdpsoper/vdc/vpu6/workbuf -dir_scratch /dev/shm/tmp_104942798 -apc_file /sdps/sdpsoper/Science/OCSSW/AQ_V5.0/data/aquarius/scatterometer/L2_APC_matrix_theory_10-04-2011.txt -cal_level 3 -suppress_tlm_warnings -i /data3/sdpsoper/vdc/vpu6/workbuf/Q2015099144200.L1A_SCI "
+      },
+      {
+        "path": "Variable_Attributes/Navigation//orb_vel/long_name",
+        "value": "Orbital velocity vector"
+      },
+      {
+        "path": "Variable_Attributes/Navigation//scat_latfoot/valid_max",
+        "value": "90.0"
+      },
+      {
+        "path": "Global_Attributes/scatterometer_polarizations",
+        "value": "6"
+      },
+      {
+        "path": "Global_Attributes/time_coverage_start",
+        "value": "2015-04-09T14:42:00.030Z"
+      },
+      {
+        "path": "Global_Attributes/percent_rfi",
+        "value": "8.175874"
+      },
+      {
+        "path": "Global_Attributes/rad_ancillary_file1",
+        "value": "y2015040912.h5:N2015099_SST_CMC_24h.h5,N2015100_SST_CMC_24h.h5,N201509912_QATM_NCEP_6h.h5,N201509912_QMET_NCEP_6h,N201509912_SWH_NCEP_6h.h5,N201509912_FROZEN_6h.h5,N201509900_SEAICE_NCEP_24h.hdf,N201510000_SEAICE_NCEP_24h.hdf,N201509900_SALINITY_HYCOM_24h.h5,N201509900_SALINITY_HYCOM_24h.h5,MERRA300.prod.simul.tavg1_2d_mld_Nx.20150409.SUB.nc4"
+      },
+      {
+        "path": "Global_Attributes/radiometer_calibration_files",
+        "value": "coeff_loss_V4.txt,coeff_nl.txt"
+      },
+      {
+        "path": "Global_Attributes/delta_TND_H_coefficient",
+        "value": "0.0057095042,0.005242433,0.0062344084"
+      }
+    ]
+  }
+}

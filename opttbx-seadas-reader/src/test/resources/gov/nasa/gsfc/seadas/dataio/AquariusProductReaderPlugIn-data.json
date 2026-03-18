@@ -1,0 +1,14 @@
+{
+  "testProducts": [
+    {
+      "id": "Q2015099144200_L2_SCI_V5",
+      "relativePath": "sensors_platforms/AQUARIUS/Q2015099144200.L2_SCI_V5.0",
+      "description": "Aquarius L2 v5.0"
+    },
+    {
+      "id": "Q20140012014365_L3m_YR_SCI_V5_0_SSS_1deg",
+      "relativePath": "sensors_platforms/AQUARIUS/Q20140012014365.L3m_YR_SCI_V5.0_SSS_1deg",
+      "description": "Aquarius L3 monthly v5.0"
+    }
+  ]
+}

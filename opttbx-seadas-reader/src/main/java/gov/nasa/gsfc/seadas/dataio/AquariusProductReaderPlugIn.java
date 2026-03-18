@@ -24,7 +24,6 @@ import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -39,7 +38,6 @@ public class AquariusProductReaderPlugIn implements ProductReaderPlugIn {
 
     private static final String DEFAULT_FILE_EXTENSION = ".h5";
 
-    private static final String AQUARIUS_L1A_EXTENSION = ".L1A_SCI";
     private static final String AQUARIUS_L2_EXTENSION = ".L2_SCI_V1.3";
     private static final String AQUARIUS_L3_EXTENSION = ".main";
 
@@ -47,7 +45,6 @@ public class AquariusProductReaderPlugIn implements ProductReaderPlugIn {
     public static final String FORMAT_NAME = "Aquarius";
 
     private static final String[] supportedProductTypes = {
-//            "Aquarius Level 1A Data",
             "Aquarius Level 2 Data",
             "Aquarius Level 3 Binned Data",
             "Aquarius Level-3 Binned Data"
@@ -152,7 +149,6 @@ public class AquariusProductReaderPlugIn implements ProductReaderPlugIn {
         // todo: return regular expression to clean up the extensions.
         return new String[]{
                 DEFAULT_FILE_EXTENSION,
-                AQUARIUS_L1A_EXTENSION,
                 AQUARIUS_L2_EXTENSION,
                 AQUARIUS_L3_EXTENSION
         };
