@@ -45,7 +45,26 @@ public class L1BViirsFileReader extends SeadasFileReader {
             scanMultiplier = 32;
         } 
 
-        mustFlipX = mustFlipY = mustFlipViirs();
+//        mustFlipX = mustFlipY = mustFlipViirs();
+
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL1B_VIIRS())) {
+            mustFlipX = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL1B_VIIRS())) {
+            mustFlipX = false;
+        } else {
+            mustFlipX = mustFlipViirs();; // default flipX
+        }
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYL1B_VIIRS())) {
+            mustFlipY = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYL1B_VIIRS())) {
+            mustFlipY = false;
+        } else {
+            mustFlipY = mustFlipViirs();; // default flipY
+        }
+
+
 
         SeadasProductReader.ProductType productType = productReader.getProductType();
 
@@ -81,7 +100,8 @@ public class L1BViirsFileReader extends SeadasFileReader {
 
         // todo - think about maybe possibly sometime creating a flag for questionable data
         addFlagsAndMasks(product);
-        product.setAutoGrouping("RefSB:Emissive");
+//        product.setAutoGrouping("RefSB:Emissive");
+        product.setAutoGrouping(getBandGroupingL1B_VIIRS());
 
         return product;
 

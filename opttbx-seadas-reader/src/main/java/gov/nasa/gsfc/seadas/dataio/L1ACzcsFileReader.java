@@ -37,12 +37,12 @@ import java.util.List;
  * Date: 11/14/11
  * Time: 2:23 PM
  */
-public class L2FileReader extends SeadasFileReader {
+public class L1ACzcsFileReader extends SeadasFileReader {
 
     private static final String KEEP_BAD_NAV_PROPERTY = "snap.seadasl2reader.keepBadNavLines";
     private static final boolean keepBadNavLines = Boolean.getBoolean(KEEP_BAD_NAV_PROPERTY);
 
-    L2FileReader(SeadasProductReader productReader) {
+    L1ACzcsFileReader(SeadasProductReader productReader) {
         super(productReader);
     }
 
@@ -51,25 +51,19 @@ public class L2FileReader extends SeadasFileReader {
 
         int sceneHeight = 0;
         int sceneWidth = 0;
-        int[] shape;
 
-//        List<Dimension> dims = ncFile.getDimensions();
-//        for (Dimension d : dims) {
-//            if (("number_of_lines".equalsIgnoreCase(d.getShortName()))
-//                    || ("Number_of_Scan_Lines".equalsIgnoreCase(d.getShortName()))) {
-//                sceneHeight = d.getLength();
-//            }
-//            if (("pixels_per_line".equalsIgnoreCase(d.getShortName()))
-//                    || ("Pixels_per_Scan_Line".equalsIgnoreCase(d.getShortName()))) {
-//                sceneWidth = d.getLength();
-//            }
-//        }
-//        if (sceneWidth == 0) {
-//            sceneWidth = getIntAttribute("Pixels_per_Scan_Line");
-//        }
-//        if (sceneHeight == 0) {
-//            sceneHeight = getIntAttribute("Number_of_Scan_Lines");
-//        }
+        List<Dimension> dims = ncFile.getDimensions();
+        for (Dimension d : dims) {
+            if (("scans".equalsIgnoreCase(d.getShortName()))
+                    || ("Number_of_Scan_Lines".equalsIgnoreCase(d.getShortName()))) {
+                sceneHeight = d.getLength();
+            }
+            if (("pixels".equalsIgnoreCase(d.getShortName()))
+                    || ("Pixels_per_Scan_Line".equalsIgnoreCase(d.getShortName()))) {
+                sceneWidth = d.getLength();
+            }
+        }
+
         try {
             String navGroup = "Navigation_Data";
             final String latitude = "latitude";
@@ -94,20 +88,9 @@ public class L2FileReader extends SeadasFileReader {
                 }
             }
             Variable variable = ncFile.findVariable(navGroup + "/" + latitude);
-            if (variable == null ) {
-                String  title = getStringAttribute("title");
-                if (title.contains("PACE OCI Level-2 Data UAA 1x1")) {
-                    variable = ncFile.findVariable(navGroup + "/Latitude");
-                }
+            if (variable == null){
+                variable = ncFile.findVariable(latitude);
             }
-            try {
-                shape = variable.getShape();
-                sceneWidth = shape[1];
-                sceneHeight = shape[0];
-            } catch (Exception e) {
-                throw new ProductIOException(e.getMessage(), e);
-            }
-
             if (!keepBadNavLines) {
                 invalidateLines(LAT_SKIP_BAD_NAV, variable);
             }
@@ -122,38 +105,13 @@ public class L2FileReader extends SeadasFileReader {
         if (productName == null) {
             productName = productReader.getInputFile().getName();
         }
-
+        mustFlipX = mustFlipY = getDefaultFlip();
         SeadasProductReader.ProductType productType = productReader.getProductType();
-
-
-        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXLevel2())) {
-            mustFlipX = true;
-        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXLevel2())) {
+        if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
+                productType == SeadasProductReader.ProductType.Level2_CZCS ||
+                productType == SeadasProductReader.ProductType.Level2_Pace ||
+                productType == SeadasProductReader.ProductType.Level2_PaceOCIS)
             mustFlipX = false;
-        } else {
-            if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
-                    productType == SeadasProductReader.ProductType.Level2_CZCS ||
-                    productType == SeadasProductReader.ProductType.Level2_Pace ||
-                    productType == SeadasProductReader.ProductType.Level2_PaceOCIS) {
-                mustFlipX = false; // mission default
-            } else {
-                mustFlipX = getDefaultFlip(); // mission default
-            }
-        }
-
-        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYLevel2())) {
-            mustFlipY = true;
-        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYLevel2())) {
-            mustFlipY = false;
-        } else {
-            if (productType == SeadasProductReader.ProductType.Level2_Pace) {
-                mustFlipY = getDefaultFlip(true);  // mission default
-            } else {
-                mustFlipY = getDefaultFlip(); // mission default
-            }
-        }
-
-
 
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
         product.setDescription(productName);
@@ -200,13 +158,7 @@ public class L2FileReader extends SeadasFileReader {
         addGeocoding(product);
 
         addFlagsAndMasks(product);
-//        product.setAutoGrouping("Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf");
-// todo not yet implementing any mission dependent band grouping - but this if statement is a stub for that
-        if (productType == SeadasProductReader.ProductType.Level2_Pace) {
-            product.setAutoGrouping(getBandGroupingLevel2());
-        } else {
-            product.setAutoGrouping(getBandGroupingLevel2());
-        }
+        product.setAutoGrouping("Rrs_unc:Rrs:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:TLg:rhom:rhos:rhot:Taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sol:tg_sen");
 
         return product;
     }
@@ -360,6 +312,11 @@ public class L2FileReader extends SeadasFileReader {
             Variable latVar = ncFile.findVariable(navGroup + "/" + latitude);
             Variable lonVar = ncFile.findVariable(navGroup + "/" + longitude);
             Variable cntlPointVar = ncFile.findVariable(navGroup + "/" + cntlPoints);
+            if (latVar == null) {
+                latVar = ncFile.findVariable(latitude);
+                lonVar = ncFile.findVariable(longitude);
+                cntlPointVar = ncFile.findVariable(cntlPoints);
+            }
             if (latVar != null && lonVar != null && cntlPointVar != null) {
                 Array lonRaw;
                 Array latRaw;

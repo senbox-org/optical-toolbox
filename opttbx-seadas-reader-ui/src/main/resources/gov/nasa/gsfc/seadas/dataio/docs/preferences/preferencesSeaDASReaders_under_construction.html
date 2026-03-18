@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <title>SeaDAS Readers (Preferences)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<table class="header" width="100%">
+    <tr class="header">
+        <td class="header">&nbsp;
+            SeaDAS Readers (Preferences)
+        </td>
+        <td class="header" align="right"><a href="index.html"><img src="../images/SeaDASHeader.png"
+                                                                   border=0></a></td>
+    </tr>
+</table>
+<hr>
+
+<h1>TBD</h1>
+
+<a href="preferencesSeaDASReaders_under_construction.html">UNDER CONSTRUCTION</a>
+
+<h4>Our apologies, the help page has not yet been written.  See a future SeaDAS release, or consult the Earth Data Forum</h4>
+
+
+<br><br>
+<p>Preference configuration settings for the SeaDAS File Readers.  The term "SeaDAS File Readers" refers
+    to the built-in aspect of SeaDAS which "reads" (aka "loads") the NASA science files intothe SeaDAS application.
+    These readers take advantage of the specific and known data/metadata structure of the NASA science files in
+    order to best utilize and access all the data for use with the SeaDAS application tools.  Note: when referring to
+     "SeaDAS File Readers", keep in mind that these file readers are specific and limited to the NASA SeaDAS-OCSSW
+    processed data.  There are many other separate file readers contained within the SeaDAS application which support other
+    datasets such as those distributed by ESA, as well as which support generic data.
+</p>
+<br>
+
+
+<p align="center">
+<!--    <a href="../images/preferences_seadas_readers.png">-->
+    <img src="../images/preferences_seadas_readers.png" width="600" border="0">
+<!--    </a>-->
+    <br><br>
+    <i>Image 1: User Interface for the SeaDAS Readers Preferences</i>
+</p>
+<br><br>
+
+<h3>Location</h3>
+<p>Band Grouping Preferences are accessed in the SeaDAS visual application in the Menu at:
+<ul>
+    <li><b>Windows</b>: Menu > Tools > Options > OptTbx > SeaDAS Readers</li>
+    <li><b>Linux</b>: Menu > Tools > Options > OptTbx > SeaDAS Readers</li>
+    <li><b>Mac</b>: Menu > seadas > Settings > OptTbx > SeaDAS Readers</li>
+</ul>
+<br>
+
+
+<br><br>
+<p>Preference configuration settings for the band property "Band Grouping", which is a feature of SeaDAS to group
+    particular bands together into a single folder, unit, group, etc. for the usage of certain tools.
+</p>
+<br>
+
+<h3>Overview</h3>
+<p>The raster grid orientation of native unprojected satellite data (such as occurs with in level-1 and level-2 data of many missions),
+    is not always such that pixels toward the top of the screen are geographically north of pixels toward the bottom of
+    the screen or that pixels toward the left of the screen are geographically west of those pixels toward the right of the screen.
+<br><br>
+    When files are loaded into SeaDAS, metadata (such as the file type, mission, data-level, and whether the satellite is on an ascending
+    or descending part of the orbit) is utilized by SeaDAS to automatically flip the grid vertically and/or horizontally (if needed)
+    such that geographic north-south (y-axis) and geographic west-east (x-axis) aligns with the raster grid as it is displayed on the screen.
+<br><br>
+    This is usually the desired behavior for most users in most cases.  However, there can be reasons for wanting to view the native
+    sensor grid orientation.  This can be accomplished by configuring your Flip Preferences.
+
+
+
+
+
+<h3>Details</h3>
+
+<p>There are essentially 3 options for the image flip states.  These options are:</p>
+
+<ul>
+    <li><b>NO: (Native Sensor Orientation)</b><br>With this selection no flip will be applied by SeaDAS to the file.</li>
+    <li><b>MISSION DEFAULT (Earth Orientation)</b><br>With this selection SeaDAS will flip the image (if needed) to
+        align with a Earth North-South and West-East view perspective.  This is sensor specific, based on the metadata fields
+    such as: file type, mission, data-level, and whether the satellite is on an ascending or descending part of the orbit.
+        or descending part of the orbit</li>
+    <li><b>YES</b><br>With this selection the SeaDAS will flip the image both vertically (Y-axis) and horizontally (X-axis)
+    without any considerations of alignment with the Earth North-South and West-East view perspective.</li>
+</ul>
+<br>
+
+<p>The flip preferences controls are available currently for the following data types:</p>
+<ul>
+    <li><b>Level-2 Files</b>: applies to all missions.</li>
+    <li><b>Level-1B PACE Files</b></li>
+    <li><b>Level-1C PACE Files</b></li>
+    <li><b>Level-1B MODIS Files</b>: applies to both the TERRA and AQUA missions</li>
+    <li><b>Level-1B VIIRS Files</b>: applies to all VIIRS missions</li>
+    <li><b>Level-3 Mapped Files</b>: applies to files regardless of mission. Note: Mapped data only has two flip options
+        ("YES" and "NO"), as mapped data is already projected and does not reflect the native sensor orientation. </li>
+</ul>
+
+<br>
+<hr>
+</body>
+</html>
