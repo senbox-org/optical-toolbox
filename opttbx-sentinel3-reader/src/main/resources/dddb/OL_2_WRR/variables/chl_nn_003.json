@@ -8,11 +8,21 @@
     "description" : "log10 scaled (Neural Net) Algal pigment concentration"
   },
   {
+    "name": "CHL_NN_err",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "units" : "lg(re mg.m-3)",
+    "description" : "log10 scaled Error estimate for (Neural Net) algal pigment concentration",
+    "optional" : true
+  },
+  {
     "name": "CHL_NN_unc",
     "dataType": "uint8",
     "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
     "units" : "lg(re mg.m-3)",
-    "description" : "log10 scaled Uncertainty estimate for (Neural Net) algal pigment concentration"
+    "description" : "log10 scaled Uncertainty estimate for (Neural Net) algal pigment concentration",
+    "optional" : true
   }
 ]

@@ -20,6 +20,7 @@ public class VariableDescriptor {
     private String validExpression;
     private String units;
     private String description;
+    private boolean optional;
 
     public VariableDescriptor() {
         type = 'v';
@@ -182,5 +183,9 @@ public class VariableDescriptor {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isOptional() {
+        return optional;
     }
 }
