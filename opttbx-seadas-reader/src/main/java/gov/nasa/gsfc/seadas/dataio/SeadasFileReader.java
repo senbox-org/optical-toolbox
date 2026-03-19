@@ -1553,7 +1553,10 @@ public abstract class SeadasFileReader {
             } else if (variableRank == 3) {
                 add3DNewBands(product, variable, bandToVariableMap);
             } else if (variableRank == 4) {
-                add4DNewBands(product, variable,bandToVariableMap);
+                if (product.getProductType().contains("SPEX"))
+                    add4DSPEXNewBands(product, variable, bandToVariableMap);
+                else
+                    add4DNewBands(product, variable,bandToVariableMap);
             } else if (variableRank == 1) {
                 Band band = add1DNewBand(product, variable);
                 if (band != null) {
@@ -1857,6 +1860,176 @@ public abstract class SeadasFileReader {
         }
         return bandToVariableMap;
     }
+
+    protected Map<Band, Variable> add4DSPEXNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
+        final int sceneRasterWidth = product.getSceneRasterWidth();
+        final int sceneRasterHeight = product.getSceneRasterHeight();
+
+        int spectralBandIndex = 0;
+        Array wavelengths = null;
+        Array band_indices = null;
+        Array intWavelengths = null;
+        Array view_angles = null;
+
+        final int[] dimensions = variable.getShape();
+//        List<Dimension> variable_dimensions = variable.getDimensions();
+        String wavelength_name = variable.getDimensionsString().split(" ")[2].trim();
+        final int views = dimensions[2];
+        final int height = dimensions[0];
+        final int width = dimensions[1];
+        final int bands = dimensions[3];
+        int dim = 0;
+        Variable wvl = null;
+        Variable bandIdx = null;
+        Variable intWvl = null;
+        Variable view_angle = null;
+
+        if (height == sceneRasterHeight && width == sceneRasterWidth) {
+            // final List<Attribute> list = variable.getAttributes();
+            List<Dimension> dims = ncFile.getDimensions();
+            for (Dimension d: dims){
+                if (d.getShortName().equalsIgnoreCase("wavelength")) {
+                    dim = d.getLength();
+                }
+            }
+            // find wvl variable for  SPEX L2  files
+            wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
+            view_angle = ncFile.findVariable("sensor_band_parameters/sensor_view_angle");
+
+            if (wvl != null && view_angle != null) {
+                try {
+                    wavelengths = wvl.read();
+                } catch (IOException e) {
+                }
+                try {
+                    view_angles = view_angle.read();
+                } catch (IOException e) {
+                }
+
+                String units = variable.getUnitsString();
+
+                for (int i = 0; i < views; i++) {
+                    for (int j = 0; j < bands; j++) {
+                        final String shortname = variable.getShortName();
+                        StringBuilder longname = new StringBuilder(shortname);
+                        longname.append("_");
+                        if ((i > views / 2) && (view_angles.getInt(i) == view_angles.getInt(views - 1 - i))) {
+                            longname.append(-view_angles.getInt(i));
+                        } else {
+                            longname.append(view_angles.getInt(i));
+                        }
+                        longname.append("_");
+                        longname.append(Math.round(wavelengths.getFloat(j)));
+                        String name = longname.toString();
+                        String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
+                        final int dataType = getProductDataType(variable);
+
+                        if (!product.containsBand(name)) {
+
+                            final Band band = new Band(name, dataType, width, height);
+                            product.addBand(band);
+
+                            Variable sliced1 = null;
+                            Variable sliced = null;
+                            try {
+                                sliced1 = variable.slice(2, i);
+                                sliced = sliced1.slice(2, j);
+                            } catch (InvalidRangeException e) {
+                                e.printStackTrace();  //Todo change body of catch statement.
+                            }
+                            bandToVariableMap.put(band, sliced);
+
+                            try {
+                                Attribute fillValue = variable.findAttribute("_FillValue");
+                                if (fillValue == null) {
+                                    fillValue = variable.findAttribute("bad_value_scaled");
+                                }
+                                band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
+                                band.setNoDataValueUsed(true);
+                                band.setSpectralWavelength(wavelengths.getFloat(j));
+                                band.setSpectralBandIndex(1);
+                            } catch (Exception ignored) {
+                            }
+
+                            final List<Attribute> list = variable.getAttributes();
+                            double[] validMinMax = {0.0, 0.0};
+                            for (Attribute attribute : list) {
+                                final String attribName = attribute.getShortName();
+                                if ("units".equals(attribName)) {
+                                    band.setUnit(attribute.getStringValue());
+                                } else if ("long_name".equals(attribName)) {
+                                    band.setDescription(attribute.getStringValue());
+                                } else if ("slope".equals(attribName)) {
+                                    band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
+                                } else if ("intercept".equals(attribName)) {
+                                    band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
+                                } else if ("scale_factor".equals(attribName)) {
+                                    band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
+                                } else if ("add_offset".equals(attribName)) {
+                                    band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
+                                } else if (attribName.startsWith("valid_")) {
+                                    if ("valid_min".equals(attribName)) {
+                                        if (attribute.getDataType().isUnsigned()) {
+                                            validMinMax[0] = getUShortAttribute(attribute);
+                                        } else {
+                                            validMinMax[0] = attribute.getNumericValue(0).doubleValue();
+                                        }
+                                    } else if ("valid_max".equals(attribName)) {
+                                        if (attribute.getDataType().isUnsigned()) {
+                                            validMinMax[1] = getUShortAttribute(attribute);
+                                        } else {
+                                            validMinMax[1] = attribute.getNumericValue(0).doubleValue();
+                                        }
+                                    } else if ("valid_range".equals(attribName)) {
+                                        validMinMax[0] = attribute.getNumericValue(0).doubleValue();
+                                        validMinMax[1] = attribute.getNumericValue(1).doubleValue();
+                                    }
+                                }
+                            }
+                            if (validMinMax[0] != validMinMax[1]) {
+                                String validExp;
+
+                                if (ncFile.getFileTypeId().equalsIgnoreCase("HDF4")) {
+
+                                    String minStr = formatValidMinMax(validMinMax[0], false);
+                                    String maxStr = formatValidMinMax(validMinMax[1], true);
+                                    validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, validMinMax[0], safeName, validMinMax[1]);
+
+                                } else {
+                                    double[] minmax = {0.0, 0.0};
+                                    minmax[0] = validMinMax[0];
+                                    minmax[1] = validMinMax[1];
+
+                                    if (band.getScalingFactor() != 1.0) {
+                                        minmax[0] *= band.getScalingFactor();
+                                        minmax[1] *= band.getScalingFactor();
+                                    }
+                                    if (band.getScalingOffset() != 0.0) {
+                                        minmax[0] += band.getScalingOffset();
+                                        minmax[1] += band.getScalingOffset();
+                                    }
+
+                                    String minStr = formatValidMinMax(minmax[0], false);
+                                    String maxStr = formatValidMinMax(minmax[1], true);
+
+                                    validExp = safeName + " >= " + minStr + " && " + safeName + " <= " + maxStr;
+//                                validExp = format("%s >= %.05f && %s <= %.05f", safeName, minmax[0], safeName, minmax[1]);
+
+                                }
+                                band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
+                            }
+                        } else {
+                            logger.log(Level.WARNING, "The Product '" + product.getName() + "' contains duplicate bands" +
+                                    " with the name '" + name + "', one will be ignored.");
+                        }
+                    }
+                }
+            }
+        }
+        return bandToVariableMap;
+    }
+
 
     protected Map<Band, Variable> add4DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();

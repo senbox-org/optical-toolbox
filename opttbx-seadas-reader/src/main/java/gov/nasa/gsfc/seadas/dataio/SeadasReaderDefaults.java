@@ -1145,8 +1145,10 @@ public class SeadasReaderDefaults {
             "NUV_UncertaintyCODToSSA:Aerosol_Optical_Depth:Mean_Gas_Corrected_Reflectance:Mean_Reflectance:" +
             "DT_AerosolSingleScattAlbedo:NUV_AerosolSingleScattAlbedo:NUV_Reflectivity:" +
             "NUV_AerosolOpticalDepthOverCloud:NUV_UncertaintyACAODToSSA:AAOD:" +
-            "Rrs1_mean:Rrs1_std:Rrs1_model_mean:Rrs1_model_std:" +
-            "Rrs2_mean:Rrs2_std:Rrs2_model_mean:Rrs2_model_std";
+            "Rrs1_-50_:Rrs1_-20_:Rrs1_0_:Rrs1_20_:Rrs1_50_:Rrs2_-50_:Rrs2_-20_:Rrs2_0_:Rrs2_20_:Rrs2_50_:" +
+            "Rrs1_mean:Rrs1_std:Rrs1_model_mean:Rrs1_model_std:Rrs2_mean:Rrs2_std:Rrs2_model_mean:Rrs2_model_std:"+
+            "mask_ref_-50_:mask_ref_-20_:mask_ref_0_:mask_ref_20_:mask_ref_50_:"+
+            "mask_dolp_-50_:mask_dolp_-20_:mask_dolp_0_:mask_dolp_20_:mask_dolp_50_:";
 
 
     public static final String PROPERTY_LEVEL2_FLIPX_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".flipx";
