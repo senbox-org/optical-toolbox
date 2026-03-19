@@ -1,9 +1,26 @@
 {
-  "id": "Q2015099144200_L2_SCI_V5",
-  "decodeQualification": "SUITABLE",
+  "id": "Q2015099144200_L2_SCI_V5_0",
+  "decodeQualification": "INTENDED",
   "expectedContent": {
     "sceneWidth": 3,
     "sceneHeight": 4084,
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 1.0,
+          "y": 2195.0,
+          "lat": 77.29229736328125,
+          "lon": -126.19300079345703
+        },
+        {
+          "x": 2.0,
+          "y": 2650.0,
+          "lat": 36.56529998779297,
+          "lon": -147.093994140625
+        }
+      ],
+      "reverseAccuracy": "NaN"
+    },
     "bands": [
       {
         "name": "EIA_SSS_sens",
@@ -17,14 +34,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 2195,
-            "value": "NaN"
+            "x": 0,
+            "y": 727,
+            "value": 0.0
           },
           {
             "x": 2,
-            "y": 2650,
-            "value": 0.3366089
+            "y": 3473,
+            "value": 0.3068924
           }
         ]
       },
@@ -34,29 +51,6 @@
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Degress",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
-            "y": 727,
-            "value": -0.008358002
-          },
-          {
-            "x": 2,
-            "y": 3473,
-            "value": 8.659363E-4
-          }
-        ]
-      },
-      {
-        "name": "IU_coupling_SSS_sens",
-        "description": "Estimated SSS retrieval sensitivity to IU coupling correction",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "PSU",
         "noDataValue": "-9999.0",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -75,6 +69,29 @@
         ]
       },
       {
+        "name": "IU_coupling_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to IU coupling correction",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 3044,
+            "value": -1.519413
+          },
+          {
+            "x": 1,
+            "y": 3791,
+            "value": -3.9850235
+          }
+        ]
+      },
+      {
         "name": "IU_coupling_err",
         "description": "Estimated systematic error in computing first (I) and third (U) stokes coupling",
         "bandWidth": 3,
@@ -86,14 +103,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3044,
-            "value": 0.0015091479
+            "x": 0,
+            "y": 2720,
+            "value": 0.0010498696
           },
           {
             "x": 1,
-            "y": 3791,
-            "value": -0.0027175816
+            "y": 3730,
+            "value": -0.0024202103
           }
         ]
       },
@@ -108,14 +125,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 2720,
-            "value": 0.0117332
+            "x": 2,
+            "y": 1979,
+            "value": 0.010961
           },
           {
-            "x": 1,
-            "y": 3730,
-            "value": 0.00987606
+            "x": 2,
+            "y": 1984,
+            "value": 0.010248
           }
         ]
       },
@@ -130,14 +147,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 1979,
-            "value": 0.0105327
+            "x": 1,
+            "y": 3673,
+            "value": 0.00963828
           },
           {
-            "x": 2,
-            "y": 1984,
-            "value": 0.00984764
+            "x": 0,
+            "y": 1922,
+            "value": 0.0119846
           }
         ]
       },
@@ -152,14 +169,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3673,
-            "value": 0.0603459
+            "x": 0,
+            "y": 805,
+            "value": 0.0171016
           },
           {
             "x": 0,
-            "y": 1922,
-            "value": 0.0130275
+            "y": 176,
+            "value": 0.0372581
           }
         ]
       },
@@ -174,14 +191,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 805,
-            "value": 0.741674
+            "x": 2,
+            "y": 2469,
+            "value": 0.314964
           },
           {
-            "x": 0,
-            "y": 176,
-            "value": 0.126158
+            "x": 1,
+            "y": 2927,
+            "value": 0.56587
           }
         ]
       },
@@ -196,14 +213,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 2469,
-            "value": 0.0784948
+            "x": 0,
+            "y": 2031,
+            "value": 0.0167552
           },
           {
-            "x": 1,
-            "y": 2927,
-            "value": 0.0598768
+            "x": 0,
+            "y": 2950,
+            "value": 0.0362155
           }
         ]
       },
@@ -218,14 +235,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 2031,
-            "value": 0.234623
+            "x": 1,
+            "y": 2034,
+            "value": 0.16434
           },
           {
-            "x": 0,
-            "y": 2950,
-            "value": 1.68902
+            "x": 1,
+            "y": 1806,
+            "value": 0.0459348
           }
         ]
       },
@@ -241,13 +258,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 2034,
-            "value": 0.0107693
+            "y": 375,
+            "value": 0.00952679
           },
           {
             "x": 1,
-            "y": 1806,
-            "value": 0.0107451
+            "y": 64,
+            "value": 0.00982646
           }
         ]
       },
@@ -262,14 +279,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 375,
-            "value": 0.00937622
+            "x": 2,
+            "y": 1500,
+            "value": 0.0198624
           },
           {
-            "x": 1,
-            "y": 64,
-            "value": 0.00977097
+            "x": 2,
+            "y": 3865,
+            "value": 0.00780854
           }
         ]
       },
@@ -284,14 +301,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 1500,
-            "value": 0.0122046
+            "x": 0,
+            "y": 1845,
+            "value": 0.0104527
           },
           {
-            "x": 2,
-            "y": 3865,
-            "value": 0.00650392
+            "x": 1,
+            "y": 2297,
+            "value": 0.00803708
           }
         ]
       },
@@ -301,29 +318,6 @@
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
-            "y": 1845,
-            "value": -0.12964249
-          },
-          {
-            "x": 1,
-            "y": 2297,
-            "value": "NaN"
-          }
-        ]
-      },
-      {
-        "name": "NEDT_3_err",
-        "description": "Estimated radiometer NEDT random error (3rd Stokes)",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "Kelvin",
         "noDataValue": "-9999.0",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -342,11 +336,11 @@
         ]
       },
       {
-        "name": "NEDT_H_SSS_sens",
-        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT input (H pol)",
+        "name": "NEDT_3_err",
+        "description": "Estimated radiometer NEDT random error (3rd Stokes)",
         "bandWidth": 3,
         "bandHeight": 4084,
-        "geophysicalUnit": "PSU",
+        "geophysicalUnit": "Kelvin",
         "noDataValue": "-9999.0",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -365,6 +359,29 @@
         ]
       },
       {
+        "name": "NEDT_H_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT input (H pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3042,
+            "value": -0.82424164
+          },
+          {
+            "x": 2,
+            "y": 3007,
+            "value": -0.89237213
+          }
+        ]
+      },
+      {
         "name": "NEDT_H_err",
         "description": "Estimated radiometer NEDT random error (H pol)",
         "bandWidth": 3,
@@ -376,14 +393,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 3042,
-            "value": 0.12843616
+            "x": 2,
+            "y": 3861,
+            "value": 0.12744564
           },
           {
-            "x": 2,
-            "y": 3007,
-            "value": 0.11686561
+            "x": 0,
+            "y": 2171,
+            "value": "NaN"
           }
         ]
       },
@@ -399,14 +416,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3861,
-            "value": -2.3658562
+            "x": 1,
+            "y": 1062,
+            "value": 5.5004377E-4
           },
           {
-            "x": 0,
-            "y": 2171,
-            "value": "NaN"
+            "x": 1,
+            "y": 616,
+            "value": -0.7781029
           }
         ]
       },
@@ -423,13 +440,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 1062,
-            "value": 0.49297714
+            "y": 2283,
+            "value": "NaN"
           },
           {
-            "x": 1,
-            "y": 616,
-            "value": 0.14152098
+            "x": 0,
+            "y": 3470,
+            "value": 0.12365006
           }
         ]
       },
@@ -444,13 +461,13 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 2283,
+            "x": 0,
+            "y": 317,
             "value": 1.0
           },
           {
-            "x": 0,
-            "y": 3470,
+            "x": 1,
+            "y": 2762,
             "value": 1.0
           }
         ]
@@ -467,13 +484,13 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 317,
+            "x": 1,
+            "y": 3656,
             "value": 0.0
           },
           {
-            "x": 1,
-            "y": 2762,
+            "x": 2,
+            "y": 2450,
             "value": 0.0
           }
         ]
@@ -481,29 +498,6 @@
       {
         "name": "SSS",
         "description": "Sea Surface Salinity",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "PSU",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 1,
-            "y": 3656,
-            "value": 34.277107
-          },
-          {
-            "x": 2,
-            "y": 2450,
-            "value": 29.176682
-          }
-        ]
-      },
-      {
-        "name": "SSS_matchup",
-        "description": "Sea Surface Salinity matchup value",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -525,8 +519,8 @@
         ]
       },
       {
-        "name": "SSS_nolc",
-        "description": "Sea Surface Salinity (nolc)",
+        "name": "SSS_matchup",
+        "description": "Sea Surface Salinity matchup value",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -538,18 +532,18 @@
           {
             "x": 2,
             "y": 2429,
-            "value": 32.003616
+            "value": "NaN"
           },
           {
             "x": 2,
             "y": 759,
-            "value": 26.523298
+            "value": "NaN"
           }
         ]
       },
       {
-        "name": "SSS_unc",
-        "description": "Estimated total uncertainty in SSS including random and systematic components",
+        "name": "SSS_nolc",
+        "description": "Sea Surface Salinity (nolc)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -561,18 +555,18 @@
           {
             "x": 1,
             "y": 1065,
-            "value": 0.5284171
+            "value": "NaN"
           },
           {
             "x": 0,
             "y": 2645,
-            "value": 0.38351977
+            "value": 33.57233
           }
         ]
       },
       {
-        "name": "SSS_unc_EIA",
-        "description": "Estimated SSS retrieval uncertainty due to boresight Earth Incidence Angle random error",
+        "name": "SSS_unc",
+        "description": "Estimated total uncertainty in SSS including random and systematic components",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -594,8 +588,8 @@
         ]
       },
       {
-        "name": "SSS_unc_IU_coupling",
-        "description": "Estimated SSS retrieval uncertainty due to IU coupling systematic error",
+        "name": "SSS_unc_EIA",
+        "description": "Estimated SSS retrieval uncertainty due to boresight Earth Incidence Angle random error",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -607,18 +601,18 @@
           {
             "x": 1,
             "y": 873,
-            "value": 6.5306613E-6
+            "value": 4.1863986E-4
           },
           {
             "x": 0,
             "y": 3629,
-            "value": 0.028660225
+            "value": 1.1494012E-4
           }
         ]
       },
       {
-        "name": "SSS_unc_NEDT_3",
-        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT random error (3rd Stokes)",
+        "name": "SSS_unc_IU_coupling",
+        "description": "Estimated SSS retrieval uncertainty due to IU coupling systematic error",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -640,8 +634,8 @@
         ]
       },
       {
-        "name": "SSS_unc_NEDT_H",
-        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT random error (H pol)",
+        "name": "SSS_unc_NEDT_3",
+        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT random error (3rd Stokes)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -658,7 +652,30 @@
           {
             "x": 2,
             "y": 3556,
-            "value": 0.15745105
+            "value": 5.799311E-4
+          }
+        ]
+      },
+      {
+        "name": "SSS_unc_NEDT_H",
+        "description": "Estimated SSS retrieval sensitivity to radiometer NEDT random error (H pol)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3622,
+            "value": 0.19725555
+          },
+          {
+            "x": 1,
+            "y": 3324,
+            "value": 0.09187814
           }
         ]
       },
@@ -675,31 +692,8 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 3622,
-            "value": 0.1348742
-          },
-          {
-            "x": 1,
-            "y": 3324,
-            "value": 0.09203146
-          }
-        ]
-      },
-      {
-        "name": "SSS_unc_RFI_level",
-        "description": "Estimated SSS retrieval uncertainty due to RFI level systematic error",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "PSU",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
             "y": 2827,
-            "value": 0.0
+            "value": 0.09043875
           },
           {
             "x": 1,
@@ -709,8 +703,8 @@
         ]
       },
       {
-        "name": "SSS_unc_TbV_ice_contam",
-        "description": "Estimated SSS retrieval uncertainty due to ocean surface Tb sea-ice contamination systematic error",
+        "name": "SSS_unc_RFI_level",
+        "description": "Estimated SSS retrieval uncertainty due to RFI level systematic error",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -732,8 +726,8 @@
         ]
       },
       {
-        "name": "SSS_unc_TbV_land_contam",
-        "description": "Estimated SSS retrieval uncertainty due to ocean surface Tb land contamination systematic error",
+        "name": "SSS_unc_TbV_ice_contam",
+        "description": "Estimated SSS retrieval uncertainty due to ocean surface Tb sea-ice contamination systematic error",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -755,6 +749,29 @@
         ]
       },
       {
+        "name": "SSS_unc_TbV_land_contam",
+        "description": "Estimated SSS retrieval uncertainty due to ocean surface Tb land contamination systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 476,
+            "value": 0.0
+          },
+          {
+            "x": 0,
+            "y": 2291,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
         "name": "SSS_unc_galact_Ta",
         "description": "Estimated SSS retrieval uncertainty due to galactic effect systematic error",
         "bandWidth": 3,
@@ -767,12 +784,12 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 476,
-            "value": 0.0747493
+            "y": 526,
+            "value": 0.06069033
           },
           {
-            "x": 0,
-            "y": 2291,
+            "x": 2,
+            "y": 2339,
             "value": "NaN"
           }
         ]
@@ -789,13 +806,13 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 526,
+            "x": 0,
+            "y": 2763,
             "value": 0.0
           },
           {
             "x": 2,
-            "y": 2339,
+            "y": 1928,
             "value": "NaN"
           }
         ]
@@ -813,31 +830,8 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 2763,
-            "value": 0.19129637
-          },
-          {
-            "x": 2,
-            "y": 1928,
-            "value": "NaN"
-          }
-        ]
-      },
-      {
-        "name": "SSS_unc_surface_temp",
-        "description": "Estimated SSS retrieval uncertainty due to sea surface temperature systematic error",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "PSU",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
             "y": 272,
-            "value": 0.508044
+            "value": 0.6299913
           },
           {
             "x": 2,
@@ -847,8 +841,8 @@
         ]
       },
       {
-        "name": "SSS_unc_sys",
-        "description": "Estimated systematic component of uncertainty in SSS",
+        "name": "SSS_unc_surface_temp",
+        "description": "Estimated SSS retrieval uncertainty due to sea surface temperature systematic error",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -870,6 +864,29 @@
         ]
       },
       {
+        "name": "SSS_unc_sys",
+        "description": "Estimated systematic component of uncertainty in SSS",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 1006,
+            "value": 0.080133446
+          },
+          {
+            "x": 0,
+            "y": 791,
+            "value": 0.5268728
+          }
+        ]
+      },
+      {
         "name": "SSS_unc_wind_dir_rand",
         "description": "Estimated SSS retrieval uncertainty due to wind direction random error",
         "bandWidth": 3,
@@ -882,42 +899,19 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 1006,
-            "value": 8.1507367E-4
+            "y": 3607,
+            "value": 0.29312643
           },
           {
-            "x": 0,
-            "y": 791,
-            "value": 0.011521657
+            "x": 2,
+            "y": 308,
+            "value": 0.0032666523
           }
         ]
       },
       {
         "name": "SSS_unc_wind_speed_rand",
         "description": "Estimated SSS retrieval uncertainty due to wind speed random error",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "PSU",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
-            "y": 3607,
-            "value": 0.4793425
-          },
-          {
-            "x": 2,
-            "y": 308,
-            "value": 0.23575315
-          }
-        ]
-      },
-      {
-        "name": "SSS_unc_wind_speed_syst",
-        "description": "Estimated SSS retrieval uncertainty due to wind speed systematic error",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
@@ -939,6 +933,29 @@
         ]
       },
       {
+        "name": "SSS_unc_wind_speed_syst",
+        "description": "Estimated SSS retrieval uncertainty due to wind speed systematic error",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 2377,
+            "value": "NaN"
+          },
+          {
+            "x": 2,
+            "y": 567,
+            "value": 0.31155306
+          }
+        ]
+      },
+      {
         "name": "anc_SSS_argo",
         "description": "Sea surface salinity (ARGO)",
         "bandWidth": 3,
@@ -951,13 +968,13 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 2377,
-            "value": -9999.0
+            "y": 594,
+            "value": 35.51915
           },
           {
             "x": 2,
-            "y": 567,
-            "value": 35.52395
+            "y": 435,
+            "value": 33.762474
           }
         ]
       },
@@ -973,14 +990,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 594,
-            "value": 35.524475
+            "x": 1,
+            "y": 3599,
+            "value": 34.733208
           },
           {
-            "x": 2,
-            "y": 435,
-            "value": 33.786983
+            "x": 1,
+            "y": 2350,
+            "value": -9999.0
           }
         ]
       },
@@ -997,13 +1014,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 3599,
-            "value": 2.7388458
+            "y": 1331,
+            "value": 2.196553
           },
           {
             "x": 1,
-            "y": 2350,
-            "value": 2.189148
+            "y": 3496,
+            "value": 2.7240653
           }
         ]
       },
@@ -1019,14 +1036,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 1331,
-            "value": 2.195466
+            "x": 0,
+            "y": 2797,
+            "value": 2.4753928
           },
           {
             "x": 1,
-            "y": 3496,
-            "value": 2.7228038
+            "y": 2758,
+            "value": 2.7761264
           }
         ]
       },
@@ -1042,14 +1059,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 2797,
-            "value": 0.0
+            "x": 1,
+            "y": 532,
+            "value": 0.18739195
           },
           {
             "x": 1,
-            "y": 2758,
-            "value": 0.05755058
+            "y": 3269,
+            "value": 0.4816158
           }
         ]
       },
@@ -1065,14 +1082,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 532,
-            "value": 9.999999E14
+            "x": 2,
+            "y": 3684,
+            "value": "NaN"
           },
           {
-            "x": 1,
-            "y": 3269,
-            "value": 1.0E15
+            "x": 0,
+            "y": 2852,
+            "value": "NaN"
           }
         ]
       },
@@ -1089,12 +1106,12 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 3684,
-            "value": 9.999E20
+            "y": 2352,
+            "value": 266.60022
           },
           {
-            "x": 0,
-            "y": 2852,
+            "x": 1,
+            "y": 3706,
             "value": 9.999E20
           }
         ]
@@ -1112,13 +1129,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 2352,
-            "value": 87596.32
+            "y": 1318,
+            "value": 92971.61
           },
           {
             "x": 1,
-            "y": 3706,
-            "value": 99686.91
+            "y": 21,
+            "value": 70111.76
           }
         ]
       },
@@ -1135,13 +1152,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 1318,
-            "value": 304.75867
+            "y": 2324,
+            "value": 264.70563
           },
           {
             "x": 1,
-            "y": 21,
-            "value": 221.10983
+            "y": 1625,
+            "value": 275.2444
           }
         ]
       },
@@ -1157,14 +1174,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 2324,
+            "x": 1,
+            "y": 4036,
             "value": "NaN"
           },
           {
-            "x": 1,
-            "y": 1625,
-            "value": "NaN"
+            "x": 0,
+            "y": 2928,
+            "value": -0.114543915
           }
         ]
       },
@@ -1180,14 +1197,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 4036,
+            "x": 2,
+            "y": 1178,
             "value": "NaN"
           },
           {
             "x": 0,
-            "y": 2928,
-            "value": 0.1635437
+            "y": 3479,
+            "value": 0.60595703
           }
         ]
       },
@@ -1203,13 +1220,13 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 1178,
-            "value": 0.0
+            "x": 0,
+            "y": 2159,
+            "value": 74.167244
           },
           {
-            "x": 0,
-            "y": 3479,
+            "x": 1,
+            "y": 3266,
             "value": 0.0
           }
         ]
@@ -1226,14 +1243,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 2159,
-            "value": "NaN"
+            "x": 1,
+            "y": 890,
+            "value": 1.8039713
           },
           {
-            "x": 1,
-            "y": 3266,
-            "value": 1.609968
+            "x": 0,
+            "y": 2877,
+            "value": 2.2201471
           }
         ]
       },
@@ -1248,14 +1265,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 890,
-            "value": 0.9900977
+            "x": 2,
+            "y": 3247,
+            "value": 0.9886062
           },
           {
-            "x": 0,
-            "y": 2877,
-            "value": 0.9909245
+            "x": 2,
+            "y": 277,
+            "value": 0.98782235
           }
         ]
       },
@@ -1272,13 +1289,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 3247,
-            "value": 39.80197
+            "y": 927,
+            "value": 261.23376
           },
           {
-            "x": 2,
-            "y": 277,
-            "value": 86.98442
+            "x": 1,
+            "y": 3799,
+            "value": 282.27658
           }
         ]
       },
@@ -1294,14 +1311,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 927,
-            "value": 2.4510493
+            "x": 0,
+            "y": 3518,
+            "value": 9.343629
           },
           {
             "x": 1,
-            "y": 3799,
-            "value": 12.087373
+            "y": 1514,
+            "value": 9.233305
           }
         ]
       },
@@ -1317,14 +1334,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 3518,
-            "value": 1024.4698
+            "x": 2,
+            "y": 2779,
+            "value": 1024.2285
           },
           {
-            "x": 1,
-            "y": 1514,
-            "value": 1008.05365
+            "x": 2,
+            "y": 1746,
+            "value": "NaN"
           }
         ]
       },
@@ -1340,14 +1357,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 2779,
-            "value": -0.9268827
+            "x": 1,
+            "y": 567,
+            "value": 4.7942214
           },
           {
             "x": 2,
-            "y": 1746,
-            "value": -6.43434
+            "y": 555,
+            "value": 7.3527756
           }
         ]
       },
@@ -1363,14 +1380,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 567,
-            "value": 4.791604
+            "x": 2,
+            "y": 2270,
+            "value": -1.8267499
           },
           {
             "x": 2,
-            "y": 555,
-            "value": 7.355419
+            "y": 4042,
+            "value": 1.1870651
           }
         ]
       },
@@ -1386,14 +1403,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 2270,
-            "value": 213.32874
+            "x": 1,
+            "y": 3700,
+            "value": 84.61827
           },
           {
             "x": 2,
-            "y": 4042,
-            "value": 182.12071
+            "y": 2168,
+            "value": 225.46799
           }
         ]
       },
@@ -1410,13 +1427,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 3700,
-            "value": 83.68892
+            "y": 3797,
+            "value": 83.17709
           },
           {
-            "x": 2,
-            "y": 2168,
-            "value": 225.08705
+            "x": 1,
+            "y": 3154,
+            "value": 80.9722
           }
         ]
       },
@@ -1432,14 +1449,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3797,
-            "value": 116.50438
+            "x": 2,
+            "y": 160,
+            "value": 219.61981
           },
           {
-            "x": 1,
-            "y": 3154,
-            "value": 114.76172
+            "x": 2,
+            "y": 2952,
+            "value": 126.644264
           }
         ]
       },
@@ -1455,43 +1472,20 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 160,
-            "value": 219.28557
+            "x": 1,
+            "y": 28,
+            "value": 209.43411
           },
           {
-            "x": 2,
-            "y": 2952,
-            "value": 125.71796
+            "x": 0,
+            "y": 3514,
+            "value": 108.19538
           }
         ]
       },
       {
         "name": "rad_TbH",
         "description": "Tb H polarization (no rough corr)",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "Kelvin",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 1,
-            "y": 28,
-            "value": 197.07489
-          },
-          {
-            "x": 0,
-            "y": 3514,
-            "value": 85.48022
-          }
-        ]
-      },
-      {
-        "name": "rad_TbH_nolc",
-        "description": "Earth surface Tb H polarization (nolc)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -1513,8 +1507,8 @@
         ]
       },
       {
-        "name": "rad_TbH_rc",
-        "description": "Tb H polarization (rough corr)",
+        "name": "rad_TbH_nolc",
+        "description": "Earth surface Tb H polarization (nolc)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -1526,12 +1520,35 @@
           {
             "x": 2,
             "y": 285,
-            "value": 67.144936
+            "value": 71.63448
           },
           {
             "x": 1,
             "y": 3545,
-            "value": 75.633354
+            "value": 79.16171
+          }
+        ]
+      },
+      {
+        "name": "rad_TbH_rc",
+        "description": "Tb H polarization (rough corr)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 966,
+            "value": 80.782745
+          },
+          {
+            "x": 0,
+            "y": 3966,
+            "value": 213.22385
           }
         ]
       },
@@ -1547,14 +1564,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 966,
-            "value": 80.86022
+            "x": 2,
+            "y": 1387,
+            "value": 246.50113
           },
           {
-            "x": 0,
-            "y": 3966,
-            "value": 212.66371
+            "x": 1,
+            "y": 2085,
+            "value": 246.67313
           }
         ]
       },
@@ -1571,13 +1588,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 1387,
-            "value": 296.992
+            "y": 2078,
+            "value": 257.8888
           },
           {
-            "x": 1,
-            "y": 2085,
-            "value": 257.50644
+            "x": 2,
+            "y": 2281,
+            "value": 263.50125
           }
         ]
       },
@@ -1594,13 +1611,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 2078,
-            "value": "NaN"
+            "y": 3109,
+            "value": -1.3519822
           },
           {
             "x": 2,
-            "y": 2281,
-            "value": "NaN"
+            "y": 3005,
+            "value": -1.2954484
           }
         ]
       },
@@ -1616,13 +1633,13 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3109,
-            "value": 0.0
+            "x": 1,
+            "y": 1740,
+            "value": "NaN"
           },
           {
-            "x": 2,
-            "y": 3005,
+            "x": 1,
+            "y": 3117,
             "value": 0.0
           }
         ]
@@ -1640,13 +1657,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 1740,
-            "value": "NaN"
+            "y": 620,
+            "value": -1.6072265
           },
           {
-            "x": 1,
-            "y": 3117,
-            "value": -1.3016088
+            "x": 2,
+            "y": 1286,
+            "value": "NaN"
           }
         ]
       },
@@ -1662,14 +1679,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 620,
-            "value": 0.0
+            "x": 0,
+            "y": 1570,
+            "value": "NaN"
           },
           {
             "x": 2,
-            "y": 1286,
-            "value": "NaN"
+            "y": 761,
+            "value": 0.51615804
           }
         ]
       },
@@ -1686,42 +1703,19 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 1570,
-            "value": 228.3613
+            "y": 4030,
+            "value": 212.48158
           },
           {
-            "x": 2,
-            "y": 761,
-            "value": 132.61357
+            "x": 1,
+            "y": 3078,
+            "value": 112.5202
           }
         ]
       },
       {
         "name": "rad_TbV_rc",
         "description": "Tb V polarization (rough corr)",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "Kelvin",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
-            "y": 4030,
-            "value": 212.4917
-          },
-          {
-            "x": 1,
-            "y": 3078,
-            "value": 111.21054
-          }
-        ]
-      },
-      {
-        "name": "rad_TbV_rc_nolc",
-        "description": "Tb V polarization (roughness corr, nolc)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -1743,8 +1737,8 @@
         ]
       },
       {
-        "name": "rad_Tb_consistency",
-        "description": "Tb consistency check",
+        "name": "rad_TbV_rc_nolc",
+        "description": "Tb V polarization (roughness corr, nolc)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -1756,18 +1750,18 @@
           {
             "x": 1,
             "y": 1357,
-            "value": 0.0
+            "value": 288.36365
           },
           {
             "x": 1,
             "y": 70,
-            "value": 0.0
+            "value": 210.67387
           }
         ]
       },
       {
-        "name": "rad_Tb_consistency_nolc",
-        "description": "Tb consistency check (nolc)",
+        "name": "rad_Tb_consistency",
+        "description": "Tb consistency check",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -1789,8 +1783,8 @@
         ]
       },
       {
-        "name": "rad_Tf3",
-        "description": "Radiometer Ta 3rd Stokes (rfi filtered)",
+        "name": "rad_Tb_consistency_nolc",
+        "description": "Tb consistency check (nolc)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -1802,12 +1796,35 @@
           {
             "x": 2,
             "y": 338,
-            "value": 8.97794
+            "value": 0.15295213
           },
           {
             "x": 0,
             "y": 3365,
-            "value": 0.5807267
+            "value": 0.16673316
+          }
+        ]
+      },
+      {
+        "name": "rad_Tf3",
+        "description": "Radiometer Ta 3rd Stokes (rfi filtered)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3730,
+            "value": 1.3763912
+          },
+          {
+            "x": 0,
+            "y": 1315,
+            "value": -3.1456828
           }
         ]
       },
@@ -1823,14 +1840,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 3730,
-            "value": 1.3747305
+            "x": 1,
+            "y": 2914,
+            "value": -1.3006907
           },
           {
             "x": 0,
-            "y": 1315,
-            "value": -3.1490026
+            "y": 891,
+            "value": 2.9894216
           }
         ]
       },
@@ -1847,13 +1864,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 2914,
-            "value": 83.50204
+            "y": 3075,
+            "value": 82.12637
           },
           {
             "x": 0,
-            "y": 891,
-            "value": 87.14187
+            "y": 3055,
+            "value": 87.95548
           }
         ]
       },
@@ -1869,14 +1886,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3075,
-            "value": 81.18353
+            "x": 2,
+            "y": 868,
+            "value": 73.4276
           },
           {
-            "x": 0,
-            "y": 3055,
-            "value": 86.88753
+            "x": 2,
+            "y": 2869,
+            "value": 75.21346
           }
         ]
       },
@@ -1892,14 +1909,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 868,
-            "value": 125.25739
+            "x": 0,
+            "y": 111,
+            "value": 198.71771
           },
           {
-            "x": 2,
-            "y": 2869,
-            "value": 126.602165
+            "x": 0,
+            "y": 3753,
+            "value": 108.613144
           }
         ]
       },
@@ -1915,43 +1932,20 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 111,
-            "value": 198.28342
+            "x": 1,
+            "y": 2956,
+            "value": 114.977066
           },
           {
-            "x": 0,
-            "y": 3753,
-            "value": 107.63604
+            "x": 1,
+            "y": 1932,
+            "value": 224.4346
           }
         ]
       },
       {
         "name": "rad_dtb_sst_wspd_H",
         "description": "Radiometer SST bias emissivity correction H",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "Kelvin",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 1,
-            "y": 2956,
-            "value": 0.0
-          },
-          {
-            "x": 1,
-            "y": 1932,
-            "value": 0.0
-          }
-        ]
-      },
-      {
-        "name": "rad_dtb_sst_wspd_V",
-        "description": "Radiometer SST bias emissivity correction V",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -1973,8 +1967,8 @@
         ]
       },
       {
-        "name": "rad_exp_Ta3",
-        "description": "Radiometer Ta 3rd Stokes (expected)",
+        "name": "rad_dtb_sst_wspd_V",
+        "description": "Radiometer SST bias emissivity correction V",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -1986,18 +1980,18 @@
           {
             "x": 2,
             "y": 2887,
-            "value": 0.26559272
+            "value": 0.0
           },
           {
             "x": 0,
             "y": 803,
-            "value": 2.3443387
+            "value": 0.0
           }
         ]
       },
       {
-        "name": "rad_exp_Ta3_hhh",
-        "description": "Radiometer Ta 3rd Stokes (expected/HHH winds)",
+        "name": "rad_exp_Ta3",
+        "description": "Radiometer Ta 3rd Stokes (expected)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -2014,7 +2008,30 @@
           {
             "x": 1,
             "y": 2654,
-            "value": -2.2882302
+            "value": -2.2896109
+          }
+        ]
+      },
+      {
+        "name": "rad_exp_Ta3_hhh",
+        "description": "Radiometer Ta 3rd Stokes (expected/HHH winds)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 347,
+            "value": 5.7346263
+          },
+          {
+            "x": 2,
+            "y": 1339,
+            "value": -9.570575
           }
         ]
       },
@@ -2030,14 +2047,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 347,
-            "value": 82.46499
+            "x": 2,
+            "y": 3758,
+            "value": 76.6537
           },
           {
-            "x": 2,
-            "y": 1339,
-            "value": 248.96626
+            "x": 1,
+            "y": 2250,
+            "value": 230.16948
           }
         ]
       },
@@ -2053,14 +2070,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3758,
-            "value": 76.737404
+            "x": 1,
+            "y": 3876,
+            "value": 87.08826
           },
           {
-            "x": 1,
-            "y": 2250,
-            "value": 230.16948
+            "x": 2,
+            "y": 762,
+            "value": 77.55129
           }
         ]
       },
@@ -2076,14 +2093,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3876,
-            "value": 117.75762
+            "x": 0,
+            "y": 3020,
+            "value": 106.833824
           },
           {
-            "x": 2,
-            "y": 762,
-            "value": 126.28054
+            "x": 0,
+            "y": 2216,
+            "value": 246.25359
           }
         ]
       },
@@ -2099,14 +2116,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 3020,
-            "value": 106.90955
+            "x": 2,
+            "y": 3528,
+            "value": 126.98134
           },
           {
-            "x": 0,
-            "y": 2216,
-            "value": 246.25359
+            "x": 1,
+            "y": 3588,
+            "value": 117.54523
           }
         ]
       },
@@ -2122,14 +2139,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3528,
-            "value": 71.22273
+            "x": 1,
+            "y": 3832,
+            "value": 79.070755
           },
           {
-            "x": 1,
-            "y": 3588,
-            "value": 79.76247
+            "x": 2,
+            "y": 1005,
+            "value": 68.11212
           }
         ]
       },
@@ -2145,14 +2162,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3832,
-            "value": 74.6222
+            "x": 0,
+            "y": 2968,
+            "value": 81.85674
           },
           {
-            "x": 2,
-            "y": 1005,
-            "value": 66.17372
+            "x": 0,
+            "y": 2777,
+            "value": 81.89756
           }
         ]
       },
@@ -2169,13 +2186,13 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 2968,
-            "value": 104.772484
+            "y": 161,
+            "value": 213.13168
           },
           {
             "x": 0,
-            "y": 2777,
-            "value": 103.50834
+            "y": 1274,
+            "value": 291.00906
           }
         ]
       },
@@ -2191,14 +2208,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 161,
-            "value": 213.13168
+            "x": 2,
+            "y": 1722,
+            "value": 215.1283
           },
           {
             "x": 0,
-            "y": 1274,
-            "value": 289.57928
+            "y": 2796,
+            "value": 102.72943
           }
         ]
       },
@@ -2214,14 +2231,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 1722,
-            "value": -45.728405
+            "x": 0,
+            "y": 1828,
+            "value": 0.084636904
           },
           {
-            "x": 0,
-            "y": 2796,
-            "value": -0.9243187
+            "x": 1,
+            "y": 215,
+            "value": 1.3970532
           }
         ]
       },
@@ -2237,13 +2254,13 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 1828,
-            "value": -0.0013892725
+            "x": 1,
+            "y": 941,
+            "value": 1.5094757
           },
           {
             "x": 1,
-            "y": 215,
+            "y": 1451,
             "value": "NaN"
           }
         ]
@@ -2260,14 +2277,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 941,
-            "value": 0.0077026817
+            "x": 0,
+            "y": 384,
+            "value": -0.003600756
           },
           {
-            "x": 1,
-            "y": 1451,
-            "value": 0.0061115352
+            "x": 2,
+            "y": 2555,
+            "value": 2.7445078E-4
           }
         ]
       },
@@ -2284,13 +2301,13 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 384,
-            "value": 0.17427944
+            "y": 271,
+            "value": 0.17701857
           },
           {
-            "x": 2,
-            "y": 2555,
-            "value": 0.22162566
+            "x": 1,
+            "y": 488,
+            "value": 0.19001101
           }
         ]
       },
@@ -2306,14 +2323,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 271,
-            "value": 0.15885098
+            "x": 2,
+            "y": 1705,
+            "value": 0.1869983
           },
           {
-            "x": 1,
-            "y": 488,
-            "value": 0.18686692
+            "x": 0,
+            "y": 1380,
+            "value": 0.1498132
           }
         ]
       },
@@ -2330,12 +2347,12 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 1705,
-            "value": "NaN"
+            "y": 501,
+            "value": -0.034600955
           },
           {
             "x": 0,
-            "y": 1380,
+            "y": 1228,
             "value": "NaN"
           }
         ]
@@ -2353,13 +2370,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 501,
-            "value": -0.013070559
+            "y": 989,
+            "value": -0.0038515693
           },
           {
             "x": 0,
-            "y": 1228,
-            "value": 0.0035322942
+            "y": 4,
+            "value": -0.004528873
           }
         ]
       },
@@ -2375,14 +2392,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 989,
-            "value": 0.25882584
+            "x": 0,
+            "y": 1865,
+            "value": 0.24557717
           },
           {
-            "x": 0,
-            "y": 4,
-            "value": 0.29065382
+            "x": 1,
+            "y": 1993,
+            "value": 0.04243672
           }
         ]
       },
@@ -2399,13 +2416,13 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 1865,
-            "value": 0.2230208
+            "y": 2568,
+            "value": 0.3145642
           },
           {
             "x": 1,
-            "y": 1993,
-            "value": 0.01704106
+            "y": 3158,
+            "value": 0.66839564
           }
         ]
       },
@@ -2421,14 +2438,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 2568,
-            "value": 0.36466694
+            "x": 1,
+            "y": 1438,
+            "value": 0.108419865
           },
           {
             "x": 1,
-            "y": 3158,
-            "value": 0.8215519
+            "y": 3708,
+            "value": 1.1812923
           }
         ]
       },
@@ -2444,14 +2461,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 1438,
-            "value": 0.063962325
+            "x": 0,
+            "y": 725,
+            "value": 0.2832331
           },
           {
-            "x": 1,
-            "y": 3708,
-            "value": 1.011997
+            "x": 0,
+            "y": 2461,
+            "value": 0.29142037
           }
         ]
       },
@@ -2467,14 +2484,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 725,
-            "value": -0.007315681
+            "x": 1,
+            "y": 242,
+            "value": -0.011212039
           },
           {
-            "x": 0,
-            "y": 2461,
-            "value": 0.009706902
+            "x": 1,
+            "y": 2023,
+            "value": 0.0
           }
         ]
       },
@@ -2490,14 +2507,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 242,
-            "value": -0.009370354
+            "x": 2,
+            "y": 2371,
+            "value": 0.0
           },
           {
             "x": 1,
-            "y": 2023,
-            "value": 0.0
+            "y": 814,
+            "value": -0.024496457
           }
         ]
       },
@@ -2513,43 +2530,20 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 2371,
-            "value": 0.08127064
+            "x": 0,
+            "y": 2616,
+            "value": 0.05218909
           },
           {
-            "x": 1,
-            "y": 814,
-            "value": 0.4401202
+            "x": 0,
+            "y": 503,
+            "value": 0.07916983
           }
         ]
       },
       {
         "name": "rad_hh_wind_speed",
         "description": "Radiometer HH wind speed",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "meters/sec",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
-            "y": 2616,
-            "value": 8.763932
-          },
-          {
-            "x": 0,
-            "y": 503,
-            "value": 16.118034
-          }
-        ]
-      },
-      {
-        "name": "rad_hhh_wind_speed",
-        "description": "Radiometer HHH wind speed",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "meters/sec",
@@ -2571,6 +2565,29 @@
         ]
       },
       {
+        "name": "rad_hhh_wind_speed",
+        "description": "Radiometer HHH wind speed",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "meters/sec",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 860,
+            "value": "NaN"
+          },
+          {
+            "x": 2,
+            "y": 3670,
+            "value": 13.160709
+          }
+        ]
+      },
+      {
         "name": "rad_ice_frac",
         "description": "Fraction of ice contamination (radiometer)",
         "bandWidth": 3,
@@ -2581,14 +2598,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 860,
-            "value": 0.0
+            "x": 1,
+            "y": 2375,
+            "value": 3.945147E-4
           },
           {
-            "x": 2,
-            "y": 3670,
-            "value": 1.3500722E-5
+            "x": 1,
+            "y": 1583,
+            "value": 5.7089756E-7
           }
         ]
       },
@@ -2604,13 +2621,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 2375,
-            "value": 0.9894646
+            "y": 3345,
+            "value": 1.2011395E-4
           },
           {
             "x": 1,
-            "y": 1583,
-            "value": 0.9982684
+            "y": 2116,
+            "value": 0.0017340258
           }
         ]
       },
@@ -2626,14 +2643,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3345,
-            "value": 1.7128754
+            "x": 2,
+            "y": 3308,
+            "value": 1.676693
           },
           {
             "x": 1,
-            "y": 2116,
-            "value": "NaN"
+            "y": 3555,
+            "value": 2.352085
           }
         ]
       },
@@ -2649,43 +2666,20 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3308,
-            "value": 0.0
+            "x": 0,
+            "y": 2372,
+            "value": "NaN"
           },
           {
             "x": 1,
-            "y": 3555,
-            "value": 0.0
+            "y": 1720,
+            "value": "NaN"
           }
         ]
       },
       {
         "name": "rad_moon_Ta_ref_3",
         "description": "Radiometer Lunar Reflect Corr 3rd Stokes",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "Kelvin",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
-            "y": 2372,
-            "value": 0.0
-          },
-          {
-            "x": 1,
-            "y": 1720,
-            "value": 0.0
-          }
-        ]
-      },
-      {
-        "name": "rad_moon_Ta_ref_H",
-        "description": "Radiometer Lunar Reflect Corr H polar",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -2707,8 +2701,8 @@
         ]
       },
       {
-        "name": "rad_moon_Ta_ref_V",
-        "description": "Radiometer Lunar Reflect Corr V polar",
+        "name": "rad_moon_Ta_ref_H",
+        "description": "Radiometer Lunar Reflect Corr H polar",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -2730,6 +2724,29 @@
         ]
       },
       {
+        "name": "rad_moon_Ta_ref_V",
+        "description": "Radiometer Lunar Reflect Corr V polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2483,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 80,
+            "value": 0.0
+          }
+        ]
+      },
+      {
         "name": "rad_pol_rot_ang",
         "description": "Radiometer Polarization Rotation Angle",
         "bandWidth": 3,
@@ -2741,43 +2758,20 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 2483,
-            "value": -2.380135
+            "x": 2,
+            "y": 394,
+            "value": 5.509034
           },
           {
-            "x": 1,
-            "y": 80,
-            "value": 3.596147
+            "x": 0,
+            "y": 1087,
+            "value": -0.8417271
           }
         ]
       },
       {
         "name": "rad_solar_Ta_bak_3",
         "description": "Radiometer Solar Back Scattered 3rd Stokes",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "Kelvin",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 2,
-            "y": 394,
-            "value": 0.0
-          },
-          {
-            "x": 0,
-            "y": 1087,
-            "value": 6.738608E-8
-          }
-        ]
-      },
-      {
-        "name": "rad_solar_Ta_bak_H",
-        "description": "Radiometer Solar Back Scattered H polar",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -2799,8 +2793,8 @@
         ]
       },
       {
-        "name": "rad_solar_Ta_bak_V",
-        "description": "Radiometer Solar Back Scattered V polar",
+        "name": "rad_solar_Ta_bak_H",
+        "description": "Radiometer Solar Back Scattered H polar",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -2812,12 +2806,35 @@
           {
             "x": 1,
             "y": 1291,
-            "value": 2.111874E-4
+            "value": 5.5715675E-5
           },
           {
             "x": 2,
             "y": 1261,
-            "value": 9.2164155E-5
+            "value": 5.6518962E-5
+          }
+        ]
+      },
+      {
+        "name": "rad_solar_Ta_bak_V",
+        "description": "Radiometer Solar Back Scattered V polar",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3213,
+            "value": 0.0
+          },
+          {
+            "x": 2,
+            "y": 285,
+            "value": 0.0
           }
         ]
       },
@@ -2833,14 +2850,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 3213,
-            "value": -7.0732116E-4
+            "x": 1,
+            "y": 2519,
+            "value": -2.8311924E-5
           },
           {
-            "x": 2,
-            "y": 285,
-            "value": 0.0029309106
+            "x": 0,
+            "y": 3290,
+            "value": -0.0041980557
           }
         ]
       },
@@ -2857,13 +2874,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 2519,
-            "value": 0.007932276
+            "y": 2638,
+            "value": 0.00517204
           },
           {
-            "x": 0,
-            "y": 3290,
-            "value": 0.016506705
+            "x": 2,
+            "y": 3321,
+            "value": 0.009610814
           }
         ]
       },
@@ -2879,14 +2896,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 2638,
-            "value": 0.01376481
+            "x": 0,
+            "y": 4054,
+            "value": 0.012904298
           },
           {
-            "x": 2,
-            "y": 3321,
-            "value": 0.00628676
+            "x": 0,
+            "y": 3820,
+            "value": 0.00898094
           }
         ]
       },
@@ -2902,14 +2919,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 4054,
-            "value": -9.3701696E-5
+            "x": 1,
+            "y": 626,
+            "value": 1.2385318E-4
           },
           {
-            "x": 0,
-            "y": 3820,
-            "value": 9.056834E-6
+            "x": 1,
+            "y": 1033,
+            "value": 2.0743803E-4
           }
         ]
       },
@@ -2926,13 +2943,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 626,
-            "value": 1.4822357E-4
+            "y": 3749,
+            "value": 1.8866544E-5
           },
           {
-            "x": 1,
-            "y": 1033,
-            "value": 3.4679388E-4
+            "x": 2,
+            "y": 1154,
+            "value": 7.0907595E-4
           }
         ]
       },
@@ -2949,13 +2966,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 3749,
-            "value": 1.2155688E-4
+            "y": 1565,
+            "value": 0.0012327272
           },
           {
-            "x": 2,
-            "y": 1154,
-            "value": 6.917772E-4
+            "x": 0,
+            "y": 2053,
+            "value": 0.0013488824
           }
         ]
       },
@@ -2971,14 +2988,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 1565,
-            "value": 154.67192
+            "x": 0,
+            "y": 794,
+            "value": 89.06253
           },
           {
             "x": 0,
-            "y": 2053,
-            "value": 246.86665
+            "y": 3581,
+            "value": 93.06865
           }
         ]
       },
@@ -2995,42 +3012,19 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 794,
-            "value": 89.3381
+            "y": 3881,
+            "value": 227.93983
           },
           {
-            "x": 0,
-            "y": 3581,
-            "value": 93.06865
+            "x": 1,
+            "y": 2980,
+            "value": 84.299866
           }
         ]
       },
       {
         "name": "rad_toa_V",
         "description": "Radiometer TOA Tb V polarization",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "Kelvin",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
-            "y": 3881,
-            "value": 237.57385
-          },
-          {
-            "x": 1,
-            "y": 2980,
-            "value": 119.25571
-          }
-        ]
-      },
-      {
-        "name": "rad_toa_V_nolc",
-        "description": "Radiometer TOA Tb V polarization (nolc)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "Kelvin",
@@ -3047,7 +3041,30 @@
           {
             "x": 2,
             "y": 2468,
-            "value": 131.98831
+            "value": 131.88297
+          }
+        ]
+      },
+      {
+        "name": "rad_toa_V_nolc",
+        "description": "Radiometer TOA Tb V polarization (nolc)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "Kelvin",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 1968,
+            "value": 247.63817
+          },
+          {
+            "x": 1,
+            "y": 169,
+            "value": 222.16386
           }
         ]
       },
@@ -3064,13 +3081,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 1968,
-            "value": -2.0456445
+            "y": 3290,
+            "value": 1.4205251
           },
           {
-            "x": 1,
-            "y": 169,
-            "value": -0.3365826
+            "x": 2,
+            "y": 3981,
+            "value": 1.1037359
           }
         ]
       },
@@ -3086,14 +3103,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3290,
-            "value": 82.64153
+            "x": 2,
+            "y": 3902,
+            "value": 236.96933
           },
           {
-            "x": 2,
-            "y": 3981,
-            "value": 193.54121
+            "x": 1,
+            "y": 959,
+            "value": 80.54364
           }
         ]
       },
@@ -3110,13 +3127,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 3902,
-            "value": 253.22922
+            "y": 1075,
+            "value": 296.93964
           },
           {
             "x": 1,
-            "y": 959,
-            "value": 116.02026
+            "y": 2291,
+            "value": 239.08693
           }
         ]
       },
@@ -3126,29 +3143,6 @@
         "bandWidth": 3,
         "bandHeight": 4084,
         "geophysicalUnit": "PSU",
-        "noDataValue": "-9999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 2,
-            "y": 1075,
-            "value": "NaN"
-          },
-          {
-            "x": 1,
-            "y": 2291,
-            "value": "NaN"
-          }
-        ]
-      },
-      {
-        "name": "rad_wind_dir_rand_err",
-        "description": "Estimated random error in radiometer derived wind direction",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "degrees",
         "noDataValue": "-9999.0",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -3167,11 +3161,11 @@
         ]
       },
       {
-        "name": "rad_wind_speed_rand_SSS_sens",
-        "description": "Estimated SSS retrieval sensitivity to random error in wind speed",
+        "name": "rad_wind_dir_rand_err",
+        "description": "Estimated random error in radiometer derived wind direction",
         "bandWidth": 3,
         "bandHeight": 4084,
-        "geophysicalUnit": "PSU",
+        "geophysicalUnit": "degrees",
         "noDataValue": "-9999.0",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -3185,7 +3179,30 @@
           {
             "x": 1,
             "y": 1513,
-            "value": 1.3510704
+            "value": 10.0
+          }
+        ]
+      },
+      {
+        "name": "rad_wind_speed_rand_SSS_sens",
+        "description": "Estimated SSS retrieval sensitivity to random error in wind speed",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "geophysicalUnit": "PSU",
+        "noDataValue": "-9999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 2432,
+            "value": 0.6953316
+          },
+          {
+            "x": 0,
+            "y": 3176,
+            "value": 0.25496674
           }
         ]
       },
@@ -3201,14 +3218,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 2432,
-            "value": 0.30873185
+            "x": 0,
+            "y": 1491,
+            "value": 0.3300215
           },
           {
             "x": 0,
-            "y": 3176,
-            "value": 0.27264094
+            "y": 206,
+            "value": "NaN"
           }
         ]
       },
@@ -3224,14 +3241,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 1491,
-            "value": 1.0861254
+            "x": 2,
+            "y": 3751,
+            "value": 1.1370811
           },
           {
             "x": 0,
-            "y": 206,
-            "value": "NaN"
+            "y": 948,
+            "value": 1.1624641
           }
         ]
       },
@@ -3247,14 +3264,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3751,
-            "value": 0.028296193
+            "x": 1,
+            "y": 1379,
+            "value": "NaN"
           },
           {
             "x": 0,
-            "y": 948,
-            "value": -0.11468042
+            "y": 375,
+            "value": 0.26066104
           }
         ]
       },
@@ -3269,14 +3286,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 1379,
-            "value": 0.0
+            "x": 0,
+            "y": 3341,
+            "value": -2.2888184E-5
           },
           {
-            "x": 0,
-            "y": 375,
-            "value": -5.0735474E-4
+            "x": 2,
+            "y": 3767,
+            "value": "NaN"
           }
         ]
       },
@@ -3291,14 +3308,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 3341,
-            "value": -1.9073486E-5
+            "x": 1,
+            "y": 3237,
+            "value": -0.013774872
           },
           {
             "x": 2,
-            "y": 3767,
-            "value": "NaN"
+            "y": 578,
+            "value": 2.670288E-5
           }
         ]
       },
@@ -3313,14 +3330,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3237,
-            "value": -0.010356903
+            "x": 0,
+            "y": 3145,
+            "value": -1.335144E-4
           },
           {
-            "x": 2,
-            "y": 578,
-            "value": -3.8146973E-6
+            "x": 0,
+            "y": 3937,
+            "value": "NaN"
           }
         ]
       },
@@ -3335,14 +3352,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 3145,
-            "value": -1.5258789E-5
+            "x": 1,
+            "y": 1649,
+            "value": -1.2588501E-4
           },
           {
-            "x": 0,
-            "y": 3937,
-            "value": "NaN"
+            "x": 1,
+            "y": 470,
+            "value": -0.0020217896
           }
         ]
       },
@@ -3351,29 +3368,6 @@
         "description": "Rain Beam Fill Fraction (IRR)",
         "bandWidth": 3,
         "bandHeight": 4084,
-        "noDataValue": "-999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 1,
-            "y": 1649,
-            "value": 0.0
-          },
-          {
-            "x": 1,
-            "y": 470,
-            "value": 0.0
-          }
-        ]
-      },
-      {
-        "name": "rim_irr",
-        "description": "Instantaneous Rain Rate (RIM)",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "geophysicalUnit": "millimeter/hour",
         "noDataValue": "-999.0",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -3392,10 +3386,11 @@
         ]
       },
       {
-        "name": "rim_pss",
-        "description": "Probablility of Salinity Stratification",
+        "name": "rim_irr",
+        "description": "Instantaneous Rain Rate (RIM)",
         "bandWidth": 3,
         "bandHeight": 4084,
+        "geophysicalUnit": "millimeter/hour",
         "noDataValue": "-999.0",
         "noDataValueUsed": "true",
         "spectralWavelength": "0.0",
@@ -3414,8 +3409,8 @@
         ]
       },
       {
-        "name": "rim_sss",
-        "description": "Sea Surface Salinity (RIM)",
+        "name": "rim_pss",
+        "description": "Probablility of Salinity Stratification",
         "bandWidth": 3,
         "bandHeight": 4084,
         "noDataValue": "-999.0",
@@ -3436,6 +3431,28 @@
         ]
       },
       {
+        "name": "rim_sss",
+        "description": "Sea Surface Salinity (RIM)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 0,
+            "y": 3036,
+            "value": 35.12785
+          },
+          {
+            "x": 0,
+            "y": 2470,
+            "value": 32.358994
+          }
+        ]
+      },
+      {
         "name": "scat_HH_ant",
         "description": "ANT Scatterometer NRCS for HH polarization",
         "bandWidth": 3,
@@ -3447,14 +3464,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 3036,
-            "value": -13.7554
+            "x": 2,
+            "y": 288,
+            "value": -22.249
           },
           {
             "x": 0,
-            "y": 2470,
-            "value": -11.9843
+            "y": 595,
+            "value": -10.3944
           }
         ]
       },
@@ -3470,14 +3487,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 288,
-            "value": -21.6949
+            "x": 0,
+            "y": 3765,
+            "value": -11.2402
           },
           {
             "x": 0,
-            "y": 595,
-            "value": -10.4276
+            "y": 1721,
+            "value": "NaN"
           }
         ]
       },
@@ -3493,14 +3510,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 3765,
-            "value": -10.8198
+            "x": 2,
+            "y": 2578,
+            "value": -22.3962
           },
           {
-            "x": 0,
-            "y": 1721,
-            "value": -6.55743
+            "x": 1,
+            "y": 689,
+            "value": -18.6708
           }
         ]
       },
@@ -3517,13 +3534,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 2578,
-            "value": -32.8343
+            "y": 1799,
+            "value": -18.8472
           },
           {
-            "x": 1,
-            "y": 689,
-            "value": -29.7432
+            "x": 2,
+            "y": 1196,
+            "value": -23.2131
           }
         ]
       },
@@ -3539,14 +3556,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 1799,
+            "x": 1,
+            "y": 2131,
             "value": "NaN"
           },
           {
-            "x": 2,
-            "y": 1196,
-            "value": "NaN"
+            "x": 0,
+            "y": 3373,
+            "value": -31.1506
           }
         ]
       },
@@ -3563,13 +3580,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 2131,
-            "value": -24.6114
+            "y": 3490,
+            "value": -35.0938
           },
           {
             "x": 0,
-            "y": 3373,
-            "value": -34.3476
+            "y": 1267,
+            "value": -31.0627
           }
         ]
       },
@@ -3586,13 +3603,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 3490,
-            "value": -33.5643
+            "y": 2895,
+            "value": -33.2631
           },
           {
             "x": 0,
-            "y": 1267,
-            "value": -27.8605
+            "y": 3044,
+            "value": -33.2996
           }
         ]
       },
@@ -3609,13 +3626,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 2895,
-            "value": -33.7498
+            "y": 3525,
+            "value": -34.0275
           },
           {
-            "x": 0,
-            "y": 3044,
-            "value": -33.5676
+            "x": 2,
+            "y": 825,
+            "value": -35.9241
           }
         ]
       },
@@ -3631,14 +3648,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3525,
-            "value": -34.8223
+            "x": 2,
+            "y": 3019,
+            "value": -36.1047
           },
           {
-            "x": 2,
-            "y": 825,
-            "value": -34.9417
+            "x": 0,
+            "y": 2904,
+            "value": -32.8307
           }
         ]
       },
@@ -3655,13 +3672,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 3019,
-            "value": -17.8573
+            "y": 1626,
+            "value": -10.1833
           },
           {
-            "x": 0,
-            "y": 2904,
-            "value": -9.82629
+            "x": 2,
+            "y": 48,
+            "value": -18.4175
           }
         ]
       },
@@ -3677,14 +3694,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 1626,
-            "value": "NaN"
+            "x": 0,
+            "y": 1857,
+            "value": -12.5019
           },
           {
             "x": 2,
-            "y": 48,
-            "value": "NaN"
+            "y": 3398,
+            "value": -17.91
           }
         ]
       },
@@ -3700,14 +3717,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 1857,
-            "value": -11.4923
+            "x": 2,
+            "y": 3611,
+            "value": -16.6999
           },
           {
-            "x": 2,
-            "y": 3398,
-            "value": -17.6496
+            "x": 1,
+            "y": 693,
+            "value": -14.6289
           }
         ]
       },
@@ -3723,14 +3740,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3611,
-            "value": 0.0189122
+            "x": 1,
+            "y": 3854,
+            "value": 0.0153661
           },
           {
             "x": 1,
-            "y": 693,
-            "value": 0.00881055
+            "y": 1344,
+            "value": 0.0185163
           }
         ]
       },
@@ -3747,13 +3764,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 3854,
-            "value": 5.07614E-4
+            "y": 3678,
+            "value": 1.90643E-4
           },
           {
-            "x": 1,
-            "y": 1344,
-            "value": 2.62827E-4
+            "x": 0,
+            "y": 2054,
+            "value": 3.48398E-5
           }
         ]
       },
@@ -3770,13 +3787,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 3678,
-            "value": 0.0097
+            "y": 1455,
+            "value": 0.0393713
           },
           {
-            "x": 0,
-            "y": 2054,
-            "value": 0.00334795
+            "x": 1,
+            "y": 1706,
+            "value": 0.0630477
           }
         ]
       },
@@ -3792,42 +3809,20 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 1455,
-            "value": 0.00115392
+            "x": 2,
+            "y": 4031,
+            "value": 4.69852E-7
           },
           {
-            "x": 1,
-            "y": 1706,
-            "value": 0.0
+            "x": 0,
+            "y": 3606,
+            "value": 5.54007E-4
           }
         ]
       },
       {
         "name": "scat_ice_frac",
         "description": "Fraction of ice contamination (scatterometer)",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "noDataValue": "-999.0",
-        "noDataValueUsed": "true",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 2,
-            "y": 4031,
-            "value": 0.0
-          },
-          {
-            "x": 0,
-            "y": 3606,
-            "value": 0.0
-          }
-        ]
-      },
-      {
-        "name": "scat_land_frac",
-        "description": "Fraction of land contamination (scatterometer)",
         "bandWidth": 3,
         "bandHeight": 4084,
         "noDataValue": "-999.0",
@@ -3848,6 +3843,28 @@
         ]
       },
       {
+        "name": "scat_land_frac",
+        "description": "Fraction of land contamination (scatterometer)",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1112,
+            "value": 1.0
+          },
+          {
+            "x": 2,
+            "y": 83,
+            "value": 1.0
+          }
+        ]
+      },
+      {
         "name": "scat_tot_toa",
         "description": "TOA Scatterometer (Total)",
         "bandWidth": 3,
@@ -3860,13 +3877,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 1112,
-            "value": -12.1165
+            "y": 275,
+            "value": -15.1885
           },
           {
-            "x": 2,
-            "y": 83,
-            "value": -11.2107
+            "x": 1,
+            "y": 1417,
+            "value": -16.5429
           }
         ]
       },
@@ -3882,14 +3899,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 275,
-            "value": 10.6782
+            "x": 0,
+            "y": 3792,
+            "value": 12.1041
           },
           {
             "x": 1,
-            "y": 1417,
-            "value": 1.14662
+            "y": 1536,
+            "value": 7.02316
           }
         ]
       },
@@ -3906,13 +3923,13 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 3792,
-            "value": -1.0253055
+            "y": 1070,
+            "value": "NaN"
           },
           {
             "x": 1,
-            "y": 1536,
-            "value": "NaN"
+            "y": 1169,
+            "value": 3.913264
           }
         ]
       },
@@ -3929,41 +3946,19 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 1070,
-            "value": 0.143959
+            "y": 809,
+            "value": 0.919477
           },
           {
             "x": 1,
-            "y": 1169,
-            "value": 0.126304
+            "y": 1188,
+            "value": 0.333296
           }
         ]
       },
       {
         "name": "rim_status_flag",
         "description": "RIM processing status",
-        "bandWidth": 3,
-        "bandHeight": 4084,
-        "noDataValue": "0.0",
-        "noDataValueUsed": "false",
-        "spectralWavelength": "0.0",
-        "spectralBandwidth": "0.0",
-        "expectedPixels": [
-          {
-            "x": 0,
-            "y": 809,
-            "value": 0.0
-          },
-          {
-            "x": 1,
-            "y": 1188,
-            "value": 0.0
-          }
-        ]
-      },
-      {
-        "name": "scatterometer_flags",
-        "description": "Scatterometer data quality flags",
         "bandWidth": 3,
         "bandHeight": 4084,
         "noDataValue": "0.0",
@@ -3984,8 +3979,8 @@
         ]
       },
       {
-        "name": "scat_samples",
-        "description": "Number of scatterometer samples per average",
+        "name": "scatterometer_flags",
+        "description": "Scatterometer data quality flags",
         "bandWidth": 3,
         "bandHeight": 4084,
         "noDataValue": "0.0",
@@ -3996,12 +3991,34 @@
           {
             "x": 2,
             "y": 3624,
-            "value": 7.0
+            "value": 1.0737418E9
           },
           {
             "x": 1,
             "y": 825,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "scat_samples",
+        "description": "Number of scatterometer samples per average",
+        "bandWidth": 3,
+        "bandHeight": 4084,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1,
+            "y": 123,
             "value": 8.0
+          },
+          {
+            "x": 1,
+            "y": 1611,
+            "value": 7.0
           }
         ]
       },
@@ -4016,14 +4033,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 123,
-            "value": 1.3743963
+            "x": 2,
+            "y": 3125,
+            "value": 1.5352057
           },
           {
-            "x": 1,
-            "y": 1611,
-            "value": 1.3749151
+            "x": 0,
+            "y": 1058,
+            "value": 1.4820164
           }
         ]
       },
@@ -4038,14 +4055,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3125,
-            "value": 1.0466344
+            "x": 0,
+            "y": 1233,
+            "value": 1.191356
           },
           {
             "x": 0,
-            "y": 1058,
-            "value": 1.1910123
+            "y": 2397,
+            "value": 1.191464
           }
         ]
       },
@@ -4061,13 +4078,13 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 1233,
-            "value": 1.0621648
+            "y": 1117,
+            "value": 1.0617237
           },
           {
-            "x": 0,
-            "y": 2397,
-            "value": 1.0619662
+            "x": 1,
+            "y": 3005,
+            "value": 0.9703133
           }
         ]
       },
@@ -4082,14 +4099,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 1117,
-            "value": 1.6082165
+            "x": 2,
+            "y": 2955,
+            "value": 1.4616388
           },
           {
-            "x": 1,
-            "y": 3005,
-            "value": 1.4624169
+            "x": 2,
+            "y": 1851,
+            "value": 1.4615643
           }
         ]
       },
@@ -4105,13 +4122,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 2955,
-            "value": 482.25375
+            "y": 1264,
+            "value": 482.29285
           },
           {
-            "x": 2,
-            "y": 1851,
-            "value": 482.18768
+            "x": 0,
+            "y": 1590,
+            "value": 504.6214
           }
         ]
       },
@@ -4126,14 +4143,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 1264,
-            "value": 437.00348
+            "x": 1,
+            "y": 3999,
+            "value": 388.38583
           },
           {
-            "x": 0,
-            "y": 1590,
-            "value": 342.1559
+            "x": 2,
+            "y": 2186,
+            "value": 436.90186
           }
         ]
       },
@@ -4148,14 +4165,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3999,
-            "value": 456.22995
+            "x": 0,
+            "y": 2540,
+            "value": 309.0166
           },
           {
-            "x": 2,
-            "y": 2186,
-            "value": 260.95383
+            "x": 0,
+            "y": 1266,
+            "value": 308.9393
           }
         ]
       },
@@ -4170,14 +4187,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 2540,
-            "value": 549.15625
+            "x": 2,
+            "y": 3648,
+            "value": 360.4431
           },
           {
-            "x": 0,
-            "y": 1266,
-            "value": 549.2834
+            "x": 2,
+            "y": 2173,
+            "value": 360.53873
           }
         ]
       },
@@ -4194,13 +4211,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 3648,
-            "value": 2.3841953
+            "y": 2156,
+            "value": 0.6574762
           },
           {
-            "x": 2,
-            "y": 2173,
-            "value": 0.7556177
+            "x": 1,
+            "y": 3588,
+            "value": -0.22277278
           }
         ]
       },
@@ -4216,14 +4233,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 2156,
-            "value": 79.332466
+            "x": 1,
+            "y": 1846,
+            "value": 71.2799
           },
           {
             "x": 1,
-            "y": 3588,
-            "value": -43.822395
+            "y": 589,
+            "value": -38.296913
           }
         ]
       },
@@ -4239,14 +4256,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 1846,
-            "value": 27.445784
+            "x": 2,
+            "y": 1024,
+            "value": 48.481247
           },
           {
-            "x": 1,
-            "y": 589,
-            "value": 57.7057
+            "x": 2,
+            "y": 607,
+            "value": 58.112015
           }
         ]
       },
@@ -4263,13 +4280,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 1024,
-            "value": 71.598274
+            "y": 1748,
+            "value": 74.22054
           },
           {
-            "x": 2,
-            "y": 607,
-            "value": 66.689476
+            "x": 0,
+            "y": 664,
+            "value": 65.74388
           }
         ]
       },
@@ -4285,14 +4302,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 1748,
-            "value": 46.25111
+            "x": 1,
+            "y": 660,
+            "value": 38.46318
           },
           {
             "x": 0,
-            "y": 664,
-            "value": 29.35537
+            "y": 1469,
+            "value": 29.304785
           }
         ]
       },
@@ -4309,13 +4326,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 660,
-            "value": -24.334797
+            "y": 943,
+            "value": -7.3699512
           },
           {
             "x": 0,
-            "y": 1469,
-            "value": 44.01905
+            "y": 3553,
+            "value": -33.265804
           }
         ]
       },
@@ -4331,14 +4348,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 943,
-            "value": 151.34569
+            "x": 0,
+            "y": 2474,
+            "value": "NaN"
           },
           {
             "x": 0,
-            "y": 3553,
-            "value": 240.12225
+            "y": 1220,
+            "value": 138.33585
           }
         ]
       },
@@ -4354,13 +4371,13 @@
         "expectedPixels": [
           {
             "x": 0,
-            "y": 2474,
-            "value": -0.19983298
+            "y": 303,
+            "value": -0.20784183
           },
           {
             "x": 0,
-            "y": 1220,
-            "value": -0.20446134
+            "y": 212,
+            "value": -0.2081771
           }
         ]
       },
@@ -4376,14 +4393,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 303,
-            "value": 83.903625
+            "x": 2,
+            "y": 3254,
+            "value": 26.715954
           },
           {
-            "x": 0,
-            "y": 212,
-            "value": 77.442505
+            "x": 1,
+            "y": 3788,
+            "value": 26.21085
           }
         ]
       },
@@ -4400,13 +4417,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 3254,
-            "value": -2035495.9
+            "y": 3814,
+            "value": -6384545.0
           },
           {
             "x": 1,
-            "y": 3788,
-            "value": -3205402.5
+            "y": 1250,
+            "value": 6413274.0
           }
         ]
       },
@@ -4422,14 +4439,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3814,
-            "value": -2985.815
+            "x": 1,
+            "y": 1911,
+            "value": -6972.491
           },
           {
             "x": 1,
-            "y": 1250,
-            "value": -2146.4263
+            "y": 86,
+            "value": 7154.0015
           }
         ]
       },
@@ -4446,13 +4463,13 @@
         "expectedPixels": [
           {
             "x": 1,
-            "y": 1911,
-            "value": 76.7532
+            "y": 232,
+            "value": -67.6206
           },
           {
             "x": 1,
-            "y": 86,
-            "value": -76.4834
+            "y": 3577,
+            "value": -42.8841
           }
         ]
       },
@@ -4468,14 +4485,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 232,
-            "value": 80.2801
+            "x": 2,
+            "y": 2395,
+            "value": -141.995
           },
           {
-            "x": 1,
-            "y": 3577,
-            "value": -165.023
+            "x": 0,
+            "y": 2329,
+            "value": -134.683
           }
         ]
       },
@@ -4492,13 +4509,13 @@
         "expectedPixels": [
           {
             "x": 2,
-            "y": 2395,
-            "value": -0.0680119
+            "y": 3963,
+            "value": -0.0635985
           },
           {
             "x": 0,
-            "y": 2329,
-            "value": -0.0524525
+            "y": 3859,
+            "value": -0.044685
           }
         ]
       },
@@ -4513,14 +4530,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 3963,
-            "value": 0.13275737
+            "x": 1,
+            "y": 1850,
+            "value": 0.3057071
           },
           {
-            "x": 0,
-            "y": 3859,
-            "value": 0.9426652
+            "x": 2,
+            "y": 1412,
+            "value": 0.13248399
           }
         ]
       },
@@ -4536,14 +4553,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 1850,
-            "value": 117.03987
+            "x": 0,
+            "y": 177,
+            "value": 135.86012
           },
           {
-            "x": 2,
-            "y": 1412,
-            "value": 128.07463
+            "x": 0,
+            "y": 699,
+            "value": 125.28509
           }
         ]
       },
@@ -4559,14 +4576,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 0,
-            "y": 177,
-            "value": 239.47807
+            "x": 1,
+            "y": 3853,
+            "value": 113.97217
           },
           {
-            "x": 0,
-            "y": 699,
-            "value": 273.51093
+            "x": 2,
+            "y": 1381,
+            "value": "NaN"
           }
         ]
       },
@@ -4581,14 +4598,14 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 1,
-            "y": 3853,
-            "value": 0.3586077
+            "x": 2,
+            "y": 2674,
+            "value": -0.2500856
           },
           {
-            "x": 2,
-            "y": 1381,
-            "value": -0.22185487
+            "x": 0,
+            "y": 1097,
+            "value": 0.9722113
           }
         ]
       },
@@ -4604,34 +4621,26 @@
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
-            "x": 2,
-            "y": 2674,
-            "value": 86.814835
+            "x": 0,
+            "y": 1929,
+            "value": 77.51371
           },
           {
             "x": 0,
-            "y": 1097,
-            "value": 90.53592
+            "y": 3059,
+            "value": 93.21024
           }
         ]
       }
     ],
     "metadata": [
       {
-        "path": "Global_Attributes/creator_name",
-        "value": "NASA/GSFC/OBPG"
+        "path": "Band_Attributes/scat_VV_exp/long_name",
+        "value": "Expected Sigma0 for VV polarization"
       },
       {
-        "path": "Global_Attributes/scatterometer_history",
-        "value": "-limits /sdps/sdpsoper/Science/OCSSW/AQ_V5.0/data/aquarius/scatterometer/L1B_limits_flA_05-08-2012.txt -debug -1 -L2_filter_rfi -param_file /sdps/sdpsoper/Science/OCSSW/AQ_V5.0/data/aquarius/scatterometer/params_pointing_fix_10-31-2012.txt -dir_dat /sdps/sdpsoper/Science/OCSSW/AQ_V5.0/data/aquarius/scatterometer -dir_out /data3/sdpsoper/vdc/vpu6/workbuf -dir_scratch /dev/shm/tmp_104942798 -apc_file /sdps/sdpsoper/Science/OCSSW/AQ_V5.0/data/aquarius/scatterometer/L2_APC_matrix_theory_10-04-2011.txt -cal_level 3 -suppress_tlm_warnings -i /data3/sdpsoper/vdc/vpu6/workbuf/Q2015099144200.L1A_SCI "
-      },
-      {
-        "path": "Variable_Attributes/Navigation//orb_vel/long_name",
-        "value": "Orbital velocity vector"
-      },
-      {
-        "path": "Variable_Attributes/Navigation//scat_latfoot/valid_max",
-        "value": "90.0"
+        "path": "Band_Attributes/scat_esurf_H_uncertainty/valid_max",
+        "value": "0.0"
       },
       {
         "path": "Global_Attributes/scatterometer_polarizations",
@@ -4656,6 +4665,14 @@
       {
         "path": "Global_Attributes/delta_TND_H_coefficient",
         "value": "0.0057095042,0.005242433,0.0062344084"
+      },
+      {
+        "path": "Global_Attributes/rad_ancillary_file1",
+        "value": "y2015040912.h5:N2015099_SST_CMC_24h.h5,N2015100_SST_CMC_24h.h5,N201509912_QATM_NCEP_6h.h5,N201509912_QMET_NCEP_6h,N201509912_SWH_NCEP_6h.h5,N201509912_FROZEN_6h.h5,N201509900_SEAICE_NCEP_24h.hdf,N201510000_SEAICE_NCEP_24h.hdf,N201509900_SALINITY_HYCOM_24h.h5,N201509900_SALINITY_HYCOM_24h.h5,MERRA300.prod.simul.tavg1_2d_mld_Nx.20150409.SUB.nc4"
+      },
+      {
+        "path": "Global_Attributes/geospatial_lon_units",
+        "value": "degrees East"
       }
     ]
   }

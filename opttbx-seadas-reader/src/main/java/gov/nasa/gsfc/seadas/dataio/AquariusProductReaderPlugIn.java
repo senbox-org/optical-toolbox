@@ -20,6 +20,7 @@ import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
+import org.jspecify.annotations.Nullable;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 
@@ -47,7 +48,8 @@ public class AquariusProductReaderPlugIn implements ProductReaderPlugIn {
     private static final String[] supportedProductTypes = {
             "Aquarius Level 2 Data",
             "Aquarius Level 3 Binned Data",
-            "Aquarius Level-3 Binned Data"
+            "Aquarius Level-3 Binned Data",
+            "Aquarius Level-3 Standard Mapped Image"
 
     };
     private static final Set<String> supportedProductTypeSet = new HashSet<String>(Arrays.asList(supportedProductTypes));
@@ -67,7 +69,8 @@ public class AquariusProductReaderPlugIn implements ProductReaderPlugIn {
 
         try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
             if (ncfile != null) {
-                Attribute titleAttribute = ncfile.findGlobalAttribute("Title");
+                Attribute titleAttribute = getTitleAttribute(ncfile);
+
                 if (titleAttribute != null) {
 
                     final String title = titleAttribute.getStringValue();
@@ -100,6 +103,15 @@ public class AquariusProductReaderPlugIn implements ProductReaderPlugIn {
             }
         }
         return DecodeQualification.UNABLE;
+    }
+
+    // package access for testing only tb 2026-03-19
+    static @Nullable Attribute getTitleAttribute(NetcdfFile ncfile) {
+        Attribute titleAttribute = ncfile.findGlobalAttribute("Title");
+        if (titleAttribute == null) {
+            titleAttribute = ncfile.findGlobalAttribute("title");
+        }
+        return titleAttribute;
     }
 
     /**

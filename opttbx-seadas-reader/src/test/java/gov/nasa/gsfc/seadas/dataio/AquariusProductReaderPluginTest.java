@@ -3,11 +3,14 @@ package gov.nasa.gsfc.seadas.dataio;
 import org.esa.snap.core.dataio.ProductReader;
 import org.junit.Before;
 import org.junit.Test;
+import ucar.nc2.Attribute;
+import ucar.nc2.NetcdfFile;
 
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AquariusProductReaderPluginTest {
 
@@ -18,9 +21,10 @@ public class AquariusProductReaderPluginTest {
         plugIn = new AquariusProductReaderPlugIn();
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testGetInputTypes() {
-        Class[] inputTypes = plugIn.getInputTypes();
+        final Class[] inputTypes = plugIn.getInputTypes();
         assertEquals(2, inputTypes.length);
         assertEquals(String.class, inputTypes[0]);
         assertEquals(File.class, inputTypes[1]);
@@ -39,5 +43,27 @@ public class AquariusProductReaderPluginTest {
     public void testCreateReaderInstance() {
         final ProductReader readerInstance = plugIn.createReaderInstance();
         assertTrue(readerInstance instanceof SeadasProductReader);
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    @Test
+    public void testGetTitleAttribute() {
+        final Attribute attribute = new Attribute("theTitle", "hiho");
+        final NetcdfFile netcdfFile = mock(NetcdfFile.class);
+        when(netcdfFile.findGlobalAttribute("Title")).thenReturn(attribute);
+        when(netcdfFile.findGlobalAttribute("title")).thenReturn(null);
+
+        Attribute titleAttribute = AquariusProductReaderPlugIn.getTitleAttribute(netcdfFile);
+        assertEquals("hiho", titleAttribute.getStringValue());
+
+        when(netcdfFile.findGlobalAttribute("Title")).thenReturn(null);
+        when(netcdfFile.findGlobalAttribute("title")).thenReturn(attribute);
+        titleAttribute = AquariusProductReaderPlugIn.getTitleAttribute(netcdfFile);
+        assertEquals("hiho", titleAttribute.getStringValue());
+
+        when(netcdfFile.findGlobalAttribute("Title")).thenReturn(null);
+        when(netcdfFile.findGlobalAttribute("title")).thenReturn(null);
+        titleAttribute = AquariusProductReaderPlugIn.getTitleAttribute(netcdfFile);
+        assertNull(titleAttribute);
     }
 }
