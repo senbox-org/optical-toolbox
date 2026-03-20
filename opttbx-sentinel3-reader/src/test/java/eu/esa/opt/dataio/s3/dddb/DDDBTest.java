@@ -169,4 +169,20 @@ public class DDDBTest {
         } catch (IOException expected) {
         }
     }
+
+    @Test
+    @STTM("SNAP-4170")
+    public void testGetVariableDescriptors_optionalFlag() throws IOException {
+        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("iop_nn.nc", "OL_2_WRR", "003");
+        assertEquals(3, variableDescriptors.length);
+
+        assertEquals("ADG443_NN",  variableDescriptors[0].getName());
+        assertFalse(variableDescriptors[0].isOptional());
+
+        assertEquals("ADG443_NN_err",  variableDescriptors[1].getName());
+        assertTrue(variableDescriptors[1].isOptional());
+
+        assertEquals("ADG443_NN_unc",  variableDescriptors[2].getName());
+        assertTrue(variableDescriptors[2].isOptional());
+    }
 }
