@@ -414,12 +414,16 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
     private void addSplittedBand(Product product, VariableDescriptor descriptor) throws IOException {
         final String bandname = descriptor.getName();
+        final Variable netCDFVariable = getNetCDFVariable(descriptor, descriptor.getNcVarName());
+        if (netCDFVariable == null) {
+            return;
+        }
+
         final boolean isMsb = bandname.contains("_msb");
         final Band band = new BandUsingReaderDirectly(bandname, ProductData.TYPE_UINT32, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         product.addBand(band);
         setSpectralProperties(bandname, band);
 
-        Variable netCDFVariable = getNetCDFVariable(descriptor, descriptor.getNcVarName());
         S3Util.addSampleCodings(product, band, netCDFVariable, isMsb);
         setScalefactorAndOffset(band, netCDFVariable);
         band.setValidPixelExpression(descriptor.getValidExpression());
@@ -429,14 +433,17 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     }
 
     private void addBand(Product product, VariableDescriptor descriptor, int dataType) throws IOException {
-        final String bandname = descriptor.getName();
+        final String bandName = descriptor.getName();
+        final Variable netCDFVariable = getNetCDFVariable(descriptor, bandName);
+        if (netCDFVariable == null) {
+            return;
+        }
 
-        final Band band = new BandUsingReaderDirectly(bandname, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+        final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         product.addBand(band);
 
-        setSpectralProperties(bandname, band);
+        setSpectralProperties(bandName, band);
 
-        final Variable netCDFVariable = getNetCDFVariable(descriptor, bandname);
         S3Util.addSampleCodings(product, band, netCDFVariable, false);
         setScalefactorAndOffset(band, netCDFVariable);
         band.setValidPixelExpression(descriptor.getValidExpression());
@@ -660,11 +667,13 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
                 variable = netcdfFile.findVariable(name);
                 if (variable == null) {
                     variable = netcdfFile.findVariable(variableName);
-                    if (variable == null) {
+                    if (variable == null && !descriptor.isOptional()) {
                         throw new IOException("requested variable not found: " + name + " " + netcdfFile.getLocation());
                     }
                 }
-                ncVariablesMap.put(name, variable);
+                if (variable != null) {
+                    ncVariablesMap.put(name, variable);
+                }
             }
 
             ncVar = variable;
