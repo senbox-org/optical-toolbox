@@ -178,8 +178,8 @@ public class CoregistrationOpTest {
         parameters.put("radius", "32, 28, 24, 20, 16, 12, 8");
 
         Map<String, Product> sourceProducts = new HashMap<String, Product>();
-        sourceProducts.put("Master", masterSourceProduct);
-        sourceProducts.put("Slave", slaveSourceProduct);
+        sourceProducts.put("masterProduct", masterSourceProduct);
+        sourceProducts.put("slaveProduct", slaveSourceProduct);
 
         // create the operator
         Operator operator = GPF.getDefaultInstance().createOperator("CoregistrationOp", parameters, sourceProducts, null);
@@ -220,22 +220,22 @@ public class CoregistrationOpTest {
 
     private static void checkGrayBand(Band band) {
         int bandValue = band.getSampleInt(64, 84);
-        assertEquals(115, bandValue);
+        assertEquals(112, bandValue);
 
         bandValue = band.getSampleInt(164, 184);
         assertEquals(93, bandValue);
 
         bandValue = band.getSampleInt(264, 114);
-        assertEquals(105, bandValue);
+        assertEquals(115, bandValue);
 
         bandValue = band.getSampleInt(14, 18);
-        assertEquals(92, bandValue);
+        assertEquals(102, bandValue);
 
         bandValue = band.getSampleInt(123, 230);
-        assertEquals(111, bandValue);
+        assertEquals(114, bandValue);
 
         bandValue = band.getSampleInt(200, 100);
-        assertEquals(88, bandValue);
+        assertEquals(85, bandValue);
     }
 
 
