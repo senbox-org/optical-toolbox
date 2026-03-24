@@ -95,6 +95,7 @@ public class SeadasProductReader extends AbstractProductReader {
         Level2("Level 2"),
         Level2_DscovrEpic("DscovrEpic Level 2"),
         Level2_Pace("Pace Level-2"),
+        Level2_PaceSPEX("SPEX Level-2"),
         Level2_PaceOCIS("OCIS Level-2"),
         Level3_Bin("Level 3 Binned"),
         Level3_NSIDC_CDR("Level 3 NSIDC CDR"),
@@ -155,6 +156,7 @@ public class SeadasProductReader extends AbstractProductReader {
                 case Level2_CZCS:
                 case Level2_Pace:
                 case Level2_PaceOCIS:
+                case Level2_PaceSPEX:
                     seadasFileReader = new L2FileReader(this);
                     break;
                 case Level2_DscovrEpic:
@@ -395,8 +397,8 @@ public class SeadasProductReader extends AbstractProductReader {
                 return ProductType.Level2_Pace;
             } else if (title.contains("HARP2 Level-2")) {
                 return ProductType.Level2_Pace;
-            } else if (title.contains("SPEXone Level-2")) {
-                return ProductType.Level2_Pace;
+            } else if (title.contains("SPEXONE Level-2")) {
+                return ProductType.Level2_PaceSPEX;
             } else if (title.contains("Level-1B")) {
                 return ProductType.Level1B;
             } else if ("CZCS Level-1A Data".equals(title)) {
