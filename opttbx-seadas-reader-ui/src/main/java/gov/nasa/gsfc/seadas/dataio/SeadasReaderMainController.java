@@ -374,6 +374,15 @@ public final class SeadasReaderMainController extends DefaultConfigController {
                 description = SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_TOOLTIP)
         String level2BandGroupingDefault = SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT;
 
+        @Preference(key = SeadasReaderDefaults.PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_KEY,
+                label = SeadasReaderDefaults.PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_TOOLTIP)
+        String level2PaceHarp2BandGroupingDefault = SeadasReaderDefaults.PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_DEFAULT;
+
+        @Preference(key = SeadasReaderDefaults.PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_KEY,
+                label = SeadasReaderDefaults.PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_TOOLTIP)
+        String level2PaceSPEXONEBandGroupingDefault = SeadasReaderDefaults.PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_DEFAULT;
 
         @Preference(key = SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_KEY,
                 label = SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_LABEL,
