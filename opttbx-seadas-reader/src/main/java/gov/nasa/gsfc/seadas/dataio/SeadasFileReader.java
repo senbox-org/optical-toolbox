@@ -3295,7 +3295,7 @@ protected Map<Band, Variable> add4DSPEXNewBands(Product product, Variable variab
 
     public String getBandGroupingL2PaceHarp2() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L2_PACE_HARP2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L2_PACE_HARP2_BAND_GROUPING_DEFAULT);
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L2_HARP2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L2_PACE_HARP2_BAND_GROUPING_DEFAULT);
     }
 
     public String getBandFlipXLevel2() {
