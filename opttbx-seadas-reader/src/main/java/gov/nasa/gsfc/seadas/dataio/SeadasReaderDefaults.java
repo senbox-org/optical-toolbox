@@ -1145,20 +1145,25 @@ public class SeadasReaderDefaults {
             "NUV_UncertaintyCODToSSA:Aerosol_Optical_Depth:Mean_Gas_Corrected_Reflectance:Mean_Reflectance:" +
             "DT_AerosolSingleScattAlbedo:NUV_AerosolSingleScattAlbedo:NUV_Reflectivity:" +
             "NUV_AerosolOpticalDepthOverCloud:NUV_UncertaintyACAODToSSA:AAOD:" +
-            "Rrs1_mean:Rrs1_std:Rrs1_model_mean:Rrs1_model_std:Rrs2_mean:Rrs2_std:Rrs2_model_mean:Rrs2_model_std:"+
-            "Rrs1_-50_:Rrs1_-20_:Rrs1_0_:Rrs1_20_:Rrs1_50_:Rrs2_-50_:Rrs2_-20_:Rrs2_0_:Rrs2_20_:Rrs2_50_:" +
-            "mask_ref_-50_:mask_ref_-20_:mask_ref_0_:mask_ref_20_:mask_ref_50_:"+
-            "mask_dolp_-50_:mask_dolp_-20_:mask_dolp_0_:mask_dolp_20_:mask_dolp_50_:";
+            "Rrs1_mean:Rrs1_std:Rrs1_model_mean:Rrs1_model_std:Rrs2_mean:Rrs2_std:Rrs2_model_mean:Rrs2_model_std:";
 
-    public static final String PROPERTY_LEVEL2_HARP2_BAND_GROUPING_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".band_grouping";
-    public static final String PROPERTY_LEVEL2_HARP2_BAND_GROUPING_LABEL = "Band Grouping";
-    public static final String PROPERTY_LEVEL2_HARP2_BAND_GROUPING_TOOLTIP = "<html>NASA Level-2 File Reader:<br>Expression to create a group of bands</html>";
-    public static final String PROPERTY_LEVEL2_HARP2_BAND_GROUPING_DEFAULT = "timing:" +
-            "Rrs1_mean:Rrs1_std:Rrs2_mean:Rrs2_std:aot_*:aot_fine:aot_coarse:" +
-            "mr_fine:mi_fine:mr_coarse:mi_coarse:mr:mi_:angstrom:ssa_fine:ssa_coarse:fmf:ssa:"+
+    public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".band_grouping.harp2";
+    public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_LABEL = "Band Grouping (HARP2)";
+    public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_TOOLTIP = "<html>NASA PACE HARP2 Level-2 File Reader:<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_DEFAULT = "angstrom:fmf:" +
+            "aot_*:aot_fine:aot_coarse:mi_:mi_fine:mi_coarse:mr:mr_fine:mr_coarse:ssa:ssa_fine:ssa_coarse:"+
             "Rrs1_*_440:Rrs1_*_550:Rrs1_*_665:Rrs1_*_865:Rrs2_*_440:Rrs2_*_550:Rrs2_*_665:Rrs2_*_865:" +
+            "Rrs1_mean:Rrs1_std:Rrs2_mean:Rrs2_std:" +
             "mask_dolp_*_440:mask_dolp_*_550:mask_dolp_*_665:mask_dolp_*_865:mask_ref_*_440:mask_ref_*_550:mask_ref_*_665:mask_ref_*_865:" ;
 
+    public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".band_grouping.spexone";
+    public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_LABEL = "Band Grouping (SPEXONE)";
+    public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_TOOLTIP = "<html>NASA PACE SPEXONE Level-2 File Reader:<br>Expression to create a group of bands</html>";
+    public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_DEFAULT = "angstrom:fmf:" +
+            "aot_*:aot_fine:aot_coarse:mi_:mi_fine:mi_coarse:mr:mr_fine:mr_coarse:ssa:ssa_fine:ssa_coarse:"+
+            "Rrs1_-50_:Rrs1_-20_:Rrs1_0_:Rrs1_20_:Rrs1_50_:Rrs2_-50_:Rrs2_-20_:Rrs2_0_:Rrs2_20_:Rrs2_50_:" +
+            "Rrs1_mean:Rrs1_std:Rrs2_mean:Rrs2_std:" +
+            "mask_dolp_-50_:mask_dolp_-20_:mask_dolp_0_:mask_dolp_20_:mask_dolp_50_:mask_ref_-50_:mask_ref_-20_:mask_ref_0_:mask_ref_20_:mask_ref_50_:" ;
 
     public static final String PROPERTY_LEVEL2_FLIPX_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".flipx";
     public static final String PROPERTY_LEVEL2_FLIPX_LABEL = "Flip-X (Horizontal)";

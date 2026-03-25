@@ -2117,10 +2117,12 @@ protected Map<Band, Variable> add4DSPEXNewBands(Product product, Variable variab
                                 if (fillValue == null) {
                                     fillValue = variable.findAttribute("bad_value_scaled");
                                 }
+                                band.setAngularValue(view_angles.getFloat(i));
+                                band.setAngularBandIndex(i);
                                 band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
                                 band.setNoDataValueUsed(true);
                                 band.setSpectralWavelength(wavelengths.getFloat(j));
-                                band.setSpectralBandIndex(1);
+                                band.setSpectralBandIndex(j);
                             } catch (Exception ignored) {
                             }
 
@@ -3293,9 +3295,14 @@ protected Map<Band, Variable> add4DSPEXNewBands(Product product, Variable variab
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT);
     }
 
-    public String getBandGroupingL2PaceHarp2() {
+    public String getBandGroupingLevel2PaceHarp2() {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L2_HARP2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L2_PACE_HARP2_BAND_GROUPING_DEFAULT);
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_DEFAULT);
+    }
+
+    public String getBandGroupingLevel2PaceSPEXONE() {
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_DEFAULT);
     }
 
     public String getBandFlipXLevel2() {
