@@ -10,81 +10,11 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 
-public class SpectralNoiseReducerTest {
+public class SpectralNoiseUtilsTest {
 
 
     private static final double DOUBLE_ERR = 1.0e-10;
 
-
-    @Test
-    @STTM("SNAP-4173")
-    public void test_ApplyConvolutionComputesWeightedAverage() {
-        double[] spectrum = {10.0, 20.0, 30.0};
-        boolean[] validMask = {true, true, true};
-        double[] kernel = {0.25, 0.5, 0.25};
-        double[] result = new double[3];
-
-        SpectralNoiseReducer.applyConvolution(spectrum, validMask, kernel, result);
-
-        assertArrayEquals(new double[]{12.5, 20.0, 27.5}, result, DOUBLE_ERR);
-    }
-
-    @Test
-    @STTM("SNAP-4173")
-    public void test_ApplyConvolutionUsesClampAtEdges() {
-        double[] spectrum = {10.0, 20.0, 30.0};
-        boolean[] validMask = {true, true, true};
-        double[] kernel = {0.25, 0.5, 0.25};
-        double[] result = new double[3];
-
-        SpectralNoiseReducer.applyConvolution(spectrum, validMask, kernel, result);
-
-        assertEquals(12.5, result[0], DOUBLE_ERR);
-        assertEquals(27.5, result[2], DOUBLE_ERR);
-    }
-
-    @Test
-    @STTM("SNAP-4173")
-    public void test_ApplyConvolutionSetsNaNForInvalidCenterSample() {
-        double[] spectrum = {10.0, 20.0, 30.0};
-        boolean[] validMask = {true, false, true};
-        double[] kernel = {0.25, 0.5, 0.25};
-        double[] result = new double[3];
-
-        SpectralNoiseReducer.applyConvolution(spectrum, validMask, kernel, result);
-
-        assertEquals(10.0, result[0], DOUBLE_ERR);
-        assertTrue(Double.isNaN(result[1]));
-        assertEquals(30.0, result[2], DOUBLE_ERR);
-    }
-
-    @Test
-    @STTM("SNAP-4173")
-    public void test_ApplyConvolutionSkipsInvalidNeighborSamplesAndRenormalizes() {
-        double[] spectrum = {10.0, 20.0, 30.0};
-        boolean[] validMask = {true, true, false};
-        double[] kernel = {0.25, 0.5, 0.25};
-        double[] result = new double[3];
-
-        SpectralNoiseReducer.applyConvolution(spectrum, validMask, kernel, result);
-
-        assertEquals(0.25 * 10.0 + 0.5 * 10.0 + 0.25 * 20.0, result[0], DOUBLE_ERR);
-        assertEquals((0.25 * 10.0 + 0.5 * 20.0) / 0.75, result[1], DOUBLE_ERR);
-        assertTrue(Double.isNaN(result[2]));
-    }
-
-    @Test
-    @STTM("SNAP-4173")
-    public void test_ApplyConvolutionFallsBackToOriginalSpectrumWhenWeightSumIsZero() {
-        double[] spectrum = {10.0, 20.0, 30.0};
-        boolean[] validMask = {true, true, true};
-        double[] kernel = {0.0, 0.0, 0.0};
-        double[] result = new double[3];
-
-        SpectralNoiseReducer.applyConvolution(spectrum, validMask, kernel, result);
-
-        assertArrayEquals(spectrum, result, DOUBLE_ERR);
-    }
 
     @Test
     @STTM("SNAP-4173")
@@ -108,7 +38,7 @@ public class SpectralNoiseReducerTest {
         double[] spectrum = new double[2];
         boolean[] validMask = new boolean[2];
 
-        SpectralNoiseReducer.readSpectrumAtPixel(context, 100, 200, 0, spectrum, validMask);
+        SpectralNoiseUtils.readSpectrumAtPixel(context, 100, 200, 0, spectrum, validMask);
 
         assertArrayEquals(new double[]{1.5, 2.5}, spectrum, DOUBLE_ERR);
         assertArrayEquals(new boolean[]{true, true}, validMask);
@@ -136,7 +66,7 @@ public class SpectralNoiseReducerTest {
         double[] spectrum = new double[2];
         boolean[] validMask = new boolean[2];
 
-        SpectralNoiseReducer.readSpectrumAtPixel(context, 3, 4, 0, spectrum, validMask);
+        SpectralNoiseUtils.readSpectrumAtPixel(context, 3, 4, 0, spectrum, validMask);
 
         assertTrue(Double.isNaN(spectrum[0]));
         assertEquals(22.0, spectrum[1], DOUBLE_ERR);
@@ -162,7 +92,7 @@ public class SpectralNoiseReducerTest {
         double[] spectrum = new double[1];
         boolean[] validMask = new boolean[1];
 
-        SpectralNoiseReducer.readSpectrumAtPixel(context, 1, 2, 0, spectrum, validMask);
+        SpectralNoiseUtils.readSpectrumAtPixel(context, 1, 2, 0, spectrum, validMask);
 
         assertTrue(Double.isNaN(spectrum[0]));
         assertFalse(validMask[0]);
@@ -187,7 +117,7 @@ public class SpectralNoiseReducerTest {
         double[] spectrum = new double[1];
         boolean[] validMask = new boolean[1];
 
-        SpectralNoiseReducer.readSpectrumAtPixel(context, 1, 2, 0, spectrum, validMask);
+        SpectralNoiseUtils.readSpectrumAtPixel(context, 1, 2, 0, spectrum, validMask);
 
         assertTrue(Double.isNaN(spectrum[0]));
         assertFalse(validMask[0]);
@@ -212,7 +142,7 @@ public class SpectralNoiseReducerTest {
         double[] spectrum = new double[1];
         boolean[] validMask = new boolean[1];
 
-        SpectralNoiseReducer.readSpectrumAtPixel(context, 1, 2, 0, spectrum, validMask);
+        SpectralNoiseUtils.readSpectrumAtPixel(context, 1, 2, 0, spectrum, validMask);
 
         assertTrue(Double.isNaN(spectrum[0]));
         assertFalse(validMask[0]);
@@ -237,7 +167,7 @@ public class SpectralNoiseReducerTest {
         double[] spectrum = new double[1];
         boolean[] validMask = new boolean[1];
 
-        SpectralNoiseReducer.readSpectrumAtPixel(context, 1, 2, 0, spectrum, validMask);
+        SpectralNoiseUtils.readSpectrumAtPixel(context, 1, 2, 0, spectrum, validMask);
 
         assertEquals(-9999.0, spectrum[0], DOUBLE_ERR);
         assertTrue(validMask[0]);
@@ -262,7 +192,7 @@ public class SpectralNoiseReducerTest {
         boolean[] validMask = {true, true};
         double[] filteredSpectrum = {10.0, 20.0};
 
-        SpectralNoiseReducer.writeFilteredSpectrumAtPixel(context, 0, spectrum, validMask, filteredSpectrum);
+        SpectralNoiseUtils.writeFilteredSpectrumAtPixel(context, 0, spectrum, validMask, filteredSpectrum);
 
         assertEquals(10.0, targetSamples[0][0], DOUBLE_ERR);
         assertEquals(20.0, targetSamples[1][0], DOUBLE_ERR);
@@ -287,7 +217,7 @@ public class SpectralNoiseReducerTest {
         boolean[] validMask = {false};
         double[] filteredSpectrum = {10.0};
 
-        SpectralNoiseReducer.writeFilteredSpectrumAtPixel(context, 0, spectrum, validMask, filteredSpectrum);
+        SpectralNoiseUtils.writeFilteredSpectrumAtPixel(context, 0, spectrum, validMask, filteredSpectrum);
 
         assertEquals(-9999.0, targetSamples[0][0], DOUBLE_ERR);
     }
@@ -311,7 +241,7 @@ public class SpectralNoiseReducerTest {
         boolean[] validMask = {false};
         double[] filteredSpectrum = {10.0};
 
-        SpectralNoiseReducer.writeFilteredSpectrumAtPixel(context, 0, spectrum, validMask, filteredSpectrum);
+        SpectralNoiseUtils.writeFilteredSpectrumAtPixel(context, 0, spectrum, validMask, filteredSpectrum);
 
         assertEquals(123.0, targetSamples[0][0], DOUBLE_ERR);
     }
@@ -335,7 +265,7 @@ public class SpectralNoiseReducerTest {
         boolean[] validMask = {true, true};
         double[] filteredSpectrum = {10.0, 20.0};
 
-        SpectralNoiseReducer.writeFilteredSpectrumAtPixel(context, 0, spectrum, validMask, filteredSpectrum);
+        SpectralNoiseUtils.writeFilteredSpectrumAtPixel(context, 0, spectrum, validMask, filteredSpectrum);
 
         assertNull(targetSamples[0]);
         assertEquals(20.0, targetSamples[1][0], DOUBLE_ERR);
@@ -362,7 +292,7 @@ public class SpectralNoiseReducerTest {
                 new double[]{1.0}
         );
 
-        SpectralNoiseReducer.writeTargetTiles(context);
+        SpectralNoiseUtils.writeTargetTiles(context);
 
         verify(requestedTile).setSamples(targetSamples[0]);
     }

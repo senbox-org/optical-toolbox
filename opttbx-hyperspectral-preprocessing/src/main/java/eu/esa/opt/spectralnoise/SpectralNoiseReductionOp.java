@@ -1,8 +1,7 @@
 package eu.esa.opt.spectralnoise;
 
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.opt.spectralnoise.util.SpectralNoiseParameter;
-import eu.esa.opt.spectralnoise.util.SpectralNoiseReducer;
+import eu.esa.opt.spectralnoise.util.SpectralNoiseUtils;
 import eu.esa.opt.spectralnoise.util.SpectralNoiseReductionContext;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
@@ -16,6 +15,8 @@ import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.StringUtils;
+import org.esa.snap.speclib.util.noise.SpectralNoiseKernelFactory;
+import org.esa.snap.speclib.util.noise.SpectralNoiseReducer;
 
 import java.awt.*;
 import java.util.*;
@@ -42,9 +43,9 @@ public class SpectralNoiseReductionOp extends Operator {
             label = "Source Bands", rasterDataNodeType = Band.class)
     private String[] sourceBands = null;
 
-    @Parameter(valueSet = {SpectralNoiseParameter.FILTER_SG, SpectralNoiseParameter.FILTER_GAUSSIAN, SpectralNoiseParameter.FILTER_BOX},
-            defaultValue = SpectralNoiseParameter.FILTER_SG, label = "Filter Method")
-    private String filterType = SpectralNoiseParameter.FILTER_SG;
+    @Parameter(valueSet = {SpectralNoiseKernelFactory.FILTER_SG, SpectralNoiseKernelFactory.FILTER_GAUSSIAN, SpectralNoiseKernelFactory.FILTER_BOX},
+            defaultValue = SpectralNoiseKernelFactory.FILTER_SG, label = "Filter Method")
+    private String filterType = SpectralNoiseKernelFactory.FILTER_SG;
 
 
     @Parameter(label = "Kernel Size",
@@ -65,18 +66,25 @@ public class SpectralNoiseReductionOp extends Operator {
 
     private static final String PRODUCT_SUFFIX = "_SNR";
     private final Map<Band, Band> targetToSourceBandMap = new LinkedHashMap<>();
-    private SpectralNoiseParameter params;
     private double[] kernel;
 
 
     @Override
     public void initialize() throws OperatorException {
-        params = new SpectralNoiseParameter(filterType, kernelSize, gaussianSigma, sgPolynomialOrder);
-        params.validateFilterParameters();
+        final SpectralNoiseKernelFactory kernelParams = new SpectralNoiseKernelFactory(filterType, kernelSize, gaussianSigma, sgPolynomialOrder);
+        try {
+            kernelParams.validateFilterParameters();
+        } catch (IllegalArgumentException e) {
+            throw new OperatorException(e.getMessage(), e);
+        }
 
         getSourceBands();
-        params.ensureKernelSize(sourceBands.length);
-        kernel = params.createKernel();
+        try {
+            kernelParams.ensureKernelSize(sourceBands.length);
+            kernel = kernelParams.createKernel();
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            throw new OperatorException(e.getMessage(), e);
+        }
         createTargetProduct();
         ProductUtils.copyProductNodes(sourceProduct, targetProduct);
         addTargetBands();
@@ -87,7 +95,6 @@ public class SpectralNoiseReductionOp extends Operator {
         super.dispose();
         targetToSourceBandMap.clear();
         kernel = null;
-        params = null;
         sourceBands = null;
     }
 
@@ -100,7 +107,7 @@ public class SpectralNoiseReductionOp extends Operator {
         try {
             final SpectralNoiseReductionContext context = createTileComputationContext(targetTiles, targetRectangle);
             processTileRectangle(context, pm);
-            SpectralNoiseReducer.writeTargetTiles(context);
+            SpectralNoiseUtils.writeTargetTiles(context);
         } catch (OperatorException e) {
             throw e;
         } catch (Throwable t) {
@@ -237,9 +244,9 @@ public class SpectralNoiseReductionOp extends Operator {
             for (int x = 0; x < context.getTileWidth(); x++, tileIndex++) {
                 final int absoluteX = context.getTargetRectangle().x + x;
 
-                SpectralNoiseReducer.readSpectrumAtPixel(context, absoluteX, absoluteY, tileIndex, spectrum, validMask);
+                SpectralNoiseUtils.readSpectrumAtPixel(context, absoluteX, absoluteY, tileIndex, spectrum, validMask);
                 SpectralNoiseReducer.applyConvolution(spectrum, validMask, context.getKernel(), filteredSpectrum);
-                SpectralNoiseReducer.writeFilteredSpectrumAtPixel(context, tileIndex, spectrum, validMask, filteredSpectrum);
+                SpectralNoiseUtils.writeFilteredSpectrumAtPixel(context, tileIndex, spectrum, validMask, filteredSpectrum);
             }
 
             pm.worked(1);

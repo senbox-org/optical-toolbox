@@ -1,11 +1,11 @@
 package eu.esa.opt.spectralnoise;
 
 import com.bc.ceres.annotation.STTM;
-import eu.esa.opt.spectralnoise.util.SpectralNoiseParameter;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.gpf.OperatorException;
+import org.esa.snap.speclib.util.noise.SpectralNoiseKernelFactory;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -123,7 +123,7 @@ public class SpectralNoiseReductionOpTest {
 
         setField(op, "sourceProduct", sourceProduct);
         setField(op, "sourceBands", sourceBands);
-        setField(op, "filterType", SpectralNoiseParameter.FILTER_BOX);
+        setField(op, "filterType", SpectralNoiseKernelFactory.FILTER_BOX);
         setField(op, "kernelSize", kernelSize);
         setField(op, "gaussianSigma", 1.0);
         setField(op, "sgPolynomialOrder", 3);
