@@ -201,7 +201,7 @@ public class SpectralNoiseReductionOp extends Operator {
                 targetSamples[i] = new double[tileSize];
             }
 
-            noDataValues[i] = sourceBand.getNoDataValue();
+            noDataValues[i] = sourceBand.getGeophysicalNoDataValue();
             noDataUsed[i] = sourceBand.isNoDataValueUsed();
         }
 
