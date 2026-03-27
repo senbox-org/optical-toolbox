@@ -51,6 +51,20 @@ public class SpectralResponseFunction {
         spectralResponsesList = new ArrayList<SpectralResponse>();
     }
 
+    public static List<SpectralResponse> getConvolvedSpectralResponses(List<SpectralResponse> fwhmSpectralResponses) {
+        // TODO: implement following Enmap Python code:
+        //       - https://github.com/EnMAP-Box/enmap-box/blob/main/enmapboxprocessing/algorithm/spectralresamplingbyresponsefunctionconvolutionalgorithmbase.py
+        //         --> function processAlgorithm, with responses from
+        //             fwhmSpectralResponses <--> responses
+        //             convolvedSpectralResponses <--> responses2
+
+        List<SpectralResponse> convolvedSpectralResponses = new ArrayList<SpectralResponse>();
+        convolvedSpectralResponses = fwhmSpectralResponses;  // remove later!!
+
+        return convolvedSpectralResponses;
+    }
+
+
     /**
      * Reads spectral responses from a csv file. Makes use of classes/methods from the snap-spectrallibrary package.
      *
@@ -70,13 +84,16 @@ public class SpectralResponseFunction {
      */
     public void setSpectralResponses(CsvTable csvTable) throws IOException {
         Assert.notNull(csvTable);
+        List<SpectralResponse> fwhmpSectralResponsesList = new ArrayList<SpectralResponse>();
         csvTable.rows().iterator().forEachRemaining(row -> {
             SpectralResponse sr = new SpectralResponse();
             sr.setWvl(Float.parseFloat(row.get(0)));
             sr.setFwhm(Float.parseFloat(row.get(1)));
 
-            spectralResponsesList.add(sr);
+            fwhmpSectralResponsesList.add(sr);
         });
+
+        spectralResponsesList = getConvolvedSpectralResponses(fwhmpSectralResponsesList);
     }
 
     /**
