@@ -94,7 +94,7 @@ public class SeadasProductReader extends AbstractProductReader {
         Level1C_Pace("Pace_L1C"),
         Level2("Level 2"),
         Level2_DscovrEpic("DscovrEpic Level 2"),
-        Level2_PaceOCI("OCI Level-2"),
+        Level2_Pace("Pace Level-2"),
         Level2_PaceOCIS("OCIS Level-2"),
         Level3_Bin("Level 3 Binned"),
         Level3_NSIDC_CDR("Level 3 NSIDC CDR"),
@@ -152,14 +152,16 @@ public class SeadasProductReader extends AbstractProductReader {
                     break;
                 case Level2:
                 case Level1B:
-                case Level1A_CZCS:
                 case Level2_CZCS:
-                case Level2_PaceOCI:
+                case Level2_Pace:
                 case Level2_PaceOCIS:
                     seadasFileReader = new L2FileReader(this);
                     break;
                 case Level2_DscovrEpic:
                     seadasFileReader = new L2DscovrEpicFileReader(this);
+                    break;
+                case Level1A_CZCS:
+                    seadasFileReader = new L1ACzcsFileReader(this);
                     break;
                 case Level1A_Hawkeye:
                     seadasFileReader = new L1AHawkeyeFileReader(this);
@@ -274,6 +276,20 @@ public class SeadasProductReader extends AbstractProductReader {
         return productType;
     }
 
+    public boolean checkEqcProjection() {
+        try {
+            String projection = ncfile.findGlobalAttribute("map_projection").getStringValue();
+            if (projection.contains("proj=eqc")){
+                return true;
+            }
+            else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public boolean checkSeadasMapped() {
         try {
             List<Variable> seadasMappedVariables = ncfile.getVariables();
@@ -369,7 +385,7 @@ public class SeadasProductReader extends AbstractProductReader {
             instrument = getStringAttributeValue(instrumentAttr);
             if ("Oceansat OCM2 Level-1B Data".equals(title)) {
                 return ProductType.Level1B_OCM2;
-            } else if ("CZCS Level-2 Data".equals(title)) {
+            } else if (title.contains("CZCS Level-2 Data")) {
                 return ProductType.Level2_CZCS;
             } else if (title.contains("Aquarius Level 1A Data")) {
                 return ProductType.Level1A_Aquarius;
@@ -390,7 +406,11 @@ public class SeadasProductReader extends AbstractProductReader {
             } else if ("OCIS Level-2 Data".equals(title)) {
                 return ProductType.Level2_PaceOCIS;
             } else if (title.contains("OCI Level-2 Data")) {
-                return ProductType.Level2_PaceOCI;
+                return ProductType.Level2_Pace;
+            } else if (title.contains("HARP2 Level-2")) {
+                return ProductType.Level2_Pace;
+            } else if (title.contains("SPEXone Level-2")) {
+                return ProductType.Level2_Pace;
             } else if (title.contains("Level-1B")) {
                 return ProductType.Level1B;
             } else if ("CZCS Level-1A Data".equals(title)) {

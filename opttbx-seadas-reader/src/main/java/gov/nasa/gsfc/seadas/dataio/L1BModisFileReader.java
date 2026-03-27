@@ -90,8 +90,25 @@ public class L1BModisFileReader extends SeadasFileReader {
             tpNumLines = getDimension("MODIS_SWATH_Type_L1B_2*nscans");
         }
 
-        mustFlipX = mustFlipY = mustFlipMODIS();
-        //mustFlipX = mustFlipY = false;
+//        mustFlipX = mustFlipY = mustFlipMODIS();
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL1B_MODIS())) {
+            mustFlipX = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL1B_MODIS())) {
+            mustFlipX = false;
+        } else {
+            mustFlipX = mustFlipMODIS();; // default flipX
+        }
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYL1B_MODIS())) {
+            mustFlipY = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYL1B_MODIS())) {
+            mustFlipY = false;
+        } else {
+            mustFlipY = mustFlipMODIS();; // default flipY
+        }
+
+
 
         // fix the tie-point offsets if we flipped the data
         if(mustFlipX) {
@@ -133,7 +150,8 @@ public class L1BModisFileReader extends SeadasFileReader {
 
         // todo - think about maybe possibly sometime creating a flag for questionable data
 //        addFlagsAndMasks(product);
-        product.setAutoGrouping("RefSB:Emissive");
+//        product.setAutoGrouping("RefSB:Emissive");
+        product.setAutoGrouping(getBandGroupingL1B_MODIS());
 
         return product;
 
