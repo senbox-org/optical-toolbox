@@ -78,8 +78,9 @@ public class MerisL3ProductReader extends AbstractProductReader {
      */
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        String path = getInput().toString();
-        _netcdfFile = NetcdfFileOpener.open(path);
+        final File productFile = getProductFile();
+        final String path = productFile.getPath();
+        _netcdfFile = NetcdfFileOpener.open(productFile);
         if (_netcdfFile == null) {
             throw new IOException("Could not open NetCDF file " + path);
         }
@@ -88,7 +89,6 @@ public class MerisL3ProductReader extends AbstractProductReader {
             _grid = new ISINGrid(ISINGrid.detectRowCount(path));
             _sceneRasterWidth = _grid.getRowCount() * 2;
             _sceneRasterHeight = _grid.getRowCount();
-            File productFile = new File(path);
             _product = new Product(FileUtils.getFilenameWithoutExtension(productFile),
                                    "L3_ENV_MER",
                                    _sceneRasterWidth,

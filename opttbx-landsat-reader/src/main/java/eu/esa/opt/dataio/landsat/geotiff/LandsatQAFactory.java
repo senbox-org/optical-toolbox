@@ -9,8 +9,8 @@ import eu.esa.opt.dataio.landsat.geotiff.c2.Collection2TMLandsatQA;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  * Created by obarrile on 02/01/2019.
@@ -26,8 +26,7 @@ public class LandsatQAFactory {
         int collection = LandsatTypeInfo.getCollectionNumber(mtlFile.getName());
         boolean isCollectionProduct = collection > 0;
         try {
-            FileReader fileReader = new FileReader(mtlFile);
-            reader = new BufferedReader(fileReader);
+            reader = Files.newBufferedReader(mtlFile.toPath());
             String line = reader.readLine();
             while (line != null) {
                 if (line.contains("SENSOR_ID")) {

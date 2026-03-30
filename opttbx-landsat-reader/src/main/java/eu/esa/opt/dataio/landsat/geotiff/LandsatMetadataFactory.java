@@ -21,8 +21,9 @@ import org.esa.snap.core.dataio.ProductIOException;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * @author Thomas Storm
@@ -30,7 +31,8 @@ import java.io.IOException;
 class LandsatMetadataFactory {
 
     static LandsatMetadata create(File mtlFile) throws IOException {
-        LandsatLegacyMetadata landsatMetadata = new LandsatLegacyMetadata(new FileReader(mtlFile));
+        final Path mtlFilePath = mtlFile.toPath();
+        LandsatLegacyMetadata landsatMetadata = new LandsatLegacyMetadata(Files.newBufferedReader(mtlFilePath));
         if (landsatMetadata.isLegacyFormat()) {
             // legacy format case
             if (landsatMetadata.isLandsatTM() || landsatMetadata.isLandsatETM_Plus()) {
@@ -40,10 +42,7 @@ class LandsatMetadataFactory {
             }
         } else {
             // new format case
-            BufferedReader reader = null;
-            try {
-                FileReader fileReader = new FileReader(mtlFile);
-                reader = new BufferedReader(fileReader);
+            try (BufferedReader reader = Files.newBufferedReader(mtlFilePath)) {
                 String line = reader.readLine();
                 int collection = 1;
                 while (line != null) {
@@ -52,19 +51,15 @@ class LandsatMetadataFactory {
                     } else if (line.contains("SPACECRAFT_ID")) {
                         if (line.contains("LANDSAT_8") || line.contains("LANDSAT_9")) {
                             return collection == 1 ?
-                                    new Landsat8Metadata(new FileReader(mtlFile)) :
-                                    new Landsat8C2Metadata(new FileReader(mtlFile));
+                                    new Landsat8Metadata(Files.newBufferedReader(mtlFilePath)) :
+                                    new Landsat8C2Metadata(Files.newBufferedReader(mtlFilePath));
                         } else {
                             return collection == 1 ?
-                                    new LandsatReprocessedMetadata(new FileReader(mtlFile)) :
-                                    new LandsatC2ReprocessedMetadata((new FileReader(mtlFile)));
+                                    new LandsatReprocessedMetadata(Files.newBufferedReader(mtlFilePath)) :
+                                    new LandsatC2ReprocessedMetadata(Files.newBufferedReader(mtlFilePath));
                         }
                     }
                     line = reader.readLine();
-                }
-            } finally {
-                if (reader != null) {
-                    reader.close();
                 }
             }
             throw new IllegalStateException(
