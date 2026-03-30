@@ -95,7 +95,7 @@
         <module>opttbx-fub-wew-ui</module>
         <module>opttbx-fu-operator</module>
         <module>opttbx-hyperspectral-preprocessing</module>
-<!--        <module>opttbx-hyperspectral-preprocessing-ui</module>-->
+        <module>opttbx-hyperspectral-preprocessing-ui</module>
         <module>opttbx-landsat-reader</module>
         <module>opttbx-meris-operators-ui</module>
         <module>opttbx-meris-operators</module>
