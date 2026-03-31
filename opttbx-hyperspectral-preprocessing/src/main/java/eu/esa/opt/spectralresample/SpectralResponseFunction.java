@@ -18,10 +18,17 @@ import java.util.List;
 public class SpectralResponseFunction {
 
     private String ID;
-    private String wvlUnit;
-    private String fwhmUnit;
+    private float refWvl;
     private List<SpectralResponse> spectralResponsesList;
 
+
+    /**
+     * Constructor
+     *
+     */
+    public SpectralResponseFunction() {
+        spectralResponsesList = new ArrayList<SpectralResponse>();
+    }
 
     /**
      * Constructor
@@ -30,23 +37,6 @@ public class SpectralResponseFunction {
      */
     public SpectralResponseFunction(String ID) {
         this.ID = ID;
-        this.wvlUnit = "nm";
-        this.fwhmUnit = "nm";
-
-        spectralResponsesList = new ArrayList<SpectralResponse>();
-    }
-
-    /**
-     * Constructor
-     *
-     * @param ID - Identifier (could be sensor name, tbd)
-     * @param wvlUnit - wavelength unit
-     * @param fwhmUnit - full width of half maximum unit
-     */
-    public SpectralResponseFunction(String ID, String wvlUnit, String fwhmUnit) {
-        this.ID = ID;
-        this.wvlUnit = wvlUnit;
-        this.fwhmUnit = fwhmUnit;
 
         spectralResponsesList = new ArrayList<SpectralResponse>();
     }
@@ -77,6 +67,47 @@ public class SpectralResponseFunction {
     }
 
     /**
+     * Provides a list of fully defined Spectral Response Functions, each of them defined as pairs of (wvl, weight)
+     * around a given reference wavelength. A fully defined SRF is retrieved from an input pair (refWvl, FWHM).
+     * See more details at https://en.wikipedia.org/wiki/Full_width_at_half_maximum
+     *
+     * @param fwhmSrfList
+     * @return
+     */
+    public static List<SpectralResponseFunction> getFullyDefinedSrf(List<SpectralResponse> fwhmSrfList) {
+
+        List<SpectralResponseFunction> fullSrfList = new ArrayList<>();
+
+        fwhmSrfList.iterator().forEachRemaining(sr -> {
+            final float x0 = sr.getWvl();
+            final float fwhm = sr.getWeight();
+            final float sigma =  fwhm / 2.355f;
+            final float a = 2.0f * sigma * sigma;
+            final float b = (float) (sigma * Math.sqrt(2.0 * Math.PI));
+            List<SpectralResponse> srList = new ArrayList<>();
+            float maxWeight = Float.MIN_VALUE;
+            final int left = (int) (x0 - 3.0 * sigma);
+            final int right = (int) (x0 + 3.0 * sigma);
+            for (int x = left; x < right + 2; x++) {
+                final float c = -1.0f * (x - x0) * (x - x0);
+                final float weight = (float) (Math.exp(c / a) / b);
+                if (weight > maxWeight) maxWeight = weight;
+                srList.add(new SpectralResponse(x, weight));
+            }
+            for (int i = 0; i < srList.size(); i++) {
+                srList.get(i).setWeight(srList.get(i).getWeight() / maxWeight);
+            }
+
+            SpectralResponseFunction fullSrf = new SpectralResponseFunction();
+            fullSrf.setRefWvl(x0);
+            fullSrf.setSpectralResponsesList(srList);
+            fullSrfList.add(fullSrf);
+        });
+
+        return fullSrfList;
+    }
+
+    /**
      * Fills spectral responses list with spectral responses from CsvTable
      *
      * @param csvTable
@@ -88,7 +119,7 @@ public class SpectralResponseFunction {
         csvTable.rows().iterator().forEachRemaining(row -> {
             SpectralResponse sr = new SpectralResponse();
             sr.setWvl(Float.parseFloat(row.get(0)));
-            sr.setFwhm(Float.parseFloat(row.get(1)));
+            sr.setWeight(Float.parseFloat(row.get(1)));
 
             fwhmpSectralResponsesList.add(sr);
         });
@@ -114,29 +145,20 @@ public class SpectralResponseFunction {
         return spectralResponsesList;
     }
 
-    /**
-     * Class holding a spectral response function value of wavelength/FWHM.
-     * See https://en.wikipedia.org/wiki/Full_width_at_half_maximum for more details.
-     *
-     */
-    class SpectralResponse {
-        float wvl;
-        float fwhm;
 
-        public float getWvl() {
-            return wvl;
-        }
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
-        public void setWvl(float wvl) {
-            this.wvl = wvl;
-        }
+    public float getRefWvl() {
+        return refWvl;
+    }
 
-        public float getFwhm() {
-            return fwhm;
-        }
+    public void setRefWvl(float refWvl) {
+        this.refWvl = refWvl;
+    }
 
-        public void setFwhm(float fwhm) {
-            this.fwhm = fwhm;
-        }
+    public void setSpectralResponsesList(List<SpectralResponse> spectralResponsesList) {
+        this.spectralResponsesList = spectralResponsesList;
     }
 }

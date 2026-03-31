@@ -8,6 +8,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
+import static org.esa.snap.core.util.Debug.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -39,15 +40,15 @@ public class SpectralResponseFunctionTest {
         assertEquals(6.99561f, Float.parseFloat(srTable.rows().getFirst().get(1)), 1.E-5);
 
         srf.setSpectralResponses(srTable);
-        final List<SpectralResponseFunction.SpectralResponse> srList = srf.getSpectralResponsesList();
+        final List<SpectralResponse> srList = srf.getSpectralResponsesList();
 
         assertEquals(224, srList.size());
         assertEquals(418.24f, srList.getFirst().getWvl(), 1.E-2);
-        assertEquals(6.99561f, srList.getFirst().getFwhm(), 1.E-5);
+        assertEquals(6.99561f, srList.getFirst().getWeight(), 1.E-5);
         assertEquals(911.715f, srList.get(81).getWvl(), 1.E-2);
-        assertEquals(10.2508f, srList.get(81).getFwhm(), 1.E-5);
+        assertEquals(10.2508f, srList.get(81).getWeight(), 1.E-5);
         assertEquals(2445.53f, srList.get(223).getWvl(), 1.E-2);
-        assertEquals(7.1581f, srList.get(223).getFwhm(), 1.E-5);
+        assertEquals(7.1581f, srList.get(223).getWeight(), 1.E-5);
     }
 
     @Test
@@ -75,14 +76,33 @@ public class SpectralResponseFunctionTest {
         assertEquals(11.4f, Float.parseFloat(srTable.rows().getFirst().get(1)), 1.E-1);
 
         srf.setSpectralResponses(srTable);
-        final List<SpectralResponseFunction.SpectralResponse> srList = srf.getSpectralResponsesList();
+        final List<SpectralResponse> srList = srf.getSpectralResponsesList();
 
         assertEquals(234, srList.size());
         assertEquals(402.5f, srList.getFirst().getWvl(), 1.E-1);
-        assertEquals(11.4f, srList.getFirst().getFwhm(), 1.E-1);
+        assertEquals(11.4f, srList.getFirst().getWeight(), 1.E-1);
         assertEquals(1626.8f, srList.get(128).getWvl(), 1.E-1);
-        assertEquals(13.3f, srList.get(128).getFwhm(), 1.E-1);
+        assertEquals(13.3f, srList.get(128).getWeight(), 1.E-1);
         assertEquals(2496.9f, srList.get(233).getWvl(), 1.E-1);
-        assertEquals(9.5f, srList.get(233).getFwhm(), 1.E-1);
+        assertEquals(9.5f, srList.get(233).getWeight(), 1.E-1);
+    }
+
+    @Test
+    @STTM("SNAP-4174")
+    public void test_getFullyDefinedSrf() throws Exception {
+        // TODO
+        SpectralResponseFunction srf = new SpectralResponseFunction("enmap");
+
+        final URL resource = getClass().getResource(srf.getID() + ".csv");
+        final File csvFile = new File(resource.toURI());
+        final CsvTable srTable = SpectralResponseFunction.readSpectralResponsesFromCsv(csvFile);
+
+        srf.setSpectralResponses(srTable);
+        final List<SpectralResponse> srList = srf.getSpectralResponsesList();
+        List<SpectralResponseFunction> fullSrfList =
+                SpectralResponseFunction.getFullyDefinedSrf(srf.getSpectralResponsesList());
+
+        assertNotNull(fullSrfList);
+
     }
 }
