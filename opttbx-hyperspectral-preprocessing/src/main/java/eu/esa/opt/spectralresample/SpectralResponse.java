@@ -2,7 +2,7 @@ package eu.esa.opt.spectralresample;
 
 /**
  * Class holding a spectral response function value of wavelength/weight.
- * See https://en.wikipedia.org/wiki/Full_width_at_half_maximum for more details.
+ * See <a href="https://en.wikipedia.org/wiki/Full_width_at_half_maximum">...</a> for more details.
  *
  */
 public class SpectralResponse {

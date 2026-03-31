@@ -27,7 +27,7 @@ public class SpectralResponseFunction {
      *
      */
     public SpectralResponseFunction() {
-        spectralResponsesList = new ArrayList<SpectralResponse>();
+        spectralResponsesList = new ArrayList<>();
     }
 
     /**
@@ -38,7 +38,7 @@ public class SpectralResponseFunction {
     public SpectralResponseFunction(String ID) {
         this.ID = ID;
 
-        spectralResponsesList = new ArrayList<SpectralResponse>();
+        spectralResponsesList = new ArrayList<>();
     }
 
     public static List<SpectralResponse> getConvolvedSpectralResponses(List<SpectralResponse> fwhmSpectralResponses) {
@@ -48,7 +48,7 @@ public class SpectralResponseFunction {
         //             fwhmSpectralResponses <--> responses
         //             convolvedSpectralResponses <--> responses2
 
-        List<SpectralResponse> convolvedSpectralResponses = new ArrayList<SpectralResponse>();
+        List<SpectralResponse> convolvedSpectralResponses;
         convolvedSpectralResponses = fwhmSpectralResponses;  // remove later!!
 
         return convolvedSpectralResponses;
@@ -60,7 +60,6 @@ public class SpectralResponseFunction {
      *
      * @param csvFile - File
      * @return - CsvTable
-     * @throws IOException
      */
     public static CsvTable readSpectralResponsesFromCsv(File csvFile) throws IOException {
         return CsvUtils.read(csvFile.toPath());
@@ -69,10 +68,10 @@ public class SpectralResponseFunction {
     /**
      * Provides a list of fully defined Spectral Response Functions, each of them defined as pairs of (wvl, weight)
      * around a given reference wavelength. A fully defined SRF is retrieved from an input pair (refWvl, FWHM).
-     * See more details at https://en.wikipedia.org/wiki/Full_width_at_half_maximum
+     * See more details at <a href="https://en.wikipedia.org/wiki/Full_width_at_half_maximum">...</a>
      *
-     * @param fwhmSrfList
-     * @return
+     * @param fwhmSrfList -
+     * @return -
      */
     public static List<SpectralResponseFunction> getFullyDefinedSrf(List<SpectralResponse> fwhmSrfList) {
 
@@ -94,8 +93,8 @@ public class SpectralResponseFunction {
                 if (weight > maxWeight) maxWeight = weight;
                 srList.add(new SpectralResponse(x, weight));
             }
-            for (int i = 0; i < srList.size(); i++) {
-                srList.get(i).setWeight(srList.get(i).getWeight() / maxWeight);
+            for (SpectralResponse spectralResponse : srList) {
+                spectralResponse.setWeight(spectralResponse.getWeight() / maxWeight);
             }
 
             SpectralResponseFunction fullSrf = new SpectralResponseFunction();
@@ -110,12 +109,11 @@ public class SpectralResponseFunction {
     /**
      * Fills spectral responses list with spectral responses from CsvTable
      *
-     * @param csvTable
-     * @throws IOException
+     * @param csvTable -
      */
-    public void setSpectralResponses(CsvTable csvTable) throws IOException {
+    public void setSpectralResponses(CsvTable csvTable) {
         Assert.notNull(csvTable);
-        List<SpectralResponse> fwhmpSectralResponsesList = new ArrayList<SpectralResponse>();
+        List<SpectralResponse> fwhmpSectralResponsesList = new ArrayList<>();
         csvTable.rows().iterator().forEachRemaining(row -> {
             SpectralResponse sr = new SpectralResponse();
             sr.setWvl(Float.parseFloat(row.get(0)));
@@ -130,10 +128,9 @@ public class SpectralResponseFunction {
     /**
      * Reads spectral responses from a GeoJson file.
      *
-     * @param geoJsonFile
-     * @throws IOException
+     * @param geoJsonFile -
      */
-    public void readSpectralResponsesFromGeoJson(File geoJsonFile) throws IOException {
+    public void readSpectralResponsesFromGeoJson(File geoJsonFile) {
         // TODO
     }
 
@@ -145,10 +142,6 @@ public class SpectralResponseFunction {
         return spectralResponsesList;
     }
 
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
 
     public float getRefWvl() {
         return refWvl;

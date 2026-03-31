@@ -90,7 +90,6 @@ public class SpectralResponseFunctionTest {
     @Test
     @STTM("SNAP-4174")
     public void test_getFullyDefinedSrf() throws Exception {
-        // TODO
         SpectralResponseFunction srf = new SpectralResponseFunction("enmap");
 
         final URL resource = getClass().getResource(srf.getID() + ".csv");
