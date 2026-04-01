@@ -48,7 +48,7 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-commons</artifactId>
-            <version>${snap.version}</version>
+            <version>${opttbx.version}</version>
         </dependency>
 
 
