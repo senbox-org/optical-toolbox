@@ -594,7 +594,9 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     }
 
     @Override
-    public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
+    public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY,
+                                           int destWidth, int destHeight, ProductData destBuffer,
+                                           ProgressMonitor pm) throws IOException {
         final String tpGridName = tpg.getName();
 
         final ProductData gridData = tpg.getData();
@@ -611,24 +613,30 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
             final Variable netCDFVariable = getNetCDFVariable(descriptor, ncVariableName);
 
             Array rawDataArray = getRawData(tpGridName, netCDFVariable);
-            final int layer = getLayerIndexFromTiePointName(tpGridName, descriptor);
-            if (layer >= 0) {
-                final int[] sliceOffset = new int[]{0, 0, layer - 1};  // shift to zero based z coord. tb 2025-03-26
-                final int[] sliceDimensions = new int[]{tpg.getGridHeight(), tpg.getGridWidth(), 1};
-                final int[] stride = new int[]{1, 1, 1};
-                try {
-                    rawDataArray = rawDataArray.section(sliceOffset, sliceDimensions, stride);
-                } catch (InvalidRangeException e) {
-                    throw new IOException(e);
-                }
+            int layer = getLayerIndexFromTiePointName(tpGridName, descriptor);
+            final int[] sliceOffset;
+            final int[] sliceDimensions;
+            final int[] stride;
+            if (layer > 0) {
+                sliceOffset = new int[]{destOffsetY, destOffsetX, layer - 1}; // shift to zero based z coord. tb 2025-03-26
+                sliceDimensions = new int[]{destHeight, destWidth, 1};
+                stride = new int[]{1, 1, 1};
+            } else {
+                sliceOffset = new int[]{destOffsetY, destOffsetX};
+                sliceDimensions = new int[]{destHeight, destWidth};
+                stride = new int[]{1, 1};
+            }
+
+            // cut section
+            try {
+                rawDataArray = rawDataArray.section(sliceOffset, sliceDimensions, stride);
+            } catch (InvalidRangeException e) {
+                throw new IOException(e);
             }
 
             final Array scaledData = ReaderUtils.scaleArray(rawDataArray, netCDFVariable);
-            final ProductData tiePointData = ProductData.createInstance((float[]) scaledData.get1DJavaArray(DataType.FLOAT));
-            tpg.setData(tiePointData);
+            destBuffer.setElems(scaledData.get1DJavaArray(DataType.FLOAT));
         }
-
-        System.arraycopy(tpg.getGridData().getElems(), 0, destBuffer.getElems(), 0, destWidth * destHeight);
     }
 
     private synchronized void readData(RasterExtract rasterExtract, ProductData destBuffer, VariableDescriptor descriptor, String name, boolean rawData) throws IOException {
