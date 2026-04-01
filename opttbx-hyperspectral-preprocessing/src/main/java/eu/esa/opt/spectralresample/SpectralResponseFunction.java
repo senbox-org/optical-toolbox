@@ -19,6 +19,7 @@ public class SpectralResponseFunction {
 
     private String ID;
     private float refWvl;
+    private final List<FWHM> fwhmList;
     private List<SpectralResponse> spectralResponsesList;
 
 
@@ -27,6 +28,7 @@ public class SpectralResponseFunction {
      *
      */
     public SpectralResponseFunction() {
+        fwhmList = new ArrayList<>();
         spectralResponsesList = new ArrayList<>();
     }
 
@@ -37,49 +39,36 @@ public class SpectralResponseFunction {
      */
     public SpectralResponseFunction(String ID) {
         this.ID = ID;
-
+        fwhmList = new ArrayList<>();
         spectralResponsesList = new ArrayList<>();
     }
 
-    public static List<SpectralResponse> getConvolvedSpectralResponses(List<SpectralResponse> fwhmSpectralResponses) {
-        // TODO: implement following Enmap Python code:
-        //       - https://github.com/EnMAP-Box/enmap-box/blob/main/enmapboxprocessing/algorithm/spectralresamplingbyresponsefunctionconvolutionalgorithmbase.py
-        //         --> function processAlgorithm, with responses from
-        //             fwhmSpectralResponses <--> responses
-        //             convolvedSpectralResponses <--> responses2
-
-        List<SpectralResponse> convolvedSpectralResponses;
-        convolvedSpectralResponses = fwhmSpectralResponses;  // remove later!!
-
-        return convolvedSpectralResponses;
-    }
-
-
     /**
-     * Reads spectral responses from a csv file. Makes use of classes/methods from the snap-spectrallibrary package.
+     * Reads FWHM values from a csv file. Makes use of classes/methods from the snap-spectrallibrary package.
      *
      * @param csvFile - File
      * @return - CsvTable
      */
-    public static CsvTable readSpectralResponsesFromCsv(File csvFile) throws IOException {
+    public static CsvTable readFwhmFromCsv(File csvFile) throws IOException {
         return CsvUtils.read(csvFile.toPath());
     }
 
     /**
      * Provides a list of fully defined Spectral Response Functions, each of them defined as pairs of (wvl, weight)
-     * around a given reference wavelength. A fully defined SRF is retrieved from an input pair (refWvl, FWHM).
+     * around a given reference wavelength. A fully defined SRF is a Gaussian function retrieved from
+     * an input pair (refWvl, FWHM).
      * See more details at <a href="https://en.wikipedia.org/wiki/Full_width_at_half_maximum">...</a>
      *
-     * @param fwhmSrfList -
+     * @param fwhmList -
      * @return -
      */
-    public static List<SpectralResponseFunction> getFullyDefinedSrf(List<SpectralResponse> fwhmSrfList) {
+    public static List<SpectralResponseFunction> getFullyDefinedSrf(List<FWHM> fwhmList) {
 
         List<SpectralResponseFunction> fullSrfList = new ArrayList<>();
 
-        fwhmSrfList.iterator().forEachRemaining(sr -> {
+        fwhmList.iterator().forEachRemaining(sr -> {
             final float x0 = sr.getWvl();
-            final float fwhm = sr.getWeight();
+            final float fwhm = sr.getFwhm();
             final float sigma =  fwhm / 2.355f;
             final float a = 2.0f * sigma * sigma;
             final float b = (float) (sigma * Math.sqrt(2.0 * Math.PI));
@@ -91,7 +80,7 @@ public class SpectralResponseFunction {
                 final float c = -1.0f * (x - x0) * (x - x0);
                 final float weight = (float) (Math.exp(c / a) / b);
                 if (weight > maxWeight) maxWeight = weight;
-                srList.add(new SpectralResponse(x, weight));
+                srList.add(new SpectralResponseFunction.SpectralResponse(x, weight));
             }
             for (SpectralResponse spectralResponse : srList) {
                 spectralResponse.setWeight(spectralResponse.getWeight() / maxWeight);
@@ -99,7 +88,7 @@ public class SpectralResponseFunction {
 
             SpectralResponseFunction fullSrf = new SpectralResponseFunction();
             fullSrf.setRefWvl(x0);
-            fullSrf.setSpectralResponsesList(srList);
+            fullSrf.setFWHMList(srList);
             fullSrfList.add(fullSrf);
         });
 
@@ -109,20 +98,14 @@ public class SpectralResponseFunction {
     /**
      * Fills spectral responses list with spectral responses from CsvTable
      *
-     * @param csvTable -
+     * @param fwhmCsvTable - wavelength/fwhm pairs
      */
-    public void setSpectralResponsesList(CsvTable csvTable) {
-        Assert.notNull(csvTable);
-        List<SpectralResponse> fwhmpSectralResponsesList = new ArrayList<>();
-        csvTable.rows().iterator().forEachRemaining(row -> {
-            SpectralResponse sr = new SpectralResponse();
-            sr.setWvl(Float.parseFloat(row.get(0)));
-            sr.setWeight(Float.parseFloat(row.get(1)));
-
-            fwhmpSectralResponsesList.add(sr);
+    public void setFWHMList(CsvTable fwhmCsvTable) {
+        Assert.notNull(fwhmCsvTable);
+        fwhmCsvTable.rows().iterator().forEachRemaining(row -> {
+            FWHM fwhm = new FWHM(Float.parseFloat(row.get(0)), Float.parseFloat(row.get(1)));
+            fwhmList.add(fwhm);
         });
-
-        spectralResponsesList = getConvolvedSpectralResponses(fwhmpSectralResponsesList);
     }
 
     /**
@@ -131,17 +114,19 @@ public class SpectralResponseFunction {
      * @param geoJsonFile -
      */
     public void readSpectralResponsesFromGeoJson(File geoJsonFile) {
-        // TODO
+        // TODO later if needed
     }
+
+    // getters/setters //
 
     public String getID() {
         return ID;
     }
 
+
     public List<SpectralResponse> getSpectralResponsesList() {
         return spectralResponsesList;
     }
-
 
     public float getRefWvl() {
         return refWvl;
@@ -151,7 +136,62 @@ public class SpectralResponseFunction {
         this.refWvl = refWvl;
     }
 
-    public void setSpectralResponsesList(List<SpectralResponse> spectralResponsesList) {
+    public void setFWHMList(List<SpectralResponse> spectralResponsesList) {
         this.spectralResponsesList = spectralResponsesList;
+    }
+
+    public List<FWHM> getFwhmList() {
+        return fwhmList;
+    }
+
+
+    /**
+     * Object holding a spectral response function value of wavelength/weight.
+     * See <a href="https://en.wikipedia.org/wiki/Full_width_at_half_maximum">...</a> for more details.
+     *
+     */
+    public static class SpectralResponse {
+        float wvl;
+        float weight;
+
+        public SpectralResponse(float wvl, float weight) {
+            this.wvl = wvl;
+            this.weight = weight;
+        }
+
+        public float getWvl() {
+            return wvl;
+        }
+
+        public float getWeight() {
+            return weight;
+        }
+
+        public void setWeight(float weight) {
+            this.weight = weight;
+        }
+    }
+
+    /**
+     * Object holding an FWHM as function wavelength.
+     * See <a href="https://en.wikipedia.org/wiki/Full_width_at_half_maximum">...</a> for more details.
+     *
+     */
+    public static class FWHM {
+        float wvl;
+        float fwhm;
+
+        public FWHM(float wvl, float fwhm) {
+            this.wvl = wvl;
+            this.fwhm = fwhm;
+        }
+
+        public float getWvl() {
+            return wvl;
+        }
+
+        public float getFwhm() {
+            return fwhm;
+        }
     }
 }

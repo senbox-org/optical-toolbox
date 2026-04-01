@@ -179,11 +179,11 @@ public class SpectralResamplingTest {
         final URL resource = getClass().getResource(srf.getID() + ".csv");
         assertNotNull(resource);
         final File csvFile = new File(resource.toURI());
-        final CsvTable srTable = SpectralResponseFunction.readSpectralResponsesFromCsv(csvFile);
+        final CsvTable fwhmTable = SpectralResponseFunction.readFwhmFromCsv(csvFile);
 
-        srf.setSpectralResponsesList(srTable);
-        List<SpectralResponseFunction> fullSrfList =
-                SpectralResponseFunction.getFullyDefinedSrf(srf.getSpectralResponsesList());
-        return fullSrfList;
+        srf.setFWHMList(fwhmTable);
+        final List<SpectralResponseFunction.FWHM> fwhmList = srf.getFwhmList();
+
+        return SpectralResponseFunction.getFullyDefinedSrf(fwhmList);
     }
 }
