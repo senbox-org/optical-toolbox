@@ -111,7 +111,7 @@ public class SpectralResponseFunction {
      *
      * @param csvTable -
      */
-    public void setSpectralResponses(CsvTable csvTable) {
+    public void setSpectralResponsesList(CsvTable csvTable) {
         Assert.notNull(csvTable);
         List<SpectralResponse> fwhmpSectralResponsesList = new ArrayList<>();
         csvTable.rows().iterator().forEachRemaining(row -> {

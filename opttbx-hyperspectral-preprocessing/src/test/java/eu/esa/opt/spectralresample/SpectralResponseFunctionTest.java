@@ -39,7 +39,7 @@ public class SpectralResponseFunctionTest {
         assertEquals(418.24f, Float.parseFloat(srTable.rows().getFirst().getFirst()), 1.E-2);
         assertEquals(6.99561f, Float.parseFloat(srTable.rows().getFirst().get(1)), 1.E-5);
 
-        srf.setSpectralResponses(srTable);
+        srf.setSpectralResponsesList(srTable);
         final List<SpectralResponse> srList = srf.getSpectralResponsesList();
 
         assertEquals(224, srList.size());
@@ -75,7 +75,7 @@ public class SpectralResponseFunctionTest {
         assertEquals(402.5f, Float.parseFloat(srTable.rows().getFirst().getFirst()), 1.E-1);
         assertEquals(11.4f, Float.parseFloat(srTable.rows().getFirst().get(1)), 1.E-1);
 
-        srf.setSpectralResponses(srTable);
+        srf.setSpectralResponsesList(srTable);
         final List<SpectralResponse> srList = srf.getSpectralResponsesList();
 
         assertEquals(234, srList.size());
@@ -83,8 +83,8 @@ public class SpectralResponseFunctionTest {
         assertEquals(11.4f, srList.getFirst().getWeight(), 1.E-1);
         assertEquals(1626.8f, srList.get(128).getWvl(), 1.E-1);
         assertEquals(13.3f, srList.get(128).getWeight(), 1.E-1);
-        assertEquals(2496.9f, srList.get(233).getWvl(), 1.E-1);
-        assertEquals(9.5f, srList.get(233).getWeight(), 1.E-1);
+        assertEquals(2496.9f, srList.getLast().getWvl(), 1.E-1);
+        assertEquals(9.5f, srList.getLast().getWeight(), 1.E-1);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class SpectralResponseFunctionTest {
         final File csvFile = new File(resource.toURI());
         final CsvTable srTable = SpectralResponseFunction.readSpectralResponsesFromCsv(csvFile);
 
-        srf.setSpectralResponses(srTable);
+        srf.setSpectralResponsesList(srTable);
         final List<SpectralResponse> srList = srf.getSpectralResponsesList();
         List<SpectralResponseFunction> fullSrfList =
                 SpectralResponseFunction.getFullyDefinedSrf(srf.getSpectralResponsesList());

@@ -4,6 +4,7 @@ import com.google.common.primitives.Doubles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SpectralResampling {
 
@@ -15,16 +16,15 @@ public class SpectralResampling {
      * Implementation follows EnMAP Box Python code:
      * <a href="https://github.com/EnMAP-Box/enmap-box/blob/main/enmapboxprocessing/algorithm/spectralresamplingbyresponsefunctionconvolutionalgorithmbase.py">...</a>
      *
-     *
      * @param inputSpectrum - the input spectrum
-     * @param inputWvls - the input wavelengths
-     * @param srfList - list of Spectral Response functions (target reference wavelength + weights around it)
-     *
+     * @param inputWvls     - the input wavelengths
+     * @param srfList       - list of Spectral Response functions (target reference wavelength + weights around it)
      * @return double[] resampledSpectrum
      */
     public static double[] resample(double[] inputSpectrum, double[] inputWvls,
                                     List<SpectralResponseFunction> srfList) {
 
+        Logger logger = Logger.getLogger(SpectralResampling.class.getName());
         List<Double> resampledSpectrumList = new ArrayList<>();
 
         srfList.iterator().forEachRemaining(srf -> {
@@ -43,7 +43,7 @@ public class SpectralResampling {
                 }
             }
             if (indices.isEmpty()) {
-                System.out.println("No input wavelengths covered by target wavelength '" + srf.getRefWvl() + "'");
+                logger.fine("Spectral Resampling: No input wavelengths covered by target wavelength '" + srf.getRefWvl() + "'");
                 resampledSpectrumList.add(0.0);
             } else {
                 double sumWeightedSpectrum = 0.0;
