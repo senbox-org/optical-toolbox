@@ -20,9 +20,7 @@ import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
-import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -130,8 +128,9 @@ public class Sentinel3ProductReaderPlugIn extends S3ReaderPlugIn {
 
         // check if we have a directory name (not ending on xml)
         final String fileExtension = FileUtils.getExtension(filename);
+        Path path = getProductPath(input);
         if (isDirectory(fileExtension)) {
-            inputString = inputString + File.separator + manifestFileBasename + ".xml";
+            path = path.resolve(manifestFileBasename + ".xml");
         }
 
         if (!isValidInputFileName(filename)) {
@@ -143,7 +142,6 @@ public class Sentinel3ProductReaderPlugIn extends S3ReaderPlugIn {
             return isValidSourceName(zipName);
         }
 
-        final Path path = Paths.get(inputString);
         final String parentFileName;
         if (path.getParent() == null) {
             parentFileName = path.getFileName().toString();

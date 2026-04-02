@@ -29,6 +29,7 @@ import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.ImageUtils;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.jai.JAIUtils;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
@@ -101,8 +102,8 @@ public class SpotVgtProductReader extends AbstractProductReader {
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        File inputFile = getFileInput(getInput());
-        virtualDir = VirtualDir.create(inputFile);
+        File inputFile = getProductFile();
+        virtualDir = ProductUtils.getProductVirtualDir(inputFile);
         fileVars = new HashMap<>(33);
 
         return isVgtPCollection3Product ? createVgtPCollection3Product(inputFile) : createProduct();
@@ -129,7 +130,7 @@ public class SpotVgtProductReader extends AbstractProductReader {
             if (logVolFileName.endsWith(".hdf") || logVolFileName.endsWith(".HDF")) {
 
                 File hdfFile = virtualDir.getFile(physVolDescriptor.getLogVolDirName() + "/" + logVolFileName);
-                NetcdfFile netcdfFile = NetcdfFileOpener.open(hdfFile.getPath());
+                NetcdfFile netcdfFile = NetcdfFileOpener.open(hdfFile);
                 setProductRasterData(targetWidth, targetHeight, product, logVolFileName, hdfFile, netcdfFile);
             }
         }

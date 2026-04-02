@@ -15,11 +15,11 @@ import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
-import org.esa.snap.engine_utilities.util.ZipUtils;
 import org.esa.snap.runtime.Config;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -35,9 +35,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,21 +122,6 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
                 variableDescriptor.setHeight(tpHeight);
             }
         }
-    }
-
-    private static VirtualDir getVirtualDir(Path inputPath) {
-        VirtualDir virtualDir;
-        if (ZipUtils.isZip(inputPath)) {
-            virtualDir = VirtualDir.create(inputPath);
-        } else {
-            Path productDirectory = inputPath;
-            if (!Files.isDirectory(inputPath)) {
-                productDirectory = inputPath.getParent();
-            }
-            virtualDir = VirtualDir.create(productDirectory);
-        }
-
-        return virtualDir;
     }
 
     static String createDescriptorKey(VariableDescriptor descriptor) {
@@ -567,8 +550,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     }
 
     private void initalizeInput() {
-        final Path inputPath = getInputPath();
-        virtualDir = getVirtualDir(inputPath);
+        final Path inputPath = getProductPath();
+        virtualDir = ProductUtils.getProductVirtualDir(inputPath);
     }
 
     // @todo 3 tb/tb this could be made testable by passing in the virtual dir. We can mock then. 2025-02-03
@@ -722,7 +705,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
                     throw new IOException("File not found: " + fileName);
                 }
 
-                netcdfFile = NetcdfFileOpener.open(file.getAbsolutePath());
+                netcdfFile = NetcdfFileOpener.open(file);
                 filesMap.put(fileName, netcdfFile);
             }
         }
@@ -751,10 +734,6 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         colorProvider = null;
 
         super.close();
-    }
-
-    private Path getInputPath() {
-        return Paths.get(getInput().toString());
     }
 
 

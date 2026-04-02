@@ -64,7 +64,7 @@ public class L1BModisProductReaderPlugIn implements ProductReaderPlugIn {
             return decodeQualification;
         }
 
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
                 Group modisl1bGroup = ncfile.findGroup("MODIS_SWATH_Type_L1B");
 

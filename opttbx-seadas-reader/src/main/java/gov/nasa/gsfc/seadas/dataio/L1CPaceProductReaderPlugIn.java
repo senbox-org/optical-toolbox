@@ -43,7 +43,7 @@ public class L1CPaceProductReaderPlugIn implements ProductReaderPlugIn {
 
         H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
 
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
                 Attribute instrument = ncfile.findGlobalAttributeIgnoreCase("instrument");
                 Attribute processing_level = ncfile.findGlobalAttributeIgnoreCase("processing_level");

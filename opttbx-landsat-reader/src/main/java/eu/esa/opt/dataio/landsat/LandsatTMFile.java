@@ -150,7 +150,7 @@ public final class LandsatTMFile {
     /**
      * @return the location of the Landsat data
      */
-    public final String getFileLocation() {
+    public final File getFileLocation() {
         return getFolderOfFile(inputFile);
     }
 
@@ -208,8 +208,7 @@ public final class LandsatTMFile {
      */
     private File findLandsat5HeaderInFolder() {
         Guardian.assertNotNull("inputFile", inputFile);
-        String folderPathName = getFolderOfFile(inputFile);
-        File folder = new File(folderPathName);
+        File folder = getFolderOfFile(inputFile);
 
         if (!folder.exists() || !folder.isDirectory()) {
             return null;
@@ -463,10 +462,10 @@ public final class LandsatTMFile {
      * @param file input File
      * @return only the file's folder
      */
-    private static String getFolderOfFile(File file) {
-        String path = file.getParent();
+    private static File getFolderOfFile(File file) {
+        File path = file.getParentFile();
         if (path == null) {
-            path = "\".\"";
+            path = new File("\".\"");
         }
 
         return path;

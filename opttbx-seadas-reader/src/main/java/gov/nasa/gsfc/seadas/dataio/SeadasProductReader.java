@@ -140,9 +140,8 @@ public class SeadasProductReader extends AbstractProductReader {
         try {
 //            Product product;
             final File inFile = SeadasHelper.getInputFile(getInput());
-            final String path = inFile.getPath();
 
-            ncfile = NetcdfFileOpener.open(path);
+            ncfile = NetcdfFileOpener.open(inFile);
             productType = findProductType();
 
             switch (productType) {

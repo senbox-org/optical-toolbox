@@ -25,9 +25,9 @@ import org.esa.snap.core.datamodel.ProductData;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Files;
 
 /**
  * This parser turns Landsat ODL (Object Description Language) files ()  into metadata elements and metadata attributes.
@@ -37,7 +37,7 @@ import java.io.Reader;
 public class OdlParser {
 
     public static MetadataElement parse(File mtlFile) throws IOException {
-        try (final FileReader reader = new FileReader(mtlFile)) {
+        try (final Reader reader = Files.newBufferedReader(mtlFile.toPath())) {
             return parse(reader);
         }
     }
