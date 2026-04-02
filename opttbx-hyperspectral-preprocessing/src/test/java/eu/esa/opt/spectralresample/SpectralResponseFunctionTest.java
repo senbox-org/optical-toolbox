@@ -23,7 +23,7 @@ public class SpectralResponseFunctionTest {
         assertNotNull(srf.getFwhmList());
         assertEquals(0, srf.getFwhmList().size());
 
-        final URL resource = getClass().getResource(srf.getID() + ".csv");
+        final URL resource = getClass().getResource("fwhm_" + srf.getID() + ".csv");
         assertNotNull(resource);
         final File csvFile = new File(resource.toURI());
         final CsvTable fwhmTableFromCsv = SpectralResponseFunction.readFwhmFromCsv(csvFile);
@@ -59,7 +59,7 @@ public class SpectralResponseFunctionTest {
         assertNotNull(srf.getFwhmList());
         assertEquals(0, srf.getFwhmList().size());
 
-        final URL resource = getClass().getResource(srf.getID() + ".csv");
+        final URL resource = getClass().getResource("fwhm_" + srf.getID() + ".csv");
         assertNotNull(resource);
         final File csvFile = new File(resource.toURI());
         final CsvTable fwhmTableFromCsv = SpectralResponseFunction.readFwhmFromCsv(csvFile);
@@ -89,6 +89,37 @@ public class SpectralResponseFunctionTest {
     @Test
     @STTM("SNAP-4174")
     public void test_setupFwhmFromCsv_olci() throws Exception {
+        SpectralResponseFunction srf = new SpectralResponseFunction("olci");
+        assertNotNull(srf.getID());
+        assertEquals("olci", srf.getID());
+        assertNotNull(srf.getFwhmList());
+        assertEquals(0, srf.getFwhmList().size());
+
+        final URL resource = getClass().getResource("fwhm_" + srf.getID() + ".csv");
+        assertNotNull(resource);
+        final File csvFile = new File(resource.toURI());
+        final CsvTable fwhmTableFromCsv = SpectralResponseFunction.readFwhmFromCsv(csvFile);
+
+        assertEquals(List.of("wavelength", "fwhm"), fwhmTableFromCsv.header());
+        assertEquals(21, fwhmTableFromCsv.rows().size());
+        assertEquals(List.of("400.0", "14.128492"), fwhmTableFromCsv.rows().getFirst());
+
+        assertEquals("400.0", fwhmTableFromCsv.rows().getFirst().getFirst());
+        assertEquals("14.128492", fwhmTableFromCsv.rows().getFirst().get(1));
+
+        assertEquals(400.0f, Float.parseFloat(fwhmTableFromCsv.rows().getFirst().getFirst()), 1.E-1);
+        assertEquals(14.128492f, Float.parseFloat(fwhmTableFromCsv.rows().getFirst().get(1)), 1.E-1);
+
+        srf.setFWHMList(fwhmTableFromCsv);
+        final List<SpectralResponseFunction.FWHM> fwhmList = srf.getFwhmList();
+
+        assertEquals(21, fwhmList.size());
+        assertEquals(400.0f, fwhmList.getFirst().getWvl(), 1.E-1);
+        assertEquals(14.128492f, fwhmList.getFirst().getFwhm(), 1.E-1);
+        assertEquals(761.25f, fwhmList.get(12).getWvl(), 1.E-1);
+        assertEquals(2.564887f, fwhmList.get(12).getFwhm(), 1.E-1);
+        assertEquals(1020.0f, fwhmList.getLast().getWvl(), 1.E-1);
+        assertEquals(26.936745f, fwhmList.getLast().getFwhm(), 1.E-1);
         // TODO
     }
 
@@ -97,7 +128,7 @@ public class SpectralResponseFunctionTest {
     public void test_getFullyDefinedSrf_olci() throws Exception {
         SpectralResponseFunction srf = new SpectralResponseFunction("olci");
 
-        final URL fwhmResource = getClass().getResource(srf.getID() + ".csv");
+        final URL fwhmResource = getClass().getResource("fwhm_" + srf.getID() + ".csv");
         assertNotNull(fwhmResource);
         final File fwhmCsvFile = new File(fwhmResource.toURI());
         final CsvTable fwhmTable = SpectralResponseFunction.readFwhmFromCsv(fwhmCsvFile);
@@ -141,12 +172,38 @@ public class SpectralResponseFunctionTest {
     @Test
     @STTM("SNAP-4174")
     public void test_getFullyDefinedSrf_enmap() throws Exception {
-       // TODO
+        SpectralResponseFunction srf = new SpectralResponseFunction("enmap");
+
+        final URL fwhmResource = getClass().getResource("fwhm_" + srf.getID() + ".csv");
+        assertNotNull(fwhmResource);
+        final File fwhmCsvFile = new File(fwhmResource.toURI());
+        final CsvTable fwhmTable = SpectralResponseFunction.readFwhmFromCsv(fwhmCsvFile);
+
+        srf.setFWHMList(fwhmTable);
+        final List<SpectralResponseFunction.FWHM> fwhmList = srf.getFwhmList();
+        List<SpectralResponseFunction> fullSrfList =
+                SpectralResponseFunction.getFullyDefinedSrf(fwhmList);
+
+        assertNotNull(fullSrfList);
+        assertEquals(224, fullSrfList.size());
     }
 
     @Test
     @STTM("SNAP-4174")
     public void test_getFullyDefinedSrf_prisma() throws Exception {
-        // TODO
+        SpectralResponseFunction srf = new SpectralResponseFunction("prisma");
+
+        final URL fwhmResource = getClass().getResource("fwhm_" + srf.getID() + ".csv");
+        assertNotNull(fwhmResource);
+        final File fwhmCsvFile = new File(fwhmResource.toURI());
+        final CsvTable fwhmTable = SpectralResponseFunction.readFwhmFromCsv(fwhmCsvFile);
+
+        srf.setFWHMList(fwhmTable);
+        final List<SpectralResponseFunction.FWHM> fwhmList = srf.getFwhmList();
+        List<SpectralResponseFunction> fullSrfList =
+                SpectralResponseFunction.getFullyDefinedSrf(fwhmList);
+
+        assertNotNull(fullSrfList);
+        assertEquals(234, fullSrfList.size());
     }
 }

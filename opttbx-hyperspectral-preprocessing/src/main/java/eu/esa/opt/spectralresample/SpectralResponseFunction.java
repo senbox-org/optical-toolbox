@@ -117,7 +117,7 @@ public class SpectralResponseFunction {
         // TODO later if needed
     }
 
-    // getters/setters //
+    // getters and setters //
 
     public String getID() {
         return ID;

@@ -35,6 +35,7 @@ public class SpectralResamplingTest {
             0.06156307, 0.061275892, 0.060655985, 0.05942464, 0.05735479, 0.05495278,
             0.052428994, 0.04587389, 0.032544572, 0.011314435, 0.004139657, 0.007510427,
             0.008983513, 0.02335119, 0.030408397, 0.030919258, 0.032426786, 0.034008343};
+
     private final double[] enmapInputWvls = new double[]{
             418.416, 424.043, 429.457, 434.686, 439.758, 444.699, 449.539, 454.306, 459.031, 463.73,
             468.411, 473.08, 477.744, 482.411, 487.087, 491.78, 496.497, 501.243, 506.02, 510.829,
@@ -48,6 +49,7 @@ public class SpectralResamplingTest {
             993.338, 1003.88, 1014.72, 1025.66, 1036.7, 1047.84, 1059.07, 1070.39, 1081.78, 1093.26,
             1104.81, 1116.43, 1128.1, 1139.84, 1151.62, 1163.44, 1175.3, 1187.2, 1199.11, 1211.05,
             1223.37, 1235.34, 1247.31, 1259.3, 1271.29, 1283.29, 1295.28, 1307.27, 1319.25, 1331.22};
+
     private final double[] prismaInputSpectrum = new double[]{
             0.06357856, 0.065789476, 0.055098828, 0.04920844, 0.052259535, 0.064120166,
             0.060783815, 0.057733163, 0.057375964, 0.05579568, 0.054379884, 0.04863483,
@@ -68,6 +70,7 @@ public class SpectralResamplingTest {
             0.030486718, 0.024081193, 0.018062647, 0.00983711, 0.003220507, 3.22338E-4,
             7.584432E-4, -0.00117957, -1.85539E-4, -4.1842E-4, 6.404922E-4, -0.0018924,
             0.001080213, 5.024912E-4, -1.25224E-5, 4.86473E-5, 0.00135011, 0.0020281777};
+
     private final double[] prismaInputWvls = new double[]{
             405.0, 415.0, 424.0, 432.0, 440.0, 448.0, 455.0, 463.0, 470.0, 477.0,
             485.0, 492.0, 500.0, 507.0, 515.0, 523.0, 530.0, 538.0, 546.0, 554.0,
@@ -81,20 +84,20 @@ public class SpectralResamplingTest {
             1277.0, 1288.0, 1299.0, 1310.0, 1321.0, 1332.0, 1343.0, 1354.0, 1365.0, 1376.0,
             1387.0, 1398.0, 1409.0, 1420.0, 1431.0, 1442.0, 1453.0, 1463.0, 1474.0, 1485.0};
 
+    private final double[] olciInputSpectrum = new double[]{
+            105.33761, 115.1706, 120.02343, 116.7073, 114.318726, 114.59385, 133.63246, 138.82625,
+            138.58409, 138.04797, 132.03772, 131.85347, 37.904022, 65.76642, 114.50595, 122.30608,
+            100.14883, 96.83181, 64.75161, 20.552023, 81.00681};
+
+    private final double[] olciInputWvls = new double[]{
+            400.1732, 411.75812, 442.95776, 490.5534, 510.52353, 560.5521, 620.395, 665.3918,
+            674.1551, 681.66376, 709.24176, 754.2953, 761.8105, 764.92523, 768.0407, 779.3815,
+            865.4787, 884.3511, 899.3343, 938.9488, 1015.7598};
+
     @Test
     @STTM("SNAP-4174")
     public void test_resample_olci_to_enmap() throws Exception {
         final List<SpectralResponseFunction> fullSrfList = getFullSrfList("enmap");
-
-        final double[] olciInputSpectrum = new double[]{
-                105.33761, 115.1706, 120.02343, 116.7073, 114.318726, 114.59385, 133.63246, 138.82625,
-                138.58409, 138.04797, 132.03772, 131.85347, 37.904022, 65.76642, 114.50595, 122.30608,
-                100.14883, 96.83181, 64.75161, 20.552023, 81.00681};
-
-        final double[] olciInputWvls = new double[]{
-                400.1732, 411.75812, 442.95776, 490.5534, 510.52353, 560.5521, 620.395, 665.3918,
-                674.1551, 681.66376, 709.24176, 754.2953, 761.8105, 764.92523, 768.0407, 779.3815,
-                865.4787, 884.3511, 899.3343, 938.9488, 1015.7598};
 
         final double[] resampledSpectrum = SpectralResampling.resample(olciInputSpectrum, olciInputWvls, fullSrfList);
 
@@ -176,7 +179,7 @@ public class SpectralResamplingTest {
     private List<SpectralResponseFunction> getFullSrfList(String olci) throws URISyntaxException, IOException {
         SpectralResponseFunction srf = new SpectralResponseFunction(olci);
 
-        final URL resource = getClass().getResource(srf.getID() + ".csv");
+        final URL resource = getClass().getResource("fwhm_" + srf.getID() + ".csv");
         assertNotNull(resource);
         final File csvFile = new File(resource.toURI());
         final CsvTable fwhmTable = SpectralResponseFunction.readFwhmFromCsv(csvFile);
