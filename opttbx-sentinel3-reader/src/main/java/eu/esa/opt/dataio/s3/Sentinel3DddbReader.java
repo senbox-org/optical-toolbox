@@ -145,7 +145,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     }
 
     // @todo 2 tb/tb add tests for this 2025-02-04
-    public static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, double scaleFactor, double offset, boolean rawData) throws IOException {
+    public static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, double scaleFactor, double offset) throws IOException {
         final int[] sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset()};
         //final int stepY = Math.max(rasterExtract.getStepY() - 1, 1);
         //final int stepX = Math.max(rasterExtract.getStepX()-1 , 1);
@@ -158,7 +158,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
         try {
             Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride).copy().reduce();
-            if (!rawData) {
+            if (scaleFactor != 1.0 || offset != 0.0) {
                 sliceData = ReaderUtils.scaleArray(sliceData, scaleFactor, offset);
             }
             assignResultData(destBuffer, sliceData);
@@ -338,10 +338,10 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         final ProductData productDataLat = ProductData.createInstance(new double[width * height]);
 
         final VariableDescriptor lonDescriptor = variablesMap.get(geoLocationNames.getLongitudeName());
-        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getLongitudeName(), false);
+        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getLongitudeName());
 
         final VariableDescriptor latDescriptor = variablesMap.get(geoLocationNames.getLatitudeName());
-        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getLatitudeName(), false);
+        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getLatitudeName());
 
         final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
         final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
@@ -378,8 +378,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         final ProductData productDataLat = ProductData.createInstance(new double[bufferSize]);
 
         final RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
-        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getTpLongitudeName(), true);
-        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getTpLatitudeName(), true);
+        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getTpLongitudeName());
+        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getTpLatitudeName());
 
         final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
         final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
@@ -597,7 +597,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         }
 
         rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
-        readData(rasterExtract, destBuffer, descriptor, destBandName, true);
+        readData(rasterExtract, destBuffer, descriptor, destBandName);
     }
 
     @Override
@@ -638,13 +638,13 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         System.arraycopy(tpg.getGridData().getElems(), 0, destBuffer.getElems(), 0, destWidth * destHeight);
     }
 
-    private synchronized void readData(RasterExtract rasterExtract, ProductData destBuffer, VariableDescriptor descriptor, String name, boolean rawData) throws IOException {
+    private synchronized void readData(RasterExtract rasterExtract, ProductData destBuffer, VariableDescriptor descriptor, String name) throws IOException {
         final Variable netCDFVariable = getNetCDFVariable(descriptor, name);
         final Array rawDataArray = getRawData(name, netCDFVariable);
 
         final double scalingFactor = getScalingFactor(netCDFVariable);
         double offset = getAddOffset(netCDFVariable);
-        extractSubset(rasterExtract, destBuffer, rawDataArray, scalingFactor, offset, rawData);
+        extractSubset(rasterExtract, destBuffer, rawDataArray, scalingFactor, offset);
     }
 
     private Variable getNetCDFVariable(VariableDescriptor descriptor, String name) throws IOException {
