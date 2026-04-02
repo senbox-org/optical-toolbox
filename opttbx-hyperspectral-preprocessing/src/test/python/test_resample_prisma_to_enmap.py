@@ -6,8 +6,11 @@ import resample_utils
 Array1d = np.ndarray
 
 if __name__ == "__main__":
-    # test with one pixel taken from
+    # test with one pixel taken from product
     # PRISMA_Florence_30m_atsrad_P1_RandNoise_BSQ
+    # found at:
+    # Guzzi, Donatella; Nardino, Vanni; Raimondi, Valentina; Lastri, Cinzia; Pippi, Ivan (2018).
+    # PRISMA datasets. figshare. Dataset. https://doi.org/10.6084/m9.figshare.7246856.v1
 
     input_wvls = np.array([405.0, 415.0, 424.0, 432.0, 440.0, 448.0, 455.0, 463.0, 470.0, 477.0,
                            485.0, 492.0, 500.0, 507.0, 515.0, 523.0, 530.0, 538.0, 546.0, 554.0,

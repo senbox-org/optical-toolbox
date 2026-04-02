@@ -7,10 +7,11 @@ Array1d = np.ndarray
 def resample_spectrum(
         input_spec: Array1d, input_wvls: Array1d, srf: Dict[str, List[Tuple[int, float]]], no_data_value: float
 ) -> list[Any]:
-    '''
+    """
     Resamples an input spectrum given on a source wavelength array onto a target wavelength array.
     Implementation follows EnMAP Box Python code:
-    <a href="https://github.com/EnMAP-Box/enmap-box/blob/main/enmapboxprocessing/algorithm/spectralresamplingbyresponsefunctionconvolutionalgorithmbase.py">...</a>
+
+    https://github.com/EnMAP-Box/enmap-box/blob/main/enmapboxprocessing/algorithm/spectralresamplingbyresponsefunctionconvolutionalgorithmbase.py
 
     :param input_spec: input spectrum
     :param input_wvls: input wavelengths
@@ -18,7 +19,7 @@ def resample_spectrum(
     :param no_data_value: no data value
 
     :return: resampled spectrum (list of spectral values on target wavelength grid)
-    '''
+    """
     input_wvl = [int(round(v)) for v in input_wvls]
     resampled_spec = list()
     for name in srf:
@@ -47,15 +48,17 @@ def resample_spectrum(
 
 
 def get_fully_defined_srf(fwhm_list):
-    '''
+    """
     Provides a dict of fully defined Spectral Response Functions, each of them defined as pairs of (wvl, weight)
     around a given reference wavelength. A fully defined SRF is a Gaussian function retrieved from
     an input pair (refWvl, FWHM).
-    See more details at <a href="https://en.wikipedia.org/wiki/Full_width_at_half_maximum">...</a>
+    See more details at
+
+    https://en.wikipedia.org/wiki/Full_width_at_half_maximum
 
     :param fwhm_list: dictionary of pairs (wvl, fwhm)
     :return: fully defined Spectral Response functions: dictionary of pairs (refWvl, dict(wvl, weight))
-    '''
+    """
     srf_full = OrderedDict()
     for i, (k, v) in enumerate(fwhm_list.items()):
         if isinstance(k, (int, float)):
