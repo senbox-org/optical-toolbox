@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 /*
 This class maintains the database of product description metadata that is missing in the
-manifest file to contruct a fully equipped SNAP in-memory product.
+manifest file to construct a fully equipped SNAP in-memory product.
 
 All metadata is stored as json files in the resources tree of the module (/resources/dddb).
 For each product type, e.g. olci L2W, there exists a sub directory named as the type.

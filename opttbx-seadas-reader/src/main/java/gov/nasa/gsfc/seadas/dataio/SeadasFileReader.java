@@ -2783,32 +2783,50 @@ public abstract class SeadasFileReader {
 
 
     public String getBandGroupingLevel2() {
+        if (this.isHeadless) {
+            return PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT);
     }
 
     public String getBandFlipXLevel2() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_DEFAULT);
     }
 
     public String getBandFlipYLevel2() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_DEFAULT);
     }
 
 
     public String getBandGroupingL1BPace() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1B_PACE_BAND_GROUPING_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_PACE_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1B_PACE_BAND_GROUPING_DEFAULT);
     }
 
     public String getBandFlipXL1BPace() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPX_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPX_DEFAULT);
     }
 
     public String getBandFlipYL1BPace() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPY_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1B_PACE_FLIPY_DEFAULT);
     }
@@ -2816,16 +2834,25 @@ public abstract class SeadasFileReader {
 
 
     public String getBandGroupingL3Mapped() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_DEFAULT);
     }
 
     public String getBandFlipXL3Mapped() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPX_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPX_DEFAULT);
     }
 
     public String getBandFlipYL3Mapped() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_DEFAULT);
     }
@@ -2834,59 +2861,92 @@ public abstract class SeadasFileReader {
 
 
     public String getBandGroupingL1CPace() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1C_PACE_OCI_BAND_GROUPING_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_OCI_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_OCI_BAND_GROUPING_DEFAULT);
     }
 
     public String getBandFlipXL1CPace() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPX_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPX_DEFAULT);
     }
 
     public String getBandFlipYL1CPace() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPY_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_FLIPY_DEFAULT);
     }
 
 
     public String getBandGroupingL1CPaceHarp2() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_HARP2_BAND_GROUPING_DEFAULT);
     }
 
     public String getBandGroupingL1CPaceSPEXONE() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_DEFAULT);
     }
 
 
     public String getBandGroupingL1B_MODIS() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1B_MODIS_BAND_GROUPING_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_MODIS_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1B_MODIS_BAND_GROUPING_DEFAULT);
     }
 
     public String getBandFlipXL1B_MODIS() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPX_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPX_DEFAULT);
     }
 
     public String getBandFlipYL1B_MODIS() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPY_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1B_MODIS_FLIPY_DEFAULT);
     }
 
 
     public String getBandGroupingL1B_VIIRS() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1B_VIIRS_BAND_GROUPING_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_VIIRS_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L1B_VIIRS_BAND_GROUPING_DEFAULT);
     }
 
     public String getBandFlipXL1B_VIIRS() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPX_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPX_DEFAULT);
     }
 
     public String getBandFlipYL1B_VIIRS() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPY_DEFAULT;
+        }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L1B_VIIRS_FLIPY_DEFAULT);
     }
@@ -2894,9 +2954,13 @@ public abstract class SeadasFileReader {
 
 
     public int get_VALID_PIXEL_SIG_FIGS() {
-        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
-
-        String sigFixStr = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
+        String sigFixStr;
+        if (this.isHeadless) {
+            sigFixStr = SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT;
+        } else {
+            final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+            sigFixStr = preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_KEY, SeadasReaderDefaults.PROPERTY_VALID_PIXEL_SIG_FIGS_DEFAULT);
+        }
 
         if (PROPERTY_VALID_PIXEL_SIG_FIGS_EXACT.equals(sigFixStr)) {
             return 0;

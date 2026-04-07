@@ -7,11 +7,20 @@
     "description": "Aerosol Angstrom exponent"
   },
   {
+    "name": "A865_err",
+    "dataType": "uint8",
+    "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description": "Error estimate for Aerosol Angstrom exponent",
+    "optional" : true
+  },
+  {
     "name": "A865_unc",
     "dataType": "uint8",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "description": "Uncertainty estimate for Aerosol Angstrom exponent"
+    "description": "Uncertainty estimate for Aerosol Angstrom exponent",
+    "optional" : true
   },
   {
     "name": "T865",
@@ -21,10 +30,19 @@
     "description": "Aerosol optical thickness"
   },
   {
+    "name": "T865_err",
+    "dataType": "uint8",
+    "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description": "Error estimate for Aerosol optical thickness",
+    "optional" : true
+  },
+  {
     "name": "T865_unc",
     "dataType": "uint8",
     "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
     "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
-    "description": "Uncertainty estimate for Aerosol optical thickness"
+    "description": "Uncertainty estimate for Aerosol optical thickness",
+    "optional" : true
   }
 ]
