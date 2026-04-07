@@ -473,15 +473,22 @@ public class SpectralUnmixingOp extends Operator {
 
     private void loadEndmemberFile() throws OperatorException {
         try {
-            try (FileReader fileReader = new FileReader(endmemberFile)) {
-                List<Endmember> newEndmembers = readGraphs(fileReader);
-                ArrayList<Endmember> list = new ArrayList<>();
-                if (endmembers != null) {
-                    list.addAll(Arrays.asList(endmembers));
-                }
-                list.addAll(newEndmembers);
-                endmembers = list.toArray(new Endmember[0]);
+            List<Endmember> list = new ArrayList<>();
+            if (endmembers != null) {
+                list.addAll(Arrays.asList(endmembers));
             }
+
+            if (EndmemberSpectralLibrarySupport.isEnviSpectralLibrary(endmemberFile.toPath())) {
+                list.addAll(Arrays.asList(
+                        EndmemberSpectralLibrarySupport.readEnviLibrary(endmemberFile.toPath())
+                ));
+            } else {
+                try (FileReader fileReader = new FileReader(endmemberFile)) {
+                    list.addAll(readGraphs(fileReader));
+                }
+            }
+
+            endmembers = list.toArray(new Endmember[0]);
         } catch (IOException e) {
             throw new OperatorException(e);
         }
