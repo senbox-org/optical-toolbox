@@ -1,0 +1,3171 @@
+{
+  "id": "H2013302140823_L1B_ISS_nc",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 512,
+    "sceneHeight": 2000,
+    "startTime": "15-APR-2013 19:41:22.000000",
+    "endTime": "15-APR-2013 19:41:32.000000",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 220.0,
+          "y": 1075.0,
+          "lat": 18.622514724731445,
+          "lon": -72.2957534790039
+        },
+        {
+          "x": 380.0,
+          "y": 1297.0,
+          "lat": 18.858787536621094,
+          "lon": -72.29302978515625
+        }
+      ],
+      "reverseAccuracy": 0.5
+    },
+    "bands": [
+      {
+        "name": "scan_quality_flags",
+        "description": "scan_quality_flags",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 26,
+            "y": 356,
+            "value": 255.0
+          },
+          {
+            "x": 350,
+            "y": 1701,
+            "value": 255.0
+          }
+        ]
+      },
+      {
+        "name": "sensor_zenith",
+        "description": "sensor_zenith",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 148,
+            "y": 513,
+            "value": 3.2021995
+          },
+          {
+            "x": 312,
+            "y": 730,
+            "value": 2.9560812
+          }
+        ]
+      },
+      {
+        "name": "solar_zenith",
+        "description": "solar_zenith",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 281,
+            "y": 1490,
+            "value": 48.09369
+          },
+          {
+            "x": 311,
+            "y": 1856,
+            "value": 48.11701
+          }
+        ]
+      },
+      {
+        "name": "sensor_azimuth",
+        "description": "sensor_azimuth",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 81,
+            "y": 1332,
+            "value": 355.7735
+          },
+          {
+            "x": 265,
+            "y": 1827,
+            "value": 41.04752
+          }
+        ]
+      },
+      {
+        "name": "solar_azimuth",
+        "description": "solar_azimuth",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "degrees",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 387,
+            "y": 969,
+            "value": 129.43431
+          },
+          {
+            "x": 486,
+            "y": 971,
+            "value": 129.4093
+          }
+        ]
+      },
+      {
+        "name": "Lt_352.528",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "352.528",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 174,
+            "y": 1798,
+            "value": 308.52
+          },
+          {
+            "x": 5,
+            "y": 941,
+            "value": 32.239998
+          }
+        ]
+      },
+      {
+        "name": "Lt_358.256",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "358.256",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 167,
+            "y": 394,
+            "value": 88.6
+          },
+          {
+            "x": 139,
+            "y": 86,
+            "value": 67.64
+          }
+        ]
+      },
+      {
+        "name": "Lt_363.98398",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "363.98398",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 497,
+            "y": 1209,
+            "value": 167.18
+          },
+          {
+            "x": 293,
+            "y": 1433,
+            "value": 59.94
+          }
+        ]
+      },
+      {
+        "name": "Lt_369.712",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "369.712",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 118,
+            "y": 995,
+            "value": 66.88
+          },
+          {
+            "x": 164,
+            "y": 1445,
+            "value": 71.159996
+          }
+        ]
+      },
+      {
+        "name": "Lt_375.44",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "375.44",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 183,
+            "y": 996,
+            "value": 63.94
+          },
+          {
+            "x": 206,
+            "y": 884,
+            "value": 71.58
+          }
+        ]
+      },
+      {
+        "name": "Lt_381.168",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "381.168",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 294,
+            "y": 183,
+            "value": 68.34
+          },
+          {
+            "x": 330,
+            "y": 31,
+            "value": 46.46
+          }
+        ]
+      },
+      {
+        "name": "Lt_386.89603",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "386.89603",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 499,
+            "y": 734,
+            "value": 60.34
+          },
+          {
+            "x": 486,
+            "y": 1892,
+            "value": 85.46
+          }
+        ]
+      },
+      {
+        "name": "Lt_392.624",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "392.624",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 56,
+            "y": 903,
+            "value": 85.36
+          },
+          {
+            "x": 292,
+            "y": 1124,
+            "value": 47.379997
+          }
+        ]
+      },
+      {
+        "name": "Lt_398.352",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "398.352",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 258,
+            "y": 1043,
+            "value": 81.979996
+          },
+          {
+            "x": 230,
+            "y": 1162,
+            "value": 61.059998
+          }
+        ]
+      },
+      {
+        "name": "Lt_404.08002",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "404.08002",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 7,
+            "y": 849,
+            "value": 82.92
+          },
+          {
+            "x": 35,
+            "y": 1985,
+            "value": 72.1
+          }
+        ]
+      },
+      {
+        "name": "Lt_409.808",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "409.808",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 151,
+            "y": 1490,
+            "value": 67.979996
+          },
+          {
+            "x": 411,
+            "y": 1472,
+            "value": 83.82
+          }
+        ]
+      },
+      {
+        "name": "Lt_415.53598",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "415.53598",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 427,
+            "y": 1891,
+            "value": 105.2
+          },
+          {
+            "x": 127,
+            "y": 1063,
+            "value": 59.64
+          }
+        ]
+      },
+      {
+        "name": "Lt_421.264",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "421.264",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 312,
+            "y": 520,
+            "value": 48.64
+          },
+          {
+            "x": 283,
+            "y": 301,
+            "value": 69.659996
+          }
+        ]
+      },
+      {
+        "name": "Lt_426.992",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "426.992",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 243,
+            "y": 1118,
+            "value": 59.44
+          },
+          {
+            "x": 48,
+            "y": 1699,
+            "value": 120.659996
+          }
+        ]
+      },
+      {
+        "name": "Lt_432.72",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "432.72",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 49,
+            "y": 155,
+            "value": 48.28
+          },
+          {
+            "x": 232,
+            "y": 1352,
+            "value": 49.539997
+          }
+        ]
+      },
+      {
+        "name": "Lt_438.448",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "438.448",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 238,
+            "y": 1790,
+            "value": 124.7
+          },
+          {
+            "x": 444,
+            "y": 1200,
+            "value": 110.259995
+          }
+        ]
+      },
+      {
+        "name": "Lt_444.176",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "444.176",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 492,
+            "y": 762,
+            "value": 73.08
+          },
+          {
+            "x": 44,
+            "y": 1065,
+            "value": 57.92
+          }
+        ]
+      },
+      {
+        "name": "Lt_449.904",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "449.904",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 376,
+            "y": 1189,
+            "value": 136.04
+          },
+          {
+            "x": 499,
+            "y": 372,
+            "value": 58.239998
+          }
+        ]
+      },
+      {
+        "name": "Lt_455.632",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "455.632",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 235,
+            "y": 521,
+            "value": 54.26
+          },
+          {
+            "x": 117,
+            "y": 1295,
+            "value": 107.0
+          }
+        ]
+      },
+      {
+        "name": "Lt_461.36002",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "461.36002",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 327,
+            "y": 875,
+            "value": 53.199997
+          },
+          {
+            "x": 272,
+            "y": 1134,
+            "value": 55.62
+          }
+        ]
+      },
+      {
+        "name": "Lt_467.088",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "467.088",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 202,
+            "y": 427,
+            "value": 64.939995
+          },
+          {
+            "x": 142,
+            "y": 1777,
+            "value": 155.16
+          }
+        ]
+      },
+      {
+        "name": "Lt_472.81598",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "472.81598",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 484,
+            "y": 1159,
+            "value": 81.0
+          },
+          {
+            "x": 388,
+            "y": 656,
+            "value": 59.46
+          }
+        ]
+      },
+      {
+        "name": "Lt_478.544",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "478.544",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 287,
+            "y": 581,
+            "value": 41.26
+          },
+          {
+            "x": 424,
+            "y": 1741,
+            "value": 82.5
+          }
+        ]
+      },
+      {
+        "name": "Lt_484.272",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "484.272",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 55,
+            "y": 1774,
+            "value": 87.6
+          },
+          {
+            "x": 176,
+            "y": 1628,
+            "value": 82.0
+          }
+        ]
+      },
+      {
+        "name": "Lt_490.0",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "490.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 93,
+            "y": 1384,
+            "value": 138.7
+          },
+          {
+            "x": 303,
+            "y": 1098,
+            "value": 58.079998
+          }
+        ]
+      },
+      {
+        "name": "Lt_495.728",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "495.728",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 105,
+            "y": 612,
+            "value": 107.24
+          },
+          {
+            "x": 210,
+            "y": 1727,
+            "value": 105.7
+          }
+        ]
+      },
+      {
+        "name": "Lt_501.45602",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "501.45602",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 359,
+            "y": 1795,
+            "value": 111.619995
+          },
+          {
+            "x": 152,
+            "y": 1985,
+            "value": 70.92
+          }
+        ]
+      },
+      {
+        "name": "Lt_507.18402",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "507.18402",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 280,
+            "y": 233,
+            "value": 51.039997
+          },
+          {
+            "x": 99,
+            "y": 1122,
+            "value": 62.34
+          }
+        ]
+      },
+      {
+        "name": "Lt_512.912",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "512.912",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 234,
+            "y": 257,
+            "value": 50.739998
+          },
+          {
+            "x": 424,
+            "y": 1145,
+            "value": 83.619995
+          }
+        ]
+      },
+      {
+        "name": "Lt_518.63995",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "518.63995",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 52,
+            "y": 1353,
+            "value": 74.299995
+          },
+          {
+            "x": 374,
+            "y": 944,
+            "value": 36.219997
+          }
+        ]
+      },
+      {
+        "name": "Lt_524.368",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "524.368",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 73,
+            "y": 133,
+            "value": 25.82
+          },
+          {
+            "x": 430,
+            "y": 599,
+            "value": 39.079998
+          }
+        ]
+      },
+      {
+        "name": "Lt_530.096",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "530.096",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 303,
+            "y": 1943,
+            "value": 49.8
+          },
+          {
+            "x": 398,
+            "y": 54,
+            "value": 29.42
+          }
+        ]
+      },
+      {
+        "name": "Lt_535.824",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "535.824",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 110,
+            "y": 492,
+            "value": 91.299995
+          },
+          {
+            "x": 163,
+            "y": 387,
+            "value": 49.68
+          }
+        ]
+      },
+      {
+        "name": "Lt_541.552",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "541.552",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 144,
+            "y": 1766,
+            "value": 132.86
+          },
+          {
+            "x": 510,
+            "y": 151,
+            "value": 36.88
+          }
+        ]
+      },
+      {
+        "name": "Lt_547.28",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "547.28",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 419,
+            "y": 1003,
+            "value": 27.859999
+          },
+          {
+            "x": 32,
+            "y": 770,
+            "value": 52.66
+          }
+        ]
+      },
+      {
+        "name": "Lt_553.008",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "553.008",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 141,
+            "y": 1164,
+            "value": 72.76
+          },
+          {
+            "x": 475,
+            "y": 277,
+            "value": 49.559998
+          }
+        ]
+      },
+      {
+        "name": "Lt_558.736",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "558.736",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 53,
+            "y": 291,
+            "value": 30.859999
+          },
+          {
+            "x": 452,
+            "y": 213,
+            "value": 55.46
+          }
+        ]
+      },
+      {
+        "name": "Lt_564.464",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "564.464",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 189,
+            "y": 1762,
+            "value": 199.2
+          },
+          {
+            "x": 299,
+            "y": 1151,
+            "value": 46.579998
+          }
+        ]
+      },
+      {
+        "name": "Lt_570.19196",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "570.19196",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 172,
+            "y": 651,
+            "value": 68.78
+          },
+          {
+            "x": 191,
+            "y": 1712,
+            "value": 89.04
+          }
+        ]
+      },
+      {
+        "name": "Lt_575.92",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "575.92",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 166,
+            "y": 1369,
+            "value": 51.059998
+          },
+          {
+            "x": 329,
+            "y": 1350,
+            "value": 42.66
+          }
+        ]
+      },
+      {
+        "name": "Lt_581.648",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "581.648",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 271,
+            "y": 260,
+            "value": 45.94
+          },
+          {
+            "x": 237,
+            "y": 1601,
+            "value": 65.439995
+          }
+        ]
+      },
+      {
+        "name": "Lt_587.376",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "587.376",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 410,
+            "y": 1804,
+            "value": 104.32
+          },
+          {
+            "x": 13,
+            "y": 1397,
+            "value": 53.26
+          }
+        ]
+      },
+      {
+        "name": "Lt_593.104",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "593.104",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 455,
+            "y": 1152,
+            "value": 68.54
+          },
+          {
+            "x": 326,
+            "y": 1815,
+            "value": 76.1
+          }
+        ]
+      },
+      {
+        "name": "Lt_598.83203",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "598.83203",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 502,
+            "y": 645,
+            "value": 32.62
+          },
+          {
+            "x": 183,
+            "y": 10,
+            "value": 15.219999
+          }
+        ]
+      },
+      {
+        "name": "Lt_604.56",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "604.56",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 429,
+            "y": 1138,
+            "value": 62.82
+          },
+          {
+            "x": 302,
+            "y": 796,
+            "value": 37.96
+          }
+        ]
+      },
+      {
+        "name": "Lt_610.288",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "610.288",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 202,
+            "y": 1976,
+            "value": 125.119995
+          },
+          {
+            "x": 117,
+            "y": 1434,
+            "value": 63.1
+          }
+        ]
+      },
+      {
+        "name": "Lt_616.016",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "616.016",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 480,
+            "y": 576,
+            "value": 47.42
+          },
+          {
+            "x": 161,
+            "y": 1704,
+            "value": 124.68
+          }
+        ]
+      },
+      {
+        "name": "Lt_621.74396",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "621.74396",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 167,
+            "y": 1057,
+            "value": 44.42
+          },
+          {
+            "x": 183,
+            "y": 1599,
+            "value": 41.02
+          }
+        ]
+      },
+      {
+        "name": "Lt_627.472",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "627.472",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 286,
+            "y": 436,
+            "value": 42.0
+          },
+          {
+            "x": 48,
+            "y": 1409,
+            "value": 67.76
+          }
+        ]
+      },
+      {
+        "name": "Lt_633.2",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "633.2",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 359,
+            "y": 1590,
+            "value": 64.119995
+          },
+          {
+            "x": 432,
+            "y": 136,
+            "value": 17.08
+          }
+        ]
+      },
+      {
+        "name": "Lt_638.928",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "638.928",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 428,
+            "y": 453,
+            "value": 31.92
+          },
+          {
+            "x": 334,
+            "y": 1860,
+            "value": 59.699997
+          }
+        ]
+      },
+      {
+        "name": "Lt_644.656",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "644.656",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 137,
+            "y": 1722,
+            "value": 142.81999
+          },
+          {
+            "x": 197,
+            "y": 741,
+            "value": 21.26
+          }
+        ]
+      },
+      {
+        "name": "Lt_650.38403",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "650.38403",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 497,
+            "y": 1361,
+            "value": 66.46
+          },
+          {
+            "x": 371,
+            "y": 855,
+            "value": 25.42
+          }
+        ]
+      },
+      {
+        "name": "Lt_656.112",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "656.112",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 255,
+            "y": 277,
+            "value": 30.519999
+          },
+          {
+            "x": 496,
+            "y": 272,
+            "value": 30.019999
+          }
+        ]
+      },
+      {
+        "name": "Lt_661.84",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "661.84",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 369,
+            "y": 1112,
+            "value": 50.579998
+          },
+          {
+            "x": 361,
+            "y": 1979,
+            "value": 30.939999
+          }
+        ]
+      },
+      {
+        "name": "Lt_667.56805",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "667.56805",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 328,
+            "y": 1811,
+            "value": 71.6
+          },
+          {
+            "x": 427,
+            "y": 1061,
+            "value": 20.84
+          }
+        ]
+      },
+      {
+        "name": "Lt_673.29596",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "673.29596",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 255,
+            "y": 1859,
+            "value": 75.34
+          },
+          {
+            "x": 293,
+            "y": 1544,
+            "value": 24.279999
+          }
+        ]
+      },
+      {
+        "name": "Lt_679.024",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "679.024",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 475,
+            "y": 78,
+            "value": 23.939999
+          },
+          {
+            "x": 360,
+            "y": 1445,
+            "value": 28.46
+          }
+        ]
+      },
+      {
+        "name": "Lt_684.752",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "684.752",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 177,
+            "y": 13,
+            "value": 9.36
+          },
+          {
+            "x": 110,
+            "y": 1720,
+            "value": 79.6
+          }
+        ]
+      },
+      {
+        "name": "Lt_690.48",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "690.48",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 64,
+            "y": 202,
+            "value": 10.139999
+          },
+          {
+            "x": 44,
+            "y": 229,
+            "value": 8.04
+          }
+        ]
+      },
+      {
+        "name": "Lt_696.208",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "696.208",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 356,
+            "y": 139,
+            "value": 19.0
+          },
+          {
+            "x": 246,
+            "y": 1736,
+            "value": 60.539997
+          }
+        ]
+      },
+      {
+        "name": "Lt_701.93604",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "701.93604",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 85,
+            "y": 473,
+            "value": 9.179999
+          },
+          {
+            "x": 128,
+            "y": 1942,
+            "value": 56.1
+          }
+        ]
+      },
+      {
+        "name": "Lt_707.664",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "707.664",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 366,
+            "y": 679,
+            "value": 38.44
+          },
+          {
+            "x": 329,
+            "y": 1021,
+            "value": 16.199999
+          }
+        ]
+      },
+      {
+        "name": "Lt_713.392",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "713.392",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 464,
+            "y": 1018,
+            "value": 36.84
+          },
+          {
+            "x": 440,
+            "y": 1117,
+            "value": 64.119995
+          }
+        ]
+      },
+      {
+        "name": "Lt_719.12",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "719.12",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 409,
+            "y": 1522,
+            "value": 53.52
+          },
+          {
+            "x": 427,
+            "y": 1471,
+            "value": 54.199997
+          }
+        ]
+      },
+      {
+        "name": "Lt_724.84796",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "724.84796",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 322,
+            "y": 852,
+            "value": 32.46
+          },
+          {
+            "x": 276,
+            "y": 1526,
+            "value": 42.3
+          }
+        ]
+      },
+      {
+        "name": "Lt_730.576",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "730.576",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 324,
+            "y": 304,
+            "value": 34.78
+          },
+          {
+            "x": 451,
+            "y": 629,
+            "value": 14.799999
+          }
+        ]
+      },
+      {
+        "name": "Lt_736.30396",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "736.30396",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 140,
+            "y": 769,
+            "value": 50.6
+          },
+          {
+            "x": 349,
+            "y": 372,
+            "value": 56.82
+          }
+        ]
+      },
+      {
+        "name": "Lt_742.032",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "742.032",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 74,
+            "y": 1973,
+            "value": 66.9
+          },
+          {
+            "x": 201,
+            "y": 1507,
+            "value": 52.42
+          }
+        ]
+      },
+      {
+        "name": "Lt_747.76",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "747.76",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 36,
+            "y": 1393,
+            "value": 68.52
+          },
+          {
+            "x": 311,
+            "y": 1726,
+            "value": 32.48
+          }
+        ]
+      },
+      {
+        "name": "Lt_753.488",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "753.488",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 300,
+            "y": 664,
+            "value": 32.1
+          },
+          {
+            "x": 223,
+            "y": 34,
+            "value": 6.8799996
+          }
+        ]
+      },
+      {
+        "name": "Lt_759.216",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "759.216",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 307,
+            "y": 1335,
+            "value": 59.199997
+          },
+          {
+            "x": 401,
+            "y": 178,
+            "value": 18.619999
+          }
+        ]
+      },
+      {
+        "name": "Lt_764.94403",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "764.94403",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 461,
+            "y": 165,
+            "value": 12.04
+          },
+          {
+            "x": 39,
+            "y": 1648,
+            "value": 117.84
+          }
+        ]
+      },
+      {
+        "name": "Lt_770.672",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "770.672",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 65,
+            "y": 1826,
+            "value": 81.58
+          },
+          {
+            "x": 99,
+            "y": 644,
+            "value": 80.74
+          }
+        ]
+      },
+      {
+        "name": "Lt_776.4",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "776.4",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 279,
+            "y": 1427,
+            "value": 52.5
+          },
+          {
+            "x": 60,
+            "y": 436,
+            "value": 7.62
+          }
+        ]
+      },
+      {
+        "name": "Lt_782.128",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "782.128",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 209,
+            "y": 1505,
+            "value": 70.159996
+          },
+          {
+            "x": 41,
+            "y": 1496,
+            "value": 91.86
+          }
+        ]
+      },
+      {
+        "name": "Lt_787.85596",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "787.85596",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 469,
+            "y": 425,
+            "value": 67.939995
+          },
+          {
+            "x": 450,
+            "y": 1405,
+            "value": 84.259995
+          }
+        ]
+      },
+      {
+        "name": "Lt_793.584",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "793.584",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 62,
+            "y": 54,
+            "value": 4.08
+          },
+          {
+            "x": 145,
+            "y": 1837,
+            "value": 107.579994
+          }
+        ]
+      },
+      {
+        "name": "Lt_799.312",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "799.312",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 306,
+            "y": 1447,
+            "value": 55.84
+          },
+          {
+            "x": 260,
+            "y": 946,
+            "value": 46.62
+          }
+        ]
+      },
+      {
+        "name": "Lt_805.04",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "805.04",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 218,
+            "y": 306,
+            "value": 19.3
+          },
+          {
+            "x": 13,
+            "y": 1589,
+            "value": 128.98
+          }
+        ]
+      },
+      {
+        "name": "Lt_810.768",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "810.768",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 345,
+            "y": 1414,
+            "value": 59.68
+          },
+          {
+            "x": 151,
+            "y": 393,
+            "value": 16.1
+          }
+        ]
+      },
+      {
+        "name": "Lt_816.49603",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "816.49603",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 97,
+            "y": 1119,
+            "value": 41.059998
+          },
+          {
+            "x": 294,
+            "y": 1299,
+            "value": 45.78
+          }
+        ]
+      },
+      {
+        "name": "Lt_822.224",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "822.224",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 268,
+            "y": 170,
+            "value": 46.899998
+          },
+          {
+            "x": 397,
+            "y": 656,
+            "value": 45.96
+          }
+        ]
+      },
+      {
+        "name": "Lt_827.952",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "827.952",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 445,
+            "y": 1840,
+            "value": 59.079998
+          },
+          {
+            "x": 243,
+            "y": 1102,
+            "value": 48.36
+          }
+        ]
+      },
+      {
+        "name": "Lt_833.68",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "833.68",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 294,
+            "y": 1898,
+            "value": 37.82
+          },
+          {
+            "x": 475,
+            "y": 373,
+            "value": 49.48
+          }
+        ]
+      },
+      {
+        "name": "Lt_839.40796",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "839.40796",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 35,
+            "y": 1479,
+            "value": 71.32
+          },
+          {
+            "x": 33,
+            "y": 1085,
+            "value": 61.18
+          }
+        ]
+      },
+      {
+        "name": "Lt_845.136",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "845.136",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 354,
+            "y": 1728,
+            "value": 62.719997
+          },
+          {
+            "x": 291,
+            "y": 1757,
+            "value": 61.739998
+          }
+        ]
+      },
+      {
+        "name": "Lt_850.864",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "850.864",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 187,
+            "y": 1876,
+            "value": 115.32
+          },
+          {
+            "x": 459,
+            "y": 492,
+            "value": 64.92
+          }
+        ]
+      },
+      {
+        "name": "Lt_856.592",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "856.592",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 53,
+            "y": 1453,
+            "value": 70.76
+          },
+          {
+            "x": 112,
+            "y": 1360,
+            "value": 69.119995
+          }
+        ]
+      },
+      {
+        "name": "Lt_862.32",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "862.32",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 37,
+            "y": 79,
+            "value": 4.08
+          },
+          {
+            "x": 139,
+            "y": 624,
+            "value": 77.72
+          }
+        ]
+      },
+      {
+        "name": "Lt_868.04803",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "868.04803",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 469,
+            "y": 843,
+            "value": 16.82
+          },
+          {
+            "x": 40,
+            "y": 1369,
+            "value": 49.36
+          }
+        ]
+      },
+      {
+        "name": "Lt_873.776",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "873.776",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 106,
+            "y": 895,
+            "value": 82.7
+          },
+          {
+            "x": 263,
+            "y": 105,
+            "value": 6.3399997
+          }
+        ]
+      },
+      {
+        "name": "Lt_879.504",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "879.504",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 312,
+            "y": 461,
+            "value": 56.579998
+          },
+          {
+            "x": 202,
+            "y": 710,
+            "value": 45.239998
+          }
+        ]
+      },
+      {
+        "name": "Lt_885.232",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "885.232",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 63,
+            "y": 188,
+            "value": 5.62
+          },
+          {
+            "x": 401,
+            "y": 1251,
+            "value": 73.92
+          }
+        ]
+      },
+      {
+        "name": "Lt_890.95996",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "890.95996",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 76,
+            "y": 132,
+            "value": 4.18
+          },
+          {
+            "x": 267,
+            "y": 239,
+            "value": 23.9
+          }
+        ]
+      },
+      {
+        "name": "Lt_896.688",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "896.688",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 462,
+            "y": 835,
+            "value": 26.26
+          },
+          {
+            "x": 125,
+            "y": 675,
+            "value": 49.559998
+          }
+        ]
+      },
+      {
+        "name": "Lt_902.416",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "902.416",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 347,
+            "y": 245,
+            "value": 15.88
+          },
+          {
+            "x": 62,
+            "y": 601,
+            "value": 18.24
+          }
+        ]
+      },
+      {
+        "name": "Lt_908.144",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "908.144",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 436,
+            "y": 484,
+            "value": 27.26
+          },
+          {
+            "x": 50,
+            "y": 1,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Lt_913.872",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "913.872",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 63,
+            "y": 913,
+            "value": 44.3
+          },
+          {
+            "x": 301,
+            "y": 976,
+            "value": 12.48
+          }
+        ]
+      },
+      {
+        "name": "Lt_919.60004",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "919.60004",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 88,
+            "y": 1258,
+            "value": 45.559998
+          },
+          {
+            "x": 273,
+            "y": 1546,
+            "value": 35.82
+          }
+        ]
+      },
+      {
+        "name": "Lt_925.328",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "925.328",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 205,
+            "y": 704,
+            "value": 22.32
+          },
+          {
+            "x": 227,
+            "y": 1816,
+            "value": 80.799995
+          }
+        ]
+      },
+      {
+        "name": "Lt_931.056",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "931.056",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 65,
+            "y": 355,
+            "value": 8.0199995
+          },
+          {
+            "x": 14,
+            "y": 1205,
+            "value": 24.24
+          }
+        ]
+      },
+      {
+        "name": "Lt_936.78406",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "936.78406",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 182,
+            "y": 118,
+            "value": 3.28
+          },
+          {
+            "x": 328,
+            "y": 990,
+            "value": 10.58
+          }
+        ]
+      },
+      {
+        "name": "Lt_942.51196",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "942.51196",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 456,
+            "y": 1161,
+            "value": 30.24
+          },
+          {
+            "x": 208,
+            "y": 399,
+            "value": 14.259999
+          }
+        ]
+      },
+      {
+        "name": "Lt_948.24",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "948.24",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2,
+            "y": 1281,
+            "value": 0.0
+          },
+          {
+            "x": 1,
+            "y": 246,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Lt_953.968",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "953.968",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 280,
+            "y": 903,
+            "value": 19.619999
+          },
+          {
+            "x": 38,
+            "y": 919,
+            "value": 26.64
+          }
+        ]
+      },
+      {
+        "name": "Lt_959.696",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "959.696",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 52,
+            "y": 421,
+            "value": 8.48
+          },
+          {
+            "x": 359,
+            "y": 1797,
+            "value": 40.879997
+          }
+        ]
+      },
+      {
+        "name": "Lt_965.424",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "965.424",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 307,
+            "y": 1163,
+            "value": 34.219997
+          },
+          {
+            "x": 189,
+            "y": 775,
+            "value": 25.76
+          }
+        ]
+      },
+      {
+        "name": "Lt_971.152",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "971.152",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 314,
+            "y": 1638,
+            "value": 38.2
+          },
+          {
+            "x": 311,
+            "y": 1036,
+            "value": 8.679999
+          }
+        ]
+      },
+      {
+        "name": "Lt_976.88",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "976.88",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 379,
+            "y": 1620,
+            "value": 66.18
+          },
+          {
+            "x": 279,
+            "y": 1741,
+            "value": 44.96
+          }
+        ]
+      },
+      {
+        "name": "Lt_982.60803",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "982.60803",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 86,
+            "y": 1161,
+            "value": 48.84
+          },
+          {
+            "x": 255,
+            "y": 842,
+            "value": 36.0
+          }
+        ]
+      },
+      {
+        "name": "Lt_988.336",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "988.336",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 302,
+            "y": 1290,
+            "value": 30.98
+          },
+          {
+            "x": 503,
+            "y": 190,
+            "value": 18.699999
+          }
+        ]
+      },
+      {
+        "name": "Lt_994.06396",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "994.06396",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 77,
+            "y": 872,
+            "value": 69.26
+          },
+          {
+            "x": 336,
+            "y": 1769,
+            "value": 47.14
+          }
+        ]
+      },
+      {
+        "name": "Lt_999.79004",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "999.79004",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 265,
+            "y": 1216,
+            "value": 44.04
+          },
+          {
+            "x": 187,
+            "y": 39,
+            "value": 8.84
+          }
+        ]
+      },
+      {
+        "name": "Lt_1005.51996",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1005.51996",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 364,
+            "y": 193,
+            "value": 19.46
+          },
+          {
+            "x": 68,
+            "y": 532,
+            "value": 12.44
+          }
+        ]
+      },
+      {
+        "name": "Lt_1011.25",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1011.25",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 366,
+            "y": 88,
+            "value": 13.7
+          },
+          {
+            "x": 109,
+            "y": 115,
+            "value": 6.8199997
+          }
+        ]
+      },
+      {
+        "name": "Lt_1016.98004",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1016.98004",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 309,
+            "y": 632,
+            "value": 41.3
+          },
+          {
+            "x": 504,
+            "y": 617,
+            "value": 15.28
+          }
+        ]
+      },
+      {
+        "name": "Lt_1022.69995",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1022.69995",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 97,
+            "y": 1573,
+            "value": 87.4
+          },
+          {
+            "x": 418,
+            "y": 139,
+            "value": 13.94
+          }
+        ]
+      },
+      {
+        "name": "Lt_1028.4299",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1028.4299",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 191,
+            "y": 1233,
+            "value": 60.78
+          },
+          {
+            "x": 68,
+            "y": 1611,
+            "value": 97.64
+          }
+        ]
+      },
+      {
+        "name": "Lt_1034.16",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1034.16",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 189,
+            "y": 1291,
+            "value": 65.0
+          },
+          {
+            "x": 471,
+            "y": 1626,
+            "value": 58.78
+          }
+        ]
+      },
+      {
+        "name": "Lt_1039.89",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1039.89",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 108,
+            "y": 1985,
+            "value": 72.36
+          },
+          {
+            "x": 62,
+            "y": 1871,
+            "value": 66.52
+          }
+        ]
+      },
+      {
+        "name": "Lt_1045.62",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1045.62",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 336,
+            "y": 306,
+            "value": 45.64
+          },
+          {
+            "x": 334,
+            "y": 506,
+            "value": 56.26
+          }
+        ]
+      },
+      {
+        "name": "Lt_1051.34",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1051.34",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 215,
+            "y": 1836,
+            "value": 142.59999
+          },
+          {
+            "x": 468,
+            "y": 565,
+            "value": 54.3
+          }
+        ]
+      },
+      {
+        "name": "Lt_1057.0701",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1057.0701",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 181,
+            "y": 766,
+            "value": 40.66
+          },
+          {
+            "x": 28,
+            "y": 1005,
+            "value": 53.94
+          }
+        ]
+      },
+      {
+        "name": "Lt_1062.8",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1062.8",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 137,
+            "y": 389,
+            "value": 30.58
+          },
+          {
+            "x": 31,
+            "y": 1754,
+            "value": 76.4
+          }
+        ]
+      },
+      {
+        "name": "Lt_1068.5299",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1068.5299",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 12,
+            "y": 1900,
+            "value": 38.42
+          },
+          {
+            "x": 179,
+            "y": 1459,
+            "value": 52.66
+          }
+        ]
+      },
+      {
+        "name": "Lt_1074.26",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1074.26",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 380,
+            "y": 1570,
+            "value": 84.979996
+          },
+          {
+            "x": 507,
+            "y": 1208,
+            "value": 172.2
+          }
+        ]
+      },
+      {
+        "name": "Lt_1079.98",
+        "description": "Lt",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "geophysicalUnit": "W/m^2/micrometer/sr",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "1079.98",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 280,
+            "y": 964,
+            "value": 42.719997
+          },
+          {
+            "x": 221,
+            "y": 82,
+            "value": 24.3
+          }
+        ]
+      },
+      {
+        "name": "latitudes",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 303,
+            "y": 1611,
+            "value": 19.029272
+          },
+          {
+            "x": 510,
+            "y": 1949,
+            "value": 19.368172
+          }
+        ]
+      },
+      {
+        "name": "longitudes",
+        "bandWidth": 512,
+        "bandHeight": 2000,
+        "noDataValue": "-999.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 442,
+            "y": 1911,
+            "value": -71.99692
+          },
+          {
+            "x": 224,
+            "y": 469,
+            "value": -72.634575
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "Navigation_Metadata/solar_zenith.attributes/units",
+        "value": "degrees"
+      },
+      {
+        "path": "Band_Metadata/Lt.attributes/wavelength_units",
+        "value": "nanometers"
+      },
+      {
+        "path": "Global_Attributes/naming_authority",
+        "value": "gov.nasa.gsfc.sci.oceandata"
+      },
+      {
+        "path": "Navigation_Metadata/latitudes.attributes/valid_max",
+        "value": "180.0"
+      },
+      {
+        "path": "Band_Metadata/Lt.attributes/wavelengths",
+        "value": "352.528,358.256,363.98398,369.712,375.44,381.168,386.89603,392.624,398.352,404.08002,409.808,415.53598,421.264,426.992,432.72,438.448,444.176,449.904,455.632,461.36002,467.088,472.81598,478.544,484.272,490.0,495.728,501.45602,507.18402,512.912,518.63995,524.368,530.096,535.824,541.552,547.28,553.008,558.736,564.464,570.19196,575.92,581.648,587.376,593.104,598.83203,604.56,610.288,616.016,621.74396,627.472,633.2,638.928,644.656,650.38403,656.112,661.84,667.56805,673.29596,679.024,684.752,690.48,696.208,701.93604,707.664,713.392,719.12,724.84796,730.576,736.30396,742.032,747.76,753.488,759.216,764.94403,770.672,776.4,782.128,787.85596,793.584,799.312,805.04,810.768,816.49603,822.224,827.952,833.68,839.40796,845.136,850.864,856.592,862.32,868.04803,873.776,879.504,885.232,890.95996,896.688,902.416,908.144,913.872,919.60004,925.328,931.056,936.78406,942.51196,948.24,953.968,959.696,965.424,971.152,976.88,982.60803,988.336,994.06396,999.79004,1005.51996,1011.25,1016.98004,1022.69995,1028.4299,1034.16,1039.89,1045.62,1051.34,1057.0701,1062.8,1068.5299,1074.26,1079.98"
+      },
+      {
+        "path": "Global_Attributes/metadata_FGDC_Identification_Information_Time_Period_of_Content_Ending_Time",
+        "value": "140848"
+      },
+      {
+        "path": "Global_Attributes/date_created",
+        "value": "2018-06-28T19:08:50Z"
+      },
+      {
+        "path": "Global_Attributes/instrument",
+        "value": "HICO"
+      },
+      {
+        "path": "Navigation_Metadata/latitudes.attributes/units",
+        "value": "degrees"
+      },
+      {
+        "path": "Global_Attributes/publisher_name",
+        "value": "NASA/GSFC"
+      }
+    ]
+  }
+}

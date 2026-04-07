@@ -63,7 +63,7 @@
             "description": "Shallow water (<30m)"
           },
           {
-            "name": "SPARE8",
+            "name": "SPARE07",
             "value": 128,
             "description": "Unused spare flag"
           },
@@ -93,7 +93,7 @@
             "description": "High solar zenith angle"
           },
           {
-            "name": "SPARE14",
+            "name": "SPARE13",
             "value": 8192,
             "description": "Unused spare flag"
           },
@@ -118,7 +118,7 @@
             "description": "Absorbing Aerosols determined"
           },
           {
-            "name": "SPARE19",
+            "name": "SPARE18",
             "value": 262144,
             "description": "Unused spare flag"
           },
@@ -143,7 +143,7 @@
             "description": "Atmospheric correction warning; Epsilon out-of-bounds"
           },
           {
-            "name": "SPARE24",
+            "name": "SPARE23",
             "value": 8388608,
             "description": "Unused spare flag"
           },
@@ -163,7 +163,7 @@
             "description": "Insufficient data for smoothing filter"
           },
           {
-            "name": "SPARE28",
+            "name": "SPARE27",
             "value": 134217728,
             "description": "Unused spare flag"
           },
@@ -183,7 +183,7 @@
             "description": "One (or more) product algorithms produced a failure"
           },
           {
-            "name": "SPARE32",
+            "name": "SPARE31",
             "value": 2147483648,
             "description": "Unused spare flag"
           }
