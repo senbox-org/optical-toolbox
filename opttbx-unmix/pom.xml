@@ -51,6 +51,11 @@
             <artifactId>snap-gpf</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-spectral-library</artifactId>
+            <version>${version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>

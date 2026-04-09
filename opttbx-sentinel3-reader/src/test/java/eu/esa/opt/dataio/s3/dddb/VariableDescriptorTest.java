@@ -4,11 +4,12 @@ import com.bc.ceres.annotation.STTM;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class VariableDescriptorTest {
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4170")
     public void testConstruction() {
         final VariableDescriptor descriptor = new VariableDescriptor();
 
@@ -22,11 +23,12 @@ public class VariableDescriptorTest {
         assertEquals("", descriptor.getDescription());
         assertEquals("", descriptor.getTpXSubsamplingXPath());
         assertEquals("", descriptor.getTpYSubsamplingXPath());
+        assertFalse(descriptor.isOptional());
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
-    public void testGetVaraibleType() {
+    public void testGetVariableType() {
         final VariableDescriptor descriptor = new VariableDescriptor();
 
         descriptor.setType('v');

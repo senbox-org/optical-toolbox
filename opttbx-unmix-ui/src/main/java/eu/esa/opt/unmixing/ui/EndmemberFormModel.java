@@ -17,6 +17,7 @@
 package eu.esa.opt.unmixing.ui;
 
 import eu.esa.opt.unmixing.Endmember;
+import eu.esa.opt.unmixing.EndmemberSpectralLibrarySupport;
 import org.esa.snap.core.util.ResourceInstaller;
 import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
@@ -30,20 +31,17 @@ import org.esa.snap.ui.diagram.DiagramAxis;
 import org.esa.snap.ui.diagram.DiagramGraph;
 import org.esa.snap.ui.diagram.DiagramGraphIO;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.DefaultListModel;
-import javax.swing.DefaultListSelectionModel;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -99,9 +97,11 @@ class EndmemberFormModel {
     }
 
     public void setEndmembers(Endmember[] endmembers) {
+        setSelectedEndmemberIndex(-1);
         endmemberListModel.removeAllElements();
+        endmemberDiagram.removeAllGraphs();
         for (Endmember endmember : endmembers) {
-            endmemberListModel.addElement(endmember);
+            addEndmember(endmember);
         }
     }
 
@@ -185,6 +185,44 @@ class EndmemberFormModel {
         }
     }
 
+    private void importEndmembers(Endmember[] endmembers) {
+        for (Endmember endmember : endmembers) {
+            addEndmember(endmember);
+        }
+    }
+
+    private Endmember[] importEnviEndmembers() throws IOException {
+        JFileChooser fileChooser = new JFileChooser(getLastImportDir());
+        fileChooser.setDialogTitle("Add Endmembers from ENVI Spectral Library");
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(
+                new FileNameExtensionFilter("ENVI Spectral Library (*.hdr, *.sli)", "hdr", "sli"));
+
+        int result = fileChooser.showOpenDialog(null);
+        if (result != JFileChooser.APPROVE_OPTION || fileChooser.getSelectedFile() == null) {
+            return new Endmember[0];
+        }
+
+        rememberLastImportDir(fileChooser.getSelectedFile());
+        return EndmemberSpectralLibrarySupport.readEnviLibrary(fileChooser.getSelectedFile().toPath());
+    }
+
+    private static File getLastImportDir() {
+        Preferences preferences = Config.instance().preferences();
+        String lastDir = preferences.get(DiagramGraphIO.DIAGRAM_GRAPH_IO_LAST_DIR_KEY,
+                defaultEndmemberDir.toAbsolutePath().toString());
+        return new File(lastDir);
+    }
+
+    private static void rememberLastImportDir(File selectedFile) {
+        File parentFile = selectedFile != null ? selectedFile.getParentFile() : null;
+        if (parentFile != null) {
+            Config.instance().preferences().put(DiagramGraphIO.DIAGRAM_GRAPH_IO_LAST_DIR_KEY,
+                    parentFile.getAbsolutePath());
+        }
+    }
+
     private class AddAction extends AbstractAction {
 
         public AddAction() {
@@ -195,13 +233,32 @@ class EndmemberFormModel {
 
         public void actionPerformed(ActionEvent e) {
             ensureDefaultDirSet();
-            DiagramGraph[] diagramGraphs = DiagramGraphIO.readGraphs(null,
+
+            Object[] options = {"CSV Spectra", "ENVI Spectral Library", "Cancel"};
+            int selection = JOptionPane.showOptionDialog(null,
+                    "Select the source of the endmembers.",
                     "Add Endmembers",
-                    new SnapFileFilter[]{DiagramGraphIO.SPECTRA_CSV_FILE_FILTER},
-                    appContext.getPreferences());
-            Endmember[] endmembers = convertGraphsToEndmembers(diagramGraphs);
-            for (Endmember endmember : endmembers) {
-                addEndmember(endmember);
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+
+            if (selection == 0) {
+                DiagramGraph[] diagramGraphs = DiagramGraphIO.readGraphs(null,
+                        "Add Endmembers",
+                        new SnapFileFilter[]{DiagramGraphIO.SPECTRA_CSV_FILE_FILTER},
+                        appContext.getPreferences());
+                importEndmembers(convertGraphsToEndmembers(diagramGraphs));
+            } else if (selection == 1) {
+                try {
+                    importEndmembers(importEnviEndmembers());
+                } catch (IOException ioException) {
+                    JOptionPane.showMessageDialog(null,
+                            "Failed to import ENVI spectral library:\n" + ioException.getMessage(),
+                            "Import Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
 
