@@ -1,0 +1,16 @@
+<filesystem>
+    <folder name="OperatorUIs">
+        <file name="SpectralNoiseReductionUI.instance">
+            <attr name="operatorName" stringvalue="SpectralNoiseReduction"/>
+            <attr name="operatorUIClass" stringvalue="eu.esa.opt.spectralnoise.SpectralNoiseReductionOpUI"/>
+        </file>
+    </folder>
+
+    <folder name="Services">
+        <folder name="JavaHelp">
+            <file name="eu-esa-opt-opttbx-hyperspectral-preprocessing-ui-helpset.xml" url="helpset.xml">
+                <attr name="position" intvalue="4600"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>
