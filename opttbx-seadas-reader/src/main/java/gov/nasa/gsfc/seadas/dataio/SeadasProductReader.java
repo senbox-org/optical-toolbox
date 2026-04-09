@@ -256,10 +256,13 @@ public class SeadasProductReader extends AbstractProductReader {
         return productType;
     }
 
-    public boolean checkEqcProjection() {
+    static boolean checkEqcProjection(Attribute mapProjectionAttribute) {
+        if (mapProjectionAttribute == null) {
+            return false;
+        }
         try {
-            String projection = ncfile.findGlobalAttribute("map_projection").getStringValue();
-            if (projection.contains("proj=eqc")){
+            String projection = mapProjectionAttribute.getStringValue();
+            if (projection.contains("proj=eqc") || projection.contains("Equidistant Cylindrical")){
                 return true;
             }
             else {

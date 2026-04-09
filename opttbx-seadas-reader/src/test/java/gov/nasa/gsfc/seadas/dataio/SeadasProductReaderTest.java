@@ -1,6 +1,7 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import org.junit.Test;
+import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 
 import java.io.IOException;
@@ -8,8 +9,7 @@ import java.util.ArrayList;
 
 import static gov.nasa.gsfc.seadas.dataio.SeadasProductReader.ProductType.Level2;
 import static gov.nasa.gsfc.seadas.dataio.SeadasProductReader.ProductType.Level3_SeadasMapped;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,6 +33,22 @@ public class SeadasProductReaderTest {
 
         productType = SeadasProductReader.findProductTypeWithoutFileAccess("WHATEVER Level-2", "dont_care", "dont_care");
         assertEquals(Level2.toString(), productType.toString());
+    }
 
+    @Test
+    public void testCheckEqcProjection_null_attribute() {
+        assertFalse(SeadasProductReader.checkEqcProjection(null));
+    }
+
+    @Test
+    public void testCheckEqcProjection() {
+        Attribute attribute = new Attribute("map_projection", "Equidistant Cylindrical");
+        assertTrue(SeadasProductReader.checkEqcProjection(attribute));
+
+        attribute = new Attribute("map_projection", "proj +proj=eqc +ellps=WGS84");
+        assertTrue(SeadasProductReader.checkEqcProjection(attribute));
+
+        attribute = new Attribute("map_projection", "Firlefanz");
+        assertFalse(SeadasProductReader.checkEqcProjection(attribute));
     }
 }
