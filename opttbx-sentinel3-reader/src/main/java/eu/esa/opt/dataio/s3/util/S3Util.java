@@ -1,7 +1,6 @@
 package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.core.VirtualDir;
-import eu.esa.opt.dataio.s3.olci.OlciContext;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
@@ -123,6 +122,11 @@ public class S3Util {
             return S3Util.getAttributeValue(attribute).doubleValue();
         }
         return 0.0;
+    }
+
+    public static boolean isLogScaled(Variable variable) {
+        String description = variable.getDescription();
+        return description != null && description.startsWith("log10 scaled");
     }
 
     public static int getRasterDataType(Variable variable) {

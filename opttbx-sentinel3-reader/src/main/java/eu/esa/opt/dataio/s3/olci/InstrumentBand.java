@@ -43,7 +43,7 @@ public class InstrumentBand extends BandUsingReaderDirectly {
 
         // Define subset to requested region
         final RasterExtract rasterExtract = new RasterExtract(offsetX, offsetY, width, height, 1, 1);
-        Sentinel3DddbReader.extractSubset(rasterExtract, rasterData, productData, getScalingFactor(), getScalingOffset(), true);
+        Sentinel3DddbReader.extractSubset(rasterExtract, rasterData, productData, getScalingFactor(), getScalingOffset(), isLog10Scaled(), true);
     }
 
     @Override

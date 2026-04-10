@@ -145,7 +145,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     }
 
     // @todo 2 tb/tb add tests for this 2025-02-04
-    public static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, double scaleFactor, double offset, boolean rawData) throws IOException {
+    public static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, double scaleFactor, double offset, boolean logScaled, boolean rawData) throws IOException {
         final int[] sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset()};
         //final int stepY = Math.max(rasterExtract.getStepY() - 1, 1);
         //final int stepX = Math.max(rasterExtract.getStepX()-1 , 1);
@@ -158,9 +158,14 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
         try {
             Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride).copy().reduce();
-            if (!rawData) {
+            if (!rawData && ReaderUtils.mustScale(scaleFactor, offset)) {
                 sliceData = ReaderUtils.scaleArray(sliceData, scaleFactor, offset);
             }
+
+            if (logScaled) {
+                ReaderUtils.invLogScaling(sliceData);
+            }
+
             assignResultData(destBuffer, sliceData);
         } catch (InvalidRangeException e) {
             throw new IOException(e);
@@ -378,8 +383,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         final ProductData productDataLat = ProductData.createInstance(new double[bufferSize]);
 
         final RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
-        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getTpLongitudeName(), true);
-        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getTpLatitudeName(), true);
+        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getTpLongitudeName(), false);
+        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getTpLatitudeName(), false);
 
         final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
         final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
@@ -637,7 +642,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
         final double scalingFactor = getScalingFactor(netCDFVariable);
         double offset = getAddOffset(netCDFVariable);
-        extractSubset(rasterExtract, destBuffer, rawDataArray, scalingFactor, offset, rawData);
+        final boolean logScaled = isLogScaled(netCDFVariable);
+        extractSubset(rasterExtract, destBuffer, rawDataArray, scalingFactor, offset, logScaled, rawData);
     }
 
     private Variable getNetCDFVariable(VariableDescriptor descriptor, String name) throws IOException {
