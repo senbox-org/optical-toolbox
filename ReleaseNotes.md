@@ -4,6 +4,8 @@ Optical Toolbox Release Notes
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
 # New in SNAP 13.0.2
+    [SNAP-4182] Incorrect TiePointGeoCoding for OLCI data
+    [SNAP-4181] TPGs are wrongly filled when directly created a subset from a product
     [SNAP-4170] OLCI L2W Uncertainty issue BL003
 
 # New in SNAP 13.0.1
