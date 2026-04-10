@@ -1,0 +1,18 @@
+[
+  {
+    "name": "WQSF_lsb",
+    "ncVarName": "WQSF",
+    "dataType": "uint64",
+    "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description": "Classification flags, quality and science flags for Marine and Inland Waters pixels(least significant bytes)"
+  },
+  {
+    "name": "WQSF_msb",
+    "ncVarName": "WQSF",
+    "dataType": "uint64",
+    "heightXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath": "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description": "Classification flags, quality and science flags for Marine and Inland Waters pixels(most significant bytes)"
+  }
+]
