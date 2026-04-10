@@ -158,14 +158,15 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
         try {
             Array sliceData = rawDataArray.section(sliceOffset, sliceDimensions, stride).copy().reduce();
-            if (!rawData && ReaderUtils.mustScale(scaleFactor, offset)) {
-                sliceData = ReaderUtils.scaleArray(sliceData, scaleFactor, offset);
-            }
+            if (!rawData) {
+                if (ReaderUtils.mustScale(scaleFactor, offset)) {
+                    sliceData = ReaderUtils.scaleArray(sliceData, scaleFactor, offset);
+                }
 
-            if (logScaled) {
-                ReaderUtils.invLogScaling(sliceData);
+                if (logScaled) {
+                    ReaderUtils.invLogScaling(sliceData);
+                }
             }
-
             assignResultData(destBuffer, sliceData);
         } catch (InvalidRangeException e) {
             throw new IOException(e);
