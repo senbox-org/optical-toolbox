@@ -31,7 +31,7 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-ecostress-reader</artifactId>
-            <version>${snap.version}</version>
+            <version>${opttbx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
