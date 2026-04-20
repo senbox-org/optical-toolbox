@@ -53,8 +53,7 @@ public class ModisProductReaderPlugIn implements ProductReaderPlugIn {
 
         NetcdfFile netcdfFile = null;
         try {
-            final String inputFilePath = inputFile.getPath();
-            netcdfFile = NetcdfFileOpener.open(inputFilePath);
+            netcdfFile = NetcdfFileOpener.open(inputFile);
             if (netcdfFile == null) {
                 return DecodeQualification.UNABLE;
             }
