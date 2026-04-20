@@ -39,6 +39,7 @@ import org.esa.snap.dataio.geotiff.GeoTiffProductReaderPlugIn;
 import org.esa.snap.engine_utilities.util.PathUtils;
 import org.esa.snap.jp2.reader.JP2ImageFile;
 import org.esa.snap.jp2.reader.JP2LocalFile;
+import org.esa.snap.jp2.reader.VirtualJP2File;
 import org.esa.snap.jp2.reader.internal.JP2MosaicBandMatrixCell;
 import org.esa.snap.jp2.reader.metadata.Jp2XmlMetadata;
 import org.esa.snap.lib.openjpeg.dataio.Utils;
@@ -436,7 +437,8 @@ public class Spot6ProductReader extends AbstractProductReader {
                         throw new IllegalStateException("Different data type count: rowIndex="+rowIndex+", columnIndex="+columnIndex+", dataType="+dataType+", tileLayout.dataType="+tileLayout.dataType+".");
                     }
                 }
-                JP2LocalFile jp2LocalFile = new SpotJp2LocalFile(jp2File);
+                VirtualJP2File jp2LocalFile = new VirtualJP2File(jp2File, Spot6ProductReader.class);
+                jp2LocalFile.deleteLocalFilesOnExit();
                 JP2ImageFile jp2ImageFile = new JP2ImageFile(jp2LocalFile);
                 int cellWidth = tileLayout.width;
                 int cellHeight = tileLayout.height;
