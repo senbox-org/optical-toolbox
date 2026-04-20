@@ -80,7 +80,7 @@ public class L3ProductReaderPlugIn implements ProductReaderPlugIn {
             return decodeQualification;
         }
 
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
                 Attribute titleAttribute = ncfile.findGlobalAttributeIgnoreCase("Title");
 
