@@ -18,8 +18,8 @@ package eu.esa.opt.dataio.landsat.geotiff.c2;
 
 import eu.esa.opt.dataio.landsat.geotiff.LandsatLegacyMetadata;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 
 /**
  * Adaptation of LandsatReprocessedMetadata for Collection 2 changes.
@@ -50,8 +50,8 @@ public class LandsatC2ReprocessedMetadata extends AbstractLandsatC2Metadata {
     };
     private final LandsatLegacyMetadata landsatLegacyMetadataDelegate;
 
-    public LandsatC2ReprocessedMetadata(FileReader fileReader) throws IOException {
-        super(fileReader);
+    public LandsatC2ReprocessedMetadata(Reader reader) throws IOException {
+        super(reader);
         landsatLegacyMetadataDelegate = new LandsatLegacyMetadata(getMetaDataElementRoot());
     }
 
