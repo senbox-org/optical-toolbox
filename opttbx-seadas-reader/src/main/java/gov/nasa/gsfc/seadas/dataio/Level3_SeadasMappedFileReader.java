@@ -117,9 +117,10 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
         addGlobalMetadata(product);
         addSmiMetadata(product);
-//        variableMap = addBands(product, ncFile.getVariables());
         variableMap = addBands(product, ncFile.getVariables());
-        if (productReader.checkEqcProjection()) {
+
+        final Attribute mapProjectionAttribute = ncFile.findGlobalAttribute("map_projection");
+        if (productReader.checkEqcProjection(mapProjectionAttribute)) {
             addEqcGeocoding(product);
         } else {
             try {

@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "O2_27OCT2015_005_010_LAP_L1B_ST_S_hdf",
+      "relativePath": "sensors_platforms/OCEANSAT-2/O2_27OCT2015_005_010_LAP_L1B_ST_S.hdf",
+      "description": "Oceansat OCM2 Level-1B Data"
+    }
+  ]
+}
