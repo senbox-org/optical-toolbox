@@ -1,0 +1,75 @@
+{
+  "id": "Q20140012014365_L3m_YR_SCI_V5_0_SSS_1deg",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 360,
+    "sceneHeight": 180,
+    "startTime": "01-JAN-2014 01:17:13.258000",
+    "endTime": "01-JAN-2015 01:33:47.701000",
+    "bands": [
+      {
+        "name": "l3m_data",
+        "bandWidth": 360,
+        "bandHeight": 180,
+        "noDataValue": "-32767.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 155,
+            "y": 96,
+            "value": 36.14225
+          },
+          {
+            "x": 267,
+            "y": 116,
+            "value": 35.51682
+          }
+        ]
+      }
+    ],
+    "metadata": [
+      {
+        "path": "Global_Attributes/start_orbit_number",
+        "value": "13765"
+      },
+      {
+        "path": "Band_Attributes/palette/data_type",
+        "value": "0"
+      },
+      {
+        "path": "Global_Attributes/suggested_image_scaling_minimum",
+        "value": "0.0"
+      },
+      {
+        "path": "Global_Attributes/number_of_columns",
+        "value": "360"
+      },
+      {
+        "path": "Band_Attributes/palette/data_type",
+        "value": "0"
+      },
+      {
+        "path": "Global_Attributes/_lastModified",
+        "value": "2017-10-22T01:47:31.000Z"
+      },
+      {
+        "path": "Band_Attributes/palette/data_type",
+        "value": "0"
+      },
+      {
+        "path": "Global_Attributes/keywords_vocabulary",
+        "value": "NASA Global Change Master Directory (GCMD) Science Keywords"
+      },
+      {
+        "path": "Global_Attributes/geospatial_lon_max",
+        "value": "180.0"
+      },
+      {
+        "path": "Band_Attributes/l3m_data/Slope",
+        "value": "1.0"
+      }
+    ]
+  }
+}

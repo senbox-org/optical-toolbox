@@ -20,6 +20,7 @@ import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.StringUtils;
 import ucar.ma2.Array;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
@@ -57,15 +58,15 @@ public class L1BHicoFileReader extends SeadasFileReader {
         int sceneHeight = dims[0];
         String productName;
 
-        try {
-            productName = getStringAttribute("metadata_FGDC_Identification_Information_Dataset_Identifier");
-        } catch (Exception ignored) {
+        productName = getStringAttribute("metadata_FGDC_Identification_Information_Dataset_Identifier");
+        if (StringUtils.isNullOrEmpty(productName)) {
             productName = productReader.getInputFile().getName();
         }
+
         String hicoOrientation = getStringAttribute("metadata_HICO_Calibration_hico_orientation_from_quaternion");
 
         mustFlipX = mustFlipY = false;
-        if(hicoOrientation.trim().equals("-XVV")) {
+        if (hicoOrientation.trim().equals("-XVV")) {
             mustFlipY = true;
         }
         SeadasProductReader.ProductType productType = productReader.getProductType();
@@ -73,15 +74,15 @@ public class L1BHicoFileReader extends SeadasFileReader {
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
         product.setDescription(productName);
 
-        ProductData.UTC utcStart = getUTCAttribute("Start",globalAttributes);
+        ProductData.UTC utcStart = getUTCAttribute("Start", globalAttributes);
         if (utcStart != null) {
-            if (mustFlipY){
+            if (mustFlipY) {
                 product.setEndTime(utcStart);
             } else {
                 product.setStartTime(utcStart);
             }
         }
-        ProductData.UTC utcEnd = getUTCAttribute("End",globalAttributes);
+        ProductData.UTC utcEnd = getUTCAttribute("End", globalAttributes);
         if (utcEnd != null) {
             if (mustFlipY) {
                 product.setStartTime(utcEnd);
@@ -100,7 +101,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
         addMetadata(product, "products", "Band_Metadata");
         addMetadata(product, "navigation", "Navigation_Metadata");
         addMetadata(product, "images", "Image_Metadata");
-        addMetadata(product,"quality","Quality_Metadata");
+        addMetadata(product, "quality", "Quality_Metadata");
 
         /*
         todo add ability to read the true_color image inculded in the file
@@ -117,7 +118,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
 
     private void addQualityFlags(Product product) {
         Band QFBand = product.getBand("flags");
-        if(QFBand != null) {
+        if (QFBand != null) {
             FlagCoding flagCoding = new FlagCoding("Quality_Flags");
             flagCoding.addFlag("LAND", 0x01, "Land");
             flagCoding.addFlag("NAVFAIL", 0x02, "Navigation failure");
@@ -165,21 +166,19 @@ public class L1BHicoFileReader extends SeadasFileReader {
     private ProductData.UTC getUTCAttribute(String key, List<Attribute> globalAttributes) {
         String timeString = null;
         try {
-            if (key.equals("Start")){
+            if (key.equals("Start")) {
                 Attribute date_attribute = findAttribute("metadata_FGDC_Identification_Information_Time_Period_of_Content_Beginning_Date", globalAttributes);
                 Attribute time_attribute = findAttribute("metadata_FGDC_Identification_Information_Time_Period_of_Content_Beginning_Time", globalAttributes);
-                StringBuilder tstring = new StringBuilder(date_attribute.getStringValue().trim());
-                tstring.append(time_attribute.getStringValue().trim());
-                tstring.append("000");
-                timeString = tstring.toString();
+                String tstring = date_attribute.getStringValue().trim() + time_attribute.getStringValue().trim() +
+                        "000";
+                timeString = tstring;
             }
-            if (key.equals("End")){
+            if (key.equals("End")) {
                 Attribute date_attribute = findAttribute("metadata_FGDC_Identification_Information_Time_Period_of_Content_Ending_Date", globalAttributes);
                 Attribute time_attribute = findAttribute("metadata_FGDC_Identification_Information_Time_Period_of_Content_Ending_Time", globalAttributes);
-                StringBuilder tstring = new StringBuilder(date_attribute.getStringValue().trim());
-                tstring.append(time_attribute.getStringValue().trim());
-                tstring.append("000");
-                timeString = tstring.toString();
+                String tstring = date_attribute.getStringValue().trim() + time_attribute.getStringValue().trim() +
+                        "000";
+                timeString = tstring;
             }
         } catch (Exception ignored) {
         }
@@ -199,7 +198,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
     }
 
     public void addMetadata(Product product, String groupname, String meta_element) throws ProductIOException {
-        Group group =  ncFile.findGroup(groupname);
+        Group group = ncFile.findGroup(groupname);
 
         if (group != null) {
             final MetadataElement bandAttributes = new MetadataElement(meta_element);
@@ -285,10 +284,8 @@ public class L1BHicoFileReader extends SeadasFileReader {
 
                     for (int i = 0; i < bands; i++) {
                         final float wavelength = getHicoWvl(i);
-                        StringBuilder longname = new StringBuilder(description);
-                        longname.append("_");
-                        longname.append(wavelength);
-                        String name = longname.toString();
+                        String name = description + "_" +
+                                wavelength;
                         final int dataType = getProductDataType(variable);
                         band = new Band(name, dataType, width, height);
                         product.addBand(band);

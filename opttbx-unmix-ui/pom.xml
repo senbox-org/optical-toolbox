@@ -69,7 +69,7 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-unmix</artifactId>
-            <version>${snap.version}</version>
+            <version>${opttbx.version}</version>
         </dependency>
 
         <dependency>

@@ -39,7 +39,9 @@ public class GenericRegionMergingUI extends BaseOperatorUI {
     public JComponent CreateOpTab(String operatorName, Map<String, Object> parameterMap, AppContext appContext) {
         initializeOperatorUI(operatorName, parameterMap);
         this.bindingContext = this.bindingContext == null ? new BindingContext(this.propertySet) : this.bindingContext;
-        this.propertySet.setDefaultValues();
+        if (paramMap.isEmpty()) {
+            this.propertySet.setDefaultValues();
+        }
         PropertyPane parametersPane = new PropertyPane(this.bindingContext);
         final JComponent panel = parametersPane.createPanel();
         initParameters();
@@ -48,8 +50,11 @@ public class GenericRegionMergingUI extends BaseOperatorUI {
 
     @Override
     public void initParameters() {
-        JList bandList = (JList) this.bindingContext.getBinding(SOURCE_BAND_NAMES_PROPERTY_NAME).getComponents()[0];
-        OperatorUIUtils.initParamList(bandList, getBandNames(), (Object[]) this.paramMap.get(SOURCE_BAND_NAMES_PROPERTY_NAME));
+        if (sourceProducts != null) {
+            updateSourceBands();
+            JList bandList = (JList) this.bindingContext.getBinding(SOURCE_BAND_NAMES_PROPERTY_NAME).getComponents()[0];
+            OperatorUIUtils.initParamList(bandList, getBandNames(), (Object[]) this.paramMap.get(SOURCE_BAND_NAMES_PROPERTY_NAME));
+        }
     }
 
     @Override
@@ -118,15 +123,19 @@ public class GenericRegionMergingUI extends BaseOperatorUI {
     }
 
     private void updateSourceBands() {
-        if (this.propertySet == null) return;
+        if (this.propertySet == null || this.sourceProducts == null)
+                return;
 
         final Property[] properties = this.propertySet.getProperties();
         for (Property p : properties) {
             final PropertyDescriptor descriptor = p.getDescriptor();
             final String name = descriptor.getName();
+            if (name == null || !name.equals(SOURCE_BAND_NAMES_PROPERTY_NAME))
+                continue;
+
             final String[] bandNames = getBandNames();
 
-            if (this.sourceProducts == null || name == null || !name.equals(SOURCE_BAND_NAMES_PROPERTY_NAME) || bandNames.length < 1)
+            if (bandNames.length < 1)
                 continue;
 
             final ValueSet valueSet = new ValueSet(bandNames);
