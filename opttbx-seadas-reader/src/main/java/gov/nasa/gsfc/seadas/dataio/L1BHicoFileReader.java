@@ -16,6 +16,7 @@
 
 package gov.nasa.gsfc.seadas.dataio;
 
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
@@ -44,16 +45,18 @@ import java.util.Map;
  */
 public class L1BHicoFileReader extends SeadasFileReader {
 
+    private Array wavlengths;
+
     L1BHicoFileReader(SeadasProductReader productReader) {
         super(productReader);
     }
 
-    Array wavlengths = ncFile.findVariable("products/Lt").findAttribute("wavelengths").getValues();
-
     @Override
     public Product createProduct() throws ProductIOException {
+        final Variable ltVariable = ncFile.findVariable("products/Lt");
+        wavlengths = ltVariable.findAttribute("wavelengths").getValues();
 
-        int[] dims = ncFile.findVariable("products/Lt").getShape();
+        final int[] dims = ltVariable.getShape();
         int sceneWidth = dims[1];
         int sceneHeight = dims[0];
         String productName;
@@ -109,7 +112,6 @@ public class L1BHicoFileReader extends SeadasFileReader {
              out how to read it...
         */
         addQualityFlags(product);
-
 
         product.setAutoGrouping("Lt");
 
@@ -222,12 +224,12 @@ public class L1BHicoFileReader extends SeadasFileReader {
         }
     }
 
-    private Map<Band, Variable> addHicoBands(Product product, List<Variable> variables) {
+    private Map<String, Variable> addHicoBands(Product product, List<Variable> variables) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             if ((variable.getShortName().contains("latitude")) || (variable.getShortName().contains("longitude"))
@@ -265,7 +267,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
                             band.setNoDataValueUsed(true);
                         }
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     band.setUnit(units);
                     band.setDescription(name);
                 }
@@ -320,7 +322,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
                                 band.setNoDataValueUsed(true);
                             }
                         }
-                        bandToVariableMap.put(band, sliced);
+                        bandToVariableMap.put(band.getName(), sliced);
                         band.setUnit(units);
                         band.setDescription(description);
 
@@ -385,5 +387,11 @@ public class L1BHicoFileReader extends SeadasFileReader {
                 throw new ProductIOException(e.getMessage());
             }
         }
+    }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        System.out.println("variableName = " + variableName);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

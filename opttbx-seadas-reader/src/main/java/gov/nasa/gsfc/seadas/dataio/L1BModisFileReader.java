@@ -211,12 +211,12 @@ public class L1BModisFileReader extends SeadasFileReader {
         return scale_factor;
     }
 
-    private Map<Band, Variable> addModisBands(Product product, List<Variable> variables) {
+    private Map<String, Variable> addModisBands(Product product, List<Variable> variables) {
 
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             final int variableRank = variable.getRank();
@@ -282,7 +282,7 @@ public class L1BModisFileReader extends SeadasFileReader {
                             } catch (InvalidRangeException e) {
                                 e.printStackTrace();  //Todo change body of catch statement.
                             }
-                            bandToVariableMap.put(band, sliced);
+                            bandToVariableMap.put(band.getName(), sliced);
                             band.setUnit(units);
                             band.setDescription(description);
                             if (slope != null) {

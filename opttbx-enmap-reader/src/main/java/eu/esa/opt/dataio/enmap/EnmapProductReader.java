@@ -458,7 +458,10 @@ class EnmapProductReader extends AbstractProductReader {
                                           int sourceStepX, int sourceStepY,
                                           Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight,
                                           ProductData destBuffer, ProgressMonitor pm) throws IOException {
+
+        // @todo 1 tb/tb take subsampling into account 2026-04-23
         final Integer spectralLayer = state.spectralBandLayerIndexMap.get(destBand.getName());
+
         if (spectralLayer != null) {
             readFromCache(SPECTRAL_CACHE_VARIABLE_NAME, spectralLayer, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer);
             return;

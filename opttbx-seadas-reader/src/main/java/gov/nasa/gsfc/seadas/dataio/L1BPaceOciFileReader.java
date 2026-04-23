@@ -16,6 +16,7 @@
 
 package gov.nasa.gsfc.seadas.dataio;
 
+import eu.esa.snap.core.dataio.cache.*;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class L1BPaceOciFileReader extends SeadasFileReader {
+public class L1BPaceOciFileReader extends SeadasFileReader implements CacheDataProvider {
 
     L1BPaceOciFileReader(SeadasProductReader productReader) {
         super(productReader);
@@ -62,7 +63,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     @Override
     public Product createProduct() throws ProductIOException {
-        
+
         int[] shape;
         int sceneWidth, sceneHeight ;
         String productName;
@@ -117,19 +118,6 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
         product.setDescription(productName);
 
-        // @todo 3 this is obviously never used again - remove? tb 2026-01-13
-        //Attribute startTime = findAttribute("time_coverage_start");
-        //ProductData.UTC utcStart = getUTCAttribute("time_coverage_start");
-        //ProductData.UTC utcEnd = getUTCAttribute("time_coverage_end");
-        //if (startTime == null) {
-         //   utcStart = getUTCAttribute("Start_Time");
-        //   utcEnd = getUTCAttribute("End_Time");
-        //}
-        // only needed as a stop-gap to handle an intermediate version of l2gen metadata
-        //if (utcEnd == null) {
-        //    utcEnd = getUTCAttribute("time_coverage_stop");
-        //}
-
         product.setFileLocation(productReader.getInputFile());
         product.setProductReader(productReader);
 
@@ -172,12 +160,12 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         }
     }
 
-    private Map<Band, Variable> addOciBands(Product product, List<Variable> variables) {
+    private Map<String, Variable> addOciBands(Product product, List<Variable> variables) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_band_parameters") || variable.getParentGroup().equals("scan_line_attributes"))
@@ -220,7 +208,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
                             band.setNoDataValueUsed(true);
                         }
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     band.setUnit(units);
                     band.setDescription(variable.getDescription());
                 }
@@ -276,7 +264,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
                                 band.setNoDataValueUsed(true);
                             }
                         }
-                        bandToVariableMap.put(band, sliced);
+                        bandToVariableMap.put(band.getName(), sliced);
                         band.setUnit(units);
                         band.setDescription(description);
 
@@ -368,13 +356,19 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             }
         }
     }
-    private int getDimension(String dimensionName) {
-        final List<Dimension> dimensions = ncFile.getDimensions();
-        for (Dimension dimension : dimensions) {
-            if (dimension.getShortName().equals(dimensionName)) {
-                return dimension.getLength();
-            }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        final Variable netcdVariable = variableMap.get(variableName);
+        if (netcdVariable == null) {
+            throw new IOException("Variable not known: " + variableName);
         }
-        return -1;
+
+        return null;
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        throw new RuntimeException("not implemented");
     }
 }

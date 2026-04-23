@@ -51,6 +51,7 @@ public class PaceOCICachedProductReader extends AbstractProductReader implements
 
         variablesMap = new HashMap<>();
         geoCoding = null;
+        productCache = null;
     }
 
     @Override
@@ -357,6 +358,7 @@ public class PaceOCICachedProductReader extends AbstractProductReader implements
         final int[] targetShapes = {destHeight, destWidth};
         final DataBuffer targetBuffer = new DataBuffer(destBuffer, targetOffsets, targetShapes);
         productCache.read(destBandName, offsets, shapes, targetBuffer);
+        // @todo 1 tb/tb take subsampling into account 2026-04-23
     }
 
     @Override

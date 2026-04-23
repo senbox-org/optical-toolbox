@@ -16,6 +16,7 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.snap.core.dataio.cache.*;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -35,19 +36,22 @@ import java.util.List;
 
 // import org.opengis.filter.spatial.Equals;
 
-public class SeadasProductReader extends AbstractProductReader {
+public class SeadasProductReader extends AbstractProductReader implements CacheDataProvider {
 
     private NetcdfFile ncfile;
     private ProductType productType;
     private SeadasFileReader seadasFileReader;
+    private ProductCache productCache;
 
     enum Mission {
         OCI("OCI");
 
-        private String name;
-        private Mission(String nm) {
+        private final String name;
+
+        Mission(String nm) {
             name = nm;
         }
+
         public String toString() {
             return name;
         }
@@ -61,15 +65,16 @@ public class SeadasProductReader extends AbstractProductReader {
         L3b("L3 Binned"),
         L3m("L3 Mapped");
 
-        private String name;
-        private ProcessingLevel(String nm) {
+        private final String name;
+
+        ProcessingLevel(String nm) {
             name = nm;
         }
+
         public String toString() {
             return name;
         }
     }
-
 
 
     enum ProductType {
@@ -132,19 +137,25 @@ public class SeadasProductReader extends AbstractProductReader {
      */
     protected SeadasProductReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
+
+        productCache = null;
+        ncfile = null;
     }
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
+        productCache = new ProductCache(this);
+        CacheManager.getInstance().register(productCache);
+
+        final File inFile = SeadasHelper.getInputFile(getInput());
+        final String path = inFile.getPath();
 
         try {
-//            Product product;
-            final File inFile = SeadasHelper.getInputFile(getInput());
-            final String path = inFile.getPath();
-
             ncfile = NetcdfFileOpener.open(path);
             productType = findProductType();
             seadasFileReader = getReaderFromProductType(productType, this);
+            // @todo 1 tb refactor 2026-04-22
+            seadasFileReader.setProductCache(productCache);
 
             Product product = seadasFileReader.createProduct();
 
@@ -222,8 +233,14 @@ public class SeadasProductReader extends AbstractProductReader {
 
     @Override
     public void close() throws IOException {
+        if (productCache != null) {
+            CacheManager.getInstance().remove(productCache);
+            productCache = null;
+        }
+
         if (ncfile != null) {
             ncfile.close();
+            ncfile = null;
         }
     }
 
@@ -262,12 +279,7 @@ public class SeadasProductReader extends AbstractProductReader {
         }
         try {
             String projection = mapProjectionAttribute.getStringValue();
-            if (projection.contains("proj=eqc") || projection.contains("Equidistant Cylindrical")){
-                return true;
-            }
-            else {
-                return false;
-            }
+            return projection.contains("proj=eqc") || projection.contains("Equidistant Cylindrical");
         } catch (Exception e) {
             return false;
         }
@@ -453,9 +465,9 @@ public class SeadasProductReader extends AbstractProductReader {
             return ProductType.ANCCLIM;
         } else if (title.contains("Level-3") && title.contains("Mapped Image")) {
             return ProductType.Level3_SeadasMapped;
-        }else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
+        } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
             return ProductType.SMI;
-        }  else if (title.contains("Level-3 Binned Data") || title.contains("level-3_binned_data")) {
+        } else if (title.contains("Level-3 Binned Data") || title.contains("level-3_binned_data")) {
             return ProductType.Level3_Bin;
         }
         return ProductType.UNKNOWN;
@@ -469,5 +481,15 @@ public class SeadasProductReader extends AbstractProductReader {
             }
         }
         return null;
+    }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        return seadasFileReader.getVariableDescriptor(variableName);
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        throw new RuntimeException("not implemented");
     }
 }

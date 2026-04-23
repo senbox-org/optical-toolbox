@@ -360,20 +360,20 @@ public class L3BinFileReader extends SeadasFileReader {
         }
     }
 
-    public Map<Band, Variable> addBands(Product product, Variable idxVariable, List<Variable> l3ProdVars) {
+    public Map<String, Variable> addBands(Product product, Variable idxVariable, List<Variable> l3ProdVars) {
 
         final Structure binListStruc = (Structure) idxVariable;
 
-        final Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        final Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
 
 
 //        bandToVariableMap.put(addBand(product, "bin_num", ProductData.TYPE_UINT32), binListStruc.select("bin_num").findVariable("bin_num"));
-        bandToVariableMap.put(addBand(product, "weights", ProductData.TYPE_FLOAT32), binListStruc.select("weights").findVariable("weights"));
-        bandToVariableMap.put(addBand(product, "nobs", ProductData.TYPE_UINT16), binListStruc.select("nobs").findVariable("nobs"));
-        bandToVariableMap.put(addBand(product, "nscenes", ProductData.TYPE_UINT16), binListStruc.select("nscenes").findVariable("nscenes"));
+        bandToVariableMap.put(addBand(product, "weights", ProductData.TYPE_FLOAT32).getName(), binListStruc.select("weights").findVariable("weights"));
+        bandToVariableMap.put(addBand(product, "nobs", ProductData.TYPE_UINT16).getName(), binListStruc.select("nobs").findVariable("nobs"));
+        bandToVariableMap.put(addBand(product, "nscenes", ProductData.TYPE_UINT16).getName(), binListStruc.select("nscenes").findVariable("nscenes"));
 //        ncFile.getRootGroup().findGroup("Level-3 Binned Data").findVariable("BinList");
         if (ncFile.getRootGroup().findGroup("Level-3_Binned_Data").findVariable("qual_l3") != null){
-            bandToVariableMap.put(addBand(product, "qual_l3", ProductData.TYPE_UINT8), ncFile.getRootGroup().findGroup("Level-3_Binned_Data").findVariable("qual_l3"));
+            bandToVariableMap.put(addBand(product, "qual_l3", ProductData.TYPE_UINT8).getName(), ncFile.getRootGroup().findGroup("Level-3_Binned_Data").findVariable("qual_l3"));
         }
         String groupnames = "";
         for (Variable l3Var : l3ProdVars) {
@@ -393,7 +393,7 @@ public class L3BinFileReader extends SeadasFileReader {
 
                 List<String> vnames = binStruc.getVariableNames();
                 for (String bandvar : vnames) {
-                    bandToVariableMap.put(addBand(product, bandvar, dataType), binStruc.select(bandvar).findVariable(bandvar));
+                    bandToVariableMap.put(addBand(product, bandvar, dataType).getName(), binStruc.select(bandvar).findVariable(bandvar));
                 }
                 // Add virtual band for product mean
                 StringBuilder prodname = new StringBuilder(varName);

@@ -16,6 +16,10 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.snap.core.dataio.cache.CacheDataProvider;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.ProductCache;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.ProductUtils;
@@ -63,12 +67,12 @@ import static java.lang.System.arraycopy;
 //AUG 2024 - Daniel Knowles - added PACE OCI actual center wavelengths lookup in resources
 
 
-public abstract class SeadasFileReader {
+public abstract class SeadasFileReader implements CacheDataProvider {
 
     protected boolean mustFlipX;
     protected boolean mustFlipY;
     protected List<Attribute> globalAttributes;
-    protected Map<Band, Variable> variableMap;
+    protected Map<String, Variable> variableMap;
     protected NetcdfFile ncFile;
     protected SeadasProductReader productReader;
     protected int[] start = new int[2];
@@ -80,7 +84,6 @@ public abstract class SeadasFileReader {
     protected String[] flagValuesStringArray = null;
     protected String flagMeanings = null;
 
-
     protected int leadLineSkip = 0;
     protected int tailLineSkip = 0;
 
@@ -89,6 +92,8 @@ public abstract class SeadasFileReader {
     protected Logger logger = Logger.getLogger(getClass().getSimpleName());
 
     private boolean isHeadless;
+
+    private ProductCache productCache;
 
     protected static final SkipBadNav LAT_SKIP_BAD_NAV = new SkipBadNav() {
         @Override
@@ -102,6 +107,10 @@ public abstract class SeadasFileReader {
         ncFile = productReader.getNcfile();
         globalAttributes = ncFile.getGlobalAttributes();
         this.isHeadless = GraphicsEnvironment.isHeadless();
+    }
+
+    public void setProductCache(ProductCache productCache) {
+        this.productCache = productCache;
     }
 
     public abstract Product createProduct() throws IOException;
@@ -129,10 +138,17 @@ public abstract class SeadasFileReader {
         count[0] = sourceHeight;
         count[1] = sourceWidth;
         Object buffer = destBuffer.getElems();
-        Variable variable = variableMap.get(destBand);
+        Variable variable = variableMap.get(destBand.getName());
 
         pm.beginTask("Reading band '" + variable.getShortName() + "'...", sourceHeight);
         try {
+            /*
+            DataBuffer dataBuffer = new DataBuffer(destBuffer, new int[]{0, 0}, count);
+            productCache.read(destBand.getName(), start, count, dataBuffer);
+
+
+             */
+
             Section section = new Section(start, count, stride);
 
             Array array;
@@ -160,6 +176,8 @@ public abstract class SeadasFileReader {
                 arraycopy(storage, 0, buffer, 0, destBuffer.getNumElems());
 
             }
+
+
         } finally {
             pm.done();
         }
@@ -1540,15 +1558,15 @@ public abstract class SeadasFileReader {
 
 
 
-    public Map<Band, Variable> addBands(Product product,
+    public Map<String, Variable> addBands(Product product,
                                         List<Variable> variables) {
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
             int variableRank = variable.getRank();
             if (variableRank == 2) {
                 Band band = addNewBand(product, variable);
                 if (band != null) {
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                 }
             } else if (variableRank == 3) {
                 add3DNewBands(product, variable, bandToVariableMap);
@@ -1658,7 +1676,7 @@ public abstract class SeadasFileReader {
     // todo END todo block
 
 
-    protected Map<Band, Variable> add3DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
+    protected Map<String, Variable> add3DNewBands(Product product, Variable variable, Map<String, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
@@ -1759,7 +1777,7 @@ public abstract class SeadasFileReader {
                         } catch (InvalidRangeException e) {
                             e.printStackTrace();  //Todo change body of catch statement.
                         }
-                        bandToVariableMap.put(band, sliced);
+                        bandToVariableMap.put(band.getName(), sliced);
 
                         try {
                             Attribute fillValue = variable.findAttribute("_FillValue");
@@ -2974,12 +2992,19 @@ public abstract class SeadasFileReader {
         }
     }
 
-
-
-
     private interface SkipBadNav {
 
         boolean isBadNav(double value);
     }
 
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+
+        throw new RuntimeException(this.getClass().getName() + " must override this method");
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        throw new RuntimeException(this.getClass().getName() + " must override this method");
+    }
 }

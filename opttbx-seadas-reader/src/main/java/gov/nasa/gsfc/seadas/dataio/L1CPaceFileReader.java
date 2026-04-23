@@ -216,12 +216,12 @@ public class L1CPaceFileReader extends SeadasFileReader {
         }
     }
 
-    private Map<Band, Variable> addHarpBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, boolean correctDim) {
+    private Map<String, Variable> addHarpBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, boolean correctDim) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
@@ -308,7 +308,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     band.setUnit(units);
                     band.setDescription(variable.getDescription());
                 }
@@ -432,7 +432,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 }
                                 band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                             }
-                            bandToVariableMap.put(band, sliced);
+                            bandToVariableMap.put(band.getName(), sliced);
                             band.setUnit(units);
                             band.setDescription(description);
                         }
@@ -565,7 +565,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     }
                                     band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                                 }
-                                bandToVariableMap.put(band, sliced);
+                                bandToVariableMap.put(band.getName(), sliced);
                                 band.setUnit(units);
                                 band.setDescription(description);
 //                            }
@@ -577,13 +577,12 @@ public class L1CPaceFileReader extends SeadasFileReader {
         return bandToVariableMap;
     }
 
-    private Map<Band, Variable> addOciBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths) {
+    private Map<String, Variable> addOciBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
-        int spectralBandIndex = 0;
+        Map<String, Variable> bandToVariableMap = new HashMap<String , Variable>();
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
                 continue;
@@ -669,7 +668,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     band.setUnit(units);
                     band.setDescription(variable.getDescription());
                 }
@@ -772,7 +771,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 }
                                 band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                             }
-                            bandToVariableMap.put(band, sliced);
+                            bandToVariableMap.put(band.getName(), sliced);
                             band.setUnit(units);
                             band.setDescription(description);
                         }
@@ -884,7 +883,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     }
                                     band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                                 }
-                                bandToVariableMap.put(band, sliced);
+                                bandToVariableMap.put(band.getName(), sliced);
                                 band.setUnit(units);
                                 band.setDescription(description);
                             }
@@ -898,7 +897,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
         return bandToVariableMap;
     }
 
-    private Map<Band, Variable> addSPEXoneBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, Array wavelengths_pol) {
+    private Map<String, Variable> addSPEXoneBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, Array wavelengths_pol) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
@@ -907,7 +906,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
 //        Array wavelengths_pol = null;
 //        Array view_angles = null;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
                 continue;
@@ -993,7 +992,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     band.setUnit(units);
                     band.setDescription(variable.getDescription());
                 }
@@ -1111,7 +1110,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 }
                                 band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                             }
-                            bandToVariableMap.put(band, sliced);
+                            bandToVariableMap.put(band.getName(), sliced);
                             band.setUnit(units);
                             band.setDescription(description);
                         }
@@ -1258,7 +1257,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     }
                                     band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                                 }
-                                bandToVariableMap.put(band, sliced);
+                                bandToVariableMap.put(band.getName(), sliced);
                                 band.setUnit(units);
                                 band.setDescription(description);
                             }
