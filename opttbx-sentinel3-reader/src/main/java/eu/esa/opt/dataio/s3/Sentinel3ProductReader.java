@@ -151,13 +151,13 @@ public class Sentinel3ProductReader extends AbstractProductReader {
 
     @Override
     public final void close() throws IOException {
-        if (virtualDir != null) {
-            virtualDir.close();
-            virtualDir = null;
-        }
         if (factory != null) {
             factory.dispose();
             factory = null;
+        }
+        if (virtualDir != null) {
+            virtualDir.close();
+            virtualDir = null;
         }
         super.close();
     }
