@@ -25,7 +25,8 @@
 <table class="header">
     <tr class="header">
         <td class="header">C2RCC Algorithm Specification</td>
-        <td class="header" align="right"><a href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html"><img
+        <td class="header" align="right"><a
+                href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html"><img
                 src="../images/snap_header.jpg" border=0></a>
         </td>
     </tr>
@@ -33,19 +34,22 @@
 
 <h3>Algorithm Specification</h3>
 
-<p>The C2RCC processor is based on deep learning approaches. Neural networks are trained in order to perform the
-    inversion of spectrum for the atmospheric correction, i.e. the determination of the water leaving radiance from the
+<p>The C2RCC processor is based on deep learning approaches. Neural networks are trained to perform the
+    inversion of spectrum for the atmospheric correction, i.e., the determination of the water leaving radiance from the
     top of atmosphere radiances, as well as the retrieval of inherent optical properties of the water body.
-    The C2RCC processor relies on a large database of simulated water leaving reflectances, and related top-of- atmosphere radiances.
+    The C2RCC processor relies on a large database of simulated water leaving reflectances, and related top-of-
+    atmosphere radiances.
     A careful characterisation of optically complex waters through its IOPs as well as of coastal atmospheres is used
     to parameterise radiative transfer models for the water body and the atmosphere. Covariances between the water
-    constituents are taken into account and a large database of reflectances at the water surface is calculated.
-    These reflectances are further used as lower boundary conditions for the radiative transfer calculation in the atmosphere.
-    Finally, a database of 5 million cases is generated, which is the basis for training neural nets.
-    For example, the top-of-atmosphere full spectrum is input to a neural net, and the water leaving reflectance in the visible
+    constituents are taken into account, and a large database of reflectances at the water surface is calculated.
+    These reflectances are further used as lower boundary conditions for the radiative transfer calculation in the
+    atmosphere.
+    Finally, a database of five million cases is generated, which is the basis for training neural nets.
+    For example, the top-of-atmosphere full spectrum is input to a neural net, and the water leaving reflectance in the
+    visible
     and near-infrared bands is the output. The training can be understood as a nonlinear multiple regression.</p>
 <p>The input spectra are corrected for gaseous absorption. Air pressure, and thus a proper altitude correction,
-    is inherent part of the neural network processing. The main output of the atmosphere part are directional water
+    is an inherent part of the neural network processing. The main output of the atmosphere part are directional water
     leaving
     reflectances produced by the atmospheric correction neural net. The atmosphere part contains out-of-range tests
     and out-of-scope tests of the TOA reflectances, resulting in corresponding quality flags.
@@ -55,6 +59,15 @@
     The in-water part gets as input the directional water leaving reflectances from the atmosphere part.</p>
 
 <h4>References</h4>
+<p>The latest paper about describes the basic principles and the performance of the C2RCC algorithm.<br>
+    <object classid="java:eu.esa.snap.netbeans.javahelp.BrowserDisplayer">
+        <param name="content" value="https://doi.org/10.3389/frsen.2026.1710758">
+        <param name="text"
+               value="Case 2 Regional Coast Colour: a neural network-based framework for atmospheric correction and in-water retrievals across multiple ocean colour satellite sensors">
+        <param name="textFontSize" value="bigger">
+    </object>
+</p>
+
 <p>The general concept is described in the ATBD for OLCI L2 Ocean data, but also applicable to other sensors like,
     S2-MCI and Landsat8:<br>
     <object classid="java:eu.esa.snap.netbeans.javahelp.BrowserDisplayer">
@@ -81,7 +94,8 @@
                value="Evolution of the C2RCC neural network for SENTINEL-2 and 3 for the retrieval of ocean colour products
            in normal and extreme optically complex waters">
         <param name="textFontSize" value="bigger">
-    </object></p>
+    </object>
+</p>
 
 <hr>
 </body>
