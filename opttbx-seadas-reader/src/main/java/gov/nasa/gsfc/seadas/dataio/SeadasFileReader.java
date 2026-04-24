@@ -16,12 +16,13 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.snap.core.dataio.cache.CacheDataProvider;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.ProductCache;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.datamodel.*;
-import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.PropertyMap;
-import org.esa.snap.core.util.ResourceInstaller;
-import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.CsvReader;
 import org.esa.snap.rcp.SnapApp;
 import ucar.ma2.Array;
@@ -32,16 +33,12 @@ import ucar.nc2.*;
 import ucar.nc2.Dimension;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 import java.util.List;
@@ -49,7 +46,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static gov.nasa.gsfc.seadas.dataio.SeadasReaderDefaults.*;
-import static java.lang.String.format;
 import static java.lang.System.arraycopy;
 
 /**
@@ -63,12 +59,13 @@ import static java.lang.System.arraycopy;
 //AUG 2024 - Daniel Knowles - added PACE OCI actual center wavelengths lookup in resources
 
 
-public abstract class SeadasFileReader {
+public abstract class SeadasFileReader implements CacheDataProvider {
 
     protected boolean mustFlipX;
     protected boolean mustFlipY;
+    protected boolean wantsCaching = false;
     protected List<Attribute> globalAttributes;
-    protected Map<Band, Variable> variableMap;
+    protected Map<String, Variable> variableMap;
     protected NetcdfFile ncFile;
     protected SeadasProductReader productReader;
     protected int[] start = new int[2];
@@ -80,7 +77,6 @@ public abstract class SeadasFileReader {
     protected String[] flagValuesStringArray = null;
     protected String flagMeanings = null;
 
-
     protected int leadLineSkip = 0;
     protected int tailLineSkip = 0;
 
@@ -88,11 +84,13 @@ public abstract class SeadasFileReader {
     private static final String FLAG_MEANINGS = "flag_meanings";
     protected Logger logger = Logger.getLogger(getClass().getSimpleName());
 
-    private boolean isHeadless;
+    private final boolean isHeadless;
+
+    private ProductCache productCache;
 
     protected static final SkipBadNav LAT_SKIP_BAD_NAV = new SkipBadNav() {
         @Override
-        public final boolean isBadNav(double value) {
+        public boolean isBadNav(double value) {
             return Double.isNaN(value) || value > 90.0 || value < -90.0;
         }
     };
@@ -102,6 +100,10 @@ public abstract class SeadasFileReader {
         ncFile = productReader.getNcfile();
         globalAttributes = ncFile.getGlobalAttributes();
         this.isHeadless = GraphicsEnvironment.isHeadless();
+    }
+
+    public void setProductCache(ProductCache productCache) {
+        this.productCache = productCache;
     }
 
     public abstract Product createProduct() throws IOException;
@@ -129,36 +131,53 @@ public abstract class SeadasFileReader {
         count[0] = sourceHeight;
         count[1] = sourceWidth;
         Object buffer = destBuffer.getElems();
-        Variable variable = variableMap.get(destBand);
+
+        final String netCDFVariableName = getNetCDFVariableName(destBand.getName());
+        Variable variable = variableMap.get(netCDFVariableName);
 
         pm.beginTask("Reading band '" + variable.getShortName() + "'...", sourceHeight);
         try {
-            Section section = new Section(start, count, stride);
+            if (wantsCaching) {
+                final DataBuffer dataBuffer = new DataBuffer(destBuffer, new int[]{0, 0}, count);
+                int spectralBandIndex = destBand.getSpectralBandIndex();
+                int[] offsets;
+                int[] shapes;
+                if (spectralBandIndex >= 0) {
+                    offsets = new int[]{spectralBandIndex, sourceOffsetY, sourceOffsetX};
+                    shapes = new int[]{1, sourceHeight, sourceWidth};
+                } else {
+                    offsets = new int[]{sourceOffsetY, sourceOffsetX};
+                    shapes = new int[]{sourceHeight, sourceWidth};
+                }
 
-            Array array;
-            int[] newshape = {sourceHeight, sourceWidth};
-
-            array = variable.read(section);
-            if (array.getRank() > 2) {
-                array = array.reshapeNoCopy(newshape);
-            }
-            Object storage;
-
-            if (mustFlipX && !mustFlipY) {
-                storage = array.flip(1).copyTo1DJavaArray();
-            } else if (!mustFlipX && mustFlipY) {
-                storage = array.flip(0).copyTo1DJavaArray();
-            } else if (mustFlipX && mustFlipY) {
-                storage = array.flip(0).flip(1).copyTo1DJavaArray();
+                productCache.read(netCDFVariableName, offsets, shapes, dataBuffer);
             } else {
-                storage = array.copyTo1DJavaArray();
-            }
+                Section section = new Section(start, count, stride);
 
-            if (widthRemainder < 0) {
-                arraycopy(storage, 0, buffer, 0, destBuffer.getNumElems() + widthRemainder);
-            } else {
-                arraycopy(storage, 0, buffer, 0, destBuffer.getNumElems());
+                Array array;
+                int[] newshape = {sourceHeight, sourceWidth};
 
+                array = variable.read(section);
+                if (array.getRank() > 2) {
+                    array = array.reshapeNoCopy(newshape);
+                }
+                Object storage;
+
+                if (mustFlipX && !mustFlipY) {
+                    storage = array.flip(1).copyTo1DJavaArray();
+                } else if (!mustFlipX && mustFlipY) {
+                    storage = array.flip(0).copyTo1DJavaArray();
+                } else if (mustFlipX && mustFlipY) {
+                    storage = array.flip(0).flip(1).copyTo1DJavaArray();
+                } else {
+                    storage = array.copyTo1DJavaArray();
+                }
+
+                if (widthRemainder < 0) {
+                    arraycopy(storage, 0, buffer, 0, destBuffer.getNumElems() + widthRemainder);
+                } else {
+                    arraycopy(storage, 0, buffer, 0, destBuffer.getNumElems());
+                }
             }
         } finally {
             pm.done();
@@ -237,7 +256,6 @@ public abstract class SeadasFileReader {
     final static Color BurntUmber = new Color(165, 0, 11);
     final static Color TealBlue = new Color(0, 103, 144);
     final static Color Cornflower = new Color(38, 115, 245);
-
 
 
     static String getFlagDescription(String flagName) {
@@ -686,12 +704,12 @@ public abstract class SeadasFileReader {
                 } else if (flagNames != null) {
 
                     // this is the old way of doing this --- leaving in case possibly needed for heritage files.
-                    int flagBits[] = {0x01,0x02,0x04,0x08,0x010,0x020,0x040,0x080,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x10000,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x800000,0x1000000,0x2000000,0x4000000,0x8000000,0x10000000,0x20000000,0x40000000,0x80000000}; //todo finish this list
+                    int[] flagBits = {0x01, 0x02, 0x04, 0x08, 0x010, 0x020, 0x040, 0x080, 0x100, 0x200, 0x400, 0x800, 0x1000, 0x2000, 0x4000, 0x8000, 0x10000, 0x20000, 0x40000, 0x80000, 0x100000, 0x200000, 0x400000, 0x800000, 0x1000000, 0x2000000, 0x4000000, 0x8000000, 0x10000000, 0x20000000, 0x40000000, 0x80000000}; //todo finish this list
 
                     for (int bit = 0; (bit < flagNames.length && bit < flagBits.length); bit++) {
                         String flagName = flagNames[bit];
                         if (flagName.startsWith("SPARE")) {
-                            flagName = flagName + Integer.toString(bit + 1);
+                            flagName = flagName + (bit + 1);
                         }
                         flagNames[bit] = flagName;
 //                    System.out.println("flag=" + flagName);
@@ -699,7 +717,7 @@ public abstract class SeadasFileReader {
 //                        System.out.println("Adding flag=" + flagName);
                             flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
                         } else {
-                            flagName = flagName + Integer.toString(bit + 1);
+                            flagName = flagName + (bit + 1);
 //                        System.out.println("Adding flag=" + flagName);
                             flagCoding.addFlag(flagName, flagBits[bit], getFlagDescription(flagName));
                         }
@@ -716,7 +734,6 @@ public abstract class SeadasFileReader {
                 Mask Water_Mask = null;
 
 
-
                 String masksTopOfStack = getMasksTopOfStack();
                 String[] masksTopOfStackArray = masksTopOfStack.split("\\s+|,");
 
@@ -724,29 +741,26 @@ public abstract class SeadasFileReader {
                 String[] masksBottomOfStackArray = masksBottomOfStack.split("\\s+|,");
 
 
-                if (masksTopOfStackArray.length > 0) {
+                for (String flagName : masksTopOfStackArray) {
 
-                    for (String flagName : masksTopOfStackArray) {
-
-                        if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
-                            composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
-                            continue;
-                        }
-                        if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null && flagName.equals(getComposite2MaskName())) {
-                            composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
-                            continue;
-                        }
-                        if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null && flagName.equals(getComposite3MaskName())) {
-                            composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
-                            continue;
-                        }
-                        if (Water_Mask == null && flagName.equals("Water")) {
-                            Water_Mask = createWaterMask(product, Water_Description, flagCoding);
-                            continue;
-                        }
-
-                        addFlagMask(product, flagName, flagCoding);
+                    if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
+                        composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
+                        continue;
                     }
+                    if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null && flagName.equals(getComposite2MaskName())) {
+                        composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
+                        continue;
+                    }
+                    if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null && flagName.equals(getComposite3MaskName())) {
+                        composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
+                        continue;
+                    }
+                    if (Water_Mask == null && flagName.equals("Water")) {
+                        Water_Mask = createWaterMask(product, Water_Description, flagCoding);
+                        continue;
+                    }
+
+                    addFlagMask(product, flagName, flagCoding);
                 }
 
                 String[] flagNames = flagCoding.getFlagNames();
@@ -768,9 +782,6 @@ public abstract class SeadasFileReader {
                         addFlagMask(product, flagName, flagCoding);
                     }
                 }
-
-
-
 
 
                 boolean bottomOfStackComposite1 = false;
@@ -814,34 +825,28 @@ public abstract class SeadasFileReader {
                 }
 
 
+                for (String flagName : masksBottomOfStackArray) {
 
-
-                if (masksBottomOfStackArray.length > 0) {
-
-                    for (String flagName : masksBottomOfStackArray) {
-
-                        if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
-                            composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
-                            continue;
-                        }
-                        if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null && flagName.equals(getComposite2MaskName())) {
-                            composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
-                            continue;
-                        }
-                        if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null && flagName.equals(getComposite3MaskName())) {
-                            composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
-                            continue;
-                        }
-                        if (Water_Mask == null && flagName.equals("Water")) {
-                            Water_Mask = createWaterMask(product, Water_Description, flagCoding);
-                            continue;
-                        }
-
-                        addFlagMask(product, flagName, flagCoding);
+                    if (isMaskEnabled(MaskType.COMPOSITE1_INCLUDE) && composite1Mask == null && flagName.equals(getComposite1MaskName())) {
+                        composite1Mask = createMaskComposite1(product, composite1Description, flagCoding);
+                        continue;
                     }
+                    if (isMaskEnabled(MaskType.COMPOSITE2_INCLUDE) && composite2Mask == null && flagName.equals(getComposite2MaskName())) {
+                        composite2Mask = createMaskComposite2(product, composite2Description, flagCoding);
+                        continue;
+                    }
+                    if (isMaskEnabled(MaskType.COMPOSITE3_INCLUDE) && composite3Mask == null && flagName.equals(getComposite3MaskName())) {
+                        composite3Mask = createMaskComposite3(product, composite3Description, flagCoding);
+                        continue;
+                    }
+                    if (Water_Mask == null && flagName.equals("Water")) {
+                        Water_Mask = createWaterMask(product, Water_Description, flagCoding);
+                        continue;
+                    }
+
+                    addFlagMask(product, flagName, flagCoding);
                 }
-                
-                
+
 
                 String[] bandNames = product.getBandNames();
                 for (String bandName : bandNames) {
@@ -968,12 +973,19 @@ public abstract class SeadasFileReader {
                     }
 
 
-                    if (composite1Mask != null && isMaskEnabled(MaskType.COMPOSITE1)) {raster.getOverlayMaskGroup().add(composite1Mask);}
-                    if (composite2Mask != null && isMaskEnabled(MaskType.COMPOSITE2)) {raster.getOverlayMaskGroup().add(composite2Mask);}
-                    if (composite3Mask != null && isMaskEnabled(MaskType.COMPOSITE3)) {raster.getOverlayMaskGroup().add(composite3Mask);}
-                    if (isMaskEnabled(MaskType.WATER)) {raster.getOverlayMaskGroup().add(Water_Mask);}
+                    if (composite1Mask != null && isMaskEnabled(MaskType.COMPOSITE1)) {
+                        raster.getOverlayMaskGroup().add(composite1Mask);
+                    }
+                    if (composite2Mask != null && isMaskEnabled(MaskType.COMPOSITE2)) {
+                        raster.getOverlayMaskGroup().add(composite2Mask);
+                    }
+                    if (composite3Mask != null && isMaskEnabled(MaskType.COMPOSITE3)) {
+                        raster.getOverlayMaskGroup().add(composite3Mask);
+                    }
+                    if (isMaskEnabled(MaskType.WATER)) {
+                        raster.getOverlayMaskGroup().add(Water_Mask);
+                    }
                 }
-
 
 
             }
@@ -1350,7 +1362,7 @@ public abstract class SeadasFileReader {
         int bitPosition = -1; // not set if equals -1
 //        System.out.println("Checking flags=" + flags);
 
-        for (int currBitPosition=0; currBitPosition < 32; currBitPosition++) {
+        for (int currBitPosition = 0; currBitPosition < 32; currBitPosition++) {
             if (isBitSet(flags, currBitPosition)) {
                 bitPosition = currBitPosition;
 //                System.out.println("flags=" +flags + " currBitPosition=" + currBitPosition);
@@ -1369,8 +1381,6 @@ public abstract class SeadasFileReader {
         // If result is non-zero, the ith bit is set
         return (n & mask) != 0;
     }
-
-
 
 
     private void setFlagMeaningsAndNames(Product product, MetadataElement metadataElementL2Flags) {
@@ -1420,9 +1430,6 @@ public abstract class SeadasFileReader {
     }
 
 
-
-
-
     private Mask createMaskMisc(Product product, String flagName) {
         String flag = "l2_flags." + flagName;
         Mask Misc_Mask = Mask.BandMathsType.create(flagName, getFlagDescription(flagName),
@@ -1433,7 +1440,6 @@ public abstract class SeadasFileReader {
 
         return Misc_Mask;
     }
-
 
 
     private Mask createMaskComposite1(Product product, String composite1Description, FlagCoding flagCoding) {
@@ -1455,7 +1461,6 @@ public abstract class SeadasFileReader {
 
         return composite1Mask;
     }
-
 
 
     private Mask createMaskComposite2(Product product, String composite2Description, FlagCoding flagCoding) {
@@ -1501,7 +1506,6 @@ public abstract class SeadasFileReader {
     }
 
 
-
     private Mask createWaterMask(Product product, String Water_Description, FlagCoding flagCoding) {
 
         if (flagCoding != null && flagCoding.containsAttribute("LAND")) {
@@ -1515,8 +1519,6 @@ public abstract class SeadasFileReader {
 
         return null;
     }
-
-
 
 
     private Mask createSPAREMask(Product product, String maskName) {
@@ -1534,21 +1536,15 @@ public abstract class SeadasFileReader {
     }
 
 
-
-
-
-
-
-
-    public Map<Band, Variable> addBands(Product product,
-                                        List<Variable> variables) {
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+    public Map<String, Variable> addBands(Product product,
+                                          List<Variable> variables) {
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
             int variableRank = variable.getRank();
             if (variableRank == 2) {
                 Band band = addNewBand(product, variable);
                 if (band != null) {
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                 }
             } else if (variableRank == 3) {
                 add3DNewBands(product, variable, bandToVariableMap);
@@ -1658,7 +1654,7 @@ public abstract class SeadasFileReader {
     // todo END todo block
 
 
-    protected Map<Band, Variable> add3DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
+    protected Map<String, Variable> add3DNewBands(Product product, Variable variable, Map<String, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
@@ -1681,7 +1677,7 @@ public abstract class SeadasFileReader {
         if (height == sceneRasterHeight && width == sceneRasterWidth) {
             // final List<Attribute> list = variable.getAttributes();
             List<Dimension> dims = ncFile.getDimensions();
-            for (Dimension d: dims){
+            for (Dimension d : dims) {
                 if (d.getShortName().equalsIgnoreCase("wavelength_3d")) {
                     dim = d.getLength();
                 }
@@ -1759,14 +1755,14 @@ public abstract class SeadasFileReader {
                         } catch (InvalidRangeException e) {
                             e.printStackTrace();  //Todo change body of catch statement.
                         }
-                        bandToVariableMap.put(band, sliced);
+                        bandToVariableMap.put(band.getName(), sliced);
 
                         try {
                             Attribute fillValue = variable.findAttribute("_FillValue");
                             if (fillValue == null) {
                                 fillValue = variable.findAttribute("bad_value_scaled");
                             }
-                            band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
+                            band.setNoDataValue(fillValue.getNumericValue().floatValue());
                             band.setNoDataValueUsed(true);
                             band.setSpectralWavelength(wavelengths.getFloat(i));
                             band.setSpectralBandIndex(1);
@@ -1878,7 +1874,7 @@ public abstract class SeadasFileReader {
                         if (fillValue == null) {
                             fillValue = variable.findAttribute("bad_value_scaled");
                         }
-                        band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
+                        band.setNoDataValue(fillValue.getNumericValue().floatValue());
                         band.setNoDataValueUsed(true);
                     } catch (Exception ignored) {
                     }
@@ -1964,8 +1960,6 @@ public abstract class SeadasFileReader {
     }
 
 
-
-
     public String formatValidMinMax(double value, boolean isMax) {
 
         String valueStr;
@@ -1976,7 +1970,6 @@ public abstract class SeadasFileReader {
             valueStr = Double.toString(value);
             return valueStr;
         }
-
 
 
         boolean roundBigNumbersToInt = false;
@@ -2028,13 +2021,10 @@ public abstract class SeadasFileReader {
     }
 
 
-
-
-
-    private static String  cleanUpPaddedDecimalZeros(String valueStr) {
+    private static String cleanUpPaddedDecimalZeros(String valueStr) {
         if (valueStr.contains(".") && !valueStr.toLowerCase().contains("e")) {
             while (valueStr.endsWith("0") && !valueStr.endsWith(".0")) {
-                valueStr = valueStr.substring(0,valueStr.length()-1);
+                valueStr = valueStr.substring(0, valueStr.length() - 1);
             }
         }
 
@@ -2044,7 +2034,6 @@ public abstract class SeadasFileReader {
 
         return valueStr;
     }
-
 
 
     public void addGlobalMetadata(Product product) {
@@ -2192,7 +2181,6 @@ public abstract class SeadasFileReader {
     }
 
 
-
     public boolean getDefaultFlip() throws ProductIOException {
         return getDefaultFlip(false);
     }
@@ -2226,7 +2214,6 @@ public abstract class SeadasFileReader {
 
         return (startNodeAscending && endNodeAscending);
     }
-
 
 
     protected static HashMap<String, String> readTwoColumnTable(String resourceName) {
@@ -2580,8 +2567,6 @@ public abstract class SeadasFileReader {
     }
 
 
-
-
     // Composite1
 
     private String getComposite1MaskName() {
@@ -2594,7 +2579,6 @@ public abstract class SeadasFileReader {
 
         return composite1MaskName;
     }
-
 
 
     // Composite2
@@ -2611,7 +2595,6 @@ public abstract class SeadasFileReader {
     }
 
 
-
     // Composite3
 
     private String getComposite3MaskName() {
@@ -2624,8 +2607,6 @@ public abstract class SeadasFileReader {
 
         return composite3MaskName;
     }
-
-
 
 
     private String validateCompositeFlagsName(String compositeMaskName, String propertyKey) {
@@ -2684,7 +2665,7 @@ public abstract class SeadasFileReader {
 
         String[] flagsArray = flags.split("\\s+|,");
 
-        for (int i=0; i < flagsArray.length; i++) {
+        for (int i = 0; i < flagsArray.length; i++) {
             if (flagsArray[i].contains("l2_flags.")) {
                 flagsArray[i] = flagsArray[i].replace("l2_flags.", "");
             }
@@ -2745,7 +2726,6 @@ public abstract class SeadasFileReader {
     }
 
 
-
     private boolean isMaskEnabled(MaskType maskType) {
         if (isHeadless) {
             return getDefaultBool(maskType);
@@ -2777,9 +2757,6 @@ public abstract class SeadasFileReader {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(getStringsKey(maskType), getDefaultStrings(maskType));
     }
-
-
-
 
 
     public String getBandGroupingLevel2() {
@@ -2832,7 +2809,6 @@ public abstract class SeadasFileReader {
     }
 
 
-
     public String getBandGroupingL3Mapped() {
         if (this.isHeadless) {
             return SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_DEFAULT;
@@ -2856,8 +2832,6 @@ public abstract class SeadasFileReader {
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_DEFAULT);
     }
-
-
 
 
     public String getBandGroupingL1CPace() {
@@ -2952,7 +2926,6 @@ public abstract class SeadasFileReader {
     }
 
 
-
     public int get_VALID_PIXEL_SIG_FIGS() {
         String sigFixStr;
         if (this.isHeadless) {
@@ -2974,12 +2947,23 @@ public abstract class SeadasFileReader {
         }
     }
 
-
-
-
     private interface SkipBadNav {
 
         boolean isBadNav(double value);
     }
 
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        throw new RuntimeException(this.getClass().getName() + " must override this method");
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        throw new RuntimeException(this.getClass().getName() + " must override this method");
+    }
+
+    // default implementation, override if the reader uses layers of a 3D variable
+    String getNetCDFVariableName(String bandName) {
+        return bandName;
+    }
 }

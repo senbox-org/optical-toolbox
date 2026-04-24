@@ -51,6 +51,7 @@ public class PaceOCICachedProductReader extends AbstractProductReader implements
 
         variablesMap = new HashMap<>();
         geoCoding = null;
+        productCache = null;
     }
 
     @Override
@@ -357,6 +358,7 @@ public class PaceOCICachedProductReader extends AbstractProductReader implements
         final int[] targetShapes = {destHeight, destWidth};
         final DataBuffer targetBuffer = new DataBuffer(destBuffer, targetOffsets, targetShapes);
         productCache.read(destBandName, offsets, shapes, targetBuffer);
+        // @todo 1 tb/tb take subsampling into account 2026-04-23
     }
 
     @Override
@@ -404,8 +406,7 @@ public class PaceOCICachedProductReader extends AbstractProductReader implements
         if (chunkSizes != null) {
             chunkSizesValues = chunkSizes.getValues();
         } else {
-            // @todo 2 tb/tb missing default values? 2025-12-02
-            chunkSizesValues = Array.factory(netcdVariable.getDataType(), shape);
+            chunkSizesValues = Array.factory(DataType.INT, new int[]{shape.length}, shape);
         }
 
         if (shape.length == 2) {

@@ -124,11 +124,11 @@ public class BrowseProductReader extends SeadasFileReader {
 //    }
 //    @Override
 
-    protected Map<Band, Variable>  addBrsBands(Product product,  List<Variable>  variables) {
+    protected Map<String, Variable>  addBrsBands(Product product,  List<Variable>  variables) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         String description = "Level-1A Browse data";
         String units = "Relative Reflectance units";
 
@@ -179,7 +179,7 @@ public class BrowseProductReader extends SeadasFileReader {
                             }
                         }
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                 }
             } else if (variable.getRank() == 3) {
                 final int[] dimensions = variable.getShape();
@@ -206,7 +206,7 @@ public class BrowseProductReader extends SeadasFileReader {
                             e.printStackTrace();  //Todo change body of catch statement.
                         }
 
-                        bandToVariableMap.put(band, sliced);
+                        bandToVariableMap.put(band.getName(), sliced);
                         band.setUnit(units);
                         band.setDescription(description);
 
