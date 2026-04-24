@@ -202,8 +202,10 @@ public class L2FileReader extends SeadasFileReader {
         addFlagsAndMasks(product);
 //        product.setAutoGrouping("Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf");
 // todo not yet implementing any mission dependent band grouping - but this if statement is a stub for that
-        if (productType == SeadasProductReader.ProductType.Level2_Pace) {
-            product.setAutoGrouping(getBandGroupingLevel2());
+        if (productType == SeadasProductReader.ProductType. Level2_PaceHARP2) {
+            product.setAutoGrouping(getBandGroupingLevel2PaceHarp2());
+        } else if (productType == SeadasProductReader.ProductType. Level2_PaceSPEX) {
+            product.setAutoGrouping(getBandGroupingLevel2PaceSPEXONE());
         } else {
             product.setAutoGrouping(getBandGroupingLevel2());
         }
