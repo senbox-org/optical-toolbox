@@ -16,6 +16,7 @@ import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
+import org.esa.snap.dataio.netcdf.util.ArrayConverter;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
