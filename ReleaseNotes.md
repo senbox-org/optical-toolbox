@@ -3,7 +3,16 @@ Optical Toolbox Release Notes
 
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
+# New in SNAP 13.0.2
+    [SNAP-4182] Incorrect TiePointGeoCoding for OLCI data
+    [SNAP-4181] TPGs are wrongly filled when directly created a subset from a product
+    [SNAP-4170] OLCI L2W Uncertainty issue BL003
+    [SNAP-4166] Unable to open any band of a S3 OL_2_WFR product in SNAP 13
+    [SNAP-4123] Implement Cache in EnMAP reader
+    [SNAP-3798] EnMAP Spectrum View performance
+
 # New in SNAP 13.0.1
+    [SNAP-4149] Add support for OLCI L2M collection 4
     [SNAP-4093] Zipped Sentinel-3 products from EUMETSAT not read correctly in SNAP 13
 
 # New in SNAP 13.0.0

@@ -231,7 +231,7 @@
         "description": "Status flag",
         "bandWidth": 360,
         "bandHeight": 131,
-        "noDataValue": "128.0",
+        "noDataValue": "255.0",
         "noDataValueUsed": "false",
         "spectralWavelength": "0.0",
         "spectralBandwidth": "0.0",

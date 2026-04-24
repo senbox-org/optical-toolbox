@@ -21,6 +21,7 @@ import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.util.StringUtils;
 
 import java.io.IOException;
 
@@ -42,7 +43,9 @@ public class AquariusL2FileReader extends SeadasFileReader {
         int sceneWidth = getIntAttribute("Number_of_Beams");
         int sceneHeight = getIntAttribute("Number_of_Blocks");
         String productName = getStringAttribute("Product_Name");
-
+        if (StringUtils.isNullOrEmpty(productName)) {
+            productName = getStringAttribute("id");
+        }
 
         SeadasProductReader.ProductType productType = productReader.getProductType();
 

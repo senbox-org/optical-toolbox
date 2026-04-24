@@ -46,9 +46,14 @@
             <version>${snap.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>lib-gdal</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+        <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-commons</artifactId>
-            <version>${snap.version}</version>
+            <version>${opttbx.version}</version>
         </dependency>
 
 
@@ -78,8 +83,23 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.21.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.22.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -106,4 +126,3 @@
     </build>
 
 </project>
-

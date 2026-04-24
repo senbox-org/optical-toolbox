@@ -33,6 +33,7 @@ public class DDDBTest {
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", olciL1Descriptor.getWidthXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows", olciL1Descriptor.getHeightXPath());
         assertEquals("Oa*_radiance:Oa*_radiance_unc:Oa*_radiance_err:atmospheric_temperature_profile:lambda0:FWHM:solar_flux", olciL1Descriptor.getBandGroupingPattern());
+        assertEquals(0, olciL1Descriptor.getFlagMasks().length);
 
         olciL1Descriptor = dddb.getProductDescriptor("OL_1_ERR", "___");
         assertEquals("removedPixelsData", olciL1Descriptor.getExcludedIds());
@@ -43,11 +44,15 @@ public class DDDBTest {
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/columns", slstrL1Descriptor.getWidthXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/rows", slstrL1Descriptor.getHeightXPath());
         assertEquals("", slstrL1Descriptor.getBandGroupingPattern());
+
+        final ProductDescriptor ol2Wrr = dddb.getProductDescriptor("OL_2_WRR", "003");
+        assertEquals("removedPixelsData", ol2Wrr.getExcludedIds());
+        assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", ol2Wrr.getWidthXPath());
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
-    public void testGetProductDescriptor_invalidResource() throws IOException {
+    public void testGetProductDescriptor_invalidResource() {
         try {
             dddb.getProductDescriptor("IN_V_ALI", "D");
             fail("IOException expected");
@@ -163,5 +168,21 @@ public class DDDBTest {
             fail("IOException expected");
         } catch (IOException expected) {
         }
+    }
+
+    @Test
+    @STTM("SNAP-4170")
+    public void testGetVariableDescriptors_optionalFlag() throws IOException {
+        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("iop_nn.nc", "OL_2_WRR", "003");
+        assertEquals(3, variableDescriptors.length);
+
+        assertEquals("ADG443_NN",  variableDescriptors[0].getName());
+        assertFalse(variableDescriptors[0].isOptional());
+
+        assertEquals("ADG443_NN_err",  variableDescriptors[1].getName());
+        assertTrue(variableDescriptors[1].isOptional());
+
+        assertEquals("ADG443_NN_unc",  variableDescriptors[2].getName());
+        assertTrue(variableDescriptors[2].isOptional());
     }
 }

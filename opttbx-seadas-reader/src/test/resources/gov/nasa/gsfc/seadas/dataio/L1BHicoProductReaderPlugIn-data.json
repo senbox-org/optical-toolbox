@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "H2013302140823_L1B_ISS_nc",
+      "relativePath": "sensors_platforms/HICO/H2013302140823.L1B_ISS.nc",
+      "description": "HICO L1b"
+    }
+  ]
+}

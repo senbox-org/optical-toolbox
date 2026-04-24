@@ -94,7 +94,7 @@ public class SeadasProductReader extends AbstractProductReader {
         Level1C_Pace("Pace_L1C"),
         Level2("Level 2"),
         Level2_DscovrEpic("DscovrEpic Level 2"),
-        Level2_PaceOCI("OCI Level-2"),
+        Level2_Pace("Pace Level-2"),
         Level2_PaceOCIS("OCIS Level-2"),
         Level3_Bin("Level 3 Binned"),
         Level3_NSIDC_CDR("Level 3 NSIDC CDR"),
@@ -144,89 +144,7 @@ public class SeadasProductReader extends AbstractProductReader {
 
             ncfile = NetcdfFileOpener.open(path);
             productType = findProductType();
-
-            switch (productType) {
-                case Level1A_Aquarius:
-                case Level2_Aquarius:
-                    seadasFileReader = new AquariusL2FileReader(this);
-                    break;
-                case Level2:
-                case Level1B:
-                case Level1A_CZCS:
-                case Level2_CZCS:
-                case Level2_PaceOCI:
-                case Level2_PaceOCIS:
-                    seadasFileReader = new L2FileReader(this);
-                    break;
-                case Level2_DscovrEpic:
-                    seadasFileReader = new L2DscovrEpicFileReader(this);
-                    break;
-                case Level1A_Hawkeye:
-                    seadasFileReader = new L1AHawkeyeFileReader(this);
-                    break;
-                case Level1A_OCTS:
-                    seadasFileReader = new L1AOctsFileReader(this);
-                    break;
-                case Level1A_Seawifs:
-                    seadasFileReader = new L1ASeawifsFileReader(this);
-                    break;
-                case Level1B_Modis:
-                    seadasFileReader = new L1BModisFileReader(this);
-                    break;
-                case Level1B_HICO:
-                    seadasFileReader = new L1BHicoFileReader(this);
-                    break;
-                case Level1B_OCM2:
-                    seadasFileReader = new L1BOcm2FileReader(this);
-                    break;
-                case Level1B_PaceOCI:
-                    seadasFileReader = new L1BPaceOciFileReader(this);
-                    break;
-                case Level1C_Pace:
-                    seadasFileReader = new L1CPaceFileReader(this);
-                    break;
-                case Level3_Bin:
-                    seadasFileReader = new L3BinFileReader(this);
-                    break;
-                case MEaSUREs_Bin:
-                    seadasFileReader = new MeasuresL3BinFileReader(this);
-                    break;
-                case Level3_NSIDC_CDR:
-                    seadasFileReader = new NSIDCSeaIceFileReader(this);
-                    break;
-                case BrowseFile:
-                    seadasFileReader = new BrowseProductReader(this);
-                    break;
-                case SMI:
-                case ANCNRT:
-                case ANCNRT2:
-                case ANCCLIM:
-                case OISST:
-                case Bathy:
-                case MEaSUREs:
-                    seadasFileReader = new SMIFileReader(this);
-                    break;
-                case Level3_SeadasMapped:
-                    seadasFileReader = new Level3_SeadasMappedFileReader(this);
-                    break;
-                case SeadasMapped:
-                    seadasFileReader = new SeadasMappedFileReader(this);
-                    break;
-                case VIIRS_IP:
-                case VIIRS_SDR:
-                case VIIRS_EDR:
-                case VIIRS_GEO:
-                    seadasFileReader = new ViirsXDRFileReader(this);
-                    break;
-                case VIIRS_L1B:
-                    seadasFileReader = new L1BViirsFileReader(this);
-                    break;
-                case UNKNOWN:
-                    throw new IOException("Unrecognized product type");
-                default:
-                    throw new IOException("Unrecognized product type");
-
-            }
+            seadasFileReader = getReaderFromProductType(productType, this);
 
             Product product = seadasFileReader.createProduct();
 
@@ -235,6 +153,70 @@ public class SeadasProductReader extends AbstractProductReader {
 
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage(), e);
+        }
+    }
+
+    // package access for testing only tb 2026-03-18
+    static SeadasFileReader getReaderFromProductType(ProductType productType, SeadasProductReader reader) throws IOException {
+        switch (productType) {
+            case Level1A_Aquarius:
+            case Level2_Aquarius:
+                return new AquariusL2FileReader(reader);
+            case Level2:
+            case Level1B:
+            case Level2_CZCS:
+            case Level2_Pace:
+            case Level2_PaceOCIS:
+                return new L2FileReader(reader);
+            case Level2_DscovrEpic:
+                return new L2DscovrEpicFileReader(reader);
+            case Level1A_CZCS:
+                return new L1ACzcsFileReader(reader);
+            case Level1A_Hawkeye:
+                return new L1AHawkeyeFileReader(reader);
+            case Level1A_OCTS:
+                return new L1AOctsFileReader(reader);
+            case Level1A_Seawifs:
+                return new L1ASeawifsFileReader(reader);
+            case Level1B_Modis:
+                return new L1BModisFileReader(reader);
+            case Level1B_HICO:
+                return new L1BHicoFileReader(reader);
+            case Level1B_OCM2:
+                return new L1BOcm2FileReader(reader);
+            case Level1B_PaceOCI:
+                return new L1BPaceOciFileReader(reader);
+            case Level1C_Pace:
+                return new L1CPaceFileReader(reader);
+            case Level3_Bin:
+                return new L3BinFileReader(reader);
+            case MEaSUREs_Bin:
+                return new MeasuresL3BinFileReader(reader);
+            case Level3_NSIDC_CDR:
+                return new NSIDCSeaIceFileReader(reader);
+            case BrowseFile:
+                return new BrowseProductReader(reader);
+            case SMI:
+            case ANCNRT:
+            case ANCNRT2:
+            case ANCCLIM:
+            case OISST:
+            case Bathy:
+            case MEaSUREs:
+                return new SMIFileReader(reader);
+            case Level3_SeadasMapped:
+                return new Level3_SeadasMappedFileReader(reader);
+            case SeadasMapped:
+                return new SeadasMappedFileReader(reader);
+            case VIIRS_IP:
+            case VIIRS_SDR:
+            case VIIRS_EDR:
+            case VIIRS_GEO:
+                return new ViirsXDRFileReader(reader);
+            case VIIRS_L1B:
+                return new L1BViirsFileReader(reader);
+            default:
+                throw new IOException("Unrecognized product type");
         }
     }
 
@@ -272,6 +254,23 @@ public class SeadasProductReader extends AbstractProductReader {
 
     public ProductType getProductType() {
         return productType;
+    }
+
+    static boolean checkEqcProjection(Attribute mapProjectionAttribute) {
+        if (mapProjectionAttribute == null) {
+            return false;
+        }
+        try {
+            String projection = mapProjectionAttribute.getStringValue();
+            if (projection.contains("proj=eqc") || projection.contains("Equidistant Cylindrical")){
+                return true;
+            }
+            else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean checkSeadasMapped() {
@@ -367,65 +366,13 @@ public class SeadasProductReader extends AbstractProductReader {
             title = titleAttr.getStringValue().trim();
             processing_level = getStringAttributeValue(processing_levelAttr);
             instrument = getStringAttributeValue(instrumentAttr);
-            if ("Oceansat OCM2 Level-1B Data".equals(title)) {
-                return ProductType.Level1B_OCM2;
-            } else if ("CZCS Level-2 Data".equals(title)) {
-                return ProductType.Level2_CZCS;
-            } else if (title.contains("Aquarius Level 1A Data")) {
-                return ProductType.Level1A_Aquarius;
-            } else if (title.contains("Aquarius Level 2 Data")) {
-                return ProductType.Level2_Aquarius;
-            } else if (title.contains("PACE OCI Level-1B Data")) {
-                return ProductType.Level1B_PaceOCI;
-            } else if (title.contains("PACE OCI Level-1C Data")
-                    || title.contains("PACE SPEXone Level-1C Data")
-                    || title.contains("HARP2 Level-1C Data")) {
-                return ProductType.Level1C_Pace;
-            } else if (processing_level != null && instrument != null && processing_level.toUpperCase().contains("1C")) {
-                if (instrument.toUpperCase().contains("OCI")
-                        || instrument.toUpperCase().contains("HARP")
-                        || instrument.toUpperCase().contains("SPEXONE")) {
-                    return ProductType.Level1C_Pace;
-                }
-            } else if ("OCIS Level-2 Data".equals(title)) {
-                return ProductType.Level2_PaceOCIS;
-            } else if (title.contains("OCI Level-2 Data")) {
-                return ProductType.Level2_PaceOCI;
-            } else if (title.contains("Level-1B")) {
-                return ProductType.Level1B;
-            } else if ("CZCS Level-1A Data".equals(title)) {
-                return ProductType.Level1A_CZCS;
-            } else if (title.contains("Hawkeye Level-1A Data")) {
-                return ProductType.Level1A_Hawkeye;
-            } else if ("OCTS Level-1A GAC Data".equals(title)) {
-                return ProductType.Level1A_OCTS;
-            } else if (title.contains("Browse")) {
-                return ProductType.BrowseFile;
-            } else if (title.contains("Level-2")) {
-                return ProductType.Level2;
-            } else if (title.contains("Level 2")) {
-                return ProductType.Level2;
-            } else if ("SeaWiFS Level-1A Data".equals(title)) {
-                return ProductType.Level1A_Seawifs;
-            } else if ("NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration Version 4".equals(title)) {
-                return ProductType.Level3_NSIDC_CDR;
-            } else if (title.contains("Daily-OI")) {
-                return ProductType.OISST;
-            } else if (title.contains("ETOPO")) {
-                return ProductType.Bathy;
-            } else if ("SeaWiFS Near Real-Time Ancillary Data".equals(title)) {
-                return ProductType.ANCNRT;
-            } else if ("NCEP Reanalysis 2 Ancillary Data".equals(title)) {
-                return ProductType.ANCNRT2;
-            } else if ("SeaWiFS Climatological Ancillary Data".equals(title)) {
-                return ProductType.ANCCLIM;
-            } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
-                return ProductType.SMI;
-            } else if (title.contains("Level-3") && title.contains("Mapped Image")) {
-                return ProductType.Level3_SeadasMapped;
-            } else if (title.contains("Level-3 Binned Data") || title.contains("level-3_binned_data")) {
-                return ProductType.Level3_Bin;
-            } else if (title.contains("GSM") && (tmp = checkMEaSUREs()) != ProductType.UNKNOWN) {
+
+            final ProductType detectedType = findProductTypeWithoutFileAccess(title, processing_level, instrument);
+            if (detectedType != ProductType.UNKNOWN) {
+                return detectedType;
+            }
+
+            if (title.contains("GSM") && (tmp = checkMEaSUREs()) != ProductType.UNKNOWN) {
                 return tmp;
             } else if (title.contains("VIIRS") && (tmp = checkViirsL1B()) != ProductType.UNKNOWN) {
                 return tmp;
@@ -444,6 +391,74 @@ public class SeadasProductReader extends AbstractProductReader {
 
         throw new ProductIOException("Unrecognized product type");
 
+    }
+
+    // package access for testing only tb 2026-03-18
+    static ProductType findProductTypeWithoutFileAccess(String title, String processing_level, String instrument) {
+        if ("Oceansat OCM2 Level-1B Data".equals(title)) {
+            return ProductType.Level1B_OCM2;
+        } else if (title.contains("CZCS Level-2 Data")) {
+            return ProductType.Level2_CZCS;
+        } else if (title.contains("Aquarius Level 1A Data")) {
+            return ProductType.Level1A_Aquarius;
+        } else if (title.contains("Aquarius Level 2 Data")) {
+            return ProductType.Level2_Aquarius;
+        } else if (title.contains("PACE OCI Level-1B Data")) {
+            return ProductType.Level1B_PaceOCI;
+        } else if (title.contains("PACE OCI Level-1C Data")
+                || title.contains("PACE SPEXone Level-1C Data")
+                || title.contains("HARP2 Level-1C Data")) {
+            return ProductType.Level1C_Pace;
+        } else if (processing_level != null && instrument != null && processing_level.toUpperCase().contains("1C")) {
+            if (instrument.toUpperCase().contains("OCI")
+                    || instrument.toUpperCase().contains("HARP")
+                    || instrument.toUpperCase().contains("SPEXONE")) {
+                return ProductType.Level1C_Pace;
+            }
+        } else if ("OCIS Level-2 Data".equals(title)) {
+            return ProductType.Level2_PaceOCIS;
+        } else if (title.contains("OCI Level-2 Data")) {
+            return ProductType.Level2_Pace;
+        } else if (title.contains("HARP2 Level-2")) {
+            return ProductType.Level2_Pace;
+        } else if (title.contains("SPEXone Level-2")) {
+            return ProductType.Level2_Pace;
+        } else if (title.contains("Level-1B")) {
+            return ProductType.Level1B;
+        } else if ("CZCS Level-1A Data".equals(title)) {
+            return ProductType.Level1A_CZCS;
+        } else if (title.contains("Hawkeye Level-1A Data")) {
+            return ProductType.Level1A_Hawkeye;
+        } else if ("OCTS Level-1A GAC Data".equals(title)) {
+            return ProductType.Level1A_OCTS;
+        } else if (title.contains("Browse")) {
+            return ProductType.BrowseFile;
+        } else if (title.contains("Level-2")) {
+            return ProductType.Level2;
+        } else if (title.contains("Level 2")) {
+            return ProductType.Level2;
+        } else if ("SeaWiFS Level-1A Data".equals(title)) {
+            return ProductType.Level1A_Seawifs;
+        } else if ("NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration Version 4".equals(title)) {
+            return ProductType.Level3_NSIDC_CDR;
+        } else if (title.contains("Daily-OI")) {
+            return ProductType.OISST;
+        } else if (title.contains("ETOPO")) {
+            return ProductType.Bathy;
+        } else if ("SeaWiFS Near Real-Time Ancillary Data".equals(title)) {
+            return ProductType.ANCNRT;
+        } else if ("NCEP Reanalysis 2 Ancillary Data".equals(title)) {
+            return ProductType.ANCNRT2;
+        } else if ("SeaWiFS Climatological Ancillary Data".equals(title)) {
+            return ProductType.ANCCLIM;
+        } else if (title.contains("Level-3") && title.contains("Mapped Image")) {
+            return ProductType.Level3_SeadasMapped;
+        }else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
+            return ProductType.SMI;
+        }  else if (title.contains("Level-3 Binned Data") || title.contains("level-3_binned_data")) {
+            return ProductType.Level3_Bin;
+        }
+        return ProductType.UNKNOWN;
     }
 
     private static String getStringAttributeValue(Attribute processing_levelAttr) {

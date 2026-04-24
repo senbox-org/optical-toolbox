@@ -14,5 +14,6 @@ gov.nasa.gsfc.seadas.dataio.L1BPaceProductReaderPlugIn
 gov.nasa.gsfc.seadas.dataio.L1CPaceProductReaderPlugIn
 gov.nasa.gsfc.seadas.dataio.L2DscovrEpicProductReaderPlugIn
 gov.nasa.gsfc.seadas.dataio.NSIDCProductReaderPlugIn
+eu.esa.snap.seadas.dataio.PaceOCICachedProductReaderPlugin
 
 

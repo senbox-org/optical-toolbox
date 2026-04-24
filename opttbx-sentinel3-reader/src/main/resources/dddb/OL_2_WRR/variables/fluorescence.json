@@ -1,0 +1,9 @@
+[
+  {
+    "name": "FPH",
+    "dataType": "uint16",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "Fluorescence Peak Height derived from BRDF-corrected reflectances (rho-FPH)"
+  }
+]

@@ -9310,13 +9310,13 @@
         ]
       },
       {
-        "name": "qual_SWIR_940.0",
+        "name": "qual_SWIR_939.713",
         "description": "qual_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "940.0",
+        "spectralWavelength": "939.713",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -9332,13 +9332,13 @@
         ]
       },
       {
-        "name": "qual_SWIR_1038.0",
+        "name": "qual_SWIR_1038.317",
         "description": "qual_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1038.0",
+        "spectralWavelength": "1038.317",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -9354,13 +9354,13 @@
         ]
       },
       {
-        "name": "qual_SWIR_1250.0",
+        "name": "qual_SWIR_1250.375",
         "description": "qual_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1250.0",
+        "spectralWavelength": "1250.375",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -9376,13 +9376,13 @@
         ]
       },
       {
-        "name": "qual_SWIR_1251.0",
+        "name": "qual_SWIR_1248.55",
         "description": "qual_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1251.0",
+        "spectralWavelength": "1248.55",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -9398,13 +9398,13 @@
         ]
       },
       {
-        "name": "qual_SWIR_1378.0",
+        "name": "qual_SWIR_1378.169",
         "description": "qual_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1378.0",
+        "spectralWavelength": "1378.169",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -9420,13 +9420,13 @@
         ]
       },
       {
-        "name": "qual_SWIR_1615.0",
+        "name": "qual_SWIR_1619.624",
         "description": "qual_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1615.0",
+        "spectralWavelength": "1619.624",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -9442,13 +9442,13 @@
         ]
       },
       {
-        "name": "qual_SWIR_1616.0",
+        "name": "qual_SWIR_1618.034",
         "description": "qual_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1616.0",
+        "spectralWavelength": "1618.034",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -9464,13 +9464,13 @@
         ]
       },
       {
-        "name": "qual_SWIR_2130.0",
+        "name": "qual_SWIR_2130.593",
         "description": "qual_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "2130.0",
+        "spectralWavelength": "2130.593",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -9486,13 +9486,13 @@
         ]
       },
       {
-        "name": "qual_SWIR_2260.0",
+        "name": "qual_SWIR_2258.429",
         "description": "qual_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "2260.0",
+        "spectralWavelength": "2258.429",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -13094,14 +13094,14 @@
         ]
       },
       {
-        "name": "rhot_SWIR_940.0",
+        "name": "rhot_SWIR_939.713",
         "description": "rhot_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "geophysicalUnit": "dimensionless",
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "940.0",
+        "spectralWavelength": "939.713",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -13117,14 +13117,14 @@
         ]
       },
       {
-        "name": "rhot_SWIR_1038.0",
+        "name": "rhot_SWIR_1038.317",
         "description": "rhot_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "geophysicalUnit": "dimensionless",
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1038.0",
+        "spectralWavelength": "1038.317",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -13140,14 +13140,14 @@
         ]
       },
       {
-        "name": "rhot_SWIR_1250.0",
+        "name": "rhot_SWIR_1250.375",
         "description": "rhot_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "geophysicalUnit": "dimensionless",
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1250.0",
+        "spectralWavelength": "1250.375",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -13163,14 +13163,14 @@
         ]
       },
       {
-        "name": "rhot_SWIR_1251.0",
+        "name": "rhot_SWIR_1248.55",
         "description": "rhot_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "geophysicalUnit": "dimensionless",
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1251.0",
+        "spectralWavelength": "1248.55",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -13186,14 +13186,14 @@
         ]
       },
       {
-        "name": "rhot_SWIR_1378.0",
+        "name": "rhot_SWIR_1378.169",
         "description": "rhot_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "geophysicalUnit": "dimensionless",
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1378.0",
+        "spectralWavelength": "1378.169",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -13209,14 +13209,14 @@
         ]
       },
       {
-        "name": "rhot_SWIR_1615.0",
+        "name": "rhot_SWIR_1619.624",
         "description": "rhot_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "geophysicalUnit": "dimensionless",
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1615.0",
+        "spectralWavelength": "1619.624",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -13232,14 +13232,14 @@
         ]
       },
       {
-        "name": "rhot_SWIR_1616.0",
+        "name": "rhot_SWIR_1618.034",
         "description": "rhot_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "geophysicalUnit": "dimensionless",
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "1616.0",
+        "spectralWavelength": "1618.034",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -13255,14 +13255,14 @@
         ]
       },
       {
-        "name": "rhot_SWIR_2130.0",
+        "name": "rhot_SWIR_2130.593",
         "description": "rhot_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "geophysicalUnit": "dimensionless",
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "2130.0",
+        "spectralWavelength": "2130.593",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {
@@ -13278,14 +13278,14 @@
         ]
       },
       {
-        "name": "rhot_SWIR_2260.0",
+        "name": "rhot_SWIR_2258.429",
         "description": "rhot_SWIR",
         "bandWidth": 1272,
         "bandHeight": 1709,
         "geophysicalUnit": "dimensionless",
         "noDataValue": "0.0",
         "noDataValueUsed": "false",
-        "spectralWavelength": "2260.0",
+        "spectralWavelength": "2258.429",
         "spectralBandwidth": "0.0",
         "expectedPixels": [
           {

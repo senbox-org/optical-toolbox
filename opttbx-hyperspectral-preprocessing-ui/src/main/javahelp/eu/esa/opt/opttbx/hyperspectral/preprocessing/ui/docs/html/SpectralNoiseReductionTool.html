@@ -1,0 +1,118 @@
+<!--
+  ~ Copyright (C) 2026 Brockmann Consult GmbH (info@brockmann-consult.de)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation; either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program; if not, see http://www.gnu.org/licenses/
+  -->
+
+<html>
+<head>
+    <title>Spectral Noise Reduction</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<table class="header">
+    <tr class="header">
+        <td class="header">&nbsp;Spectral Noise Reduction</td>
+        <td class="header" align="right">
+            <a href="nbdocs://org.esa.snap.snap.help/org/esa/snap/snap/help/docs/general/overview/SnapOverview.html">
+                <img src="../images/snap_header.jpg" border="0">
+            </a>
+        </td>
+    </tr>
+</table>
+
+<h3>Overview</h3>
+
+<p>
+    The Spectral Noise Reduction operator reduces noise in hyperspectral data by smoothing each pixel spectrum
+    along the spectral axis. The selected spectral bands are ordered by wavelength and filtered with a
+    one-dimensional convolution kernel.
+</p>
+
+<p>
+    Only bands with a spectral wavelength greater than zero are processed. Invalid, NaN, infinite, and no-data
+    samples are ignored during filtering.
+</p>
+
+<p>
+    The target product keeps the source geometry and metadata and contains the filtered spectral bands.
+</p>
+
+<h3>Parameters</h3>
+
+<h4>Source Bands</h4>
+<p>
+    The spectral bands to be processed. If no bands are selected, all spectral bands of the source product are used.
+</p>
+
+<h4>Filter Method</h4>
+<p>
+    Selects the smoothing method: <b>Savitzky-Golay</b>, <b>Gaussian</b>, or <b>Box</b>.
+</p>
+<ul>
+    <li><b>Savitzky-Golay</b> - preserves local spectral shape and narrow features better than simple averaging.</li>
+    <li><b>Gaussian</b> - smooths with stronger weight near the center band and lower weight toward the edges.</li>
+    <li><b>Box</b> - applies a simple moving average over the selected spectral window.</li>
+</ul>
+
+<h4>Kernel Size</h4>
+<p>
+    Size of the spectral filter window. The value must be odd, at least 3, and not larger than the number of
+    selected spectral bands.
+</p>
+
+<h4>Gaussian Sigma</h4>
+<p>
+    Standard deviation of the Gaussian kernel. This parameter is only used for <b>Gaussian</b> filtering.
+    Larger values spread the weights more broadly across neighboring bands.
+</p>
+
+<h4>Polynomial Order</h4>
+<p>
+    Polynomial order used for <b>Savitzky-Golay</b> filtering. The value must be at least 0 and smaller than
+    the kernel size.
+</p>
+
+<ul>
+    <li><b>2</b> - robust default</li>
+    <li><b>3</b> - good general-purpose choice</li>
+    <li><b>4 or 5</b> - preserves more local structure, but may be less stable with small kernels</li>
+</ul>
+
+<h3>Notes</h3>
+
+<ul>
+    <li>Smaller kernels preserve detail better but reduce noise less strongly.</li>
+    <li>Larger kernels smooth more strongly but may flatten narrow spectral features.</li>
+    <li>At spectral boundaries, the nearest edge band is reused for missing neighbors.</li>
+</ul>
+
+<h4>Recommended Starting Values</h4>
+
+<ul>
+    <li><b>Savitzky-Golay:</b> Kernel Size = <b>11</b>, Polynomial Order = <b>3</b></li>
+    <li><b>Gaussian:</b> Kernel Size = <b>11</b>, Gaussian Sigma = <b>1.0 to 2.0</b></li>
+    <li><b>Box:</b> Kernel Size = <b>5 to 11</b></li>
+</ul>
+
+<p>
+    Savitzky-Golay is usually the best starting point when spectral feature preservation is important.
+    Gaussian is a good general-purpose alternative. Box is mainly useful as a simple baseline.
+</p>
+
+<hr>
+
+</body>
+</html>

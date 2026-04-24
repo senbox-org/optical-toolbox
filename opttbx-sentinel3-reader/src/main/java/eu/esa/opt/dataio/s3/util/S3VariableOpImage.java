@@ -3,7 +3,6 @@ package eu.esa.opt.dataio.s3.util;
 import org.esa.snap.core.image.ResolutionLevel;
 import org.esa.snap.core.image.SingleBandedOpImage;
 import ucar.ma2.Array;
-import ucar.ma2.DataType;
 import ucar.ma2.Section;
 import ucar.nc2.Variable;
 
@@ -143,51 +142,6 @@ public class S3VariableOpImage extends SingleBandedOpImage {
      */
     protected Object transformStorage(Array array) {
         return array.getStorage();
-    }
-
-    interface ArrayConverter {
-
-        public ArrayConverter IDENTITY = new ArrayConverter() {
-            @Override
-            public Array convert(Array array) {
-                return array;
-            }
-        };
-
-        public ArrayConverter LSB = new ArrayConverter() {
-            @Override
-            public Array convert(Array array) {
-                final Array convertedArray = Array.factory(DataType.INT, array.getShape());
-                for (int i = 0; i < convertedArray.getSize(); i++) {
-                    convertedArray.setInt(i, (int) (array.getLong(i) & 0x00000000FFFFFFFFL));
-                }
-                return convertedArray;
-            }
-        };
-
-        public ArrayConverter MSB = new ArrayConverter() {
-            @Override
-            public Array convert(Array array) {
-                final Array convertedArray = Array.factory(DataType.INT, array.getShape());
-                for (int i = 0; i < convertedArray.getSize(); i++) {
-                    convertedArray.setInt(i, (int) (array.getLong(i) >>> 32));
-                }
-                return convertedArray;
-            }
-        };
-
-        public ArrayConverter UINTCONVERTER = new ArrayConverter() {
-            @Override
-            public Array convert(Array array) {
-                final Array convertedArray = Array.factory(DataType.FLOAT, array.getShape());
-                for (int i = 0; i < convertedArray.getSize(); i++) {
-                    convertedArray.setFloat(i, array.getFloat(i));
-                }
-                return convertedArray;
-            }
-        };
-
-        Array convert(Array array);
     }
 
 }
