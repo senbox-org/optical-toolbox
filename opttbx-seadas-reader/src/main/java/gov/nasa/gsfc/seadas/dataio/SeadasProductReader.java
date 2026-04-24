@@ -146,93 +146,7 @@ public class SeadasProductReader extends AbstractProductReader {
 
             ncfile = NetcdfFileOpener.open(path);
             productType = findProductType();
-
-            switch (productType) {
-                case Level1A_Aquarius:
-                case Level2_Aquarius:
-                    seadasFileReader = new AquariusL2FileReader(this);
-                    break;
-                case Level2:
-                case Level1B:
-                case Level2_CZCS:
-                case Level2_Pace:
-                case Level2_PaceOCIS:
-                case Level2_PaceSPEX:
-                case Level2_PaceHARP2:
-                    seadasFileReader = new L2FileReader(this);
-                    break;
-                case Level2_DscovrEpic:
-                    seadasFileReader = new L2DscovrEpicFileReader(this);
-                    break;
-                case Level1A_CZCS:
-                    seadasFileReader = new L1ACzcsFileReader(this);
-                    break;
-                case Level1A_Hawkeye:
-                    seadasFileReader = new L1AHawkeyeFileReader(this);
-                    break;
-                case Level1A_OCTS:
-                    seadasFileReader = new L1AOctsFileReader(this);
-                    break;
-                case Level1A_Seawifs:
-                    seadasFileReader = new L1ASeawifsFileReader(this);
-                    break;
-                case Level1B_Modis:
-                    seadasFileReader = new L1BModisFileReader(this);
-                    break;
-                case Level1B_HICO:
-                    seadasFileReader = new L1BHicoFileReader(this);
-                    break;
-                case Level1B_OCM2:
-                    seadasFileReader = new L1BOcm2FileReader(this);
-                    break;
-                case Level1B_PaceOCI:
-                    seadasFileReader = new L1BPaceOciFileReader(this);
-                    break;
-                case Level1C_Pace:
-                    seadasFileReader = new L1CPaceFileReader(this);
-                    break;
-                case Level3_Bin:
-                    seadasFileReader = new L3BinFileReader(this);
-                    break;
-                case MEaSUREs_Bin:
-                    seadasFileReader = new MeasuresL3BinFileReader(this);
-                    break;
-                case Level3_NSIDC_CDR:
-                    seadasFileReader = new NSIDCSeaIceFileReader(this);
-                    break;
-                case BrowseFile:
-                    seadasFileReader = new BrowseProductReader(this);
-                    break;
-                case SMI:
-                case ANCNRT:
-                case ANCNRT2:
-                case ANCCLIM:
-                case OISST:
-                case Bathy:
-                case MEaSUREs:
-                    seadasFileReader = new SMIFileReader(this);
-                    break;
-                case Level3_SeadasMapped:
-                    seadasFileReader = new Level3_SeadasMappedFileReader(this);
-                    break;
-                case SeadasMapped:
-                    seadasFileReader = new SeadasMappedFileReader(this);
-                    break;
-                case VIIRS_IP:
-                case VIIRS_SDR:
-                case VIIRS_EDR:
-                case VIIRS_GEO:
-                    seadasFileReader = new ViirsXDRFileReader(this);
-                    break;
-                case VIIRS_L1B:
-                    seadasFileReader = new L1BViirsFileReader(this);
-                    break;
-                case UNKNOWN:
-                    throw new IOException("Unrecognized product type");
-                default:
-                    throw new IOException("Unrecognized product type");
-
-            }
+            seadasFileReader = getReaderFromProductType(productType, this);
 
             Product product = seadasFileReader.createProduct();
 
@@ -243,6 +157,73 @@ public class SeadasProductReader extends AbstractProductReader {
             throw new ProductIOException(e.getMessage(), e);
         }
     }
+
+    // package access for testing only tb 2026-03-18
+    static SeadasFileReader getReaderFromProductType(ProductType productType, SeadasProductReader reader) throws IOException {
+        switch (productType) {
+            case Level1A_Aquarius:
+            case Level2_Aquarius:
+                return new AquariusL2FileReader(reader);
+            case Level2:
+            case Level1B:
+            case Level2_CZCS:
+            case Level2_Pace:
+            case Level2_PaceOCIS:
+            case Level2_PaceSPEX:
+            case Level2_PaceHARP2:
+                return new L2FileReader(reader);
+            case Level2_DscovrEpic:
+                return new L2DscovrEpicFileReader(reader);
+            case Level1A_CZCS:
+                return new L1ACzcsFileReader(reader);
+            case Level1A_Hawkeye:
+                return new L1AHawkeyeFileReader(reader);
+            case Level1A_OCTS:
+                return new L1AOctsFileReader(reader);
+            case Level1A_Seawifs:
+                return new L1ASeawifsFileReader(reader);
+            case Level1B_Modis:
+                return new L1BModisFileReader(reader);
+            case Level1B_HICO:
+                return new L1BHicoFileReader(reader);
+            case Level1B_OCM2:
+                return new L1BOcm2FileReader(reader);
+            case Level1B_PaceOCI:
+                return new L1BPaceOciFileReader(reader);
+            case Level1C_Pace:
+                return new L1CPaceFileReader(reader);
+            case Level3_Bin:
+                return new L3BinFileReader(reader);
+            case MEaSUREs_Bin:
+                return new MeasuresL3BinFileReader(reader);
+            case Level3_NSIDC_CDR:
+                return new NSIDCSeaIceFileReader(reader);
+            case BrowseFile:
+                return new BrowseProductReader(reader);
+            case SMI:
+            case ANCNRT:
+            case ANCNRT2:
+            case ANCCLIM:
+            case OISST:
+            case Bathy:
+            case MEaSUREs:
+                return new SMIFileReader(reader);
+            case Level3_SeadasMapped:
+                return new Level3_SeadasMappedFileReader(reader);
+            case SeadasMapped:
+                return new SeadasMappedFileReader(reader);
+            case VIIRS_IP:
+            case VIIRS_SDR:
+            case VIIRS_EDR:
+            case VIIRS_GEO:
+                return new ViirsXDRFileReader(reader);
+            case VIIRS_L1B:
+                return new L1BViirsFileReader(reader);
+            default:
+                throw new IOException("Unrecognized product type");
+        }
+    }
+
 
     @Override
     public void close() throws IOException {
