@@ -43,9 +43,9 @@ import org.esa.snap.core.util.Debug;
 import org.esa.snap.core.util.Guardian;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.TreeNode;
+import org.esa.snap.core.util.ImageUtils;
 import org.esa.snap.core.util.math.FXYSum;
 
-import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -604,6 +604,6 @@ class PrismProductDirectory {
 
 
     private ImageInputStream createInputStream(final String fileName) throws IOException {
-        return new FileImageInputStream(new File(baseDir, fileName));
+        return ImageUtils.getImageInputStream(baseDir.toPath().resolve(fileName));
     }
 }

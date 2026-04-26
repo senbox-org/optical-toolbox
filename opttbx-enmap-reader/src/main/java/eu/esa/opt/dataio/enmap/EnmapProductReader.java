@@ -22,6 +22,7 @@ import org.esa.snap.core.dataio.geocoding.GeoRaster;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.engine_utilities.dataio.VirtualDirTgz;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -141,7 +142,7 @@ class EnmapProductReader extends AbstractProductReader {
             path = path.getParent();
         }
 
-        state.dataDir = VirtualDir.create(path.toFile());
+        state.dataDir = ProductUtils.getProductVirtualDir(path.toFile());
         if (state.dataDir == null) {
             throw new IOException(String.format("%s%nVirtual directory could not be created", CANNOT_READ_PRODUCT_MSG));
         }

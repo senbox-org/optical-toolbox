@@ -304,6 +304,7 @@ public class S2NamingConventionUtils {
 
     public static VirtualPath transformToSentinel2VirtualPath(Path path) throws IOException {
         boolean copyFilesFromDirectoryOnLocalDisk = (path.getFileSystem() != FileSystems.getDefault());
+        boolean isVFSPath = path.getClass().getName().contains("VFS");
         VirtualDirEx virtualDirEx = VirtualDirEx.build(path, copyFilesFromDirectoryOnLocalDisk, true);
         if (virtualDirEx == null) {
             throw new IllegalArgumentException("Unable to read the path '"+path.toString()+"'.");
@@ -328,7 +329,7 @@ public class S2NamingConventionUtils {
                 }
 
                 //if defaultFileSytem, try to use relativePaths longer in order to be able to get the parents for looking for product metadata
-                if(!copyFilesFromDirectoryOnLocalDisk) {
+                if(!copyFilesFromDirectoryOnLocalDisk || isVFSPath) {
                     if(path.getParent() != null && path.getParent().getParent() != null && path.getParent().getParent().getParent() != null) {
                         virtualDirEx = VirtualDirEx.build(path.getParent().getParent().getParent(), copyFilesFromDirectoryOnLocalDisk, true);
                         relativePath = Paths.get(path.getParent().getParent().getFileName().toString(),path.getParent().getFileName().toString(),path.getFileName().toString());

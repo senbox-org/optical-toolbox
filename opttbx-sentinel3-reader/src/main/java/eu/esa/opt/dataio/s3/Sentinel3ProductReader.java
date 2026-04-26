@@ -30,6 +30,7 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.util.ProductUtils;
 
 import java.awt.*;
 import java.awt.image.Raster;
@@ -60,7 +61,7 @@ public class Sentinel3ProductReader extends AbstractProductReader {
     }
 
     protected void ensureVirtualDir(File inputFile) {
-        virtualDir = getVirtualDir(inputFile);
+        virtualDir = ProductUtils.getProductVirtualDir(inputFile);
     }
 
     public VirtualDir getVirtualDir() {
@@ -125,7 +126,7 @@ public class Sentinel3ProductReader extends AbstractProductReader {
 
     protected void setInput(Object input) {
         if (input instanceof File && ((File) input).isDirectory()) {
-            super.setInput(new File(((File) input), XfduManifest.MANIFEST_FILE_NAME));
+            super.setInput(((File) input).toPath().resolve(XfduManifest.MANIFEST_FILE_NAME).toFile());
         } else {
             super.setInput(input);
         }
@@ -163,29 +164,10 @@ public class Sentinel3ProductReader extends AbstractProductReader {
     }
 
     public final File getInputFile() {
-        return new File(getInput().toString());
+        return getProductFile();
     }
 
     public final File getInputFileParentDirectory() {
         return getInputFile().getParentFile();
-    }
-
-    // @todo 3 tb/tb check if we can test this without requiring the file-sysem tb 2024-05-29
-    static VirtualDir getVirtualDir(File inputFile) {
-        VirtualDir virtualDir;
-        if (isZipFile(inputFile)) {
-            virtualDir = VirtualDir.create(inputFile);
-        } else {
-            File productDirectory = inputFile;
-            if (!inputFile.isDirectory()) {
-                productDirectory = productDirectory.getParentFile();
-            }
-            virtualDir = VirtualDir.create(productDirectory);
-        }
-        return virtualDir;
-    }
-
-    private static boolean isZipFile(File inputFile) {
-        return inputFile.getName().toLowerCase().endsWith(".zip");
     }
 }

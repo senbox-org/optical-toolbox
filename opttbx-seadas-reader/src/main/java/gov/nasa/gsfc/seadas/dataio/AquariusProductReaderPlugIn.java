@@ -67,7 +67,7 @@ public class AquariusProductReaderPlugIn implements ProductReaderPlugIn {
             return decodeQualification;
         }
 
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
                 Attribute titleAttribute = getTitleAttribute(ncfile);
 

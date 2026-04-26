@@ -592,7 +592,7 @@ public final class LandsatHeader {
     /**
      * @return the path of the header(s)
      */
-    public final String getPath() {
+    public final File getPath() {
         return _inputFile.getFileLocation();
     }
 
