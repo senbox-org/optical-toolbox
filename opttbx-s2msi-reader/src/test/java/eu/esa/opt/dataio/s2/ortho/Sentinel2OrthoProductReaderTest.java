@@ -1,9 +1,11 @@
 package eu.esa.opt.dataio.s2.ortho;
 
+import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.binding.ConversionException;
 import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM32N_ReaderPlugIn;
 import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM34S_ReaderPlugIn;
 import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM36N_ReaderPlugIn;
+import eu.esa.opt.dataio.s2.ortho.plugins.Sentinel2L1CProduct_Multi_UTM38N_ReaderPlugIn;
 import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductSubsetDef;
@@ -46,6 +48,7 @@ public class Sentinel2OrthoProductReaderTest {
 
     private static final String L1C_PRODUCT_NAME = "L1C"+ File.separator+ "S2A_MSIL1C_20161206T080312_N0204_R035_T34HFH_20161206T081929.SAFE"+ File.separator+ "MTD_MSIL1C.xml";
     private static final String L2A_PRODUCT_NAME = "L2A"+ File.separator+ "S2B_MSIL2A_20190528T085609_N0212_R007_T36VWK_20190528T121447.zip";
+    private static final String L2A_NEW_PRODUCT_NAME = "L2A"+ File.separator+ "S2C_MSIL2A_20241114T080951_N9904_R035_T38SLG_20241114T091153.SAFE.zip";
     private static final String L3_PRODUCT_NAME = "L3"+ File.separator+ "Darmstadt"+ File.separator+ "10m"+ File.separator+ "S2A_USER_PRD_MSIL03_PDMC_20150812T193220_R108_V20161231T235959_20161231T235959.SAFE"+ File.separator+ "S2A_USER_MTD_SAFL03_PDMC_20150812T193220_R108_V20150730T103914_20150730T103914.xml";
 
     @BeforeClass
@@ -885,5 +888,41 @@ public class Sentinel2OrthoProductReaderTest {
         assertEquals(6.0f, pixelValue, 0);
         pixelValue = band_quality_scene_classification_20m.getSampleFloat(1003, 1522);
         assertEquals(3.0f, pixelValue, 0);
+    }
+
+    @Test
+    @STTM("SNAP-3908")
+    public void testValidPixelExpressionOnProductWithVectorMasks() throws IOException {
+        final Path productPath = sentinel2TestProductsPath.resolve(L2A_PRODUCT_NAME);
+        final S2OrthoProductReaderPlugIn readerPlugIn = new Sentinel2L1CProduct_Multi_UTM36N_ReaderPlugIn();
+        final ProductReader reader = readerPlugIn.createReaderInstance();
+        final Rectangle subsetRegion = new Rectangle(6142, 5402, 4663, 3035);
+        final ProductSubsetDef subsetDef = new ProductSubsetDef();
+        subsetDef.setNodeNames(new String[]{"B8", "view_zenith_B8", "view_azimuth_B8", "detector_footprint-B8-01", "nodata_B8"});
+        subsetDef.setSubsetRegion(new PixelSubsetRegion(subsetRegion, 0));
+        subsetDef.setSubSampling(1, 1);
+        subsetDef.setIgnoreMetadata(true);
+        try (Product finalProduct = reader.readProductNodes(productPath.toFile(), subsetDef)) {
+            Band band_B1 = finalProduct.getBand("B8");
+            assertEquals("B8.raw >= -0.1", band_B1.getValidPixelExpression());
+        }
+    }
+
+    @Test
+    @STTM("SNAP-3908")
+    public void testValidPixelExpressionOnProductWithRasterMasks() throws IOException {
+        final Path productPath = sentinel2TestProductsPath.resolve(L2A_NEW_PRODUCT_NAME);
+        final S2OrthoProductReaderPlugIn readerPlugIn = new Sentinel2L1CProduct_Multi_UTM38N_ReaderPlugIn();
+        final ProductReader reader = readerPlugIn.createReaderInstance();
+        final Rectangle subsetRegion = new Rectangle(6142, 5402, 4663, 3035);
+        final ProductSubsetDef subsetDef = new ProductSubsetDef();
+        subsetDef.setNodeNames(new String[]{"B8", "view_zenith_B8", "view_azimuth_B8", "detector_footprint-B8-01", "nodata_B8"});
+        subsetDef.setSubsetRegion(new PixelSubsetRegion(subsetRegion, 0));
+        subsetDef.setSubSampling(1, 1);
+        subsetDef.setIgnoreMetadata(true);
+        try (Product finalProduct = reader.readProductNodes(productPath.toFile(), subsetDef)) {
+            Band band_B1 = finalProduct.getBand("B8");
+            assertEquals("B8.raw >= -0.1 && B_detector_footprint_B8.raw > 0 && B_nodata_B8 == 0", band_B1.getValidPixelExpression());
+        }
     }
 }

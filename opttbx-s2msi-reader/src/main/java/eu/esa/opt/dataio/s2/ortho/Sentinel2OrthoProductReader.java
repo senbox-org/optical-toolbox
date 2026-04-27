@@ -268,8 +268,7 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
             if (!isMultiResolution()) {
                 scaleBands(product, bandInfoList, productResolution);
             }
-            S2Metadata.Tile tile = tileList.get(0);
-            if (tile.getMaskFilenames() != null && (!tile.getMaskFilenames()[0].getPath().getFullPathString().endsWith(".gml"))) {
+            if (usingRasterMasks()) {
                 addRasterMasks(tileList, product, mapCRS, bandInfoList, sceneDescription, productResolution,
                                productDefaultGeoCoding, subsetDef, defaultJAIReadTileSize);
                 addIndexMasks(product, mapCRS, bandInfoList, sceneDescription, productResolution,
@@ -555,7 +554,7 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                                                                                     defaultBandHeight, isMultiResolution());
                 }
                 if (!bandBounds.isEmpty()) {
-                    Band band = buildBand(bandInfo, bandBounds.width, bandBounds.height, dataBufferType);
+                    Band band = buildBand(bandInfo, bandBounds.width, bandBounds.height, dataBufferType, usingRasterMasks());
                     band.setDescription(bandInfo.getBandInformation().getDescription());
                     band.setUnit(bandInfo.getBandInformation().getUnit());
 
@@ -840,7 +839,7 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                     int resolutionCount = computeMatrixCellsResolutionCount(mosaicMatrix, false);
                     productMaximumResolutionCount = Math.max(productMaximumResolutionCount, resolutionCount);
                     int dataBufferType = computeMatrixCellsDataBufferType(mosaicMatrix);
-                    Band band = buildBand(maskBandInfo, bandBounds.width, bandBounds.height, dataBufferType);
+                    Band band = buildBand(maskBandInfo, bandBounds.width, bandBounds.height, dataBufferType, usingRasterMasks());
                     band.setDescription(maskBandInfo.getBandInformation().getDescription());
                     band.setUnit("none");
                     band.setValidPixelExpression(null);
@@ -918,7 +917,7 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                         int dataBufferType = computeMatrixCellsDataBufferType(mosaicMatrix);
                         int resolutionCount = computeMatrixCellsResolutionCount(mosaicMatrix, false);
                         productMaximumResolutionCount = Math.max(productMaximumResolutionCount, resolutionCount);
-                        band = buildBand(maskBandInfo, bandBounds.width, bandBounds.height, dataBufferType);
+                        band = buildBand(maskBandInfo, bandBounds.width, bandBounds.height, dataBufferType, usingRasterMasks());
                         band.setDescription(maskInfo.getDescriptionForBand(bandName, i));
                         band.setUnit("none");
                         band.setValidPixelExpression(null);
@@ -1466,6 +1465,11 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
             return null;
         }
         return new BandInfo(tilePathMap, bandInformation, config.getTileLayout(spatialResolution.resolution));
+    }
+
+    private boolean usingRasterMasks(){
+        final S2Metadata.Tile tile = orthoMetadataHeader.getTileList().getFirst();
+        return tile.getMaskFilenames() != null && (!tile.getMaskFilenames()[0].getPath().getFullPathString().endsWith(".gml"));
     }
 
     private static VirtualPath getProductDir(VirtualPath productPath) throws IOException {

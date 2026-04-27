@@ -53,7 +53,7 @@
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-spectral-library</artifactId>
-            <version>${version}</version>
+            <version>${snap.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

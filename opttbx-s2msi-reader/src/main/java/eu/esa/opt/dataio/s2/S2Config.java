@@ -82,7 +82,7 @@ public class S2Config {
 
     public static final double FILL_CODE_MOSAIC_ANGLES = Double.NaN;
 
-    public static final short RAW_NO_DATA_THRESHOLD = DEBUG ? (short) 4 : (short) 0;
+    public static final double RAW_NO_DATA_THRESHOLD = DEBUG ? (double) 4 : -0.1;
 
     public static final String MTD_EXT = ".xml";
 
