@@ -90,9 +90,9 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
 
     }
 
-    public Map<Band, Variable> addNSIDCBands(Product product,
+    public Map<String, Variable> addNSIDCBands(Product product,
                                              List<Variable> variables) {
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
             int variableRank = variable.getRank();
             if (variableRank == 3) {
@@ -131,7 +131,7 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
         }
     }
 
-    protected Map<Band, Variable> add3DNSIDCBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
+    protected Map<String, Variable> add3DNSIDCBands(Product product, Variable variable, Map<String, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
@@ -179,7 +179,7 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
                         } catch (InvalidRangeException e) {
                             e.printStackTrace();  //Todo change body of catch statement.
                         }
-                        bandToVariableMap.put(band, sliced);
+                        bandToVariableMap.put(band.getName(), sliced);
 
                         try {
                             Attribute fillValue = variable.findAttribute("_FillValue");

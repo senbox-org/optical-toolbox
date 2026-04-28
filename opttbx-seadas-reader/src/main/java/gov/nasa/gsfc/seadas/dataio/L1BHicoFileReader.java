@@ -46,6 +46,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
 
     L1BHicoFileReader(SeadasProductReader productReader) {
         super(productReader);
+
     }
 
     Array wavlengths = ncFile.findVariable("products/Lt").findAttribute("wavelengths").getValues();
@@ -222,12 +223,12 @@ public class L1BHicoFileReader extends SeadasFileReader {
         }
     }
 
-    private Map<Band, Variable> addHicoBands(Product product, List<Variable> variables) {
+    private Map<String, Variable> addHicoBands(Product product, List<Variable> variables) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             if ((variable.getShortName().contains("latitude")) || (variable.getShortName().contains("longitude"))
@@ -265,7 +266,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
                             band.setNoDataValueUsed(true);
                         }
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     band.setUnit(units);
                     band.setDescription(name);
                 }
@@ -320,7 +321,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
                                 band.setNoDataValueUsed(true);
                             }
                         }
-                        bandToVariableMap.put(band, sliced);
+                        bandToVariableMap.put(band.getName(), sliced);
                         band.setUnit(units);
                         band.setDescription(description);
 

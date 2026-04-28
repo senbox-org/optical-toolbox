@@ -16,27 +16,38 @@
 
 package gov.nasa.gsfc.seadas.dataio;
 
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
+import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.dataio.netcdf.util.ReaderUtils;
+import org.esa.snap.runtime.Config;
+import org.jspecify.annotations.NonNull;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
 import ucar.nc2.Group;
 import ucar.nc2.Variable;
-import ucar.nc2.Dimension;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.Preferences;
+
+import static org.esa.snap.dataio.netcdf.util.DataTypeUtils.getRasterDataType;
 
 public class L1BPaceOciFileReader extends SeadasFileReader {
 
     L1BPaceOciFileReader(SeadasProductReader productReader) {
         super(productReader);
+
+        final Preferences preferences = Config.instance("seadas").preferences();
+        wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
     }
 
     enum WvlType {
@@ -44,9 +55,9 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         BLUE("blue_wavelengths"),
         SWIR("swir_wavelengths");
 
-        private String name;
+        private final String name;
 
-        private WvlType(String nm) {
+        WvlType(String nm) {
             name = nm;
         }
 
@@ -62,9 +73,9 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     @Override
     public Product createProduct() throws ProductIOException {
-        
+
         int[] shape;
-        int sceneWidth, sceneHeight ;
+        int sceneWidth, sceneHeight;
         String productName;
 
         try {
@@ -81,6 +92,48 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             productName = productReader.getInputFile().getName();
         }
 
+        readWvlVariables();
+
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL1BPace())) {
+            mustFlipX = true;
+        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL1BPace())) {
+            mustFlipX = false;
+        } else {
+            mustFlipX = false; // default flipX
+        }
+
+        // default flipY
+        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYL1BPace())) {
+            mustFlipY = true;
+        } else mustFlipY = !SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYL1BPace());
+
+        SeadasProductReader.ProductType productType = productReader.getProductType();
+
+        Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
+        product.setDescription(productName);
+
+        product.setFileLocation(productReader.getInputFile());
+        product.setProductReader(productReader);
+
+        addGlobalMetadata(product);
+        List<Variable> variables = ncFile.getVariables();
+        if (wantsCaching) {
+            variableMap = addCachedOciBands(product, variables);
+        } else {
+            variableMap = addOciBands(product, variables);
+        }
+
+        addGeocoding(product);
+        addMetadata(product, "products", "Band_Metadata");
+        addMetadata(product, "navigation", "Navigation_Metadata");
+
+//        product.setAutoGrouping("rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR");
+        product.setAutoGrouping(getBandGroupingL1BPace());
+
+        return product;
+    }
+
+    private void readWvlVariables() throws ProductIOException {
         Variable blueWvl = ncFile.findVariable("sensor_band_parameters/blue_wavelength");
         Variable redWvl = ncFile.findVariable("sensor_band_parameters/red_wavelength");
         Variable swirWvl = ncFile.findVariable("sensor_band_parameters/SWIR_wavelength");
@@ -91,59 +144,6 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage(), e);
         }
-//        mustFlipY = true;
-//        mustFlipX = false;
-
-        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipXL1BPace())) {
-            mustFlipX = true;
-        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXL1BPace())) {
-            mustFlipX = false;
-        } else {
-            mustFlipX = false; // default flipX
-        }
-
-        if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYL1BPace())) {
-            mustFlipY = true;
-        } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYL1BPace())) {
-            mustFlipY = false;
-        } else {
-            mustFlipY = true; // default flipY
-        }
-
-
-
-        SeadasProductReader.ProductType productType = productReader.getProductType();
-
-        Product product = new Product(productName, productType.toString(), sceneWidth, sceneHeight);
-        product.setDescription(productName);
-
-        // @todo 3 this is obviously never used again - remove? tb 2026-01-13
-        //Attribute startTime = findAttribute("time_coverage_start");
-        //ProductData.UTC utcStart = getUTCAttribute("time_coverage_start");
-        //ProductData.UTC utcEnd = getUTCAttribute("time_coverage_end");
-        //if (startTime == null) {
-         //   utcStart = getUTCAttribute("Start_Time");
-        //   utcEnd = getUTCAttribute("End_Time");
-        //}
-        // only needed as a stop-gap to handle an intermediate version of l2gen metadata
-        //if (utcEnd == null) {
-        //    utcEnd = getUTCAttribute("time_coverage_stop");
-        //}
-
-        product.setFileLocation(productReader.getInputFile());
-        product.setProductReader(productReader);
-
-        addGlobalMetadata(product);
-        variableMap = addOciBands(product, ncFile.getVariables());
-
-        addGeocoding(product);
-        addMetadata(product, "products", "Band_Metadata");
-        addMetadata(product, "navigation", "Navigation_Metadata");
-
-//        product.setAutoGrouping("rhot_blue:rhot_red:rhot_SWIR:qual_blue:qual_red:qual_SWIR:Lt_blue:Lt_red:Lt_SWIR");
-        product.setAutoGrouping(getBandGroupingL1BPace());
-
-        return product;
     }
 
 
@@ -172,13 +172,66 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         }
     }
 
-    private Map<Band, Variable> addOciBands(Product product, List<Variable> variables) {
+    private Map<String, Variable> addCachedOciBands(Product product, List<Variable> variables) {
+        final Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
-        Band band;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        for (Variable variable : variables) {
+            final Group parentGroup = variable.getParentGroup();
+            final String groupName = parentGroup.getShortName();
+            if ("sensor_band_parameters".equals(groupName) || "scan_line_attributes".equals(groupName)) {
+                continue;
+            }
+            final String variableName = variable.getShortName();
+            if (("latitude".equals(variableName)) || ("longitude".equals(variableName))) {
+                continue;
+            }
+
+            final int variableRank = variable.getRank();
+            if (variableRank == 2) {
+                add2DBand(product, variable, sceneRasterHeight, sceneRasterWidth, bandToVariableMap);
+            } else if (variableRank == 3) {
+                add3DVariables_forCaching(product, variable, sceneRasterHeight, sceneRasterWidth, bandToVariableMap);
+            }
+        }
+
+        return bandToVariableMap;
+    }
+
+    private void add3DVariables_forCaching(Product product, Variable variable, int sceneRasterHeight, int sceneRasterWidth, Map<String, Variable> bandToVariableMap) {
+        final int[] dimensions = variable.getShape();
+        final int bands = dimensions[0];
+        final int height = dimensions[1];
+        final int width = dimensions[2];
+
+        if (height != sceneRasterHeight || width != sceneRasterWidth) {
+            return;
+        }
+
+        final String ncVariableName = variable.getShortName();
+        final WvlType wvlType = getWvlType(variable.getShortName());
         int spectralBandIndex = 0;
+        for (int i = 0; i < bands; i++) {
+            final float wavelength = getOciWvl(i, wvlType);
+            final String variableName = getVariableName(ncVariableName, wavelength);
+            final int dataType = getProductDataType(variable);
+            final Band band = new BandUsingReaderDirectly(variableName, dataType, width, height);
+
+            product.addBand(band);
+
+            band.setSpectralWavelength(wavelength);
+            band.setSpectralBandIndex(spectralBandIndex++);
+            addAttributes(variable, band);
+        }
+        bandToVariableMap.put(ncVariableName, variable);
+    }
+
+    private Map<String, Variable> addOciBands(Product product, List<Variable> variables) {
+        final int sceneRasterWidth = product.getSceneRasterWidth();
+        final int sceneRasterHeight = product.getSceneRasterHeight();
+
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_band_parameters") || variable.getParentGroup().equals("scan_line_attributes"))
                 continue;
@@ -187,106 +240,126 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             int variableRank = variable.getRank();
 
             if (variableRank == 2) {
-                final int[] dimensions = variable.getShape();
-                final int height = dimensions[0];
-                final int width = dimensions[1];
-
-                if (height == sceneRasterHeight && width == sceneRasterWidth) {
-                    // final List<Attribute> list = variable.getAttributes();
-
-                    String units = variable.getUnitsString();
-                    String name = variable.getShortName();
-                    final int dataType = getProductDataType(variable);
-                    band = new Band(name, dataType, width, height);
-                    product.addBand(band);
-
-                    final List<Attribute> list = variable.getAttributes();
-                    for (Attribute hdfAttribute : list) {
-                        final String attribName = hdfAttribute.getShortName();
-                        if ("units".equals(attribName)) {
-                            band.setUnit(hdfAttribute.getStringValue());
-                        } else if ("long_name".equals(attribName)) {
-                            band.setDescription(hdfAttribute.getStringValue());
-                        } else if ("slope".equals(attribName)) {
-                            band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("intercept".equals(attribName)) {
-                            band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
-                            band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("add_offset".equals(attribName)) {
-                            band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("bad_value_scaled".equals(attribName)) {
-                            band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
-                            band.setNoDataValueUsed(true);
-                        }
-                    }
-                    bandToVariableMap.put(band, variable);
-                    band.setUnit(units);
-                    band.setDescription(variable.getDescription());
-                }
+                add2DBand(product, variable, sceneRasterHeight, sceneRasterWidth, bandToVariableMap);
             } else if (variableRank == 3) {
-                final int[] dimensions = variable.getShape();
-                final int bands = dimensions[0];
-                final int height = dimensions[1];
-                final int width = dimensions[2];
-
-                if (height == sceneRasterHeight && width == sceneRasterWidth) {
-                    // final List<Attribute> list = variable.getAttributes();
-
-                    String units = variable.getUnitsString();
-                    String description = variable.getShortName();
-
-                    for (int i = 0; i < bands; i++) {
-                        final float wavelength = getOciWvl(i, getWvlType(variable.getShortName()));
-                        StringBuilder longname = new StringBuilder(description);
-                        longname.append("_");
-                        longname.append(wavelength);
-                        String name = longname.toString();
-                        final int dataType = getProductDataType(variable);
-                        band = new Band(name, dataType, width, height);
-                        product.addBand(band);
-
-                        band.setSpectralWavelength(wavelength);
-                        band.setSpectralBandIndex(spectralBandIndex++);
-
-                        Variable sliced = null;
-                        try {
-                            sliced = variable.slice(0, i);
-                        } catch (InvalidRangeException e) {
-                            e.printStackTrace();  //Todo change body of catch statement.
-                        }
-
-                        final List<Attribute> list = variable.getAttributes();
-                        for (Attribute hdfAttribute : list) {
-                            final String attribName = hdfAttribute.getShortName();
-                            if ("units".equals(attribName)) {
-                                band.setUnit(hdfAttribute.getStringValue());
-                            } else if ("long_name".equals(attribName)) {
-                                band.setDescription(hdfAttribute.getStringValue());
-                            } else if ("slope".equals(attribName)) {
-                                band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                            } else if ("intercept".equals(attribName)) {
-                                band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                            } else if ("scale_factor".equals(attribName)) {
-                                band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                            } else if ("add_offset".equals(attribName)) {
-                                band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                            } else if ("bad_value_scaled".equals(attribName)) {
-                                band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
-                                band.setNoDataValueUsed(true);
-                            }
-                        }
-                        bandToVariableMap.put(band, sliced);
-                        band.setUnit(units);
-                        band.setDescription(description);
-
-                    }
-                }
+                add3DBands(product, variable, sceneRasterHeight, sceneRasterWidth, bandToVariableMap);
             }
-
-
         }
         return bandToVariableMap;
+    }
+
+    private void add3DBands(Product product, Variable variable, int sceneRasterHeight, int sceneRasterWidth, Map<String, Variable> bandToVariableMap) {
+        int spectralBandIndex = 0;
+        final int[] dimensions = variable.getShape();
+        final int bands = dimensions[0];
+        final int height = dimensions[1];
+        final int width = dimensions[2];
+
+        if (height != sceneRasterHeight || width != sceneRasterWidth) {
+            return;
+        }
+
+        final String units = variable.getUnitsString();
+        final String description = variable.getShortName();
+
+        for (int i = 0; i < bands; i++) {
+            final float wavelength = getOciWvl(i, getWvlType(variable.getShortName()));
+            final String variableName = getVariableName(description, wavelength);
+            final int dataType = getProductDataType(variable);
+            final Band band = new Band(variableName, dataType, width, height);
+            product.addBand(band);
+
+            band.setSpectralWavelength(wavelength);
+            band.setSpectralBandIndex(spectralBandIndex++);
+
+            Variable sliced = null;
+            try {
+                sliced = variable.slice(0, i);
+            } catch (InvalidRangeException e) {
+                e.printStackTrace();  //Todo change body of catch statement.
+            }
+
+            addAttributes(variable, band);
+            bandToVariableMap.put(band.getName(), sliced);
+            // the following two are duplicated, already covered by addAttributes() tb 2026-04-28
+            band.setUnit(units);
+            band.setDescription(description);
+        }
+    }
+
+    // package access for testing only tb 2026-04-28
+    static void addAttributes(Variable variable, Band band) {
+        Attribute attribute = variable.findAttribute("units");
+        if (attribute != null) {
+            band.setUnit(attribute.getStringValue());
+        }
+        attribute = variable.findAttribute("long_name");
+        if (attribute != null) {
+            band.setDescription(attribute.getStringValue());
+        }
+        attribute = variable.findAttribute("slope");
+        if (attribute != null) {
+            band.setScalingFactor(attribute.getNumericValue().doubleValue());
+        }
+        attribute = variable.findAttribute("scale-factor");
+        if (attribute != null) {
+            band.setScalingFactor(attribute.getNumericValue().doubleValue());
+        }
+        attribute = variable.findAttribute("intercept");
+        if (attribute != null) {
+            band.setScalingOffset(attribute.getNumericValue().doubleValue());
+        }
+        attribute = variable.findAttribute("add_offset");
+        if (attribute != null) {
+            band.setScalingOffset(attribute.getNumericValue().doubleValue());
+        }
+        attribute = variable.findAttribute("bad_value_scaled");
+        if (attribute != null) {
+            band.setNoDataValue(attribute.getNumericValue().doubleValue());
+            band.setNoDataValueUsed(true);
+        }
+    }
+
+    // package access for testing only tb 2026-04-28
+    static @NonNull String getVariableName(String description, float wavelength) {
+        return description + "_" + wavelength;
+    }
+
+    @Override
+    String getNcVariableName(String variableName) {
+        return stripWavelengthFromName(variableName);
+    }
+
+    static @NonNull String stripWavelengthFromName(String variableName) {
+        final int underscoreIdx = variableName.lastIndexOf("_");
+        return variableName.substring(0, underscoreIdx);
+    }
+
+    private void add2DBand(Product product, Variable variable, int sceneRasterHeight, int sceneRasterWidth, Map<String, Variable> bandToVariableMap) {
+        final int[] dimensions = variable.getShape();
+        final int height = dimensions[0];
+        final int width = dimensions[1];
+
+        if (height != sceneRasterHeight || width != sceneRasterWidth) {
+            return;
+        }
+
+        final String units = variable.getUnitsString();
+        final String name = variable.getShortName();
+        final int dataType = getProductDataType(variable);
+        final Band band;
+        if (wantsCaching) {
+            band = new BandUsingReaderDirectly(name, dataType, width, height);
+        } else {
+            band = new Band(name, dataType, width, height);
+        }
+        product.addBand(band);
+
+        addAttributes(variable, band);
+
+        bandToVariableMap.put(band.getName(), variable);
+        band.setUnit(units);
+        band.setDescription(variable.getDescription());
     }
 
     private WvlType getWvlType(String productName) {
@@ -368,13 +441,107 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             }
         }
     }
-    private int getDimension(String dimensionName) {
-        final List<Dimension> dimensions = ncFile.getDimensions();
-        for (Dimension dimension : dimensions) {
-            if (dimension.getShortName().equals(dimensionName)) {
-                return dimension.getLength();
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        final Variable netcdVariable = variableMap.get(variableName);
+        if (netcdVariable == null) {
+            throw new IOException("Variable not known: " + variableName);
+        }
+
+        final VariableDescriptor variableDescriptor = new VariableDescriptor();
+        variableDescriptor.name = variableName;
+        // @todo 2 tb/tb find out how to used NetCDF MAMath to scale to a desired data type.
+        if (ReaderUtils.mustScale(netcdVariable)) {
+            variableDescriptor.dataType = ProductData.TYPE_FLOAT64;
+        } else {
+            variableDescriptor.dataType = getRasterDataType(netcdVariable.getDataType(), false);
+        }
+
+        int[] shape = netcdVariable.getShape();
+
+        final Array chunkSizesValues;
+        final Attribute chunkSizes = netcdVariable.findAttribute("_ChunkSizes");
+        if (chunkSizes != null) {
+            chunkSizesValues = chunkSizes.getValues();
+        } else {
+            chunkSizesValues = Array.factory(DataType.INT, new int[]{shape.length}, shape);
+        }
+
+        if (shape.length == 2) {
+            variableDescriptor.width = shape[1];
+            variableDescriptor.height = shape[0];
+            variableDescriptor.layers = -1;
+
+            variableDescriptor.tileWidth = chunkSizesValues.getInt(1);
+            variableDescriptor.tileHeight = chunkSizesValues.getInt(0);
+            variableDescriptor.tileLayers = -1;
+        } else if (shape.length == 3) {
+            variableDescriptor.width = shape[2];
+            variableDescriptor.height = shape[1];
+            variableDescriptor.layers = shape[0];
+
+            variableDescriptor.tileWidth = chunkSizesValues.getInt(2);
+            variableDescriptor.tileHeight = chunkSizesValues.getInt(1);
+            variableDescriptor.tileLayers = chunkSizesValues.getInt(0);
+        }
+
+        return variableDescriptor;
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        int rasterDataType = getRasterDataType(netcdfVariable);
+
+        Array rawBuffer;
+        synchronized (ncFile) {
+            try {
+                rawBuffer = netcdfVariable.read(offsets, shapes);
+            } catch (InvalidRangeException e) {
+                throw new IOException(e);
+            }
+
+            // @todo 2 tb/tb foresee that users may want the raw data 2025-12-05
+            if (ReaderUtils.mustScale(netcdfVariable)) {
+                rawBuffer = ReaderUtils.scaleArray(rawBuffer, netcdfVariable);
+                rasterDataType = ProductData.TYPE_FLOAT64;
+            }
+
+            if (targetData == null) {
+                targetData = createTargetDataBuffer(shapes, rasterDataType);
+            }
+
+            switch (rasterDataType) {
+                case ProductData.TYPE_FLOAT32:
+                    targetData.setElems(rawBuffer.get1DJavaArray(DataType.FLOAT));
+                    break;
+                case ProductData.TYPE_FLOAT64:
+                    targetData.setElems(rawBuffer.get1DJavaArray(DataType.DOUBLE));
+                    break;
+                case ProductData.TYPE_INT16:
+                    targetData.setElems(rawBuffer.get1DJavaArray(DataType.SHORT));
+                    break;
+                case ProductData.TYPE_UINT8:
+                    targetData.setElems(rawBuffer.get1DJavaArray(DataType.BYTE));
+                    break;
+                default:
+                    throw new IOException("Unknown data type: " + rasterDataType);
             }
         }
-        return -1;
+
+        return new DataBuffer(targetData, offsets, shapes);
+    }
+
+    private static @NonNull ProductData createTargetDataBuffer(int[] shapes, int rasterDataType) throws IOException {
+        ProductData targetData;
+        if (shapes.length == 2) {
+            targetData = ProductData.createInstance(rasterDataType, shapes[0] * shapes[1]);
+        } else if (shapes.length == 3) {
+            targetData = ProductData.createInstance(rasterDataType, shapes[0] * shapes[1] * shapes[2]);
+        } else {
+            throw new IOException("Illegal shaped variable");
+        }
+        return targetData;
     }
 }

@@ -116,10 +116,10 @@ public class SMIFileReader extends SeadasFileReader {
         return product;
     }
 
-    protected Map<Band, Variable> addSmiBands(Product product, List<Variable> variables) {
+    protected Map<String, Variable> addSmiBands(Product product, List<Variable> variables) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
-        Map<Band, Variable> bandToVariableMap = new HashMap<>();
+        Map<String, Variable> bandToVariableMap = new HashMap<>();
         for (Variable variable : variables) {
             int variableRank = variable.getRank();
             if (variableRank == 2) {
@@ -154,7 +154,7 @@ public class SMIFileReader extends SeadasFileReader {
                     } catch (Exception ignored) {
 
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     // Set units, if defined
                     try {
                         band.setUnit(getStringAttribute("Units"));
@@ -227,7 +227,7 @@ public class SMIFileReader extends SeadasFileReader {
                         e.printStackTrace();  //Todo change body of catch statement.
                     }
 
-                    bandToVariableMap.put(band, sliced);
+                    bandToVariableMap.put(band.getName(), sliced);
                     product.addBand(band);
 
                     try {

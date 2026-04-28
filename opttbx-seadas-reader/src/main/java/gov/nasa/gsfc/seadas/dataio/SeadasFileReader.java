@@ -16,6 +16,10 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
+import eu.esa.snap.core.dataio.cache.CacheDataProvider;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.ProductCache;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.ProductUtils;
@@ -23,6 +27,7 @@ import org.esa.snap.core.util.PropertyMap;
 import org.esa.snap.core.util.ResourceInstaller;
 import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.CsvReader;
+import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.rcp.SnapApp;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
@@ -63,12 +68,13 @@ import static java.lang.System.arraycopy;
 //AUG 2024 - Daniel Knowles - added PACE OCI actual center wavelengths lookup in resources
 
 
-public abstract class SeadasFileReader {
+public abstract class SeadasFileReader implements CacheDataProvider {
 
     protected boolean mustFlipX;
     protected boolean mustFlipY;
+    protected boolean wantsCaching;
     protected List<Attribute> globalAttributes;
-    protected Map<Band, Variable> variableMap;
+    protected Map<String, Variable> variableMap;
     protected NetcdfFile ncFile;
     protected SeadasProductReader productReader;
     protected int[] start = new int[2];
@@ -88,7 +94,9 @@ public abstract class SeadasFileReader {
     private static final String FLAG_MEANINGS = "flag_meanings";
     protected Logger logger = Logger.getLogger(getClass().getSimpleName());
 
-    private boolean isHeadless;
+    private final boolean isHeadless;
+
+    private ProductCache productCache;
 
     protected static final SkipBadNav LAT_SKIP_BAD_NAV = new SkipBadNav() {
         @Override
@@ -99,9 +107,16 @@ public abstract class SeadasFileReader {
 
     public SeadasFileReader(SeadasProductReader productReader) {
         this.productReader = productReader;
+
         ncFile = productReader.getNcfile();
         globalAttributes = ncFile.getGlobalAttributes();
-        this.isHeadless = GraphicsEnvironment.isHeadless();
+        isHeadless = GraphicsEnvironment.isHeadless();
+
+        wantsCaching = false;
+    }
+
+    public void setProductCache(ProductCache productCache) {
+        this.productCache = productCache;
     }
 
     public abstract Product createProduct() throws IOException;
@@ -116,52 +131,90 @@ public abstract class SeadasFileReader {
         if (mustFlipX) {
             sourceOffsetX = destBand.getRasterWidth() - (sourceOffsetX + sourceWidth);
         }
-        sourceOffsetY += leadLineSkip;
-        int widthRemainder = destBand.getRasterWidth() - (sourceOffsetX + sourceWidth);
 
-        if (widthRemainder < 0) {
-            sourceWidth += widthRemainder;
-        }
-        start[0] = sourceOffsetY;
-        start[1] = sourceOffsetX;
-        stride[0] = sourceStepY;
-        stride[1] = sourceStepX;
-        count[0] = sourceHeight;
-        count[1] = sourceWidth;
-        Object buffer = destBuffer.getElems();
-        Variable variable = variableMap.get(destBand);
+        if (wantsCaching) {
+            final int[] offsets;
+            final int[] shapes;
 
-        pm.beginTask("Reading band '" + variable.getShortName() + "'...", sourceHeight);
-        try {
-            Section section = new Section(start, count, stride);
+            String destBandName = destBand.getName();
+            final int spectralBandIndex = destBand.getSpectralBandIndex();
+            if (spectralBandIndex >= 0) {
+                destBandName = getNcVariableName(destBandName);
 
-            Array array;
-            int[] newshape = {sourceHeight, sourceWidth};
-
-            array = variable.read(section);
-            if (array.getRank() > 2) {
-                array = array.reshapeNoCopy(newshape);
-            }
-            Object storage;
-
-            if (mustFlipX && !mustFlipY) {
-                storage = array.flip(1).copyTo1DJavaArray();
-            } else if (!mustFlipX && mustFlipY) {
-                storage = array.flip(0).copyTo1DJavaArray();
-            } else if (mustFlipX && mustFlipY) {
-                storage = array.flip(0).flip(1).copyTo1DJavaArray();
+                offsets = new int[]{spectralBandIndex, sourceOffsetY, sourceOffsetX};
+                shapes = new int[]{1, sourceHeight, sourceWidth};
             } else {
-                storage = array.copyTo1DJavaArray();
+                offsets = new int[]{sourceOffsetY, sourceOffsetX};
+                shapes = new int[]{sourceHeight, sourceWidth};
             }
+
+            final int[] targetOffsets = {0, 0};
+            final DataBuffer targetBuffer = new DataBuffer(destBuffer, targetOffsets, shapes);
+            productCache.read(destBandName, offsets, shapes, targetBuffer);
+            if (mustFlipX || mustFlipY) {
+                DataType netcdfDataType = DataTypeUtils.getNetcdfDataType(destBuffer.getType());
+                Array resultArray = Array.factory(netcdfDataType, shapes, destBuffer.getElems());
+                Object flipped = null;
+                if (mustFlipX && !mustFlipY) {
+                    flipped = resultArray.flip(1).copy().copyTo1DJavaArray();
+                } else if (!mustFlipX && mustFlipY) {
+                    flipped = resultArray.flip(0).copy().copyTo1DJavaArray();
+                } else if (mustFlipX && mustFlipY) {
+                    flipped = resultArray.flip(0).flip(1).copy().copyTo1DJavaArray();
+                }
+                arraycopy(flipped, 0, destBuffer.getElems(), 0, destBuffer.getNumElems());
+            }
+
+
+        } else {
+
+            sourceOffsetY += leadLineSkip;
+            int widthRemainder = destBand.getRasterWidth() - (sourceOffsetX + sourceWidth);
 
             if (widthRemainder < 0) {
-                arraycopy(storage, 0, buffer, 0, destBuffer.getNumElems() + widthRemainder);
-            } else {
-                arraycopy(storage, 0, buffer, 0, destBuffer.getNumElems());
-
+                sourceWidth += widthRemainder;
             }
-        } finally {
-            pm.done();
+            start[0] = sourceOffsetY;
+            start[1] = sourceOffsetX;
+            stride[0] = sourceStepY;
+            stride[1] = sourceStepX;
+            count[0] = sourceHeight;
+            count[1] = sourceWidth;
+            Object buffer = destBuffer.getElems();
+            Variable variable = variableMap.get(destBand.getName());
+
+            pm.beginTask("Reading band '" + variable.getShortName() + "'...", sourceHeight);
+            try {
+                Section section = new Section(start, count, stride);
+
+                Array array;
+                int[] newshape = {sourceHeight, sourceWidth};
+
+                array = variable.read(section);
+                if (array.getRank() > 2) {
+                    array = array.reshapeNoCopy(newshape);
+                }
+                Object storage;
+
+                if (mustFlipX && !mustFlipY) {
+                    storage = array.flip(1).copyTo1DJavaArray();
+                } else if (!mustFlipX && mustFlipY) {
+                    storage = array.flip(0).copyTo1DJavaArray();
+                } else if (mustFlipX && mustFlipY) {
+                    storage = array.flip(0).flip(1).copyTo1DJavaArray();
+                } else {
+                    storage = array.copyTo1DJavaArray();
+                }
+
+                if (widthRemainder < 0) {
+                    arraycopy(storage, 0, buffer, 0, destBuffer.getNumElems() + widthRemainder);
+                } else {
+                    arraycopy(storage, 0, buffer, 0, destBuffer.getNumElems());
+
+                }
+            } finally {
+                pm.done();
+            }
         }
 
     }
@@ -1540,15 +1593,15 @@ public abstract class SeadasFileReader {
 
 
 
-    public Map<Band, Variable> addBands(Product product,
+    public Map<String, Variable> addBands(Product product,
                                         List<Variable> variables) {
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
             int variableRank = variable.getRank();
             if (variableRank == 2) {
                 Band band = addNewBand(product, variable);
                 if (band != null) {
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                 }
             } else if (variableRank == 3) {
                 add3DNewBands(product, variable, bandToVariableMap);
@@ -1658,7 +1711,7 @@ public abstract class SeadasFileReader {
     // todo END todo block
 
 
-    protected Map<Band, Variable> add3DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
+    protected Map<String, Variable> add3DNewBands(Product product, Variable variable, Map<String, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
@@ -1759,7 +1812,7 @@ public abstract class SeadasFileReader {
                         } catch (InvalidRangeException e) {
                             e.printStackTrace();  //Todo change body of catch statement.
                         }
-                        bandToVariableMap.put(band, sliced);
+                        bandToVariableMap.put(band.getName(), sliced);
 
                         try {
                             Attribute fillValue = variable.findAttribute("_FillValue");
@@ -2978,8 +3031,20 @@ public abstract class SeadasFileReader {
 
 
     private interface SkipBadNav {
-
         boolean isBadNav(double value);
     }
 
+    String getNcVariableName(String variableName) {
+        return variableName;
+    }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        throw new RuntimeException("This method must be overridden if the reader wants to use caching");
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        throw new RuntimeException("This method must be overridden if the reader wants to use caching");
+    }
 }
