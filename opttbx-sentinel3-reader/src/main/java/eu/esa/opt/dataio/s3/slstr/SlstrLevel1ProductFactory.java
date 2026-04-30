@@ -485,7 +485,7 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
 
     @Override
     protected void setBandGeoCodings(Product product) throws IOException {
-        if (Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, true)) {
+        if (Config.instance("opttbx").load().preferences().getBoolean(SLSTR_L1B_USE_PIXELGEOCODINGS, false)) {
             setPixelBandGeoCodings(product);
         } else {
             setTiePointBandGeoCodings(product);

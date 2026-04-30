@@ -113,7 +113,7 @@ public class SlstrLstProductFactory extends SlstrProductFactory {
         targetProduct.setSceneGeoCoding(geoCoding);
     }
 
-    private void setTiePointGeoCoding(Product targetProduct, TiePointGrid lonGrid, TiePointGrid latGrid) {
+    private void setTiePointGeoCoding(Product targetProduct, TiePointGrid lonGrid, TiePointGrid latGrid) throws IOException {
         final double[] longitudes = loadTiePointData(lonGrid.getName());
         final double[] latitudes = loadTiePointData(latGrid.getName());
 
