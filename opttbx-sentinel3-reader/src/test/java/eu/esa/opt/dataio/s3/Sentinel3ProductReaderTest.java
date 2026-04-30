@@ -1,16 +1,23 @@
 package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
 import eu.esa.opt.dataio.s3.synergy.SynAodProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynL1CProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynLevel2ProductFactory;
 import eu.esa.opt.dataio.s3.synergy.VgtProductFactory;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.datamodel.TiePointGrid;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import java.io.IOException;
+import java.util.Collections;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class Sentinel3ProductReaderTest {
 
@@ -77,5 +84,58 @@ public class Sentinel3ProductReaderTest {
 
         productFactory = sentinel3ProductReader.getProductFactory("S3A_OL_2_WFR____20070425T152940_20070425T153025_20140610T112151_0045_000_000______MAR_D_NR____.SEN3");
         assertNull(productFactory);
+    }
+
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_isSubsetReadingFullySupported_alwaysTrue() {
+        Sentinel3ProductReader reader = new Sentinel3ProductReader(new Sentinel3ProductReaderPlugIn());
+        assertTrue(reader.isSubsetReadingFullySupported());
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_readBandRasterDataImpl_throwsIOException_whenBandNotRegistered() {
+        Sentinel3ProductReader reader = new Sentinel3ProductReader(new Sentinel3ProductReaderPlugIn());
+
+        AbstractProductFactory mockFactory = mock(AbstractProductFactory.class);
+        when(mockFactory.getBandCacheMap()).thenReturn(Collections.emptyMap());
+        reader.setFactory(mockFactory);
+
+        Band destBand = mock(Band.class);
+        when(destBand.getName()).thenReturn("nonexistent_band");
+
+        ProductData buffer = ProductData.createInstance(ProductData.TYPE_INT32, 4);
+
+        try {
+            reader.readBandRasterDataImpl(0, 0, 2, 2, 1, 1,
+                    destBand, 0, 0, 2, 2, buffer, ProgressMonitor.NULL);
+            fail("Expected IOException for unregistered band");
+        } catch (IOException e) {
+            assertTrue(e.getMessage().contains("nonexistent_band"));
+        }
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_readTiePointGridRasterData_throwsIOException_whenTpgNotRegistered() {
+        Sentinel3ProductReader reader = new Sentinel3ProductReader(new Sentinel3ProductReaderPlugIn());
+
+        AbstractProductFactory mockFactory = mock(AbstractProductFactory.class);
+        when(mockFactory.getTpgReaderMap()).thenReturn(Collections.emptyMap());
+        reader.setFactory(mockFactory);
+
+        TiePointGrid tpg = mock(TiePointGrid.class);
+        when(tpg.getName()).thenReturn("missing_tpg");
+
+        ProductData buffer = ProductData.createInstance(ProductData.TYPE_FLOAT32, 4);
+
+        try {
+            reader.readTiePointGridRasterData(tpg, 0, 0, 2, 2, buffer, ProgressMonitor.NULL);
+            fail("Expected IOException for unregistered TPG");
+        } catch (IOException e) {
+            assertTrue(e.getMessage().contains("missing_tpg"));
+        }
     }
 }

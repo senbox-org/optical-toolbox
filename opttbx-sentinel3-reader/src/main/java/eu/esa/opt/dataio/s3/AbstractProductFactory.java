@@ -16,11 +16,12 @@ package eu.esa.opt.dataio.s3;/*
 
 import com.bc.ceres.core.VirtualDir;
 import com.bc.ceres.multilevel.MultiLevelImage;
-import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
-import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
+import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
+import eu.esa.opt.dataio.s3.util.S3Util;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.*;
@@ -32,15 +33,9 @@ import ucar.ma2.Array;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
-import javax.media.jai.Interpolation;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.CropDescriptor;
-import javax.media.jai.operator.TranslateDescriptor;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +54,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
             new Color(0, 0, 0),
             new Color(255, 255, 255)
     };
-    private final Map<String, MultiLevelImage> tpgImageMap;
     private final List<Product> openProductList = new ArrayList<>();
     private final Sentinel3ProductReader productReader;
     private final Logger logger;
@@ -68,16 +62,29 @@ public abstract class AbstractProductFactory implements ProductFactory {
     private volatile Manifest manifest;
     private final ColorProvider colorProvider;
 
+    private final Map<String, S3NetcdfReader> bandCacheMap = new HashMap<>();
+    private final Map<String, TpgEntry> tpgReaderMap = new HashMap<>();
+
+
     public AbstractProductFactory(Sentinel3ProductReader productReader) {
         this.productReader = productReader;
         this.logger = Logger.getLogger(getClass().getSimpleName());
         separatingDimensions = new ArrayList<>();
-        tpgImageMap = new HashMap<>();
         colorProvider = new ColorProvider();
     }
 
     protected static Band copyBand(Band sourceBand, Product targetProduct, boolean copySourceImage) {
         return ProductUtils.copyBand(sourceBand.getName(), sourceBand.getProduct(), targetProduct, copySourceImage);
+    }
+
+    /** Returns an unmodifiable view of the band → reader mapping. */
+    protected Map<String, S3NetcdfReader> getBandCacheMap() {
+        return Collections.unmodifiableMap(bandCacheMap);
+    }
+
+    /** Returns an unmodifiable view of the TPG → cache-entry mapping. */
+    Map<String, TpgEntry> getTpgReaderMap() {
+        return Collections.unmodifiableMap(tpgReaderMap);
     }
 
     @Override
@@ -140,6 +147,9 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     @Override
     public void dispose() throws IOException {
+        bandCacheMap.clear();
+        tpgReaderMap.clear();
+
         openProductList.forEach(Product::dispose);
         openProductList.clear();
     }
@@ -150,49 +160,48 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     @Override
     public MultiLevelImage getImageForTpg(String tpgName) {
-        return tpgImageMap.get(tpgName);
+        return null;
     }
 
-    protected TiePointGrid copyBandAsTiePointGrid(Band sourceBand, Product targetProduct, int subSamplingX,
-                                                  int subSamplingY,
-                                                  double offsetX, double offsetY) {
-        final MultiLevelImage sourceImage = sourceBand.getGeophysicalImage();
+
+    protected TiePointGrid copyBandAsTiePointGrid(Band sourceBand, Product targetProduct, int subSamplingX, int subSamplingY, double offsetX, double offsetY) {
         final String unit = sourceBand.getUnit();
 
         double newOffsetX = offsetX % subSamplingX;
-        double dataOffsetX = (newOffsetX - offsetX) / subSamplingX;
-        double newWidth = Math.min(sourceBand.getRasterWidth(),
-                Math.ceil((targetProduct.getSceneRasterWidth() - newOffsetX) / subSamplingX));
+        int dataOffsetX = (int) Math.round((newOffsetX - offsetX) / subSamplingX);
+        double newWidth = Math.min(sourceBand.getRasterWidth(), Math.ceil((targetProduct.getSceneRasterWidth() - newOffsetX) / subSamplingX));
+
         double newOffsetY = offsetY % subSamplingY;
-        double dataOffsetY = (newOffsetY - offsetY) / subSamplingY;
-        double newHeight = Math.min(sourceBand.getRasterHeight(),
-                Math.ceil((targetProduct.getSceneRasterHeight() - newOffsetY) / subSamplingY));
-        RenderedOp translatedSourceImage = TranslateDescriptor.create(sourceImage, (float) -dataOffsetX, (float) -dataOffsetY,
-                Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
-        RenderedImage croppedSourceImage = CropDescriptor.create(translatedSourceImage, 0f, 0f,
-                (float) newWidth, (float) newHeight, null);
-        DefaultMultiLevelImage newSourceImage =
-                new DefaultMultiLevelImage(new DefaultMultiLevelSource(croppedSourceImage, sourceImage.getModel()));
+        int dataOffsetY = (int) Math.round((newOffsetY - offsetY) / subSamplingY);
+        double newHeight = Math.min(sourceBand.getRasterHeight(), Math.ceil((targetProduct.getSceneRasterHeight() - newOffsetY) / subSamplingY));
+
         final String bandName = sourceBand.getName();
-        final TiePointGrid tiePointGrid = new TiePointGrid(bandName, (int) newWidth, (int) newHeight,
+
+        final TiePointGrid tiePointGrid = new TiePointGrid(bandName,
+                (int) newWidth, (int) newHeight,
                 newOffsetX, newOffsetY,
                 subSamplingX, subSamplingY);
         if (unit != null && unit.toLowerCase().contains("degree")) {
             tiePointGrid.setDiscontinuity(TiePointGrid.DISCONT_AUTO);
         }
-        putTiePointSourceImage(bandName, newSourceImage);
         tiePointGrid.setDescription(sourceBand.getDescription());
         tiePointGrid.setGeophysicalNoDataValue(sourceBand.getGeophysicalNoDataValue());
         tiePointGrid.setNoDataValueUsed(sourceBand.isNoDataValueUsed());
         tiePointGrid.setUnit(unit);
         targetProduct.addTiePointGrid(tiePointGrid);
-        sourceImage.dispose();
+
+        final ProductReader reader = sourceBand.getProduct().getProductReader();
+        if (reader instanceof S3NetcdfReader) {
+            final String cacheKey = getTpgCacheKey(bandName);
+
+            tpgReaderMap.put(bandName, new TpgEntry((S3NetcdfReader) reader, sourceBand, dataOffsetX, dataOffsetY,
+                    (int) newWidth, (int) newHeight, cacheKey));
+        } else {
+            logger.warning("Cannot register TPG '" + bandName + "' with cache: " +
+                    "source band product reader is not an S3NetcdfReader.");
+        }
 
         return tiePointGrid;
-    }
-
-    protected void putTiePointSourceImage(String tpgName, MultiLevelImage newSourceImage) {
-        tpgImageMap.put(tpgName, newSourceImage);
     }
 
     protected void setSceneTransforms(Product product) {
@@ -214,28 +223,14 @@ public abstract class AbstractProductFactory implements ProductFactory {
             if (product.containsBand(errorBandName)) {
                 final Band errorBand = product.getBand(errorBandName);
                 band.addAncillaryVariable(errorBand, "error");
-                addUncertaintyImageInfo(errorBand);
             } else if (product.containsBand(uncertaintyBandName)) {
                 final Band uncertaintyBand = product.getBand(uncertaintyBandName);
                 band.addAncillaryVariable(uncertaintyBand, "uncertainty");
-                addUncertaintyImageInfo(uncertaintyBand);
             } else if (product.containsBand(uncBandName)) {
                 final Band uncBand = product.getBand(uncBandName);
                 band.addAncillaryVariable(uncBand, "uncertainty");
-                addUncertaintyImageInfo(uncBand);
             }
         }
-    }
-
-    protected void addUncertaintyImageInfo(Band band) {
-        final double minValue = band.getStx().getMinimum();
-        final double maxValue = band.getStx().getMaximum();
-        double colorDist = (maxValue - minValue) / (uncertainty_colors.length - 1);
-        final ColorPaletteDef.Point[] points = new ColorPaletteDef.Point[uncertainty_colors.length];
-        for (int i = 0; i < points.length; i++) {
-            points[i] = new ColorPaletteDef.Point(minValue + (i * colorDist), uncertainty_colors[i]);
-        }
-        band.setImageInfo(new ImageInfo(new ColorPaletteDef(points)));
     }
 
     protected void processProductSpecificMetadata(MetadataElement metadataElement) {
@@ -301,7 +296,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
     protected Band addBand(Band sourceBand, Product targetProduct) {
-        return copyBand(sourceBand, targetProduct, true);
+        return copyBand(sourceBand, targetProduct, sourceBand.isSourceImageSet());
     }
 
     // package access for testing only tb 2025-04-08
@@ -358,6 +353,11 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
                         if (targetNode.getName().startsWith("counter_water")) {
                             targetNode.setImageInfo(new ImageInfo(getCounterWaterColorPalette()));
+                        }
+
+                        final ProductReader sourceReader = sourceProduct.getProductReader();
+                        if (sourceReader instanceof S3NetcdfReader && !sourceBand.isSourceImageSet()) {
+                            bandCacheMap.put(targetNode.getName(), (S3NetcdfReader) sourceReader);
                         }
                     }
                 }
@@ -420,10 +420,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
             logger.log(Level.SEVERE, msg);
             throw new IOException(msg);
         }
-        // Todo remove when numResolutionsMax is assigned by ProductReader
-        if (product.getNumBands() > 0) {
-            product.setNumResolutionsMax(product.getBandAt(0).getSourceImage().getModel().getLevelCount());
-        }
+
         return product;
     }
 
@@ -473,12 +470,48 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
     }
 
-    protected double[] loadTiePointData(String tpgName) {
-        final MultiLevelImage mlImage = getImageForTpg(tpgName);
-        final Raster tpData = mlImage.getImage(0).getData();
-        final double[] tiePoints = new double[tpData.getWidth() * tpData.getHeight()];
-        tpData.getPixels(tpData.getMinX(), tpData.getMinY(), tpData.getWidth(), tpData.getHeight(), tiePoints);
-        return tiePoints;
+
+    protected void registerTpgWithCache(String tpgName, Band sourceBand,
+                                        int dataOffsetX, int dataOffsetY,
+                                        int gridWidth, int gridHeight) {
+        final ProductReader reader = sourceBand.getProduct().getProductReader();
+        if (reader instanceof S3NetcdfReader) {
+            final String sourceName = sourceBand.getName();
+            final String cacheKey = getTpgCacheKey(sourceName);
+
+            tpgReaderMap.put(tpgName, new TpgEntry((S3NetcdfReader) reader, sourceBand, dataOffsetX, dataOffsetY,
+                    gridWidth, gridHeight, cacheKey));
+        } else {
+            logger.warning("Cannot register TPG '" + tpgName + "' with cache: " +
+                    "source band product reader is not an S3NetcdfReader.");
+        }
+    }
+
+
+    protected double[] loadTiePointData(String tpgName) throws IOException {
+        final TpgEntry entry = tpgReaderMap.get(tpgName);
+        if (entry == null) {
+            throw new IOException("No cache reader registered for tie-point grid '" + tpgName + "'.");
+        }
+
+        final int w = entry.gridWidth;
+        final int h = entry.gridHeight;
+        final int[] offsets = new int[]{entry.dataOffsetY, entry.dataOffsetX};
+        final int[] shapes = new int[]{h, w};
+
+        final ProductData data = ProductData.createInstance(entry.sourceBand.getDataType(), w * h);
+        entry.reader.getProductCache().read(entry.cacheKey, offsets, shapes, new DataBuffer(data, offsets, shapes));
+
+        final double[] result = new double[w * h];
+        for (int ii = 0; ii < result.length; ii++) {
+            double geoValue = S3Util.getGeophysicalValue(entry.sourceBand, data.getElemDoubleAt(ii));
+
+            if (S3Util.isInvalidGeoCoordinate(tpgName, geoValue)) {
+                geoValue = Double.NaN;
+            }
+            result[ii] = geoValue;
+        }
+        return result;
     }
 
     private void setTimes(Product targetProduct) {
@@ -549,5 +582,39 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
 
         return null;
+    }
+
+    private static String getTpgCacheKey(String bandName) {
+        if ("TP_latitude".equals(bandName)) {
+            return "latitude";
+        }
+        if ("TP_longitude".equals(bandName)) {
+            return "longitude";
+        }
+
+        return bandName;
+    }
+
+
+    static class TpgEntry {
+        final S3NetcdfReader reader;
+        final Band sourceBand;
+        final int dataOffsetX;
+        final int dataOffsetY;
+        final int gridWidth;
+        final int gridHeight;
+        final String cacheKey;
+
+
+        TpgEntry(S3NetcdfReader reader, Band sourceBand, int dataOffsetX, int dataOffsetY,
+                 int gridWidth, int gridHeight, String cacheKey) {
+            this.reader = reader;
+            this.sourceBand = sourceBand;
+            this.dataOffsetX = dataOffsetX;
+            this.dataOffsetY = dataOffsetY;
+            this.gridWidth = gridWidth;
+            this.gridHeight = gridHeight;
+            this.cacheKey = cacheKey;
+        }
     }
 }

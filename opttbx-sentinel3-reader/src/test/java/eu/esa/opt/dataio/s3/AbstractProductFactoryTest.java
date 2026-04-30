@@ -17,12 +17,16 @@
 package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.annotation.STTM;
+import eu.esa.opt.dataio.s3.meris.MerisProductFactory;
+import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
+import org.esa.snap.core.datamodel.Band;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class AbstractProductFactoryTest {
 
@@ -48,5 +52,45 @@ public class AbstractProductFactoryTest {
 
         final List<String> processedNames = AbstractProductFactory.removeLeadingSlash(fileNames);
         assertEquals(0, processedNames.size());
+    }
+
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_tpgEntry_constructorStoresAllFields() {
+        S3NetcdfReader reader = mock(S3NetcdfReader.class);
+        Band band = mock(Band.class);
+
+        AbstractProductFactory.TpgEntry entry = new AbstractProductFactory.TpgEntry(
+                reader, band, 5, 10, 100, 200, "my_cache_key"
+        );
+
+        assertSame("reader", reader, entry.reader);
+        assertSame("sourceBand", band, entry.sourceBand);
+        assertEquals("dataOffsetX", 5, entry.dataOffsetX);
+        assertEquals("dataOffsetY", 10, entry.dataOffsetY);
+        assertEquals("gridWidth", 100, entry.gridWidth);
+        assertEquals("gridHeight", 200, entry.gridHeight);
+        assertEquals("cacheKey", "my_cache_key", entry.cacheKey);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    @STTM("SNAP-4200")
+    public void test_getBandCacheMap_returnsUnmodifiableView() {
+        AbstractProductFactory factory = createMinimalFactory();
+        factory.getBandCacheMap().put("anyBand", mock(S3NetcdfReader.class));
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    @STTM("SNAP-4200")
+    public void test_getTpgReaderMap_returnsUnmodifiableView() {
+        AbstractProductFactory factory = createMinimalFactory();
+        factory.getTpgReaderMap().put("anyTpg", mock(AbstractProductFactory.TpgEntry.class));
+    }
+
+
+    private static AbstractProductFactory createMinimalFactory() {
+        Sentinel3ProductReader mockReader = mock(Sentinel3ProductReader.class);
+        return new MerisProductFactory(mockReader);
     }
 }

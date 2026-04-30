@@ -3,12 +3,12 @@ package eu.esa.opt.dataio.s3.util;
 import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.olci.OlciContext;
-import eu.esa.opt.dataio.s3.olci.OlciProductFactory;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelGeoIndexInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.dataio.netcdf.util.Constants;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,7 +16,9 @@ import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
+import ucar.nc2.constants.CDM;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -843,5 +845,133 @@ public class S3UtilTest {
 
         final File eTwo = S3Util.getFileFromVirtualDir("e_two", virtualDir);
         assertNull(eTwo);
+    }
+
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_getGeophysicalValue_appliesScalingAndOffset() {
+        Band band = mock(Band.class);
+        when(band.isNoDataValueUsed()).thenReturn(false);
+        when(band.getScalingFactor()).thenReturn(0.1);
+        when(band.getScalingOffset()).thenReturn(5.0);
+
+        double result = S3Util.getGeophysicalValue(band, 100.0);
+
+        assertEquals(15.0, result, 1e-10);
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_getGeophysicalValue_returnsGeophysicalNoData_whenRawValueIsNoData() {
+        Band band = mock(Band.class);
+        when(band.isNoDataValueUsed()).thenReturn(true);
+        when(band.getNoDataValue()).thenReturn(-999.0);
+        when(band.getGeophysicalNoDataValue()).thenReturn(Double.NaN);
+
+        double result = S3Util.getGeophysicalValue(band, -999.0);
+
+        assertTrue("Expected NaN for no-data input", Double.isNaN(result));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_getGeophysicalValue_noDataNotUsed_appliesScalingEvenForNoDataValue() {
+        Band band = mock(Band.class);
+        when(band.isNoDataValueUsed()).thenReturn(false);
+        when(band.getScalingFactor()).thenReturn(2.0);
+        when(band.getScalingOffset()).thenReturn(1.0);
+
+        double result = S3Util.getGeophysicalValue(band, -999.0);
+
+        assertEquals(-999.0 * 2.0 + 1.0, result, 1e-10);
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_getGeophysicalValue_identityTransform() {
+        Band band = mock(Band.class);
+        when(band.isNoDataValueUsed()).thenReturn(false);
+        when(band.getScalingFactor()).thenReturn(1.0);
+        when(band.getScalingOffset()).thenReturn(0.0);
+
+        double result = S3Util.getGeophysicalValue(band, 42.5);
+
+        assertEquals(42.5, result, 1e-10);
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_isInvalidGeoCoordinate_latitude_validRange() {
+        assertFalse(S3Util.isInvalidGeoCoordinate("latitude", 0.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("latitude", 45.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("latitude", -90.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("latitude", 90.0));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_isInvalidGeoCoordinate_latitude_outOfRange() {
+        assertTrue(S3Util.isInvalidGeoCoordinate("latitude", 90.001));
+        assertTrue(S3Util.isInvalidGeoCoordinate("latitude", -90.001));
+        assertTrue(S3Util.isInvalidGeoCoordinate("latitude", 180.0));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_isInvalidGeoCoordinate_longitude_validRange() {
+        assertFalse(S3Util.isInvalidGeoCoordinate("longitude", 0.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("longitude", 120.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("longitude", -180.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("longitude", 180.0));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_isInvalidGeoCoordinate_longitude_outOfRange() {
+        assertTrue(S3Util.isInvalidGeoCoordinate("longitude", 180.001));
+        assertTrue(S3Util.isInvalidGeoCoordinate("longitude", -180.001));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_isInvalidGeoCoordinate_nonFiniteValues_alwaysInvalid() {
+        assertTrue(S3Util.isInvalidGeoCoordinate("latitude",  Double.NaN));
+        assertTrue(S3Util.isInvalidGeoCoordinate("longitude", Double.NaN));
+        assertTrue(S3Util.isInvalidGeoCoordinate("latitude",  Double.POSITIVE_INFINITY));
+        assertTrue(S3Util.isInvalidGeoCoordinate("longitude", Double.NEGATIVE_INFINITY));
+        assertTrue(S3Util.isInvalidGeoCoordinate("some_var", Double.NaN));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_isInvalidGeoCoordinate_unknownName_finiteValue_neverInvalid() {
+        assertFalse(S3Util.isInvalidGeoCoordinate("temperature", 9999.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("reflectance", -500.0));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_isInvalidGeoCoordinate_caseInsensitive() {
+        assertTrue(S3Util.isInvalidGeoCoordinate("LATITUDE",   91.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("LATITUDE",  45.0));
+        assertTrue(S3Util.isInvalidGeoCoordinate("Longitude",  181.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("Longitude", 0.0));
+        assertTrue(S3Util.isInvalidGeoCoordinate("TP_latitude", 91.0));
+        assertFalse(S3Util.isInvalidGeoCoordinate("TP_latitude", 45.0));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void test_getTileSizeForVariable_noChunkSizeAttribute_returnsProductPreferredTileSize() {
+        Variable variable = mock(Variable.class);
+        when(variable.findAttribute(CDM.CHUNK_SIZES)).thenReturn(null);
+
+        Product product = new Product("test", "TEST_TYPE", 512, 512);
+        Dimension expected = ImageManager.getPreferredTileSize(product);
+
+        Dimension result = S3Util.getTileSizeForVariable(variable, product);
+
+        assertEquals(expected, result);
     }
 }
