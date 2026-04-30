@@ -9,12 +9,9 @@ import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReaderFactory;
 import eu.esa.opt.dataio.s3.util.S3Util;
 import org.esa.snap.core.dataio.geocoding.*;
-import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
-import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
-import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.runtime.Config;
 
 import java.io.File;
@@ -184,7 +181,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     @Override
     protected void setGeoCoding(Product targetProduct) throws IOException {
         // @todo 1 tb/tb move to factory for contexts 2025-04-03
-        if (Config.instance("opttbx").load().preferences().getBoolean(new OlciContext().getUsePixelGeoCodingKey(), true)) {
+        if (Config.instance("opttbx").load().preferences().getBoolean(new OlciContext().getUsePixelGeoCodingKey(), false)) {
             setPixelGeoCoding(targetProduct);
         } else {
             setTiePointGeoCoding(targetProduct);
@@ -218,7 +215,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         targetProduct.setSceneGeoCoding(geoCoding);
     }
 
-    private void setTiePointGeoCoding(Product targetProduct) {
+    private void setTiePointGeoCoding(Product targetProduct) throws IOException {
         String lonVarName = "longitude";
         String latVarName = "latitude";
         TiePointGrid lonGrid = targetProduct.getTiePointGrid(lonVarName);
