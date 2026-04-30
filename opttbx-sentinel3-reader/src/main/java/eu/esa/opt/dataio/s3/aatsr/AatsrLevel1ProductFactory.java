@@ -1,9 +1,6 @@
 package eu.esa.opt.dataio.s3.aatsr;
 
 import com.bc.ceres.core.VirtualDir;
-import com.bc.ceres.multilevel.MultiLevelImage;
-import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
-import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory;
 import eu.esa.opt.dataio.s3.util.MetTxReader;
@@ -16,16 +13,13 @@ import org.esa.snap.core.dataio.geocoding.GeoRaster;
 import org.esa.snap.core.dataio.geocoding.InverseCoding;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.RasterDataNode;
-import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.ProductUtils;
 
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.CropDescriptor;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import static eu.esa.opt.dataio.s3.util.S3Util.getFileFromVirtualDir;
 
@@ -83,7 +77,6 @@ public class AatsrLevel1ProductFactory extends SlstrLevel1ProductFactory {
             if (product.containsBand(uncertaintyBandName)) {
                 final Band uncertaintyBand = product.getBand(uncertaintyBandName);
                 band.addAncillaryVariable(uncertaintyBand, "uncertainty");
-                addUncertaintyImageInfo(uncertaintyBand);
             }
         }
     }
@@ -119,22 +112,30 @@ public class AatsrLevel1ProductFactory extends SlstrLevel1ProductFactory {
         }
     }
 
+    /**
+     * Builds a TiePointGrid with AATSR-specific geometry and registers it with the
+     * ProductCache so that {@link eu.esa.opt.dataio.s3.Sentinel3ProductReader#readTiePointGridRasterData}
+     * can serve its data without any JAI image pipeline.
+     * <p>
+     * The crop offset used here is always zero (no trim needed for AATSR tie-point
+     * grids), so {@code dataOffsetX = dataOffsetY = 0} is passed to
+     * {@link #registerTpgWithCache}.
+     */
     @Override
     protected RasterDataNode copyTiePointGrid(Band sourceBand, Product targetProduct, double sourceStartOffset,
                                               double sourceTrackOffset, short[] sourceResolutions) {
-        final MultiLevelImage sourceImage = sourceBand.getGeophysicalImage();
-        final String tpgName = sourceBand.getName();
-        final float cutOff = 0.0f;
-        final RenderedOp tpgImage = CropDescriptor.create(sourceImage, 0.0f, cutOff,
-                                                          (float) sourceBand.getRasterWidth(), (float) sourceBand.getRasterHeight() - cutOff, null);
-        putTiePointSourceImage(tpgName, new DefaultMultiLevelImage(new DefaultMultiLevelSource(tpgImage, 1)));
+        final String tpgName   = sourceBand.getName();
+        final int gridWidth    = sourceBand.getRasterWidth();
+        final int gridHeight   = sourceBand.getRasterHeight();
+
         final short[] referenceResolutions = getReferenceResolutions();
         final int subSamplingX = sourceResolutions[0] / referenceResolutions[0];
         final int subSamplingY = sourceResolutions[1] / referenceResolutions[1];
         final double[] tiePointGridOffsets = getTiePointGridOffsets(sourceStartOffset, sourceTrackOffset, subSamplingX, subSamplingY);
-        final TiePointGrid tiePointGrid = new TiePointGrid(tpgName, tpgImage.getWidth(), tpgImage.getHeight(),
-                                                           tiePointGridOffsets[0], tiePointGridOffsets[1],
-                                                           subSamplingX, subSamplingY);
+
+        final TiePointGrid tiePointGrid = new TiePointGrid(tpgName, gridWidth, gridHeight,
+                tiePointGridOffsets[0], tiePointGridOffsets[1],
+                subSamplingX, subSamplingY);
 
         final String unit = sourceBand.getUnit();
         tiePointGrid.setUnit(unit);
@@ -142,6 +143,7 @@ public class AatsrLevel1ProductFactory extends SlstrLevel1ProductFactory {
             tiePointGrid.setDiscontinuity(TiePointGrid.DISCONT_AUTO);
         }
         tiePointGrid.setDescription(sourceBand.getDescription());
+
         if (("latitude_tx".equals(tpgName) || "longitude_tx".equals(tpgName)) && !sourceBand.isNoDataValueUsed()) {
             tiePointGrid.setGeophysicalNoDataValue(-9.99999999E8);
             tiePointGrid.setNoDataValueUsed(true);
@@ -150,6 +152,9 @@ public class AatsrLevel1ProductFactory extends SlstrLevel1ProductFactory {
             tiePointGrid.setNoDataValueUsed(sourceBand.isNoDataValueUsed());
         }
         targetProduct.addTiePointGrid(tiePointGrid);
+
+        registerTpgWithCache(tpgName, sourceBand, 0, 0, gridWidth, gridHeight);
+
         return tiePointGrid;
     }
 
@@ -164,7 +169,7 @@ public class AatsrLevel1ProductFactory extends SlstrLevel1ProductFactory {
     }
 
     @Override
-    protected void setGeoCoding(Product targetProduct) {
+    protected void setGeoCoding(Product targetProduct) throws IOException {
 // TODO https://senbox.atlassian.net/browse/SIIITBX-394
 // Not setting GeoCoding. We can't get a good geolocation with the tie-points and the geo-location bands are not usable
 // because they contain fill_values.
@@ -232,5 +237,62 @@ public class AatsrLevel1ProductFactory extends SlstrLevel1ProductFactory {
             }
         }
         return masterProduct;
+    }
+
+
+    @Override
+    protected RasterDataNode addSpecialNode(Product masterProduct, Band sourceBand, Product targetProduct) {
+        final String sourceBandName = sourceBand.getName();
+        final String gridIndex = getAatsrGridIndex(sourceBandName);
+
+        final Double sourceStartOffset = getStartOffset(gridIndex);
+        final Double sourceTrackOffset = getTrackOffset(gridIndex);
+
+        if (sourceStartOffset != null && sourceTrackOffset != null && gridIndex.startsWith("t")) {
+            final short[] sourceResolutions = getResolutions(gridIndex);
+            return copyTiePointGrid(sourceBand, targetProduct, sourceStartOffset, sourceTrackOffset, sourceResolutions);
+        }
+
+        final Band targetBand = new Band(sourceBandName,
+                sourceBand.getDataType(),
+                sourceBand.getRasterWidth(),
+                sourceBand.getRasterHeight());
+
+        targetProduct.addBand(targetBand);
+        ProductUtils.copyRasterDataNodeProperties(sourceBand, targetBand);
+
+        return targetBand;
+    }
+
+    private static final Set<String> AATSR_GRID_INDEXES = Set.of(
+            "an", "ao", "bn", "bo", "cn", "co",
+            "in", "io", "fn", "fo",
+            "tn", "to", "tx",
+            "i", "t"
+    );
+
+    private static String getAatsrGridIndex(String bandName) {
+        final String[] nameParts = bandName.split("_");
+        final int lastPartIndex = nameParts.length - 1;
+
+        int firstIndexOfPartWithTwoLetters = -1;
+        for (int ii = lastPartIndex; ii >= 0; ii--) {
+            if (AATSR_GRID_INDEXES.contains(nameParts[ii])) {
+                return nameParts[ii];
+            }
+            if (firstIndexOfPartWithTwoLetters < 0 && nameParts[ii].length() == 2) {
+                firstIndexOfPartWithTwoLetters = ii;
+            }
+        }
+
+        if (firstIndexOfPartWithTwoLetters >= 0) {
+            return nameParts[firstIndexOfPartWithTwoLetters];
+        }
+
+        if (nameParts[lastPartIndex].length() > 1) {
+            return nameParts[lastPartIndex].substring(nameParts[lastPartIndex].length() - 2);
+        }
+
+        return nameParts[lastPartIndex];
     }
 }
