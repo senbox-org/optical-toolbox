@@ -62,11 +62,24 @@ public class MerisProductFactory extends AbstractProductFactory {
         final MetadataElement samplingParametersElement = merisInformationElement.getElement("samplingParameters");
         subSamplingY = Integer.parseInt(samplingParametersElement.getAttribute("rowsPerTiePoint").getData().toString());
         subSamplingX = Integer.parseInt(samplingParametersElement.getAttribute("columnsPerTiePoint").getData().toString());
+
+        if (subSamplingX <= 0) {
+            subSamplingX = 16;
+        }
+        if (subSamplingY <= 0) {
+            subSamplingY = 16;
+        }
+
         final MetadataElement bandDescriptionsElement = merisInformationElement.getElement("bandDescriptions");
         if (bandDescriptionsElement != null) {
             for (int i = 0; i < bandDescriptionsElement.getNumElements(); i++) {
                 final MetadataElement bandDescriptionElement = bandDescriptionsElement.getElementAt(i);
-                final String bandName = bandDescriptionElement.getAttribute("name").getData().getElemString();
+                String bandName = bandDescriptionElement.getAttribute("name").getData().getElemString();
+
+                if (!bandName.startsWith("M")) {
+                    bandName = "M" + bandName;
+                }
+
                 final float wavelength =
                         Float.parseFloat(bandDescriptionElement.getAttribute("centralWavelength").getData().getElemString());
                 final float bandWidth =
