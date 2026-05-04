@@ -64,10 +64,10 @@ public class S3NetcdfReader extends AbstractProductReader {
         int productHeight = getHeight();
 
         final Product product = new Product(FileUtils.getFilenameWithoutExtension(inputFile), productType, productWidth, productHeight);
-        setNumResolutionsMax(product);
         product.setFileLocation(inputFile);
         addGlobalMetadata(product);
         addBands(product);
+        setNumResolutionsMax(product);
         addGeoCoding(product);
 
         cacheDataProvider = new NetcdfCacheDataProvider();
@@ -94,10 +94,15 @@ public class S3NetcdfReader extends AbstractProductReader {
     }
 
     private void setNumResolutionsMax(Product product) {
-        final int maxDim = Math.max(getWidth(), getHeight());
-        if (maxDim > 0) {
-            product.setNumResolutionsMax((int) Math.floor(Math.log(maxDim) / Math.log(2.0)) + 1);
+        int maxLevels = 1;
+
+        for (Band band : product.getBands()) {
+            if (band.isSourceImageSet()) {
+                maxLevels = Math.max(maxLevels, band.getSourceImage().getModel().getLevelCount());
+            }
         }
+
+        product.setNumResolutionsMax(maxLevels);
     }
 
     @Override
