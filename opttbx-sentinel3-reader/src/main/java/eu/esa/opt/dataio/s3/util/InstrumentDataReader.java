@@ -2,11 +2,13 @@ package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import org.esa.snap.core.datamodel.*;
+import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 import java.awt.image.RenderedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -88,11 +90,11 @@ class InstrumentDataReader extends S3NetcdfReader {
     protected RenderedImage createSourceImage(Band band) {
         final String bandName = band.getName();
         if (bandName.equals(DETECTOR_INDEX_NAME)) {
-            return super.createSourceImage(band);
+            return createSourceImageForInstrument(band);
         }
         if (bandName.equals(FRAME_OFFSET_NAME)) {
             if (is2dFrameOffset) {
-                return super.createSourceImage(band);
+                return createSourceImageForInstrument(band);
             }
         }
         String variableName = bandName;
@@ -111,6 +113,64 @@ class InstrumentDataReader extends S3NetcdfReader {
         S3MultiLevelOpSource levelSource = new S3MultiLevelOpSource(band, variable, new String[]{dimensionName},
                 new int[]{dimensionIndex},
                 detectorIndexBand, "detectors", dimensionName);
+        return new DefaultMultiLevelImage(levelSource);
+    }
+
+    private RenderedImage createSourceImageForInstrument(Band band) {
+        final String bandName = band.getName();
+        String variableName = bandName;
+        if (variableName.endsWith("_lsb")) {
+            variableName = variableName.substring(0, variableName.indexOf("_lsb"));
+        } else if (variableName.endsWith("_msb")) {
+            variableName = variableName.substring(0, variableName.indexOf("_msb"));
+        }
+
+        Variable variable = null;
+        List<String> dimensionNameList = new ArrayList<>();
+        List<Integer> dimensionIndexList = new ArrayList<>();
+        final String[] separatingDimensions = getSeparatingDimensions();
+        final String[] suffixesForSeparatingThirdDimensions = getSuffixesForSeparatingDimensions();
+        int lowestSuffixIndex = Integer.MAX_VALUE;
+
+        for (int ii = 0; ii < separatingDimensions.length; ii++) {
+            final String dimension = separatingDimensions[ii];
+            final String suffix = suffixesForSeparatingThirdDimensions[ii];
+            if (bandName.contains(suffix)) {
+                final int suffixIndex = bandName.indexOf(suffix) - 1;
+                if (suffixIndex < lowestSuffixIndex) {
+                    lowestSuffixIndex = suffixIndex;
+                }
+                dimensionNameList.add(dimension);
+                dimensionIndexList.add(getDimensionIndexFromBandName(bandName));
+            }
+        }
+        if (lowestSuffixIndex < bandName.length()) {
+            variableName = bandName.substring(0, lowestSuffixIndex);
+            variable = getNetcdfFile().findVariable(variableName);
+        }
+        if (variable == null) {
+            variable = getNetcdfFile().findVariable(variableName);
+        }
+        Dimension widthDimension = getWidthDimension();
+        int xIndex = -1;
+        int yIndex = -1;
+
+        if (widthDimension != null) {
+            xIndex = variable.findDimensionIndex(widthDimension.getFullName());
+        }
+        Dimension heightDimension = getHeightDimension();
+
+        if (heightDimension != null) {
+            yIndex = variable.findDimensionIndex(heightDimension.getFullName());
+        }
+        String[] dimensionNames = dimensionNameList.toArray(new String[dimensionNameList.size()]);
+        int[] dimensionIndexes = new int[dimensionIndexList.size()];
+
+        for (int ii = 0; ii < dimensionIndexList.size(); ii++) {
+            dimensionIndexes[ii] = dimensionIndexList.get(ii);
+        }
+
+        S3MultiLevelOpSource levelSource = new S3MultiLevelOpSource(band, variable, dimensionNames, dimensionIndexes, xIndex, yIndex);
         return new DefaultMultiLevelImage(levelSource);
     }
 

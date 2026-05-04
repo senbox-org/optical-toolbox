@@ -4,6 +4,7 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.RasterDataNode;
 import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.image.ResolutionLevel;
+import org.esa.snap.dataio.netcdf.util.ArrayConverter;
 import org.esa.snap.dataio.netcdf.util.LazyMultiLevelSource;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;

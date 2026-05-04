@@ -10,12 +10,18 @@ import eu.esa.opt.dataio.s3.olci.InstrumentBand;
 import eu.esa.opt.dataio.s3.olci.ReaderContext;
 import eu.esa.opt.dataio.s3.util.*;
 import eu.esa.snap.core.dataio.RasterExtract;
+import eu.esa.snap.core.dataio.cache.CacheManager;
+import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.ProductCache;
 import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
+import org.esa.snap.dataio.netcdf.cache.NetcdfCacheDataProvider;
+import org.esa.snap.dataio.netcdf.util.ArrayConverter;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
@@ -64,6 +70,10 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     private Manifest manifest;
     private ColorProvider colorProvider;
     private SensorContext sensorContext;
+
+    private NetcdfCacheDataProvider cacheDataProvider;
+    private ProductCache productCache;
+
 
     protected Sentinel3DddbReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
@@ -251,6 +261,10 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     protected Product readProductNodesImpl() throws IOException {
         initalizeInput();
 
+        cacheDataProvider = new NetcdfCacheDataProvider();
+        productCache = new ProductCache(cacheDataProvider);
+        CacheManager.getInstance().register(productCache);
+
         manifest = readManifest();
 
         final String productType = manifest.getProductType();
@@ -331,21 +345,11 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
             return null;
         }
 
-        final int width = product.getSceneRasterWidth();
-        final int height = product.getSceneRasterHeight();
-        final RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
-
-        final ProductData productDataLon = ProductData.createInstance(new double[width * height]);
-        final ProductData productDataLat = ProductData.createInstance(new double[width * height]);
-
-        final VariableDescriptor lonDescriptor = variablesMap.get(geoLocationNames.getLongitudeName());
-        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getLongitudeName(), false);
-
-        final VariableDescriptor latDescriptor = variablesMap.get(geoLocationNames.getLatitudeName());
-        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getLatitudeName(), false);
-
+        final double[] lonData = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(productCache, lonBand);
+        final double[] latData = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(productCache, latBand);
         final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
-        final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
+
+        final GeoRaster geoRaster = new GeoRaster(lonData, latData,
                 geoLocationNames.getLongitudeName(), geoLocationNames.getLatitudeName(),
                 lonBand.getRasterWidth(), lonBand.getRasterHeight(), resolutionInKm);
 
@@ -374,16 +378,12 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
         final int width = lonDescriptor.getWidth();
         final int height = lonDescriptor.getHeight();
-        final int bufferSize = width * height;
-        final ProductData productDataLon = ProductData.createInstance(new double[bufferSize]);
-        final ProductData productDataLat = ProductData.createInstance(new double[bufferSize]);
 
-        final RasterExtract rasterExtract = new RasterExtract(0, 0, width, height, 1, 1);
-        readData(rasterExtract, productDataLon, lonDescriptor, geoLocationNames.getTpLongitudeName(), true);
-        readData(rasterExtract, productDataLat, latDescriptor, geoLocationNames.getTpLatitudeName(), true);
-
+        final double[] lonData = S3CachedGeoDataUtil.readCachedRawDataAsDouble(productCache, geoLocationNames.getTpLongitudeName(), width, height, lonGrid.getDataType());
+        final double[] latData = S3CachedGeoDataUtil.readCachedRawDataAsDouble(productCache, geoLocationNames.getTpLatitudeName(), width, height, latGrid.getDataType());
         final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
-        final GeoRaster geoRaster = new GeoRaster((double[]) productDataLon.getElems(), (double[]) productDataLat.getElems(),
+
+        final GeoRaster geoRaster = new GeoRaster(lonData, latData,
                 geoLocationNames.getTpLongitudeName(), geoLocationNames.getTpLatitudeName(),
                 lonGrid.getGridWidth(), lonGrid.getGridHeight(),
                 product.getSceneRasterWidth(), product.getSceneRasterHeight(), resolutionInKm,
@@ -430,6 +430,9 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         sensorContext.applyCalibration(band);
         sensorContext.addDescriptionAndUnit(band, descriptor);
         S3Util.addFillValue(band, netCDFVariable);
+
+        cacheDataProvider.register(bandname, netCDFVariable, new int[0], false, ProductData.TYPE_UINT32,
+                getArrayConverter(bandname), S3Util.getTileSizeForVariable(netCDFVariable, product));
     }
 
     private void addBand(Product product, VariableDescriptor descriptor, int dataType) throws IOException {
@@ -450,6 +453,9 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         sensorContext.applyCalibration(band);
         sensorContext.addDescriptionAndUnit(band, descriptor);
         S3Util.addFillValue(band, netCDFVariable);
+
+        cacheDataProvider.register(bandName, netCDFVariable, new int[0], false, dataType,
+                getArrayConverter(bandName), S3Util.getTileSizeForVariable(netCDFVariable, product));
     }
 
     private static void setScalefactorAndOffset(Band band, Variable netCDFVariable) {
@@ -470,7 +476,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         }
     }
 
-    private void addTiePointGrids(Product product, Manifest manifest) {
+    private void addTiePointGrids(Product product, Manifest manifest) throws IOException {
         for (VariableDescriptor descriptor : tiepointMap.values()) {
             ensureWidthAndHeight(descriptor, manifest);
             final String tiePointName = descriptor.getName();
@@ -492,14 +498,28 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
                     tiePointGrid.setUnit(descriptor.getUnits());
                     tiePointGrid.setVariableName(tiePointName);
                     product.addTiePointGrid(tiePointGrid);
+
+                    registerTiePointGridInCache(layerName, descriptor, new int[]{layer - 1}, product);
                 }
             } else {
                 final TiePointGrid tiePointGrid = new TiePointGrid(tiePointName, tpRasterWidth, tpRasterHeight, 0.0, 0.0, subsamplingX, subsamplingY);
                 tiePointGrid.setDescription(descriptor.getDescription());
                 tiePointGrid.setUnit(descriptor.getUnits());
                 product.addTiePointGrid(tiePointGrid);
+
+                registerTiePointGridInCache(tiePointName, descriptor, new int[0], product);
             }
         }
+    }
+
+    private void registerTiePointGridInCache(String cacheKey, VariableDescriptor descriptor, int[] imageOrigin, Product product) throws IOException {
+        final Variable netCDFVariable = getNetCDFVariable(descriptor, descriptor.getName());
+        if (netCDFVariable == null) {
+            return;
+        }
+
+        cacheDataProvider.register(cacheKey, netCDFVariable, imageOrigin, false, S3Util.getRasterDataType(netCDFVariable),
+                getArrayConverter(cacheKey), S3Util.getTileSizeForVariable(netCDFVariable, product));
     }
 
     private void addSpecialBands(Product product) throws IOException {
@@ -585,65 +605,49 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
     @Override
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY, Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer, ProgressMonitor pm) throws IOException {
-        final VariableDescriptor descriptor;
-        final RasterExtract rasterExtract;
-
         final String destBandName = destBand.getName();
         if (destBand instanceof InstrumentBand instrumentBand) {
             final String variableName = getVariableNameFromLayerName(destBandName);
-            descriptor = specialsMap.get(variableName);
+            final VariableDescriptor descriptor = specialsMap.get(variableName);
+
             instrumentBand.readRasterDataFully();
-        } else {
-            descriptor = variablesMap.get(destBandName);
+
+            final RasterExtract rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
+            readData(rasterExtract, destBuffer, descriptor, destBandName, true);
+            return;
         }
 
-        rasterExtract = new RasterExtract(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY);
-        readData(rasterExtract, destBuffer, descriptor, destBandName, true);
+        CachedSubsamplingReader.read(productCache, destBandName, destBand.getDataType(),
+                sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                sourceStepX, sourceStepY, destWidth, destHeight, destBuffer
+        );
     }
 
     @Override
     public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY,
                                            int destWidth, int destHeight, ProductData destBuffer,
                                            ProgressMonitor pm) throws IOException {
-        final String tpGridName = tpg.getName();
+        final String cacheKey = tpg.getName();
+        final String ncVariableName = tpg instanceof LayeredTiePointGrid layered
+                ? layered.getVariableName()
+                : cacheKey;
 
-        final ProductData gridData = tpg.getData();
-        if (gridData == null) {
+        final VariableDescriptor descriptor = tiepointMap.get(ncVariableName);
+        final Variable netCDFVariable = getNetCDFVariable(descriptor, ncVariableName);
 
-            final String ncVariableName;
-            if (tpg instanceof LayeredTiePointGrid) {
-                ncVariableName = ((LayeredTiePointGrid) tpg).getVariableName();
-            } else {
-                ncVariableName = tpGridName;
-            }
+        final int[] offsets = new int[]{destOffsetY, destOffsetX};
+        final int[] shapes = new int[]{destHeight, destWidth};
 
-            final VariableDescriptor descriptor = tiepointMap.get(ncVariableName);
-            final Variable netCDFVariable = getNetCDFVariable(descriptor, ncVariableName);
+        final int sourceType = S3Util.getRasterDataType(netCDFVariable);
+        final DataBuffer sourceBuffer = new DataBuffer(sourceType, offsets, shapes);
+        productCache.read(cacheKey, offsets, shapes, sourceBuffer);
 
-            Array rawDataArray = getRawData(tpGridName, netCDFVariable);
-            int layer = getLayerIndexFromTiePointName(tpGridName, descriptor);
-            final int[] sliceOffset;
-            final int[] sliceDimensions;
-            final int[] stride;
-            if (layer > 0) {
-                sliceOffset = new int[]{destOffsetY, destOffsetX, layer - 1}; // shift to zero based z coord. tb 2025-03-26
-                sliceDimensions = new int[]{destHeight, destWidth, 1};
-                stride = new int[]{1, 1, 1};
-            } else {
-                sliceOffset = new int[]{destOffsetY, destOffsetX};
-                sliceDimensions = new int[]{destHeight, destWidth};
-                stride = new int[]{1, 1};
-            }
+        final ProductData sourceData = sourceBuffer.getData();
+        final double scale = getScalingFactor(netCDFVariable);
+        final double offset = getAddOffset(netCDFVariable);
 
-            // cut section
-            try {
-                rawDataArray = rawDataArray.section(sliceOffset, sliceDimensions, stride);
-            } catch (InvalidRangeException e) {
-                throw new IOException(e);
-            }
-
-            final Array scaledData = ReaderUtils.scaleArray(rawDataArray, netCDFVariable);
-            destBuffer.setElems(scaledData.get1DJavaArray(DataType.FLOAT));
+        for (int ii = 0; ii < destWidth * destHeight; ii++) {
+            destBuffer.setElemDoubleAt(ii, sourceData.getElemDoubleAt(ii) * scale + offset);
         }
     }
 
@@ -739,10 +743,12 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
     @Override
     public void close() throws IOException {
-        if (virtualDir != null) {
-            virtualDir.close();
-            virtualDir = null;
+        if (productCache != null) {
+            CacheManager.getInstance().remove(productCache);
+            productCache = null;
         }
+        cacheDataProvider = null;
+
         variablesMap.clear();
         ncVariablesMap.clear();
         tiepointMap.clear();
@@ -753,6 +759,11 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         }
         filesMap.clear();
         dataMap.clear();
+
+        if (virtualDir != null) {
+            virtualDir.close();
+            virtualDir = null;
+        }
 
         manifest = null;
         sensorContext = null;

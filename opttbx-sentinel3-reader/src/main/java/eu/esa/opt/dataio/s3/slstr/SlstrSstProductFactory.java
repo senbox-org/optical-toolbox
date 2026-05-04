@@ -20,6 +20,8 @@ import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
+import eu.esa.opt.dataio.s3.util.S3CachedGeoDataUtil;
+import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3Util;
 import org.esa.snap.core.dataio.geocoding.ComponentFactory;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
@@ -295,8 +297,19 @@ public class SlstrSstProductFactory extends SlstrProductFactory {
                 return null;
             }
 
-            final double[] longitudes = RasterUtils.loadGeoData(lonBand);
-            final double[] latitudes = RasterUtils.loadGeoData(latBand);
+            final double[] longitudes;
+            final double[] latitudes;
+            final S3NetcdfReader readerLon = getBandCacheMap().get(lonBand.getName());
+            final S3NetcdfReader readerLat = getBandCacheMap().get(latBand.getName());
+
+            if (readerLon == null || readerLat == null) {
+                // Fallback for special/resampled geo bands not registered in bandCacheMap
+                longitudes = RasterUtils.loadGeoData(lonBand);
+                latitudes = RasterUtils.loadGeoData(latBand);
+            } else {
+                longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLon.getProductCache(), lonBand);
+                latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLat.getProductCache(), latBand);
+            }
 
             final int width = lonBand.getRasterWidth();
             final int height = lonBand.getRasterHeight();

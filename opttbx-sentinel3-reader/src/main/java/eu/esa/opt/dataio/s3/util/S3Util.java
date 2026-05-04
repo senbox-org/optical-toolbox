@@ -1,21 +1,24 @@
 package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.core.VirtualDir;
-import eu.esa.opt.dataio.s3.olci.OlciContext;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.forward.PixelInterpolatingForward;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.dataio.netcdf.util.Constants;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
+import org.esa.snap.dataio.netcdf.util.DimKey;
 import org.esa.snap.runtime.Config;
 import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
+import ucar.nc2.Dimension;
 import ucar.nc2.Variable;
+import ucar.nc2.constants.CDM;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +26,7 @@ import java.util.prefs.Preferences;
 
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
 import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERPOLATING;
-import static org.geotools.gml3.GML.stringValue;
+
 
 public class S3Util {
 
@@ -411,5 +414,44 @@ public class S3Util {
             }
         }
         return null;
+    }
+
+    public static double getGeophysicalValue(Band sourceBand, double rawValue) {
+        if (sourceBand.isNoDataValueUsed()
+                && Double.compare(rawValue, sourceBand.getNoDataValue()) == 0) {
+            return sourceBand.getGeophysicalNoDataValue();
+        }
+
+        return rawValue * sourceBand.getScalingFactor() + sourceBand.getScalingOffset();
+    }
+
+    public static boolean isInvalidGeoCoordinate(String name, double value) {
+        if (!Double.isFinite(value)) {
+            return true;
+        }
+
+        final String lowerName = name.toLowerCase(java.util.Locale.ROOT);
+        if (lowerName.contains("latitude")) {
+            return value < -90.0 || value > 90.0;
+        }
+        if (lowerName.contains("longitude")) {
+            return value < -180.0 || value > 180.0;
+        }
+        return false;
+    }
+
+    public static java.awt.Dimension getTileSizeForVariable(Variable variable, Product p) {
+        final Attribute chunkSizes = variable.findAttribute(CDM.CHUNK_SIZES);
+
+        if (chunkSizes != null) {
+            final DimKey dimKey = new DimKey(variable.getDimensions().toArray(new Dimension[0]));
+            final Number tileWidth  = chunkSizes.getNumericValue(dimKey.findXDimensionIndex());
+            final Number tileHeight = chunkSizes.getNumericValue(dimKey.findYDimensionIndex());
+
+            if (tileWidth != null && tileHeight != null) {
+                return new java.awt.Dimension(tileWidth.intValue(), tileHeight.intValue());
+            }
+        }
+        return ImageManager.getPreferredTileSize(p);
     }
 }

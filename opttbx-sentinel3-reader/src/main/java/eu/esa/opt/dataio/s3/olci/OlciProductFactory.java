@@ -5,16 +5,14 @@ import eu.esa.opt.dataio.s3.AbstractProductFactory;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.SentinelTimeCoding;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.util.S3CachedGeoDataUtil;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReaderFactory;
 import eu.esa.opt.dataio.s3.util.S3Util;
+import eu.esa.snap.core.dataio.cache.ProductCache;
 import org.esa.snap.core.dataio.geocoding.*;
-import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
-import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
-import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
-import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.runtime.Config;
 
 import java.io.File;
@@ -200,8 +198,13 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
             return;
         }
 
-        final double[] longitudes = RasterUtils.loadGeoData(lonBand);
-        final double[] latitudes = RasterUtils.loadGeoData(latBand);
+        final S3NetcdfReader readerLon = getBandCacheMap().get(lonBand.getName());
+        final S3NetcdfReader readerLat = getBandCacheMap().get(latBand.getName());
+        final ProductCache cacheLon = readerLon.getProductCache();
+        final ProductCache cacheLat = readerLat.getProductCache();
+
+        final double[] longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(cacheLon, lonBand);
+        final double[] latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(cacheLat, latBand);
 
         final double resolutionInKilometers = getResolutionInKm(targetProduct.getProductType());
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
@@ -218,7 +221,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
         targetProduct.setSceneGeoCoding(geoCoding);
     }
 
-    private void setTiePointGeoCoding(Product targetProduct) {
+    private void setTiePointGeoCoding(Product targetProduct) throws IOException {
         String lonVarName = "longitude";
         String latVarName = "latitude";
         TiePointGrid lonGrid = targetProduct.getTiePointGrid(lonVarName);

@@ -2,6 +2,7 @@ package eu.esa.opt.dataio.s3.util;
 
 import org.esa.snap.core.image.ResolutionLevel;
 import org.esa.snap.core.image.SingleBandedOpImage;
+import org.esa.snap.dataio.netcdf.util.ArrayConverter;
 import ucar.ma2.Array;
 import ucar.ma2.Section;
 import ucar.nc2.Variable;

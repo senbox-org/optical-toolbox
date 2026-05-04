@@ -1,15 +1,15 @@
 package eu.esa.opt.dataio.s3.util;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
+import eu.esa.snap.core.dataio.cache.CacheManager;
+import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
+import eu.esa.snap.core.dataio.cache.ProductCache;
 import eu.esa.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.datamodel.*;
-import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.FileUtils;
-import org.esa.snap.dataio.netcdf.util.Constants;
-import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
-import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
+import org.esa.snap.dataio.netcdf.cache.NetcdfCacheDataProvider;
+import org.esa.snap.dataio.netcdf.util.*;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
@@ -21,7 +21,6 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,9 +33,17 @@ public class S3NetcdfReader extends AbstractProductReader {
     private static final String product_type = "product_type";
 
     private NetcdfFile netcdfFile;
+    private NetcdfCacheDataProvider cacheDataProvider;
+    private ProductCache productCache;
+
 
     public S3NetcdfReader() {
         super(null);
+    }
+
+
+    public ProductCache getProductCache() {
+        return productCache;
     }
 
     public String[] getSuffixesForSeparatingDimensions() {
@@ -57,25 +64,50 @@ public class S3NetcdfReader extends AbstractProductReader {
         int productHeight = getHeight();
 
         final Product product = new Product(FileUtils.getFilenameWithoutExtension(inputFile), productType, productWidth, productHeight);
+        setNumResolutionsMax(product);
         product.setFileLocation(inputFile);
         addGlobalMetadata(product);
         addBands(product);
         addGeoCoding(product);
+
+        cacheDataProvider = new NetcdfCacheDataProvider();
+
         for (final Band band : product.getBands()) {
             if (band instanceof VirtualBand || band instanceof SparseDataBand) {
                 continue;
             }
             RenderedImage sourceImage = createSourceImage(band);
-            if (product.getPreferredTileSize() == null) {
-                product.setPreferredTileSize(sourceImage.getTileWidth(), sourceImage.getTileHeight());
+            if (sourceImage != null) {
+                if (product.getPreferredTileSize() == null) {
+                    product.setPreferredTileSize(sourceImage.getTileWidth(), sourceImage.getTileHeight());
+                }
+                band.setSourceImage(sourceImage);
+            } else {
+                registerBandWithCache(band);
             }
-            band.setSourceImage(sourceImage);
         }
+
+        productCache = new ProductCache(cacheDataProvider);
+        CacheManager.getInstance().register(productCache);
+
         return product;
+    }
+
+    private void setNumResolutionsMax(Product product) {
+        final int maxDim = Math.max(getWidth(), getHeight());
+        if (maxDim > 0) {
+            product.setNumResolutionsMax((int) Math.floor(Math.log(maxDim) / Math.log(2.0)) + 1);
+        }
     }
 
     @Override
     public void close() throws IOException {
+        if (productCache != null) {
+            CacheManager.getInstance().remove(productCache);
+            productCache = null;
+        }
+        cacheDataProvider = null;
+
         if (netcdfFile != null) {
             netcdfFile.close();
             netcdfFile = null;
@@ -87,7 +119,17 @@ public class S3NetcdfReader extends AbstractProductReader {
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
                                           Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
                                           ProgressMonitor pm) throws IOException {
-        throw new IllegalStateException("All bands use images as source for its data, readBandRasterDataImpl should not be called.");
+        CachedSubsamplingReader.read(productCache, destBand.getName(), destBand.getDataType(),
+                sourceOffsetX, sourceOffsetY,
+                sourceWidth, sourceHeight,
+                sourceStepX, sourceStepY,
+                destWidth, destHeight, destBuffer
+        );
+    }
+
+    @Override
+    public boolean isSubsetReadingFullySupported() {
+        return true;
     }
 
     protected void addGeoCoding(Product product) {
@@ -107,6 +149,84 @@ public class S3NetcdfReader extends AbstractProductReader {
         throw new IllegalArgumentException(MessageFormat.format("Illegal input: {0}", input));
     }
 
+    protected void registerBandWithCache(Band band) {
+        final String bandName = band.getName();
+        String variableName = bandName;
+
+        ArrayConverter converter = ArrayConverter.IDENTITY;
+        if (variableName.endsWith("_lsb")) {
+            variableName = variableName.substring(0, variableName.indexOf("_lsb"));
+            converter = ArrayConverter.LSB;
+        } else if (variableName.endsWith("_msb")) {
+            variableName = variableName.substring(0, variableName.indexOf("_msb"));
+            converter = ArrayConverter.MSB;
+        }
+
+        Variable variable = null;
+        final String[] separatingDimensions = getSeparatingDimensions();
+        final String[] suffixesForSeparatingDimensions = getSuffixesForSeparatingDimensions();
+        int lowestSuffixIndex = Integer.MAX_VALUE;
+
+        for (int ii = 0; ii < separatingDimensions.length; ii++) {
+            final String suffix = suffixesForSeparatingDimensions[ii];
+
+            if (bandName.contains(suffix)) {
+                final int suffixIndex = bandName.indexOf(suffix) - 1;
+                if (suffixIndex < lowestSuffixIndex) {
+                    lowestSuffixIndex = suffixIndex;
+                }
+            }
+        }
+
+        if (lowestSuffixIndex < bandName.length()) {
+            variableName = bandName.substring(0, lowestSuffixIndex);
+            variable = netcdfFile.findVariable(variableName);
+        }
+        if (variable == null) {
+            variable = netcdfFile.findVariable(variableName);
+        }
+        if (variable == null) {
+            Logger.getLogger(getClass().getName()).warning("Cannot register band '" + bandName + "' with cache: variable not found.");
+            return;
+        }
+
+        int dataType = band.getDataType();
+        if ((variable.getFullName().contains("row_corresp") || variable.getFullName().contains("col_corresp")) && dataType == ProductData.TYPE_UINT32) {
+            converter = ArrayConverter.UINTCONVERTER;
+            dataType = ProductData.TYPE_FLOAT32;
+        }
+
+        final int[] imageOrigin = createImageOrigin(variable, bandName);
+
+        final java.awt.Dimension tileSize = S3Util.getTileSizeForVariable(variable, band.getProduct());
+
+        cacheDataProvider.register(bandName, variable, imageOrigin, false, dataType, converter, tileSize);
+    }
+
+
+    private int[] createImageOrigin(Variable variable, String bandName) {
+        final List<Dimension> dims = variable.getDimensions();
+        final int startIndexToCopy = DimKey.findStartIndexOfBandVariables(dims);
+        final int[] imageOrigin = new int[variable.getRank() - startIndexToCopy];
+
+        final String[] separatingDimensions = getSeparatingDimensions();
+        final String[] suffixes = getSuffixesForSeparatingDimensions();
+
+        for (int dimIndex = startIndexToCopy; dimIndex < variable.getRank(); dimIndex++) {
+            final Dimension dimension = variable.getDimension(dimIndex);
+
+            for (int ii = 0; ii < separatingDimensions.length; ii++) {
+                if (dimension.getShortName().equals(separatingDimensions[ii]) && bandName.contains("_" + suffixes[ii] + "_")) {
+                    imageOrigin[dimIndex - startIndexToCopy] = getDimensionIndexFromBandName(bandName);
+                    break;
+                }
+            }
+        }
+
+        return imageOrigin;
+    }
+
+
     protected String[] getSeparatingDimensions() {
         return new String[0];
     }
@@ -116,56 +236,7 @@ public class S3NetcdfReader extends AbstractProductReader {
     }
 
     protected RenderedImage createSourceImage(Band band) {
-        final String bandName = band.getName();
-        String variableName = bandName;
-        if (variableName.endsWith("_lsb")) {
-            variableName = variableName.substring(0, variableName.indexOf("_lsb"));
-        } else if (variableName.endsWith("_msb")) {
-            variableName = variableName.substring(0, variableName.indexOf("_msb"));
-        }
-        Variable variable = null;
-        List<String> dimensionNameList = new ArrayList<>();
-        List<Integer> dimensionIndexList = new ArrayList<>();
-        final String[] separatingDimensions = getSeparatingDimensions();
-        final String[] suffixesForSeparatingThirdDimensions = getSuffixesForSeparatingDimensions();
-        int lowestSuffixIndex = Integer.MAX_VALUE;
-        for (int i = 0; i < separatingDimensions.length; i++) {
-            final String dimension = separatingDimensions[i];
-            final String suffix = suffixesForSeparatingThirdDimensions[i];
-            if (bandName.contains(suffix)) {
-                final int suffixIndex = bandName.indexOf(suffix) - 1;
-                if (suffixIndex < lowestSuffixIndex) {
-                    lowestSuffixIndex = suffixIndex;
-                }
-                dimensionNameList.add(dimension);
-                dimensionIndexList.add(getDimensionIndexFromBandName(bandName));
-            }
-        }
-        if (lowestSuffixIndex < bandName.length()) {
-            variableName = bandName.substring(0, lowestSuffixIndex);
-            variable = netcdfFile.findVariable(variableName);
-        }
-        if (variable == null) {
-            variable = netcdfFile.findVariable(variableName);
-        }
-        Dimension widthDimension = getWidthDimension();
-        int xIndex = -1;
-        int yIndex = -1;
-        if (widthDimension != null) {
-            xIndex = variable.findDimensionIndex(widthDimension.getFullName());
-        }
-        Dimension heightDimension = getHeightDimension();
-        if (heightDimension != null) {
-            yIndex = variable.findDimensionIndex(heightDimension.getFullName());
-        }
-        String[] dimensionNames = dimensionNameList.toArray(new String[dimensionNameList.size()]);
-        int[] dimensionIndexes = new int[dimensionIndexList.size()];
-        for (int i = 0; i < dimensionIndexList.size(); i++) {
-            dimensionIndexes[i] = dimensionIndexList.get(i);
-        }
-        S3MultiLevelOpSource levelSource = new S3MultiLevelOpSource(band, variable, dimensionNames, dimensionIndexes, xIndex,
-                yIndex);
-        return new DefaultMultiLevelImage(levelSource);
+        return null;
     }
 
     protected int getDimensionIndexFromBandName(String bandName) {
@@ -417,7 +488,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         return 0;
     }
 
-    private Dimension getWidthDimension() {
+    protected Dimension getWidthDimension() {
         final String[][] rowColumnNamePairs = getRowColumnNamePairs();
         for (String[] rowColumnNamePair : rowColumnNamePairs) {
             final Dimension widthDimension = netcdfFile.findDimension(rowColumnNamePair[1]);
@@ -436,7 +507,7 @@ public class S3NetcdfReader extends AbstractProductReader {
         return 0;
     }
 
-    private Dimension getHeightDimension() {
+    protected Dimension getHeightDimension() {
         final String[][] rowColumnNamePairs = getRowColumnNamePairs();
         for (String[] rowColumnNamePair : rowColumnNamePairs) {
             final Dimension heightDimension = netcdfFile.findDimension(rowColumnNamePair[0]);

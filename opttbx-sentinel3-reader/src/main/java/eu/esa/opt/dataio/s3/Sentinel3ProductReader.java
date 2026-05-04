@@ -16,7 +16,6 @@ package eu.esa.opt.dataio.s3;/*
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
-import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
@@ -24,6 +23,10 @@ import eu.esa.opt.dataio.s3.synergy.SynAodProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynL1CProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynLevel2ProductFactory;
 import eu.esa.opt.dataio.s3.synergy.VgtProductFactory;
+import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
+import eu.esa.opt.dataio.s3.util.S3Util;
+import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Band;
@@ -31,8 +34,6 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGrid;
 
-import java.awt.*;
-import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 
@@ -57,6 +58,11 @@ public class Sentinel3ProductReader extends AbstractProductReader {
 
         // set manifest file - better, open stream to manifest and proagate this. It must be read anyways. tb 2024-05-29
         return createProduct();
+    }
+
+    @Override
+    public boolean isSubsetReadingFullySupported() {
+        return true;
     }
 
     protected void ensureVirtualDir(File inputFile) {
@@ -135,18 +141,60 @@ public class Sentinel3ProductReader extends AbstractProductReader {
     protected final void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight,
                                                 int sourceStepX, int sourceStepY, Band destBand, int destOffsetX,
                                                 int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
-                                                ProgressMonitor pm) {
-        throw new IllegalStateException("Data are provided by images.");
+                                                ProgressMonitor pm) throws IOException {
+        final S3NetcdfReader s3Reader = ((AbstractProductFactory) factory).getBandCacheMap().get(destBand.getName());
+        if (s3Reader == null) {
+            throw new IOException("No cache reader registered for band '" + destBand.getName() + "'. " +
+                    "The band may require a JAI source image that was not set up correctly.");
+        }
+
+        CachedSubsamplingReader.read(s3Reader.getProductCache(), destBand.getName(), destBand.getDataType(),
+                sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                sourceStepX, sourceStepY, destWidth, destHeight, destBuffer
+        );
+
     }
 
 
+
     @Override
-    public void readTiePointGridRasterData(TiePointGrid tpg, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
-                                           ProgressMonitor pm) {
-        MultiLevelImage imageForTpg = factory.getImageForTpg(tpg.getName());
-        Rectangle rectangle = new Rectangle(destOffsetX, destOffsetY, destWidth, destHeight);
-        Raster imageData = imageForTpg.getImage(0).getData(rectangle);
-        imageData.getSamples(destOffsetX, destOffsetY, destWidth, destHeight, 0, (float[]) destBuffer.getElems());
+    public void readTiePointGridRasterData(TiePointGrid tpg,
+                                           int destOffsetX, int destOffsetY,
+                                           int destWidth, int destHeight,
+                                           ProductData destBuffer,
+                                           ProgressMonitor pm) throws IOException {
+        final AbstractProductFactory.TpgEntry entry =
+                ((AbstractProductFactory) factory).getTpgReaderMap().get(tpg.getName());
+
+        if (entry == null) {
+            throw new IOException("No cache reader registered for tie-point grid '" + tpg.getName() + "'.");
+        }
+
+        final int srcOffsetX = entry.dataOffsetX + destOffsetX;
+        final int srcOffsetY = entry.dataOffsetY + destOffsetY;
+        final int[] offsets = new int[]{srcOffsetY, srcOffsetX};
+        final int[] shapes = new int[]{destHeight, destWidth};
+
+        String cacheKey = entry.cacheKey;
+        final ProductData sourceData;
+        final int sourceType = entry.sourceBand.getDataType();
+
+        if (sourceType == destBuffer.getType()) {
+            entry.reader.getProductCache().read(cacheKey, offsets, shapes, new DataBuffer(destBuffer, offsets, shapes));
+            sourceData = destBuffer;
+        } else {
+            final DataBuffer intermediateBuffer = new DataBuffer(sourceType, offsets, shapes);
+            entry.reader.getProductCache().read(cacheKey, offsets, shapes, intermediateBuffer);
+            sourceData = intermediateBuffer.getData();
+        }
+
+
+        final int count = destWidth * destHeight;
+        for (int ii = 0; ii < count; ii++) {
+            final double rawValue = sourceData.getElemDoubleAt(ii);
+            final double geoValue = S3Util.getGeophysicalValue(entry.sourceBand, rawValue);
+            destBuffer.setElemDoubleAt(ii, geoValue);
+        }
     }
 
     @Override
