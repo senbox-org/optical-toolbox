@@ -345,8 +345,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
             return null;
         }
 
-        final double[] lonData = readCachedGeophysicalBandAsDouble(lonBand);
-        final double[] latData = readCachedGeophysicalBandAsDouble(latBand);
+        final double[] lonData = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(productCache, lonBand);
+        final double[] latData = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(productCache, latBand);
         final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
 
         final GeoRaster geoRaster = new GeoRaster(lonData, latData,
@@ -379,8 +379,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         final int width = lonDescriptor.getWidth();
         final int height = lonDescriptor.getHeight();
 
-        final double[] lonData = readCachedRawDataAsDouble(geoLocationNames.getTpLongitudeName(), width, height, lonGrid.getDataType());
-        final double[] latData = readCachedRawDataAsDouble(geoLocationNames.getTpLatitudeName(), width, height, latGrid.getDataType());
+        final double[] lonData = S3CachedGeoDataUtil.readCachedRawDataAsDouble(productCache, geoLocationNames.getTpLongitudeName(), width, height, lonGrid.getDataType());
+        final double[] latData = S3CachedGeoDataUtil.readCachedRawDataAsDouble(productCache, geoLocationNames.getTpLatitudeName(), width, height, latGrid.getDataType());
         final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
 
         final GeoRaster geoRaster = new GeoRaster(lonData, latData,
@@ -398,38 +398,6 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         geoCoding.initialize();
 
         return geoCoding;
-    }
-
-    private double[] readCachedGeophysicalBandAsDouble(Band band) throws IOException {
-        final double[] data = readCachedRawDataAsDouble(
-                band.getName(),
-                band.getRasterWidth(),
-                band.getRasterHeight(),
-                band.getDataType()
-        );
-
-        for (int ii = 0; ii < data.length; ii++) {
-            data[ii] = S3Util.getGeophysicalValue(band, data[ii]);
-        }
-
-        return data;
-    }
-
-    private double[] readCachedRawDataAsDouble(String cacheKey, int width, int height, int sourceDataType) throws IOException {
-        final int[] offsets = new int[]{0, 0};
-        final int[] shapes = new int[]{height, width};
-
-        final DataBuffer buffer = new DataBuffer(sourceDataType, offsets, shapes);
-        productCache.read(cacheKey, offsets, shapes, buffer);
-
-        final ProductData sourceData = buffer.getData();
-        final double[] target = new double[width * height];
-
-        for (int ii = 0; ii < target.length; ii++) {
-            target[ii] = sourceData.getElemDoubleAt(ii);
-        }
-
-        return target;
     }
 
     private void addVariables(Product product) throws IOException {

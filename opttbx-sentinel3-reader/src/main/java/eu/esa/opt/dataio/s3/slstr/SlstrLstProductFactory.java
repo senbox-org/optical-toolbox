@@ -17,7 +17,10 @@ package eu.esa.opt.dataio.s3.slstr;/*
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
+import eu.esa.opt.dataio.s3.util.S3CachedGeoDataUtil;
+import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3Util;
+import eu.esa.snap.core.dataio.cache.ProductCache;
 import org.esa.snap.core.dataio.geocoding.ComponentFactory;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.ForwardCoding;
@@ -26,7 +29,6 @@ import org.esa.snap.core.dataio.geocoding.GeoRaster;
 import org.esa.snap.core.dataio.geocoding.InverseCoding;
 import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
 import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
-import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.RasterDataNode;
@@ -97,8 +99,13 @@ public class SlstrLstProductFactory extends SlstrProductFactory {
     }
 
     private void setPixelGeoCoding(Product targetProduct, Band lonBand, Band latBand) throws IOException {
-        final double[] longitudes = RasterUtils.loadGeoData(lonBand);
-        final double[] latitudes = RasterUtils.loadGeoData(latBand);
+        final S3NetcdfReader readerLon = getBandCacheMap().get(lonBand.getName());
+        final S3NetcdfReader readerLat = getBandCacheMap().get(latBand.getName());
+        final ProductCache cacheLon = readerLon.getProductCache();
+        final ProductCache cacheLat = readerLat.getProductCache();
+
+        final double[] longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(cacheLon, lonBand);
+        final double[] latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(cacheLat, latBand);
 
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonBand.getName(), latBand.getName(),
                                                   targetProduct.getSceneRasterWidth(), targetProduct.getSceneRasterHeight(), RESOLUTION_IN_KM);

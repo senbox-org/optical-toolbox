@@ -5,11 +5,12 @@ import eu.esa.opt.dataio.s3.AbstractProductFactory;
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.SentinelTimeCoding;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.util.S3CachedGeoDataUtil;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReaderFactory;
 import eu.esa.opt.dataio.s3.util.S3Util;
+import eu.esa.snap.core.dataio.cache.ProductCache;
 import org.esa.snap.core.dataio.geocoding.*;
-import org.esa.snap.core.dataio.geocoding.util.RasterUtils;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.runtime.Config;
@@ -181,7 +182,7 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
     @Override
     protected void setGeoCoding(Product targetProduct) throws IOException {
         // @todo 1 tb/tb move to factory for contexts 2025-04-03
-        if (Config.instance("opttbx").load().preferences().getBoolean(new OlciContext().getUsePixelGeoCodingKey(), false)) {
+        if (Config.instance("opttbx").load().preferences().getBoolean(new OlciContext().getUsePixelGeoCodingKey(), true)) {
             setPixelGeoCoding(targetProduct);
         } else {
             setTiePointGeoCoding(targetProduct);
@@ -197,8 +198,13 @@ public abstract class OlciProductFactory extends AbstractProductFactory {
             return;
         }
 
-        final double[] longitudes = RasterUtils.loadGeoData(lonBand);
-        final double[] latitudes = RasterUtils.loadGeoData(latBand);
+        final S3NetcdfReader readerLon = getBandCacheMap().get(lonBand.getName());
+        final S3NetcdfReader readerLat = getBandCacheMap().get(latBand.getName());
+        final ProductCache cacheLon = readerLon.getProductCache();
+        final ProductCache cacheLat = readerLat.getProductCache();
+
+        final double[] longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(cacheLon, lonBand);
+        final double[] latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(cacheLat, latBand);
 
         final double resolutionInKilometers = getResolutionInKm(targetProduct.getProductType());
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
