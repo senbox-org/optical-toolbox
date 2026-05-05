@@ -76,9 +76,7 @@ public class MerisProductFactory extends AbstractProductFactory {
                 final MetadataElement bandDescriptionElement = bandDescriptionsElement.getElementAt(i);
                 String bandName = bandDescriptionElement.getAttribute("name").getData().getElemString();
 
-                if (!bandName.startsWith("M")) {
-                    bandName = "M" + bandName;
-                }
+                bandName = ensureBandName(bandName);
 
                 final float wavelength =
                         Float.parseFloat(bandDescriptionElement.getAttribute("centralWavelength").getData().getElemString());
@@ -89,6 +87,13 @@ public class MerisProductFactory extends AbstractProductFactory {
                 nameToIndexMap.put(bandName, i);
             }
         }
+    }
+
+    private String ensureBandName(String name) {
+        if (!name.startsWith("M")) {
+            name = "M" + name;
+        }
+        return name.substring(0, 3);
     }
 
     @Override

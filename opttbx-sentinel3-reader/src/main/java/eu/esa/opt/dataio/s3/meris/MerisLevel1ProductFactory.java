@@ -26,8 +26,8 @@ public class MerisLevel1ProductFactory extends MerisProductFactory {
                 targetBand.setSpectralWavelength(getWavelength(targetName));
                 targetBand.setSpectralBandwidth(getBandwidth(targetName));
             }
+            targetNode.setValidPixelExpression(getValidExpression());
         }
-        targetNode.setValidPixelExpression(getValidExpression());
     }
 
     @Override
