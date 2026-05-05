@@ -47,7 +47,8 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         super(productReader);
 
         final Preferences preferences = Config.instance("seadas").preferences();
-        wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        wantsCaching = false;
+        //wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
     }
 
     enum WvlType {
@@ -540,7 +541,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         } else if (shapes.length == 3) {
             targetData = ProductData.createInstance(rasterDataType, shapes[0] * shapes[1] * shapes[2]);
         } else {
-            throw new IOException("Illegal shaped variable");
+            throw new IOException("Illegally shaped variable");
         }
         return targetData;
     }

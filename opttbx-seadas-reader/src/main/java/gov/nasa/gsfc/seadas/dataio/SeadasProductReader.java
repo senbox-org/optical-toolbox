@@ -239,6 +239,7 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
 
         if (ncfile != null) {
             ncfile.close();
+            ncfile = null;
         }
     }
 
