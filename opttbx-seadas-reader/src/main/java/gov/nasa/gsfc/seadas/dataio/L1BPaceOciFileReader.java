@@ -225,6 +225,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             band.setSpectralWavelength(wavelength);
             band.setSpectralBandIndex(spectralBandIndex++);
             addAttributes(variable, band, applyScaling);
+            band.setDescription(ncVariableName);
         }
         bandToVariableMap.put(ncVariableName, variable);
     }
