@@ -23,7 +23,6 @@ import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
-import org.esa.snap.dataio.netcdf.util.ReaderUtils;
 import org.esa.snap.runtime.Config;
 import org.jspecify.annotations.NonNull;
 import ucar.ma2.Array;
@@ -43,11 +42,14 @@ import static org.esa.snap.dataio.netcdf.util.DataTypeUtils.getRasterDataType;
 
 public class L1BPaceOciFileReader extends SeadasFileReader {
 
+    private boolean applyScaling;
+
     L1BPaceOciFileReader(SeadasProductReader productReader) {
         super(productReader);
 
         final Preferences preferences = Config.instance("seadas").preferences();
         wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
     }
 
     enum WvlType {
@@ -222,7 +224,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
             band.setSpectralWavelength(wavelength);
             band.setSpectralBandIndex(spectralBandIndex++);
-            addAttributes(variable, band);
+            addAttributes(variable, band, applyScaling);
         }
         bandToVariableMap.put(ncVariableName, variable);
     }
@@ -279,7 +281,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
                 e.printStackTrace();  //Todo change body of catch statement.
             }
 
-            addAttributes(variable, band);
+            addAttributes(variable, band, applyScaling);
             bandToVariableMap.put(band.getName(), sliced);
             // the following two are duplicated, already covered by addAttributes() tb 2026-04-28
             band.setUnit(units);
@@ -288,7 +290,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
     }
 
     // package access for testing only tb 2026-04-28
-    static void addAttributes(Variable variable, Band band) {
+    static void addAttributes(Variable variable, Band band, boolean applyScaling) {
         Attribute attribute = variable.findAttribute("units");
         if (attribute != null) {
             band.setUnit(attribute.getStringValue());
@@ -297,26 +299,28 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         if (attribute != null) {
             band.setDescription(attribute.getStringValue());
         }
-        attribute = variable.findAttribute("slope");
-        if (attribute != null) {
-            band.setScalingFactor(attribute.getNumericValue().doubleValue());
-        }
-        attribute = variable.findAttribute("scale-factor");
-        if (attribute != null) {
-            band.setScalingFactor(attribute.getNumericValue().doubleValue());
-        }
-        attribute = variable.findAttribute("intercept");
-        if (attribute != null) {
-            band.setScalingOffset(attribute.getNumericValue().doubleValue());
-        }
-        attribute = variable.findAttribute("add_offset");
-        if (attribute != null) {
-            band.setScalingOffset(attribute.getNumericValue().doubleValue());
-        }
-        attribute = variable.findAttribute("bad_value_scaled");
-        if (attribute != null) {
-            band.setNoDataValue(attribute.getNumericValue().doubleValue());
-            band.setNoDataValueUsed(true);
+        if (applyScaling) {
+            attribute = variable.findAttribute("slope");
+            if (attribute != null) {
+                band.setScalingFactor(attribute.getNumericValue().doubleValue());
+            }
+            attribute = variable.findAttribute("scale_factor");
+            if (attribute != null) {
+                band.setScalingFactor(attribute.getNumericValue().doubleValue());
+            }
+            attribute = variable.findAttribute("intercept");
+            if (attribute != null) {
+                band.setScalingOffset(attribute.getNumericValue().doubleValue());
+            }
+            attribute = variable.findAttribute("add_offset");
+            if (attribute != null) {
+                band.setScalingOffset(attribute.getNumericValue().doubleValue());
+            }
+            attribute = variable.findAttribute("bad_value_scaled");
+            if (attribute != null) {
+                band.setNoDataValue(attribute.getNumericValue().doubleValue());
+                band.setNoDataValueUsed(true);
+            }
         }
     }
 
@@ -355,7 +359,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         }
         product.addBand(band);
 
-        addAttributes(variable, band);
+        addAttributes(variable, band, applyScaling);
 
         bandToVariableMap.put(band.getName(), variable);
         band.setUnit(units);
@@ -451,12 +455,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
         final VariableDescriptor variableDescriptor = new VariableDescriptor();
         variableDescriptor.name = variableName;
-        // @todo 2 tb/tb find out how to used NetCDF MAMath to scale to a desired data type.
-        if (ReaderUtils.mustScale(netcdVariable)) {
-            variableDescriptor.dataType = ProductData.TYPE_FLOAT64;
-        } else {
-            variableDescriptor.dataType = getRasterDataType(netcdVariable.getDataType(), false);
-        }
+        variableDescriptor.dataType = getRasterDataType(netcdVariable.getDataType(), false);
 
         int[] shape = netcdVariable.getShape();
 
@@ -500,12 +499,6 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
                 rawBuffer = netcdfVariable.read(offsets, shapes);
             } catch (InvalidRangeException e) {
                 throw new IOException(e);
-            }
-
-            // @todo 2 tb/tb foresee that users may want the raw data 2025-12-05
-            if (ReaderUtils.mustScale(netcdfVariable)) {
-                rawBuffer = ReaderUtils.scaleArray(rawBuffer, netcdfVariable);
-                rasterDataType = ProductData.TYPE_FLOAT64;
             }
 
             if (targetData == null) {

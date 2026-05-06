@@ -31,7 +31,7 @@ public class L1BPaceOciFileReaderTest {
         when(variable.findAttribute("bad_value_scaled")).thenReturn(new Attribute("bad_value_scaled", 88.108));
 
         final Band band = new Band("test", ProductData.TYPE_FLOAT64, 12, 14);
-        L1BPaceOciFileReader.addAttributes(variable, band);
+        L1BPaceOciFileReader.addAttributes(variable, band, true);
 
         assertEquals("m^2/kg", band.getUnit());
         assertEquals("Maria", band.getDescription());
@@ -43,13 +43,34 @@ public class L1BPaceOciFileReaderTest {
 
     @Test
     @STTM("SNAP-4122")
+    public void testAddAttributes_slope_intercept_applyScalingPath() {
+        final Variable variable = mock(Variable.class);
+        when(variable.findAttribute("units")).thenReturn(new Attribute("units", "m^2/kg"));
+        when(variable.findAttribute("long_name")).thenReturn(new Attribute("long_name", "Maria"));
+        when(variable.findAttribute("slope")).thenReturn(new Attribute("slope", 18.65));
+        when(variable.findAttribute("intercept")).thenReturn(new Attribute("intercept", -0.887));
+        when(variable.findAttribute("bad_value_scaled")).thenReturn(new Attribute("bad_value_scaled", 88.108));
+
+        final Band band = new Band("test", ProductData.TYPE_FLOAT64, 12, 14);
+        L1BPaceOciFileReader.addAttributes(variable, band, false);
+
+        assertEquals("m^2/kg", band.getUnit());
+        assertEquals("Maria", band.getDescription());
+        assertEquals(1.0, band.getScalingFactor(), 1e-8);
+        assertEquals(0.0, band.getScalingOffset(), 1e-8);
+        assertEquals(0.0, band.getNoDataValue(), 1e-8);
+        assertFalse(band.isNoDataValueUsed());
+    }
+
+    @Test
+    @STTM("SNAP-4122")
     public void testAddAttributes_scale_offset() {
         final Variable variable = mock(Variable.class);
         when(variable.findAttribute("slope")).thenReturn(new Attribute("scale_factor", 0.855));
         when(variable.findAttribute("intercept")).thenReturn(new Attribute("add_offset", 100.4));
 
         final Band band = new Band("test", ProductData.TYPE_FLOAT64, 12, 14);
-        L1BPaceOciFileReader.addAttributes(variable, band);
+        L1BPaceOciFileReader.addAttributes(variable, band, true);
 
         assertEquals(0.855, band.getScalingFactor(), 1e-8);
         assertEquals(100.4, band.getScalingOffset(), 1e-8);
