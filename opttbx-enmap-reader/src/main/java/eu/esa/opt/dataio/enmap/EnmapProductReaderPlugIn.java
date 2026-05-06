@@ -5,6 +5,7 @@ import eu.esa.opt.dataio.TarUtils;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.engine_utilities.dataio.VirtualDirTgz;
@@ -108,7 +109,7 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
 
     // package access for testing only tb 2024-03-07
     static List<Path> extractPathsFromZip(Path path) throws IOException {
-        final VirtualDir virtualDir = VirtualDir.create(path.toFile());
+        final VirtualDir virtualDir = ProductUtils.getProductVirtualDir(path.toFile());
 
         final List<Path> filePaths = new ArrayList<>();
         try {

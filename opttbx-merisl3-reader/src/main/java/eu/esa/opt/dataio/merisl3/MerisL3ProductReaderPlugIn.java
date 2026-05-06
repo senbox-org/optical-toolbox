@@ -74,7 +74,7 @@ public class MerisL3ProductReaderPlugIn implements ProductReaderPlugIn {
         }
         final NetcdfFile netcdfFile;
         try {
-            netcdfFile = NetcdfFileOpener.open(path);
+            netcdfFile = NetcdfFileOpener.open(input);
             if (netcdfFile == null) {
                 return DecodeQualification.UNABLE;
             }

@@ -61,7 +61,7 @@ public final class Landsat5FASTImageSources extends AbstractLandsatImageSources 
     protected final void setImageFiles() {
         final Pattern bandFilenamePattern = Pattern.compile("band[\\d].dat");
 
-        final File folder = new File(file.getFileLocation());
+        final File folder = file.getFileLocation();
         final File filesInFolder[] = folder.listFiles(new FileFilter() {
             public boolean accept(File file) {
                 if (file.isFile() && bandFilenamePattern.matcher(file.getName().toLowerCase()).matches()) {

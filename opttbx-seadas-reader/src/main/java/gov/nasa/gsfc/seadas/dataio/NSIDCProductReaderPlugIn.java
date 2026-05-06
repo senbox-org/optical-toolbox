@@ -57,7 +57,7 @@ public class NSIDCProductReaderPlugIn implements ProductReaderPlugIn {
         }
 
         H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile.getPath())) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
                 final Attribute sensor = ncfile.findGlobalAttribute("sensor");
                 final Attribute institution = ncfile.findGlobalAttribute("institution");

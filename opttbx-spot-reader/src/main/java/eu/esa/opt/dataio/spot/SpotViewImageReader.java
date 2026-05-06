@@ -1,8 +1,8 @@
 package eu.esa.opt.dataio.spot;
 
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.util.ImageUtils;
 
-import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -19,7 +19,7 @@ public class SpotViewImageReader implements Closeable {
     private final int imagePixelSize;
 
     public SpotViewImageReader(File inputFile, ByteOrder rasterByteOrder, int imageWidth, int imagePixelSize) throws IOException {
-        this.imageInputStream = ImageIO.createImageInputStream(inputFile);
+        this.imageInputStream = ImageUtils.getImageInputStream(inputFile);
         this.imageInputStream.setByteOrder(rasterByteOrder);
         this.imageWidth = imageWidth;
         this.imagePixelSize = imagePixelSize;

@@ -145,7 +145,7 @@ public class ModisProductReader extends AbstractProductReader {
         final File inFile = getInputFile();
         final String inputFilePath = inFile.getPath();
 
-        netcdfFile = NetcdfFileOpener.open(inputFilePath);
+        netcdfFile = NetcdfFileOpener.open(inFile);
         if (netcdfFile == null) {
             throw new IOException("Failed top open file: " + inputFilePath);
         }

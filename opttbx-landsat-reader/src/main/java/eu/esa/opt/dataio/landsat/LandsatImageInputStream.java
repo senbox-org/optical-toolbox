@@ -16,7 +16,8 @@
 
 package eu.esa.opt.dataio.landsat;
 
-import javax.imageio.stream.FileImageInputStream;
+import org.esa.snap.core.util.ImageUtils;
+
 import javax.imageio.stream.ImageInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,7 +54,7 @@ public final class LandsatImageInputStream {
      */
     public LandsatImageInputStream(File file) throws
             IOException {
-        imageInputStream = new FileImageInputStream(file);
+        imageInputStream = ImageUtils.getImageInputStream(file);
         length = file.length();
     }
 

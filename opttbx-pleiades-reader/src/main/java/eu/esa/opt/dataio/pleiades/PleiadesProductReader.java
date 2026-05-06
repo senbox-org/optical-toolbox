@@ -36,7 +36,7 @@ import org.esa.snap.dataio.geotiff.GeoTiffMatrixCell;
 import org.esa.snap.dataio.geotiff.GeoTiffProductReaderPlugIn;
 import org.esa.snap.engine_utilities.util.PathUtils;
 import org.esa.snap.jp2.reader.JP2ImageFile;
-import org.esa.snap.jp2.reader.JP2LocalFile;
+import org.esa.snap.jp2.reader.VirtualJP2File;
 import org.esa.snap.jp2.reader.internal.JP2MosaicBandMatrixCell;
 import org.esa.snap.lib.openjpeg.dataio.Utils;
 import org.esa.snap.lib.openjpeg.jp2.TileLayout;
@@ -569,7 +569,8 @@ public class PleiadesProductReader extends AbstractProductReader {
                         throw new IllegalStateException("Different data type count: rowIndex="+rowIndex+", columnIndex="+columnIndex+", dataType="+dataType+", tileLayout.dataType="+tileLayout.dataType+".");
                     }
                 }
-                JP2LocalFile jp2LocalFile = new JP2LocalFileImpl(jp2File);
+                VirtualJP2File jp2LocalFile = new VirtualJP2File(jp2File, PleiadesProductReader.class);
+                jp2LocalFile.deleteLocalFilesOnExit();
                 JP2ImageFile jp2ImageFile = new JP2ImageFile(jp2LocalFile);
                 int cellWidth = tileLayout.width;
                 int cellHeight = tileLayout.height;
@@ -598,17 +599,4 @@ public class PleiadesProductReader extends AbstractProductReader {
         }
     }
 
-    private static class JP2LocalFileImpl implements JP2LocalFile {
-
-        private final Path jp2File;
-
-        private JP2LocalFileImpl(Path jp2File) {
-            this.jp2File = jp2File;
-        }
-
-        @Override
-        public Path getLocalFile() {
-            return this.jp2File;
-        }
-    }
 }
