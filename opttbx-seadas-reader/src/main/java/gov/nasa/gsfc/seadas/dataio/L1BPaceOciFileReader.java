@@ -47,8 +47,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         super(productReader);
 
         final Preferences preferences = Config.instance("seadas").preferences();
-        wantsCaching = false;
-        //wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
     }
 
     enum WvlType {

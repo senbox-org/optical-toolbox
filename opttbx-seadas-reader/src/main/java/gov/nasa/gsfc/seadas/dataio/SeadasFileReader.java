@@ -142,13 +142,12 @@ public abstract class SeadasFileReader implements CacheDataProvider {
 
                 offsets = new int[]{spectralBandIndex, sourceOffsetY, sourceOffsetX};
                 shapes = new int[]{1, sourceHeight, sourceWidth};
-                System.out.println("fromCache = " + offsets[0] + ", " + offsets[1] + ", " + offsets[2] + ", " + shapes[1]+ ", " + shapes[2]);
             } else {
                 offsets = new int[]{sourceOffsetY, sourceOffsetX};
                 shapes = new int[]{sourceHeight, sourceWidth};
             }
 
-            final int[] targetOffsets = {0, 0};
+            final int[] targetOffsets = {sourceOffsetY, sourceOffsetX};
             final int[] targetShapes = {sourceHeight, sourceWidth};
             final DataBuffer targetBuffer = new DataBuffer(destBuffer, targetOffsets, targetShapes);
             productCache.read(destBandName, offsets, shapes, targetBuffer);
@@ -180,7 +179,6 @@ public abstract class SeadasFileReader implements CacheDataProvider {
             pm.beginTask("Reading band '" + variable.getShortName() + "'...", sourceHeight);
             try {
                 Section section = new Section(start, count, stride);
-                System.out.println("fromCache = " + start[0] + ", " + start[1] + ", " + count[0] + ", " + count[1]);
 
                 Array array;
                 int[] newshape = {sourceHeight, sourceWidth};
