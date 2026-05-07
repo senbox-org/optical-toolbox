@@ -16,13 +16,14 @@
 
 package gov.nasa.gsfc.seadas.dataio;
 
+import eu.esa.snap.core.dataio.cache.CacheDataProvider;
 import eu.esa.snap.core.dataio.cache.DataBuffer;
 import eu.esa.snap.core.dataio.cache.VariableDescriptor;
-import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.runtime.Config;
 import org.jspecify.annotations.NonNull;
 import ucar.ma2.Array;
@@ -38,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
-import static org.esa.snap.dataio.netcdf.util.DataTypeUtils.getRasterDataType;
 
 public class L1BPaceOciFileReader extends SeadasFileReader {
 
@@ -218,7 +218,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             final float wavelength = getOciWvl(i, wvlType);
             final String variableName = getVariableName(ncVariableName, wavelength);
             final int dataType = getProductDataType(variable);
-            final Band band = new BandUsingReaderDirectly(variableName, dataType, width, height);
+            final Band band = createBand(variableName, dataType, width, height);
 
             product.addBand(band);
 
@@ -269,7 +269,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             final float wavelength = getOciWvl(i, getWvlType(variable.getShortName()));
             final String variableName = getVariableName(description, wavelength);
             final int dataType = getProductDataType(variable);
-            final Band band = new Band(variableName, dataType, width, height);
+            final Band band = createBand(variableName, dataType, width, height);
             product.addBand(band);
 
             band.setSpectralWavelength(wavelength);
@@ -352,12 +352,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         final String units = variable.getUnitsString();
         final String name = variable.getShortName();
         final int dataType = getProductDataType(variable);
-        final Band band;
-        if (wantsCaching) {
-            band = new BandUsingReaderDirectly(name, dataType, width, height);
-        } else {
-            band = new Band(name, dataType, width, height);
-        }
+        final Band band = createBand(name, dataType, width, height);
         product.addBand(band);
 
         addAttributes(variable, band, applyScaling);
@@ -449,93 +444,20 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     @Override
     public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
-        final Variable netcdVariable = variableMap.get(variableName);
-        if (netcdVariable == null) {
-            throw new IOException("Variable not known: " + variableName);
-        }
-
-        final VariableDescriptor variableDescriptor = new VariableDescriptor();
-        variableDescriptor.name = variableName;
-        variableDescriptor.dataType = getRasterDataType(netcdVariable.getDataType(), false);
-
-        int[] shape = netcdVariable.getShape();
-
-        final Array chunkSizesValues;
-        final Attribute chunkSizes = netcdVariable.findAttribute("_ChunkSizes");
-        if (chunkSizes != null) {
-            chunkSizesValues = chunkSizes.getValues();
-        } else {
-            chunkSizesValues = Array.factory(DataType.INT, new int[]{shape.length}, shape);
-        }
-
-        if (shape.length == 2) {
-            variableDescriptor.width = shape[1];
-            variableDescriptor.height = shape[0];
-            variableDescriptor.layers = -1;
-
-            variableDescriptor.tileWidth = chunkSizesValues.getInt(1);
-            variableDescriptor.tileHeight = chunkSizesValues.getInt(0);
-            variableDescriptor.tileLayers = -1;
-        } else if (shape.length == 3) {
-            variableDescriptor.width = shape[2];
-            variableDescriptor.height = shape[1];
-            variableDescriptor.layers = shape[0];
-
-            variableDescriptor.tileWidth = chunkSizesValues.getInt(2);
-            variableDescriptor.tileHeight = chunkSizesValues.getInt(1);
-            variableDescriptor.tileLayers = chunkSizesValues.getInt(0);
-        }
-
-        return variableDescriptor;
+        final Variable netcdfVariable = variableMap.get(variableName);
+        return SeadasCacheUtils.getDefaultVariableDescriptor(netcdfVariable, variableName);
     }
 
     @Override
     public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
         final Variable netcdfVariable = variableMap.get(variableName);
-        int rasterDataType = getRasterDataType(netcdfVariable);
+        final int rasterDataType = DataTypeUtils.getRasterDataType(netcdfVariable);
 
         Array rawBuffer;
         synchronized (ncFile) {
-            try {
-                rawBuffer = netcdfVariable.read(offsets, shapes);
-            } catch (InvalidRangeException e) {
-                throw new IOException(e);
-            }
-
-            if (targetData == null) {
-                targetData = createTargetDataBuffer(shapes, rasterDataType);
-            }
-
-            switch (rasterDataType) {
-                case ProductData.TYPE_FLOAT32:
-                    targetData.setElems(rawBuffer.get1DJavaArray(DataType.FLOAT));
-                    break;
-                case ProductData.TYPE_FLOAT64:
-                    targetData.setElems(rawBuffer.get1DJavaArray(DataType.DOUBLE));
-                    break;
-                case ProductData.TYPE_INT16:
-                    targetData.setElems(rawBuffer.get1DJavaArray(DataType.SHORT));
-                    break;
-                case ProductData.TYPE_UINT8:
-                    targetData.setElems(rawBuffer.get1DJavaArray(DataType.BYTE));
-                    break;
-                default:
-                    throw new IOException("Unknown data type: " + rasterDataType);
-            }
+            rawBuffer = SeadasCacheUtils.readArray(netcdfVariable, offsets, shapes);
         }
 
-        return new DataBuffer(targetData, offsets, shapes);
-    }
-
-    private static @NonNull ProductData createTargetDataBuffer(int[] shapes, int rasterDataType) throws IOException {
-        ProductData targetData;
-        if (shapes.length == 2) {
-            targetData = ProductData.createInstance(rasterDataType, shapes[0] * shapes[1]);
-        } else if (shapes.length == 3) {
-            targetData = ProductData.createInstance(rasterDataType, shapes[0] * shapes[1] * shapes[2]);
-        } else {
-            throw new IOException("Illegally shaped variable");
-        }
-        return targetData;
+        return SeadasCacheUtils.constructDataBuffer(rawBuffer, offsets, shapes, targetData, rasterDataType);
     }
 }

@@ -20,6 +20,7 @@ import eu.esa.snap.core.dataio.cache.CacheDataProvider;
 import eu.esa.snap.core.dataio.cache.DataBuffer;
 import eu.esa.snap.core.dataio.cache.ProductCache;
 import eu.esa.snap.core.dataio.cache.VariableDescriptor;
+import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.util.PropertyMap;
@@ -135,22 +136,35 @@ public abstract class SeadasFileReader implements CacheDataProvider {
             final int[] offsets;
             final int[] shapes;
 
-            String destBandName = destBand.getName();
+            String cacheVariableName = destBand.getName();
+            Variable cacheVariable = variableMap.get(cacheVariableName);
+
             final int spectralBandIndex = destBand.getSpectralBandIndex();
             if (spectralBandIndex >= 0) {
-                destBandName = getNcVariableName(destBandName);
+                final String ncVariableName = getNcVariableName(cacheVariableName);
+                final Variable ncVariable = variableMap.get(ncVariableName);
+                if (ncVariable != null) {
+                    cacheVariableName = ncVariableName;
+                    cacheVariable = ncVariable;
+                }
+            }
 
+            final int variableRank = cacheVariable.getRank();
+            if (spectralBandIndex >= 0 && variableRank == 3) {
                 offsets = new int[]{spectralBandIndex, sourceOffsetY, sourceOffsetX};
                 shapes = new int[]{1, sourceHeight, sourceWidth};
-            } else {
+            } else if (variableRank == 2) {
                 offsets = new int[]{sourceOffsetY, sourceOffsetX};
                 shapes = new int[]{sourceHeight, sourceWidth};
+            } else {
+                throw new IOException("Unsupported cached variable rank " + variableRank +
+                        " for variable '" + cacheVariableName + "'");
             }
 
             final int[] targetOffsets = {sourceOffsetY, sourceOffsetX};
             final int[] targetShapes = {sourceHeight, sourceWidth};
             final DataBuffer targetBuffer = new DataBuffer(destBuffer, targetOffsets, targetShapes);
-            productCache.read(destBandName, offsets, shapes, targetBuffer);
+            productCache.read(cacheVariableName, offsets, shapes, targetBuffer);
 
             if (mustFlipX || mustFlipY) {
                 DataType netcdfDataType = DataTypeUtils.getNetcdfDataType(destBuffer.getType());
@@ -212,8 +226,8 @@ public abstract class SeadasFileReader implements CacheDataProvider {
 
     }
 
-    public FlagCoding readFlagCoding(Product product, Band bandName) {
-        Variable variable = variableMap.get(bandName);
+    public FlagCoding readFlagCoding(Product product, Band band) {
+        Variable variable = variableMap.get(band.getName());
         if (variable.getFullName().contains("flag")) {
             final String codingName = variable.getShortName() + "_coding";
             return readFlagCoding(variable, codingName);
@@ -1583,6 +1597,13 @@ public abstract class SeadasFileReader implements CacheDataProvider {
         return bandToVariableMap;
     }
 
+    protected Band createBand(String name, int dataType, int width, int height) {
+        if (wantsCaching) {
+            return new BandUsingReaderDirectly(name, dataType, width, height);
+        }
+        return new Band(name, dataType, width, height);
+    }
+
     protected void setSpectralBand(Product product) {
 
         // todo Later Possibly Delete: but for now commenting out code which used decimal wavelength lookup file
@@ -1773,7 +1794,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
 
                     if (!product.containsBand(name)) {
 
-                        final Band band = new Band(name, dataType, width, height);
+                        final Band band = createBand(name, dataType, width, height);
                         product.addBand(band);
 
                         Variable sliced = null;
@@ -1892,7 +1913,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
 
                 if (!product.containsBand(name)) {
 
-                    band = new Band(name, dataType, width, height);
+                    band = createBand(name, dataType, width, height);
 
                     product.addBand(band);
 

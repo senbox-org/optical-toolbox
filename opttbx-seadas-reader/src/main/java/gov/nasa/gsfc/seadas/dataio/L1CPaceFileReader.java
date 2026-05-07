@@ -16,11 +16,17 @@
 
 package gov.nasa.gsfc.seadas.dataio;
 
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
+import org.esa.snap.runtime.Config;
+import org.jspecify.annotations.NonNull;
 import ucar.ma2.Array;
+import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
 import ucar.nc2.Group;
@@ -28,6 +34,7 @@ import ucar.nc2.Variable;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.prefs.Preferences;
 
 import static java.lang.String.format;
 
@@ -35,6 +42,9 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
     L1CPaceFileReader(SeadasProductReader productReader) {
         super(productReader);
+
+        final Preferences preferences = Config.instance("seadas").preferences();
+        wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
     }
 
     @Override
@@ -242,7 +252,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String name = variable.getShortName();
                     final int dataType = getProductDataType(variable);
-                    band = new Band(name, dataType, width, height);
+                    band = createBand(name, dataType, width, height);
                     product.addBand(band);
 
                     final List<Attribute> list = variable.getAttributes();
@@ -344,7 +354,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
 
                             final int dataType = getProductDataType(variable);
-                            band = new Band(name, dataType, width, height);
+                            band = createBand(name, dataType, width, height);
                             product.addBand(band);
 
                             band.setSpectralWavelength(wavelengths.getFloat(i));
@@ -472,7 +482,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 String name = longname.toString();
                                 String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                                 final int dataType = getProductDataType(variable);
-                                band = new Band(name, dataType, width, height);
+                                band = createBand(name, dataType, width, height);
                                 product.addBand(band);
 
                                 band.setSpectralWavelength(wavelengths.getFloat(j));
@@ -603,7 +613,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String name = variable.getShortName();
                     final int dataType = getProductDataType(variable);
-                    band = new Band(name, dataType, width, height);
+                    band = createBand(name, dataType, width, height);
                     product.addBand(band);
 
                     final List<Attribute> list = variable.getAttributes();
@@ -696,7 +706,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
 
                             final int dataType = getProductDataType(variable);
-                            band = new Band(name, dataType, width, height);
+                            band = createBand(name, dataType, width, height);
                             product.addBand(band);
 
                             band.setAngularValue(view_angles.getFloat(i));
@@ -803,7 +813,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
 
                                 final int dataType = getProductDataType(variable);
-                                band = new Band(name, dataType, width, height);
+                                band = createBand(name, dataType, width, height);
                                 product.addBand(band);
 
                                 band.setSpectralWavelength(wavelengths.getFloat(j));
@@ -927,7 +937,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String name = variable.getShortName();
                     final int dataType = getProductDataType(variable);
-                    band = new Band(name, dataType, width, height);
+                    band = createBand(name, dataType, width, height);
                     product.addBand(band);
 
                     final List<Attribute> list = variable.getAttributes();
@@ -1031,7 +1041,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             String name = longname.toString();
                             String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                             final int dataType = getProductDataType(variable);
-                            band = new Band(name, dataType, width, height);
+                            band = createBand(name, dataType, width, height);
                             product.addBand(band);
 
                             if ((i > views / 2) && (view_angles.getInt(i) == view_angles.getInt(views - 1 - i))) {
@@ -1169,7 +1179,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 String name = longname.toString();
                                 String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                                 final int dataType = getProductDataType(variable);
-                                band = new Band(name, dataType, width, height);
+                                band = createBand(name, dataType, width, height);
                                 product.addBand(band);
 
                                 if (bands == 400) {
@@ -1338,5 +1348,26 @@ public class L1CPaceFileReader extends SeadasFileReader {
             }
 
         }
+    }
+
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        return SeadasCacheUtils.getDefaultVariableDescriptor(netcdfVariable, variableName);
+    }
+
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        final int rasterDataType = DataTypeUtils.getRasterDataType(netcdfVariable);
+
+        Array rawBuffer;
+        synchronized (ncFile) {
+            rawBuffer = SeadasCacheUtils.readArray(netcdfVariable, offsets, shapes);
+        }
+
+        return SeadasCacheUtils.constructDataBuffer(rawBuffer, offsets, shapes, targetData, rasterDataType);
     }
 }
