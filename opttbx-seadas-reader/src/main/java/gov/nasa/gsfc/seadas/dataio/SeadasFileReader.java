@@ -66,6 +66,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
     protected boolean mustFlipX;
     protected boolean mustFlipY;
     protected boolean wantsCaching;
+    protected boolean applyScaling;
     protected List<Attribute> globalAttributes;
     protected Map<String, Variable> variableMap;
     protected NetcdfFile ncFile;
@@ -106,6 +107,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
         isHeadless = GraphicsEnvironment.isHeadless();
 
         wantsCaching = false;
+        applyScaling = true;
     }
 
     public void setProductCache(ProductCache productCache) {
@@ -1807,11 +1809,13 @@ public abstract class SeadasFileReader implements CacheDataProvider {
 
                         try {
                             Attribute fillValue = variable.findAttribute("_FillValue");
-                            if (fillValue == null) {
+                            if (fillValue == null && applyScaling) {
                                 fillValue = variable.findAttribute("bad_value_scaled");
                             }
-                            band.setNoDataValue(fillValue.getNumericValue().floatValue());
-                            band.setNoDataValueUsed(true);
+                            if (fillValue != null) {
+                                band.setNoDataValue(fillValue.getNumericValue().floatValue());
+                                band.setNoDataValueUsed(true);
+                            }
                             band.setSpectralWavelength(wavelengths.getFloat(i));
                             band.setSpectralBandIndex(1);
                         } catch (Exception ignored) {
@@ -1825,13 +1829,13 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                                 band.setUnit(attribute.getStringValue());
                             } else if ("long_name".equals(attribName)) {
                                 band.setDescription(attribute.getStringValue());
-                            } else if ("slope".equals(attribName)) {
+                            } else if (applyScaling && "slope".equals(attribName)) {
                                 band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
-                            } else if ("intercept".equals(attribName)) {
+                            } else if (applyScaling && "intercept".equals(attribName)) {
                                 band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
-                            } else if ("scale_factor".equals(attribName)) {
+                            } else if (applyScaling && "scale_factor".equals(attribName)) {
                                 band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
-                            } else if ("add_offset".equals(attribName)) {
+                            } else if (applyScaling && "add_offset".equals(attribName)) {
                                 band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
                             } else if (attribName.startsWith("valid_")) {
                                 if ("valid_min".equals(attribName)) {
@@ -1919,11 +1923,13 @@ public abstract class SeadasFileReader implements CacheDataProvider {
 
                     try {
                         Attribute fillValue = variable.findAttribute("_FillValue");
-                        if (fillValue == null) {
+                        if (fillValue == null && applyScaling) {
                             fillValue = variable.findAttribute("bad_value_scaled");
                         }
-                        band.setNoDataValue(fillValue.getNumericValue().floatValue());
-                        band.setNoDataValueUsed(true);
+                        if (fillValue != null) {
+                            band.setNoDataValue(fillValue.getNumericValue().floatValue());
+                            band.setNoDataValueUsed(true);
+                        }
                     } catch (Exception ignored) {
                     }
 
@@ -1935,13 +1941,13 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                             band.setUnit(attribute.getStringValue());
                         } else if ("long_name".equals(attribName)) {
                             band.setDescription(attribute.getStringValue());
-                        } else if ("slope".equals(attribName)) {
+                        } else if (applyScaling && "slope".equals(attribName)) {
                             band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
-                        } else if ("intercept".equals(attribName)) {
+                        } else if (applyScaling && "intercept".equals(attribName)) {
                             band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
+                        } else if (applyScaling && "scale_factor".equals(attribName)) {
                             band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
-                        } else if ("add_offset".equals(attribName)) {
+                        } else if (applyScaling && "add_offset".equals(attribName)) {
                             band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
                         } else if (attribName.startsWith("valid_")) {
                             if ("valid_min".equals(attribName)) {

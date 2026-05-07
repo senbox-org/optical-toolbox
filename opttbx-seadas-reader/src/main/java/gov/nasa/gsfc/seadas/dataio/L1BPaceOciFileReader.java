@@ -42,7 +42,6 @@ import java.util.prefs.Preferences;
 
 public class L1BPaceOciFileReader extends SeadasFileReader {
 
-    private boolean applyScaling;
 
     L1BPaceOciFileReader(SeadasProductReader productReader) {
         super(productReader);

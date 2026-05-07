@@ -50,6 +50,7 @@ public class L2FileReader extends SeadasFileReader {
 
         final Preferences preferences = Config.instance("seadas").preferences();
         wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
     }
 
     @Override

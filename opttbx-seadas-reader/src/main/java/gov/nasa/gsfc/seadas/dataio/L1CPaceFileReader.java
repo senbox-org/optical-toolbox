@@ -45,6 +45,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
         final Preferences preferences = Config.instance("seadas").preferences();
         wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
     }
 
     @Override
@@ -263,15 +264,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             band.setUnit(hdfAttribute.getStringValue());
                         } else if ("long_name".equals(attribName)) {
                             band.setDescription(hdfAttribute.getStringValue());
-                        } else if ("slope".equals(attribName)) {
+                        } else if (applyScaling && "slope".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("intercept".equals(attribName)) {
+                        } else if (applyScaling && "intercept".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
+                        } else if (applyScaling && "scale_factor".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("add_offset".equals(attribName)) {
+                        } else if (applyScaling && "add_offset".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("bad_value_scaled".equals(attribName)) {
+                        } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                             band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                             band.setNoDataValueUsed(true);
                         } else if ("_FillValue".equals(attribName)) {
@@ -387,20 +388,20 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     band.setUnit(hdfAttribute.getStringValue());
                                 } else if ("long_name".equals(attribName)) {
                                     band.setDescription(hdfAttribute.getStringValue());
-                                } else if ("slope".equals(attribName)) {
+                                } else if (applyScaling && "slope".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("intercept".equals(attribName)) {
+                                } else if (applyScaling && "intercept".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("scale_factor".equals(attribName)) {
+                                } else if (applyScaling && "scale_factor".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("add_offset".equals(attribName)) {
+                                } else if (applyScaling && "add_offset".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("bad_value_scaled".equals(attribName)) {
+                                } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                     band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                     band.setNoDataValueUsed(true);
                                 } else if ("_FillValue".equals(attribName)) {
-                                band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
-                                band.setNoDataValueUsed(true);
+                                    band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
+                                    band.setNoDataValueUsed(true);
                                 } else if (attribName.startsWith("valid_")) {
                                     if ("valid_min".equals(attribName)) {
                                         if (hdfAttribute.getDataType().isUnsigned()) {
@@ -520,15 +521,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                         band.setUnit(hdfAttribute.getStringValue());
                                     } else if ("long_name".equals(attribName)) {
                                         band.setDescription(hdfAttribute.getStringValue());
-                                    } else if ("slope".equals(attribName)) {
+                                    } else if (applyScaling && "slope".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("intercept".equals(attribName)) {
+                                    } else if (applyScaling && "intercept".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("scale_factor".equals(attribName)) {
+                                    } else if (applyScaling && "scale_factor".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("add_offset".equals(attribName)) {
+                                    } else if (applyScaling && "add_offset".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("bad_value_scaled".equals(attribName)) {
+                                    } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                         band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                         band.setNoDataValueUsed(true);
                                     } else if ("_FillValue".equals(attribName)) {
@@ -624,15 +625,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             band.setUnit(hdfAttribute.getStringValue());
                         } else if ("long_name".equals(attribName)) {
                             band.setDescription(hdfAttribute.getStringValue());
-                        } else if ("slope".equals(attribName)) {
+                        } else if (applyScaling && "slope".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("intercept".equals(attribName)) {
+                        } else if (applyScaling && "intercept".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
+                        } else if (applyScaling && "scale_factor".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("add_offset".equals(attribName)) {
+                        } else if (applyScaling && "add_offset".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("bad_value_scaled".equals(attribName)) {
+                        } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                             band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                             band.setNoDataValueUsed(true);
                         } else if ("_FillValue".equals(attribName)) {
@@ -727,15 +728,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     band.setUnit(hdfAttribute.getStringValue());
                                 } else if ("long_name".equals(attribName)) {
                                     band.setDescription(hdfAttribute.getStringValue());
-                                } else if ("slope".equals(attribName)) {
+                                } else if (applyScaling && "slope".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("intercept".equals(attribName)) {
+                                } else if (applyScaling && "intercept".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("scale_factor".equals(attribName)) {
+                                } else if (applyScaling && "scale_factor".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("add_offset".equals(attribName)) {
+                                } else if (applyScaling && "add_offset".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("bad_value_scaled".equals(attribName)) {
+                                } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                     band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                     band.setNoDataValueUsed(true);
                                 } else if ("_FillValue".equals(attribName)) {
@@ -839,15 +840,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                         band.setUnit(hdfAttribute.getStringValue());
                                     } else if ("long_name".equals(attribName)) {
                                         band.setDescription(hdfAttribute.getStringValue());
-                                    } else if ("slope".equals(attribName)) {
+                                    } else if (applyScaling && "slope".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("intercept".equals(attribName)) {
+                                    } else if (applyScaling && "intercept".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("scale_factor".equals(attribName)) {
+                                    } else if (applyScaling && "scale_factor".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("add_offset".equals(attribName)) {
+                                    } else if (applyScaling && "add_offset".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("bad_value_scaled".equals(attribName)) {
+                                    } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                         band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                         band.setNoDataValueUsed(true);
                                     } else if ("_FillValue".equals(attribName)) {
@@ -948,15 +949,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             band.setUnit(hdfAttribute.getStringValue());
                         } else if ("long_name".equals(attribName)) {
                             band.setDescription(hdfAttribute.getStringValue());
-                        } else if ("slope".equals(attribName)) {
+                        } else if (applyScaling && "slope".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("intercept".equals(attribName)) {
+                        } else if (applyScaling && "intercept".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
+                        } else if (applyScaling && "scale_factor".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("add_offset".equals(attribName)) {
+                        } else if (applyScaling && "add_offset".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("bad_value_scaled".equals(attribName)) {
+                        } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                             band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                             band.setNoDataValueUsed(true);
                         } else if ("_FillValue".equals(attribName)) {
@@ -1066,15 +1067,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     band.setUnit(hdfAttribute.getStringValue());
                                 } else if ("long_name".equals(attribName)) {
                                     band.setDescription(hdfAttribute.getStringValue());
-                                } else if ("slope".equals(attribName)) {
+                                } else if (applyScaling && "slope".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("intercept".equals(attribName)) {
+                                } else if (applyScaling && "intercept".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("scale_factor".equals(attribName)) {
+                                } else if (applyScaling && "scale_factor".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("add_offset".equals(attribName)) {
+                                } else if (applyScaling && "add_offset".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("bad_value_scaled".equals(attribName)) {
+                                } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                     band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                     band.setNoDataValueUsed(true);
                                 } else if ("_FillValue".equals(attribName)) {
@@ -1213,15 +1214,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                         band.setUnit(hdfAttribute.getStringValue());
                                     } else if ("long_name".equals(attribName)) {
                                         band.setDescription(hdfAttribute.getStringValue());
-                                    } else if ("slope".equals(attribName)) {
+                                    } else if (applyScaling && "slope".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("intercept".equals(attribName)) {
+                                    } else if (applyScaling && "intercept".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("scale_factor".equals(attribName)) {
+                                    } else if (applyScaling && "scale_factor".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("add_offset".equals(attribName)) {
+                                    } else if (applyScaling && "add_offset".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("bad_value_scaled".equals(attribName)) {
+                                    } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                         band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                         band.setNoDataValueUsed(true);
                                     } else if ("_FillValue".equals(attribName)) {
