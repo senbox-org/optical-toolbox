@@ -46,6 +46,7 @@ import java.util.stream.Stream;
 public class FlexProductReader extends AbstractProductReader implements FlexMetadataProvider {
 
     private static final Logger logger = Logger.getLogger(FlexProductReader.class.getName());
+    private static final String NETCDF_BASE_METADATA_ELEMENT = "NetCDF";
     private static final String LATITUDE_BAND_NAME = "latitude";
     private static final String LONGITUDE_BAND_NAME = "longitude";
     private static final double FLEX_RESOLUTION_KM = 0.3;
@@ -110,11 +111,11 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         product.setAutoGrouping(productDescriptor.getBandGroupingPattern());
         setProductTimes(product, header);
 
+        addMetadata(product, header);
+        addMetadataVariables(product);
         addBands(product, productDescriptor);
         addSpecialBands(product);
         addFlagMasks(product, productDescriptor);
-        addMetadata(product, header);
-        addMetadataVariables(product);
 
         return product;
     }
@@ -523,11 +524,50 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                 band.setUnit(descriptor.getUnits());
                 setScaleAndOffset(band, ncVariable);
                 setFillValue(band, ncVariable);
+                setSpectralWavelength(band, product, descriptor.getWavelengthReference(), layer);
+                setSpectralFwhm(band, product, descriptor.getFwhmReference(), layer);
                 product.addBand(band);
 
                 cacheDataProvider.register(layerBandName, ncVariable, new int[]{layer - 1}, false, dataType, ArrayConverter.IDENTITY, tileSize);
             }
         }
+    }
+
+    private static void setSpectralWavelength(Band band, Product product, String metaElementName, int elementIndex) {
+        final Float value = getSpectralValue(product, metaElementName, elementIndex);
+        if (value != null) {
+            band.setSpectralWavelength(value);
+        }
+    }
+
+    private static void setSpectralFwhm(Band band, Product product, String metaElementName, int elementIndex) {
+        final Float value = getSpectralValue(product, metaElementName, elementIndex);
+        if (value != null) {
+            band.setSpectralBandwidth(value);
+        }
+    }
+
+    private static Float getSpectralValue(Product product, String metaElementName, int elementIndex) {
+        if (metaElementName == null || metaElementName.isEmpty() || elementIndex <= 0) {
+            return null;
+        }
+
+        final MetadataElement netcdfElement = product.getMetadataRoot().getElement(NETCDF_BASE_METADATA_ELEMENT);
+        if (netcdfElement == null) {
+            return null;
+        }
+
+        final MetadataElement element = netcdfElement.getElement(metaElementName);
+        if (element == null) {
+            return null;
+        }
+
+        final MetadataAttribute valueAttr = element.getAttribute("value");
+        if (valueAttr == null || elementIndex > valueAttr.getData().getNumElems()) {
+            return null;
+        }
+
+        return (float) valueAttr.getData().getElemDoubleAt(elementIndex - 1);
     }
 
     private void addFlagMasks(Product product, FlexProductDescriptor productDescriptor) {
@@ -582,10 +622,12 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             return;
         }
         final MetadataElement metadataRoot = product.getMetadataRoot();
+        final MetadataElement baseElement = new MetadataElement(NETCDF_BASE_METADATA_ELEMENT);
         for (final FlexVariableDescriptor descriptor : metadataMap.values()) {
             final FlexMetadataElementLazy lazyElement = new FlexMetadataElementLazy(descriptor.getName(), this);
-            metadataRoot.addElement(lazyElement);
+            baseElement.addElement(lazyElement);
         }
+        metadataRoot.addElement(baseElement);
     }
 
     @Override

@@ -7,6 +7,8 @@
     "dataType": "float64",
     "depth": 580,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "floris_spectral_channel_central_wavelengths",
+    "fwhmReference": "floris_spectral_channel_fwhm",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "FLORIS TOA radiance spectral hypercube"
   },
@@ -18,6 +20,7 @@
     "dataType": "float64",
     "depth": 21,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "olci_spectral_channel_central_wavelengths",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "OLCI TOA radiance"
   },
@@ -29,6 +32,7 @@
     "dataType": "float64",
     "depth": 6,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "slstr_vswir_spectral_channel_central_wavelengths",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "SLSTR nadir TOA radiance (VSWIR channels)"
   },
@@ -40,6 +44,7 @@
     "dataType": "float64",
     "depth": 3,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "slstr_tir_spectral_channel_central_wavelengths",
     "units": "K",
     "description": "SLSTR nadir brightness temperature (TIR channels)"
   },
@@ -51,6 +56,7 @@
     "dataType": "float64",
     "depth": 6,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "slstr_vswir_spectral_channel_central_wavelengths",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "SLSTR oblique TOA radiance (VSWIR channels)"
   },
@@ -62,6 +68,8 @@
     "dataType": "float64",
     "depth": 580,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "floris_spectral_channel_central_wavelengths",
+    "fwhmReference": "floris_spectral_channel_fwhm",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "FLORIS TOA radiance noise uncertainty"
   },
@@ -73,6 +81,7 @@
     "dataType": "float64",
     "depth": 21,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "olci_spectral_channel_central_wavelengths",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "OLCI TOA radiance uncertainty"
   },
@@ -84,6 +93,7 @@
     "dataType": "float64",
     "depth": 6,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "slstr_vswir_spectral_channel_central_wavelengths",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "SLSTR Nadir TOA radiance uncertainty"
   },
@@ -95,6 +105,7 @@
     "dataType": "float64",
     "depth": 3,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "slstr_tir_spectral_channel_central_wavelengths",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "SLSTR Nadir TOA Brightness Temperature uncertainty"
   },
@@ -106,6 +117,7 @@
     "dataType": "float64",
     "depth": 6,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "slstr_vswir_spectral_channel_central_wavelengths",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "Absolute uncertainty related to slstr_oblique_toa_radiance"
   },
@@ -117,6 +129,7 @@
     "dataType": "float64",
     "depth": 3,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "slstr_tir_spectral_channel_central_wavelengths",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "SLSTR_nadir TOA radiance spectral hypercube (TIR channels), reprojected into FLORIS geometrical frame"
   }
