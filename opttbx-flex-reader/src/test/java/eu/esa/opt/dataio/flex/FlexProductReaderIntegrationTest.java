@@ -133,6 +133,27 @@ public class FlexProductReaderIntegrationTest {
         assertFalse(header.getAttributeString("startTime", "").isEmpty());
     }
 
+    @Test
+    public void testReadL1cMetadataVariables() throws IOException {
+        final Path productDir = findProductDir("FLX_L1C_FLXSYN");
+        Assume.assumeNotNull("No L1C product found", productDir);
+
+        product = readProduct(productDir);
+        assertNotNull(product);
+
+        final MetadataElement root = product.getMetadataRoot();
+
+        final MetadataElement timeStamp = root.getElement("time_stamp");
+        assertNotNull("L1C should have time_stamp metadata", timeStamp);
+        assertTrue("time_stamp should have attributes after lazy load",
+                timeStamp.getNumAttributes() > 0);
+
+        final MetadataElement tiePressure = root.getElement("tie_pressure_levels");
+        assertNotNull("L1C should have tie_pressure_levels metadata", tiePressure);
+        assertNotNull("tie_pressure_levels should have 'value' attribute",
+                tiePressure.getAttribute("value"));
+    }
+
     // ------ L2 ------
 
     @Test
@@ -201,6 +222,27 @@ public class FlexProductReaderIntegrationTest {
         if (product.getBand("quality_flags") != null || product.getBand("pixel_classification") != null) {
             assertTrue("L2 should have flag masks when quality bands exist", maskGroup.getNodeCount() > 0);
         }
+    }
+
+    @Test
+    public void testReadL2MetadataVariables() throws IOException {
+        final Path productDir = findProductDir("FLX_L2__FLXSYN");
+        Assume.assumeNotNull("No L2 product found", productDir);
+
+        product = readProduct(productDir);
+        assertNotNull(product);
+
+        final MetadataElement root = product.getMetadataRoot();
+
+        final MetadataElement sifWavelength = root.getElement("sif_wavelength_grid");
+        assertNotNull("L2 should have sif_wavelength_grid metadata", sifWavelength);
+        assertNotNull("sif_wavelength_grid should have 'value' attribute",
+                sifWavelength.getAttribute("value"));
+
+        final MetadataElement reflWavelength = root.getElement("reflectance_wavelength_grid");
+        assertNotNull("L2 should have reflectance_wavelength_grid metadata", reflWavelength);
+        assertNotNull("reflectance_wavelength_grid should have 'value' attribute",
+                reflWavelength.getAttribute("value"));
     }
 
     // ------ helpers ------

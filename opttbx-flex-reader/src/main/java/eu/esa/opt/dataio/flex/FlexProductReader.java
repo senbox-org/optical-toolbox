@@ -6,6 +6,8 @@ import eu.esa.opt.dataio.flex.compatibility.EarlyProcessorCompatibility;
 import eu.esa.opt.dataio.flex.compatibility.FlexProductCompatibility;
 import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
 import eu.esa.opt.dataio.flex.dddb.*;
+import eu.esa.opt.dataio.flex.metadata.FlexMetadataElementLazy;
+import eu.esa.opt.dataio.flex.metadata.FlexMetadataProvider;
 import eu.esa.opt.dataio.flex.header.FlexHeaderParser;
 import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import eu.esa.snap.core.dataio.cache.CacheManager;
@@ -23,7 +25,9 @@ import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.dataio.netcdf.cache.NetcdfCacheDataProvider;
 import org.esa.snap.dataio.netcdf.util.ArrayConverter;
+import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
+import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
@@ -39,7 +43,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-public class FlexProductReader extends AbstractProductReader {
+public class FlexProductReader extends AbstractProductReader implements FlexMetadataProvider {
 
     private static final Logger logger = Logger.getLogger(FlexProductReader.class.getName());
     private static final String LATITUDE_BAND_NAME = "latitude";
@@ -110,6 +114,7 @@ public class FlexProductReader extends AbstractProductReader {
         addSpecialBands(product);
         addFlagMasks(product, productDescriptor);
         addMetadata(product, header);
+        addMetadataVariables(product);
 
         return product;
     }
@@ -516,6 +521,91 @@ public class FlexProductReader extends AbstractProductReader {
                 addStringAttribute(vendorElement, entry.getKey(), entry.getValue());
             }
             metadataRoot.addElement(vendorElement);
+        }
+    }
+
+    private void addMetadataVariables(Product product) {
+        if (metadataMap.isEmpty()) {
+            return;
+        }
+        final MetadataElement metadataRoot = product.getMetadataRoot();
+        for (final FlexVariableDescriptor descriptor : metadataMap.values()) {
+            final FlexMetadataElementLazy lazyElement = new FlexMetadataElementLazy(descriptor.getName(), this);
+            metadataRoot.addElement(lazyElement);
+        }
+    }
+
+    @Override
+    public MetadataElement readElement(String name) throws IOException {
+        final FlexVariableDescriptor descriptor = metadataMap.get(name);
+        if (descriptor == null) {
+            return null;
+        }
+        final Variable ncVariable = findNcVariable(descriptor);
+        if (ncVariable == null) {
+            return null;
+        }
+        return extractMetadata(ncVariable);
+    }
+
+    static MetadataElement extractMetadata(Variable variable) throws IOException {
+        final MetadataElement element = new MetadataElement(variable.getFullName());
+
+        for (final Attribute attribute : variable.getAttributes()) {
+            if (attribute.getValues() != null) {
+                final ProductData data = getAttributeData(attribute);
+                if (data != null) {
+                    element.addAttribute(new MetadataAttribute(attribute.getFullName(), data, true));
+                }
+            }
+        }
+
+        if (variable.getDataType() != DataType.STRING) {
+            final Object data = variable.read().copyTo1DJavaArray();
+            MetadataAttribute valueAttribute = null;
+            if (data instanceof float[]) {
+                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((float[]) data), true);
+            } else if (data instanceof double[]) {
+                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((double[]) data), true);
+            } else if (data instanceof byte[]) {
+                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((byte[]) data), true);
+            } else if (data instanceof short[]) {
+                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((short[]) data), true);
+            } else if (data instanceof int[]) {
+                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((int[]) data), true);
+            } else if (data instanceof long[]) {
+                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((long[]) data), true);
+            }
+            if (valueAttribute != null) {
+                valueAttribute.setUnit(variable.getUnitsString());
+                valueAttribute.setDescription(variable.getDescription());
+                element.addAttribute(valueAttribute);
+            }
+        }
+
+        return element;
+    }
+
+    private static ProductData getAttributeData(Attribute attribute) {
+        final int type = DataTypeUtils.getEquivalentProductDataType(attribute.getDataType(), false, false);
+        final ucar.ma2.Array values = attribute.getValues();
+        switch (type) {
+            case ProductData.TYPE_ASCII:
+                return ProductData.createInstance(values.toString());
+            case ProductData.TYPE_INT8:
+                return ProductData.createInstance((byte[]) values.copyTo1DJavaArray());
+            case ProductData.TYPE_INT16:
+                return ProductData.createInstance((short[]) values.copyTo1DJavaArray());
+            case ProductData.TYPE_INT32:
+                return ProductData.createInstance((int[]) values.copyTo1DJavaArray());
+            case ProductData.TYPE_INT64:
+                return ProductData.createInstance((long[]) values.copyTo1DJavaArray());
+            case ProductData.TYPE_FLOAT32:
+                return ProductData.createInstance((float[]) values.copyTo1DJavaArray());
+            case ProductData.TYPE_FLOAT64:
+                return ProductData.createInstance((double[]) values.copyTo1DJavaArray());
+            default:
+                return null;
         }
     }
 
