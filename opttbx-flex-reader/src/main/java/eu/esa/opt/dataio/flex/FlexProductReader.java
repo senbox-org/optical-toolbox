@@ -340,7 +340,8 @@ public class FlexProductReader extends AbstractProductReader {
         final String startTime = header.getStartTime();
         if (!startTime.isEmpty()) {
             try {
-                product.setStartTime(ProductData.UTC.parse(startTime, "yyyy-MM-dd'T'HH:mm:ss"));
+                String normalizedStartTime = startTime.replace("Z", "");
+                product.setStartTime(ProductData.UTC.parse(normalizedStartTime, "yyyy-MM-dd'T'HH:mm:ss"));
             } catch (ParseException e) {
                 logger.warning("Cannot parse start time: " + startTime);
             }
@@ -348,7 +349,8 @@ public class FlexProductReader extends AbstractProductReader {
         final String stopTime = header.getStopTime();
         if (!stopTime.isEmpty()) {
             try {
-                product.setEndTime(ProductData.UTC.parse(stopTime, "yyyy-MM-dd'T'HH:mm:ss"));
+                String normalizedStartTime = startTime.replace("Z", "");
+                product.setEndTime(ProductData.UTC.parse(normalizedStartTime, "yyyy-MM-dd'T'HH:mm:ss"));
             } catch (ParseException e) {
                 logger.warning("Cannot parse stop time: " + stopTime);
             }
