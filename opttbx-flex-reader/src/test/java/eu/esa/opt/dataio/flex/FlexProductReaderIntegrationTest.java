@@ -26,7 +26,7 @@ public class FlexProductReaderIntegrationTest {
 
 
     private static final String DATA_DIR_PROPERTY = "flex.test.data.dir";
-    private static final String DEFAULT_DATA_DIR = "C:/Users/Benny/Work/FLEX/FLEX_SPECS/data";
+    private static final String DEFAULT_DATA_DIR = "C:/Users/user/Work/FLEX/FLEX_SPECS/data";
 
     private static Path dataDir;
     private Product product;

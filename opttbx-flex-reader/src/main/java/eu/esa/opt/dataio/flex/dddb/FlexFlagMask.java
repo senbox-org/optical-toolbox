@@ -7,8 +7,6 @@ public class FlexFlagMask {
     private int value;
     private String description;
 
-    public FlexFlagMask() {
-    }
 
     public FlexFlagMask(String bandName, String name, int value, String description) {
         this.bandName = bandName;
@@ -21,10 +19,6 @@ public class FlexFlagMask {
         return bandName;
     }
 
-    public void setBandName(String bandName) {
-        this.bandName = bandName;
-    }
-
     public String getName() {
         return name;
     }
@@ -35,10 +29,6 @@ public class FlexFlagMask {
 
     public int getValue() {
         return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 
     public String getDescription() {

@@ -10,6 +10,7 @@ import eu.esa.opt.dataio.flex.header.FlexHeaderParser;
 import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import eu.esa.snap.core.dataio.cache.CacheManager;
 import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
 import eu.esa.snap.core.dataio.cache.ProductCache;
 import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import org.esa.snap.core.dataio.AbstractProductReader;
@@ -32,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
@@ -202,8 +204,7 @@ public class FlexProductReader extends AbstractProductReader {
         final int[] offsets = {0, 0};
         final int[] shapes = {height, width};
 
-        final eu.esa.snap.core.dataio.cache.DataBuffer buffer =
-                new eu.esa.snap.core.dataio.cache.DataBuffer(sourceDataType, offsets, shapes);
+        final DataBuffer buffer = new DataBuffer(sourceDataType, offsets, shapes);
         productCache.read(bandName, offsets, shapes, buffer);
 
         final ProductData sourceData = buffer.getData();
@@ -217,35 +218,11 @@ public class FlexProductReader extends AbstractProductReader {
         return data;
     }
 
-//    private double[] readGeoDataDirect(String bandName, int width, int height, Band band) throws IOException {
-//        final FlexVariableDescriptor descriptor = variablesMap.get(bandName);
-//        if (descriptor == null) {
-//            throw new IOException("No descriptor for geo band: " + bandName);
-//        }
-//
-//        final Variable ncVariable = findNcVariable(descriptor);
-//        if (ncVariable == null) {
-//            throw new IOException("No netCDF variable for geo band: " + bandName);
-//        }
-//
-//        final Array array = ncVariable.read();
-//        final double[] data = (double[]) array.get1DJavaArray(DataType.DOUBLE);
-//
-//        final double scaleFactor = band.getScalingFactor();
-//        final double scaleOffset = band.getScalingOffset();
-//        if (scaleFactor != 1.0 || scaleOffset != 0.0) {
-//            for (int i = 0; i < data.length; i++) {
-//                data[i] = data[i] * scaleFactor + scaleOffset;
-//            }
-//        }
-//        return data;
-//    }
-
     private int resolveProductWidth(FlexProductDescriptor productDescriptor) {
         final String groupPath = findFirstGroupPath();
         for (final NetcdfFile ncFile : ncFilesMap.values()) {
-            final int resolved = compatibility.resolveDimension(ncFile, groupPath, DIM_ACROSS_TRACK,
-                    productDescriptor.getWidth());
+            final int resolved = compatibility.resolveDimension(ncFile, groupPath, DIM_ACROSS_TRACK, productDescriptor.getWidth());
+
             if (resolved != productDescriptor.getWidth()) {
                 logger.fine("Resolved width from netCDF: " + resolved + " (spec default: " + productDescriptor.getWidth() + ")");
             }
@@ -257,8 +234,8 @@ public class FlexProductReader extends AbstractProductReader {
     private int resolveProductHeight(FlexProductDescriptor productDescriptor) {
         final String groupPath = findFirstGroupPath();
         for (final NetcdfFile ncFile : ncFilesMap.values()) {
-            final int resolved = compatibility.resolveDimension(ncFile, groupPath, DIM_ALONG_TRACK,
-                    productDescriptor.getHeight());
+            final int resolved = compatibility.resolveDimension(ncFile, groupPath, DIM_ALONG_TRACK, productDescriptor.getHeight());
+
             if (resolved != productDescriptor.getHeight()) {
                 logger.fine("Resolved height from netCDF: " + resolved + " (spec default: " + productDescriptor.getHeight() + ")");
             }
@@ -364,7 +341,7 @@ public class FlexProductReader extends AbstractProductReader {
         if (!startTime.isEmpty()) {
             try {
                 product.setStartTime(ProductData.UTC.parse(startTime, "yyyy-MM-dd'T'HH:mm:ss"));
-            } catch (java.text.ParseException e) {
+            } catch (ParseException e) {
                 logger.warning("Cannot parse start time: " + startTime);
             }
         }
@@ -372,7 +349,7 @@ public class FlexProductReader extends AbstractProductReader {
         if (!stopTime.isEmpty()) {
             try {
                 product.setEndTime(ProductData.UTC.parse(stopTime, "yyyy-MM-dd'T'HH:mm:ss"));
-            } catch (java.text.ParseException e) {
+            } catch (ParseException e) {
                 logger.warning("Cannot parse stop time: " + stopTime);
             }
         }
@@ -405,7 +382,7 @@ public class FlexProductReader extends AbstractProductReader {
         }
     }
 
-    private void addBand(Product product, FlexVariableDescriptor descriptor) throws IOException {
+    private void addBand(Product product, FlexVariableDescriptor descriptor) {
         final int dataType = ProductData.getType(descriptor.getDataType());
         final String bandName = descriptor.getName();
 
@@ -417,8 +394,8 @@ public class FlexProductReader extends AbstractProductReader {
             return;
         }
 
-        final Band band = new BandUsingReaderDirectly(bandName, dataType,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight());
+        final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+
         band.setDescription(descriptor.getDescription());
         band.setUnit(descriptor.getUnits());
         setScaleAndOffset(band, ncVariable);
@@ -426,12 +403,11 @@ public class FlexProductReader extends AbstractProductReader {
         product.addBand(band);
 
         final Dimension tileSize = ImageManager.getPreferredTileSize(product);
-        cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType,
-                ArrayConverter.IDENTITY, tileSize);
+        cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
     }
 
     private void addFlagBand(Product product, FlexVariableDescriptor descriptor,
-                             FlexProductDescriptor productDescriptor) throws IOException {
+                             FlexProductDescriptor productDescriptor) {
         final int dataType = ProductData.getType(descriptor.getDataType());
         final String bandName = descriptor.getName();
 
@@ -443,8 +419,7 @@ public class FlexProductReader extends AbstractProductReader {
             return;
         }
 
-        final Band band = new BandUsingReaderDirectly(bandName, dataType,
-                product.getSceneRasterWidth(), product.getSceneRasterHeight());
+        final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(descriptor.getDescription());
 
         final IndexCoding indexCoding = new IndexCoding(bandName);
@@ -461,11 +436,10 @@ public class FlexProductReader extends AbstractProductReader {
         product.addBand(band);
 
         final Dimension tileSize = ImageManager.getPreferredTileSize(product);
-        cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType,
-                ArrayConverter.IDENTITY, tileSize);
+        cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
     }
 
-    private void addSpecialBands(Product product) throws IOException {
+    private void addSpecialBands(Product product) {
         for (final FlexVariableDescriptor descriptor : specialsMap.values()) {
             final Variable ncVariable = findNcVariable(descriptor);
             if (ncVariable == null) {
@@ -488,16 +462,15 @@ public class FlexProductReader extends AbstractProductReader {
             for (int layer = 1; layer <= depth; layer++) {
                 final String layerBandName = baseName + token + layer;
 
-                final Band band = new BandUsingReaderDirectly(layerBandName, dataType,
-                        product.getSceneRasterWidth(), product.getSceneRasterHeight());
+                final Band band = new BandUsingReaderDirectly(layerBandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+
                 band.setDescription(descriptor.getDescription());
                 band.setUnit(descriptor.getUnits());
                 setScaleAndOffset(band, ncVariable);
                 setFillValue(band, ncVariable);
                 product.addBand(band);
 
-                cacheDataProvider.register(layerBandName, ncVariable, new int[]{layer - 1}, false,
-                        dataType, ArrayConverter.IDENTITY, tileSize);
+                cacheDataProvider.register(layerBandName, ncVariable, new int[]{layer - 1}, false, dataType, ArrayConverter.IDENTITY, tileSize);
             }
         }
     }

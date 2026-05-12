@@ -3,7 +3,6 @@ package eu.esa.opt.dataio.flex;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
-import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
 import java.io.File;
@@ -78,10 +77,6 @@ abstract class FlexReaderPlugIn implements ProductReaderPlugIn {
     @Override
     public SnapFileFilter getProductFileFilter() {
         return new SnapFileFilter(formatName, FILE_EXTENSIONS, description);
-    }
-
-    Pattern getSourceNamePattern() {
-        return sourceNamePattern;
     }
 
     private Path convertToPath(Object input) {

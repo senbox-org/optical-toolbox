@@ -20,7 +20,6 @@ import java.util.Map;
 public class FlexHeaderParser {
 
     private static final String NS_GML = "http://www.opengis.net/gml/3.2";
-    private static final String NS_OM = "http://www.opengis.net/om/2.0";
     private static final String NS_EOP = "http://www.opengis.net/eop/2.1";
     private static final String NS_OWS = "http://www.opengis.net/ows/2.0";
     private static final String NS_XLINK = "http://www.w3.org/1999/xlink";
