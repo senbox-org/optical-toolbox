@@ -7,6 +7,7 @@ public class FlexFlagMask {
     private int value;
     private String description;
 
+    public FlexFlagMask() {}
 
     public FlexFlagMask(String bandName, String name, int value, String description) {
         this.bandName = bandName;
