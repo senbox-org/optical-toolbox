@@ -2,6 +2,35 @@
   "productType": "FLX_L1B_OBS",
   "width": 536,
   "height": 3640,
-  "dataFiles": ["measurement_data_hre1", "measurement_data_hre2", "measurement_data_lres"],
-  "bandGroupingPattern": "FLORIS_HR1B_*_radiance:FLORIS_HR2B_*_radiance:FLORIS_LRB_*_radiance"
+  "dataFiles": [
+    "measurement_data_hre1", "measurement_data_hre2", "measurement_data_lres",
+    "annotation_data_hre1", "annotation_data_hre2", "annotation_data_lres"
+  ],
+  "bandGroupingPattern": "FLORIS_HR1B_*_radiance:FLORIS_HR2B_*_radiance:FLORIS_LRB_*_radiance:HRE1_*:HRE2_*:LRES_*",
+  "flagMasks": [
+    {"bandName": "HRE1_common_quality_flags", "name": "invalid", "value": 1, "description": "Invalid pixel", "bitmask": true},
+    {"bandName": "HRE1_common_quality_flags", "name": "land", "value": 2, "description": "Land pixel", "bitmask": true},
+    {"bandName": "HRE1_common_quality_flags", "name": "fresh_inland_water", "value": 4, "description": "Fresh inland water", "bitmask": true},
+    {"bandName": "HRE1_common_quality_flags", "name": "coastline", "value": 8, "description": "Coastline", "bitmask": true},
+    {"bandName": "HRE1_common_quality_flags", "name": "tidal_region", "value": 16, "description": "Tidal region", "bitmask": true},
+    {"bandName": "HRE1_common_quality_flags", "name": "bright", "value": 32, "description": "Bright pixel", "bitmask": true},
+    {"bandName": "HRE1_common_quality_flags", "name": "sun_glint_risk", "value": 64, "description": "Sun-glint risk", "bitmask": true},
+    {"bandName": "HRE1_common_quality_flags", "name": "thermal_stabilize", "value": 128, "description": "Thermal stabilization", "bitmask": true},
+    {"bandName": "HRE2_common_quality_flags", "name": "invalid", "value": 1, "description": "Invalid pixel", "bitmask": true},
+    {"bandName": "HRE2_common_quality_flags", "name": "land", "value": 2, "description": "Land pixel", "bitmask": true},
+    {"bandName": "HRE2_common_quality_flags", "name": "fresh_inland_water", "value": 4, "description": "Fresh inland water", "bitmask": true},
+    {"bandName": "HRE2_common_quality_flags", "name": "coastline", "value": 8, "description": "Coastline", "bitmask": true},
+    {"bandName": "HRE2_common_quality_flags", "name": "tidal_region", "value": 16, "description": "Tidal region", "bitmask": true},
+    {"bandName": "HRE2_common_quality_flags", "name": "bright", "value": 32, "description": "Bright pixel", "bitmask": true},
+    {"bandName": "HRE2_common_quality_flags", "name": "sun_glint_risk", "value": 64, "description": "Sun-glint risk", "bitmask": true},
+    {"bandName": "HRE2_common_quality_flags", "name": "thermal_stabilize", "value": 128, "description": "Thermal stabilization", "bitmask": true},
+    {"bandName": "LRES_common_quality_flags", "name": "invalid", "value": 1, "description": "Invalid pixel", "bitmask": true},
+    {"bandName": "LRES_common_quality_flags", "name": "land", "value": 2, "description": "Land pixel", "bitmask": true},
+    {"bandName": "LRES_common_quality_flags", "name": "fresh_inland_water", "value": 4, "description": "Fresh inland water", "bitmask": true},
+    {"bandName": "LRES_common_quality_flags", "name": "coastline", "value": 8, "description": "Coastline", "bitmask": true},
+    {"bandName": "LRES_common_quality_flags", "name": "tidal_region", "value": 16, "description": "Tidal region", "bitmask": true},
+    {"bandName": "LRES_common_quality_flags", "name": "bright", "value": 32, "description": "Bright pixel", "bitmask": true},
+    {"bandName": "LRES_common_quality_flags", "name": "sun_glint_risk", "value": 64, "description": "Sun-glint risk", "bitmask": true},
+    {"bandName": "LRES_common_quality_flags", "name": "thermal_stabilize", "value": 128, "description": "Thermal stabilization", "bitmask": true}
+  ]
 }

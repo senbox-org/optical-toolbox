@@ -126,20 +126,31 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
     @Override
     public GeoCoding readGeoCoding(Product product) throws IOException {
-        final Band lonBand = product.getBand(LONGITUDE_BAND_NAME);
-        final Band latBand = product.getBand(LATITUDE_BAND_NAME);
+        Band lonBand = product.getBand(LONGITUDE_BAND_NAME);
+        Band latBand = product.getBand(LATITUDE_BAND_NAME);
         if (lonBand == null || latBand == null) {
-            return null;
+            for (final String prefix : new String[]{"LRES_", "HRE1_", "HRE2_"}) {
+                lonBand = product.getBand(prefix + LONGITUDE_BAND_NAME);
+                latBand = product.getBand(prefix + LATITUDE_BAND_NAME);
+                if (lonBand != null && latBand != null) {
+                    break;
+                }
+            }
+            if (lonBand == null || latBand == null) {
+                return null;
+            }
         }
 
         final int width = lonBand.getRasterWidth();
         final int height = lonBand.getRasterHeight();
 
-        final double[] lonData = readGeoData(LONGITUDE_BAND_NAME, width, height, lonBand);
-        final double[] latData = readGeoData(LATITUDE_BAND_NAME, width, height, latBand);
+        final String lonBandName = lonBand.getName();
+        final String latBandName = latBand.getName();
+        final double[] lonData = readGeoData(lonBandName, width, height, lonBand);
+        final double[] latData = readGeoData(latBandName, width, height, latBand);
 
         final GeoRaster geoRaster = new GeoRaster(lonData, latData,
-                LONGITUDE_BAND_NAME, LATITUDE_BAND_NAME,
+                lonBandName, latBandName,
                 width, height, FLEX_RESOLUTION_KM);
 
         final ForwardCoding forward = ComponentFactory.getForward(PixelForward.KEY);
@@ -372,7 +383,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                 final FlexVariableType varType = descriptor.getVariableType();
                 switch (varType) {
                     case VARIABLE, TIE_POINT -> variablesMap.put(name, descriptor);
-                    case FLAG -> flagsMap.put(name, descriptor);
+                    case FLAG, BITMASK_FLAG -> flagsMap.put(name, descriptor);
                     case SPECIAL -> specialsMap.put(name, descriptor);
                     case METADATA -> metadataMap.put(name, descriptor);
                 }
@@ -385,7 +396,11 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             addBand(product, descriptor);
         }
         for (final FlexVariableDescriptor descriptor : flagsMap.values()) {
-            addFlagBand(product, descriptor, productDescriptor);
+            if (descriptor.getVariableType() == FlexVariableType.BITMASK_FLAG) {
+                addBitmaskFlagBand(product, descriptor, productDescriptor);
+            } else {
+                addFlagBand(product, descriptor, productDescriptor);
+            }
         }
     }
 
@@ -446,6 +461,39 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
     }
 
+    private void addBitmaskFlagBand(Product product, FlexVariableDescriptor descriptor,
+                                    FlexProductDescriptor productDescriptor) {
+        final int dataType = ProductData.getType(descriptor.getDataType());
+        final String bandName = descriptor.getName();
+
+        final Variable ncVariable = findNcVariable(descriptor);
+        if (ncVariable == null) {
+            if (!descriptor.isOptional()) {
+                logger.warning("Bitmask flag variable not found: " + descriptor.getFullNcPath());
+            }
+            return;
+        }
+
+        final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
+        band.setDescription(descriptor.getDescription());
+
+        final FlagCoding flagCoding = new FlagCoding(bandName);
+        for (final FlexFlagMask mask : productDescriptor.getFlagMasks()) {
+            if (mask.getBandName().equals(bandName)) {
+                flagCoding.addFlag(mask.getName(), mask.getValue(), mask.getDescription());
+            }
+        }
+        if (flagCoding.getNumAttributes() > 0) {
+            product.getFlagCodingGroup().add(flagCoding);
+            band.setSampleCoding(flagCoding);
+        }
+
+        product.addBand(band);
+
+        final Dimension tileSize = ImageManager.getPreferredTileSize(product);
+        cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
+    }
+
     private void addSpecialBands(Product product) {
         for (final FlexVariableDescriptor descriptor : specialsMap.values()) {
             final Variable ncVariable = findNcVariable(descriptor);
@@ -488,7 +536,12 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             if (product.getBand(mask.getBandName()) == null) {
                 continue;
             }
-            final String expression = mask.getBandName() + " == " + mask.getValue();
+            final String expression;
+            if (mask.isBitmask()) {
+                expression = mask.getBandName() + " & " + mask.getValue() + " != 0";
+            } else {
+                expression = mask.getBandName() + " == " + mask.getValue();
+            }
             final String maskName = mask.getBandName() + "_" + mask.getName();
             product.addMask(maskName, expression, mask.getDescription(),
                     MASK_COLORS[colorIndex++ % MASK_COLORS.length], 0.5);
@@ -614,29 +667,37 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     private Variable findNcVariable(FlexVariableDescriptor descriptor) {
-        final String fullPath = descriptor.getFullNcPath();
+        final String cacheKey = descriptor.getName();
 
-        Variable cached = ncVariablesCache.get(fullPath);
+        Variable cached = ncVariablesCache.get(cacheKey);
         if (cached != null) {
             return cached;
         }
 
-        for (final NetcdfFile ncFile : ncFilesMap.values()) {
-            Variable variable = ncFile.findVariable(fullPath);
+        final String fullPath = descriptor.getFullNcPath();
+        final String ncDataFile = descriptor.getNcDataFile();
+
+        for (final Map.Entry<String, NetcdfFile> entry : ncFilesMap.entrySet()) {
+            if (!ncDataFile.isEmpty() && !entry.getKey().contains(ncDataFile)) {
+                continue;
+            }
+            Variable variable = entry.getValue().findVariable(fullPath);
             if (variable != null) {
-                ncVariablesCache.put(fullPath, variable);
+                ncVariablesCache.put(cacheKey, variable);
                 return variable;
             }
         }
 
-        // L1B group name has space ("Measurement data") but descriptors use underscore ("Measurement_data")
         final String groupPath = descriptor.getNcGroupPath();
         if (groupPath.contains("_")) {
             final String altPath = groupPath.replace("_", " ") + "/" + descriptor.getNcVarName();
-            for (final NetcdfFile ncFile : ncFilesMap.values()) {
-                Variable variable = ncFile.findVariable(altPath);
+            for (final Map.Entry<String, NetcdfFile> entry : ncFilesMap.entrySet()) {
+                if (!ncDataFile.isEmpty() && !entry.getKey().contains(ncDataFile)) {
+                    continue;
+                }
+                Variable variable = entry.getValue().findVariable(altPath);
                 if (variable != null) {
-                    ncVariablesCache.put(fullPath, variable);
+                    ncVariablesCache.put(cacheKey, variable);
                     return variable;
                 }
             }

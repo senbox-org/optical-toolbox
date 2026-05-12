@@ -66,7 +66,19 @@ public class FlexProductReaderIntegrationTest {
         assertNotNull(product.getBand("FLORIS_HR2B_1_radiance"));
         assertNotNull(product.getBand("FLORIS_LRB_1_radiance"));
 
-        assertNull("L1B should not have geocoding", product.getSceneGeoCoding());
+        assertNotNull("L1B should have HRE1_longitude", product.getBand("HRE1_longitude"));
+        assertNotNull("L1B should have HRE1_latitude", product.getBand("HRE1_latitude"));
+        assertNotNull("L1B should have HRE2_longitude", product.getBand("HRE2_longitude"));
+        assertNotNull("L1B should have LRES_latitude", product.getBand("LRES_latitude"));
+        assertNotNull("L1B should have LRES_SZA", product.getBand("LRES_SZA"));
+        assertNotNull("L1B should have HRE1_OZA", product.getBand("HRE1_OZA"));
+
+        final GeoCoding geoCoding = product.getSceneGeoCoding();
+        assertNotNull("L1B should have geocoding from annotation data", geoCoding);
+
+        final GeoPos geoPos = geoCoding.getGeoPos(new PixelPos(268, 1820), null);
+        assertTrue("Latitude should be valid", geoPos.getLat() >= -90 && geoPos.getLat() <= 90);
+        assertTrue("Longitude should be valid", geoPos.getLon() >= -180 && geoPos.getLon() <= 180);
 
         assertNotNull(product.getMetadataRoot().getElement("Header"));
         assertEquals("L1B_OBS___",
@@ -87,6 +99,29 @@ public class FlexProductReaderIntegrationTest {
 
         band.loadRasterData();
         // reading succeeds; value depends on test data
+    }
+
+    @Test
+    public void testReadL1bAnnotationBands() throws IOException {
+        final Path productDir = findProductDir("FLX_L1B_OBS");
+        Assume.assumeNotNull("No L1B product found", productDir);
+
+        product = readProduct(productDir);
+        assertNotNull(product);
+
+        final Band hre1Flags = product.getBand("HRE1_common_quality_flags");
+        assertNotNull("L1B should have HRE1_common_quality_flags", hre1Flags);
+        assertNotNull("HRE1_common_quality_flags should have FlagCoding",
+                hre1Flags.getSampleCoding());
+
+        final ProductNodeGroup<Mask> maskGroup = product.getMaskGroup();
+        assertTrue("L1B should have bitmask flag masks", maskGroup.getNodeCount() > 0);
+        assertNotNull("Should have HRE1 invalid mask",
+                maskGroup.get("HRE1_common_quality_flags_invalid"));
+
+        final MetadataElement root = product.getMetadataRoot();
+        final MetadataElement timeStamp = root.getElement("HRE1_time_stamp");
+        assertNotNull("L1B should have HRE1_time_stamp metadata", timeStamp);
     }
 
     // ------ L1C ------

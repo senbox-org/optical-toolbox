@@ -15,10 +15,15 @@ public class FlexDDDBProductDescriptorsTest {
         assertEquals("FLX_L1B_OBS", descriptor.getProductType());
         assertEquals(536, descriptor.getWidth());
         assertEquals(3640, descriptor.getHeight());
-        assertEquals(3, descriptor.getDataFiles().length);
+        assertEquals(6, descriptor.getDataFiles().length);
         assertEquals("measurement_data_hre1", descriptor.getDataFiles()[0]);
         assertEquals("measurement_data_hre2", descriptor.getDataFiles()[1]);
         assertEquals("measurement_data_lres", descriptor.getDataFiles()[2]);
+        assertEquals("annotation_data_hre1", descriptor.getDataFiles()[3]);
+        assertEquals("annotation_data_hre2", descriptor.getDataFiles()[4]);
+        assertEquals("annotation_data_lres", descriptor.getDataFiles()[5]);
+        assertTrue("L1B should have bitmask flag masks", descriptor.getFlagMasks().length > 0);
+        assertTrue("L1B flag masks should be bitmask", descriptor.getFlagMasks()[0].isBitmask());
     }
 
     @Test

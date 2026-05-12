@@ -6,14 +6,16 @@ public class FlexFlagMask {
     private String name;
     private int value;
     private String description;
+    private boolean bitmask;
 
     public FlexFlagMask() {}
 
-    public FlexFlagMask(String bandName, String name, int value, String description) {
+    public FlexFlagMask(String bandName, String name, int value, String description, boolean bitmask) {
         this.bandName = bandName;
         this.name = name;
         this.value = value;
         this.description = description;
+        this.bitmask = bitmask;
     }
 
     public String getBandName() {
@@ -38,5 +40,13 @@ public class FlexFlagMask {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isBitmask() {
+        return bitmask;
+    }
+
+    public void setBitmask(boolean bitmask) {
+        this.bitmask = bitmask;
     }
 }

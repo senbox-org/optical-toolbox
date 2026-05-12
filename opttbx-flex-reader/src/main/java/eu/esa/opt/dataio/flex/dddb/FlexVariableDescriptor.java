@@ -13,6 +13,7 @@ public class FlexVariableDescriptor {
     private String depthPrefixToken;
     private String units;
     private String description;
+    private String ncDataFile;
     private boolean optional;
 
     public FlexVariableDescriptor() {
@@ -23,6 +24,7 @@ public class FlexVariableDescriptor {
         depthPrefixToken = "";
         units = "";
         description = "";
+        ncDataFile = "";
         ncGroupPath = "";
     }
 
@@ -116,6 +118,14 @@ public class FlexVariableDescriptor {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getNcDataFile() {
+        return ncDataFile;
+    }
+
+    public void setNcDataFile(String ncDataFile) {
+        this.ncDataFile = ncDataFile;
     }
 
     public boolean isOptional() {

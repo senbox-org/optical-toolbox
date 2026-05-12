@@ -28,7 +28,7 @@ public class FlexProductDescriptorTest {
         descriptor.setDataFiles(new String[]{"geometry", "measurement_data"});
         descriptor.setBandGroupingPattern("floris_toa_radiance_ch_*:olci_toa_radiance_ch_*");
 
-        final FlexFlagMask mask = new FlexFlagMask("pixel_classification", "land", 1, "Land pixel");
+        final FlexFlagMask mask = new FlexFlagMask("pixel_classification", "land", 1, "Land pixel", false);
         descriptor.setFlagMasks(new FlexFlagMask[]{mask});
 
         assertEquals("FLX_L1C_FLXSYN", descriptor.getProductType());
