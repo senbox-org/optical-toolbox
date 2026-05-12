@@ -53,19 +53,19 @@ public class FlexDDDBProductDescriptorsTest {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
         final FlexVariableDescriptor[] hre1 = dddb.getVariableDescriptors("measurement_data_hre1", "FLX_L1B_OBS");
-        assertEquals(140, hre1.length);
+        assertEquals(280, hre1.length);
         assertEquals("FLORIS_HR1B_1_radiance", hre1[0].getName());
-        assertEquals("FLORIS_HR1B_140_radiance", hre1[139].getName());
+        assertEquals("FLORIS_HR1U_140_radiance_unc", hre1[279].getName());
         assertEquals("Measurement_data", hre1[0].getNcGroupPath());
 
         final FlexVariableDescriptor[] hre2 = dddb.getVariableDescriptors("measurement_data_hre2", "FLX_L1B_OBS");
-        assertEquals(140, hre2.length);
+        assertEquals(538, hre2.length);
         assertEquals("FLORIS_HR2B_1_radiance", hre2[0].getName());
 
         final FlexVariableDescriptor[] lres = dddb.getVariableDescriptors("measurement_data_lres", "FLX_L1B_OBS");
-        assertEquals(235, lres.length);
+        assertEquals(470, lres.length);
         assertEquals("FLORIS_LRB_1_radiance", lres[0].getName());
-        assertEquals("FLORIS_LRB_235_radiance", lres[234].getName());
+        assertEquals("FLORIS_LRU_235_radiance_unc", lres[469].getName());
     }
 
     @Test

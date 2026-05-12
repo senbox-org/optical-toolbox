@@ -6,7 +6,7 @@
     "measurement_data_hre1", "measurement_data_hre2", "measurement_data_lres",
     "annotation_data_hre1", "annotation_data_hre2", "annotation_data_lres"
   ],
-  "bandGroupingPattern": "FLORIS_HR1B_*_radiance:FLORIS_HR2B_*_radiance:FLORIS_LRB_*_radiance:HRE1_*:HRE2_*:LRES_*",
+  "bandGroupingPattern": "FLORIS_HR1*_*_radiance:FLORIS_HR2*_*_radiance:FLORIS_LR*_*_radiance:FLORIS_HR1*_*_radiance_unc:FLORIS_HR2*_*_radiance_unc:FLORIS_LR*_*_radiance_unc:HRE1_*:HRE2_*:LRES_*",
   "flagMasks": [
     {"bandName": "HRE1_common_quality_flags", "name": "invalid", "value": 1, "description": "Invalid pixel", "bitmask": true},
     {"bandName": "HRE1_common_quality_flags", "name": "land", "value": 2, "description": "Land pixel", "bitmask": true},
