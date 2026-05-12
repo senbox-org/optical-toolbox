@@ -16,8 +16,8 @@ import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.geocoding.*;
-import org.esa.snap.core.dataio.geocoding.forward.TiePointBilinearForward;
-import org.esa.snap.core.dataio.geocoding.inverse.TiePointInverse;
+import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
+import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.util.ProductUtils;
@@ -137,8 +137,8 @@ public class FlexProductReader extends AbstractProductReader {
                 LONGITUDE_BAND_NAME, LATITUDE_BAND_NAME,
                 width, height, FLEX_RESOLUTION_KM);
 
-        final ForwardCoding forward = ComponentFactory.getForward(TiePointBilinearForward.KEY);
-        final InverseCoding inverse = ComponentFactory.getInverse(TiePointInverse.KEY);
+        final ForwardCoding forward = ComponentFactory.getForward(PixelForward.KEY);
+        final InverseCoding inverse = ComponentFactory.getInverse(PixelQuadTreeInverse.KEY);
 
         final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
         geoCoding.initialize();
