@@ -7,14 +7,5 @@
     "dataType": "int16",
     "units": "",
     "description": "Quality flags"
-  },
-  {
-    "name": "pixel_classification",
-    "ncVarName": "pixel_classification",
-    "ncGroupPath": "L2_Quality",
-    "type": "f",
-    "dataType": "int16",
-    "units": "",
-    "description": "Pixel classification flag"
   }
 ]
