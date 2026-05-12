@@ -1,0 +1,79 @@
+[
+  {
+    "name": "floris_toa_radiance",
+    "ncVarName": "floris_toa_radiance",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 580,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "FLORIS TOA radiance spectral hypercube"
+  },
+  {
+    "name": "olci_toa_radiance",
+    "ncVarName": "olci_toa_radiance",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 21,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "OLCI TOA radiance"
+  },
+  {
+    "name": "slstr_nadir_toa_radiance",
+    "ncVarName": "slstr_nadir_toa_radiance",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 6,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "SLSTR nadir TOA radiance (VSWIR channels)"
+  },
+  {
+    "name": "slstr_nadir_brightness_temperature",
+    "ncVarName": "slstr_nadir_brightness_temperature",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 3,
+    "depthPrefixToken": "_ch_",
+    "units": "K",
+    "description": "SLSTR nadir brightness temperature (TIR channels)"
+  },
+  {
+    "name": "slstr_oblique_toa_radiance",
+    "ncVarName": "slstr_oblique_toa_radiance",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 6,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "SLSTR oblique TOA radiance (VSWIR channels)"
+  },
+  {
+    "name": "floris_toa_radiance_noise_uncertainty",
+    "ncVarName": "floris_toa_radiance_noise_uncertainty",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 580,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "FLORIS TOA radiance noise uncertainty"
+  },
+  {
+    "name": "olci_toa_radiance_uncertainty",
+    "ncVarName": "olci_toa_radiance_uncertainty",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 21,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "OLCI TOA radiance uncertainty"
+  }
+]

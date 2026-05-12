@@ -1,0 +1,152 @@
+[
+  {
+    "name": "sif_emission_spectrum",
+    "ncVarName": "sif_emission_spectrum",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 111,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "SIF emission spectrum"
+  },
+  {
+    "name": "sif_emission_spectrum_uncertainty",
+    "ncVarName": "sif_emission_spectrum_uncertainty",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float32",
+    "depth": 111,
+    "depthPrefixToken": "_ch_",
+    "units": "",
+    "description": "SIF emission spectrum uncertainty"
+  },
+  {
+    "name": "sif_wavelength_grid",
+    "ncVarName": "sif_wavelength_grid",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "m",
+    "dataType": "float64",
+    "width": 111,
+    "height": 1,
+    "units": "nm",
+    "description": "SIF wavelength grid"
+  },
+  {
+    "name": "total_integrated_sif",
+    "ncVarName": "total_integrated_sif",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "v",
+    "dataType": "float64",
+    "units": "mW.m-2.sr-1",
+    "description": "Total integrated SIF"
+  },
+  {
+    "name": "total_integrated_sif_uncertainty",
+    "ncVarName": "total_integrated_sif_uncertainty",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "v",
+    "dataType": "float32",
+    "units": "",
+    "description": "Total integrated SIF uncertainty"
+  },
+  {
+    "name": "sif_peak_values",
+    "ncVarName": "sif_peak_values",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 2,
+    "depthPrefixToken": "_peak_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "SIF peak values"
+  },
+  {
+    "name": "sif_peak_values_uncertainty",
+    "ncVarName": "sif_peak_values_uncertainty",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float32",
+    "depth": 2,
+    "depthPrefixToken": "_peak_",
+    "units": "",
+    "description": "SIF peak values uncertainty"
+  },
+  {
+    "name": "sif_peak_positions",
+    "ncVarName": "sif_peak_positions",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 2,
+    "depthPrefixToken": "_peak_",
+    "units": "nm",
+    "description": "SIF peak positions"
+  },
+  {
+    "name": "sif_peak_positions_uncertainty",
+    "ncVarName": "sif_peak_positions_uncertainty",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float32",
+    "depth": 2,
+    "depthPrefixToken": "_peak_",
+    "units": "",
+    "description": "SIF peak positions uncertainty"
+  },
+  {
+    "name": "sif_O2_bands_value",
+    "ncVarName": "sif_O2_bands_value",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 2,
+    "depthPrefixToken": "_band_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "SIF at O2 absorption bands"
+  },
+  {
+    "name": "sif_O2_bands_value_uncertainty",
+    "ncVarName": "sif_O2_bands_value_uncertainty",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float32",
+    "depth": 2,
+    "depthPrefixToken": "_band_",
+    "units": "",
+    "description": "SIF at O2 absorption bands uncertainty"
+  },
+  {
+    "name": "floris_real_reflectance",
+    "ncVarName": "floris_real_reflectance",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 281,
+    "depthPrefixToken": "_ch_",
+    "units": "",
+    "description": "FLORIS real reflectance"
+  },
+  {
+    "name": "floris_real_reflectance_uncertainty",
+    "ncVarName": "floris_real_reflectance_uncertainty",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "s",
+    "dataType": "float32",
+    "depth": 281,
+    "depthPrefixToken": "_ch_",
+    "units": "",
+    "description": "FLORIS real reflectance uncertainty"
+  },
+  {
+    "name": "reflectance_wavelength_grid",
+    "ncVarName": "reflectance_wavelength_grid",
+    "ncGroupPath": "L2_Fluorescence",
+    "type": "m",
+    "dataType": "float64",
+    "width": 281,
+    "height": 1,
+    "units": "nm",
+    "description": "Reflectance wavelength grid"
+  }
+]

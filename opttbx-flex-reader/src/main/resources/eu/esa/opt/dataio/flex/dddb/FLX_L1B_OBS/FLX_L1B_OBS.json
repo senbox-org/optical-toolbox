@@ -1,0 +1,7 @@
+{
+  "productType": "FLX_L1B_OBS",
+  "width": 536,
+  "height": 3640,
+  "dataFiles": ["measurement_data_hre1", "measurement_data_hre2", "measurement_data_lres"],
+  "bandGroupingPattern": "FLORIS_HR1B_*_radiance:FLORIS_HR2B_*_radiance:FLORIS_LRB_*_radiance"
+}

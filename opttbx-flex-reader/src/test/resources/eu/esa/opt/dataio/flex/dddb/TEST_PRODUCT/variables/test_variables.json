@@ -1,0 +1,42 @@
+[
+  {
+    "name": "latitude",
+    "ncVarName": "latitude",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "v",
+    "dataType": "float64",
+    "units": "degrees_north",
+    "description": "Latitude in WGS84"
+  },
+  {
+    "name": "longitude",
+    "ncVarName": "longitude",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "v",
+    "dataType": "float64",
+    "units": "degrees_east",
+    "description": "Longitude in WGS84"
+  },
+  {
+    "name": "radiance",
+    "ncVarName": "floris_toa_radiance",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 580,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "FLORIS TOA radiance spectral hypercube"
+  },
+  {
+    "name": "coregistration_uncertainty",
+    "ncVarName": "average_coregistration_uncertainty",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "m",
+    "dataType": "float64",
+    "width": 2,
+    "height": 4,
+    "units": "degrees",
+    "description": "Global coregistration uncertainty"
+  }
+]

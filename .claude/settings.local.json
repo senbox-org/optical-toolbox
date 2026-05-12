@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn test *)",
+      "Bash(mvn compile *)",
+      "Bash(ls \"C:/Users/Benny/Work/FLEX/FLEX_SPECS/data/\" 2>&1)",
+      "Bash(mvn -q exec:java -Dexec.mainClass=\"ucar.nc2.NCdumpW\" -Dexec.args=\"-h \\\\\"C:/Users/Benny/Work/FLEX/FLEX_SPECS/data/FLX_L1C_FLXSYN_20230712T075954_20230712T080232_20260311T160418_0158_100_064_0021_01/flx_l1c_flxsyn_20230712T075954_20230712T080232_20260311T160418_0158_100_064_0021_01.nc\\\\\"\")",
+      "Bash(ls \"C:/Users/Benny/Work/FLEX/FLEX_SPECS/nc_dumps/\" 2>&1)",
+      "Bash(grep -E \"\\(VirtualDir|getFile|\\\\\\\\.nc\\)\")",
+      "PowerShell(Remove-Item \"C:\\\\Users\\\\Benny\\\\Work\\\\SNAP\\\\repos\\\\snap-debug-X\\\\optical-toolbox\\\\opttbx-flex-reader\\\\src\\\\test\\\\java\\\\eu\\\\esa\\\\opt\\\\dataio\\\\flex\\\\FlexNcDebugTest.java\" -Confirm:$false)"
+    ]
+  }
+}
