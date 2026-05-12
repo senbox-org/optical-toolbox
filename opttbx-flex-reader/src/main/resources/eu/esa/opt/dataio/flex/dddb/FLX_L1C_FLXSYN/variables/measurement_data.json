@@ -75,5 +75,49 @@
     "depthPrefixToken": "_ch_",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "OLCI TOA radiance uncertainty"
+  },
+  {
+    "name": "slstr_nadir_toa_radiance_uncertainty",
+    "ncVarName": "slstr_nadir_toa_radiance_uncertainty",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 6,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "SLSTR Nadir TOA radiance uncertainty"
+  },
+  {
+    "name": "slstr_nadir_brightness_temperature_uncertainty",
+    "ncVarName": "slstr_nadir_brightness_temperature_uncertainty",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 3,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "SLSTR Nadir TOA Brightness Temperature uncertainty"
+  },
+  {
+    "name": "slstr_oblique_toa_radiance_uncertainty",
+    "ncVarName": "slstr_oblique_toa_radiance_uncertainty",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 6,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "Absolute uncertainty related to slstr_oblique_toa_radiance"
+  },
+  {
+    "name": "slstr_nadir_tir_toa_radiance",
+    "ncVarName": "slstr_nadir_tir_toa_radiance",
+    "ncGroupPath": "Measurement_data",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 3,
+    "depthPrefixToken": "_ch_",
+    "units": "mW.m-2.sr-1.nm-1",
+    "description": "SLSTR_nadir TOA radiance spectral hypercube (TIR channels), reprojected into FLORIS geometrical frame"
   }
 ]

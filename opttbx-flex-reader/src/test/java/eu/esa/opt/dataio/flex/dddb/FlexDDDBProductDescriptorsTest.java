@@ -92,7 +92,7 @@ public class FlexDDDBProductDescriptorsTest {
     public void testLoadL1cMeasurementData() throws IOException {
         final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors("measurement_data", "FLX_L1C_FLXSYN");
 
-        assertEquals(7, vars.length);
+        assertEquals(11, vars.length);
         assertEquals("floris_toa_radiance", vars[0].getName());
         assertEquals(580, vars[0].getDepth());
         assertEquals("_ch_", vars[0].getDepthPrefixToken());
