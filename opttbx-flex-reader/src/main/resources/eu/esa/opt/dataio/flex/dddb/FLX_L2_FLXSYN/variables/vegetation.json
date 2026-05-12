@@ -160,6 +160,7 @@
     "dataType": "float64",
     "depth": 111,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "sif_wavelength_grid",
     "units": "",
     "description": "Fluorescence escape probability"
   },
@@ -171,6 +172,7 @@
     "dataType": "float64",
     "depth": 111,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "sif_wavelength_grid",
     "units": "",
     "description": "Fluorescence escape probability uncertainty"
   },

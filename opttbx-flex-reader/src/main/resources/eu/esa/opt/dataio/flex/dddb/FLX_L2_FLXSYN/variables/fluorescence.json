@@ -7,6 +7,7 @@
     "dataType": "float64",
     "depth": 111,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "sif_wavelength_grid",
     "units": "mW.m-2.sr-1.nm-1",
     "description": "SIF emission spectrum"
   },
@@ -18,6 +19,7 @@
     "dataType": "float32",
     "depth": 111,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "sif_wavelength_grid",
     "units": "",
     "description": "SIF emission spectrum uncertainty"
   },
@@ -124,6 +126,7 @@
     "dataType": "float64",
     "depth": 281,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "reflectance_wavelength_grid",
     "units": "",
     "description": "FLORIS real reflectance"
   },
@@ -135,6 +138,7 @@
     "dataType": "float32",
     "depth": 281,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "reflectance_wavelength_grid",
     "units": "",
     "description": "FLORIS real reflectance uncertainty"
   },

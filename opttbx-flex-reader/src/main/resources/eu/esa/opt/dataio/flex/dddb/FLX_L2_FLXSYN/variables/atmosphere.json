@@ -7,6 +7,7 @@
     "dataType": "float64",
     "depth": 580,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "floris_spectral_channel_central_wavelengths",
     "units": "",
     "description": "FLORIS apparent reflectance"
   },
@@ -92,6 +93,7 @@
     "dataType": "float64",
     "depth": 21,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "olci_spectral_channel_central_wavelengths",
     "units": "",
     "description": "OLCI apparent reflectance"
   },
@@ -103,6 +105,7 @@
     "dataType": "float64",
     "depth": 6,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "slstr_vswir_spectral_channel_central_wavelengths",
     "units": "",
     "description": "SLSTR apparent reflectance"
   },
@@ -114,6 +117,7 @@
     "dataType": "float64",
     "depth": 580,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "floris_spectral_channel_central_wavelengths",
     "units": "",
     "description": "FLORIS apparent reflectance uncertainty"
   },
@@ -125,6 +129,7 @@
     "dataType": "float64",
     "depth": 605,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "irradiance_wavelength_grid",
     "units": "mW.m-2.nm-1",
     "description": "Direct irradiance"
   },
@@ -136,6 +141,7 @@
     "dataType": "float32",
     "depth": 605,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "irradiance_wavelength_grid",
     "units": "",
     "description": "Direct irradiance uncertainty"
   },
@@ -147,6 +153,7 @@
     "dataType": "float64",
     "depth": 605,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "irradiance_wavelength_grid",
     "units": "mW.m-2.nm-1",
     "description": "Diffuse irradiance"
   },
@@ -158,6 +165,7 @@
     "dataType": "float32",
     "depth": 605,
     "depthPrefixToken": "_ch_",
+    "wavelengthReference": "irradiance_wavelength_grid",
     "units": "",
     "description": "Diffuse irradiance uncertainty"
   },
