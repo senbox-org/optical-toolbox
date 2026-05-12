@@ -20,6 +20,11 @@ import static org.junit.Assert.*;
  */
 public class FlexProductReaderIntegrationTest {
 
+
+    // TODO remove this test!!! BL
+
+
+
     private static final String DATA_DIR_PROPERTY = "flex.test.data.dir";
     private static final String DEFAULT_DATA_DIR = "C:/Users/Benny/Work/FLEX/FLEX_SPECS/data";
 

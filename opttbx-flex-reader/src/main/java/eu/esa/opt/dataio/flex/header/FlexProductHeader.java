@@ -1,4 +1,4 @@
-package eu.esa.opt.dataio.flex;
+package eu.esa.opt.dataio.flex.header;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package eu.esa.opt.dataio.flex;
+package eu.esa.opt.dataio.flex.compatibility;
 
 import org.junit.Test;
 import ucar.nc2.Dimension;

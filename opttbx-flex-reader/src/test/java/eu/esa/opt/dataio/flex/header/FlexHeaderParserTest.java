@@ -1,4 +1,4 @@
-package eu.esa.opt.dataio.flex;
+package eu.esa.opt.dataio.flex.header;
 
 import org.junit.Before;
 import org.junit.Test;
