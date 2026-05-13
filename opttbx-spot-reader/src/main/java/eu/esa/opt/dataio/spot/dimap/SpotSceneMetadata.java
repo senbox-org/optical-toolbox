@@ -24,6 +24,7 @@ import org.esa.snap.core.metadata.XmlMetadataParserFactory;
 import org.esa.snap.core.datamodel.MetadataElement;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -167,12 +168,10 @@ public class SpotSceneMetadata {
     }
 
     private void readMetadataFiles() throws IOException {
-        // try to get first the volume metadata file
-        File file = null;
-        try {
-            file = folder.getFile(SpotConstants.DIMAP_VOLUME_FILE);
-        } catch (Exception e) {
+        if (!folder.getBaseFile().exists()) {
+            throw new FileNotFoundException(folder.getBaseFile().getAbsolutePath());
         }
+        File file = folder.getFile(SpotConstants.DIMAP_VOLUME_FILE);
         if (file == null || !file.exists()) { // no volume, then look for metadata*.dim
             File selectedMetadataFile = folder.getFile(SpotConstants.SPOTSCENE_METADATA_FILE);
             logger.info("Read metadata file " + selectedMetadataFile.getName());
@@ -187,13 +186,8 @@ public class SpotSceneMetadata {
         } else { // vol_list.dim metadata file is present
             logger.info("Read volume metadata file");
             //FileInputStream stream = null;
-            InputStream stream = null;
-            try {
-                //stream = new FileInputStream(file);
-                stream = Files.newInputStream(file.toPath());
+            try (InputStream stream = Files.newInputStream(file.toPath())) {
                 volumeMetadata = VolumeMetadata.create(stream);
-            } finally {
-                if (stream != null) stream.close();
             }
             List<VolumeComponent> encapsulatedComponents;
             if ((volumeMetadata != null) && ((encapsulatedComponents = volumeMetadata.getDimapComponents()) != null)) {
