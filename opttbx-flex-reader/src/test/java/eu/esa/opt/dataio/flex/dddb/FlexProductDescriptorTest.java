@@ -1,12 +1,16 @@
 package eu.esa.opt.dataio.flex.dddb;
 
+import com.bc.ceres.annotation.STTM;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+
 public class FlexProductDescriptorTest {
 
+
     @Test
+    @STTM("SNAP-4126")
     public void testDefaultValues() {
         final FlexProductDescriptor descriptor = new FlexProductDescriptor();
 
@@ -19,6 +23,7 @@ public class FlexProductDescriptorTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testSettersAndGetters() {
         final FlexProductDescriptor descriptor = new FlexProductDescriptor();
 

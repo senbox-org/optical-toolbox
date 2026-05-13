@@ -1,12 +1,16 @@
 package eu.esa.opt.dataio.flex.dddb;
 
+import com.bc.ceres.annotation.STTM;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+
 public class FlexVariableDescriptorTest {
 
+
     @Test
+    @STTM("SNAP-4126")
     public void testDefaultValues() {
         final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
 
@@ -18,10 +22,14 @@ public class FlexVariableDescriptorTest {
         assertEquals("", descriptor.getUnits());
         assertEquals("", descriptor.getDescription());
         assertEquals("", descriptor.getNcGroupPath());
+        assertEquals("", descriptor.getNcDataFile());
+        assertEquals("", descriptor.getWavelengthReference());
+        assertEquals("", descriptor.getFwhmReference());
         assertFalse(descriptor.isOptional());
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testSettersAndGetters() {
         final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
 
@@ -37,6 +45,9 @@ public class FlexVariableDescriptorTest {
         descriptor.setUnits("degrees_north");
         descriptor.setDescription("Latitude in WGS84");
         descriptor.setOptional(true);
+        descriptor.setWavelengthReference("floris_spectral_grid");
+        descriptor.setFwhmReference("floris_spectral_bandwidth_grid");
+        descriptor.setNcDataFile("hre1.nc");
 
         assertEquals("latitude", descriptor.getName());
         assertEquals("latitude", descriptor.getNcVarName());
@@ -50,9 +61,13 @@ public class FlexVariableDescriptorTest {
         assertEquals("degrees_north", descriptor.getUnits());
         assertEquals("Latitude in WGS84", descriptor.getDescription());
         assertTrue(descriptor.isOptional());
+        assertEquals("floris_spectral_grid", descriptor.getWavelengthReference());
+        assertEquals("floris_spectral_bandwidth_grid", descriptor.getFwhmReference());
+        assertEquals("hre1.nc", descriptor.getNcDataFile());
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetVariableType() {
         final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
 
@@ -67,12 +82,10 @@ public class FlexVariableDescriptorTest {
 
         descriptor.setType('m');
         assertEquals(FlexVariableType.METADATA, descriptor.getVariableType());
-
-        descriptor.setType('t');
-        assertEquals(FlexVariableType.TIE_POINT, descriptor.getVariableType());
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetFullNcPath_withGroupPath() {
         final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
         descriptor.setNcVarName("latitude");
@@ -82,6 +95,7 @@ public class FlexVariableDescriptorTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetFullNcPath_withoutGroupPath() {
         final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
         descriptor.setNcVarName("latitude");
@@ -90,6 +104,7 @@ public class FlexVariableDescriptorTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetFullNcPath_emptyGroupPath() {
         final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
         descriptor.setNcVarName("latitude");

@@ -383,7 +383,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
                 final FlexVariableType varType = descriptor.getVariableType();
                 switch (varType) {
-                    case VARIABLE, TIE_POINT -> variablesMap.put(name, descriptor);
+                    case VARIABLE -> variablesMap.put(name, descriptor);
                     case FLAG, BITMASK_FLAG -> flagsMap.put(name, descriptor);
                     case SPECIAL -> specialsMap.put(name, descriptor);
                     case METADATA -> metadataMap.put(name, descriptor);

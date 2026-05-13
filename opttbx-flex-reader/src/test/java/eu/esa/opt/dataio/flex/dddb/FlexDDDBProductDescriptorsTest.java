@@ -1,14 +1,18 @@
 package eu.esa.opt.dataio.flex.dddb;
 
+import com.bc.ceres.annotation.STTM;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static org.junit.Assert.*;
 
+
 public class FlexDDDBProductDescriptorsTest {
 
+
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL1bProductDescriptor() throws IOException {
         final FlexProductDescriptor descriptor = FlexDDDB.getInstance().getProductDescriptor("FLX_L1B_OBS");
 
@@ -27,6 +31,7 @@ public class FlexDDDBProductDescriptorsTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL1cProductDescriptor() throws IOException {
         final FlexProductDescriptor descriptor = FlexDDDB.getInstance().getProductDescriptor("FLX_L1C_FLXSYN");
 
@@ -38,6 +43,7 @@ public class FlexDDDBProductDescriptorsTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL2ProductDescriptor() throws IOException {
         final FlexProductDescriptor descriptor = FlexDDDB.getInstance().getProductDescriptor("FLX_L2_FLXSYN");
 
@@ -49,6 +55,7 @@ public class FlexDDDBProductDescriptorsTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL1bVariableDescriptors() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
@@ -69,6 +76,7 @@ public class FlexDDDBProductDescriptorsTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL1cVariableDescriptors_allFiles() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
         final FlexProductDescriptor pd = dddb.getProductDescriptor("FLX_L1C_FLXSYN");
@@ -84,6 +92,7 @@ public class FlexDDDBProductDescriptorsTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL1cGeometry() throws IOException {
         final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors("geometry", "FLX_L1C_FLXSYN");
 
@@ -94,6 +103,7 @@ public class FlexDDDBProductDescriptorsTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL1cMeasurementData() throws IOException {
         final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors("measurement_data", "FLX_L1C_FLXSYN");
 
@@ -105,6 +115,7 @@ public class FlexDDDBProductDescriptorsTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL2VariableDescriptors_allFiles() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
         final FlexProductDescriptor pd = dddb.getProductDescriptor("FLX_L2_FLXSYN");
@@ -120,6 +131,7 @@ public class FlexDDDBProductDescriptorsTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL2Fluorescence() throws IOException {
         final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors("fluorescence", "FLX_L2_FLXSYN");
 
@@ -130,6 +142,7 @@ public class FlexDDDBProductDescriptorsTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLoadL2Vegetation() throws IOException {
         final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors("vegetation", "FLX_L2_FLXSYN");
 

@@ -1,14 +1,18 @@
 package eu.esa.opt.dataio.flex.dddb;
 
+import com.bc.ceres.annotation.STTM;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static org.junit.Assert.*;
 
+
 public class FlexDDDBTest {
 
+
     @Test
+    @STTM("SNAP-4126")
     public void testGetInstance() {
         final FlexDDDB dddb = FlexDDDB.getInstance();
         assertNotNull(dddb);
@@ -16,6 +20,7 @@ public class FlexDDDBTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetProductDescriptor() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
@@ -32,6 +37,7 @@ public class FlexDDDBTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetProductDescriptor_flagMasks() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
@@ -50,11 +56,13 @@ public class FlexDDDBTest {
     }
 
     @Test(expected = IOException.class)
+    @STTM("SNAP-4126")
     public void testGetProductDescriptor_invalidType() throws IOException {
         FlexDDDB.getInstance().getProductDescriptor("NON_EXISTENT_PRODUCT");
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetVariableDescriptors() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
@@ -77,6 +85,7 @@ public class FlexDDDBTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetVariableDescriptors_specialType() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
@@ -93,6 +102,7 @@ public class FlexDDDBTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetVariableDescriptors_metadataType() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
@@ -107,6 +117,7 @@ public class FlexDDDBTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetVariableDescriptors_flagType() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
@@ -124,11 +135,13 @@ public class FlexDDDBTest {
     }
 
     @Test(expected = IOException.class)
+    @STTM("SNAP-4126")
     public void testGetVariableDescriptors_nonExistentFile() throws IOException {
         FlexDDDB.getInstance().getVariableDescriptors("non_existent", "TEST_PRODUCT");
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetFullNcPath() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
@@ -139,6 +152,7 @@ public class FlexDDDBTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetProductDescriptor_isCached() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 

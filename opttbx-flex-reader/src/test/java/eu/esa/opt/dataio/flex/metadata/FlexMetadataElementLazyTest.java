@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.flex.metadata;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
@@ -9,9 +10,12 @@ import java.io.IOException;
 
 import static org.junit.Assert.*;
 
+
 public class FlexMetadataElementLazyTest {
 
+
     @Test
+    @STTM("SNAP-4126")
     public void testLazyLoadingOnGetNumElements() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -23,6 +27,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLazyLoadingOnGetNumAttributes() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -36,6 +41,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLazyLoadingOnGetElements() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -48,6 +54,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLazyLoadingOnGetAttributes() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -59,6 +66,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLazyLoadingOnContainsElement() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -69,6 +77,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLazyLoadingOnContainsAttribute() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -79,6 +88,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLazyLoadingOnGetElement() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -89,6 +99,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testLazyLoadingOnGetAttribute() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -99,6 +110,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testProviderReturnsNull() {
         final FlexMetadataProvider provider = name -> null;
 
@@ -108,6 +120,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testProviderCalledOnlyOnce() {
         final int[] callCount = {0};
         final MetadataElement inner = createTestElement();
@@ -125,6 +138,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testProviderReceivesCorrectName() {
         final String[] receivedName = {null};
         final FlexMetadataProvider provider = name -> {
@@ -138,6 +152,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test(expected = RuntimeException.class)
+    @STTM("SNAP-4126")
     public void testProviderIOExceptionWrappedInRuntimeException() {
         final FlexMetadataProvider provider = name -> {
             throw new IOException("test error");
@@ -148,6 +163,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetElementNames() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -159,6 +175,7 @@ public class FlexMetadataElementLazyTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetAttributeNames() {
         final MetadataElement inner = createTestElement();
         final FlexMetadataProvider provider = name -> inner;
@@ -169,6 +186,74 @@ public class FlexMetadataElementLazyTest {
         assertEquals("units", names[0]);
         assertEquals("value", names[1]);
     }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testGetElementGroup() {
+        final MetadataElement inner = createTestElement();
+        final FlexMetadataProvider provider = name -> inner;
+
+        final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
+
+        assertNotNull(lazy.getElementGroup());
+        assertEquals(1, lazy.getElementGroup().getNodeCount());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testRemoveElement() {
+        final MetadataElement inner = createTestElement();
+        final FlexMetadataProvider provider = name -> inner;
+
+        final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
+        final MetadataElement child = lazy.getElement("child");
+
+        assertTrue(lazy.removeElement(child));
+        assertFalse(lazy.containsElement("child"));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testGetElementIndex() {
+        final MetadataElement inner = createTestElement();
+        final FlexMetadataProvider provider = name -> inner;
+
+        final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
+        final MetadataElement child = lazy.getElement("child");
+
+        assertEquals(0, lazy.getElementIndex(child));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testGetAttributeIndex() {
+        final MetadataElement inner = createTestElement();
+        final FlexMetadataProvider provider = name -> inner;
+
+        final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
+        final MetadataAttribute attr = lazy.getAttribute("units");
+
+        assertEquals(0, lazy.getAttributeIndex(attr));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testProviderIOExceptionWrappedWithCause() {
+        final IOException ioException = new IOException("test error");
+        final FlexMetadataProvider provider = name -> {
+            throw ioException;
+        };
+
+        final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
+
+        try {
+            lazy.getNumAttributes();
+            fail("Expected RuntimeException");
+        } catch (RuntimeException e) {
+            assertSame(ioException, e.getCause());
+        }
+    }
+
 
     private static MetadataElement createTestElement() {
         final MetadataElement element = new MetadataElement("test_var");

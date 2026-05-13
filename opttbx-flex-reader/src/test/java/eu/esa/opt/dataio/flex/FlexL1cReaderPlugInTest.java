@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.flex;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,6 +25,7 @@ public class FlexL1cReaderPlugInTest {
 
 
     @Test
+    @STTM("SNAP-4126")
     public void testValidInputsReturnIntended() throws Exception {
         final File dir = createProductDir(VALID);
 
@@ -34,6 +36,7 @@ public class FlexL1cReaderPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testInvalidInputsReturnUnable() throws Exception {
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(null));
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(new Object()));
@@ -45,12 +48,14 @@ public class FlexL1cReaderPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testDirectoryWithoutXmlReturnsUnable() throws Exception {
         final File dir = tempFolder.newFolder(VALID);
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(dir));
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testNcAndOtherFilesReturnUnable() throws Exception {
         final File dir = createProductDir(VALID);
 
@@ -60,6 +65,7 @@ public class FlexL1cReaderPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testXmlWithoutParentOrInvalidParentReturnsUnable() throws Exception {
         final File xmlInRoot = tempFolder.newFile(VALID + ".xml");
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(xmlInRoot.toPath().getFileName()));
@@ -72,6 +78,7 @@ public class FlexL1cReaderPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testMetadataMethods() {
         assertArrayEquals(new String[]{"FLEX_L1C"}, plugIn.getFormatNames());
         assertArrayEquals(new String[]{".xml"}, plugIn.getDefaultFileExtensions());
@@ -82,6 +89,7 @@ public class FlexL1cReaderPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testUpperCaseXmlReturnsIntended() throws Exception {
         final File dir = tempFolder.newFolder(VALID);
         final File xml = new File(dir, "HEADER.XML");
