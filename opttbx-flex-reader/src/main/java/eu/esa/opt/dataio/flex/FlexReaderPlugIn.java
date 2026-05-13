@@ -32,21 +32,29 @@ abstract class FlexReaderPlugIn implements ProductReaderPlugIn {
             return DecodeQualification.UNABLE;
         }
 
-        final String fileName = path.getFileName().toString();
-        if (!fileName.toLowerCase().endsWith(".xml")) {
-            final String parentName = getParentDirectoryName(path);
-            if (parentName != null && sourceNamePattern.matcher(parentName).matches()) {
-                return DecodeQualification.INTENDED;
-            }
+        final File file = path.toFile();
+
+        if (file.isDirectory()) {
+            return sourceNamePattern.matcher(file.getName()).matches()
+                    && containsHeaderXml(file.toPath())
+                    ? DecodeQualification.INTENDED
+                    : DecodeQualification.UNABLE;
+        }
+
+        final String fileName = path.getFileName().toString().toLowerCase(Locale.ROOT);
+        if (!fileName.endsWith(".xml")) {
             return DecodeQualification.UNABLE;
         }
 
         final String parentName = getParentDirectoryName(path);
-        if (parentName != null && sourceNamePattern.matcher(parentName).matches()) {
-            return DecodeQualification.INTENDED;
-        }
+        return parentName != null && sourceNamePattern.matcher(parentName).matches()
+                ? DecodeQualification.INTENDED
+                : DecodeQualification.UNABLE;
+    }
 
-        return DecodeQualification.UNABLE;
+    private boolean containsHeaderXml(Path dir) {
+        final File[] files = dir.toFile().listFiles((d, name) -> name.toLowerCase(Locale.ROOT).endsWith(".xml"));
+        return files != null && files.length > 0;
     }
 
     @Override

@@ -7,7 +7,7 @@ public class FlexL2ReaderPlugIn extends FlexReaderPlugIn {
     private static final String FORMAT_NAME = "FLEX_L2";
     private static final String DESCRIPTION = "FLEX L2 Products (geophysical parameters)";
     private static final Pattern SOURCE_NAME_PATTERN = Pattern.compile(
-            "(?i)FLX_L2__FLXSYN_.*"
+            "(?i)^FLX_L2__FLXSYN_\\d{8}T\\d{6}_\\d{8}T\\d{6}_\\d{8}T\\d{6}_[0-9]{2}[A-Z]{3}_\\d{3}_\\d{3}_\\d{2}$"
     );
 
     public FlexL2ReaderPlugIn() {
