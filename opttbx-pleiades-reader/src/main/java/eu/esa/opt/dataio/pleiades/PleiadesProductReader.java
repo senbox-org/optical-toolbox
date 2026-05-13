@@ -115,11 +115,13 @@ public class PleiadesProductReader extends AbstractProductReader {
                             }
                         } catch (IOException ex) {
                             logger.warning(ex.getMessage());
+                            throw ex;
                         }
                     }
                 }
             } catch (IOException ex) {
                 logger.warning(ex.getMessage());
+                throw new IllegalStateException(ex);
             }
         }
         return result;
