@@ -2,14 +2,13 @@ package eu.esa.opt.dataio.flex;
 
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
-import eu.esa.opt.dataio.flex.compatibility.EarlyProcessorCompatibility;
 import eu.esa.opt.dataio.flex.compatibility.FlexProductCompatibility;
-import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
 import eu.esa.opt.dataio.flex.dddb.*;
 import eu.esa.opt.dataio.flex.metadata.FlexMetadataElementLazy;
 import eu.esa.opt.dataio.flex.metadata.FlexMetadataProvider;
 import eu.esa.opt.dataio.flex.header.FlexHeaderParser;
 import eu.esa.opt.dataio.flex.header.FlexProductHeader;
+import eu.esa.opt.dataio.flex.util.FlexReaderUtils;
 import eu.esa.snap.core.dataio.cache.CacheManager;
 import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
 import eu.esa.snap.core.dataio.cache.DataBuffer;
@@ -25,28 +24,24 @@ import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.dataio.netcdf.cache.NetcdfCacheDataProvider;
 import org.esa.snap.dataio.netcdf.util.ArrayConverter;
-import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
-import ucar.ma2.DataType;
-import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
+
 
 public class FlexProductReader extends AbstractProductReader implements FlexMetadataProvider {
 
+
     private static final Logger logger = Logger.getLogger(FlexProductReader.class.getName());
-    private static final String NETCDF_BASE_METADATA_ELEMENT = "NetCDF";
     private static final String LATITUDE_BAND_NAME = "latitude";
     private static final String LONGITUDE_BAND_NAME = "longitude";
     private static final double FLEX_RESOLUTION_KM = 0.3;
@@ -68,6 +63,9 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private NetcdfCacheDataProvider cacheDataProvider;
     private ProductCache productCache;
 
+    public static final String NETCDF_BASE_METADATA_ELEMENT = "NetCDF";
+
+
     FlexProductReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
         dddb = FlexDDDB.getInstance();
@@ -80,6 +78,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         descriptorToFileMap = new HashMap<>();
     }
 
+
     @Override
     protected Product readProductNodesImpl() throws IOException {
         final Path inputPath = getProductPath();
@@ -89,12 +88,12 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         productCache = new ProductCache(cacheDataProvider);
         CacheManager.getInstance().register(productCache);
 
-        final Path headerFile = findHeaderFile(inputPath);
+        final Path headerFile = FlexReaderUtils.findHeaderFile(inputPath);
         final FlexHeaderParser parser = new FlexHeaderParser();
         final FlexProductHeader header = parser.parse(headerFile);
 
-        dddbProductType = mapProductType(header.getProductType());
-        compatibility = detectCompatibility(header);
+        dddbProductType = FlexReaderUtils.mapProductType(header.getProductType());
+        compatibility = FlexReaderUtils.detectCompatibility(header);
 
         final FlexProductDescriptor productDescriptor = dddb.getProductDescriptor(dddbProductType);
 
@@ -119,6 +118,17 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
         return product;
     }
+
+    @Override
+    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight,
+                                          int sourceStepX, int sourceStepY, Band destBand, int destOffsetX,
+                                          int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
+                                          ProgressMonitor pm) throws IOException {
+        CachedSubsamplingReader.read(productCache, destBand.getName(), destBand.getDataType(),
+                sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                sourceStepX, sourceStepY, destWidth, destHeight, destBuffer);
+    }
+
 
     @Override
     public boolean isSubsetReadingFullySupported() {
@@ -164,16 +174,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     @Override
-    protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight,
-                                          int sourceStepX, int sourceStepY, Band destBand, int destOffsetX,
-                                          int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
-                                          ProgressMonitor pm) throws IOException {
-        CachedSubsamplingReader.read(productCache, destBand.getName(), destBand.getDataType(),
-                sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
-                sourceStepX, sourceStepY, destWidth, destHeight, destBuffer);
-    }
-
-    @Override
     public void close() throws IOException {
         if (productCache != null) {
             CacheManager.getInstance().remove(productCache);
@@ -204,17 +204,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         super.close();
     }
 
-    // package access for testing
-    static String mapProductType(String headerProductType) {
-        if (headerProductType.contains("L1B") && headerProductType.contains("OBS")) {
-            return "FLX_L1B_OBS";
-        } else if (headerProductType.contains("L1C") && headerProductType.contains("FLXSYN")) {
-            return "FLX_L1C_FLXSYN";
-        } else if (headerProductType.contains("L2") && headerProductType.contains("FLXSYN")) {
-            return "FLX_L2_FLXSYN";
-        }
-        throw new IllegalArgumentException("Unknown FLEX product type: " + headerProductType);
-    }
 
     private double[] readGeoData(String bandName, int width, int height, Band band) throws IOException {
         final int sourceDataType = band.getDataType();
@@ -275,34 +264,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         return "";
     }
 
-    private Path findHeaderFile(Path inputPath) throws IOException {
-        final File inputFile = inputPath.toFile();
-        final Path productDir;
-        if (inputFile.isFile()) {
-            if (inputFile.getName().toLowerCase().endsWith(".xml")) {
-                return inputPath;
-            }
-            productDir = inputPath.getParent();
-        } else {
-            productDir = inputPath;
-        }
-
-        try (Stream<Path> files = Files.list(productDir)) {
-            return files
-                    .filter(p -> p.getFileName().toString().toLowerCase().endsWith(".xml"))
-                    .findFirst()
-                    .orElseThrow(() -> new IOException("No XML header file found in " + productDir));
-        }
-    }
-
-    private FlexProductCompatibility detectCompatibility(FlexProductHeader header) {
-        for (final String fileName : header.getDataFileNames()) {
-            if (fileName.endsWith(".nc.nc")) {
-                return new EarlyProcessorCompatibility();
-            }
-        }
-        return new StandardFlexCompatibility();
-    }
 
     private void openNcFiles(FlexProductHeader header) throws IOException {
         final List<String> dataFileNames = header.getDataFileNames();
@@ -421,8 +382,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
         band.setDescription(descriptor.getDescription());
         band.setUnit(descriptor.getUnits());
-        setScaleAndOffset(band, ncVariable);
-        setFillValue(band, ncVariable);
+        FlexReaderUtils.setScaleAndOffset(band, ncVariable);
+        FlexReaderUtils.setFillValue(band, ncVariable);
         product.addBand(band);
 
         final Dimension tileSize = ImageManager.getPreferredTileSize(product);
@@ -522,10 +483,10 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
                 band.setDescription(descriptor.getDescription());
                 band.setUnit(descriptor.getUnits());
-                setScaleAndOffset(band, ncVariable);
-                setFillValue(band, ncVariable);
-                setSpectralWavelength(band, product, descriptor.getWavelengthReference(), layer);
-                setSpectralFwhm(band, product, descriptor.getFwhmReference(), layer);
+                FlexReaderUtils.setScaleAndOffset(band, ncVariable);
+                FlexReaderUtils.setFillValue(band, ncVariable);
+                FlexReaderUtils.setSpectralWavelength(band, product, descriptor.getWavelengthReference(), layer);
+                FlexReaderUtils.setSpectralFwhm(band, product, descriptor.getFwhmReference(), layer);
                 product.addBand(band);
 
                 cacheDataProvider.register(layerBandName, ncVariable, new int[]{layer - 1}, false, dataType, ArrayConverter.IDENTITY, tileSize);
@@ -533,42 +494,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         }
     }
 
-    private static void setSpectralWavelength(Band band, Product product, String metaElementName, int elementIndex) {
-        final Float value = getSpectralValue(product, metaElementName, elementIndex);
-        if (value != null) {
-            band.setSpectralWavelength(value);
-        }
-    }
-
-    private static void setSpectralFwhm(Band band, Product product, String metaElementName, int elementIndex) {
-        final Float value = getSpectralValue(product, metaElementName, elementIndex);
-        if (value != null) {
-            band.setSpectralBandwidth(value);
-        }
-    }
-
-    private static Float getSpectralValue(Product product, String metaElementName, int elementIndex) {
-        if (metaElementName == null || metaElementName.isEmpty() || elementIndex <= 0) {
-            return null;
-        }
-
-        final MetadataElement netcdfElement = product.getMetadataRoot().getElement(NETCDF_BASE_METADATA_ELEMENT);
-        if (netcdfElement == null) {
-            return null;
-        }
-
-        final MetadataElement element = netcdfElement.getElement(metaElementName);
-        if (element == null) {
-            return null;
-        }
-
-        final MetadataAttribute valueAttr = element.getAttribute("value");
-        if (valueAttr == null || elementIndex > valueAttr.getData().getNumElems()) {
-            return null;
-        }
-
-        return (float) valueAttr.getData().getElemDoubleAt(elementIndex - 1);
-    }
 
     private void addFlagMasks(Product product, FlexProductDescriptor productDescriptor) {
         int colorIndex = 0;
@@ -583,35 +508,36 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                 expression = mask.getBandName() + " == " + mask.getValue();
             }
             final String maskName = mask.getBandName() + "_" + mask.getName();
-            product.addMask(maskName, expression, mask.getDescription(),
-                    MASK_COLORS[colorIndex++ % MASK_COLORS.length], 0.5);
+            product.addMask(maskName, expression, mask.getDescription(), MASK_COLORS[colorIndex++ % MASK_COLORS.length], 0.5);
         }
     }
 
-    private void addMetadata(Product product, FlexProductHeader header) {
+    private static void addMetadata(Product product, FlexProductHeader header) {
         final MetadataElement metadataRoot = product.getMetadataRoot();
 
         final MetadataElement headerElement = new MetadataElement("Header");
-        addStringAttribute(headerElement, "productName", header.getProductName());
-        addStringAttribute(headerElement, "productType", header.getProductType());
-        addStringAttribute(headerElement, "startTime", header.getStartTime());
-        addStringAttribute(headerElement, "stopTime", header.getStopTime());
-        addStringAttribute(headerElement, "platformName", header.getPlatformName());
-        addStringAttribute(headerElement, "instrumentName", header.getInstrumentName());
+        FlexReaderUtils.addStringAttribute(headerElement, "productName", header.getProductName());
+        FlexReaderUtils.addStringAttribute(headerElement, "productType", header.getProductType());
+        FlexReaderUtils.addStringAttribute(headerElement, "startTime", header.getStartTime());
+        FlexReaderUtils.addStringAttribute(headerElement, "stopTime", header.getStopTime());
+        FlexReaderUtils.addStringAttribute(headerElement, "platformName", header.getPlatformName());
+        FlexReaderUtils.addStringAttribute(headerElement, "instrumentName", header.getInstrumentName());
+
         if (header.getOrbitNumber() >= 0) {
             headerElement.addAttribute(new MetadataAttribute("orbitNumber",
                     ProductData.createInstance(new int[]{header.getOrbitNumber()}), true));
         }
-        addStringAttribute(headerElement, "orbitDirection", header.getOrbitDirection());
-        addStringAttribute(headerElement, "processorName", header.getProcessorName());
-        addStringAttribute(headerElement, "processorVersion", header.getProcessorVersion());
+
+        FlexReaderUtils.addStringAttribute(headerElement, "orbitDirection", header.getOrbitDirection());
+        FlexReaderUtils.addStringAttribute(headerElement, "processorName", header.getProcessorName());
+        FlexReaderUtils.addStringAttribute(headerElement, "processorVersion", header.getProcessorVersion());
         metadataRoot.addElement(headerElement);
 
         final Map<String, String> vendorSpecific = header.getVendorSpecific();
         if (!vendorSpecific.isEmpty()) {
             final MetadataElement vendorElement = new MetadataElement("VendorSpecific");
             for (final Map.Entry<String, String> entry : vendorSpecific.entrySet()) {
-                addStringAttribute(vendorElement, entry.getKey(), entry.getValue());
+                FlexReaderUtils.addStringAttribute(vendorElement, entry.getKey(), entry.getValue());
             }
             metadataRoot.addElement(vendorElement);
         }
@@ -640,73 +566,9 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         if (ncVariable == null) {
             return null;
         }
-        return extractMetadata(ncVariable);
+        return FlexReaderUtils.extractMetadata(ncVariable);
     }
 
-    static MetadataElement extractMetadata(Variable variable) throws IOException {
-        final MetadataElement element = new MetadataElement(variable.getFullName());
-
-        for (final Attribute attribute : variable.getAttributes()) {
-            if (attribute.getValues() != null) {
-                final ProductData data = getAttributeData(attribute);
-                if (data != null) {
-                    element.addAttribute(new MetadataAttribute(attribute.getFullName(), data, true));
-                }
-            }
-        }
-
-        if (variable.getDataType() != DataType.STRING) {
-            final Object data = variable.read().copyTo1DJavaArray();
-            MetadataAttribute valueAttribute = null;
-            if (data instanceof float[]) {
-                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((float[]) data), true);
-            } else if (data instanceof double[]) {
-                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((double[]) data), true);
-            } else if (data instanceof byte[]) {
-                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((byte[]) data), true);
-            } else if (data instanceof short[]) {
-                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((short[]) data), true);
-            } else if (data instanceof int[]) {
-                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((int[]) data), true);
-            } else if (data instanceof long[]) {
-                valueAttribute = new MetadataAttribute("value", ProductData.createInstance((long[]) data), true);
-            }
-            if (valueAttribute != null) {
-                valueAttribute.setUnit(variable.getUnitsString());
-                valueAttribute.setDescription(variable.getDescription());
-                element.addAttribute(valueAttribute);
-            }
-        }
-
-        return element;
-    }
-
-    private static ProductData getAttributeData(Attribute attribute) {
-        final int type = DataTypeUtils.getEquivalentProductDataType(attribute.getDataType(), false, false);
-        final ucar.ma2.Array values = attribute.getValues();
-        switch (type) {
-            case ProductData.TYPE_ASCII:
-                return ProductData.createInstance(values.toString());
-            case ProductData.TYPE_INT8:
-                return ProductData.createInstance((byte[]) values.copyTo1DJavaArray());
-            case ProductData.TYPE_INT16:
-                return ProductData.createInstance((short[]) values.copyTo1DJavaArray());
-            case ProductData.TYPE_INT32:
-                return ProductData.createInstance((int[]) values.copyTo1DJavaArray());
-            case ProductData.TYPE_INT64:
-                return ProductData.createInstance((long[]) values.copyTo1DJavaArray());
-            case ProductData.TYPE_FLOAT32:
-                return ProductData.createInstance((float[]) values.copyTo1DJavaArray());
-            case ProductData.TYPE_FLOAT64:
-                return ProductData.createInstance((double[]) values.copyTo1DJavaArray());
-            default:
-                return null;
-        }
-    }
-
-    private static void addStringAttribute(MetadataElement element, String name, String value) {
-        element.addAttribute(new MetadataAttribute(name, ProductData.createInstance(value), true));
-    }
 
     private Variable findNcVariable(FlexVariableDescriptor descriptor) {
         final String cacheKey = descriptor.getName();
@@ -748,24 +610,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         return null;
     }
 
-    private static void setScaleAndOffset(Band band, Variable ncVariable) {
-        final Attribute scaleFactor = ncVariable.findAttribute("scale_factor");
-        if (scaleFactor != null) {
-            band.setScalingFactor(scaleFactor.getNumericValue().doubleValue());
-        }
-        final Attribute addOffset = ncVariable.findAttribute("add_offset");
-        if (addOffset != null) {
-            band.setScalingOffset(addOffset.getNumericValue().doubleValue());
-        }
-    }
-
-    private static void setFillValue(Band band, Variable ncVariable) {
-        final Attribute fillValue = ncVariable.findAttribute("_FillValue");
-        if (fillValue != null) {
-            band.setNoDataValue(fillValue.getNumericValue().doubleValue());
-            band.setNoDataValueUsed(true);
-        }
-    }
 
     private static final Color[] MASK_COLORS = {
             new Color(0, 100, 0), new Color(0, 0, 200), new Color(200, 0, 0),
