@@ -125,11 +125,13 @@ public class Spot6ProductReader extends AbstractProductReader {
                             }
                         } catch (IOException ex) {
                             logger.warning(ex.getMessage());
+                            throw new IllegalStateException(ex);
                         }
                     }
                 }
             } catch (IOException ex) {
                 logger.warning(ex.getMessage());
+                throw new IllegalStateException(ex);
             }
 
             return result;
