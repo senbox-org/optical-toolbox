@@ -31,6 +31,31 @@
     {"bandName": "LRES_common_quality_flags", "name": "tidal_region", "value": 16, "description": "Tidal region", "bitmask": true},
     {"bandName": "LRES_common_quality_flags", "name": "bright", "value": 32, "description": "Bright pixel", "bitmask": true},
     {"bandName": "LRES_common_quality_flags", "name": "sun_glint_risk", "value": 64, "description": "Sun-glint risk", "bitmask": true},
-    {"bandName": "LRES_common_quality_flags", "name": "thermal_stabilize", "value": 128, "description": "Thermal stabilization", "bitmask": true}
+    {"bandName": "LRES_common_quality_flags", "name": "thermal_stabilize", "value": 128, "description": "Thermal stabilization", "bitmask": true},
+
+    {"bandName": "HRE1_channel_quality_flags", "name": "bad", "value": 1, "description": "Bad sample or pixel", "bitmask": true},
+    {"bandName": "HRE1_channel_quality_flags", "name": "dead", "value": 2, "description": "Dead sample or pixel", "bitmask": true},
+    {"bandName": "HRE1_channel_quality_flags", "name": "saturated", "value": 4, "description": "Saturated sample", "bitmask": true},
+    {"bandName": "HRE1_channel_quality_flags", "name": "dubious", "value": 8, "description": "Dubious sample or pixel", "bitmask": true},
+    {"bandName": "HRE1_channel_quality_flags", "name": "spare0", "value": 16, "description": "Spare flag 0", "bitmask": true},
+    {"bandName": "HRE1_channel_quality_flags", "name": "spare1", "value": 32, "description": "Spare flag 1", "bitmask": true},
+    {"bandName": "HRE1_channel_quality_flags", "name": "spare2", "value": 64, "description": "Spare flag 2", "bitmask": true},
+    {"bandName": "HRE1_channel_quality_flags", "name": "spare3", "value": 128, "description": "Spare flag 3", "bitmask": true},
+    {"bandName": "HRE2_channel_quality_flags", "name": "bad", "value": 1, "description": "Bad sample or pixel", "bitmask": true},
+    {"bandName": "HRE2_channel_quality_flags", "name": "dead", "value": 2, "description": "Dead sample or pixel", "bitmask": true},
+    {"bandName": "HRE2_channel_quality_flags", "name": "saturated", "value": 4, "description": "Saturated sample", "bitmask": true},
+    {"bandName": "HRE2_channel_quality_flags", "name": "dubious", "value": 8, "description": "Dubious sample or pixel", "bitmask": true},
+    {"bandName": "HRE2_channel_quality_flags", "name": "spare0", "value": 16, "description": "Spare flag 0", "bitmask": true},
+    {"bandName": "HRE2_channel_quality_flags", "name": "spare1", "value": 32, "description": "Spare flag 1", "bitmask": true},
+    {"bandName": "HRE2_channel_quality_flags", "name": "spare2", "value": 64, "description": "Spare flag 2", "bitmask": true},
+    {"bandName": "HRE2_channel_quality_flags", "name": "spare3", "value": 128, "description": "Spare flag 3", "bitmask": true},
+    {"bandName": "LRES_channel_quality_flags", "name": "bad", "value": 1, "description": "Bad sample or pixel", "bitmask": true},
+    {"bandName": "LRES_channel_quality_flags", "name": "dead", "value": 2, "description": "Dead sample or pixel", "bitmask": true},
+    {"bandName": "LRES_channel_quality_flags", "name": "saturated", "value": 4, "description": "Saturated sample", "bitmask": true},
+    {"bandName": "LRES_channel_quality_flags", "name": "dubious", "value": 8, "description": "Dubious sample or pixel", "bitmask": true},
+    {"bandName": "LRES_channel_quality_flags", "name": "spare0", "value": 16, "description": "Spare flag 0", "bitmask": true},
+    {"bandName": "LRES_channel_quality_flags", "name": "spare1", "value": 32, "description": "Spare flag 1", "bitmask": true},
+    {"bandName": "LRES_channel_quality_flags", "name": "spare2", "value": 64, "description": "Spare flag 2", "bitmask": true},
+    {"bandName": "LRES_channel_quality_flags", "name": "spare3", "value": 128, "description": "Spare flag 3", "bitmask": true}
   ]
 }
