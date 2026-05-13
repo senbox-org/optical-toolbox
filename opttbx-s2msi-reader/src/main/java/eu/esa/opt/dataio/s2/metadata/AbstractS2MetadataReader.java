@@ -14,12 +14,9 @@ import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.s2.filepatterns.INamingConvention;
 import org.xml.sax.SAXException;
 
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Path;
@@ -224,39 +221,25 @@ public abstract class AbstractS2MetadataReader {
     }
 
     public static TileLayout readTileLayoutFromTIFFile(VirtualPath imageFilePath) throws IOException, InterruptedException {
-        TileLayout tileLayout=null;
-        ImageInputStream inputStream = null;
-        try {
-            inputStream = ImageIO.createImageInputStream(imageFilePath);
-            
-            File inputFile=imageFilePath.getFilePath().getPath().toFile();
-            VirtualDirEx virtualDir = VirtualDirEx.build(imageFilePath.getFilePath().getPath(), false, true);
-            if (virtualDir == null) {
-                throw new NullPointerException("The virtual dir is null for input path '" + imageFilePath.getFullPathString() + "'.");
-            }
-    
-            try {
-                inputFile = virtualDir.getFile(imageFilePath.getFullPathString());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        try (VirtualDirEx virtualDir = VirtualDirEx.build(imageFilePath.getFilePath().getPath(), false, true)) {
+
+            File inputFile = virtualDir.getFile(imageFilePath.getFullPathString());
             GeoTiffProductReaderPlugIn geoTiffReaderPlugIn = new GeoTiffProductReaderPlugIn();
             GeoTiffProductReader geoTiffProductReader = new GeoTiffProductReader(geoTiffReaderPlugIn);
-            
-            Product tiffProduct = geoTiffProductReader.readProductNodes(inputFile, null);
-            int width = tiffProduct.getSceneRasterWidth();
-            int height = tiffProduct.getSceneRasterHeight();
-            int tileWidth = tiffProduct.getSceneRasterWidth();
-            int tileHeight = tiffProduct.getSceneRasterHeight();
-            int numXTiles = 1;
-            int numYTiles = 1;
-            int numResolutions = 1;
-            tileLayout = new TileLayout(width, height, tileWidth, tileHeight, numXTiles, numYTiles, numResolutions);
+
+            try (Product tiffProduct = geoTiffProductReader.readProductNodes(inputFile, null)) {
+                int width = tiffProduct.getSceneRasterWidth();
+                int height = tiffProduct.getSceneRasterHeight();
+                int tileWidth = tiffProduct.getSceneRasterWidth();
+                int tileHeight = tiffProduct.getSceneRasterHeight();
+                int numXTiles = 1;
+                int numYTiles = 1;
+                int numResolutions = 1;
+                return new TileLayout(width, height, tileWidth, tileHeight, numXTiles, numYTiles, numResolutions);
+            }
         } catch (IOException e) {
             logger.warning(String.format("Unable to get tile layout",imageFilePath.getFullPathString()));
+            throw e;
         }
-        
-        
-        return tileLayout;
     }
 }
