@@ -416,14 +416,12 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
                     || instrument.toUpperCase().contains("SPEXONE")) {
                 return ProductType.Level1C_Pace;
             }
-        } else if ("OCIS Level-2 Data".equals(title)) {
-            return ProductType.Level2_PaceOCIS;
         } else if (title.contains("OCI Level-2 Data")) {
             return ProductType.Level2_Pace;
         } else if (title.contains("HARP2 Level-2")) {
-            return ProductType.Level2_Pace;
-        } else if (title.contains("SPEXone Level-2")) {
-            return ProductType.Level2_Pace;
+            return ProductType.Level2_PaceHARP2;
+        } else if (title.contains("SPEXONE Level-2")) {
+            return ProductType.Level2_PaceSPEX;
         } else if (title.contains("Level-1B")) {
             return ProductType.Level1B;
         } else if ("CZCS Level-1A Data".equals(title)) {
