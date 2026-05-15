@@ -452,8 +452,8 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
             return ProductType.ANCCLIM;
         } else if (title.contains("Level-3") && title.contains("Mapped Image")) {
             return ProductType.Level3_SeadasMapped;
-        } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
-            return ProductType.SMI;
+//            } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
+//                return ProductType.SMI;
         } else if (title.contains("Level-3 Binned Data") || title.contains("level-3_binned_data")) {
             return ProductType.Level3_Bin;
         }
