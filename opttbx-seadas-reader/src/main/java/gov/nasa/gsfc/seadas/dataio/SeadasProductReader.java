@@ -373,69 +373,7 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
                 return detectedType;
             }
 
-            if ("Oceansat OCM2 Level-1B Data".equals(title)) {
-                return ProductType.Level1B_OCM2;
-            } else if (title.contains("CZCS Level-2 Data")) {
-                return ProductType.Level2_CZCS;
-            } else if (title.contains("Aquarius Level 1A Data")) {
-                return ProductType.Level1A_Aquarius;
-            } else if (title.contains("Aquarius Level 2 Data")) {
-                return ProductType.Level2_Aquarius;
-            } else if (title.contains("PACE OCI Level-1B Data")) {
-                return ProductType.Level1B_PaceOCI;
-            } else if (title.contains("PACE OCI Level-1C Data")
-                    || title.contains("PACE SPEXone Level-1C Data")
-                    || title.contains("HARP2 Level-1C Data")) {
-                return ProductType.Level1C_Pace;
-            } else if (processing_level != null && instrument != null && processing_level.toUpperCase().contains("1C")) {
-                if (instrument.toUpperCase().contains("OCI")
-                        || instrument.toUpperCase().contains("HARP")
-                        || instrument.toUpperCase().contains("SPEXONE")) {
-                    return ProductType.Level1C_Pace;
-                }
-            } else if ("OCIS Level-2 Data".equals(title)) {
-                return ProductType.Level2_PaceOCIS;
-            } else if (title.contains("OCI Level-2 Data")) {
-                return ProductType.Level2_Pace;
-            } else if (title.contains("HARP2 Level-2")) {
-                return ProductType.Level2_PaceHARP2;
-            } else if (title.contains("SPEXONE Level-2")) {
-                return ProductType.Level2_PaceSPEX;
-            } else if (title.contains("Level-1B")) {
-                return ProductType.Level1B;
-            } else if ("CZCS Level-1A Data".equals(title)) {
-                return ProductType.Level1A_CZCS;
-            } else if (title.contains("Hawkeye Level-1A Data")) {
-                return ProductType.Level1A_Hawkeye;
-            } else if ("OCTS Level-1A GAC Data".equals(title)) {
-                return ProductType.Level1A_OCTS;
-            } else if (title.contains("Browse")) {
-                return ProductType.BrowseFile;
-            } else if (title.contains("Level-2")) {
-                return ProductType.Level2;
-            } else if (title.contains("Level 2")) {
-                return ProductType.Level2;
-            } else if ("SeaWiFS Level-1A Data".equals(title)) {
-                return ProductType.Level1A_Seawifs;
-            } else if ("NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration Version 4".equals(title)) {
-                return ProductType.Level3_NSIDC_CDR;
-            } else if (title.contains("Daily-OI")) {
-                return ProductType.OISST;
-            } else if (title.contains("ETOPO")) {
-                return ProductType.Bathy;
-            } else if ("SeaWiFS Near Real-Time Ancillary Data".equals(title)) {
-                return ProductType.ANCNRT;
-            } else if ("NCEP Reanalysis 2 Ancillary Data".equals(title)) {
-                return ProductType.ANCNRT2;
-            } else if ("SeaWiFS Climatological Ancillary Data".equals(title)) {
-                return ProductType.ANCCLIM;
-            } else if (title.contains("Level-3") && title.contains("Mapped Image")) {
-                return ProductType.Level3_SeadasMapped;
-//            } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
-//                return ProductType.SMI;
-            } else if (title.contains("Level-3 Binned Data") || title.contains("level-3_binned_data")) {
-                return ProductType.Level3_Bin;
-            } else if (title.contains("GSM") && (tmp = checkMEaSUREs()) != ProductType.UNKNOWN) {
+            if (title.contains("GSM") && (tmp = checkMEaSUREs()) != ProductType.UNKNOWN) {
                 return tmp;
             } else if (title.contains("VIIRS") && (tmp = checkViirsL1B()) != ProductType.UNKNOWN) {
                 return tmp;
@@ -454,6 +392,74 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
 
         throw new ProductIOException("Unrecognized product type");
 
+    }
+
+    // package access for testing only tb 2026-03-18
+    static ProductType findProductTypeWithoutFileAccess(String title, String processing_level, String instrument) {
+        if ("Oceansat OCM2 Level-1B Data".equals(title)) {
+            return ProductType.Level1B_OCM2;
+        } else if (title.contains("CZCS Level-2 Data")) {
+            return ProductType.Level2_CZCS;
+        } else if (title.contains("Aquarius Level 1A Data")) {
+            return ProductType.Level1A_Aquarius;
+        } else if (title.contains("Aquarius Level 2 Data")) {
+            return ProductType.Level2_Aquarius;
+        } else if (title.contains("PACE OCI Level-1B Data")) {
+            return ProductType.Level1B_PaceOCI;
+        } else if (title.contains("PACE OCI Level-1C Data")
+                || title.contains("PACE SPEXone Level-1C Data")
+                || title.contains("HARP2 Level-1C Data")) {
+            return ProductType.Level1C_Pace;
+        } else if (processing_level != null && instrument != null && processing_level.toUpperCase().contains("1C")) {
+            if (instrument.toUpperCase().contains("OCI")
+                    || instrument.toUpperCase().contains("HARP")
+                    || instrument.toUpperCase().contains("SPEXONE")) {
+                return ProductType.Level1C_Pace;
+            }
+        } else if ("OCIS Level-2 Data".equals(title)) {
+            return ProductType.Level2_PaceOCIS;
+        } else if (title.contains("OCI Level-2 Data")) {
+            return ProductType.Level2_Pace;
+        } else if (title.contains("HARP2 Level-2")) {
+            return ProductType.Level2_Pace;
+        } else if (title.contains("SPEXone Level-2")) {
+            return ProductType.Level2_Pace;
+        } else if (title.contains("Level-1B")) {
+            return ProductType.Level1B;
+        } else if ("CZCS Level-1A Data".equals(title)) {
+            return ProductType.Level1A_CZCS;
+        } else if (title.contains("Hawkeye Level-1A Data")) {
+            return ProductType.Level1A_Hawkeye;
+        } else if ("OCTS Level-1A GAC Data".equals(title)) {
+            return ProductType.Level1A_OCTS;
+        } else if (title.contains("Browse")) {
+            return ProductType.BrowseFile;
+        } else if (title.contains("Level-2")) {
+            return ProductType.Level2;
+        } else if (title.contains("Level 2")) {
+            return ProductType.Level2;
+        } else if ("SeaWiFS Level-1A Data".equals(title)) {
+            return ProductType.Level1A_Seawifs;
+        } else if ("NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration Version 4".equals(title)) {
+            return ProductType.Level3_NSIDC_CDR;
+        } else if (title.contains("Daily-OI")) {
+            return ProductType.OISST;
+        } else if (title.contains("ETOPO")) {
+            return ProductType.Bathy;
+        } else if ("SeaWiFS Near Real-Time Ancillary Data".equals(title)) {
+            return ProductType.ANCNRT;
+        } else if ("NCEP Reanalysis 2 Ancillary Data".equals(title)) {
+            return ProductType.ANCNRT2;
+        } else if ("SeaWiFS Climatological Ancillary Data".equals(title)) {
+            return ProductType.ANCCLIM;
+        } else if (title.contains("Level-3") && title.contains("Mapped Image")) {
+            return ProductType.Level3_SeadasMapped;
+        } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
+            return ProductType.SMI;
+        } else if (title.contains("Level-3 Binned Data") || title.contains("level-3_binned_data")) {
+            return ProductType.Level3_Bin;
+        }
+        return ProductType.UNKNOWN;
     }
 
     private static String getStringAttributeValue(Attribute processing_levelAttr) {
