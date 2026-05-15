@@ -33,19 +33,20 @@ import java.io.IOException;
 import java.util.List;
 
 
-// import org.opengis.filter.spatial.Equals;
 
-public class SeadasProductReader extends AbstractProductReader {
+public class SeadasProductReader extends AbstractProductReader implements CacheDataProvider {
 
     private NetcdfFile ncfile;
     private ProductType productType;
     private SeadasFileReader seadasFileReader;
+    private ProductCache productCache;
 
     enum Mission {
         OCI("OCI");
 
-        private String name;
-        private Mission(String nm) {
+        private final String name;
+
+        Mission(String nm) {
             name = nm;
         }
         public String toString() {
@@ -61,8 +62,9 @@ public class SeadasProductReader extends AbstractProductReader {
         L3b("L3 Binned"),
         L3m("L3 Mapped");
 
-        private String name;
-        private ProcessingLevel(String nm) {
+        private final String name;
+
+        ProcessingLevel(String nm) {
             name = nm;
         }
         public String toString() {
@@ -134,19 +136,24 @@ public class SeadasProductReader extends AbstractProductReader {
      */
     protected SeadasProductReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
+        productCache = null;
+        ncfile = null;
     }
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
+        productCache = new ProductCache(this);
+        CacheManager.getInstance().register(productCache);
 
         try {
 //            Product product;
             final File inFile = SeadasHelper.getInputFile(getInput());
-            final String path = inFile.getPath();
 
-            ncfile = NetcdfFileOpener.open(path);
+            ncfile = NetcdfFileOpener.open(inFile);
             productType = findProductType();
             seadasFileReader = getReaderFromProductType(productType, this);
+            // @todo 1 tb refactor 2026-04-22
+            seadasFileReader.setProductCache(productCache);
 
             Product product = seadasFileReader.createProduct();
 
@@ -227,8 +234,13 @@ public class SeadasProductReader extends AbstractProductReader {
 
     @Override
     public void close() throws IOException {
+        if (productCache != null) {
+            CacheManager.getInstance().remove(productCache);
+            productCache = null;
+        }
         if (ncfile != null) {
             ncfile.close();
+            ncfile = null;
         }
     }
 
@@ -354,6 +366,12 @@ public class SeadasProductReader extends AbstractProductReader {
             title = titleAttr.getStringValue().trim();
             processing_level = getStringAttributeValue(processing_levelAttr);
             instrument = getStringAttributeValue(instrumentAttr);
+
+            final ProductType detectedType = findProductTypeWithoutFileAccess(title, processing_level, instrument);
+            if (detectedType != ProductType.UNKNOWN) {
+                return detectedType;
+            }
+
             if ("Oceansat OCM2 Level-1B Data".equals(title)) {
                 return ProductType.Level1B_OCM2;
             } else if (title.contains("CZCS Level-2 Data")) {
@@ -445,5 +463,15 @@ public class SeadasProductReader extends AbstractProductReader {
             }
         }
         return null;
+    }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        return seadasFileReader.getVariableDescriptor(variableName);
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        return seadasFileReader.readCacheBlock(variableName, offsets, shapes, targetData);
     }
 }
