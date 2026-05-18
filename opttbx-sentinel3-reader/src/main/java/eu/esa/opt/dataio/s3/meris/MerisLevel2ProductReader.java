@@ -2,6 +2,7 @@ package eu.esa.opt.dataio.s3.meris;
 
 import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
+import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 
 import java.io.File;
@@ -27,5 +28,14 @@ public class MerisLevel2ProductReader extends Sentinel3ProductReader {
             setFactory(new MerisLevel2ProductFactory(this));
         }
         return createProduct();
+    }
+
+    @Override
+    protected String getBandCacheKey(Band band) {
+        String name = band.getName();
+        if (name.equals("W_IWV") || name.equals("L_IWV")) {
+            return "IWV";
+        }
+        return name;
     }
 }

@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "ENV_ME_1_RRG____20120406T085654",
+      "relativePath": "sensors_platforms/MERIS/MERIS_in_S3like_format/ENV_ME_1_RRG____20120406T085654_20120406T090138_________________0284_113_237______ACR_R_NT____.SEN3/xfdumanifest.xml",
+      "description": "ENV_ME_1_RRG"
+    }
+  ]
+}

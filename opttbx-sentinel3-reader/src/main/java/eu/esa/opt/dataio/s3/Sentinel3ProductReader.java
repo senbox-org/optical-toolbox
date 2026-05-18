@@ -149,11 +149,16 @@ public class Sentinel3ProductReader extends AbstractProductReader {
                     "The band may require a JAI source image that was not set up correctly.");
         }
 
-        CachedSubsamplingReader.read(s3Reader.getProductCache(), destBand.getName(), destBand.getDataType(),
+        final String cacheKey = getBandCacheKey(destBand);
+        CachedSubsamplingReader.read(s3Reader.getProductCache(), cacheKey, destBand.getDataType(),
                 sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
                 sourceStepX, sourceStepY, destWidth, destHeight, destBuffer
         );
 
+    }
+
+    protected String getBandCacheKey(Band destBand) {
+        return destBand.getName();
     }
 
 
