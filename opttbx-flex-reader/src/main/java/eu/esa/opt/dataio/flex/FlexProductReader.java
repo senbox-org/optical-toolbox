@@ -56,6 +56,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private final Map<String, NetcdfFile> ncFilesMap;
     private final Map<String, Variable> ncVariablesCache;
     private final Map<String, String> descriptorToFileMap;
+    private final Map<String, GeoCoding> geoCodingMap;
 
     private String dddbProductType;
     private VirtualDir virtualDir;
@@ -76,6 +77,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         ncFilesMap = new HashMap<>();
         ncVariablesCache = new HashMap<>();
         descriptorToFileMap = new HashMap<>();
+        geoCodingMap = new HashMap<>();
     }
 
 
@@ -115,6 +117,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         addBands(product, productDescriptor);
         addSpecialBands(product);
         addFlagMasks(product, productDescriptor);
+        assignPerBandGeoCoding(product);
 
         return product;
     }
@@ -139,19 +142,55 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     public GeoCoding readGeoCoding(Product product) throws IOException {
         Band lonBand = product.getBand(LONGITUDE_BAND_NAME);
         Band latBand = product.getBand(LATITUDE_BAND_NAME);
-        if (lonBand == null || latBand == null) {
-            for (final String prefix : new String[]{"LRES_", "HRE1_", "HRE2_"}) {
-                lonBand = product.getBand(prefix + LONGITUDE_BAND_NAME);
-                latBand = product.getBand(prefix + LATITUDE_BAND_NAME);
-                if (lonBand != null && latBand != null) {
-                    break;
-                }
-            }
-            if (lonBand == null || latBand == null) {
-                return null;
-            }
+        if (lonBand != null && latBand != null) {
+            return createComponentGeoCoding(lonBand, latBand);
         }
 
+        // L1B: prefer LRES as product-level default
+        for (final String gridId : new String[]{"lres", "hre1", "hre2"}) {
+            final GeoCoding cached = getOrCreateGridGeoCoding(product, gridId);
+            if (cached != null) {
+                return cached;
+            }
+        }
+        return null;
+    }
+
+    private void assignPerBandGeoCoding(Product product) throws IOException {
+        if (!isL1bProduct()) {
+            return;
+        }
+
+        for (final Band band : product.getBands()) {
+            final String gridId = getGridId(band.getName());
+            if (gridId == null) {
+                continue;
+            }
+            final GeoCoding gridGeoCoding = getOrCreateGridGeoCoding(product, gridId);
+            if (gridGeoCoding != null) {
+                band.setGeoCoding(gridGeoCoding);
+            }
+        }
+    }
+
+    private GeoCoding getOrCreateGridGeoCoding(Product product, String gridId) throws IOException {
+        if (geoCodingMap.containsKey(gridId)) {
+            return geoCodingMap.get(gridId);
+        }
+
+        final String prefix = gridId.toUpperCase() + "_";
+        final Band lonBand = product.getBand(prefix + LONGITUDE_BAND_NAME);
+        final Band latBand = product.getBand(prefix + LATITUDE_BAND_NAME);
+        if (lonBand == null || latBand == null) {
+            return null;
+        }
+
+        final GeoCoding geoCoding = createComponentGeoCoding(lonBand, latBand);
+        geoCodingMap.put(gridId, geoCoding);
+        return geoCoding;
+    }
+
+    private GeoCoding createComponentGeoCoding(Band lonBand, Band latBand) throws IOException {
         final int width = lonBand.getRasterWidth();
         final int height = lonBand.getRasterHeight();
 
@@ -169,8 +208,48 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
         final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
         geoCoding.initialize();
-
         return geoCoding;
+    }
+
+    String getGridId(String bandName) {
+        final String dataFile = descriptorToFileMap.get(bandName);
+        if (dataFile != null) {
+            if (dataFile.contains("hre1")) {
+                return "hre1";
+            }
+            if (dataFile.contains("hre2")) {
+                return "hre2";
+            }
+            if (dataFile.contains("lres")) {
+                return "lres";
+            }
+        }
+
+        final String upper = bandName.toUpperCase();
+        if (upper.startsWith("HRE1_")) {
+            return "hre1";
+        }
+        if (upper.startsWith("HRE2_")) {
+            return "hre2";
+        }
+        if (upper.startsWith("LRES_")) {
+            return "lres";
+        }
+        if (upper.startsWith("FLORIS_HR1")) {
+            return "hre1";
+        }
+        if (upper.startsWith("FLORIS_HR2")) {
+            return "hre2";
+        }
+        if (upper.startsWith("FLORIS_LR")) {
+            return "lres";
+        }
+
+        return null;
+    }
+
+    private boolean isL1bProduct() {
+        return dddbProductType != null && dddbProductType.contains("L1B");
     }
 
     @Override
@@ -187,6 +266,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         metadataMap.clear();
         ncVariablesCache.clear();
         descriptorToFileMap.clear();
+        geoCodingMap.clear();
 
         for (final NetcdfFile ncFile : ncFilesMap.values()) {
             ncFile.close();

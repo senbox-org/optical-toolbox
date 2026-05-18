@@ -196,6 +196,58 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    public void testGetGridId_fromDescriptorToFileMap() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        descriptorToFileMap(reader).put("FLORIS_HR1B_1_radiance", "measurement_data_hre1");
+        descriptorToFileMap(reader).put("FLORIS_HR2B_1_radiance", "measurement_data_hre2");
+        descriptorToFileMap(reader).put("FLORIS_LRB_1_radiance", "measurement_data_lres");
+
+        assertEquals("hre1", reader.getGridId("FLORIS_HR1B_1_radiance"));
+        assertEquals("hre2", reader.getGridId("FLORIS_HR2B_1_radiance"));
+        assertEquals("lres", reader.getGridId("FLORIS_LRB_1_radiance"));
+    }
+
+    @Test
+    public void testGetGridId_fromAnnotationBandPrefix() {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+
+        assertEquals("hre1", reader.getGridId("HRE1_latitude"));
+        assertEquals("hre1", reader.getGridId("HRE1_longitude"));
+        assertEquals("hre1", reader.getGridId("HRE1_SZA"));
+        assertEquals("hre2", reader.getGridId("HRE2_latitude"));
+        assertEquals("hre2", reader.getGridId("HRE2_OAA"));
+        assertEquals("lres", reader.getGridId("LRES_latitude"));
+        assertEquals("lres", reader.getGridId("LRES_common_quality_flags"));
+    }
+
+    @Test
+    public void testGetGridId_fromMeasurementBandPrefix() {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+
+        assertEquals("hre1", reader.getGridId("FLORIS_HR1B_1_radiance"));
+        assertEquals("hre1", reader.getGridId("FLORIS_HR1B_42_radiance"));
+        assertEquals("hre2", reader.getGridId("FLORIS_HR2B_1_radiance"));
+        assertEquals("lres", reader.getGridId("FLORIS_LRB_1_radiance"));
+    }
+
+    @Test
+    public void testGetGridId_unknownBand_returnsNull() {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+
+        assertNull(reader.getGridId("unknown_band"));
+        assertNull(reader.getGridId("some_other_variable"));
+    }
+
+    @Test
+    public void testGetGridId_descriptorToFileMapTakesPrecedence() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        // Band name looks like HRE1 prefix but is mapped to lres file
+        descriptorToFileMap(reader).put("HRE1_special", "annotation_data_lres");
+
+        assertEquals("lres", reader.getGridId("HRE1_special"));
+    }
+
+    @Test
     public void testClose_clearsStateAndClosesNcFiles() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -210,6 +262,7 @@ public class FlexProductReaderTest {
         assertTrue(ncFilesMap(reader).isEmpty());
         assertTrue(ncVariablesCache(reader).isEmpty());
         assertTrue(descriptorToFileMap(reader).isEmpty());
+        assertTrue(geoCodingMap(reader).isEmpty());
     }
 
     private Variable mockStringVariable(String fullName) {
@@ -250,6 +303,11 @@ public class FlexProductReaderTest {
     @SuppressWarnings("unchecked")
     private Map<String, String> descriptorToFileMap(FlexProductReader reader) throws Exception {
         return (Map<String, String>) getField(reader, "descriptorToFileMap");
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, GeoCoding> geoCodingMap(FlexProductReader reader) throws Exception {
+        return (Map<String, GeoCoding>) getField(reader, "geoCodingMap");
     }
 
     private Object getField(FlexProductReader reader, String name) throws Exception {
