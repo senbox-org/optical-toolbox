@@ -67,20 +67,44 @@ public class FlexReaderUtils {
     public static void setScaleAndOffset(Band band, Variable ncVariable) {
         final Attribute scaleFactor = ncVariable.findAttribute("scale_factor");
         if (scaleFactor != null) {
-            band.setScalingFactor(scaleFactor.getNumericValue().doubleValue());
+            final Double scale = getNumericAttributeValue(scaleFactor);
+            if (scale != null) {
+                band.setScalingFactor(scale);
+            }
         }
         final Attribute addOffset = ncVariable.findAttribute("add_offset");
         if (addOffset != null) {
-            band.setScalingOffset(addOffset.getNumericValue().doubleValue());
+            final Double offset = getNumericAttributeValue(addOffset);
+            if (offset != null) {
+                band.setScalingOffset(offset);
+            }
         }
     }
 
     public static void setFillValue(Band band, Variable ncVariable) {
         final Attribute fillValue = ncVariable.findAttribute("_FillValue");
         if (fillValue != null) {
-            band.setNoDataValue(fillValue.getNumericValue().doubleValue());
-            band.setNoDataValueUsed(true);
+            final Double value = getNumericAttributeValue(fillValue);
+            if (value != null) {
+                band.setNoDataValue(value);
+                band.setNoDataValueUsed(true);
+            }
         }
+    }
+
+    private static Double getNumericAttributeValue(Attribute attribute) {
+        final Number numericValue = attribute.getNumericValue();
+        if (numericValue != null) {
+            return numericValue.doubleValue();
+        }
+        final String stringValue = attribute.getStringValue();
+        if (stringValue != null) {
+            try {
+                return Double.parseDouble(stringValue.trim());
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return null;
     }
 
 

@@ -141,6 +141,36 @@ public class FlexReaderUtilsTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testSetScaleAndOffset_stringTypedAttributes() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final Variable variable = mock(Variable.class);
+
+        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", "0.01"));
+        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", "2.5"));
+
+        FlexReaderUtils.setScaleAndOffset(band, variable);
+
+        assertEquals(0.01, band.getScalingFactor(), 1.0e-12);
+        assertEquals(2.5, band.getScalingOffset(), 1.0e-12);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testSetScaleAndOffset_unparseableStringKeepsDefaults() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final Variable variable = mock(Variable.class);
+
+        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", "not_a_number"));
+        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", "abc"));
+
+        FlexReaderUtils.setScaleAndOffset(band, variable);
+
+        assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
+        assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testSetFillValue_present() {
         final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
         final Variable variable = mock(Variable.class);
@@ -160,6 +190,33 @@ public class FlexReaderUtilsTest {
         final Variable variable = mock(Variable.class);
 
         when(variable.findAttribute("_FillValue")).thenReturn(null);
+
+        FlexReaderUtils.setFillValue(band, variable);
+
+        assertFalse(band.isNoDataValueUsed());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testSetFillValue_stringTypedAttribute() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final Variable variable = mock(Variable.class);
+
+        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", "-999.0"));
+
+        FlexReaderUtils.setFillValue(band, variable);
+
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(-999.0, band.getNoDataValue(), 1.0e-12);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testSetFillValue_unparseableStringKeepsDefault() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final Variable variable = mock(Variable.class);
+
+        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", "invalid"));
 
         FlexReaderUtils.setFillValue(band, variable);
 
