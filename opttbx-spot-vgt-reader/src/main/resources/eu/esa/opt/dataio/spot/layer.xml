@@ -18,6 +18,7 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <file name="eu-esa-opt-dataio-spot-ImportSpotVgtProduct.shadow">
+                        <attr name="position" intvalue="26"/>
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/eu-esa-opt-dataio-spot-ImportSpotVgtProduct.instance"/>
                     </file>

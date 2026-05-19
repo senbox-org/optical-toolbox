@@ -26,7 +26,9 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="Envisat">
+                        <attr name="position" intvalue="7"/>
                         <file name="eu-esa-opt-dataio-merisl3-ImportMerisBinnedL3Product.shadow">
+                            <attr name="position" intvalue="5"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-merisl3-ImportMerisBinnedL3Product.instance"/>
                         </file>
