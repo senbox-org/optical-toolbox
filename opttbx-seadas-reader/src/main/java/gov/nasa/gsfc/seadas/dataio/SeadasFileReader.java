@@ -1591,18 +1591,18 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                 }
             } else if (variableRank == 3) {
                 add3DNewBands(product, variable, bandToVariableMap);
-            } else if (variableRank == 4) {
-                if (product.getProductType().contains("SPEX") )
-                    add4DSPEXNewBands(product, variable, bandToVariableMap);
-                else if  ( product.getProductType().contains("HARP2"))
-                    add4DHARP2NewBands(product, variable, bandToVariableMap);
-                else
-                    add4DNewBands(product, variable,bandToVariableMap);
-            } else if (variableRank == 1) {
-                Band band = add1DNewBand(product, variable);
-                if (band != null) {
-                    bandToVariableMap.put(band, variable);
-                }
+//            } else if (variableRank == 4) {
+//                if (product.getProductType().contains("SPEX") )
+//                    add4DSPEXNewBands(product, variable, bandToVariableMap);
+//                else if  ( product.getProductType().contains("HARP2"))
+//                    add4DHARP2NewBands(product, variable, bandToVariableMap);
+//                else
+//                    add4DNewBands(product, variable,bandToVariableMap);
+//            } else if (variableRank == 1) {
+//                Band band = add1DNewBand(product, variable);
+//                if (band != null) {
+//                    bandToVariableMap.put(band, variable);
+//                }
             }
 
         }

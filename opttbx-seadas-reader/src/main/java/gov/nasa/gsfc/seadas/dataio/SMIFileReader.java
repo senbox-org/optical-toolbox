@@ -258,9 +258,9 @@ public class SMIFileReader extends SeadasFileReader {
                 }
             } else if (variableRank == 1) {
                 Band band = add1DNewBand(product, variable);
-                if (band != null) {
-                    bandToVariableMap.put(band, variable);
-                }
+//                if (band != null) {
+//                    bandToVariableMap.put(band, variable);
+//                }
             }
         }
         setSpectralBand(product);
