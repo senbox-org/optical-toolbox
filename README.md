@@ -1,7 +1,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20284489.svg)](https://doi.org/10.5281/zenodo.20284489)
-[![pipeline status](https://gitlab.com/senbox-org/optical-toolbox/badges/master/pipeline.svg)](https://gitlab.com/senbox-org/optical-toolbox/-/commits/master)
-[![Quality Gate Status](https://sonarqube.snap-ci.ovh/api/project_badges/measure?project=eu.esa.opt%3Aoptical-toolbox&metric=alert_status&token=sqb_c72cab652839333ca3df7349feec4e6ac3021d7e)](https://sonarqube.snap-ci.ovh/dashboard?id=eu.esa.opt%3Aoptical-toolbox)
-[![coverage report](https://gitlab.com/senbox-org/optical-toolbox/badges/master/coverage.svg)](https://gitlab.com/senbox-org/optical-toolbox/-/commits/master)
+[![pipeline status](https://gitlab.com/senbox-org/optical-toolbox/badges/master/pipeline.svg)](https://gitlab.com/senbox-org/optical-toolbox)
+[![coverage report](https://gitlab.com/senbox-org/optical-toolbox/badges/master/coverage.svg)](https://gitlab.com/senbox-org/optical-toolbox)
 
 Optical Toolbox (OptTbx)
 ==========================
