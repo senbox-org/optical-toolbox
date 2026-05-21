@@ -57,6 +57,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private final Map<String, Variable> ncVariablesCache;
     private final Map<String, String> descriptorToFileMap;
     private final Map<String, GeoCoding> geoCodingMap;
+    private final Map<String, String> bandToCacheKeyMap = new HashMap<>();
+    private final Map<String, Integer> bandToLayerMap = new HashMap<>();
 
     private String dddbProductType;
     private VirtualDir virtualDir;
@@ -127,6 +129,18 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                                           int sourceStepX, int sourceStepY, Band destBand, int destOffsetX,
                                           int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
                                           ProgressMonitor pm) throws IOException {
+        final String bandName = destBand.getName();
+        final String cacheKey = bandToCacheKeyMap.get(bandName);
+
+        if (cacheKey != null) {
+            final int layer = bandToLayerMap.get(bandName);
+
+            CachedSubsamplingReader.readLayer(productCache, cacheKey, layer, destBand.getDataType(),
+                    sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                    sourceStepX, sourceStepY, destWidth, destHeight, destBuffer);
+            return;
+        }
+
         CachedSubsamplingReader.read(productCache, destBand.getName(), destBand.getDataType(),
                 sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
                 sourceStepX, sourceStepY, destWidth, destHeight, destBuffer);
@@ -267,6 +281,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         ncVariablesCache.clear();
         descriptorToFileMap.clear();
         geoCodingMap.clear();
+        bandToCacheKeyMap.clear();
+        bandToLayerMap.clear();
 
         for (final NetcdfFile ncFile : ncFilesMap.values()) {
             ncFile.close();
@@ -556,6 +572,9 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             final String token = descriptor.getDepthPrefixToken();
             final Dimension tileSize = ImageManager.getPreferredTileSize(product);
 
+            final String cacheKey = descriptor.getFullNcPath();
+            cacheDataProvider.register(cacheKey, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
+
             for (int layer = 1; layer <= depth; layer++) {
                 final String layerBandName = baseName + token + layer;
 
@@ -569,27 +588,61 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                 FlexReaderUtils.setSpectralFwhm(band, product, descriptor.getFwhmReference(), layer);
                 product.addBand(band);
 
-                cacheDataProvider.register(layerBandName, ncVariable, new int[]{layer - 1}, false, dataType, ArrayConverter.IDENTITY, tileSize);
+                if (baseName.contains("channel_quality_flags")) {
+                    final FlagCoding flagCoding = createChannelQualityFlagCoding(layerBandName);
+                    product.getFlagCodingGroup().add(flagCoding);
+                    band.setSampleCoding(flagCoding);
+                }
+
+                bandToCacheKeyMap.put(layerBandName, cacheKey);
+                bandToLayerMap.put(layerBandName, layer - 1);
             }
         }
+    }
+
+    private static FlagCoding createChannelQualityFlagCoding(String bandName) {
+        final FlagCoding flagCoding = new FlagCoding(bandName);
+        flagCoding.addFlag("bad",       1,   "Bad pixel");
+        flagCoding.addFlag("dead",      2,   "Dead pixel");
+        flagCoding.addFlag("saturated", 4,   "Saturated pixel");
+        flagCoding.addFlag("dubious",   8,   "Dubious pixel");
+        flagCoding.addFlag("spare0",    16,  "Spare bit 0");
+        flagCoding.addFlag("spare1",    32,  "Spare bit 1");
+        flagCoding.addFlag("spare2",    64,  "Spare bit 2");
+        flagCoding.addFlag("spare3",    128, "Spare bit 3");
+        return flagCoding;
     }
 
 
     private void addFlagMasks(Product product, FlexProductDescriptor productDescriptor) {
         int colorIndex = 0;
         for (final FlexFlagMask mask : productDescriptor.getFlagMasks()) {
-            if (product.getBand(mask.getBandName()) == null) {
+            final String baseBandName = mask.getBandName();
+
+            if (baseBandName.contains("channel_quality_flags")) {
+                for (final Band band : product.getBands()) {
+                    if (band.getName().startsWith(baseBandName + "_")) {
+                        addFlagMask(product, band.getName(), mask, colorIndex++);
+                    }
+                }
                 continue;
             }
-            final String expression;
-            if (mask.isBitmask()) {
-                expression = mask.getBandName() + " & " + mask.getValue() + " != 0";
-            } else {
-                expression = mask.getBandName() + " == " + mask.getValue();
+
+            if (product.getBand(baseBandName) == null) {
+                continue;
             }
-            final String maskName = mask.getBandName() + "_" + mask.getName();
-            product.addMask(maskName, expression, mask.getDescription(), MASK_COLORS[colorIndex++ % MASK_COLORS.length], 0.5);
+
+            addFlagMask(product, baseBandName, mask, colorIndex++);
         }
+    }
+
+    private void addFlagMask(Product product, String bandName, FlexFlagMask mask, int colorIndex) {
+        final String expression = mask.isBitmask()
+                ? bandName + " & " + mask.getValue() + " != 0"
+                : bandName + " == " + mask.getValue();
+
+        final String maskName = bandName + "_" + mask.getName();
+        product.addMask(maskName, expression, mask.getDescription(), MASK_COLORS[colorIndex % MASK_COLORS.length], 0.5);
     }
 
     private static void addMetadata(Product product, FlexProductHeader header) {

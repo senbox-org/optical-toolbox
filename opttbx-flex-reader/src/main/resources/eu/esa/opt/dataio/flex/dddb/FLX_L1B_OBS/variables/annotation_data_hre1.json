@@ -93,8 +93,10 @@
         "ncVarName": "channel_quality_flags",
         "ncGroupPath": "Annotation_data/Quality_flags",
         "ncDataFile": "hre1",
-        "type": "b",
+        "type": "s",
         "dataType": "uint8",
+        "depth": 140,
+        "depthPrefixToken": "_",
         "description": "Classification and quality flags depending on spectral channel from HRE1"
     },
     {
