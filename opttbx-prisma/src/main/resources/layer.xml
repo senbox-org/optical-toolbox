@@ -20,6 +20,7 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <file name="eu-esa-opt-dataio-prisma-ImportPrismaProduct.shadow">
+                        <attr name="position" intvalue="19"/>
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/eu-esa-opt-dataio-prisma-ImportPrismaProduct.instance"/>
                     </file>
