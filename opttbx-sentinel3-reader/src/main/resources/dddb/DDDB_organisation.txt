@@ -1,0 +1,18 @@
+This DDDB (Dataset Descriptor DataBase) contains files and directories that describe the structure of Sentinel 3 data
+products for OLCI, SLSTR and SYN.
+
+At the highest level is a set of directories, named as the product types supported. The product types have to be as listen
+in the Manifest, section "generalProductInformation", field "sentinel3:productType" with trailing underscores removed.
+
+ dddb
+    |
+    OL_1_ERR
+    |
+    OL_1_ERR
+    |
+    etc
+
+Each directory contains one or more JSON files describing the general content of the product, size etc. A file named as
+<product_type>.json denotes the standard format, if a version number is appended <product_type>_version>.json, the
+format is version specific. The version number has always the format that is stored in the manifest, section
+"generalProductInformation", field "sentinel3:baselineCollection".
