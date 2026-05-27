@@ -2,7 +2,6 @@ package eu.esa.opt.dataio.s3;
 
 import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.core.ProgressMonitor;
-import eu.esa.opt.dataio.s3.olci.OlciLevel2LProductFactory;
 import eu.esa.opt.dataio.s3.slstr.*;
 import eu.esa.opt.dataio.s3.synergy.SynAodProductFactory;
 import eu.esa.opt.dataio.s3.synergy.SynL1CProductFactory;
@@ -17,20 +16,18 @@ import java.io.IOException;
 import java.util.Collections;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class Sentinel3ProductReaderTest {
 
     @Test
-    @STTM("SNAP-3666,SNAP-4149")
+    @STTM("SNAP-3666,SNAP-4149,SNAP-4152")
     public void testGetProductFactory() {
         Sentinel3ProductReader sentinel3ProductReader = new Sentinel3ProductReader(new Sentinel3ProductReaderPlugIn());
 
         // with Sentinel3ProductReaderPlugIn -----------------------
-        ProductFactory productFactory = sentinel3ProductReader.getProductFactory("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3");
-        assertTrue(productFactory instanceof OlciLevel2LProductFactory);
-
-        productFactory = sentinel3ProductReader.getProductFactory("S3A_SL_2_LST____20160329T084522_20160329T084822_20160330T145846_0180_046_207______SVL_O_NR_001.SEN3");
+        ProductFactory productFactory = sentinel3ProductReader.getProductFactory("S3A_SL_2_LST____20160329T084522_20160329T084822_20160330T145846_0180_046_207______SVL_O_NR_001.SEN3");
         assertTrue(productFactory instanceof SlstrLstProductFactory);
 
         productFactory = sentinel3ProductReader.getProductFactory("S3A_SL_2_WST____20130621T101013_20130621T101053_20140613T135758_0039_009_022______MAR_O_NR____.SEN3");
@@ -55,17 +52,10 @@ public class Sentinel3ProductReaderTest {
         productFactory = sentinel3ProductReader.getProductFactory("S3A_SY_2_VG1____20130621T100922_20130621T104922_20140527T011902_GLOBAL____________LN2_D_NR____.SEN3");
         assertTrue(productFactory instanceof VgtProductFactory);
 
-
-        // with zip extension
-        productFactory = sentinel3ProductReader.getProductFactory("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3.zip");
-        assertTrue(productFactory instanceof OlciLevel2LProductFactory);
-
-
         // with SlstrLevel1B1kmProductReaderPlugIn
         sentinel3ProductReader = new Sentinel3ProductReader(new SlstrLevel1B1kmProductReaderPlugIn());
         productFactory = sentinel3ProductReader.getProductFactory("S3A_SL_1_RBT____20180809T035343_20180809T035643_20180810T124116_0179_034_218_2520_MAR_O_NT_002.SEN3");
         assertTrue(productFactory instanceof SlstrLevel1B1kmProductFactory);
-
 
         // with SlstrLevel1B500mProductReaderPlugIn
         sentinel3ProductReader = new Sentinel3ProductReader(new SlstrLevel1B500mProductReaderPlugIn());
@@ -83,6 +73,9 @@ public class Sentinel3ProductReaderTest {
         assertNull(productFactory);
 
         productFactory = sentinel3ProductReader.getProductFactory("S3A_OL_2_WFR____20070425T152940_20070425T153025_20140610T112151_0045_000_000______MAR_D_NR____.SEN3");
+        assertNull(productFactory);
+
+        productFactory = sentinel3ProductReader.getProductFactory("S3A_OL_2_LFR____20240526T204947_20240526T205247_20240526T225409_0179_112_385_1980_PS1_O_NR_002.SEN3");
         assertNull(productFactory);
     }
 

@@ -69,6 +69,26 @@
       "id": "S3A_OL_2_WRR____20200101T032352",
       "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_WRR____20200101T032352_20200101T040752_20260117T022646_2640_053_175______MAR_R_NT_004.SEN3/xfdumanifest.xml",
       "description": "OL__L2M.004.00.00"
+    },
+    {
+      "id": "S3A_OL_2_LRR____20070910T095130",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_LRR____20070910T095130_20070910T095442_20140610T110326_0192_000_000______LN2_D_NR____.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_2_LRR"
+    },
+    {
+      "id": "S3A_OL_2_LFR____20070425T152940",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_LFR____20070425T152940_20070425T153025_20140610T111104_0045_000_000______LN2_D_NR____.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_2_LFR v1"
+    },
+    {
+      "id": "S3A_OL_2_LFR____20170304T084224",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_LFR____20170304T084224_20170304T084524_20170305T142632_0179_015_078_4139_LN1_O_NT_002.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_2_LFR v2"
+    },
+    {
+      "id": "S3B_OL_2_LFR____20260527T075303",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3B_OL_2_LFR____20260527T075303_20260527T075603_20260527T095536_0179_120_263_3240_ESA_O_NR_003.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_2_LFR version 003"
     }
   ]
 }

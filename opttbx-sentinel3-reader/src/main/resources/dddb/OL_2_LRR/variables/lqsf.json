@@ -1,0 +1,9 @@
+[
+  {
+    "name": "LQSF",
+    "dataType": "uint32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "Classification flags, quality and science flags for Land pixels"
+  }
+]

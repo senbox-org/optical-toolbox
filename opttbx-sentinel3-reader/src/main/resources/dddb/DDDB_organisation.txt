@@ -14,5 +14,10 @@ in the Manifest, section "generalProductInformation", field "sentinel3:productTy
 
 Each directory contains one or more JSON files describing the general content of the product, size etc. A file named as
 <product_type>.json denotes the standard format, if a version number is appended <product_type>_version>.json, the
-format is version specific. The version number has always the format that is stored in the manifest, section
+format is specific for this version. The version number is always of the format that is stored in the manifest, section
 "generalProductInformation", field "sentinel3:baselineCollection".
+This general product description file is mapped to the ProductDescriptor class.
+
+Each product specific directory contains one or more subdirectories named "variables" or "variables_<version>" which
+contain the description of the variables of the product. A directory with a version number contains version-specific
+variable descriptors, the directory without contains the standard variable descriptions.
