@@ -247,9 +247,9 @@ public class MeasuresL3BinFileReader extends SeadasFileReader {
         }
     }
 
-    public Map<Band, Variable> addBands(Product product, List<Variable> l3ProdVars) {
+    public Map<String, Variable> addBands(Product product, List<Variable> l3ProdVars) {
 
-        final Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        final Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
 
         for (Variable l3Var : l3ProdVars) {
             String varName = l3Var.getShortName();
@@ -263,7 +263,7 @@ public class MeasuresL3BinFileReader extends SeadasFileReader {
 
 
             if (!varName.contains("Indexes") && (!varName.equalsIgnoreCase("n"))) {
-               bandToVariableMap.put(addBand(product, varName, dataType), l3Var);
+               bandToVariableMap.put(addBand(product, varName, dataType).getName(), l3Var);
             }
         }
         return bandToVariableMap;

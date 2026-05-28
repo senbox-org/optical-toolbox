@@ -1,0 +1,80 @@
+[
+  {
+    "name": "atmospheric_temperature_profile",
+    "type": "t",
+    "dataType": "float32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "depth" : 25,
+    "depthPrefixToken" : "_pressure_level_",
+    "units" : "K",
+    "description" : "Air temperature profile"
+  },
+  {
+    "name": "horizontal_wind",
+    "type": "t",
+    "dataType": "float32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "depth" : 2,
+    "depthPrefixToken" : "_vector_",
+    "units" : "m.s-1",
+    "description" : "Horizontal wind vector at 10m altitude"
+  },
+  {
+    "name": "humidity",
+    "type": "t",
+    "dataType": "float32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "units" : "%",
+    "description" : "Relative humidity"
+  },
+  {
+    "name": "reference_pressure_level",
+    "type": "m",
+    "dataType": "float32",
+    "width" : 25,
+    "units" : "hPa",
+    "description" : "Reference pressure level"
+  },
+  {
+    "name": "sea_level_pressure",
+    "type": "t",
+    "dataType": "float32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "units" : "hPa",
+    "description" : "Mean sea level pressure"
+  },
+  {
+    "name": "total_columnar_water_vapour",
+    "type": "t",
+    "dataType": "float32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "units" : "kg.m-2",
+    "description" : "Total column water vapour"
+  },
+  {
+    "name": "total_ozone",
+    "type": "t",
+    "dataType": "float32",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "tpXSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/columnsPerTiePoint",
+    "tpYSubsamplingXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/samplingParameters/rowsPerTiePoint",
+    "units" : "kg.m-2",
+    "description" : "Total columnar ozone"
+  }
+]

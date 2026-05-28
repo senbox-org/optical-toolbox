@@ -1,0 +1,16 @@
+[
+  {
+    "name": "OGVI",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "OLCI Global Vegetation Index"
+  },
+  {
+    "name": "OGVI_err",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "Error estimate for OLCI Global Vegetation Index"
+  }
+]

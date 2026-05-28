@@ -135,14 +135,14 @@ public class L1AHawkeyeFileReader extends SeadasFileReader {
 
     }
 
-    public Map<Band, Variable> addHawkeyeBands(Product product,
+    public Map<String, Variable> addHawkeyeBands(Product product,
                                                List<Variable> variables) {
-        final Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        final Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             Band band = addNewBand(product, variable);
             if (band != null) {
-                bandToVariableMap.put(band, variable);
+                bandToVariableMap.put(band.getName(), variable);
             }
             if (spectralBandIndex < 8) {
                 final float wavelength = Float.valueOf(HAWKEYE_WVL[spectralBandIndex]);

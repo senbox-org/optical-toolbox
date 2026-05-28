@@ -16,11 +16,17 @@
 
 package gov.nasa.gsfc.seadas.dataio;
 
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
+import org.esa.snap.runtime.Config;
+import org.jspecify.annotations.NonNull;
 import ucar.ma2.Array;
+import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
 import ucar.nc2.Group;
@@ -28,6 +34,7 @@ import ucar.nc2.Variable;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.prefs.Preferences;
 
 import static java.lang.String.format;
 
@@ -35,6 +42,10 @@ public class L1CPaceFileReader extends SeadasFileReader {
 
     L1CPaceFileReader(SeadasProductReader productReader) {
         super(productReader);
+
+        final Preferences preferences = Config.instance("seadas").preferences();
+        wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
     }
 
     @Override
@@ -216,12 +227,12 @@ public class L1CPaceFileReader extends SeadasFileReader {
         }
     }
 
-    private Map<Band, Variable> addHarpBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, boolean correctDim) {
+    private Map<String, Variable> addHarpBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, boolean correctDim) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
@@ -242,7 +253,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String name = variable.getShortName();
                     final int dataType = getProductDataType(variable);
-                    band = new Band(name, dataType, width, height);
+                    band = createBand(name, dataType, width, height);
                     product.addBand(band);
 
                     final List<Attribute> list = variable.getAttributes();
@@ -253,15 +264,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             band.setUnit(hdfAttribute.getStringValue());
                         } else if ("long_name".equals(attribName)) {
                             band.setDescription(hdfAttribute.getStringValue());
-                        } else if ("slope".equals(attribName)) {
+                        } else if (applyScaling && "slope".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("intercept".equals(attribName)) {
+                        } else if (applyScaling && "intercept".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
+                        } else if (applyScaling && "scale_factor".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("add_offset".equals(attribName)) {
+                        } else if (applyScaling && "add_offset".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("bad_value_scaled".equals(attribName)) {
+                        } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                             band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                             band.setNoDataValueUsed(true);
                         } else if ("_FillValue".equals(attribName)) {
@@ -308,7 +319,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     band.setUnit(units);
                     band.setDescription(variable.getDescription());
                 }
@@ -344,7 +355,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
 
                             final int dataType = getProductDataType(variable);
-                            band = new Band(name, dataType, width, height);
+                            band = createBand(name, dataType, width, height);
                             product.addBand(band);
 
                             band.setSpectralWavelength(wavelengths.getFloat(i));
@@ -377,20 +388,20 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     band.setUnit(hdfAttribute.getStringValue());
                                 } else if ("long_name".equals(attribName)) {
                                     band.setDescription(hdfAttribute.getStringValue());
-                                } else if ("slope".equals(attribName)) {
+                                } else if (applyScaling && "slope".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("intercept".equals(attribName)) {
+                                } else if (applyScaling && "intercept".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("scale_factor".equals(attribName)) {
+                                } else if (applyScaling && "scale_factor".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("add_offset".equals(attribName)) {
+                                } else if (applyScaling && "add_offset".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("bad_value_scaled".equals(attribName)) {
+                                } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                     band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                     band.setNoDataValueUsed(true);
                                 } else if ("_FillValue".equals(attribName)) {
-                                band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
-                                band.setNoDataValueUsed(true);
+                                    band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
+                                    band.setNoDataValueUsed(true);
                                 } else if (attribName.startsWith("valid_")) {
                                     if ("valid_min".equals(attribName)) {
                                         if (hdfAttribute.getDataType().isUnsigned()) {
@@ -432,7 +443,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 }
                                 band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                             }
-                            bandToVariableMap.put(band, sliced);
+                            bandToVariableMap.put(band.getName(), sliced);
                             band.setUnit(units);
                             band.setDescription(description);
                         }
@@ -472,7 +483,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 String name = longname.toString();
                                 String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                                 final int dataType = getProductDataType(variable);
-                                band = new Band(name, dataType, width, height);
+                                band = createBand(name, dataType, width, height);
                                 product.addBand(band);
 
                                 band.setSpectralWavelength(wavelengths.getFloat(j));
@@ -510,15 +521,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                         band.setUnit(hdfAttribute.getStringValue());
                                     } else if ("long_name".equals(attribName)) {
                                         band.setDescription(hdfAttribute.getStringValue());
-                                    } else if ("slope".equals(attribName)) {
+                                    } else if (applyScaling && "slope".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("intercept".equals(attribName)) {
+                                    } else if (applyScaling && "intercept".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("scale_factor".equals(attribName)) {
+                                    } else if (applyScaling && "scale_factor".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("add_offset".equals(attribName)) {
+                                    } else if (applyScaling && "add_offset".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("bad_value_scaled".equals(attribName)) {
+                                    } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                         band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                         band.setNoDataValueUsed(true);
                                     } else if ("_FillValue".equals(attribName)) {
@@ -565,7 +576,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     }
                                     band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                                 }
-                                bandToVariableMap.put(band, sliced);
+                                bandToVariableMap.put(band.getName(), sliced);
                                 band.setUnit(units);
                                 band.setDescription(description);
 //                            }
@@ -577,12 +588,12 @@ public class L1CPaceFileReader extends SeadasFileReader {
         return bandToVariableMap;
     }
 
-    private Map<Band, Variable> addOciBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths) {
+    private Map<String, Variable> addOciBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
@@ -603,7 +614,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String name = variable.getShortName();
                     final int dataType = getProductDataType(variable);
-                    band = new Band(name, dataType, width, height);
+                    band = createBand(name, dataType, width, height);
                     product.addBand(band);
 
                     final List<Attribute> list = variable.getAttributes();
@@ -614,15 +625,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             band.setUnit(hdfAttribute.getStringValue());
                         } else if ("long_name".equals(attribName)) {
                             band.setDescription(hdfAttribute.getStringValue());
-                        } else if ("slope".equals(attribName)) {
+                        } else if (applyScaling && "slope".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("intercept".equals(attribName)) {
+                        } else if (applyScaling && "intercept".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
+                        } else if (applyScaling && "scale_factor".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("add_offset".equals(attribName)) {
+                        } else if (applyScaling && "add_offset".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("bad_value_scaled".equals(attribName)) {
+                        } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                             band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                             band.setNoDataValueUsed(true);
                         } else if ("_FillValue".equals(attribName)) {
@@ -669,7 +680,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     band.setUnit(units);
                     band.setDescription(variable.getDescription());
                 }
@@ -696,7 +707,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
 
                             final int dataType = getProductDataType(variable);
-                            band = new Band(name, dataType, width, height);
+                            band = createBand(name, dataType, width, height);
                             product.addBand(band);
 
                             band.setAngularValue(view_angles.getFloat(i));
@@ -717,15 +728,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     band.setUnit(hdfAttribute.getStringValue());
                                 } else if ("long_name".equals(attribName)) {
                                     band.setDescription(hdfAttribute.getStringValue());
-                                } else if ("slope".equals(attribName)) {
+                                } else if (applyScaling && "slope".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("intercept".equals(attribName)) {
+                                } else if (applyScaling && "intercept".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("scale_factor".equals(attribName)) {
+                                } else if (applyScaling && "scale_factor".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("add_offset".equals(attribName)) {
+                                } else if (applyScaling && "add_offset".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("bad_value_scaled".equals(attribName)) {
+                                } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                     band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                     band.setNoDataValueUsed(true);
                                 } else if ("_FillValue".equals(attribName)) {
@@ -772,7 +783,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 }
                                 band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                             }
-                            bandToVariableMap.put(band, sliced);
+                            bandToVariableMap.put(band.getName(), sliced);
                             band.setUnit(units);
                             band.setDescription(description);
                         }
@@ -803,7 +814,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
 
                                 final int dataType = getProductDataType(variable);
-                                band = new Band(name, dataType, width, height);
+                                band = createBand(name, dataType, width, height);
                                 product.addBand(band);
 
                                 band.setSpectralWavelength(wavelengths.getFloat(j));
@@ -829,15 +840,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                         band.setUnit(hdfAttribute.getStringValue());
                                     } else if ("long_name".equals(attribName)) {
                                         band.setDescription(hdfAttribute.getStringValue());
-                                    } else if ("slope".equals(attribName)) {
+                                    } else if (applyScaling && "slope".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("intercept".equals(attribName)) {
+                                    } else if (applyScaling && "intercept".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("scale_factor".equals(attribName)) {
+                                    } else if (applyScaling && "scale_factor".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("add_offset".equals(attribName)) {
+                                    } else if (applyScaling && "add_offset".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("bad_value_scaled".equals(attribName)) {
+                                    } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                         band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                         band.setNoDataValueUsed(true);
                                     } else if ("_FillValue".equals(attribName)) {
@@ -884,7 +895,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     }
                                     band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                                 }
-                                bandToVariableMap.put(band, sliced);
+                                bandToVariableMap.put(band.getName(), sliced);
                                 band.setUnit(units);
                                 band.setDescription(description);
                             }
@@ -898,7 +909,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
         return bandToVariableMap;
     }
 
-    private Map<Band, Variable> addSPEXoneBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, Array wavelengths_pol) {
+    private Map<String, Variable> addSPEXoneBands(Product product, List<Variable> variables, Array view_angles, Array wavelengths, Array wavelengths_pol) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
@@ -907,7 +918,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
 //        Array wavelengths_pol = null;
 //        Array view_angles = null;
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
             if (variable.getParentGroup().equals("sensor_views_bands"))
                 continue;
@@ -927,7 +938,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     String units = variable.getUnitsString();
                     String name = variable.getShortName();
                     final int dataType = getProductDataType(variable);
-                    band = new Band(name, dataType, width, height);
+                    band = createBand(name, dataType, width, height);
                     product.addBand(band);
 
                     final List<Attribute> list = variable.getAttributes();
@@ -938,15 +949,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             band.setUnit(hdfAttribute.getStringValue());
                         } else if ("long_name".equals(attribName)) {
                             band.setDescription(hdfAttribute.getStringValue());
-                        } else if ("slope".equals(attribName)) {
+                        } else if (applyScaling && "slope".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("intercept".equals(attribName)) {
+                        } else if (applyScaling && "intercept".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
+                        } else if (applyScaling && "scale_factor".equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("add_offset".equals(attribName)) {
+                        } else if (applyScaling && "add_offset".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("bad_value_scaled".equals(attribName)) {
+                        } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                             band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                             band.setNoDataValueUsed(true);
                         } else if ("_FillValue".equals(attribName)) {
@@ -993,7 +1004,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         }
                         band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                     }
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                     band.setUnit(units);
                     band.setDescription(variable.getDescription());
                 }
@@ -1031,7 +1042,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             String name = longname.toString();
                             String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                             final int dataType = getProductDataType(variable);
-                            band = new Band(name, dataType, width, height);
+                            band = createBand(name, dataType, width, height);
                             product.addBand(band);
 
                             if ((i > views / 2) && (view_angles.getInt(i) == view_angles.getInt(views - 1 - i))) {
@@ -1056,15 +1067,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     band.setUnit(hdfAttribute.getStringValue());
                                 } else if ("long_name".equals(attribName)) {
                                     band.setDescription(hdfAttribute.getStringValue());
-                                } else if ("slope".equals(attribName)) {
+                                } else if (applyScaling && "slope".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("intercept".equals(attribName)) {
+                                } else if (applyScaling && "intercept".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("scale_factor".equals(attribName)) {
+                                } else if (applyScaling && "scale_factor".equals(attribName)) {
                                     band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("add_offset".equals(attribName)) {
+                                } else if (applyScaling && "add_offset".equals(attribName)) {
                                     band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                } else if ("bad_value_scaled".equals(attribName)) {
+                                } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                     band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                     band.setNoDataValueUsed(true);
                                 } else if ("_FillValue".equals(attribName)) {
@@ -1111,7 +1122,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 }
                                 band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                             }
-                            bandToVariableMap.put(band, sliced);
+                            bandToVariableMap.put(band.getName(), sliced);
                             band.setUnit(units);
                             band.setDescription(description);
                         }
@@ -1169,7 +1180,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                 String name = longname.toString();
                                 String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
                                 final int dataType = getProductDataType(variable);
-                                band = new Band(name, dataType, width, height);
+                                band = createBand(name, dataType, width, height);
                                 product.addBand(band);
 
                                 if (bands == 400) {
@@ -1203,15 +1214,15 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                         band.setUnit(hdfAttribute.getStringValue());
                                     } else if ("long_name".equals(attribName)) {
                                         band.setDescription(hdfAttribute.getStringValue());
-                                    } else if ("slope".equals(attribName)) {
+                                    } else if (applyScaling && "slope".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("intercept".equals(attribName)) {
+                                    } else if (applyScaling && "intercept".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("scale_factor".equals(attribName)) {
+                                    } else if (applyScaling && "scale_factor".equals(attribName)) {
                                         band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("add_offset".equals(attribName)) {
+                                    } else if (applyScaling && "add_offset".equals(attribName)) {
                                         band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                                    } else if ("bad_value_scaled".equals(attribName)) {
+                                    } else if (applyScaling && "bad_value_scaled".equals(attribName)) {
                                         band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
                                         band.setNoDataValueUsed(true);
                                     } else if ("_FillValue".equals(attribName)) {
@@ -1258,7 +1269,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                                     }
                                     band.setValidPixelExpression(validExp);//.format(name, validMinMax[0], name, validMinMax[1]));
                                 }
-                                bandToVariableMap.put(band, sliced);
+                                bandToVariableMap.put(band.getName(), sliced);
                                 band.setUnit(units);
                                 band.setDescription(description);
                             }
@@ -1338,5 +1349,26 @@ public class L1CPaceFileReader extends SeadasFileReader {
             }
 
         }
+    }
+
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        return SeadasCacheUtils.getDefaultVariableDescriptor(netcdfVariable, variableName);
+    }
+
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        final int rasterDataType = DataTypeUtils.getRasterDataType(netcdfVariable);
+
+        Array rawBuffer;
+        synchronized (ncFile) {
+            rawBuffer = SeadasCacheUtils.readArray(netcdfVariable, offsets, shapes);
+        }
+
+        return SeadasCacheUtils.constructDataBuffer(rawBuffer, offsets, shapes, targetData, rasterDataType);
     }
 }

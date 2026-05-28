@@ -16,6 +16,8 @@
 
 package gov.nasa.gsfc.seadas.dataio;
 
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
@@ -23,13 +25,14 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
+import org.esa.snap.runtime.Config;
 import ucar.ma2.Array;
 import ucar.nc2.Attribute;
-import ucar.nc2.Dimension;
 import ucar.nc2.Variable;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.prefs.Preferences;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,6 +47,10 @@ public class L2FileReader extends SeadasFileReader {
 
     L2FileReader(SeadasProductReader productReader) {
         super(productReader);
+
+        final Preferences preferences = Config.instance("seadas").preferences();
+        wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
     }
 
     @Override
@@ -413,5 +420,25 @@ public class L2FileReader extends SeadasFileReader {
                 throw new ProductIOException(e.getMessage());
             }
         }
+    }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        return SeadasCacheUtils.getDefaultVariableDescriptor(netcdfVariable, variableName);
+    }
+
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        final int rasterDataType = DataTypeUtils.getRasterDataType(netcdfVariable);
+
+        Array rawBuffer;
+        synchronized (ncFile) {
+            rawBuffer = SeadasCacheUtils.readArray(netcdfVariable, offsets, shapes);
+        }
+
+        return SeadasCacheUtils.constructDataBuffer(rawBuffer, offsets, shapes, targetData, rasterDataType);
     }
 }

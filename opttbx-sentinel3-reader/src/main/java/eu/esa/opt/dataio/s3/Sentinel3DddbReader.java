@@ -303,7 +303,6 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
             product.addMask(flagMask.getName(), flagMask.getExpression(), flagMask.getDescription(), maskColor, 0.5);
         }
 
-
         // metadata
         final MetadataElement metadataRoot = product.getMetadataRoot();
         metadataRoot.addElement(manifest.getMetadata());

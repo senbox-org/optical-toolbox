@@ -79,21 +79,6 @@
       "description": "S3A_SL_2_WST"
     },
     {
-      "id": "S3A_OL_2_LRR____20070910T095130",
-      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_LRR____20070910T095130_20070910T095442_20140610T110326_0192_000_000______LN2_D_NR____.SEN3/xfdumanifest.xml",
-      "description": "S3A_OL_2_LRR"
-    },
-    {
-      "id": "S3A_OL_2_LFR____20070425T152940",
-      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_LFR____20070425T152940_20070425T153025_20140610T111104_0045_000_000______LN2_D_NR____.SEN3/xfdumanifest.xml",
-      "description": "S3A_OL_2_LFR v1"
-    },
-    {
-      "id": "S3A_OL_2_LFR____20170304T084224",
-      "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_LFR____20170304T084224_20170304T084524_20170305T142632_0179_015_078_4139_LN1_O_NT_002.SEN3/xfdumanifest.xml",
-      "description": "S3A_OL_2_LFR v2"
-    },
-    {
       "id": "S3B_SL_2_FRP____20240325T213812",
       "relativePath": "sensors_platforms/SENTINEL-3/slstr/L2/S3B_SL_2_FRP____20240325T213812_20240325T214112_20240327T003545_0179_091_129_0720_PS2_O_NT_004.SEN3/xfdumanifest.xml",
       "description": "S3B_SL2_FRP v4"

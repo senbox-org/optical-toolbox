@@ -585,13 +585,9 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
     private static String getTpgCacheKey(String bandName) {
-        if ("TP_latitude".equals(bandName)) {
-            return "latitude";
+        if (bandName.startsWith("TP_")) {
+            return bandName.substring(3);
         }
-        if ("TP_longitude".equals(bandName)) {
-            return "longitude";
-        }
-
         return bandName;
     }
 

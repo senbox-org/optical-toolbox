@@ -128,11 +128,11 @@ public class L1AOctsFileReader extends SeadasFileReader {
         }
     }
 
-    private Map<Band, Variable> addOctsBands(Product product, List<Variable> variables) {
+    private Map<String, Variable> addOctsBands(Product product, List<Variable> variables) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
-        Map<Band, Variable> bandToVariableMap = new HashMap<Band, Variable>();
+        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         int spectralBandIndex = 0;
         for (Variable variable : variables) {
             int variableRank = variable.getRank();
@@ -168,7 +168,7 @@ public class L1AOctsFileReader extends SeadasFileReader {
                         } catch (InvalidRangeException e) {
                             e.printStackTrace();  //Todo change body of catch statement.
                         }
-                        bandToVariableMap.put(band, sliced);
+                        bandToVariableMap.put(band.getName(), sliced);
                         band.setUnit(units);
                         band.setDescription(description);
 

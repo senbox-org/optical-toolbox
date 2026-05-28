@@ -144,11 +144,17 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
 
     public void readBandRasterData(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
                                    Band destBand, int destWidth, int destHeight, ProductData destBuffer) throws IOException {
-        final S3CacheLayerMapper.LayerReference layerReference = cacheLayerMappings.get(destBand.getName());
+        readBandRasterData(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
+                destBand.getName(), destBand, destWidth, destHeight, destBuffer);
+    }
+
+    public void readBandRasterData(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+                                   String cacheKey, Band destBand, int destWidth, int destHeight, ProductData destBuffer) throws IOException {
+        final S3CacheLayerMapper.LayerReference layerReference = cacheLayerMappings.get(cacheKey);
         if (layerReference != null) {
-            final String cacheKey = layerReference.getCacheKey();
+            final String mappedCacheKey = layerReference.getCacheKey();
             if (use2DCacheRead(layerReference)) {
-                CachedSubsamplingReader.read(productCache, cacheKey, destBand.getDataType(),
+                CachedSubsamplingReader.read(productCache, mappedCacheKey, destBand.getDataType(),
                         sourceOffsetX, sourceOffsetY,
                         sourceWidth, sourceHeight,
                         sourceStepX, sourceStepY,
@@ -156,7 +162,7 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
                 );
                 return;
             }
-            CachedSubsamplingReader.readLayer(productCache, cacheKey, layerReference.getLayer(), destBand.getDataType(),
+            CachedSubsamplingReader.readLayer(productCache, mappedCacheKey, layerReference.getLayer(), destBand.getDataType(),
                     sourceOffsetX, sourceOffsetY,
                     sourceWidth, sourceHeight,
                     sourceStepX, sourceStepY,
@@ -165,7 +171,7 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
             return;
         }
 
-        CachedSubsamplingReader.read(productCache, destBand.getName(), destBand.getDataType(),
+        CachedSubsamplingReader.read(productCache, cacheKey, destBand.getDataType(),
                 sourceOffsetX, sourceOffsetY,
                 sourceWidth, sourceHeight,
                 sourceStepX, sourceStepY,

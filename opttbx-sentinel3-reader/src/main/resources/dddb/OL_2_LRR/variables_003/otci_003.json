@@ -1,0 +1,16 @@
+[
+  {
+    "name": "OTCI",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "OLCI Terrestrial Chlorophyll Index"
+  },
+  {
+    "name": "OTCI_unc",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "Uncertainty estimate for the OLCI Terrestrial Chlorophyll Index of the current land pixel"
+  }
+]

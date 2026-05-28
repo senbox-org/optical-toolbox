@@ -1,0 +1,24 @@
+[
+  {
+    "name": "OTCI",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "OLCI Terrestrial Chlorophyll Index"
+  },
+  {
+    "name": "OTCI_err",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "Error estimate for OLCI Terrestrial Chlorophyll Index"
+  }
+,
+  {
+    "name": "OTCI_quality_flags",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "OLCI Terrestrial Vegetation Index Quality Flag of the land pixel"
+  }
+]
