@@ -15,11 +15,15 @@ public final class S3CachedGeoDataUtil {
 
 
     public static double[] readCachedRawDataAsDouble(ProductCache productCache, String cacheKey, int width, int height, int sourceDataType) throws IOException {
+        return readCachedRawDataAsDouble(productCache::read, cacheKey, width, height, sourceDataType);
+    }
+
+    public static double[] readCachedRawDataAsDouble(S3CacheDataReader cacheReader, String cacheKey, int width, int height, int sourceDataType) throws IOException {
         final int[] offsets = new int[]{0, 0};
         final int[] shapes = new int[]{height, width};
 
         final DataBuffer buffer = new DataBuffer(sourceDataType, offsets, shapes);
-        productCache.read(cacheKey, offsets, shapes, buffer);
+        cacheReader.readCacheData(cacheKey, offsets, shapes, buffer);
 
         final ProductData sourceData = buffer.getData();
         final double[] target = new double[width * height];
@@ -32,12 +36,16 @@ public final class S3CachedGeoDataUtil {
     }
 
     public static double[] readCachedGeophysicalBandAsDouble(ProductCache productCache, Band band) throws IOException {
+        return readCachedGeophysicalBandAsDouble(productCache::read, band);
+    }
+
+    public static double[] readCachedGeophysicalBandAsDouble(S3CacheDataReader cacheReader, Band band) throws IOException {
         final String cacheKey = band.getName();
         final int width = band.getRasterWidth();
         final int height = band.getRasterHeight();
         final int sourceDataType = band.getDataType();
 
-        final double[] data = readCachedRawDataAsDouble(productCache, cacheKey, width, height, sourceDataType);
+        final double[] data = readCachedRawDataAsDouble(cacheReader, cacheKey, width, height, sourceDataType);
 
         for (int ii = 0; ii < data.length; ii++) {
             data[ii] = S3Util.getGeophysicalValue(band, data[ii]);

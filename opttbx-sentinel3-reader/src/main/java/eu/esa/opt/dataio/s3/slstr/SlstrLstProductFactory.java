@@ -20,7 +20,6 @@ import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.util.S3CachedGeoDataUtil;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3Util;
-import eu.esa.snap.core.dataio.cache.ProductCache;
 import org.esa.snap.core.dataio.geocoding.ComponentFactory;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.ForwardCoding;
@@ -101,11 +100,9 @@ public class SlstrLstProductFactory extends SlstrProductFactory {
     private void setPixelGeoCoding(Product targetProduct, Band lonBand, Band latBand) throws IOException {
         final S3NetcdfReader readerLon = getBandCacheMap().get(lonBand.getName());
         final S3NetcdfReader readerLat = getBandCacheMap().get(latBand.getName());
-        final ProductCache cacheLon = readerLon.getProductCache();
-        final ProductCache cacheLat = readerLat.getProductCache();
 
-        final double[] longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(cacheLon, lonBand);
-        final double[] latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(cacheLat, latBand);
+        final double[] longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLon, lonBand);
+        final double[] latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLat, latBand);
 
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonBand.getName(), latBand.getName(),
                                                   targetProduct.getSceneRasterWidth(), targetProduct.getSceneRasterHeight(), RESOLUTION_IN_KM);

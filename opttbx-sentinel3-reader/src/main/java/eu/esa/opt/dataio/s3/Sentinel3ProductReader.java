@@ -25,7 +25,6 @@ import eu.esa.opt.dataio.s3.synergy.SynLevel2ProductFactory;
 import eu.esa.opt.dataio.s3.synergy.VgtProductFactory;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3Util;
-import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
 import eu.esa.snap.core.dataio.cache.DataBuffer;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -149,10 +148,8 @@ public class Sentinel3ProductReader extends AbstractProductReader {
                     "The band may require a JAI source image that was not set up correctly.");
         }
 
-        CachedSubsamplingReader.read(s3Reader.getProductCache(), destBand.getName(), destBand.getDataType(),
-                sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
-                sourceStepX, sourceStepY, destWidth, destHeight, destBuffer
-        );
+        s3Reader.readBandRasterData(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                sourceStepX, sourceStepY, destBand, destWidth, destHeight, destBuffer);
 
     }
 
@@ -181,11 +178,11 @@ public class Sentinel3ProductReader extends AbstractProductReader {
         final int sourceType = entry.sourceBand.getDataType();
 
         if (sourceType == destBuffer.getType()) {
-            entry.reader.getProductCache().read(cacheKey, offsets, shapes, new DataBuffer(destBuffer, offsets, shapes));
+            entry.reader.readCacheData(cacheKey, offsets, shapes, new DataBuffer(destBuffer, offsets, shapes));
             sourceData = destBuffer;
         } else {
             final DataBuffer intermediateBuffer = new DataBuffer(sourceType, offsets, shapes);
-            entry.reader.getProductCache().read(cacheKey, offsets, shapes, intermediateBuffer);
+            entry.reader.readCacheData(cacheKey, offsets, shapes, intermediateBuffer);
             sourceData = intermediateBuffer.getData();
         }
 

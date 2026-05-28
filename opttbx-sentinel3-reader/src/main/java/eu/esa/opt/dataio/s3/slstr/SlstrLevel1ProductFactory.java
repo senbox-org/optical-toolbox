@@ -638,8 +638,8 @@ public class SlstrLevel1ProductFactory extends SlstrProductFactory {
                 longitudes = RasterUtils.loadGeoData(lonBand);
                 latitudes = RasterUtils.loadGeoData(latBand);
             } else {
-                longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLon.getProductCache(), lonBand);
-                latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLat.getProductCache(), latBand);
+                longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLon, lonBand);
+                latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLat, latBand);
             }
 
             final double resolutionInKm = getResolutionInKm(nameEnd);
