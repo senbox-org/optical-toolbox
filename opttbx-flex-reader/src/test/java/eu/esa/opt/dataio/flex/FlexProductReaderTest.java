@@ -5,21 +5,28 @@ import eu.esa.opt.dataio.flex.dddb.FlexFlagMask;
 import eu.esa.opt.dataio.flex.dddb.FlexProductDescriptor;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.FlagCoding;
 import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.datamodel.Mask;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.runtime.Config;
 import org.junit.Test;
+import ucar.ma2.Array;
 import ucar.ma2.DataType;
+import ucar.ma2.Section;
+import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -271,6 +278,72 @@ public class FlexProductReaderTest {
         assertTrue(geoCodingMap(reader).isEmpty());
     }
 
+//    @Test
+//    public void testInitializeCache_defaultPreferenceCreatesCacheObjects() throws Exception {
+//        final Preferences preferences = Config.instance("opttbx").load().preferences();
+//        final String oldValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
+//        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+//
+//        try {
+//            preferences.remove(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE);
+//
+//            invokeInitializeCache(reader);
+//
+//            assertFalse((Boolean) getField(reader, "cacheEnabled"));
+//            assertNull(getField(reader, "cacheDataProvider"));
+//            assertNull(getField(reader, "productCache"));
+//        } finally {
+//            restorePreference(preferences, oldValue);
+//            reader.close();
+//        }
+//    }
+
+    @Test
+    public void testInitializeCache_falsePreferenceDoesNotCreateCacheObjects() throws Exception {
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
+        final String oldValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+
+        try {
+            preferences.putBoolean(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, false);
+
+            invokeInitializeCache(reader);
+
+            assertFalse((Boolean) getField(reader, "cacheEnabled"));
+            assertNull(getField(reader, "cacheDataProvider"));
+            assertNull(getField(reader, "productCache"));
+        } finally {
+            restorePreference(preferences, oldValue);
+            reader.close();
+        }
+    }
+
+    @Test
+    public void testReadGeoData_noCacheUsesDirectVariableRead() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Variable variable = mock(Variable.class);
+        when(variable.getFullName()).thenReturn("latitude");
+        when(variable.getRank()).thenReturn(2);
+        when(variable.getDimensions()).thenReturn(Arrays.asList(
+                new Dimension("number_of_along_track_samples", 2),
+                new Dimension("number_of_across_track_samples", 2)
+        ));
+        when(variable.read(any(Section.class))).thenReturn(
+                Array.factory(DataType.DOUBLE, new int[]{2, 2}, new double[]{1.0, 2.0, 3.0, 4.0}));
+
+        setField(reader, "cacheEnabled", false);
+        bandToVariableMap(reader).put("latitude", variable);
+
+        final Band band = new Band("latitude", ProductData.TYPE_FLOAT64, 2, 2);
+        band.setScalingFactor(2.0);
+        band.setScalingOffset(10.0);
+
+        final double[] geoData = invokeReadGeoData(reader, "latitude", 2, 2, band);
+
+        assertArrayEquals(new double[]{12.0, 14.0, 16.0, 18.0}, geoData, 1.0e-8);
+        verify(variable).read(any(Section.class));
+    }
+
     @Test
     public void testAddFlagMask_usesDirectMaskCreation() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
@@ -333,12 +406,19 @@ public class FlexProductReaderTest {
         final Product product = new Product("p", "t", 10, 10);
         product.addBand("HRE1_channel_quality_flags_1", ProductData.TYPE_UINT8);
         product.addBand("HRE1_channel_quality_flags_2", ProductData.TYPE_UINT8);
+        product.addBand("HRE1_channel_quality_flags_summary", ProductData.TYPE_UINT8);
+        product.addBand("HRE1_channel_quality_flags", ProductData.TYPE_UINT8);
+        product.addBand("HRE2_channel_quality_flags_1", ProductData.TYPE_UINT8);
+        product.addBand("HRE2_channel_quality_flags_summary", ProductData.TYPE_UINT8);
+        product.addBand("LRES_channel_quality_flags_1", ProductData.TYPE_UINT8);
         product.addBand("HRE1_common_quality_flags", ProductData.TYPE_UINT8);
 
         final FlexProductDescriptor descriptor = new FlexProductDescriptor();
         descriptor.setFlagMasks(new FlexFlagMask[]{
                 new FlexFlagMask("HRE1_channel_quality_flags", "bad", 1, "Bad pixel", true),
-                new FlexFlagMask("HRE1_channel_quality_flags", "dead", 2, "Dead pixel", true)
+                new FlexFlagMask("HRE1_channel_quality_flags", "dead", 2, "Dead pixel", true),
+                new FlexFlagMask("HRE2_channel_quality_flags", "bad", 1, "Bad pixel", true),
+                new FlexFlagMask("LRES_channel_quality_flags", "bad", 1, "Bad pixel", true)
         });
 
         invokeAddFlagMasks(reader, product, descriptor);
@@ -347,7 +427,56 @@ public class FlexProductReaderTest {
         assertNotNull(product.getMaskGroup().get("HRE1_channel_quality_flags_2_bad"));
         assertNotNull(product.getMaskGroup().get("HRE1_channel_quality_flags_1_dead"));
         assertNotNull(product.getMaskGroup().get("HRE1_channel_quality_flags_2_dead"));
-        assertEquals(4, product.getMaskGroup().getNodeCount());
+        assertNotNull(product.getMaskGroup().get("HRE2_channel_quality_flags_1_bad"));
+        assertNotNull(product.getMaskGroup().get("LRES_channel_quality_flags_1_bad"));
+        assertNull(product.getMaskGroup().get("HRE1_channel_quality_flags_summary_bad"));
+        assertNull(product.getMaskGroup().get("HRE1_channel_quality_flags_bad"));
+        assertNull(product.getMaskGroup().get("HRE2_channel_quality_flags_summary_bad"));
+        assertEquals(6, product.getMaskGroup().getNodeCount());
+    }
+
+    @Test
+    public void testAddSpecialBands_usesProductDescriptorFlagMasksForChannelQualityFlagCoding() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 4, 3);
+
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setName("HRE2_channel_quality_flags");
+        descriptor.setNcVarName("channel_quality_flags");
+        descriptor.setNcGroupPath("Annotation_data/Quality_flags");
+        descriptor.setNcDataFile("hre2");
+        descriptor.setType('s');
+        descriptor.setDataType("uint8");
+        descriptor.setDepth(2);
+        descriptor.setDepthPrefixToken("_");
+        descriptor.setDescription("Channel quality");
+        specialsMap(reader).put(descriptor.getName(), descriptor);
+
+        final Variable variable = mock(Variable.class);
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
+        ncFilesMap(reader).put("sample_hre2.nc", ncFile);
+
+        final FlexProductDescriptor productDescriptor = new FlexProductDescriptor();
+        productDescriptor.setFlagMasks(new FlexFlagMask[]{
+                new FlexFlagMask("HRE2_channel_quality_flags", "bad", 1, "DDDB bad sample", true),
+                new FlexFlagMask("HRE2_channel_quality_flags", "dead", 2, "DDDB dead sample", true),
+                new FlexFlagMask("LRES_channel_quality_flags", "bad", 1, "Wrong base", true)
+        });
+
+        invokeAddSpecialBands(reader, product, productDescriptor);
+
+        final Band layerBand = product.getBand("HRE2_channel_quality_flags_1");
+        assertNotNull(layerBand);
+        assertTrue(layerBand.getSampleCoding() instanceof FlagCoding);
+
+        final FlagCoding flagCoding = (FlagCoding) layerBand.getSampleCoding();
+        assertEquals(2, flagCoding.getNumAttributes());
+        assertEquals(1, flagCoding.getFlagMask("bad"));
+        assertEquals("DDDB bad sample", flagCoding.getFlag("bad").getDescription());
+        assertEquals(2, flagCoding.getFlagMask("dead"));
+        assertEquals("DDDB dead sample", flagCoding.getFlag("dead").getDescription());
+        assertNull(flagCoding.getFlag("saturated"));
     }
 
     private Variable mockStringVariable(String fullName) {
@@ -395,6 +524,11 @@ public class FlexProductReaderTest {
         return (Map<String, GeoCoding>) getField(reader, "geoCodingMap");
     }
 
+    @SuppressWarnings("unchecked")
+    private Map<String, FlexVariableDescriptor> specialsMap(FlexProductReader reader) throws Exception {
+        return (Map<String, FlexVariableDescriptor>) getField(reader, "specialsMap");
+    }
+
     private void invokeAddFlagMask(FlexProductReader reader, Product product, String bandName,
                                    FlexFlagMask mask, int colorIndex) throws Exception {
         final Method method = FlexProductReader.class.getDeclaredMethod(
@@ -411,9 +545,50 @@ public class FlexProductReaderTest {
         method.invoke(reader, product, productDescriptor);
     }
 
+    private void invokeAddSpecialBands(FlexProductReader reader, Product product,
+                                       FlexProductDescriptor productDescriptor) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "addSpecialBands", Product.class, FlexProductDescriptor.class);
+        method.setAccessible(true);
+        method.invoke(reader, product, productDescriptor);
+    }
+
+    private void invokeInitializeCache(FlexProductReader reader) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod("initializeCache");
+        method.setAccessible(true);
+        method.invoke(reader);
+    }
+
+    private double[] invokeReadGeoData(FlexProductReader reader, String bandName, int width, int height,
+                                       Band band) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "readGeoData", String.class, int.class, int.class, Band.class);
+        method.setAccessible(true);
+        return (double[]) method.invoke(reader, bandName, width, height, band);
+    }
+
+    private void restorePreference(Preferences preferences, String oldValue) {
+        if (oldValue == null) {
+            preferences.remove(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE);
+        } else {
+            preferences.put(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, oldValue);
+        }
+    }
+
     private Object getField(FlexProductReader reader, String name) throws Exception {
         final Field field = FlexProductReader.class.getDeclaredField(name);
         field.setAccessible(true);
         return field.get(reader);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Variable> bandToVariableMap(FlexProductReader reader) throws Exception {
+        return (Map<String, Variable>) getField(reader, "bandToVariableMap");
+    }
+
+    private void setField(FlexProductReader reader, String name, Object value) throws Exception {
+        final Field field = FlexProductReader.class.getDeclaredField(name);
+        field.setAccessible(true);
+        field.set(reader, value);
     }
 }

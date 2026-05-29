@@ -23,6 +23,7 @@ import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.util.ProductUtils;
+import org.esa.snap.runtime.Config;
 import org.esa.snap.dataio.netcdf.cache.NetcdfCacheDataProvider;
 import org.esa.snap.dataio.netcdf.util.ArrayConverter;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
@@ -37,6 +38,7 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 
 
 public class FlexProductReader extends AbstractProductReader implements FlexMetadataProvider {
@@ -48,6 +50,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private static final double FLEX_RESOLUTION_KM = 0.3;
     private static final String DIM_ACROSS_TRACK = "number_of_across_track_samples";
     private static final String DIM_ALONG_TRACK = "number_of_along_track_samples";
+    public static final String PREFERENCE_KEY_ENABLE_CACHE = "opttbx.flex.reader.enable.cache";
+    public static final boolean CACHE_ENABLED_DEFAULT = false;
 
     private final FlexDDDB dddb;
     private final Map<String, FlexVariableDescriptor> variablesMap;
@@ -60,12 +64,15 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private final Map<String, GeoCoding> geoCodingMap;
     private final Map<String, String> bandToCacheKeyMap = new HashMap<>();
     private final Map<String, Integer> bandToLayerMap = new HashMap<>();
+    private final Map<String, Variable> bandToVariableMap = new HashMap<>();
+    private final FlexDirectNetcdfBandReader directBandReader;
 
     private String dddbProductType;
     private VirtualDir virtualDir;
     private FlexProductCompatibility compatibility;
     private NetcdfCacheDataProvider cacheDataProvider;
     private ProductCache productCache;
+    private boolean cacheEnabled = false;
 
     public static final String NETCDF_BASE_METADATA_ELEMENT = "NetCDF";
 
@@ -81,6 +88,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         ncVariablesCache = new HashMap<>();
         descriptorToFileMap = new HashMap<>();
         geoCodingMap = new HashMap<>();
+        directBandReader = new FlexDirectNetcdfBandReader();
     }
 
 
@@ -89,9 +97,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final Path inputPath = getProductPath();
         virtualDir = ProductUtils.getProductVirtualDir(inputPath);
 
-        cacheDataProvider = new NetcdfCacheDataProvider();
-        productCache = new ProductCache(cacheDataProvider);
-        CacheManager.getInstance().register(productCache);
+        initializeCache();
 
         final Path headerFile = FlexReaderUtils.findHeaderFile(inputPath);
         final FlexHeaderParser parser = new FlexHeaderParser();
@@ -118,7 +124,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         addMetadata(product, header);
         addMetadataVariables(product);
         addBands(product, productDescriptor);
-        addSpecialBands(product);
+        addSpecialBands(product, productDescriptor);
         addFlagMasks(product, productDescriptor);
         assignPerBandGeoCoding(product);
 
@@ -131,26 +137,64 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                                           int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
                                           ProgressMonitor pm) throws IOException {
         final String bandName = destBand.getName();
-        final String cacheKey = bandToCacheKeyMap.get(bandName);
 
-        if (cacheKey != null) {
-            final int layer = bandToLayerMap.get(bandName);
+        if (cacheEnabled) {
+            final String cacheKey = bandToCacheKeyMap.get(bandName);
 
-            CachedSubsamplingReader.readLayer(productCache, cacheKey, layer, destBand.getDataType(),
+            if (cacheKey != null) {
+                final int layer = bandToLayerMap.get(bandName);
+
+                CachedSubsamplingReader.readLayer(productCache, cacheKey, layer, destBand.getDataType(),
+                        sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                        sourceStepX, sourceStepY, destWidth, destHeight, destBuffer);
+                return;
+            }
+
+            CachedSubsamplingReader.read(productCache, destBand.getName(), destBand.getDataType(),
                     sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
                     sourceStepX, sourceStepY, destWidth, destHeight, destBuffer);
             return;
         }
 
-        CachedSubsamplingReader.read(productCache, destBand.getName(), destBand.getDataType(),
-                sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
-                sourceStepX, sourceStepY, destWidth, destHeight, destBuffer);
+        final Variable variable = bandToVariableMap.get(bandName);
+        if (variable == null) {
+            throw new IOException("No NetCDF variable registered for band: " + bandName);
+        }
+
+        final Integer layer = bandToLayerMap.get(bandName);
+        if (layer != null) {
+            directBandReader.readLayer(variable, layer, destBand.getDataType(),
+                    sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                    sourceStepX, sourceStepY, destWidth, destHeight, destBuffer);
+        } else {
+            directBandReader.read(variable, destBand.getDataType(),
+                    sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                    sourceStepX, sourceStepY, destWidth, destHeight, destBuffer);
+        }
     }
 
 
     @Override
     public boolean isSubsetReadingFullySupported() {
         return true;
+    }
+
+    private void initializeCache() {
+        if (productCache != null) {
+            CacheManager.getInstance().remove(productCache);
+        }
+        cacheDataProvider = null;
+        productCache = null;
+
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
+        cacheEnabled = preferences.getBoolean(PREFERENCE_KEY_ENABLE_CACHE, CACHE_ENABLED_DEFAULT);
+        if (!cacheEnabled) {
+            return;
+        }
+
+        cacheDataProvider = new NetcdfCacheDataProvider();
+        productCache = new ProductCache(cacheDataProvider);
+        CacheManager.getInstance().register(productCache);
     }
 
     @Override
@@ -284,6 +328,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         geoCodingMap.clear();
         bandToCacheKeyMap.clear();
         bandToLayerMap.clear();
+        bandToVariableMap.clear();
 
         for (final NetcdfFile ncFile : ncFilesMap.values()) {
             ncFile.close();
@@ -297,6 +342,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
         dddbProductType = null;
         compatibility = null;
+        cacheEnabled = true;
 
         super.close();
     }
@@ -307,10 +353,22 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final int[] offsets = {0, 0};
         final int[] shapes = {height, width};
 
-        final DataBuffer buffer = new DataBuffer(sourceDataType, offsets, shapes);
-        productCache.read(bandName, offsets, shapes, buffer);
+        final ProductData sourceData;
+        if (cacheEnabled) {
+            final DataBuffer buffer = new DataBuffer(sourceDataType, offsets, shapes);
+            productCache.read(bandName, offsets, shapes, buffer);
+            sourceData = buffer.getData();
+        } else {
+            final Variable variable = bandToVariableMap.get(bandName);
+            if (variable == null) {
+                throw new IOException("No NetCDF variable registered for geocoding band: " + bandName);
+            }
+            sourceData = ProductData.createInstance(sourceDataType, width * height);
+            directBandReader.read(variable, sourceDataType,
+                    0, 0, width, height,
+                    1, 1, width, height, sourceData);
+        }
 
-        final ProductData sourceData = buffer.getData();
         final double scaleFactor = band.getScalingFactor();
         final double scaleOffset = band.getScalingOffset();
 
@@ -482,9 +540,9 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         FlexReaderUtils.setScaleAndOffset(band, ncVariable);
         FlexReaderUtils.setFillValue(band, ncVariable);
         product.addBand(band);
+        bandToVariableMap.put(bandName, ncVariable);
 
-        final Dimension tileSize = ImageManager.getPreferredTileSize(product);
-        cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
+        registerCacheVariable(product, bandName, ncVariable, dataType);
     }
 
     private void addFlagBand(Product product, FlexVariableDescriptor descriptor,
@@ -515,9 +573,9 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         }
 
         product.addBand(band);
+        bandToVariableMap.put(bandName, ncVariable);
 
-        final Dimension tileSize = ImageManager.getPreferredTileSize(product);
-        cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
+        registerCacheVariable(product, bandName, ncVariable, dataType);
     }
 
     private void addBitmaskFlagBand(Product product, FlexVariableDescriptor descriptor,
@@ -548,12 +606,12 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         }
 
         product.addBand(band);
+        bandToVariableMap.put(bandName, ncVariable);
 
-        final Dimension tileSize = ImageManager.getPreferredTileSize(product);
-        cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
+        registerCacheVariable(product, bandName, ncVariable, dataType);
     }
 
-    private void addSpecialBands(Product product) {
+    private void addSpecialBands(Product product, FlexProductDescriptor productDescriptor) {
         for (final FlexVariableDescriptor descriptor : specialsMap.values()) {
             final Variable ncVariable = findNcVariable(descriptor);
             if (ncVariable == null) {
@@ -571,10 +629,9 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             final int dataType = ProductData.getType(descriptor.getDataType());
             final String baseName = descriptor.getName();
             final String token = descriptor.getDepthPrefixToken();
-            final Dimension tileSize = ImageManager.getPreferredTileSize(product);
 
             final String cacheKey = descriptor.getFullNcPath();
-            cacheDataProvider.register(cacheKey, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
+            registerCacheVariable(product, cacheKey, ncVariable, dataType);
 
             for (int layer = 1; layer <= depth; layer++) {
                 final String layerBandName = baseName + token + layer;
@@ -590,27 +647,37 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                 product.addBand(band);
 
                 if (baseName.contains("channel_quality_flags")) {
-                    final FlagCoding flagCoding = createChannelQualityFlagCoding(layerBandName);
-                    product.getFlagCodingGroup().add(flagCoding);
-                    band.setSampleCoding(flagCoding);
+                    final FlagCoding flagCoding = createChannelQualityFlagCoding(layerBandName, baseName, productDescriptor);
+                    if (flagCoding.getNumAttributes() > 0) {
+                        product.getFlagCodingGroup().add(flagCoding);
+                        band.setSampleCoding(flagCoding);
+                    }
                 }
 
                 bandToCacheKeyMap.put(layerBandName, cacheKey);
                 bandToLayerMap.put(layerBandName, layer - 1);
+                bandToVariableMap.put(layerBandName, ncVariable);
             }
         }
     }
 
-    private static FlagCoding createChannelQualityFlagCoding(String bandName) {
+    private void registerCacheVariable(Product product, String bandName, Variable ncVariable, int dataType) {
+        if (!cacheEnabled || cacheDataProvider == null) {
+            return;
+        }
+
+        final Dimension tileSize = ImageManager.getPreferredTileSize(product);
+        cacheDataProvider.register(bandName, ncVariable, new int[0], false, dataType, ArrayConverter.IDENTITY, tileSize);
+    }
+
+    private static FlagCoding createChannelQualityFlagCoding(String bandName, String baseBandName,
+                                                            FlexProductDescriptor productDescriptor) {
         final FlagCoding flagCoding = new FlagCoding(bandName);
-        flagCoding.addFlag("bad",       1,   "Bad pixel");
-        flagCoding.addFlag("dead",      2,   "Dead pixel");
-        flagCoding.addFlag("saturated", 4,   "Saturated pixel");
-        flagCoding.addFlag("dubious",   8,   "Dubious pixel");
-        flagCoding.addFlag("spare0",    16,  "Spare bit 0");
-        flagCoding.addFlag("spare1",    32,  "Spare bit 1");
-        flagCoding.addFlag("spare2",    64,  "Spare bit 2");
-        flagCoding.addFlag("spare3",    128, "Spare bit 3");
+        for (final FlexFlagMask mask : productDescriptor.getFlagMasks()) {
+            if (mask.getBandName().equals(baseBandName)) {
+                flagCoding.addFlag(mask.getName(), mask.getValue(), mask.getDescription());
+            }
+        }
         return flagCoding;
     }
 
@@ -622,7 +689,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
             if (baseBandName.contains("channel_quality_flags")) {
                 for (final Band band : product.getBands()) {
-                    if (band.getName().startsWith(baseBandName + "_")) {
+                    if (isLayerBandName(band.getName(), baseBandName)) {
                         addFlagMask(product, band.getName(), mask, colorIndex++);
                     }
                 }
@@ -635,6 +702,25 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
             addFlagMask(product, baseBandName, mask, colorIndex++);
         }
+    }
+
+    private static boolean isLayerBandName(String bandName, String baseBandName) {
+        final String prefix = baseBandName + "_";
+        if (!bandName.startsWith(prefix)) {
+            return false;
+        }
+
+        final String layerSuffix = bandName.substring(prefix.length());
+        if (layerSuffix.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < layerSuffix.length(); i++) {
+            if (!Character.isDigit(layerSuffix.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void addFlagMask(Product product, String bandName, FlexFlagMask mask, int colorIndex) {
