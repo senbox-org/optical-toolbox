@@ -52,6 +52,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private static final String DIM_ALONG_TRACK = "number_of_along_track_samples";
     public static final String PREFERENCE_KEY_ENABLE_CACHE = "opttbx.flex.reader.enable.cache";
     public static final boolean CACHE_ENABLED_DEFAULT = false;
+    public static final int L1B_L1C_TILE_HEIGHT_DEFAULT = 520;
 
     private final FlexDDDB dddb;
     private final Map<String, FlexVariableDescriptor> variablesMap;
@@ -72,7 +73,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private FlexProductCompatibility compatibility;
     private NetcdfCacheDataProvider cacheDataProvider;
     private ProductCache productCache;
-    private boolean cacheEnabled = false;
+    private boolean cacheEnabled = CACHE_ENABLED_DEFAULT;
 
     public static final String NETCDF_BASE_METADATA_ELEMENT = "NetCDF";
 
@@ -114,9 +115,9 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final int width = resolveProductWidth(productDescriptor);
         final int height = resolveProductHeight(productDescriptor);
 
-        final Product product = new Product(header.getProductName(), dddbProductType,
-                width, height, this);
+        final Product product = new Product(header.getProductName(), dddbProductType, width, height, this);
 
+        product.setPreferredTileSize(createPreferredTileSize(dddbProductType, width, height));
         product.setFileLocation(inputPath.toFile());
         product.setAutoGrouping(productDescriptor.getBandGroupingPattern());
         setProductTimes(product, header);
@@ -129,6 +130,13 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         assignPerBandGeoCoding(product);
 
         return product;
+    }
+
+    private static Dimension createPreferredTileSize(String productType, int width, int height) {
+        if (productType != null && productType.contains("L2")) {
+            return new Dimension(width, height);
+        }
+        return new Dimension(width, L1B_L1C_TILE_HEIGHT_DEFAULT);
     }
 
     @Override
@@ -342,7 +350,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
         dddbProductType = null;
         compatibility = null;
-        cacheEnabled = true;
+        cacheEnabled = CACHE_ENABLED_DEFAULT;
 
         super.close();
     }
