@@ -14,6 +14,7 @@ import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
 import eu.esa.snap.core.dataio.cache.DataBuffer;
 import eu.esa.snap.core.dataio.cache.ProductCache;
 import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
+import org.esa.snap.core.dataop.barithm.GeoCodingLazyProxy;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.geocoding.*;
@@ -637,12 +638,23 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     private void addFlagMask(Product product, String bandName, FlexFlagMask mask, int colorIndex) {
+        final Band band = product.getBand(bandName);
+        if (band == null) {
+            return;
+        }
+
         final String expression = mask.isBitmask()
                 ? bandName + " & " + mask.getValue() + " != 0"
                 : bandName + " == " + mask.getValue();
 
         final String maskName = bandName + "_" + mask.getName();
-        product.addMask(maskName, expression, mask.getDescription(), MASK_COLORS[colorIndex % MASK_COLORS.length], 0.5);
+        final Mask flagMask = Mask.BandMathsType.create(maskName, mask.getDescription(),
+                band.getRasterWidth(), band.getRasterHeight(), expression,
+                MASK_COLORS[colorIndex % MASK_COLORS.length], 0.5);
+        if (band.hasGeoCoding()) {
+            flagMask.setGeoCoding(new GeoCodingLazyProxy(band.getProduct()));
+        }
+        product.addMask(flagMask);
     }
 
     private static void addMetadata(Product product, FlexProductHeader header) {

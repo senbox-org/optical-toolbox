@@ -1,8 +1,12 @@
 package eu.esa.opt.dataio.flex;
 
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
+import eu.esa.opt.dataio.flex.dddb.FlexFlagMask;
+import eu.esa.opt.dataio.flex.dddb.FlexProductDescriptor;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
+import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoCoding;
+import org.esa.snap.core.datamodel.Mask;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
@@ -11,7 +15,9 @@ import ucar.ma2.DataType;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
+import java.awt.Color;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Map;
 
@@ -265,6 +271,85 @@ public class FlexProductReaderTest {
         assertTrue(geoCodingMap(reader).isEmpty());
     }
 
+    @Test
+    public void testAddFlagMask_usesDirectMaskCreation() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = spy(new Product("p", "t", 10, 10));
+        product.addBand("quality", ProductData.TYPE_UINT8);
+        final FlexFlagMask flagMask = new FlexFlagMask("quality", "bad", 1, "Bad pixel", true);
+
+        invokeAddFlagMask(reader, product, "quality", flagMask, 0);
+
+        verify(product, never()).addMask(eq("quality_bad"), anyString(), anyString(), any(Color.class), anyDouble());
+        verify(product).addMask(any(Mask.class));
+    }
+
+    @Test
+    public void testAddFlagMask_preservesBitmaskExpression() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 10, 10);
+        product.addBand("quality", ProductData.TYPE_UINT8);
+        final FlexFlagMask flagMask = new FlexFlagMask("quality", "bad", 4, "Bad pixel", true);
+
+        invokeAddFlagMask(reader, product, "quality", flagMask, 0);
+
+        final Mask mask = product.getMaskGroup().get("quality_bad");
+        assertNotNull(mask);
+        assertEquals("quality & 4 != 0", Mask.BandMathsType.getExpression(mask));
+    }
+
+    @Test
+    public void testAddFlagMask_preservesIndexExpression() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 10, 10);
+        product.addBand("classification", ProductData.TYPE_UINT8);
+        final FlexFlagMask flagMask = new FlexFlagMask("classification", "land", 2, "Land pixel", false);
+
+        invokeAddFlagMask(reader, product, "classification", flagMask, 0);
+
+        final Mask mask = product.getMaskGroup().get("classification_land");
+        assertNotNull(mask);
+        assertEquals("classification == 2", Mask.BandMathsType.getExpression(mask));
+    }
+
+    @Test
+    public void testAddFlagMask_usesReferencedBandGeometry() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 20, 30);
+        product.addBand(new Band("quality", ProductData.TYPE_UINT8, 4, 5));
+        final FlexFlagMask flagMask = new FlexFlagMask("quality", "bad", 1, "Bad pixel", true);
+
+        invokeAddFlagMask(reader, product, "quality", flagMask, 0);
+
+        final Mask mask = product.getMaskGroup().get("quality_bad");
+        assertNotNull(mask);
+        assertEquals(4, mask.getRasterWidth());
+        assertEquals(5, mask.getRasterHeight());
+    }
+
+    @Test
+    public void testAddFlagMasks_expandsChannelQualityMasksForAllLayerBands() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 10, 10);
+        product.addBand("HRE1_channel_quality_flags_1", ProductData.TYPE_UINT8);
+        product.addBand("HRE1_channel_quality_flags_2", ProductData.TYPE_UINT8);
+        product.addBand("HRE1_common_quality_flags", ProductData.TYPE_UINT8);
+
+        final FlexProductDescriptor descriptor = new FlexProductDescriptor();
+        descriptor.setFlagMasks(new FlexFlagMask[]{
+                new FlexFlagMask("HRE1_channel_quality_flags", "bad", 1, "Bad pixel", true),
+                new FlexFlagMask("HRE1_channel_quality_flags", "dead", 2, "Dead pixel", true)
+        });
+
+        invokeAddFlagMasks(reader, product, descriptor);
+
+        assertNotNull(product.getMaskGroup().get("HRE1_channel_quality_flags_1_bad"));
+        assertNotNull(product.getMaskGroup().get("HRE1_channel_quality_flags_2_bad"));
+        assertNotNull(product.getMaskGroup().get("HRE1_channel_quality_flags_1_dead"));
+        assertNotNull(product.getMaskGroup().get("HRE1_channel_quality_flags_2_dead"));
+        assertEquals(4, product.getMaskGroup().getNodeCount());
+    }
+
     private Variable mockStringVariable(String fullName) {
         final Variable variable = mock(Variable.class);
         when(variable.getFullName()).thenReturn(fullName);
@@ -308,6 +393,22 @@ public class FlexProductReaderTest {
     @SuppressWarnings("unchecked")
     private Map<String, GeoCoding> geoCodingMap(FlexProductReader reader) throws Exception {
         return (Map<String, GeoCoding>) getField(reader, "geoCodingMap");
+    }
+
+    private void invokeAddFlagMask(FlexProductReader reader, Product product, String bandName,
+                                   FlexFlagMask mask, int colorIndex) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "addFlagMask", Product.class, String.class, FlexFlagMask.class, int.class);
+        method.setAccessible(true);
+        method.invoke(reader, product, bandName, mask, colorIndex);
+    }
+
+    private void invokeAddFlagMasks(FlexProductReader reader, Product product,
+                                    FlexProductDescriptor productDescriptor) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "addFlagMasks", Product.class, FlexProductDescriptor.class);
+        method.setAccessible(true);
+        method.invoke(reader, product, productDescriptor);
     }
 
     private Object getField(FlexProductReader reader, String name) throws Exception {
