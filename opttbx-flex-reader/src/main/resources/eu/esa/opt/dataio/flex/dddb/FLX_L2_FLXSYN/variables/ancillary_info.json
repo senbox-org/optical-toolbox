@@ -1,0 +1,62 @@
+[
+  {
+    "name": "elevation",
+    "ncVarName": "elevation",
+    "ncGroupPath": "Ancillary_Information",
+    "type": "v",
+    "dataType": "float64",
+    "units": "m",
+    "description": "Surface elevation"
+  },
+  {
+    "name": "sun_zenith_angle",
+    "ncVarName": "sun_zenith_angle",
+    "ncGroupPath": "Ancillary_Information",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 4,
+    "depthPrefixToken": "_instrument_",
+    "units": "degrees",
+    "description": "Sun zenith angle per instrument"
+  },
+  {
+    "name": "viewing_zenith_angle",
+    "ncVarName": "viewing_zenith_angle",
+    "ncGroupPath": "Ancillary_Information",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 4,
+    "depthPrefixToken": "_instrument_",
+    "units": "degrees",
+    "description": "Viewing zenith angle per instrument"
+  },
+  {
+    "name": "relative_azimuth_angle",
+    "ncVarName": "relative_azimuth_angle",
+    "ncGroupPath": "Ancillary_Information",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 4,
+    "depthPrefixToken": "_instrument_",
+    "units": "degrees",
+    "description": "Relative azimuth angle per instrument"
+  },
+  {
+    "name": "longitude",
+    "ncVarName": "longitude",
+    "ncGroupPath": "Ancillary_Information",
+    "type": "v",
+    "dataType": "float64",
+    "units": "degrees_east",
+    "description": "Longitude in WGS84"
+  },
+  {
+    "name": "latitude",
+    "ncVarName": "latitude",
+    "ncGroupPath": "Ancillary_Information",
+    "type": "v",
+    "dataType": "float64",
+    "units": "degrees_north",
+    "description": "Latitude in WGS84"
+  }
+]

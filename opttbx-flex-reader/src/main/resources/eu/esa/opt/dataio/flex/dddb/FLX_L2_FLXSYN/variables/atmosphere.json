@@ -1,0 +1,214 @@
+[
+  {
+    "name": "floris_apparent_reflectance",
+    "ncVarName": "floris_apparent_reflectance",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 580,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "floris_spectral_channel_central_wavelengths",
+    "units": "",
+    "description": "FLORIS apparent reflectance"
+  },
+  {
+    "name": "floris_spectral_channel_central_wavelengths",
+    "ncVarName": "floris_spectral_channel_central_wavelengths",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "m",
+    "dataType": "float64",
+    "width": 580,
+    "height": 1,
+    "units": "nm",
+    "description": "FLORIS spectral channel central wavelengths"
+  },
+  {
+    "name": "columnar_water_vapor",
+    "ncVarName": "columnar_water_vapor",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "v",
+    "dataType": "float64",
+    "units": "g.cm-2",
+    "description": "Columnar water vapor"
+  },
+  {
+    "name": "aerosol_optical_thickness",
+    "ncVarName": "aerosol_optical_thickness",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "v",
+    "dataType": "float64",
+    "units": "",
+    "description": "Aerosol optical thickness"
+  },
+  {
+    "name": "angstrom_exponent",
+    "ncVarName": "angstrom_exponent",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "v",
+    "dataType": "float64",
+    "units": "",
+    "description": "Angstrom exponent"
+  },
+  {
+    "name": "asymmetry_parameter",
+    "ncVarName": "asymmetry_parameter",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "v",
+    "dataType": "float64",
+    "units": "",
+    "description": "Asymmetry parameter"
+  },
+  {
+    "name": "cloud_probability",
+    "ncVarName": "cloud_probability",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "v",
+    "dataType": "float64",
+    "units": "",
+    "description": "Cloud probability"
+  },
+  {
+    "name": "cirrus_cloud_mask",
+    "ncVarName": "cirrus_cloud_mask",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "v",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Cirrus cloud mask"
+  },
+  {
+    "name": "land_surface_temperature",
+    "ncVarName": "land_surface_temperature",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "v",
+    "dataType": "float32",
+    "units": "K",
+    "description": "Land surface temperature"
+  },
+  {
+    "name": "olci_apparent_reflectance",
+    "ncVarName": "olci_apparent_reflectance",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 21,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "olci_spectral_channel_central_wavelengths",
+    "units": "",
+    "description": "OLCI apparent reflectance"
+  },
+  {
+    "name": "slstr_apparent_reflectance",
+    "ncVarName": "slstr_apparent_reflectance",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 6,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "slstr_vswir_spectral_channel_central_wavelengths",
+    "units": "",
+    "description": "SLSTR apparent reflectance"
+  },
+  {
+    "name": "floris_apparent_reflectance_uncertainty",
+    "ncVarName": "floris_apparent_reflectance_uncertainty",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 580,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "floris_spectral_channel_central_wavelengths",
+    "units": "",
+    "description": "FLORIS apparent reflectance uncertainty"
+  },
+  {
+    "name": "direct_irradiance",
+    "ncVarName": "direct_irradiance",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 605,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "irradiance_wavelength_grid",
+    "units": "mW.m-2.nm-1",
+    "description": "Direct irradiance"
+  },
+  {
+    "name": "direct_irradiance_uncertainty",
+    "ncVarName": "direct_irradiance_uncertainty",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "s",
+    "dataType": "float32",
+    "depth": 605,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "irradiance_wavelength_grid",
+    "units": "",
+    "description": "Direct irradiance uncertainty"
+  },
+  {
+    "name": "diffuse_irradiance",
+    "ncVarName": "diffuse_irradiance",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 605,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "irradiance_wavelength_grid",
+    "units": "mW.m-2.nm-1",
+    "description": "Diffuse irradiance"
+  },
+  {
+    "name": "diffuse_irradiance_uncertainty",
+    "ncVarName": "diffuse_irradiance_uncertainty",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "s",
+    "dataType": "float32",
+    "depth": 605,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "irradiance_wavelength_grid",
+    "units": "",
+    "description": "Diffuse irradiance uncertainty"
+  },
+  {
+    "name": "irradiance_wavelength_grid",
+    "ncVarName": "irradiance_wavelength_grid",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "m",
+    "dataType": "float64",
+    "width": 605,
+    "height": 1,
+    "units": "nm",
+    "description": "Irradiance wavelength grid"
+  },
+  {
+    "name": "integrated_par",
+    "ncVarName": "integrated_par",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "v",
+    "dataType": "float64",
+    "units": "umol.photons.m-2.s-1",
+    "description": "Integrated photosynthetically active radiation"
+  },
+  {
+    "name": "slstr_vswir_spectral_channel_central_wavelengths",
+    "ncVarName": "slstr_vswir_spectral_channel_central_wavelengths",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "m",
+    "dataType": "float64",
+    "width": 6,
+    "height": 1,
+    "units": "nm",
+    "description": "SLSTR VSWIR spectral channel central wavelengths"
+  },
+  {
+    "name": "olci_spectral_channel_central_wavelengths",
+    "ncVarName": "olci_spectral_channel_central_wavelengths",
+    "ncGroupPath": "L2_Atmosphere",
+    "type": "m",
+    "dataType": "float64",
+    "width": 21,
+    "height": 1,
+    "units": "nm",
+    "description": "OLCI spectral channel central wavelengths"
+  }
+]

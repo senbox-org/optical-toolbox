@@ -1,0 +1,9 @@
+{
+  "testProducts": [
+    {
+      "id": "FLX_L1C_FLXSYN_20230712T075954",
+      "relativePath": "sensors_platforms/FLEX/L1C/FLX_L1C_FLXSYN_20230712T075954_20230712T080232_20260311T160418_0158_100_064_0021_01/flx_l1c_flxsyn_20230712T075954_20230712T080232_20260311T160418_0158_100_064_0021_01.xml",
+      "description": "FLEX L1c flxsyn"
+    }
+  ]
+}

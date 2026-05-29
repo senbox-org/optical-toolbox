@@ -1,0 +1,15 @@
+{
+  "productType": "FLX_L2_FLXSYN",
+  "width": 366,
+  "height": 366,
+  "dataFiles": ["atmosphere", "ancillary_info", "fluorescence", "vegetation", "quality"],
+  "bandGroupingPattern": "floris_apparent_reflectance_ch_*:floris_apparent_reflectance_uncertainty_ch_*:olci_apparent_reflectance_ch_*:slstr_apparent_reflectance_ch_*:direct_irradiance_ch_*:direct_irradiance_uncertainty_ch_*:diffuse_irradiance_ch_*:diffuse_irradiance_uncertainty_ch_*:sif_emission_spectrum_ch_*:sif_emission_spectrum_uncertainty_ch_*:floris_real_reflectance_ch_*:floris_real_reflectance_uncertainty_ch_*:sif_peak_values_*:sif_peak_positions_*:sif_O2_bands_value_*:fluorescence_escape_probability_ch_*:fluorescence_escape_probability_uncertainty_ch_*:viewing_zenith_angle_instrument_*:sun_zenith_angle_instrument_*:relative_azimuth_angle_instrument_*:leaf_*",
+  "flagMasks": [
+    {"bandName": "quality_flags", "name": "valid", "value": 0, "description": "Valid pixel"},
+    {"bandName": "quality_flags", "name": "not_valid_l1c", "value": 1, "description": "Not-valid L1C pixel"},
+    {"bandName": "quality_flags", "name": "error_l2a_wv", "value": 2, "description": "Error in L2A water vapor retrieval"},
+    {"bandName": "quality_flags", "name": "not_valid_l2a_refl", "value": 3, "description": "Not-valid L2A reflectance"},
+    {"bandName": "quality_flags", "name": "not_valid_l2b_fluor", "value": 4, "description": "Not-valid L2B fluorescence"},
+    {"bandName": "quality_flags", "name": "not_valid_l2c", "value": 5, "description": "Not-valid L2C"}
+  ]
+}

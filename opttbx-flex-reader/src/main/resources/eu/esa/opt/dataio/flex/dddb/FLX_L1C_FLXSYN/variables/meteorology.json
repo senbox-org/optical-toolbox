@@ -1,0 +1,53 @@
+[
+  {
+    "name": "temperature_profile",
+    "ncVarName": "temperature_profile",
+    "ncGroupPath": "Annotation_data/Meteorology",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 25,
+    "depthPrefixToken": "_level_",
+    "units": "K",
+    "description": "Temperature profile at 25 pressure levels"
+  },
+  {
+    "name": "total_columnar_water_vapor",
+    "ncVarName": "total_columnar_water_vapor",
+    "ncGroupPath": "Annotation_data/Meteorology",
+    "type": "v",
+    "dataType": "float64",
+    "units": "g.m-2",
+    "description": "Total columnar water vapor"
+  },
+  {
+    "name": "total_ozone",
+    "ncVarName": "total_ozone",
+    "ncGroupPath": "Annotation_data/Meteorology",
+    "type": "v",
+    "dataType": "float64",
+    "units": "atm-cm",
+    "description": "Total ozone column"
+  },
+  {
+    "name": "tie_pressure_levels",
+    "ncVarName": "tie_pressure_levels",
+    "ncGroupPath": "Annotation_data/Meteorology",
+    "type": "m",
+    "dataType": "float32",
+    "width": 25,
+    "height": 1,
+    "units": "hPa",
+    "description": "Pressure levels for temperature profile"
+  },
+  {
+    "name": "aerosol_optical_thickness",
+    "ncVarName": "aerosol_optical_thickness",
+    "ncGroupPath": "Annotation_data/Meteorology",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 3,
+    "depthPrefixToken": "_band_",
+    "units": "",
+    "description": "Aerosol optical thickness at 3 wavelength bands"
+  }
+]

@@ -1,0 +1,102 @@
+[
+  {
+    "name": "latitude",
+    "ncVarName": "latitude",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "v",
+    "dataType": "float64",
+    "units": "degrees_north",
+    "description": "Latitude in WGS84"
+  },
+  {
+    "name": "longitude",
+    "ncVarName": "longitude",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "v",
+    "dataType": "float64",
+    "units": "degrees_east",
+    "description": "Longitude in WGS84"
+  },
+  {
+    "name": "surface_elevation",
+    "ncVarName": "surface_elevation",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "v",
+    "dataType": "float64",
+    "units": "m",
+    "description": "Surface elevation from GETASSE30 DEM"
+  },
+  {
+    "name": "viewing_zenith_angle",
+    "ncVarName": "viewing_zenith_angle",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 4,
+    "depthPrefixToken": "_instrument_",
+    "units": "degrees",
+    "description": "Viewing zenith angle per instrument (FLORIS, OLCI, SLSTR nadir, SLSTR oblique)"
+  },
+  {
+    "name": "sun_zenith_angle",
+    "ncVarName": "sun_zenith_angle",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 4,
+    "depthPrefixToken": "_instrument_",
+    "units": "degrees",
+    "description": "Sun zenith angle per instrument"
+  },
+  {
+    "name": "sun_azimuth_angle",
+    "ncVarName": "sun_azimuth_angle",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 4,
+    "depthPrefixToken": "_instrument_",
+    "units": "degrees",
+    "description": "Sun azimuth angle per instrument"
+  },
+  {
+    "name": "relative_azimuth_angle",
+    "ncVarName": "relative_azimuth_angle",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 4,
+    "depthPrefixToken": "_instrument_",
+    "units": "degrees",
+    "description": "Relative azimuth angle per instrument"
+  },
+  {
+    "name": "average_coregistration_uncertainty",
+    "ncVarName": "average_coregistration_uncertainty",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "m",
+    "dataType": "float64",
+    "width": 2,
+    "height": 4,
+    "units": "degrees",
+    "description": "Global coregistration uncertainty"
+  },
+  {
+    "name": "surface_slope",
+    "ncVarName": "surface_slope",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "v",
+    "dataType": "float64",
+    "units": "degrees",
+    "description": "Surface slope"
+  },
+  {
+    "name": "surface_aspect",
+    "ncVarName": "surface_aspect",
+    "ncGroupPath": "Annotation_data/Geometry",
+    "type": "v",
+    "dataType": "float64",
+    "units": "degrees",
+    "description": "Surface aspect"
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "name": "time_stamp",
+    "ncVarName": "time_stamp",
+    "ncGroupPath": "Annotation_data/Datation",
+    "type": "m",
+    "dataType": "int64",
+    "width": 3640,
+    "height": 1,
+    "units": "microseconds since 2000-01-01",
+    "description": "Acquisition time stamp per along-track line"
+  }
+]

@@ -1,0 +1,529 @@
+[
+    {
+        "name": "HRE1_longitude",
+        "ncVarName": "longitude",
+        "ncGroupPath": "Annotation_data/Geolocation_coordinates",
+        "ncDataFile": "hre1",
+        "type": "v",
+        "dataType": "int32",
+        "units": "degrees_east",
+        "description": "DEM corrected longitude from HRE1 observation"
+    },
+    {
+        "name": "HRE1_latitude",
+        "ncVarName": "latitude",
+        "ncGroupPath": "Annotation_data/Geolocation_coordinates",
+        "ncDataFile": "hre1",
+        "type": "v",
+        "dataType": "int32",
+        "units": "degrees_north",
+        "description": "DEM corrected latitude from HRE1 observation"
+    },
+    {
+        "name": "HRE1_altitude",
+        "ncVarName": "altitude",
+        "ncGroupPath": "Annotation_data/Geolocation_coordinates",
+        "ncDataFile": "hre1",
+        "type": "v",
+        "dataType": "int16",
+        "units": "m",
+        "description": "Altitude over Ellipsoid from HRE1 observation"
+    },
+    {
+        "name": "HRE1_SZA",
+        "ncVarName": "SZA",
+        "ncGroupPath": "Annotation_data/Geometry",
+        "ncDataFile": "hre1",
+        "type": "v",
+        "dataType": "uint32",
+        "units": "degrees",
+        "description": "Sun Zenith Angle from HRE1"
+    },
+    {
+        "name": "HRE1_SAA",
+        "ncVarName": "SAA",
+        "ncGroupPath": "Annotation_data/Geometry",
+        "ncDataFile": "hre1",
+        "type": "v",
+        "dataType": "int32",
+        "units": "degrees",
+        "description": "Sun Azimuth Angle from HRE1"
+    },
+    {
+        "name": "HRE1_OZA",
+        "ncVarName": "OZA",
+        "ncGroupPath": "Annotation_data/Geometry",
+        "ncDataFile": "hre1",
+        "type": "v",
+        "dataType": "uint32",
+        "units": "degrees",
+        "description": "Observation Zenith Angle from HRE1"
+    },
+    {
+        "name": "HRE1_OAA",
+        "ncVarName": "OAA",
+        "ncGroupPath": "Annotation_data/Geometry",
+        "ncDataFile": "hre1",
+        "type": "v",
+        "dataType": "int32",
+        "units": "degrees",
+        "description": "Observation Azimuth Angle from HRE1"
+    },
+    {
+        "name": "HRE1_common_quality_flags",
+        "ncVarName": "common_quality_flags",
+        "ncGroupPath": "Annotation_data/Quality_flags",
+        "ncDataFile": "hre1",
+        "type": "b",
+        "dataType": "uint8",
+        "description": "Classification and quality flags common to all spectral channels from HRE1"
+    },
+    {
+        "name": "HRE1_time_stamp",
+        "ncVarName": "time_stamp",
+        "ncGroupPath": "Annotation_data/Time_coordinates",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Elapsed time since 01 Jan 2000 0h from HRE1"
+    },
+    {
+        "name": "HRE1_channel_quality_flags",
+        "ncVarName": "channel_quality_flags",
+        "ncGroupPath": "Annotation_data/Quality_flags",
+        "ncDataFile": "hre1",
+        "type": "s",
+        "dataType": "uint8",
+        "depth": 140,
+        "depthPrefixToken": "_",
+        "description": "Classification and quality flags depending on spectral channel from HRE1"
+    },
+    {
+        "name": "HRE1_meteo_column_index",
+        "ncVarName": "meteo_column_index",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Location on the instrument grid of the meteo tie points from HRE1"
+    },
+    {
+        "name": "HRE1_horizontal_wind",
+        "ncVarName": "horizontal_wind",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "m.s-1",
+        "description": "Horizontal wind vector [u,v] at 10m altitude from HRE1"
+    },
+    {
+        "name": "HRE1_sea_level_pressure",
+        "ncVarName": "sea_level_pressure",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "hPa",
+        "description": "Mean sea level pressure from HRE1"
+    },
+    {
+        "name": "HRE1_total_ozone",
+        "ncVarName": "total_ozone",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "Kg.m-2",
+        "description": "Total columnar ozone from HRE1"
+    },
+    {
+        "name": "HRE1_humidity",
+        "ncVarName": "humidity",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "%",
+        "description": "Relative humidity from HRE1"
+    },
+    {
+        "name": "HRE1_reference_pressure_level",
+        "ncVarName": "reference_pressure_level",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "hPa",
+        "description": "Reference pressure level from HRE1"
+    },
+    {
+        "name": "HRE1_atmospheric_temperature_profile",
+        "ncVarName": "atmospheric_temperature_profile",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "K",
+        "description": "Air temperature profile from HRE1"
+    },
+    {
+        "name": "HRE1_total_columnar_water_vapour",
+        "ncVarName": "total_columnar_water_vapour",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "Kg.m-2",
+        "description": "Total column water vapour from HRE1"
+    },
+    {
+        "name": "HRE1_time_out_of_eclipse",
+        "ncVarName": "time_out_of_eclipse",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float64",
+        "units": "seconds",
+        "description": "Seconds satellite is out of Earth eclipse from HRE1"
+    },
+    {
+        "name": "HRE1_eclipse_entry",
+        "ncVarName": "eclipse_entry",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Eclipse entry time (Earth occluding Sun) from HRE1"
+    },
+    {
+        "name": "HRE1_eclipse_exit",
+        "ncVarName": "eclipse_exit",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Eclipse exit time (Earth occluding Sun) from HRE1"
+    },
+    {
+        "name": "HRE1_sun_moon_entry",
+        "ncVarName": "sun_moon_entry",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Eclipse entry time (Moon occluding Sun) from HRE1"
+    },
+    {
+        "name": "HRE1_sun_moon_exit",
+        "ncVarName": "sun_moon_exit",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Eclipse exit time (Moon occluding Sun) from HRE1"
+    },
+    {
+        "name": "HRE1_gain_uncertainty",
+        "ncVarName": "gain_uncertainty",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "%",
+        "description": "Uncertainty on the gain calibration coefficients from HRE1"
+    },
+    {
+        "name": "HRE1_relative_spatial_radiometric_accuracy",
+        "ncVarName": "relative_spatial_radiometric_accuracy",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "%",
+        "description": "Uncertainty due to the RXRA from HRE1"
+    },
+    {
+        "name": "HRE1_relative_spectral_radiometric_accuracy",
+        "ncVarName": "relative_spectral_radiometric_accuracy",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "%",
+        "description": "Uncertainty due to the RSRA from HRE1"
+    },
+    {
+        "name": "HRE1_spectral_channel_centre_wavelength",
+        "ncVarName": "spectral_channel_centre_wavelength",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "nm",
+        "description": "FLEX characterised central wavelength from HRE1"
+    },
+    {
+        "name": "HRE1_spectral_channel_centre_wavelength_shift",
+        "ncVarName": "spectral_channel_centre_wavelength_shift",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "nm",
+        "description": "FLEX central wavelength shifts from HRE1"
+    },
+    {
+        "name": "HRE1_FWHM",
+        "ncVarName": "FWHM",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "nm",
+        "description": "FLEX bandwidth (Full Widths at Half Maximum) from HRE1"
+    },
+    {
+        "name": "HRE1_HR1_Isun_filt",
+        "ncVarName": "HR1_Isun_filt",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "mW.m-2.nm-1",
+        "description": "Extraterrestrial in-band solar irradiance from HRE1"
+    },
+    {
+        "name": "HRE1_dynamic_range",
+        "ncVarName": "dynamic_range",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Minimum and Maximum pixel levels from HRE1"
+    },
+    {
+        "name": "HRE1_T_expo",
+        "ncVarName": "T_expo",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Exposure time from HRE1"
+    },
+    {
+        "name": "HRE1_woi_start",
+        "ncVarName": "woi_start",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Start row of the Window Of Interest from HRE1"
+    },
+    {
+        "name": "HRE1_woi_size",
+        "ncVarName": "woi_size",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Size of the Window Of Interest from HRE1"
+    },
+    {
+        "name": "HRE1_NBSMEAR",
+        "ncVarName": "NBSMEAR",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Number of vertical shift for smearing info accumulation from HRE1"
+    },
+    {
+        "name": "HRE1_NBTAIL",
+        "ncVarName": "NBTAIL",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Number of over-scan rows from HRE1"
+    },
+    {
+        "name": "HRE1_smearing_lines",
+        "ncVarName": "smearing_lines",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "description": "Smearing lines used for smearing correction from HRE1"
+    },
+    {
+        "name": "HRE1_post_pixels",
+        "ncVarName": "post_pixels",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Post-Pixel Voltage Reference Channel E, F, G, H from HRE1"
+    },
+    {
+        "name": "HRE1_Dark_info_imaged",
+        "ncVarName": "Dark_info_imaged",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Dark sides content of the central part of the CCD from HRE1"
+    },
+    {
+        "name": "HRE1_spectral_binning",
+        "ncVarName": "spectral_binning",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Spectral binning parameters from HRE1"
+    },
+    {
+        "name": "HRE1_temperatures_CCD",
+        "ncVarName": "temperatures_CCD",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "K",
+        "description": "CCD Temperature from HRE1"
+    },
+    {
+        "name": "HRE1_temperatures_VAU",
+        "ncVarName": "temperatures_VAU",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "K",
+        "description": "VAU temperatures from HRE1"
+    },
+    {
+        "name": "HRE1_temperatures_FPA",
+        "ncVarName": "temperatures_FPA",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "float32",
+        "units": "K",
+        "description": "FPA temperatures from HRE1"
+    },
+    {
+        "name": "HRE1_offset_correction",
+        "ncVarName": "offset_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if offset correction has been applied from HRE1"
+    },
+    {
+        "name": "HRE1_non_linearity_correction",
+        "ncVarName": "non_linearity_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if non-linearity correction has been applied from HRE1"
+    },
+    {
+        "name": "HRE1_dark_signal_removal",
+        "ncVarName": "dark_signal_removal",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if dark signal correction has been applied from HRE1"
+    },
+    {
+        "name": "HRE1_smearing_correction",
+        "ncVarName": "smearing_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if smearing signal correction has been applied from HRE1"
+    },
+    {
+        "name": "HRE1_straylight_correction",
+        "ncVarName": "straylight_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if straylight correction has been applied from HRE1"
+    },
+    {
+        "name": "HRE1_flat_field_correction",
+        "ncVarName": "flat_field_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if flat field correction has been applied from HRE1"
+    },
+    {
+        "name": "HRE1_absolute_radiometric_calibration",
+        "ncVarName": "absolute_radiometric_calibration",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if absolute radiometric correction has been applied from HRE1"
+    },
+    {
+        "name": "HRE1_geolocation",
+        "ncVarName": "geolocation",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if geolocation has been done from HRE1"
+    },
+    {
+        "name": "HRE1_defective_pixels_flagging",
+        "ncVarName": "defective_pixels_flagging",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if defective pixels flagging has been done from HRE1"
+    },
+    {
+        "name": "HRE1_classification_and_quality_flagging",
+        "ncVarName": "classification_and_quality_flagging",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if classification and quality flagging has been done from HRE1"
+    },
+    {
+        "name": "HRE1_output_rescaling",
+        "ncVarName": "output_rescaling",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if output rescaling has been done from HRE1"
+    },
+    {
+        "name": "HRE1_output_zipping",
+        "ncVarName": "output_zipping",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "hre1",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if output zipping has been done from HRE1"
+    }
+]

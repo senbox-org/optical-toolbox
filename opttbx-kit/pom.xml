@@ -601,6 +601,11 @@
             <artifactId>opttbx-prisma</artifactId>
             <version>${opttbx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>eu.esa.opt</groupId>
+            <artifactId>opttbx-flex-reader</artifactId>
+            <version>${opttbx.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>

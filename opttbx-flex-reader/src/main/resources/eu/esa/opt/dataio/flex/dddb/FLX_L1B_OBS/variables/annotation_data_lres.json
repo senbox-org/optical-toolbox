@@ -1,0 +1,529 @@
+[
+    {
+        "name": "LRES_longitude",
+        "ncVarName": "longitude",
+        "ncGroupPath": "Annotation_data/Geolocation_coordinates",
+        "ncDataFile": "lres",
+        "type": "v",
+        "dataType": "int32",
+        "units": "degrees_east",
+        "description": "DEM corrected longitude from LRES observation"
+    },
+    {
+        "name": "LRES_latitude",
+        "ncVarName": "latitude",
+        "ncGroupPath": "Annotation_data/Geolocation_coordinates",
+        "ncDataFile": "lres",
+        "type": "v",
+        "dataType": "int32",
+        "units": "degrees_north",
+        "description": "DEM corrected latitude from LRES observation"
+    },
+    {
+        "name": "LRES_altitude",
+        "ncVarName": "altitude",
+        "ncGroupPath": "Annotation_data/Geolocation_coordinates",
+        "ncDataFile": "lres",
+        "type": "v",
+        "dataType": "int16",
+        "units": "m",
+        "description": "Altitude over Ellipsoid from LRES observation"
+    },
+    {
+        "name": "LRES_SZA",
+        "ncVarName": "SZA",
+        "ncGroupPath": "Annotation_data/Geometry",
+        "ncDataFile": "lres",
+        "type": "v",
+        "dataType": "uint32",
+        "units": "degrees",
+        "description": "Sun Zenith Angle from LRES"
+    },
+    {
+        "name": "LRES_SAA",
+        "ncVarName": "SAA",
+        "ncGroupPath": "Annotation_data/Geometry",
+        "ncDataFile": "lres",
+        "type": "v",
+        "dataType": "int32",
+        "units": "degrees",
+        "description": "Sun Azimuth Angle from LRES"
+    },
+    {
+        "name": "LRES_OZA",
+        "ncVarName": "OZA",
+        "ncGroupPath": "Annotation_data/Geometry",
+        "ncDataFile": "lres",
+        "type": "v",
+        "dataType": "uint32",
+        "units": "degrees",
+        "description": "Observation Zenith Angle from LRES"
+    },
+    {
+        "name": "LRES_OAA",
+        "ncVarName": "OAA",
+        "ncGroupPath": "Annotation_data/Geometry",
+        "ncDataFile": "lres",
+        "type": "v",
+        "dataType": "int32",
+        "units": "degrees",
+        "description": "Observation Azimuth Angle from LRES"
+    },
+    {
+        "name": "LRES_common_quality_flags",
+        "ncVarName": "common_quality_flags",
+        "ncGroupPath": "Annotation_data/Quality_flags",
+        "ncDataFile": "lres",
+        "type": "b",
+        "dataType": "uint8",
+        "description": "Classification and quality flags common to all spectral channels from LRES"
+    },
+    {
+        "name": "LRES_time_stamp",
+        "ncVarName": "time_stamp",
+        "ncGroupPath": "Annotation_data/Time_coordinates",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Elapsed time since 01 Jan 2000 0h from LRES"
+    },
+    {
+        "name": "LRES_channel_quality_flags",
+        "ncVarName": "channel_quality_flags",
+        "ncGroupPath": "Annotation_data/Quality_flags",
+        "ncDataFile": "lres",
+        "type": "s",
+        "dataType": "uint8",
+        "depth": 235,
+        "depthPrefixToken": "_",
+        "description": "Classification and quality flags depending on spectral channel from LRES"
+    },
+    {
+        "name": "LRES_meteo_column_index",
+        "ncVarName": "meteo_column_index",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Location on the instrument grid of the meteo tie points from LRES"
+    },
+    {
+        "name": "LRES_horizontal_wind",
+        "ncVarName": "horizontal_wind",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "m.s-1",
+        "description": "Horizontal wind vector [u,v] at 10m altitude from LRES"
+    },
+    {
+        "name": "LRES_sea_level_pressure",
+        "ncVarName": "sea_level_pressure",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "hPa",
+        "description": "Mean sea level pressure from LRES"
+    },
+    {
+        "name": "LRES_total_ozone",
+        "ncVarName": "total_ozone",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "Kg.m-2",
+        "description": "Total columnar ozone from LRES"
+    },
+    {
+        "name": "LRES_humidity",
+        "ncVarName": "humidity",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "%",
+        "description": "Relative humidity from LRES"
+    },
+    {
+        "name": "LRES_reference_pressure_level",
+        "ncVarName": "reference_pressure_level",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "hPa",
+        "description": "Reference pressure level from LRES"
+    },
+    {
+        "name": "LRES_atmospheric_temperature_profile",
+        "ncVarName": "atmospheric_temperature_profile",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "K",
+        "description": "Air temperature profile from LRES"
+    },
+    {
+        "name": "LRES_total_columnar_water_vapour",
+        "ncVarName": "total_columnar_water_vapour",
+        "ncGroupPath": "Annotation_data/Meteorological_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "Kg.m-2",
+        "description": "Total column water vapour from LRES"
+    },
+    {
+        "name": "LRES_time_out_of_eclipse",
+        "ncVarName": "time_out_of_eclipse",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float64",
+        "units": "seconds",
+        "description": "Seconds satellite is out of Earth eclipse from LRES"
+    },
+    {
+        "name": "LRES_eclipse_entry",
+        "ncVarName": "eclipse_entry",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Eclipse entry time (Earth occluding Sun) from LRES"
+    },
+    {
+        "name": "LRES_eclipse_exit",
+        "ncVarName": "eclipse_exit",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Eclipse exit time (Earth occluding Sun) from LRES"
+    },
+    {
+        "name": "LRES_sun_moon_entry",
+        "ncVarName": "sun_moon_entry",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Eclipse entry time (Moon occluding Sun) from LRES"
+    },
+    {
+        "name": "LRES_sun_moon_exit",
+        "ncVarName": "sun_moon_exit",
+        "ncGroupPath": "Annotation_data/Eclipse",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "int64",
+        "units": "microseconds since 2000-01-01 00:00:00",
+        "description": "Eclipse exit time (Moon occluding Sun) from LRES"
+    },
+    {
+        "name": "LRES_gain_uncertainty",
+        "ncVarName": "gain_uncertainty",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "%",
+        "description": "Uncertainty on the gain calibration coefficients from LRES"
+    },
+    {
+        "name": "LRES_relative_spatial_radiometric_accuracy",
+        "ncVarName": "relative_spatial_radiometric_accuracy",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "%",
+        "description": "Uncertainty due to the RXRA from LRES"
+    },
+    {
+        "name": "LRES_relative_spectral_radiometric_accuracy",
+        "ncVarName": "relative_spectral_radiometric_accuracy",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "%",
+        "description": "Uncertainty due to the RSRA from LRES"
+    },
+    {
+        "name": "LRES_spectral_channel_centre_wavelength",
+        "ncVarName": "spectral_channel_centre_wavelength",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "nm",
+        "description": "FLEX characterised central wavelength from LRES"
+    },
+    {
+        "name": "LRES_spectral_channel_centre_wavelength_shift",
+        "ncVarName": "spectral_channel_centre_wavelength_shift",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "nm",
+        "description": "FLEX central wavelength shifts from LRES"
+    },
+    {
+        "name": "LRES_FWHM",
+        "ncVarName": "FWHM",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "nm",
+        "description": "FLEX bandwidth (Full Widths at Half Maximum) from LRES"
+    },
+    {
+        "name": "LRES_LR_Isun_filt",
+        "ncVarName": "LR_Isun_filt",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "mW.m-2.nm-1",
+        "description": "Extraterrestrial in-band solar irradiance from LRES"
+    },
+    {
+        "name": "LRES_dynamic_range",
+        "ncVarName": "dynamic_range",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Minimum and Maximum pixel levels from LRES"
+    },
+    {
+        "name": "LRES_T_expo",
+        "ncVarName": "T_expo",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Exposure time from LRES"
+    },
+    {
+        "name": "LRES_woi_start",
+        "ncVarName": "woi_start",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Start row of the Window Of Interest from LRES"
+    },
+    {
+        "name": "LRES_woi_size",
+        "ncVarName": "woi_size",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Size of the Window Of Interest from LRES"
+    },
+    {
+        "name": "LRES_NBSMEAR",
+        "ncVarName": "NBSMEAR",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Number of vertical shift for smearing info accumulation from LRES"
+    },
+    {
+        "name": "LRES_NBTAIL",
+        "ncVarName": "NBTAIL",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Number of over-scan rows from LRES"
+    },
+    {
+        "name": "LRES_smearing_lines",
+        "ncVarName": "smearing_lines",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "description": "Smearing lines used for smearing correction from LRES"
+    },
+    {
+        "name": "LRES_post_pixels",
+        "ncVarName": "post_pixels",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Post-Pixel Voltage Reference Channel E, F, G, H from LRES"
+    },
+    {
+        "name": "LRES_Dark_info_imaged",
+        "ncVarName": "Dark_info_imaged",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Dark sides content of the central part of the CCD from LRES"
+    },
+    {
+        "name": "LRES_spectral_binning",
+        "ncVarName": "spectral_binning",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint16",
+        "description": "Spectral binning parameters from LRES"
+    },
+    {
+        "name": "LRES_temperatures_CCD",
+        "ncVarName": "temperatures_CCD",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "K",
+        "description": "CCD Temperature from LRES"
+    },
+    {
+        "name": "LRES_temperatures_VAU",
+        "ncVarName": "temperatures_VAU",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "K",
+        "description": "VAU temperatures from LRES"
+    },
+    {
+        "name": "LRES_temperatures_FPA",
+        "ncVarName": "temperatures_FPA",
+        "ncGroupPath": "Annotation_data/Instrumental_information",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "float32",
+        "units": "K",
+        "description": "FPA temperatures from LRES"
+    },
+    {
+        "name": "LRES_offset_correction",
+        "ncVarName": "offset_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if offset correction has been applied from LRES"
+    },
+    {
+        "name": "LRES_non_linearity_correction",
+        "ncVarName": "non_linearity_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if non-linearity correction has been applied from LRES"
+    },
+    {
+        "name": "LRES_dark_signal_removal",
+        "ncVarName": "dark_signal_removal",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if dark signal correction has been applied from LRES"
+    },
+    {
+        "name": "LRES_smearing_correction",
+        "ncVarName": "smearing_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if smearing signal correction has been applied from LRES"
+    },
+    {
+        "name": "LRES_straylight_correction",
+        "ncVarName": "straylight_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if straylight correction has been applied from LRES"
+    },
+    {
+        "name": "LRES_flat_field_correction",
+        "ncVarName": "flat_field_correction",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if flat field correction has been applied from LRES"
+    },
+    {
+        "name": "LRES_absolute_radiometric_calibration",
+        "ncVarName": "absolute_radiometric_calibration",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if absolute radiometric correction has been applied from LRES"
+    },
+    {
+        "name": "LRES_geolocation",
+        "ncVarName": "geolocation",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if geolocation has been done from LRES"
+    },
+    {
+        "name": "LRES_defective_pixels_flagging",
+        "ncVarName": "defective_pixels_flagging",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if defective pixels flagging has been done from LRES"
+    },
+    {
+        "name": "LRES_classification_and_quality_flagging",
+        "ncVarName": "classification_and_quality_flagging",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if classification and quality flagging has been done from LRES"
+    },
+    {
+        "name": "LRES_output_rescaling",
+        "ncVarName": "output_rescaling",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if output rescaling has been done from LRES"
+    },
+    {
+        "name": "LRES_output_zipping",
+        "ncVarName": "output_zipping",
+        "ncGroupPath": "Annotation_data/Processing_executed",
+        "ncDataFile": "lres",
+        "type": "m",
+        "dataType": "uint8",
+        "description": "Flag indicating if output zipping has been done from LRES"
+    }
+]
