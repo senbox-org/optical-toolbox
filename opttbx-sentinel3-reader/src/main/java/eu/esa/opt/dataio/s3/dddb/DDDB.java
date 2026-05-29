@@ -1,7 +1,6 @@
 package eu.esa.opt.dataio.s3.dddb;
 
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.FileUtils;
@@ -74,7 +73,8 @@ public class DDDB {
     public VariableDescriptor[] getVariableDescriptors(String dataFile, String productType, String version) throws IOException {
         final String inputFileName = FileUtils.getFilenameWithoutExtension(dataFile);
 
-        String resourceFileName = getResourceFileName("variables/" + inputFileName, version);
+        String resourceDirectoryName = "variables" + "_" + version;
+        String resourceFileName = getResourceFileName(resourceDirectoryName + "/" + inputFileName, version);
         URL resourceUrl = getResourceUrl(productType, resourceFileName);
         if (resourceUrl == null) {
             // try if we have a default, unversioned, version of the file tb 2024-12-13

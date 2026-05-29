@@ -23,7 +23,7 @@ public class Sentinel3DddbReaderPlugIn extends S3ReaderPlugIn {
     private final String altManifestName;
 
     public Sentinel3DddbReaderPlugIn() {
-        sourceNamePattern = Pattern.compile("S3.?_(OL_1_E[FR]R|OL_2_W[FR]R|ER1_AT_1_RBT|ER2_AT_1_RBT|ENV_AT_1_RBT)_.*(?:.SEN3|.zip|.SEN3.zip)$");
+        sourceNamePattern = Pattern.compile("S3.?_(OL_1_E[FR]R|OL_2_W[FR]R|OL_2_L[FR]R)_.*(?:.SEN3|.zip|.SEN3.zip)$");
         manifestName = MANIFEST_BASE + ".xml";
         altManifestName = ALTERNATIVE_MANIFEST_BASE + ".xml";
     }

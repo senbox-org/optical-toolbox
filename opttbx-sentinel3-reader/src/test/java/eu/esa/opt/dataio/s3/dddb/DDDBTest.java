@@ -26,7 +26,7 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4152")
     public void testGetProductDescriptor() throws IOException {
         ProductDescriptor olciL1Descriptor = dddb.getProductDescriptor("OL_1_EFR", "004");
         assertEquals("removedPixelsData", olciL1Descriptor.getExcludedIds());
@@ -45,6 +45,10 @@ public class DDDBTest {
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/rows", slstrL1Descriptor.getHeightXPath());
         assertEquals("", slstrL1Descriptor.getBandGroupingPattern());
 
+        final ProductDescriptor ol2Wfr = dddb.getProductDescriptor("OL_2_WFR", "004");
+        assertEquals("Oa*_reflectance:Oa*_reflectance_err:Oa*_reflectance_unc:A865:ADG443_NN:CHL_NN:chlor_a:IWV:PAR:T865:TSM_NN:FWHM:lambda0:solar_flux", ol2Wfr.getBandGroupingPattern());
+        assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", ol2Wfr.getWidthXPath());
+
         final ProductDescriptor ol2Wrr = dddb.getProductDescriptor("OL_2_WRR", "003");
         assertEquals("removedPixelsData", ol2Wrr.getExcludedIds());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", ol2Wrr.getWidthXPath());
@@ -61,7 +65,7 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4152")
     public void testGetResourceFileName() {
         assertEquals("OL_1_EFR_004.json", DDDB.getResourceFileName("OL_1_EFR", "004"));
         assertEquals("SL_1_RBT_004.json", DDDB.getResourceFileName("SL_1_RBT", "004"));

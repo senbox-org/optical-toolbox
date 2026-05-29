@@ -1,0 +1,2912 @@
+{
+  "id": "S3B_OL_2_LFR____20260527T075303",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 4865,
+    "sceneHeight": 4091,
+    "startTime": "27-MAY-2026 07:53:02.784699",
+    "endTime": "27-MAY-2026 07:56:02.784699",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2098.0,
+          "y": 2199.0,
+          "lat": -17.535921,
+          "lon": 24.970914999999998
+        },
+        {
+          "x": 3612.0,
+          "y": 2654.0,
+          "lat": -19.57023,
+          "lon": 28.438069
+        }
+      ],
+      "reverseAccuracy": 0.5
+    },
+    "flagCodings": [
+      {
+        "name": "LQSF",
+        "samples": [
+          {
+            "name": "INVALID",
+            "value": 1
+          },
+          {
+            "name": "WATER",
+            "value": 2
+          },
+          {
+            "name": "LAND",
+            "value": 4
+          },
+          {
+            "name": "COASTLINE",
+            "value": 2097152
+          },
+          {
+            "name": "CLOUD",
+            "value": 8
+          },
+          {
+            "name": "CLOUD_AMBIGUOUS",
+            "value": 8388608
+          },
+          {
+            "name": "CLOUD_MARGIN",
+            "value": 16777216
+          },
+          {
+            "name": "SNOW_ICE",
+            "value": 16
+          },
+          {
+            "name": "INLAND_WATER",
+            "value": 32
+          },
+          {
+            "name": "TIDAL",
+            "value": 64
+          },
+          {
+            "name": "COSMETIC",
+            "value": 128
+          },
+          {
+            "name": "SUSPECT",
+            "value": 256
+          },
+          {
+            "name": "HISOLZEN",
+            "value": 512
+          },
+          {
+            "name": "SATURATED",
+            "value": 1024
+          },
+          {
+            "name": "WV_FAIL",
+            "value": 2048
+          },
+          {
+            "name": "GIFAPAR_FAIL",
+            "value": 4096
+          },
+          {
+            "name": "OTCI_FAIL",
+            "value": 8192
+          },
+          {
+            "name": "LRAYFAIL",
+            "value": 16384
+          },
+          {
+            "name": "GIFAPAR_CLASS_BAD",
+            "value": 32768
+          },
+          {
+            "name": "GIFAPAR_CLASS_WS",
+            "value": 65536
+          },
+          {
+            "name": "GIFAPAR_CLASS_CSI",
+            "value": 131072
+          },
+          {
+            "name": "GIFAPAR_CLASS_BRIGHT",
+            "value": 262144
+          },
+          {
+            "name": "GIFAPAR_CLASS_INVAL_REC",
+            "value": 524288
+          },
+          {
+            "name": "OTCI_BAD_IN",
+            "value": 1048576
+          },
+          {
+            "name": "OTCI_CLASS_CLSN",
+            "value": 4194304
+          }
+        ]
+      }
+    ],
+    "tiePointGrids": [
+      {
+        "name": "OAA",
+        "description": "Observation (Viewing) Azimuth Angle",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 253,
+            "y": 728,
+            "value": 104.64756
+          },
+          {
+            "x": 3332,
+            "y": 3479,
+            "value": 103.20548
+          }
+        ]
+      },
+      {
+        "name": "OZA",
+        "description": "Observation (Viewing) Zenith Angle",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1415,
+            "y": 1050,
+            "value": 40.661682
+          },
+          {
+            "x": 2970,
+            "y": 1494,
+            "value": 13.672424
+          }
+        ]
+      },
+      {
+        "name": "SAA",
+        "description": "Sun Azimuth Angle",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2675,
+            "y": 3049,
+            "value": 41.216286
+          },
+          {
+            "x": 2959,
+            "y": 3798,
+            "value": 39.9218
+          }
+        ]
+      },
+      {
+        "name": "SZA",
+        "description": "Sun Zenith Angle",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 769,
+            "y": 2724,
+            "value": 55.007896
+          },
+          {
+            "x": 2525,
+            "y": 3737,
+            "value": 55.1904
+          }
+        ]
+      },
+      {
+        "name": "TP_latitude",
+        "description": "Latitude",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 3678,
+            "y": 1982,
+            "value": -17.864536
+          },
+          {
+            "x": 4625,
+            "y": 1987,
+            "value": -18.373243
+          }
+        ]
+      },
+      {
+        "name": "TP_longitude",
+        "description": "Longitude",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1656,
+            "y": 3679,
+            "value": 22.837236
+          },
+          {
+            "x": 48,
+            "y": 1925,
+            "value": 20.14079
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_1",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1592,
+            "y": 806,
+            "value": 299.3859
+          },
+          {
+            "x": 1329,
+            "y": 176,
+            "value": 300.38455
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_2",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4726,
+            "y": 2473,
+            "value": 293.70752
+          },
+          {
+            "x": 2784,
+            "y": 2932,
+            "value": 295.7515
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_3",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1128,
+            "y": 2035,
+            "value": 295.728
+          },
+          {
+            "x": 1562,
+            "y": 2955,
+            "value": 294.14453
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_4",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1742,
+            "y": 2038,
+            "value": 294.69
+          },
+          {
+            "x": 1959,
+            "y": 1809,
+            "value": 294.28085
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_5",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2795,
+            "y": 375,
+            "value": 290.26193
+          },
+          {
+            "x": 3139,
+            "y": 64,
+            "value": 290.4323
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_6",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4744,
+            "y": 1502,
+            "value": 282.57523
+          },
+          {
+            "x": 4622,
+            "y": 3871,
+            "value": 284.39862
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_7",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 539,
+            "y": 1848,
+            "value": 276.19708
+          },
+          {
+            "x": 2777,
+            "y": 2301,
+            "value": 281.04318
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_8",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2460,
+            "y": 2133,
+            "value": 277.59747
+          },
+          {
+            "x": 2192,
+            "y": 2376,
+            "value": 277.86932
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_9",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 70,
+            "y": 1737,
+            "value": 269.5822
+          },
+          {
+            "x": 341,
+            "y": 4061,
+            "value": 268.30396
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_10",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1443,
+            "y": 3048,
+            "value": 255.664
+          },
+          {
+            "x": 3909,
+            "y": 3012,
+            "value": 255.74113
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_11",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4059,
+            "y": 3868,
+            "value": 238.24721
+          },
+          {
+            "x": 1209,
+            "y": 2175,
+            "value": 240.23698
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_12",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2972,
+            "y": 1064,
+            "value": 230.32039
+          },
+          {
+            "x": 2689,
+            "y": 617,
+            "value": 230.5259
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_13",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2313,
+            "y": 2287,
+            "value": 217.59213
+          },
+          {
+            "x": 464,
+            "y": 3476,
+            "value": 218.26033
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_14",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 467,
+            "y": 318,
+            "value": 205.87737
+          },
+          {
+            "x": 2213,
+            "y": 2766,
+            "value": 208.73991
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_15",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2262,
+            "y": 3662,
+            "value": 200.92526
+          },
+          {
+            "x": 4220,
+            "y": 2454,
+            "value": 199.86125
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_16",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4680,
+            "y": 1558,
+            "value": 199.89131
+          },
+          {
+            "x": 427,
+            "y": 2179,
+            "value": 199.31723
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_17",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 3577,
+            "y": 2433,
+            "value": 211.01326
+          },
+          {
+            "x": 4749,
+            "y": 760,
+            "value": 211.07329
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_18",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2239,
+            "y": 1067,
+            "value": 216.30373
+          },
+          {
+            "x": 1114,
+            "y": 2649,
+            "value": 215.42398
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_19",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 3112,
+            "y": 1790,
+            "value": 223.82166
+          },
+          {
+            "x": 2585,
+            "y": 2320,
+            "value": 223.93745
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_20",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1925,
+            "y": 874,
+            "value": 232.69891
+          },
+          {
+            "x": 1357,
+            "y": 3635,
+            "value": 231.58342
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_21",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4600,
+            "y": 2372,
+            "value": 235.83571
+          },
+          {
+            "x": 3687,
+            "y": 1342,
+            "value": 237.40843
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_22",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2727,
+            "y": 1189,
+            "value": 243.56334
+          },
+          {
+            "x": 4034,
+            "y": 3562,
+            "value": 239.62633
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_23",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 526,
+            "y": 3629,
+            "value": 246.65492
+          },
+          {
+            "x": 1673,
+            "y": 3330,
+            "value": 246.69695
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_24",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 886,
+            "y": 2832,
+            "value": 254.55396
+          },
+          {
+            "x": 2882,
+            "y": 2246,
+            "value": 255.46753
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_25",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1000,
+            "y": 1252,
+            "value": 263.7816
+          },
+          {
+            "x": 1996,
+            "y": 3533,
+            "value": 268.13135
+          }
+        ]
+      },
+      {
+        "name": "horizontal_wind_vector_1",
+        "description": "Horizontal wind vector at 10m altitude",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 3414,
+            "y": 3671,
+            "value": -0.49010402
+          },
+          {
+            "x": 1447,
+            "y": 4061,
+            "value": -1.8225615
+          }
+        ]
+      },
+      {
+        "name": "horizontal_wind_vector_2",
+        "description": "Horizontal wind vector at 10m altitude",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2662,
+            "y": 477,
+            "value": 0.22729164
+          },
+          {
+            "x": 947,
+            "y": 2295,
+            "value": 0.09984596
+          }
+        ]
+      },
+      {
+        "name": "humidity",
+        "description": "Relative humidity",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2228,
+            "y": 527,
+            "value": 54.411076
+          },
+          {
+            "x": 4032,
+            "y": 2343,
+            "value": 48.073143
+          }
+        ]
+      },
+      {
+        "name": "sea_level_pressure",
+        "description": "Mean sea level pressure",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 499,
+            "y": 2768,
+            "value": 1021.463
+          },
+          {
+            "x": 3556,
+            "y": 1931,
+            "value": 1022.3239
+          }
+        ]
+      },
+      {
+        "name": "total_columnar_water_vapour",
+        "description": "Total column water vapour",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 696,
+            "y": 272,
+            "value": 16.802599
+          },
+          {
+            "x": 4093,
+            "y": 1226,
+            "value": 20.640366
+          }
+        ]
+      },
+      {
+        "name": "total_ozone",
+        "description": "Total columnar ozone",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2881,
+            "y": 3975,
+            "value": 0.0054811495
+          },
+          {
+            "x": 3781,
+            "y": 112,
+            "value": 0.005426888
+          }
+        ]
+      }
+    ],
+    "bands": [
+      {
+        "name": "GIFAPAR",
+        "description": "Green Instantaneous Fraction of Absorbed Photosynthetically Available Radiation (GIFAPAR) of the current land pixel",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "",
+        "noDataValue": "1.003937004134059",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1054,
+            "y": 1008,
+            "value": 0.38976377
+          },
+          {
+            "x": 1553,
+            "y": 792,
+            "value": 0.33464566
+          }
+        ]
+      },
+      {
+        "name": "GIFAPAR_unc",
+        "description": "Uncertainty estimate for the GIFAPAR of the current land pixel",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "",
+        "noDataValue": "1.003937004134059",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1374,
+            "y": 3613,
+            "value": 0.062992126
+          },
+          {
+            "x": 4853,
+            "y": 309,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "IWV",
+        "description": "Integrated water vapour column above the current pixel",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "kg.m-2",
+        "noDataValue": "76.49999544024467",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3984,
+            "y": 2052,
+            "value": 13.199999
+          },
+          {
+            "x": 305,
+            "y": 1576,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "IWV_unc",
+        "description": "Uncertainty estimate for the Integrated water vapour column above the current pixel",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "kg.m-2",
+        "noDataValue": "76.49999544024467",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1349,
+            "y": 2381,
+            "value": "NaN"
+          },
+          {
+            "x": 4517,
+            "y": 568,
+            "value": 0.9
+          }
+        ]
+      },
+      {
+        "name": "LQSF",
+        "description": "Classification flags, quality and science flags for Land pixels",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 508,
+            "y": 595,
+            "value": 1.677722E7
+          },
+          {
+            "x": 4299,
+            "y": 436,
+            "value": 4.0
+          }
+        ]
+      },
+      {
+        "name": "OTCI",
+        "description": "OLCI Terrestrial Chlorophyll Index",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "",
+        "noDataValue": "6.52559076435864",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1800,
+            "y": 3605,
+            "value": 1.5354332
+          },
+          {
+            "x": 2846,
+            "y": 2354,
+            "value": 1.3562993
+          }
+        ]
+      },
+      {
+        "name": "OTCI_unc",
+        "description": "Uncertainty estimate for the OLCI Terrestrial Chlorophyll Index of the current land pixel",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "",
+        "noDataValue": "6.52559076435864",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1642,
+            "y": 1333,
+            "value": 0.2559055
+          },
+          {
+            "x": 1818,
+            "y": 3502,
+            "value": 0.23031497
+          }
+        ]
+      },
+      {
+        "name": "RC681",
+        "description": "Rectified reflectance for the band O10",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "1.0000152583234012",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1585,
+            "y": 2802,
+            "value": 0.04605243
+          },
+          {
+            "x": 3130,
+            "y": 2762,
+            "value": 0.044251837
+          }
+        ]
+      },
+      {
+        "name": "RC681_unc",
+        "description": "Uncertainty estimate for the Rectified reflectance for the band O10 on the current land pixel",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "1.0000152583234012",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2579,
+            "y": 533,
+            "value": 0.0062715537
+          },
+          {
+            "x": 2255,
+            "y": 3275,
+            "value": 0.014847254
+          }
+        ]
+      },
+      {
+        "name": "RC865",
+        "description": "Rectified reflectance for the band O17",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "1.0000152583234012",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3903,
+            "y": 3690,
+            "value": 0.15594958
+          },
+          {
+            "x": 124,
+            "y": 2857,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "RC865_unc",
+        "description": "Uncertainty estimate for the Rectified reflectance for the band O17 on the current land pixel",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "1.0000152583234012",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4325,
+            "y": 2356,
+            "value": 0.009704886
+          },
+          {
+            "x": 3102,
+            "y": 3713,
+            "value": 0.009964293
+          }
+        ]
+      },
+      {
+        "name": "altitude",
+        "description": "DEM corrected altitude",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "m",
+        "noDataValue": "-32768.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4778,
+            "y": 1321,
+            "value": 764.0
+          },
+          {
+            "x": 1747,
+            "y": 21,
+            "value": 1440.0
+          }
+        ]
+      },
+      {
+        "name": "detector_index",
+        "description": "Detector index",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4084,
+            "y": 2328,
+            "value": 3027.0
+          },
+          {
+            "x": 2872,
+            "y": 1628,
+            "value": 1782.0
+          }
+        ]
+      },
+      {
+        "name": "latitude",
+        "description": "DEM corrected latitude",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "degrees_north",
+        "noDataValue": "-2147.483648",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1919,
+            "y": 4043,
+            "value": -22.18118
+          },
+          {
+            "x": 1116,
+            "y": 2933,
+            "value": -18.826376
+          }
+        ]
+      },
+      {
+        "name": "longitude",
+        "description": "DEM corrected longitude",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "degrees_east",
+        "noDataValue": "-2147.483648",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4566,
+            "y": 1180,
+            "value": 31.692614
+          },
+          {
+            "x": 1530,
+            "y": 3485,
+            "value": 22.66982
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_1",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1593,
+            "y": 2163,
+            "value": 12.412914
+          },
+          {
+            "x": 1742,
+            "y": 3271,
+            "value": 12.755652
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_2",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2726,
+            "y": 892,
+            "value": 9.879077
+          },
+          {
+            "x": 462,
+            "y": 2882,
+            "value": 9.86125
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_3",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3418,
+            "y": 3252,
+            "value": 9.934683
+          },
+          {
+            "x": 4106,
+            "y": 278,
+            "value": 9.919629
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_4",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4069,
+            "y": 928,
+            "value": 9.967288
+          },
+          {
+            "x": 3174,
+            "y": 3805,
+            "value": 9.98832
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_5",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1304,
+            "y": 3524,
+            "value": 9.958913
+          },
+          {
+            "x": 1879,
+            "y": 1517,
+            "value": 9.964182
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_6",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4728,
+            "y": 2784,
+            "value": 9.994075
+          },
+          {
+            "x": 3526,
+            "y": 1749,
+            "value": 10.000017
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_7",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2426,
+            "y": 568,
+            "value": 9.930378
+          },
+          {
+            "x": 4713,
+            "y": 556,
+            "value": 9.9361925
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_8",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3507,
+            "y": 2274,
+            "value": 9.946142
+          },
+          {
+            "x": 3434,
+            "y": 4049,
+            "value": 9.944489
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_9",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3117,
+            "y": 3706,
+            "value": 7.52561
+          },
+          {
+            "x": 4063,
+            "y": 2172,
+            "value": 7.4980307
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_10",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2432,
+            "y": 3803,
+            "value": 7.4945726
+          },
+          {
+            "x": 2784,
+            "y": 3160,
+            "value": 7.5122876
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_11",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4521,
+            "y": 160,
+            "value": 10.004127
+          },
+          {
+            "x": 3425,
+            "y": 2957,
+            "value": 10.005036
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_12",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1689,
+            "y": 28,
+            "value": 7.489486
+          },
+          {
+            "x": 1052,
+            "y": 3520,
+            "value": 7.5028415
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_13",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 611,
+            "y": 415,
+            "value": 2.5917423
+          },
+          {
+            "x": 419,
+            "y": 468,
+            "value": 2.5994127
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_14",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3386,
+            "y": 285,
+            "value": 3.7547476
+          },
+          {
+            "x": 2341,
+            "y": 3551,
+            "value": 3.7419813
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_15",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 814,
+            "y": 967,
+            "value": 2.5873253
+          },
+          {
+            "x": 1221,
+            "y": 3973,
+            "value": 2.5717125
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_16",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3482,
+            "y": 1390,
+            "value": 15.021689
+          },
+          {
+            "x": 3135,
+            "y": 2088,
+            "value": 15.023538
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_17",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4412,
+            "y": 2082,
+            "value": 19.923124
+          },
+          {
+            "x": 4189,
+            "y": 2284,
+            "value": 19.923073
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_18",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3894,
+            "y": 3114,
+            "value": 9.966798
+          },
+          {
+            "x": 4063,
+            "y": 3010,
+            "value": 9.9473
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_19",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3061,
+            "y": 1743,
+            "value": 9.973447
+          },
+          {
+            "x": 2628,
+            "y": 3122,
+            "value": 9.968383
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_20",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3084,
+            "y": 621,
+            "value": 19.860868
+          },
+          {
+            "x": 4292,
+            "y": 1288,
+            "value": 19.85614
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_21",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1330,
+            "y": 1573,
+            "value": 27.26431
+          },
+          {
+            "x": 3319,
+            "y": 762,
+            "value": 28.030293
+          }
+        ]
+      },
+      {
+        "name": "frame_offset",
+        "description": "Re-sampling along-track frame offset",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "noDataValue": "-128.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 707,
+            "y": 4037,
+            "value": -4.0
+          },
+          {
+            "x": 1911,
+            "y": 3083,
+            "value": -3.0
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_1",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 343,
+            "y": 2851,
+            "value": 400.9271
+          },
+          {
+            "x": 2957,
+            "y": 3530,
+            "value": 399.89487
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_2",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2852,
+            "y": 1359,
+            "value": 411.2933
+          },
+          {
+            "x": 2127,
+            "y": 70,
+            "value": 412.2505
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_3",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2925,
+            "y": 2731,
+            "value": 442.25943
+          },
+          {
+            "x": 3818,
+            "y": 365,
+            "value": 443.1307
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_4",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4381,
+            "y": 339,
+            "value": 490.5939
+          },
+          {
+            "x": 375,
+            "y": 3371,
+            "value": 490.56216
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_5",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 620,
+            "y": 3736,
+            "value": 510.44226
+          },
+          {
+            "x": 942,
+            "y": 1317,
+            "value": 510.3111
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_6",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2652,
+            "y": 2919,
+            "value": 559.976
+          },
+          {
+            "x": 572,
+            "y": 893,
+            "value": 560.44275
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_7",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1988,
+            "y": 3080,
+            "value": 620.58405
+          },
+          {
+            "x": 395,
+            "y": 3061,
+            "value": 620.3723
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_8",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4465,
+            "y": 869,
+            "value": 665.22107
+          },
+          {
+            "x": 4283,
+            "y": 2874,
+            "value": 665.36926
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_9",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 590,
+            "y": 111,
+            "value": 673.9463
+          },
+          {
+            "x": 1386,
+            "y": 3759,
+            "value": 673.60425
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_10",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2912,
+            "y": 2961,
+            "value": 680.81744
+          },
+          {
+            "x": 2479,
+            "y": 1936,
+            "value": 681.3187
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_11",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2072,
+            "y": 625,
+            "value": 709.20013
+          },
+          {
+            "x": 126,
+            "y": 3251,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_12",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3281,
+            "y": 2892,
+            "value": 753.1216
+          },
+          {
+            "x": 1436,
+            "y": 805,
+            "value": 753.76917
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_13",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 926,
+            "y": 2289,
+            "value": 761.5096
+          },
+          {
+            "x": 2799,
+            "y": 2658,
+            "value": 761.0932
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_14",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2553,
+            "y": 348,
+            "value": 764.42236
+          },
+          {
+            "x": 3778,
+            "y": 1342,
+            "value": 764.8819
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_15",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4231,
+            "y": 3764,
+            "value": 768.0824
+          },
+          {
+            "x": 2315,
+            "y": 2254,
+            "value": 767.83844
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_16",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2794,
+            "y": 3882,
+            "value": 778.6338
+          },
+          {
+            "x": 4521,
+            "y": 763,
+            "value": 779.1306
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_17",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 332,
+            "y": 3025,
+            "value": 865.3266
+          },
+          {
+            "x": 318,
+            "y": 2220,
+            "value": 865.33026
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_18",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3370,
+            "y": 3534,
+            "value": 884.7629
+          },
+          {
+            "x": 2769,
+            "y": 3594,
+            "value": 883.8328
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_19",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1779,
+            "y": 3838,
+            "value": 899.47437
+          },
+          {
+            "x": 4365,
+            "y": 1007,
+            "value": 899.3174
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_20",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 512,
+            "y": 2973,
+            "value": 938.756
+          },
+          {
+            "x": 1067,
+            "y": 2782,
+            "value": 938.56934
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_21",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 355,
+            "y": 161,
+            "value": 1015.8202
+          },
+          {
+            "x": 1330,
+            "y": 1276,
+            "value": 1015.47534
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_1",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4465,
+            "y": 1725,
+            "value": 1435.5178
+          },
+          {
+            "x": 382,
+            "y": 2801,
+            "value": 1456.088
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_2",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1014,
+            "y": 1831,
+            "value": 1720.9318
+          },
+          {
+            "x": 2501,
+            "y": 216,
+            "value": 1723.421
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_3",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2972,
+            "y": 943,
+            "value": 1833.1932
+          },
+          {
+            "x": 1928,
+            "y": 1453,
+            "value": 1860.6781
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_4",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 603,
+            "y": 385,
+            "value": 1898.7074
+          },
+          {
+            "x": 3810,
+            "y": 2559,
+            "value": 1901.4147
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_5",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 729,
+            "y": 271,
+            "value": 1906.1824
+          },
+          {
+            "x": 2537,
+            "y": 489,
+            "value": 1906.4912
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_6",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4390,
+            "y": 1708,
+            "value": 1806.1671
+          },
+          {
+            "x": 1196,
+            "y": 1382,
+            "value": 1808.6146
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_7",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3305,
+            "y": 502,
+            "value": 1632.141
+          },
+          {
+            "x": 590,
+            "y": 1231,
+            "value": 1634.8484
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_8",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4149,
+            "y": 990,
+            "value": 1510.4796
+          },
+          {
+            "x": 480,
+            "y": 4,
+            "value": 1510.9452
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_9",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 607,
+            "y": 1868,
+            "value": 1480.0848
+          },
+          {
+            "x": 2861,
+            "y": 1996,
+            "value": 1482.2269
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_10",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 841,
+            "y": 2573,
+            "value": 1457.3169
+          },
+          {
+            "x": 2603,
+            "y": 3163,
+            "value": 1458.8809
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_11",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1954,
+            "y": 1440,
+            "value": 1362.6621
+          },
+          {
+            "x": 2163,
+            "y": 3714,
+            "value": 1363.2126
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_12",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 618,
+            "y": 726,
+            "value": 1222.9884
+          },
+          {
+            "x": 139,
+            "y": 2465,
+            "value": 1222.6698
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_13",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1736,
+            "y": 243,
+            "value": 1203.0579
+          },
+          {
+            "x": 3121,
+            "y": 2026,
+            "value": 1208.4069
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_14",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4333,
+            "y": 2375,
+            "value": 1190.5513
+          },
+          {
+            "x": 1985,
+            "y": 816,
+            "value": 1189.2664
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_15",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 23,
+            "y": 2620,
+            "value": "NaN"
+          },
+          {
+            "x": 9,
+            "y": 503,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_16",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2663,
+            "y": 1847,
+            "value": 1157.1996
+          },
+          {
+            "x": 363,
+            "y": 1880,
+            "value": 1156.5532
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_17",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 497,
+            "y": 861,
+            "value": 931.1615
+          },
+          {
+            "x": 3412,
+            "y": 3676,
+            "value": 931.1953
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_18",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2917,
+            "y": 2379,
+            "value": 903.5628
+          },
+          {
+            "x": 1802,
+            "y": 1586,
+            "value": 902.6411
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_19",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2992,
+            "y": 3351,
+            "value": 875.62006
+          },
+          {
+            "x": 2959,
+            "y": 2120,
+            "value": 875.55664
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_20",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3609,
+            "y": 3314,
+            "value": 803.9338
+          },
+          {
+            "x": 2651,
+            "y": 3561,
+            "value": 804.8112
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_21",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 826,
+            "y": 2376,
+            "value": 685.443
+          },
+          {
+            "x": 2425,
+            "y": 1723,
+            "value": 685.5761
+          }
+        ]
+      }
+    ],
+    "masks": [
+      {
+        "name": "LQSF_INVALID",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,255",
+        "description": "LQSF.INVALID"
+      },
+      {
+        "name": "LQSF_WATER",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,63,255",
+        "description": "LQSF.WATER"
+      },
+      {
+        "name": "LQSF_LAND",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,63",
+        "description": "LQSF.LAND"
+      },
+      {
+        "name": "LQSF_COASTLINE",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,0",
+        "description": "LQSF.COASTLINE"
+      },
+      {
+        "name": "LQSF_CLOUD",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "191,191,191",
+        "description": "LQSF.CLOUD"
+      },
+      {
+        "name": "LQSF_CLOUD_AMBIGUOUS",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "191,191,191",
+        "description": "LQSF.CLOUD_AMBIGUOUS"
+      },
+      {
+        "name": "LQSF_CLOUD_MARGIN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "191,191,191",
+        "description": "LQSF.CLOUD_MARGIN"
+      },
+      {
+        "name": "LQSF_SNOW_ICE",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,255",
+        "description": "LQSF.SNOW_ICE"
+      },
+      {
+        "name": "LQSF_INLAND_WATER",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,63",
+        "description": "LQSF.INLAND_WATER"
+      },
+      {
+        "name": "LQSF_TIDAL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,0",
+        "description": "LQSF.TIDAL"
+      },
+      {
+        "name": "LQSF_COSMETIC",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,255",
+        "description": "LQSF.COSMETIC"
+      },
+      {
+        "name": "LQSF_SUSPECT",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,255",
+        "description": "LQSF.SUSPECT"
+      },
+      {
+        "name": "LQSF_HISOLZEN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,0",
+        "description": "LQSF.HISOLZEN"
+      },
+      {
+        "name": "LQSF_SATURATED",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,127",
+        "description": "LQSF.SATURATED"
+      },
+      {
+        "name": "LQSF_WV_FAIL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,0",
+        "description": "LQSF.WV_FAIL"
+      },
+      {
+        "name": "LQSF_GIFAPAR_FAIL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,127",
+        "description": "LQSF.GIFAPAR_FAIL"
+      },
+      {
+        "name": "LQSF_OTCI_FAIL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,127",
+        "description": "LQSF.OTCI_FAIL"
+      },
+      {
+        "name": "LQSF_LRAYFAIL",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,0,0",
+        "description": "LQSF.LRAYFAIL"
+      },
+      {
+        "name": "LQSF_GIFAPAR_CLASS_BAD",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,0,127",
+        "description": "LQSF.GIFAPAR_CLASS_BAD"
+      },
+      {
+        "name": "LQSF_GIFAPAR_CLASS_WS",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,0,255",
+        "description": "LQSF.GIFAPAR_CLASS_WS"
+      },
+      {
+        "name": "LQSF_GIFAPAR_CLASS_CSI",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,127,0",
+        "description": "LQSF.GIFAPAR_CLASS_CSI"
+      },
+      {
+        "name": "LQSF_GIFAPAR_CLASS_BRIGHT",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,127,127",
+        "description": "LQSF.GIFAPAR_CLASS_BRIGHT"
+      },
+      {
+        "name": "LQSF_GIFAPAR_CLASS_INVAL_REC",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,127,255",
+        "description": "LQSF.GIFAPAR_CLASS_INVAL_REC"
+      },
+      {
+        "name": "LQSF_OTCI_BAD_IN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,255,0",
+        "description": "LQSF.OTCI_BAD_IN"
+      },
+      {
+        "name": "LQSF_OTCI_CLASS_CLSN",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,255,127",
+        "description": "LQSF.OTCI_CLASS_CLSN"
+      },
+      {
+        "name": "LQSF_GENERAL_RECOM",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,255,255",
+        "description": "Excluding pixels that are deemed unreliable. Flag recommended by QWG."
+      },
+      {
+        "name": "LQSF_OTCI_RECOM",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,127",
+        "description": "Excluding pixels that are deemed unreliable for OTCI. Flag recommended by QWG."
+      },
+      {
+        "name": "LQSF_GIFAPAR_RECOM",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,127,0",
+        "description": "Excluding pixels that are deemed unreliable for GIFAPAR. Flag recommended by QWG."
+      },
+      {
+        "name": "LQSF_IWV_RECOM",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,127,127",
+        "description": "Excluding pixels that are deemed unreliable for IWV. Flag recommended by QWG."
+      }
+    ],
+    "metadata": [
+      {
+        "path": "reference_pressure_level/valid_max",
+        "value": "1500.0"
+      },
+      {
+        "path": "relative_spectral_covariance/ancillary_variables",
+        "value": "lambda0 "
+      },
+      {
+        "path": "Manifest/metadataSection/orbitReference/elementSet/ephemeris[2]/position/y",
+        "value": "-2487727.5869999998"
+      },
+      {
+        "path": "Manifest/metadataSection/acquisitionPeriod/startTime",
+        "value": "2026-05-27T07:53:02.784699Z"
+      },
+      {
+        "path": "time_stamp/_ChunkSizes",
+        "value": "4091"
+      },
+      {
+        "path": "Manifest/metadataSection/acquisitionPeriod/stopTime",
+        "value": "2026-05-27T07:56:02.784699Z"
+      },
+      {
+        "path": "time_stamp/value",
+        "value": "833183600790172,833183600834173,833183600878173,833183600922174,833183600966174,833183601010209,833183601054210,833183601098210,833183601142210,833183601186211,833183601230211,833183601274211,833183601318212,833183601362212,833183601406213,833183601450213,833183601494213,833183601538214,833183601582214,833183601626214,833183601670215,833183601714215,833183601758216,833183601802216,833183601846216,833183601890217,833183601934217,833183601978217,833183602022254,833183602066254,833183602110255,833183602154255,833183602198255,833183602242256,833183602286256,833183602330256,833183602374257,833183602418257,833183602462257,833183602506258,833183602550258,833183602594259,833183602638259,833183602682259,833183602726260,833183602770260,833183602814260,833183602858261,833183602902261,833183602946262,833183602990297,833183603034297,833183603078298,833183603122298,833183603166298,833183603210299,833183603254299,833183603298300,833183603342300,833183603386300,833183603430301,833183603474301,833183603518301,833183603562302,833183603606302,833183603650302,833183603694303,833183603738303,833183603782304,833183603826304,833183603870304,833183603914305,833183603958305,833183604002340,833183604046341,833183604090341,833183604134342,833183604178342,833183604222342,833183604266343,833183604310343,833183604354343,833183604398344,833183604442344,833183604486344,833183604530345,833183604574345,833183604618346,833183604662346,833183604706346,833183604750347,833183604794347,833183604838347,833183604882348,833183604926348,833183604970349,833183605014385,833183605058385,833183605102386,833183605146386,833183605190386,833183605234387,833183605278387,833183605322388,833183605366388,833183605410388,833183605454389,833183605498389,833183605542389,833183605586390,833183605630390,833183605674390,833183605718391,833183605762391,833183605806392,833183605850392,833183605894392,833183605938393,833183605982428,833183606026428,833183606070429,833183606114429,833183606158430,833183606202430,833183606246430,833183606290431,833183606334431,833183606378431,833183606422432,833183606466432,833183606510433,833183606554433,833183606598433,833183606642434,833183606686434,833183606730434,833183606774435,833183606818435,833183606862435,833183606906436,833183606950436,833183606994473,833183607038473,833183607082473,833183607126474,833183607170474,833183607214474,833183607258475,833183607302475,833183607346476,833183607390476,833183607434476,833183607478477,833183607522477,833183607566477,833183607610478,833183607654478,833183607698479,833183607742479,833183607786479,833183607830480,833183607874480,833183607918480,833183607962481,833183608006516,833183608050516,833183608094517,833183608138517,833183608182518,833183608226518,833183608270518,833183608314519,833183608358519,833183608402519,833183608446520,833183608490520,833183608534521,833183608578521,833183608622521,833183608666522,833183608710522,833183608754522,833183608798523,833183608842523,833183608886524,833183608930524,833183608974524,833183609018560,833183609062560,833183609106560,833183609150561,833183609194561,833183609238561,833183609282562,833183609326562,833183609370563,833183609414563,833183609458563,833183609502564,833183609546564,833183609590564,833183609634565,833183609678565,833183609722566,833183609766566,833183609810566,833183609854567,833183609898567,833183609942567,833183609986604,833183610030604,833183610074604,833183610118605,833183610162605,833183610206606,833183610250606,833183610294606,833183610338607,833183610382607,833183610426607,833183610470608,833183610514608,833183610558609,833183610602609,833183610646609,833183610690610,833183610734610,833183610778610,833183610822611,833183610866611,833183610910612,833183610954612,833183610998647,833183611042648,833183611086648,833183611130648,833183611174649,833183611218649,833183611262649,833183611306650,833183611350650,833183611394651,833183611438651,833183611482651,833183611526652,833183611570652,833183611614652,833183611658653,833183611702653,833183611746654,833183611790654,833183611834654,833183611878655,833183611922655,833183611966655,833183612010692,833183612054692,833183612098693,833183612142693,833183612186693,833183612230694,833183612274694,833183612318694,833183612362695,833183612406695,833183612450695,833183612494696,833183612538696,833183612582697,833183612626697,833183612670697,833183612714698,833183612758698,833183612802698,833183612846699,833183612890699,833183612934700,833183612978735,833183613022735,833183613066736,833183613110736,833183613154736,833183613198737,833183613242737,833183613286738,833183613330738,833183613374738,833183613418739,833183613462739,833183613506739,833183613550740,833183613594740,833183613638740,833183613682741,833183613726741,833183613770742,833183613814742,833183613858742,833183613902743,833183613946743,833183613990778,833183614034779,833183614078779,833183614122780,833183614166780,833183614210780,833183614254781,833183614298781,833183614342781,833183614386782,833183614430782,833183614474783,833183614518783,833183614562783,833183614606784,833183614650784,833183614694784,833183614738785,833183614782785,833183614826785,833183614870786,833183614914786,833183614958787,833183615002823,833183615046823,833183615090824,833183615134824,833183615178824,833183615222825,833183615266825,833183615310826,833183615354826,833183615398826,833183615442827,833183615486827,833183615530827,833183615574828,833183615618828,833183615662829,833183615706829,833183615750829,833183615794830,833183615838830,833183615882830,833183615926831,833183615970831,833183616014866,833183616058867,833183616102867,833183616146868,833183616190868,833183616234868,833183616278869,833183616322869,833183616366869,833183616410870,833183616454870,833183616498871,833183616542871,833183616586871,833183616630872,833183616674872,833183616718872,833183616762873,833183616806873,833183616850874,833183616894874,833183616938874,833183616982910,833183617026910,833183617070910,833183617114911,833183617158911,833183617202911,833183617246912,833183617290912,833183617334913,833183617378913,833183617422913,833183617466914,833183617510914,833183617554914,833183617598915,833183617642915,833183617686916,833183617730916,833183617774916,833183617818917,833183617862917,833183617906917,833183617950918,833183617994954,833183618038955,833183618082955,833183618126955,833183618170956,833183618214956,833183618258956,833183618302957,833183618346957,833183618390957,833183618434958,833183618478958,833183618522959,833183618566959,833183618610959,833183618654960,833183618698960,833183618742960,833183618786961,833183618830961,833183618874962,833183618918962,833183618962962,833183619006998,833183619050998,833183619094998,833183619138999,833183619182999,833183619227000,833183619271000,833183619315000,833183619359001,833183619403001,833183619447001,833183619491002,833183619535002,833183619579002,833183619623003,833183619667003,833183619711004,833183619755004,833183619799004,833183619843005,833183619887005,833183619931005,833183619975006,833183620019042,833183620063043,833183620107043,833183620151043,833183620195044,833183620239044,833183620283044,833183620327045,833183620371045,833183620415046,833183620459046,833183620503046,833183620547047,833183620591047,833183620635047,833183620679048,833183620723048,833183620767048,833183620811049,833183620855049,833183620899050,833183620943050,833183620987085,833183621031086,833183621075086,833183621119086,833183621163087,833183621207087,833183621251088,833183621295088,833183621339088,833183621383089,833183621427089,833183621471089,833183621515090,833183621559090,833183621603091,833183621647091,833183621691091,833183621735092,833183621779092,833183621823092,833183621867093,833183621911093,833183621955093,833183621999129,833183622043129,833183622087130,833183622131130,833183622175130,833183622219131,833183622263131,833183622307131,833183622351132,833183622395132,833183622439133,833183622483133,833183622527133,833183622571134,833183622615134,833183622659134,833183622703135,833183622747135,833183622791136,833183622835136,833183622879136,833183622923137,833183622967137,833183623011173,833183623055174,833183623099174,833183623143174,833183623187175,833183623231175,833183623275176,833183623319176,833183623363176,833183623407177,833183623451177,833183623495177,833183623539178,833183623583178,833183623627179,833183623671179,833183623715179,833183623759180,833183623803180,833183623847180,833183623891181,833183623935181,833183623979217,833183624023217,833183624067217,833183624111218,833183624155218,833183624199218,833183624243219,833183624287219,833183624331219,833183624375220,833183624419220,833183624463221,833183624507221,833183624551221,833183624595222,833183624639222,833183624683222,833183624727223,833183624771223,833183624815224,833183624859224,833183624903224,833183624947225,833183624991261,833183625035261,833183625079262,833183625123262,833183625167263,833183625211263,833183625255263,833183625299264,833183625343264,833183625387264,833183625431265,833183625475265,833183625519265,833183625563266,833183625607266,833183625651267,833183625695267,833183625739267,833183625783268,833183625827268,833183625871268,833183625915269,833183625959269,833183626003305,833183626047305,833183626091305,833183626135306,833183626179306,833183626223306,833183626267307,833183626311307,833183626355308,833183626399308,833183626443308,833183626487309,833183626531309,833183626575309,833183626619310,833183626663310,833183626707311,833183626751311,833183626795311,833183626839312,833183626883312,833183626927312,833183626971313,833183627015348,833183627059348,833183627103349,833183627147349,833183627191350,833183627235350,833183627279350,833183627323351,833183627367351,833183627411351,833183627455352,833183627499352,833183627543353,833183627587353,833183627631353,833183627675354,833183627719354,833183627763354,833183627807355,833183627851355,833183627895356,833183627939356,833183627983392,833183628027393,833183628071393,833183628115393,833183628159394,833183628203394,833183628247394,833183628291395,833183628335395,833183628379396,833183628423396,833183628467396,833183628511397,833183628555397,833183628599397,833183628643398,833183628687398,833183628731399,833183628775399,833183628819399,833183628863400,833183628907400,833183628951400,833183628995436,833183629039436,833183629083437,833183629127437,833183629171437,833183629215438,833183629259438,833183629303438,833183629347439,833183629391439,833183629435439,833183629479440,833183629523440,833183629567441,833183629611441,833183629655441,833183629699442,833183629743442,833183629787442,833183629831443,833183629875443,833183629919444,833183629963444,833183630007480,833183630051481,833183630095481,833183630139481,833183630183482,833183630227482,833183630271483,833183630315483,833183630359483,833183630403484,833183630447484,833183630491484,833183630535485,833183630579485,833183630623485,833183630667486,833183630711486,833183630755487,833183630799487,833183630843487,833183630887488,833183630931488,833183630975488,833183631019524,833183631063524,833183631107525,833183631151525,833183631195525,833183631239526,833183631283526,833183631327526,833183631371527,833183631415527,833183631459528,833183631503528,833183631547528,833183631591529,833183631635529,833183631679529,833183631723530,833183631767530,833183631811531,833183631855531,833183631899531,833183631943532,833183631987567,833183632031567,833183632075568,833183632119568,833183632163568,833183632207569,833183632251569,833183632295570,833183632339570,833183632383570,833183632427571,833183632471571,833183632515571,833183632559572,833183632603572,833183632647573,833183632691573,833183632735573,833183632779574,833183632823574,833183632867574,833183632911575,833183632955575,833183632999612,833183633043612,833183633087612,833183633131613,833183633175613,833183633219613,833183633263614,833183633307614,833183633351614,833183633395615,833183633439615,833183633483616,833183633527616,833183633571616,833183633615617,833183633659617,833183633703617,833183633747618,833183633791618,833183633835619,833183633879619,833183633923619,833183633967620,833183634011655,833183634055655,833183634099656,833183634143656,833183634187657,833183634231657,833183634275657,833183634319658,833183634363658,833183634407658,833183634451659,833183634495659,833183634539660,833183634583660,833183634627660,833183634671661,833183634715661,833183634759661,833183634803662,833183634847662,833183634891662,833183634935663,833183634979699,833183635023700,833183635067700,833183635111700,833183635155701,833183635199701,833183635243701,833183635287702,833183635331702,833183635375703,833183635419703,833183635463703,833183635507704,833183635551704,833183635595704,833183635639705,833183635683705,833183635727706,833183635771706,833183635815706,833183635859707,833183635903707,833183635947707,833183635991743,833183636035743,833183636079743,833183636123744,833183636167744,833183636211745,833183636255745,833183636299745,833183636343746,833183636387746,833183636431746,833183636475747,833183636519747,833183636563748,833183636607748,833183636651748,833183636695749,833183636739749,833183636783749,833183636827750,833183636871750,833183636915751,833183636959751,833183637003786,833183637047787,833183637091787,833183637135787,833183637179788,833183637223788,833183637267788,833183637311789,833183637355789,833183637399790,833183637443790,833183637487790,833183637531791,833183637575791,833183637619791,833183637663792,833183637707792,833183637751793,833183637795793,833183637839793,833183637883794,833183637927794,833183637971794,833183638015831,833183638059831,833183638103832,833183638147832,833183638191832,833183638235833,833183638279833,833183638323833,833183638367834,833183638411834,833183638455835,833183638499835,833183638543835,833183638587836,833183638631836,833183638675836,833183638719837,833183638763837,833183638807837,833183638851838,833183638895838,833183638939839,833183638983874,833183639027874,833183639071875,833183639115875,833183639159875,833183639203876,833183639247876,833183639291877,833183639335877,833183639379877,833183639423878,833183639467878,833183639511878,833183639555879,833183639599879,833183639643880,833183639687880,833183639731880,833183639775881,833183639819881,833183639863881,833183639907882,833183639951882,833183639995919,833183640039919,833183640083919,833183640127920,833183640171920,833183640215920,833183640259921,833183640303921,833183640347921,833183640391922,833183640435922,833183640479923,833183640523923,833183640567923,833183640611924,833183640655924,833183640699924,833183640743925,833183640787925,833183640831926,833183640875926,833183640919926,833183640963927,833183641007962,833183641051962,833183641095963,833183641139963,833183641183964,833183641227964,833183641271964,833183641315965,833183641359965,833183641403965,833183641447966,833183641491966,833183641535966,833183641579967,833183641623967,833183641667968,833183641711968,833183641755968,833183641799969,833183641843969,833183641887969,833183641931970,833183641975970,833183642020006,833183642064006,833183642108006,833183642152007,833183642196007,833183642240007,833183642284008,833183642328008,833183642372009,833183642416009,833183642460009,833183642504010,833183642548010,833183642592010,833183642636011,833183642680011,833183642724012,833183642768012,833183642812012,833183642856013,833183642900013,833183642944013,833183642988050,833183643032050,833183643076050,833183643120051,833183643164051,833183643208052,833183643252052,833183643296052,833183643340053,833183643384053,833183643428053,833183643472054,833183643516054,833183643560055,833183643604055,833183643648055,833183643692056,833183643736056,833183643780056,833183643824057,833183643868057,833183643912058,833183643956058,833183644000093,833183644044094,833183644088094,833183644132094,833183644176095,833183644220095,833183644264095,833183644308096,833183644352096,833183644396097,833183644440097,833183644484097,833183644528098,833183644572098,833183644616098,833183644660099,833183644704099,833183644748100,833183644792100,833183644836100,833183644880101,833183644924101,833183644968101,833183645012138,833183645056138,833183645100139,833183645144139,833183645188139,833183645232140,833183645276140,833183645320140,833183645364141,833183645408141,833183645452142,833183645496142,833183645540142,833183645584143,833183645628143,833183645672143,833183645716144,833183645760144,833183645804144,833183645848145,833183645892145,833183645936146,833183645980181,833183646024181,833183646068182,833183646112182,833183646156182,833183646200183,833183646244183,833183646288184,833183646332184,833183646376184,833183646420185,833183646464185,833183646508185,833183646552186,833183646596186,833183646640187,833183646684187,833183646728187,833183646772188,833183646816188,833183646860188,833183646904189,833183646948189,833183646992225,833183647036225,833183647080225,833183647124226,833183647168226,833183647212226,833183647256227,833183647300227,833183647344227,833183647388228,833183647432228,833183647476229,833183647520229,833183647564229,833183647608230,833183647652230,833183647696230,833183647740231,833183647784231,833183647828232,833183647872232,833183647916232,833183647960233,833183648004269,833183648048269,833183648092270,833183648136270,833183648180271,833183648224271,833183648268271,833183648312272,833183648356272,833183648400272,833183648444273,833183648488273,833183648532274,833183648576274,833183648620274,833183648664275,833183648708275,833183648752275,833183648796276,833183648840276,833183648884276,833183648928277,833183648972277,833183649016313,833183649060313,833183649104313,833183649148314,833183649192314,833183649236314,833183649280315,833183649324315,833183649368316,833183649412316,833183649456316,833183649500317,833183649544317,833183649588317,833183649632318,833183649676318,833183649720319,833183649764319,833183649808319,833183649852320,833183649896320,833183649940320,833183649984357,833183650028357,833183650072358,833183650116358,833183650160358,833183650204359,833183650248359,833183650292359,833183650336360,833183650380360,833183650424360,833183650468361,833183650512361,833183650556362,833183650600362,833183650644362,833183650688363,833183650732363,833183650776363,833183650820364,833183650864364,833183650908365,833183650952365,833183650996400,833183651040401,833183651084401,833183651128401,833183651172402,833183651216402,833183651260403,833183651304403,833183651348403,833183651392404,833183651436404,833183651480404,833183651524405,833183651568405,833183651612406,833183651656406,833183651700406,833183651744407,833183651788407,833183651832407,833183651876408,833183651920408,833183651964408,833183652008444,833183652052444,833183652096445,833183652140445,833183652184445,833183652228446,833183652272446,833183652316446,833183652360447,833183652404447,833183652448448,833183652492448,833183652536448,833183652580449,833183652624449,833183652668449,833183652712450,833183652756450,833183652800451,833183652844451,833183652888451,833183652932452,833183652976452,833183653020488,833183653064489,833183653108489,833183653152490,833183653196490,833183653240490,833183653284491,833183653328491,833183653372491,833183653416492,833183653460492,833183653504492,833183653548493,833183653592493,833183653636494,833183653680494,833183653724494,833183653768495,833183653812495,833183653856495,833183653900496,833183653944496,833183653988532,833183654032532,833183654076532,833183654120533,833183654164533,833183654208533,833183654252534,833183654296534,833183654340535,833183654384535,833183654428535,833183654472536,833183654516536,833183654560536,833183654604537,833183654648537,833183654692538,833183654736538,833183654780538,833183654824539,833183654868539,833183654912539,833183654956540,833183655000576,833183655044576,833183655088577,833183655132577,833183655176578,833183655220578,833183655264578,833183655308579,833183655352579,833183655396579,833183655440580,833183655484580,833183655528581,833183655572581,833183655616581,833183655660582,833183655704582,833183655748582,833183655792583,833183655836583,833183655880584,833183655924584,833183655968584,833183656012620,833183656056620,833183656100620,833183656144621,833183656188621,833183656232622,833183656276622,833183656320622,833183656364623,833183656408623,833183656452623,833183656496624,833183656540624,833183656584624,833183656628625,833183656672625,833183656716626,833183656760626,833183656804626,833183656848627,833183656892627,833183656936627,833183656980663,833183657024663,833183657068664,833183657112664,833183657156664,833183657200665,833183657244665,833183657288665,833183657332666,833183657376666,833183657420667,833183657464667,833183657508667,833183657552668,833183657596668,833183657640668,833183657684669,833183657728669,833183657772670,833183657816670,833183657860670,833183657904671,833183657948671,833183657992707,833183658036708,833183658080708,833183658124708,833183658168709,833183658212709,833183658256710,833183658300710,833183658344710,833183658388711,833183658432711,833183658476711,833183658520712,833183658564712,833183658608713,833183658652713,833183658696713,833183658740714,833183658784714,833183658828714,833183658872715,833183658916715,833183658960716,833183659004751,833183659048751,833183659092752,833183659136752,833183659180752,833183659224753,833183659268753,833183659312754,833183659356754,833183659400754,833183659444755,833183659488755,833183659532755,833183659576756,833183659620756,833183659664756,833183659708757,833183659752757,833183659796758,833183659840758,833183659884758,833183659928759,833183659972759,833183660016795,833183660060796,833183660104796,833183660148797,833183660192797,833183660236797,833183660280798,833183660324798,833183660368798,833183660412799,833183660456799,833183660500800,833183660544800,833183660588800,833183660632801,833183660676801,833183660720801,833183660764802,833183660808802,833183660852803,833183660896803,833183660940803,833183660984839,833183661028839,833183661072839,833183661116840,833183661160840,833183661204841,833183661248841,833183661292841,833183661336842,833183661380842,833183661424842,833183661468843,833183661512843,833183661556843,833183661600844,833183661644844,833183661688845,833183661732845,833183661776845,833183661820846,833183661864846,833183661908846,833183661952847,833183661996882,833183662040883,833183662084883,833183662128883,833183662172884,833183662216884,833183662260884,833183662304885,833183662348885,833183662392886,833183662436886,833183662480886,833183662524887,833183662568887,833183662612887,833183662656888,833183662700888,833183662744889,833183662788889,833183662832889,833183662876890,833183662920890,833183662964890,833183663008927,833183663052927,833183663096927,833183663140928,833183663184928,833183663228929,833183663272929,833183663316929,833183663360930,833183663404930,833183663448930,833183663492931,833183663536931,833183663580932,833183663624932,833183663668932,833183663712933,833183663756933,833183663800933,833183663844934,833183663888934,833183663932935,833183663976935,833183664020970,833183664064971,833183664108971,833183664152971,833183664196972,833183664240972,833183664284973,833183664328973,833183664372973,833183664416974,833183664460974,833183664504974,833183664548975,833183664592975,833183664636975,833183664680976,833183664724976,833183664768977,833183664812977,833183664856977,833183664900978,833183664944978,833183664989014,833183665033015,833183665077015,833183665121016,833183665165016,833183665209016,833183665253017,833183665297017,833183665341017,833183665385018,833183665429018,833183665473019,833183665517019,833183665561019,833183665605020,833183665649020,833183665693020,833183665737021,833183665781021,833183665825022,833183665869022,833183665913022,833183665957023,833183666001058,833183666045058,833183666089059,833183666133059,833183666177060,833183666221060,833183666265060,833183666309061,833183666353061,833183666397061,833183666441062,833183666485062,833183666529062,833183666573063,833183666617063,833183666661064,833183666705064,833183666749064,833183666793065,833183666837065,833183666881065,833183666925066,833183666969066,833183667013102,833183667057102,833183667101102,833183667145103,833183667189103,833183667233103,833183667277104,833183667321104,833183667365105,833183667409105,833183667453105,833183667497106,833183667541106,833183667585106,833183667629107,833183667673107,833183667717108,833183667761108,833183667805108,833183667849109,833183667893109,833183667937109,833183667981146,833183668025146,833183668069147,833183668113147,833183668157147,833183668201148,833183668245148,833183668289148,833183668333149,833183668377149,833183668421149,833183668465150,833183668509150,833183668553151,833183668597151,833183668641151,833183668685152,833183668729152,833183668773152,833183668817153,833183668861153,833183668905154,833183668949154,833183668993189,833183669037190,833183669081190,833183669125190,833183669169191,833183669213191,833183669257192,833183669301192,833183669345192,833183669389193,833183669433193,833183669477193,833183669521194,833183669565194,833183669609195,833183669653195,833183669697195,833183669741196,833183669785196,833183669829196,833183669873197,833183669917197,833183669961197,833183670005234,833183670049234,833183670093235,833183670137235,833183670181235,833183670225236,833183670269236,833183670313236,833183670357237,833183670401237,833183670445238,833183670489238,833183670533238,833183670577239,833183670621239,833183670665239,833183670709240,833183670753240,833183670797241,833183670841241,833183670885241,833183670929242,833183670973242,833183671017277,833183671061278,833183671105278,833183671149279,833183671193279,833183671237279,833183671281280,833183671325280,833183671369280,833183671413281,833183671457281,833183671501282,833183671545282,833183671589282,833183671633283,833183671677283,833183671721283,833183671765284,833183671809284,833183671853284,833183671897285,833183671941285,833183671985321,833183672029321,833183672073321,833183672117322,833183672161322,833183672205322,833183672249323,833183672293323,833183672337324,833183672381324,833183672425324,833183672469325,833183672513325,833183672557325,833183672601326,833183672645326,833183672689327,833183672733327,833183672777327,833183672821328,833183672865328,833183672909328,833183672953329,833183672997365,833183673041366,833183673085366,833183673129366,833183673173367,833183673217367,833183673261367,833183673305368,833183673349368,833183673393369,833183673437369,833183673481369,833183673525370,833183673569370,833183673613370,833183673657371,833183673701371,833183673745371,833183673789372,833183673833372,833183673877373,833183673921373,833183673965373,833183674009409,833183674053409,833183674097409,833183674141410,833183674185410,833183674229411,833183674273411,833183674317411,833183674361412,833183674405412,833183674449412,833183674493413,833183674537413,833183674581414,833183674625414,833183674669414,833183674713415,833183674757415,833183674801415,833183674845416,833183674889416,833183674933417,833183674977417,833183675021453,833183675065454,833183675109454,833183675153454,833183675197455,833183675241455,833183675285456,833183675329456,833183675373456,833183675417457,833183675461457,833183675505457,833183675549458,833183675593458,833183675637458,833183675681459,833183675725459,833183675769460,833183675813460,833183675857460,833183675901461,833183675945461,833183675989496,833183676033497,833183676077497,833183676121498,833183676165498,833183676209498,833183676253499,833183676297499,833183676341499,833183676385500,833183676429500,833183676473501,833183676517501,833183676561501,833183676605502,833183676649502,833183676693502,833183676737503,833183676781503,833183676825504,833183676869504,833183676913504,833183676957505,833183677001540,833183677045540,833183677089541,833183677133541,833183677177542,833183677221542,833183677265542,833183677309543,833183677353543,833183677397543,833183677441544,833183677485544,833183677529544,833183677573545,833183677617545,833183677661546,833183677705546,833183677749546,833183677793547,833183677837547,833183677881547,833183677925548,833183677969548,833183678013585,833183678057585,833183678101585,833183678145586,833183678189586,833183678233586,833183678277587,833183678321587,833183678365588,833183678409588,833183678453588,833183678497589,833183678541589,833183678585589,833183678629590,833183678673590,833183678717591,833183678761591,833183678805591,833183678849592,833183678893592,833183678937592,833183678981628,833183679025628,833183679069629,833183679113629,833183679157629,833183679201630,833183679245630,833183679289630,833183679333631,833183679377631,833183679421632,833183679465632,833183679509632,833183679553633,833183679597633,833183679641633,833183679685634,833183679729634,833183679773634,833183679817635,833183679861635,833183679905636,833183679949636,833183679993672,833183680037673,833183680081673,833183680125673,833183680169674,833183680213674,833183680257675,833183680301675,833183680345675,833183680389676,833183680433676,833183680477676,833183680521677,833183680565677,833183680609678,833183680653678,833183680697678,833183680741679,833183680785679,833183680829679,833183680873680,833183680917680,833183680961681,833183681005716,833183681049716,833183681093717,833183681137717,833183681181717,833183681225718,833183681269718,833183681313719,833183681357719,833183681401719,833183681445720,833183681489720,833183681533720,833183681577721,833183681621721,833183681665721,833183681709722,833183681753722,833183681797723,833183681841723,833183681885723,833183681929724,833183681973724,833183682017760,833183682061761,833183682105761,833183682149762,833183682193762,833183682237762,833183682281763,833183682325763,833183682369763,833183682413764,833183682457764,833183682501765,833183682545765,833183682589765,833183682633766,833183682677766,833183682721766,833183682765767,833183682809767,833183682853768,833183682897768,833183682941768,833183682985804,833183683029804,833183683073804,833183683117805,833183683161805,833183683205806,833183683249806,833183683293806,833183683337807,833183683381807,833183683425807,833183683469808,833183683513808,833183683557808,833183683601809,833183683645809,833183683689810,833183683733810,833183683777810,833183683821811,833183683865811,833183683909811,833183683953812,833183683997847,833183684041848,833183684085848,833183684129848,833183684173849,833183684217849,833183684261849,833183684305850,833183684349850,833183684393851,833183684437851,833183684481851,833183684525852,833183684569852,833183684613852,833183684657853,833183684701853,833183684745854,833183684789854,833183684833854,833183684877855,833183684921855,833183684965855,833183685009892,833183685053892,833183685097893,833183685141893,833183685185893,833183685229894,833183685273894,833183685317894,833183685361895,833183685405895,833183685449896,833183685493896,833183685537896,833183685581897,833183685625897,833183685669897,833183685713898,833183685757898,833183685801898,833183685845899,833183685889899,833183685933900,833183685977900,833183686021935,833183686065936,833183686109936,833183686153936,833183686197937,833183686241937,833183686285938,833183686329938,833183686373938,833183686417939,833183686461939,833183686505939,833183686549940,833183686593940,833183686637941,833183686681941,833183686725941,833183686769942,833183686813942,833183686857942,833183686901943,833183686945943,833183686989980,833183687033980,833183687077980,833183687121981,833183687165981,833183687209981,833183687253982,833183687297982,833183687341983,833183687385983,833183687429983,833183687473984,833183687517984,833183687561984,833183687605985,833183687649985,833183687693986,833183687737986,833183687781986,833183687825987,833183687869987,833183687913987,833183687957988,833183688002023,833183688046023,833183688090024,833183688134024,833183688178025,833183688222025,833183688266025,833183688310026,833183688354026,833183688398026,833183688442027,833183688486027,833183688530028,833183688574028,833183688618028,833183688662029,833183688706029,833183688750029,833183688794030,833183688838030,833183688882031,833183688926031,833183688970031,833183689014068,833183689058068,833183689102068,833183689146069,833183689190069,833183689234070,833183689278070,833183689322070,833183689366071,833183689410071,833183689454071,833183689498072,833183689542072,833183689586073,833183689630073,833183689674073,833183689718074,833183689762074,833183689806074,833183689850075,833183689894075,833183689938076,833183689982111,833183690026111,833183690070112,833183690114112,833183690158112,833183690202113,833183690246113,833183690290113,833183690334114,833183690378114,833183690422115,833183690466115,833183690510115,833183690554116,833183690598116,833183690642116,833183690686117,833183690730117,833183690774118,833183690818118,833183690862118,833183690906119,833183690950119,833183690994154,833183691038155,833183691082155,833183691126156,833183691170156,833183691214156,833183691258157,833183691302157,833183691346157,833183691390158,833183691434158,833183691478159,833183691522159,833183691566159,833183691610160,833183691654160,833183691698160,833183691742161,833183691786161,833183691830162,833183691874162,833183691918162,833183691962163,833183692006199,833183692050199,833183692094200,833183692138200,833183692182201,833183692226201,833183692270201,833183692314202,833183692358202,833183692402202,833183692446203,833183692490203,833183692534203,833183692578204,833183692622204,833183692666205,833183692710205,833183692754205,833183692798206,833183692842206,833183692886206,833183692930207,833183692974207,833183693018243,833183693062243,833183693106243,833183693150244,833183693194244,833183693238244,833183693282245,833183693326245,833183693370246,833183693414246,833183693458246,833183693502247,833183693546247,833183693590247,833183693634248,833183693678248,833183693722249,833183693766249,833183693810249,833183693854250,833183693898250,833183693942250,833183693986287,833183694030287,833183694074288,833183694118288,833183694162288,833183694206289,833183694250289,833183694294289,833183694338290,833183694382290,833183694426291,833183694470291,833183694514291,833183694558292,833183694602292,833183694646292,833183694690293,833183694734293,833183694778293,833183694822294,833183694866294,833183694910295,833183694954295,833183694998330,833183695042331,833183695086331,833183695130331,833183695174332,833183695218332,833183695262333,833183695306333,833183695350333,833183695394334,833183695438334,833183695482334,833183695526335,833183695570335,833183695614336,833183695658336,833183695702336,833183695746337,833183695790337,833183695834337,833183695878338,833183695922338,833183695966339,833183696010374,833183696054374,833183696098375,833183696142375,833183696186375,833183696230376,833183696274376,833183696318377,833183696362377,833183696406377,833183696450378,833183696494378,833183696538378,833183696582379,833183696626379,833183696670380,833183696714380,833183696758380,833183696802381,833183696846381,833183696890381,833183696934382,833183696978382,833183697022419,833183697066419,833183697110419,833183697154420,833183697198420,833183697242420,833183697286421,833183697330421,833183697374421,833183697418422,833183697462422,833183697506423,833183697550423,833183697594423,833183697638424,833183697682424,833183697726424,833183697770425,833183697814425,833183697858426,833183697902426,833183697946426,833183697990462,833183698034462,833183698078462,833183698122463,833183698166463,833183698210464,833183698254464,833183698298464,833183698342465,833183698386465,833183698430465,833183698474466,833183698518466,833183698562467,833183698606467,833183698650467,833183698694468,833183698738468,833183698782468,833183698826469,833183698870469,833183698914470,833183698958470,833183699002506,833183699046507,833183699090507,833183699134507,833183699178508,833183699222508,833183699266509,833183699310509,833183699354509,833183699398510,833183699442510,833183699486510,833183699530511,833183699574511,833183699618512,833183699662512,833183699706512,833183699750513,833183699794513,833183699838513,833183699882514,833183699926514,833183699970514,833183700014550,833183700058550,833183700102551,833183700146551,833183700190551,833183700234552,833183700278552,833183700322552,833183700366553,833183700410553,833183700454554,833183700498554,833183700542554,833183700586555,833183700630555,833183700674555,833183700718556,833183700762556,833183700806557,833183700850557,833183700894557,833183700938558,833183700982594,833183701026594,833183701070595,833183701114595,833183701158596,833183701202596,833183701246596,833183701290597,833183701334597,833183701378597,833183701422598,833183701466598,833183701510599,833183701554599,833183701598599,833183701642600,833183701686600,833183701730600,833183701774601,833183701818601,833183701862602,833183701906602,833183701950602,833183701994638,833183702038638,833183702082638,833183702126639,833183702170639,833183702214640,833183702258640,833183702302640,833183702346641,833183702390641,833183702434641,833183702478642,833183702522642,833183702566642,833183702610643,833183702654643,833183702698644,833183702742644,833183702786644,833183702830645,833183702874645,833183702918645,833183702962646,833183703006681,833183703050682,833183703094682,833183703138682,833183703182683,833183703226683,833183703270683,833183703314684,833183703358684,833183703402685,833183703446685,833183703490685,833183703534686,833183703578686,833183703622686,833183703666687,833183703710687,833183703754688,833183703798688,833183703842688,833183703886689,833183703930689,833183703974689,833183704018726,833183704062726,833183704106727,833183704150727,833183704194727,833183704238728,833183704282728,833183704326728,833183704370729,833183704414729,833183704458730,833183704502730,833183704546730,833183704590731,833183704634731,833183704678731,833183704722732,833183704766732,833183704810733,833183704854733,833183704898733,833183704942734,833183704986769,833183705030769,833183705074770,833183705118770,833183705162770,833183705206771,833183705250771,833183705294772,833183705338772,833183705382772,833183705426773,833183705470773,833183705514773,833183705558774,833183705602774,833183705646775,833183705690775,833183705734775,833183705778776,833183705822776,833183705866776,833183705910777,833183705954777,833183705998814,833183706042814,833183706086814,833183706130815,833183706174815,833183706218815,833183706262816,833183706306816,833183706350817,833183706394817,833183706438817,833183706482818,833183706526818,833183706570818,833183706614819,833183706658819,833183706702820,833183706746820,833183706790820,833183706834821,833183706878821,833183706922821,833183706966822,833183707010857,833183707054858,833183707098858,833183707142858,833183707186859,833183707230859,833183707274859,833183707318860,833183707362860,833183707406861,833183707450861,833183707494861,833183707538862,833183707582862,833183707626862,833183707670863,833183707714863,833183707758864,833183707802864,833183707846864,833183707890865,833183707934865,833183707978901,833183708022902,833183708066902,833183708110902,833183708154903,833183708198903,833183708242904,833183708286904,833183708330904,833183708374905,833183708418905,833183708462905,833183708506906,833183708550906,833183708594907,833183708638907,833183708682907,833183708726908,833183708770908,833183708814908,833183708858909,833183708902909,833183708946910,833183708990945,833183709034945,833183709078946,833183709122946,833183709166946,833183709210947,833183709254947,833183709298948,833183709342948,833183709386948,833183709430949,833183709474949,833183709518949,833183709562950,833183709606950,833183709650951,833183709694951,833183709738951,833183709782952,833183709826952,833183709870952,833183709914953,833183709958953,833183710002989,833183710046989,833183710090989,833183710134990,833183710178990,833183710222990,833183710266991,833183710310991,833183710354992,833183710398992,833183710442992,833183710486993,833183710530993,833183710574993,833183710618994,833183710662994,833183710706995,833183710750995,833183710794995,833183710838996,833183710882996,833183710926996,833183710970997,833183711015033,833183711059033,833183711103034,833183711147034,833183711191035,833183711235035,833183711279035,833183711323036,833183711367036,833183711411036,833183711455037,833183711499037,833183711543038,833183711587038,833183711631038,833183711675039,833183711719039,833183711763039,833183711807040,833183711851040,833183711895041,833183711939041,833183711983076,833183712027077,833183712071077,833183712115077,833183712159078,833183712203078,833183712247079,833183712291079,833183712335079,833183712379080,833183712423080,833183712467080,833183712511081,833183712555081,833183712599082,833183712643082,833183712687082,833183712731083,833183712775083,833183712819083,833183712863084,833183712907084,833183712951085,833183712995121,833183713039121,833183713083122,833183713127122,833183713171122,833183713215123,833183713259123,833183713303124,833183713347124,833183713391124,833183713435125,833183713479125,833183713523125,833183713567126,833183713611126,833183713655127,833183713699127,833183713743127,833183713787128,833183713831128,833183713875128,833183713919129,833183713963129,833183714007165,833183714051165,833183714095165,833183714139166,833183714183166,833183714227166,833183714271167,833183714315167,833183714359167,833183714403168,833183714447168,833183714491169,833183714535169,833183714579169,833183714623170,833183714667170,833183714711170,833183714755171,833183714799171,833183714843172,833183714887172,833183714931172,833183714975173,833183715019208,833183715063208,833183715107209,833183715151209,833183715195210,833183715239210,833183715283210,833183715327211,833183715371211,833183715415211,833183715459212,833183715503212,833183715547213,833183715591213,833183715635213,833183715679214,833183715723214,833183715767214,833183715811215,833183715855215,833183715899216,833183715943216,833183715987252,833183716031253,833183716075253,833183716119253,833183716163254,833183716207254,833183716251255,833183716295255,833183716339255,833183716383256,833183716427256,833183716471256,833183716515257,833183716559257,833183716603258,833183716647258,833183716691258,833183716735259,833183716779259,833183716823259,833183716867260,833183716911260,833183716955261,833183716999296,833183717043296,833183717087297,833183717131297,833183717175297,833183717219298,833183717263298,833183717307299,833183717351299,833183717395299,833183717439300,833183717483300,833183717527300,833183717571301,833183717615301,833183717659301,833183717703302,833183717747302,833183717791303,833183717835303,833183717879303,833183717923304,833183717967304,833183718011340,833183718055341,833183718099341,833183718143342,833183718187342,833183718231342,833183718275343,833183718319343,833183718363343,833183718407344,833183718451344,833183718495345,833183718539345,833183718583345,833183718627346,833183718671346,833183718715346,833183718759347,833183718803347,833183718847348,833183718891348,833183718935348,833183718979384,833183719023384,833183719067384,833183719111385,833183719155385,833183719199386,833183719243386,833183719287386,833183719331387,833183719375387,833183719419387,833183719463388,833183719507388,833183719551389,833183719595389,833183719639389,833183719683390,833183719727390,833183719771390,833183719815391,833183719859391,833183719903392,833183719947392,833183719991428,833183720035429,833183720079429,833183720123429,833183720167430,833183720211430,833183720255431,833183720299431,833183720343431,833183720387432,833183720431432,833183720475432,833183720519433,833183720563433,833183720607434,833183720651434,833183720695434,833183720739435,833183720783435,833183720827435,833183720871436,833183720915436,833183720959436,833183721003472,833183721047472,833183721091473,833183721135473,833183721179473,833183721223474,833183721267474,833183721311474,833183721355475,833183721399475,833183721443476,833183721487476,833183721531476,833183721575477,833183721619477,833183721663477,833183721707478,833183721751478,833183721795479,833183721839479,833183721883479,833183721927480,833183721971480,833183722015516,833183722059517,833183722103517,833183722147518,833183722191518,833183722235518,833183722279519,833183722323519,833183722367519,833183722411520,833183722455520,833183722499521,833183722543521,833183722587521,833183722631522,833183722675522,833183722719522,833183722763523,833183722807523,833183722851524,833183722895524,833183722939524,833183722983560,833183723027560,833183723071560,833183723115561,833183723159561,833183723203562,833183723247562,833183723291562,833183723335563,833183723379563,833183723423563,833183723467564,833183723511564,833183723555565,833183723599565,833183723643565,833183723687566,833183723731566,833183723775566,833183723819567,833183723863567,833183723907568,833183723951568,833183723995603,833183724039604,833183724083604,833183724127604,833183724171605,833183724215605,833183724259606,833183724303606,833183724347606,833183724391607,833183724435607,833183724479607,833183724523608,833183724567608,833183724611608,833183724655609,833183724699609,833183724743610,833183724787610,833183724831610,833183724875611,833183724919611,833183724963611,833183725007648,833183725051648,833183725095649,833183725139649,833183725183649,833183725227650,833183725271650,833183725315650,833183725359651,833183725403651,833183725447652,833183725491652,833183725535652,833183725579653,833183725623653,833183725667653,833183725711654,833183725755654,833183725799655,833183725843655,833183725887655,833183725931656,833183725975656,833183726019691,833183726063692,833183726107692,833183726151693,833183726195693,833183726239693,833183726283694,833183726327694,833183726371694,833183726415695,833183726459695,833183726503696,833183726547696,833183726591696,833183726635697,833183726679697,833183726723697,833183726767698,833183726811698,833183726855699,833183726899699,833183726943699,833183726987736,833183727031736,833183727075736,833183727119737,833183727163737,833183727207738,833183727251738,833183727295738,833183727339739,833183727383739,833183727427739,833183727471740,833183727515740,833183727559741,833183727603741,833183727647741,833183727691742,833183727735742,833183727779742,833183727823743,833183727867743,833183727911744,833183727955744,833183727999779,833183728043780,833183728087780,833183728131780,833183728175781,833183728219781,833183728263782,833183728307782,833183728351782,833183728395783,833183728439783,833183728483783,833183728527784,833183728571784,833183728615785,833183728659785,833183728703785,833183728747786,833183728791786,833183728835786,833183728879787,833183728923787,833183728967787,833183729011824,833183729055824,833183729099825,833183729143825,833183729187825,833183729231826,833183729275826,833183729319826,833183729363827,833183729407827,833183729451828,833183729495828,833183729539828,833183729583829,833183729627829,833183729671829,833183729715830,833183729759830,833183729803831,833183729847831,833183729891831,833183729935832,833183729979867,833183730023867,833183730067868,833183730111868,833183730155869,833183730199869,833183730243869,833183730287870,833183730331870,833183730375870,833183730419871,833183730463871,833183730507872,833183730551872,833183730595872,833183730639873,833183730683873,833183730727873,833183730771874,833183730815874,833183730859875,833183730903875,833183730947875,833183730991911,833183731035911,833183731079911,833183731123912,833183731167912,833183731211913,833183731255913,833183731299913,833183731343914,833183731387914,833183731431914,833183731475915,833183731519915,833183731563916,833183731607916,833183731651916,833183731695917,833183731739917,833183731783917,833183731827918,833183731871918,833183731915919,833183731959919,833183732003955,833183732047956,833183732091956,833183732135956,833183732179957,833183732223957,833183732267958,833183732311958,833183732355958,833183732399959,833183732443959,833183732487959,833183732531960,833183732575960,833183732619961,833183732663961,833183732707961,833183732751962,833183732795962,833183732839962,833183732883963,833183732927963,833183732971964,833183733015999,833183733059999,833183733104000,833183733148000,833183733192000,833183733236001,833183733280001,833183733324001,833183733368002,833183733412002,833183733456003,833183733500003,833183733544003,833183733588004,833183733632004,833183733676004,833183733720005,833183733764005,833183733808006,833183733852006,833183733896006,833183733940007,833183733984043,833183734028043,833183734072044,833183734116044,833183734160045,833183734204045,833183734248045,833183734292046,833183734336046,833183734380046,833183734424047,833183734468047,833183734512048,833183734556048,833183734600048,833183734644049,833183734688049,833183734732049,833183734776050,833183734820050,833183734864051,833183734908051,833183734952051,833183734996087,833183735040087,833183735084087,833183735128088,833183735172088,833183735216089,833183735260089,833183735304089,833183735348090,833183735392090,833183735436090,833183735480091,833183735524091,833183735568092,833183735612092,833183735656092,833183735700093,833183735744093,833183735788093,833183735832094,833183735876094,833183735920095,833183735964095,833183736008131,833183736052132,833183736096132,833183736140132,833183736184133,833183736228133,833183736272134,833183736316134,833183736360134,833183736404135,833183736448135,833183736492135,833183736536136,833183736580136,833183736624137,833183736668137,833183736712137,833183736756138,833183736800138,833183736844138,833183736888139,833183736932139,833183736976140,833183737020175,833183737064175,833183737108176,833183737152176,833183737196176,833183737240177,833183737284177,833183737328178,833183737372178,833183737416178,833183737460179,833183737504179,833183737548179,833183737592180,833183737636180,833183737680181,833183737724181,833183737768181,833183737812182,833183737856182,833183737900182,833183737944183,833183737988218,833183738032219,833183738076219,833183738120219,833183738164220,833183738208220,833183738252220,833183738296221,833183738340221,833183738384222,833183738428222,833183738472222,833183738516223,833183738560223,833183738604223,833183738648224,833183738692224,833183738736224,833183738780225,833183738824225,833183738868226,833183738912226,833183738956226,833183739000263,833183739044263,833183739088263,833183739132264,833183739176264,833183739220265,833183739264265,833183739308265,833183739352266,833183739396266,833183739440266,833183739484267,833183739528267,833183739572268,833183739616268,833183739660268,833183739704269,833183739748269,833183739792269,833183739836270,833183739880270,833183739924271,833183739968271,833183740012306,833183740056307,833183740100307,833183740144307,833183740188308,833183740232308,833183740276309,833183740320309,833183740364309,833183740408310,833183740452310,833183740496310,833183740540311,833183740584311,833183740628312,833183740672312,833183740716312,833183740760313,833183740804313,833183740848313,833183740892314,833183740936314,833183740980351,833183741024351,833183741068351,833183741112352,833183741156352,833183741200352,833183741244353,833183741288353,833183741332354,833183741376354,833183741420354,833183741464355,833183741508355,833183741552355,833183741596356,833183741640356,833183741684357,833183741728357,833183741772357,833183741816358,833183741860358,833183741904358,833183741948359,833183741992394,833183742036395,833183742080395,833183742124395,833183742168396,833183742212396,833183742256396,833183742300397,833183742344397,833183742388398,833183742432398,833183742476398,833183742520399,833183742564399,833183742608399,833183742652400,833183742696400,833183742740401,833183742784401,833183742828401,833183742872402,833183742916402,833183742960402,833183743004439,833183743048439,833183743092440,833183743136440,833183743180440,833183743224441,833183743268441,833183743312441,833183743356442,833183743400442,833183743444443,833183743488443,833183743532443,833183743576444,833183743620444,833183743664444,833183743708445,833183743752445,833183743796446,833183743840446,833183743884446,833183743928447,833183743972447,833183744016482,833183744060483,833183744104483,833183744148484,833183744192484,833183744236484,833183744280485,833183744324485,833183744368485,833183744412486,833183744456486,833183744500487,833183744544487,833183744588487,833183744632488,833183744676488,833183744720488,833183744764489,833183744808489,833183744852489,833183744896490,833183744940490,833183744984527,833183745028527,833183745072527,833183745116528,833183745160528,833183745204528,833183745248529,833183745292529,833183745336530,833183745380530,833183745424530,833183745468531,833183745512531,833183745556531,833183745600532,833183745644532,833183745688533,833183745732533,833183745776533,833183745820534,833183745864534,833183745908534,833183745952535,833183745996570,833183746040571,833183746084571,833183746128571,833183746172572,833183746216572,833183746260572,833183746304573,833183746348573,833183746392574,833183746436574,833183746480574,833183746524575,833183746568575,833183746612575,833183746656576,833183746700576,833183746744577,833183746788577,833183746832577,833183746876578,833183746920578,833183746964578,833183747008614,833183747052614,833183747096615,833183747140615,833183747184615,833183747228616,833183747272616,833183747316616,833183747360617,833183747404617,833183747448618,833183747492618,833183747536618,833183747580619,833183747624619,833183747668619,833183747712620,833183747756620,833183747800621,833183747844621,833183747888621,833183747932622,833183747976622,833183748020658,833183748064659,833183748108659,833183748152660,833183748196660,833183748240660,833183748284661,833183748328661,833183748372661,833183748416662,833183748460662,833183748504663,833183748548663,833183748592663,833183748636664,833183748680664,833183748724664,833183748768665,833183748812665,833183748856666,833183748900666,833183748944666,833183748988702,833183749032702,833183749076702,833183749120703,833183749164703,833183749208704,833183749252704,833183749296704,833183749340705,833183749384705,833183749428705,833183749472706,833183749516706,833183749560707,833183749604707,833183749648707,833183749692708,833183749736708,833183749780708,833183749824709,833183749868709,833183749912710,833183749956710,833183750000746,833183750044747,833183750088747,833183750132747,833183750176748,833183750220748,833183750264749,833183750308749,833183750352749,833183750396750,833183750440750,833183750484750,833183750528751,833183750572751,833183750616752,833183750660752,833183750704752,833183750748753,833183750792753,833183750836753,833183750880754,833183750924754,833183750968755,833183751012790,833183751056790,833183751100791,833183751144791,833183751188791,833183751232792,833183751276792,833183751320793,833183751364793,833183751408793,833183751452794,833183751496794,833183751540794,833183751584795,833183751628795,833183751672796,833183751716796,833183751760796,833183751804797,833183751848797,833183751892797,833183751936798,833183751980834,833183752024835,833183752068835,833183752112835,833183752156836,833183752200836,833183752244836,833183752288837,833183752332837,833183752376838,833183752420838,833183752464838,833183752508839,833183752552839,833183752596839,833183752640840,833183752684840,833183752728840,833183752772841,833183752816841,833183752860842,833183752904842,833183752948842,833183752992878,833183753036878,833183753080878,833183753124879,833183753168879,833183753212880,833183753256880,833183753300880,833183753344881,833183753388881,833183753432881,833183753476882,833183753520882,833183753564883,833183753608883,833183753652883,833183753696884,833183753740884,833183753784884,833183753828885,833183753872885,833183753916886,833183753960886,833183754004922,833183754048923,833183754092923,833183754136923,833183754180924,833183754224924,833183754268925,833183754312925,833183754356925,833183754400926,833183754444926,833183754488926,833183754532927,833183754576927,833183754620928,833183754664928,833183754708928,833183754752929,833183754796929,833183754840929,833183754884930,833183754928930,833183754972931,833183755016966,833183755060966,833183755104967,833183755148967,833183755192967,833183755236968,833183755280968,833183755324969,833183755368969,833183755412969,833183755456970,833183755500970,833183755544970,833183755588971,833183755632971,833183755676972,833183755720972,833183755764972,833183755808973,833183755852973,833183755896973,833183755940974,833183755985009,833183756029010,833183756073010,833183756117010,833183756161011,833183756205011,833183756249011,833183756293012,833183756337012,833183756381013,833183756425013,833183756469013,833183756513014,833183756557014,833183756601014,833183756645015,833183756689015,833183756733016,833183756777016,833183756821016,833183756865017,833183756909017,833183756953017,833183756997054,833183757041054,833183757085055,833183757129055,833183757173055,833183757217056,833183757261056,833183757305056,833183757349057,833183757393057,833183757437058,833183757481058,833183757525058,833183757569059,833183757613059,833183757657059,833183757701060,833183757745060,833183757789061,833183757833061,833183757877061,833183757921062,833183757965062,833183758009097,833183758053098,833183758097098,833183758141099,833183758185099,833183758229099,833183758273100,833183758317100,833183758361100,833183758405101,833183758449101,833183758493102,833183758537102,833183758581102,833183758625103,833183758669103,833183758713103,833183758757104,833183758801104,833183758845105,833183758889105,833183758933105,833183758977106,833183759021142,833183759065142,833183759109143,833183759153143,833183759197144,833183759241144,833183759285144,833183759329145,833183759373145,833183759417145,833183759461146,833183759505146,833183759549147,833183759593147,833183759637147,833183759681148,833183759725148,833183759769148,833183759813149,833183759857149,833183759901150,833183759945150,833183759989185,833183760033186,833183760077186,833183760121186,833183760165187,833183760209187,833183760253188,833183760297188,833183760341188,833183760385189,833183760429189,833183760473189,833183760517190,833183760561190,833183760605191,833183760649191,833183760693191,833183760737192,833183760781192,833183760825192,833183760869193,833183760913193,833183760957194,833183761001230,833183761045230,833183761089231,833183761133231,833183761177231,833183761221232,833183761265232,833183761309233,833183761353233,833183761397233,833183761441234,833183761485234,833183761529234,833183761573235,833183761617235,833183761661236,833183761705236,833183761749236,833183761793237,833183761837237,833183761881237,833183761925238,833183761969238,833183762013274,833183762057274,833183762101274,833183762145275,833183762189275,833183762233275,833183762277276,833183762321276,833183762365277,833183762409277,833183762453277,833183762497278,833183762541278,833183762585278,833183762629279,833183762673279,833183762717280,833183762761280,833183762805280,833183762849281,833183762893281,833183762937281,833183762981318,833183763025318,833183763069319,833183763113319,833183763157319,833183763201320,833183763245320,833183763289320,833183763333321,833183763377321,833183763421322,833183763465322,833183763509322,833183763553323,833183763597323,833183763641323,833183763685324,833183763729324,833183763773325,833183763817325,833183763861325,833183763905326,833183763949326,833183763993361,833183764037362,833183764081362,833183764125363,833183764169363,833183764213363,833183764257364,833183764301364,833183764345364,833183764389365,833183764433365,833183764477366,833183764521366,833183764565366,833183764609367,833183764653367,833183764697367,833183764741368,833183764785368,833183764829369,833183764873369,833183764917369,833183764961370,833183765005405,833183765049405,833183765093406,833183765137406,833183765181407,833183765225407,833183765269407,833183765313408,833183765357408,833183765401408,833183765445409,833183765489409,833183765533410,833183765577410,833183765621410,833183765665411,833183765709411,833183765753411,833183765797412,833183765841412,833183765885413,833183765929413,833183765973413,833183766017450,833183766061450,833183766105450,833183766149451,833183766193451,833183766237452,833183766281452,833183766325452,833183766369453,833183766413453,833183766457453,833183766501454,833183766545454,833183766589455,833183766633455,833183766677455,833183766721456,833183766765456,833183766809456,833183766853457,833183766897457,833183766941458,833183766985493,833183767029493,833183767073494,833183767117494,833183767161494,833183767205495,833183767249495,833183767293496,833183767337496,833183767381496,833183767425497,833183767469497,833183767513497,833183767557498,833183767601498,833183767645499,833183767689499,833183767733499,833183767777500,833183767821500,833183767865500,833183767909501,833183767953501,833183767997538,833183768041538,833183768085538,833183768129539,833183768173539,833183768217539,833183768261540,833183768305540,833183768349541,833183768393541,833183768437541,833183768481542,833183768525542,833183768569542,833183768613543,833183768657543,833183768701543,833183768745544,833183768789544,833183768833545,833183768877545,833183768921545,833183768965546,833183769009581,833183769053581,833183769097582,833183769141582,833183769185583,833183769229583,833183769273583,833183769317584,833183769361584,833183769405584,833183769449585,833183769493585,833183769537586,833183769581586,833183769625586,833183769669587,833183769713587,833183769757587,833183769801588,833183769845588,833183769889589,833183769933589,833183769977589,833183770021626,833183770065626,833183770109626,833183770153627,833183770197627,833183770241628,833183770285628,833183770329628,833183770373629,833183770417629,833183770461629,833183770505630,833183770549630,833183770593631,833183770637631,833183770681631,833183770725632,833183770769632,833183770813632,833183770857633,833183770901633,833183770945634,833183770989669,833183771033669,833183771077670,833183771121670,833183771165670,833183771209671,833183771253671,833183771297672,833183771341672,833183771385672,833183771429673,833183771473673,833183771517673,833183771561674,833183771605674,833183771649675,833183771693675,833183771737675,833183771781676,833183771825676,833183771869676,833183771913677,833183771957677,833183772001714,833183772045714,833183772089714,833183772133715,833183772177715,833183772221715,833183772265716,833183772309716,833183772353717,833183772397717,833183772441717,833183772485718,833183772529718,833183772573718,833183772617719,833183772661719,833183772705720,833183772749720,833183772793720,833183772837721,833183772881721,833183772925721,833183772969722,833183773013757,833183773057758,833183773101758,833183773145758,833183773189759,833183773233759,833183773277759,833183773321760,833183773365760,833183773409761,833183773453761,833183773497761,833183773541762,833183773585762,833183773629762,833183773673763,833183773717763,833183773761764,833183773805764,833183773849764,833183773893765,833183773937765,833183773981801,833183774025802,833183774069802,833183774113803,833183774157803,833183774201803,833183774245804,833183774289804,833183774333804,833183774377805,833183774421805,833183774465806,833183774509806,833183774553806,833183774597807,833183774641807,833183774685807,833183774729808,833183774773808,833183774817809,833183774861809,833183774905809,833183774949810,833183774993845,833183775037845,833183775081846,833183775125846,833183775169847,833183775213847,833183775257847,833183775301848,833183775345848,833183775389848,833183775433849,833183775477849,833183775521850,833183775565850,833183775609850,833183775653851,833183775697851,833183775741852,833183775785852,833183775829852,833183775873853,833183775917853,833183775961853,833183776005889,833183776049889,833183776093890,833183776137890,833183776181890,833183776225891,833183776269891,833183776313891,833183776357892,833183776401892,833183776445893,833183776489893,833183776533893,833183776577894,833183776621894,833183776665894,833183776709895,833183776753895,833183776797896,833183776841896,833183776885896,833183776929897,833183776973897,833183777017933,833183777061934,833183777105934,833183777149935,833183777193935,833183777237935,833183777281936,833183777325936,833183777369936,833183777413937,833183777457937,833183777501938,833183777545938,833183777589938,833183777633939,833183777677939,833183777721939,833183777765940,833183777809940,833183777853941,833183777897941,833183777941941,833183777985977,833183778029977,833183778073977,833183778117978,833183778161978,833183778205979,833183778249979,833183778293979,833183778337980,833183778381980,833183778425980,833183778469981,833183778513981,833183778557982,833183778601982,833183778645982,833183778689983,833183778733983,833183778777983,833183778821984,833183778865984,833183778909985,833183778953985,833183778998021,833183779042022,833183779086022,833183779130022,833183779174023,833183779218023,833183779262024,833183779306024,833183779350024,833183779394025,833183779438025,833183779482025,833183779526026,833183779570026,833183779614027,833183779658027,833183779702027,833183779746028,833183779790028,833183779834028,833183779878029,833183779922029,833183779966030,833183780010065,833183780054065,833183780098066,833183780142066,833183780186066,833183780230067,833183780274067,833183780318068,833183780362068,833183780406068,833183780450069,833183780494069,833183780538069,833183780582070,833183780626070,833183780670071,833183780714071,833183780758071"
+      },
+      {
+        "path": "time_stamp/long_name",
+        "value": "Elapsed time since 01 Jan 2000 0h "
+      },
+      {
+        "path": "relative_spectral_covariance/value",
+        "value": "1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0"
+      },
+      {
+        "path": "Manifest/metadataSection/olciProductInformation/classificationSummary/landPixels/percentage",
+        "value": "87.000000"
+      }
+    ]
+  }
+}

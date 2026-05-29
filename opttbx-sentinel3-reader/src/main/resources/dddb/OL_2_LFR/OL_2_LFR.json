@@ -1,0 +1,27 @@
+{
+  "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+  "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+  "bandGroupingPattern" : "IWV:OGVI:OTCI:RC681:RC865:atmospheric_temperature_profile:lambda0:FWHM:solar_flux",
+  "flagMasks": [
+    {
+      "name": "LQSF_GENERAL_RECOM",
+      "expression": "LQSF.CLOUD or LQSF.SNOW_ICE",
+      "description": "Excluding pixels that are deemed unreliable. Flag recommended by QWG."
+    },
+    {
+      "name": "LQSF_OTCI_RECOM",
+      "expression": "LQSF.CLOUD or LQSF.SNOW_ICE or LQSF.OTCI_FAIL or LQSF.OTCI_CLASS_CLSN",
+      "description": "Excluding pixels that are deemed unreliable for OTCI. Flag recommended by QWG."
+    },
+    {
+      "name": "LQSF_OGVI_RECOM",
+      "expression": "LQSF.CLOUD or LQSF.SNOW_ICE or LQSF.OGVI_FAIL",
+      "description": "Excluding pixels that are deemed unreliable for OGVI. Flag recommended by QWG."
+    },
+    {
+      "name": "LQSF_IWV_RECOM",
+      "expression": "LQSF.CLOUD or LQSF.SNOW_ICE or LQSF.WV_FAIL",
+      "description": "Excluding pixels that are deemed unreliable for IWV. Flag recommended by QWG."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "GIFAPAR",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "Green Instantaneous Fraction of Absorbed Photosynthetically Available Radiation (GIFAPAR) of the current land pixel"
+  },
+  {
+    "name": "GIFAPAR_unc",
+    "dataType": "uint8",
+    "heightXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows",
+    "widthXPath" : "/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns",
+    "description" : "Uncertainty estimate for the GIFAPAR of the current land pixel"
+  }
+]
