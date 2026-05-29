@@ -3,6 +3,9 @@ Optical Toolbox Release Notes
 
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
+# New in SNAP 14.0.0
+    [SNAP-4152] Re-organise S3 reader DDDB 
+
 # New in SNAP 13.0.2
     [SNAP-4182] Incorrect TiePointGeoCoding for OLCI data
     [SNAP-4181] TPGs are wrongly filled when directly created a subset from a product
