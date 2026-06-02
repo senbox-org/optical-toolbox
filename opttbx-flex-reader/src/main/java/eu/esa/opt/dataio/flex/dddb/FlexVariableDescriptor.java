@@ -13,6 +13,9 @@ public class FlexVariableDescriptor {
     private String depthPrefixToken;
     private String wavelengthReference;
     private String fwhmReference;
+    private double scaleFactor;
+    private double addOffset;
+    private Double fillValue;
     private String units;
     private String description;
     private String ncDataFile;
@@ -26,6 +29,9 @@ public class FlexVariableDescriptor {
         depthPrefixToken = "";
         wavelengthReference = "";
         fwhmReference = "";
+        scaleFactor = 1.0;
+        addOffset = 0.0;
+        fillValue = null;
         units = "";
         description = "";
         ncDataFile = "";
@@ -122,6 +128,30 @@ public class FlexVariableDescriptor {
 
     public void setFwhmReference(String fwhmReference) {
         this.fwhmReference = fwhmReference;
+    }
+
+    public double getScaleFactor() {
+        return scaleFactor;
+    }
+
+    public void setScaleFactor(double scaleFactor) {
+        this.scaleFactor = scaleFactor;
+    }
+
+    public double getAddOffset() {
+        return addOffset;
+    }
+
+    public void setAddOffset(double addOffset) {
+        this.addOffset = addOffset;
+    }
+
+    public Double getFillValue() {
+        return fillValue;
+    }
+
+    public void setFillValue(Double fillValue) {
+        this.fillValue = fillValue;
     }
 
     public String getUnits() {

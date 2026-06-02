@@ -25,6 +25,9 @@ public class FlexVariableDescriptorTest {
         assertEquals("", descriptor.getNcDataFile());
         assertEquals("", descriptor.getWavelengthReference());
         assertEquals("", descriptor.getFwhmReference());
+        assertEquals(1.0, descriptor.getScaleFactor(), 1.0e-12);
+        assertEquals(0.0, descriptor.getAddOffset(), 1.0e-12);
+        assertNull(descriptor.getFillValue());
         assertFalse(descriptor.isOptional());
     }
 
@@ -48,6 +51,9 @@ public class FlexVariableDescriptorTest {
         descriptor.setWavelengthReference("floris_spectral_grid");
         descriptor.setFwhmReference("floris_spectral_bandwidth_grid");
         descriptor.setNcDataFile("hre1.nc");
+        descriptor.setScaleFactor(0.01);
+        descriptor.setAddOffset(-2.5);
+        descriptor.setFillValue(0.0);
 
         assertEquals("latitude", descriptor.getName());
         assertEquals("latitude", descriptor.getNcVarName());
@@ -64,6 +70,9 @@ public class FlexVariableDescriptorTest {
         assertEquals("floris_spectral_grid", descriptor.getWavelengthReference());
         assertEquals("floris_spectral_bandwidth_grid", descriptor.getFwhmReference());
         assertEquals("hre1.nc", descriptor.getNcDataFile());
+        assertEquals(0.01, descriptor.getScaleFactor(), 1.0e-12);
+        assertEquals(-2.5, descriptor.getAddOffset(), 1.0e-12);
+        assertEquals(0.0, descriptor.getFillValue(), 1.0e-12);
     }
 
     @Test

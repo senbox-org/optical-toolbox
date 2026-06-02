@@ -5,6 +5,7 @@ import eu.esa.opt.dataio.flex.FlexProductReader;
 import eu.esa.opt.dataio.flex.compatibility.EarlyProcessorCompatibility;
 import eu.esa.opt.dataio.flex.compatibility.FlexProductCompatibility;
 import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
+import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
@@ -89,6 +90,20 @@ public class FlexReaderUtils {
                 band.setNoDataValue(value);
                 band.setNoDataValueUsed(true);
             }
+        }
+    }
+
+    public static void setScaleOffsetAndFillValue(Band band, FlexVariableDescriptor descriptor) {
+        if (Double.compare(descriptor.getScaleFactor(), 1.0) != 0) {
+            band.setScalingFactor(descriptor.getScaleFactor());
+        }
+        if (Double.compare(descriptor.getAddOffset(), 0.0) != 0) {
+            band.setScalingOffset(descriptor.getAddOffset());
+        }
+        final Double fillValue = descriptor.getFillValue();
+        if (fillValue != null) {
+            band.setNoDataValue(fillValue);
+            band.setNoDataValueUsed(true);
         }
     }
 

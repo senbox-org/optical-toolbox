@@ -6,7 +6,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 1"
+        "description": "TOA radiance for FLEX HR1 spectral channel 1",
+        "scaleFactor": 0.013384721241891384,
+        "addOffset": -0.020648246631026268
     },
     {
         "name": "FLORIS_HR1B_2_radiance",
@@ -15,7 +17,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 2"
+        "description": "TOA radiance for FLEX HR1 spectral channel 2",
+        "scaleFactor": 0.01350665744394064,
+        "addOffset": -9.146051406860352
     },
     {
         "name": "FLORIS_HR1B_3_radiance",
@@ -24,7 +28,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 3"
+        "description": "TOA radiance for FLEX HR1 spectral channel 3",
+        "scaleFactor": 0.013348370790481567,
+        "addOffset": -10.07400894165039
     },
     {
         "name": "FLORIS_HR1B_4_radiance",
@@ -33,7 +39,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 4"
+        "description": "TOA radiance for FLEX HR1 spectral channel 4",
+        "scaleFactor": 0.013374505564570427,
+        "addOffset": -10.063226699829102
     },
     {
         "name": "FLORIS_HR1B_5_radiance",
@@ -42,7 +50,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 5"
+        "description": "TOA radiance for FLEX HR1 spectral channel 5",
+        "scaleFactor": 0.013296861201524734,
+        "addOffset": -0.02040114998817444
     },
     {
         "name": "FLORIS_HR1B_6_radiance",
@@ -51,7 +61,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 6"
+        "description": "TOA radiance for FLEX HR1 spectral channel 6",
+        "scaleFactor": 0.013622504658997059,
+        "addOffset": -18.031896591186523
     },
     {
         "name": "FLORIS_HR1B_7_radiance",
@@ -60,7 +72,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 7"
+        "description": "TOA radiance for FLEX HR1 spectral channel 7",
+        "scaleFactor": 0.013252840377390385,
+        "addOffset": -0.020455535501241684
     },
     {
         "name": "FLORIS_HR1B_8_radiance",
@@ -69,7 +83,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 8"
+        "description": "TOA radiance for FLEX HR1 spectral channel 8",
+        "scaleFactor": 0.013345138169825077,
+        "addOffset": -9.110533714294434
     },
     {
         "name": "FLORIS_HR1B_9_radiance",
@@ -78,7 +94,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 9"
+        "description": "TOA radiance for FLEX HR1 spectral channel 9",
+        "scaleFactor": 0.01323811337351799,
+        "addOffset": -0.020354973152279854
     },
     {
         "name": "FLORIS_HR1B_10_radiance",
@@ -87,7 +105,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 10"
+        "description": "TOA radiance for FLEX HR1 spectral channel 10",
+        "scaleFactor": 0.0133785055950284,
+        "addOffset": -11.462818145751953
     },
     {
         "name": "FLORIS_HR1B_11_radiance",
@@ -96,7 +116,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 11"
+        "description": "TOA radiance for FLEX HR1 spectral channel 11",
+        "scaleFactor": 0.013530093245208263,
+        "addOffset": -24.1899356842041
     },
     {
         "name": "FLORIS_HR1B_12_radiance",
@@ -105,7 +127,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 12"
+        "description": "TOA radiance for FLEX HR1 spectral channel 12",
+        "scaleFactor": 0.013604414649307728,
+        "addOffset": -23.302650451660156
     },
     {
         "name": "FLORIS_HR1B_13_radiance",
@@ -114,7 +138,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 13"
+        "description": "TOA radiance for FLEX HR1 spectral channel 13",
+        "scaleFactor": 0.013474266976118088,
+        "addOffset": -23.857654571533203
     },
     {
         "name": "FLORIS_HR1B_14_radiance",
@@ -123,7 +149,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 14"
+        "description": "TOA radiance for FLEX HR1 spectral channel 14",
+        "scaleFactor": 0.013128383085131645,
+        "addOffset": -0.02040701173245907
     },
     {
         "name": "FLORIS_HR1B_15_radiance",
@@ -132,7 +160,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 15"
+        "description": "TOA radiance for FLEX HR1 spectral channel 15",
+        "scaleFactor": 0.01308362651616335,
+        "addOffset": -0.020294206216931343
     },
     {
         "name": "FLORIS_HR1B_16_radiance",
@@ -141,7 +171,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 16"
+        "description": "TOA radiance for FLEX HR1 spectral channel 16",
+        "scaleFactor": 0.013061558827757835,
+        "addOffset": -0.020345434546470642
     },
     {
         "name": "FLORIS_HR1B_17_radiance",
@@ -150,7 +182,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 17"
+        "description": "TOA radiance for FLEX HR1 spectral channel 17",
+        "scaleFactor": 0.013073238544166088,
+        "addOffset": -0.02024652063846588
     },
     {
         "name": "FLORIS_HR1B_18_radiance",
@@ -159,7 +193,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 18"
+        "description": "TOA radiance for FLEX HR1 spectral channel 18",
+        "scaleFactor": 0.013153206557035446,
+        "addOffset": -8.90749454498291
     },
     {
         "name": "FLORIS_HR1B_19_radiance",
@@ -168,7 +204,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 19"
+        "description": "TOA radiance for FLEX HR1 spectral channel 19",
+        "scaleFactor": 0.013347486034035683,
+        "addOffset": -23.67765235900879
     },
     {
         "name": "FLORIS_HR1B_20_radiance",
@@ -177,7 +215,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 20"
+        "description": "TOA radiance for FLEX HR1 spectral channel 20",
+        "scaleFactor": 0.013035948388278484,
+        "addOffset": -1.0204650163650513
     },
     {
         "name": "FLORIS_HR1U_21_radiance",
@@ -186,7 +226,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 21"
+        "description": "TOA radiance for FLEX HR1 spectral channel 21",
+        "scaleFactor": 0.013703713193535805,
+        "addOffset": -0.022351648658514023
     },
     {
         "name": "FLORIS_HR1U_22_radiance",
@@ -195,7 +237,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 22"
+        "description": "TOA radiance for FLEX HR1 spectral channel 22",
+        "scaleFactor": 0.013375923037528992,
+        "addOffset": -9.165603637695312
     },
     {
         "name": "FLORIS_HR1U_23_radiance",
@@ -204,7 +248,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 23"
+        "description": "TOA radiance for FLEX HR1 spectral channel 23",
+        "scaleFactor": 0.013418780639767647,
+        "addOffset": -10.126821517944336
     },
     {
         "name": "FLORIS_HR1U_24_radiance",
@@ -213,7 +259,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 24"
+        "description": "TOA radiance for FLEX HR1 spectral channel 24",
+        "scaleFactor": 0.013304704800248146,
+        "addOffset": -8.873729705810547
     },
     {
         "name": "FLORIS_HR1U_25_radiance",
@@ -222,7 +270,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 25"
+        "description": "TOA radiance for FLEX HR1 spectral channel 25",
+        "scaleFactor": 0.013325328938663006,
+        "addOffset": -0.02210766077041626
     },
     {
         "name": "FLORIS_HR1U_26_radiance",
@@ -231,7 +281,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 26"
+        "description": "TOA radiance for FLEX HR1 spectral channel 26",
+        "scaleFactor": 0.013443103060126305,
+        "addOffset": -0.021610494703054428
     },
     {
         "name": "FLORIS_HR1U_27_radiance",
@@ -240,7 +292,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 27"
+        "description": "TOA radiance for FLEX HR1 spectral channel 27",
+        "scaleFactor": 0.01378022413700819,
+        "addOffset": -0.022981921210885048
     },
     {
         "name": "FLORIS_HR1U_28_radiance",
@@ -249,7 +303,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 28"
+        "description": "TOA radiance for FLEX HR1 spectral channel 28",
+        "scaleFactor": 0.013501251116394997,
+        "addOffset": -14.826485633850098
     },
     {
         "name": "FLORIS_HR1U_29_radiance",
@@ -258,7 +314,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 29"
+        "description": "TOA radiance for FLEX HR1 spectral channel 29",
+        "scaleFactor": 0.013412278145551682,
+        "addOffset": -0.13372568786144257
     },
     {
         "name": "FLORIS_HR1U_30_radiance",
@@ -267,7 +325,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 30"
+        "description": "TOA radiance for FLEX HR1 spectral channel 30",
+        "scaleFactor": 0.013911055400967598,
+        "addOffset": -27.67184829711914
     },
     {
         "name": "FLORIS_HR1U_31_radiance",
@@ -276,7 +336,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 31"
+        "description": "TOA radiance for FLEX HR1 spectral channel 31",
+        "scaleFactor": 0.013706034980714321,
+        "addOffset": -24.39929962158203
     },
     {
         "name": "FLORIS_HR1U_32_radiance",
@@ -285,7 +347,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 32"
+        "description": "TOA radiance for FLEX HR1 spectral channel 32",
+        "scaleFactor": 0.013401249423623085,
+        "addOffset": -3.71232533454895
     },
     {
         "name": "FLORIS_HR1U_33_radiance",
@@ -294,7 +358,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 33"
+        "description": "TOA radiance for FLEX HR1 spectral channel 33",
+        "scaleFactor": 0.013538742437958717,
+        "addOffset": -15.9360933303833
     },
     {
         "name": "FLORIS_HR1U_34_radiance",
@@ -303,7 +369,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 34"
+        "description": "TOA radiance for FLEX HR1 spectral channel 34",
+        "scaleFactor": 0.013319764286279678,
+        "addOffset": -0.022023605182766914
     },
     {
         "name": "FLORIS_HR1U_35_radiance",
@@ -312,7 +380,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 35"
+        "description": "TOA radiance for FLEX HR1 spectral channel 35",
+        "scaleFactor": 0.013537077233195305,
+        "addOffset": -0.02178850769996643
     },
     {
         "name": "FLORIS_HR1U_36_radiance",
@@ -321,7 +391,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 36"
+        "description": "TOA radiance for FLEX HR1 spectral channel 36",
+        "scaleFactor": 0.013377390801906586,
+        "addOffset": -0.021915869787335396
     },
     {
         "name": "FLORIS_HR1U_37_radiance",
@@ -330,7 +402,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 37"
+        "description": "TOA radiance for FLEX HR1 spectral channel 37",
+        "scaleFactor": 0.013540719635784626,
+        "addOffset": -0.021885573863983154
     },
     {
         "name": "FLORIS_HR1U_38_radiance",
@@ -339,7 +413,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 38"
+        "description": "TOA radiance for FLEX HR1 spectral channel 38",
+        "scaleFactor": 0.013685103505849838,
+        "addOffset": -18.09012222290039
     },
     {
         "name": "FLORIS_HR1U_39_radiance",
@@ -348,7 +424,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 39"
+        "description": "TOA radiance for FLEX HR1 spectral channel 39",
+        "scaleFactor": 0.013737163506448269,
+        "addOffset": -24.018699645996094
     },
     {
         "name": "FLORIS_HR1U_40_radiance",
@@ -357,7 +435,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 40"
+        "description": "TOA radiance for FLEX HR1 spectral channel 40",
+        "scaleFactor": 0.01347409188747406,
+        "addOffset": -1.1710865497589111
     },
     {
         "name": "FLORIS_HR1U_41_radiance",
@@ -366,7 +446,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 41"
+        "description": "TOA radiance for FLEX HR1 spectral channel 41",
+        "scaleFactor": 0.013430260121822357,
+        "addOffset": -0.021700039505958557
     },
     {
         "name": "FLORIS_HR1U_42_radiance",
@@ -375,7 +457,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 42"
+        "description": "TOA radiance for FLEX HR1 spectral channel 42",
+        "scaleFactor": 0.01354452408850193,
+        "addOffset": -9.270403861999512
     },
     {
         "name": "FLORIS_HR1U_43_radiance",
@@ -384,7 +468,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 43"
+        "description": "TOA radiance for FLEX HR1 spectral channel 43",
+        "scaleFactor": 0.013628092594444752,
+        "addOffset": -8.546442985534668
     },
     {
         "name": "FLORIS_HR1U_44_radiance",
@@ -393,7 +479,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 44"
+        "description": "TOA radiance for FLEX HR1 spectral channel 44",
+        "scaleFactor": 0.01340365782380104,
+        "addOffset": -8.702065467834473
     },
     {
         "name": "FLORIS_HR1U_45_radiance",
@@ -402,7 +490,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 45"
+        "description": "TOA radiance for FLEX HR1 spectral channel 45",
+        "scaleFactor": 0.013274320401251316,
+        "addOffset": -0.021844517439603806
     },
     {
         "name": "FLORIS_HR1U_46_radiance",
@@ -411,7 +501,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 46"
+        "description": "TOA radiance for FLEX HR1 spectral channel 46",
+        "scaleFactor": 0.01348874717950821,
+        "addOffset": -14.652710914611816
     },
     {
         "name": "FLORIS_HR1U_47_radiance",
@@ -420,7 +512,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 47"
+        "description": "TOA radiance for FLEX HR1 spectral channel 47",
+        "scaleFactor": 0.013436520472168922,
+        "addOffset": -0.022441290318965912
     },
     {
         "name": "FLORIS_HR1U_48_radiance",
@@ -429,7 +523,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 48"
+        "description": "TOA radiance for FLEX HR1 spectral channel 48",
+        "scaleFactor": 0.013391779735684395,
+        "addOffset": -5.7018842697143555
     },
     {
         "name": "FLORIS_HR1U_49_radiance",
@@ -438,7 +534,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 49"
+        "description": "TOA radiance for FLEX HR1 spectral channel 49",
+        "scaleFactor": 0.013498000800609589,
+        "addOffset": -0.1350874900817871
     },
     {
         "name": "FLORIS_HR1U_50_radiance",
@@ -447,7 +545,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 50"
+        "description": "TOA radiance for FLEX HR1 spectral channel 50",
+        "scaleFactor": 0.013760589063167572,
+        "addOffset": -27.266124725341797
     },
     {
         "name": "FLORIS_HR1U_51_radiance",
@@ -456,7 +556,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 51"
+        "description": "TOA radiance for FLEX HR1 spectral channel 51",
+        "scaleFactor": 0.01387413777410984,
+        "addOffset": -24.2786865234375
     },
     {
         "name": "FLORIS_HR1U_52_radiance",
@@ -465,7 +567,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 52"
+        "description": "TOA radiance for FLEX HR1 spectral channel 52",
+        "scaleFactor": 0.013574820011854172,
+        "addOffset": -12.660395622253418
     },
     {
         "name": "FLORIS_HR1U_53_radiance",
@@ -474,7 +578,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 53"
+        "description": "TOA radiance for FLEX HR1 spectral channel 53",
+        "scaleFactor": 0.013654030859470367,
+        "addOffset": -24.11387062072754
     },
     {
         "name": "FLORIS_HR1U_54_radiance",
@@ -483,7 +589,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 54"
+        "description": "TOA radiance for FLEX HR1 spectral channel 54",
+        "scaleFactor": 0.013481128960847855,
+        "addOffset": -0.02187224291265011
     },
     {
         "name": "FLORIS_HR1U_55_radiance",
@@ -492,7 +600,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 55"
+        "description": "TOA radiance for FLEX HR1 spectral channel 55",
+        "scaleFactor": 0.013209001161158085,
+        "addOffset": -0.02119375765323639
     },
     {
         "name": "FLORIS_HR1U_56_radiance",
@@ -501,7 +611,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 56"
+        "description": "TOA radiance for FLEX HR1 spectral channel 56",
+        "scaleFactor": 0.013484216295182705,
+        "addOffset": -0.022665835916996002
     },
     {
         "name": "FLORIS_HR1U_57_radiance",
@@ -510,7 +622,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 57"
+        "description": "TOA radiance for FLEX HR1 spectral channel 57",
+        "scaleFactor": 0.013466493226587772,
+        "addOffset": -0.022452283650636673
     },
     {
         "name": "FLORIS_HR1U_58_radiance",
@@ -519,7 +633,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 58"
+        "description": "TOA radiance for FLEX HR1 spectral channel 58",
+        "scaleFactor": 0.013669234700500965,
+        "addOffset": -27.095792770385742
     },
     {
         "name": "FLORIS_HR1U_59_radiance",
@@ -528,7 +644,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 59"
+        "description": "TOA radiance for FLEX HR1 spectral channel 59",
+        "scaleFactor": 0.013543988578021526,
+        "addOffset": -24.33370018005371
     },
     {
         "name": "FLORIS_HR1U_60_radiance",
@@ -537,7 +655,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 60"
+        "description": "TOA radiance for FLEX HR1 spectral channel 60",
+        "scaleFactor": 0.013285813853144646,
+        "addOffset": -0.813642144203186
     },
     {
         "name": "FLORIS_HR1U_61_radiance",
@@ -546,7 +666,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 61"
+        "description": "TOA radiance for FLEX HR1 spectral channel 61",
+        "scaleFactor": 0.013275736011564732,
+        "addOffset": -0.02147943153977394
     },
     {
         "name": "FLORIS_HR1U_62_radiance",
@@ -555,7 +677,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 62"
+        "description": "TOA radiance for FLEX HR1 spectral channel 62",
+        "scaleFactor": 0.013366950675845146,
+        "addOffset": -8.795025825500488
     },
     {
         "name": "FLORIS_HR1U_63_radiance",
@@ -564,7 +688,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 63"
+        "description": "TOA radiance for FLEX HR1 spectral channel 63",
+        "scaleFactor": 0.013161691837012768,
+        "addOffset": -9.353007316589355
     },
     {
         "name": "FLORIS_HR1U_64_radiance",
@@ -573,7 +699,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 64"
+        "description": "TOA radiance for FLEX HR1 spectral channel 64",
+        "scaleFactor": 0.013488258235156536,
+        "addOffset": -9.42324447631836
     },
     {
         "name": "FLORIS_HR1U_65_radiance",
@@ -582,7 +710,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 65"
+        "description": "TOA radiance for FLEX HR1 spectral channel 65",
+        "scaleFactor": 0.013474657200276852,
+        "addOffset": -0.023331690579652786
     },
     {
         "name": "FLORIS_HR1U_66_radiance",
@@ -591,7 +721,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 66"
+        "description": "TOA radiance for FLEX HR1 spectral channel 66",
+        "scaleFactor": 0.013276692479848862,
+        "addOffset": -9.060615539550781
     },
     {
         "name": "FLORIS_HR1U_67_radiance",
@@ -600,7 +732,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 67"
+        "description": "TOA radiance for FLEX HR1 spectral channel 67",
+        "scaleFactor": 0.013186540454626083,
+        "addOffset": -0.02171606756746769
     },
     {
         "name": "FLORIS_HR1U_68_radiance",
@@ -609,7 +743,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 68"
+        "description": "TOA radiance for FLEX HR1 spectral channel 68",
+        "scaleFactor": 0.013348137959837914,
+        "addOffset": -9.035239219665527
     },
     {
         "name": "FLORIS_HR1U_69_radiance",
@@ -618,7 +754,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 69"
+        "description": "TOA radiance for FLEX HR1 spectral channel 69",
+        "scaleFactor": 0.013314573094248772,
+        "addOffset": -0.022128760814666748
     },
     {
         "name": "FLORIS_HR1U_70_radiance",
@@ -627,7 +765,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 70"
+        "description": "TOA radiance for FLEX HR1 spectral channel 70",
+        "scaleFactor": 0.013352829031646252,
+        "addOffset": -4.235270977020264
     },
     {
         "name": "FLORIS_HR1U_71_radiance",
@@ -636,7 +776,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 71"
+        "description": "TOA radiance for FLEX HR1 spectral channel 71",
+        "scaleFactor": 0.013494981452822685,
+        "addOffset": -24.22011375427246
     },
     {
         "name": "FLORIS_HR1U_72_radiance",
@@ -645,7 +787,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 72"
+        "description": "TOA radiance for FLEX HR1 spectral channel 72",
+        "scaleFactor": 0.013709120452404022,
+        "addOffset": -21.63817024230957
     },
     {
         "name": "FLORIS_HR1U_73_radiance",
@@ -654,7 +798,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 73"
+        "description": "TOA radiance for FLEX HR1 spectral channel 73",
+        "scaleFactor": 0.013452490791678429,
+        "addOffset": -23.81570053100586
     },
     {
         "name": "FLORIS_HR1U_74_radiance",
@@ -663,7 +809,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 74"
+        "description": "TOA radiance for FLEX HR1 spectral channel 74",
+        "scaleFactor": 0.013318583369255066,
+        "addOffset": -0.021440887823700905
     },
     {
         "name": "FLORIS_HR1U_75_radiance",
@@ -672,7 +820,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 75"
+        "description": "TOA radiance for FLEX HR1 spectral channel 75",
+        "scaleFactor": 0.013211086392402649,
+        "addOffset": -0.022058768197894096
     },
     {
         "name": "FLORIS_HR1U_76_radiance",
@@ -681,7 +831,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 76"
+        "description": "TOA radiance for FLEX HR1 spectral channel 76",
+        "scaleFactor": 0.013141834177076817,
+        "addOffset": -0.021396305412054062
     },
     {
         "name": "FLORIS_HR1U_77_radiance",
@@ -690,7 +842,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 77"
+        "description": "TOA radiance for FLEX HR1 spectral channel 77",
+        "scaleFactor": 0.013335946947336197,
+        "addOffset": -0.022062500938773155
     },
     {
         "name": "FLORIS_HR1U_78_radiance",
@@ -699,7 +853,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 78"
+        "description": "TOA radiance for FLEX HR1 spectral channel 78",
+        "scaleFactor": 0.01338148396462202,
+        "addOffset": -7.365007400512695
     },
     {
         "name": "FLORIS_HR1U_79_radiance",
@@ -708,7 +864,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 79"
+        "description": "TOA radiance for FLEX HR1 spectral channel 79",
+        "scaleFactor": 0.013444165699183941,
+        "addOffset": -24.173358917236328
     },
     {
         "name": "FLORIS_HR1U_80_radiance",
@@ -717,7 +875,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 80"
+        "description": "TOA radiance for FLEX HR1 spectral channel 80",
+        "scaleFactor": 0.013210250064730644,
+        "addOffset": -0.6961237788200378
     },
     {
         "name": "FLORIS_HR1U_81_radiance",
@@ -726,7 +886,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 81"
+        "description": "TOA radiance for FLEX HR1 spectral channel 81",
+        "scaleFactor": 0.013127977028489113,
+        "addOffset": -0.021298758685588837
     },
     {
         "name": "FLORIS_HR1U_82_radiance",
@@ -735,7 +897,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 82"
+        "description": "TOA radiance for FLEX HR1 spectral channel 82",
+        "scaleFactor": 0.013302251696586609,
+        "addOffset": -8.739943504333496
     },
     {
         "name": "FLORIS_HR1U_83_radiance",
@@ -744,7 +908,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 83"
+        "description": "TOA radiance for FLEX HR1 spectral channel 83",
+        "scaleFactor": 0.0132210161536932,
+        "addOffset": -9.524308204650879
     },
     {
         "name": "FLORIS_HR1U_84_radiance",
@@ -753,7 +919,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 84"
+        "description": "TOA radiance for FLEX HR1 spectral channel 84",
+        "scaleFactor": 0.013123933225870132,
+        "addOffset": -0.02153576910495758
     },
     {
         "name": "FLORIS_HR1U_85_radiance",
@@ -762,7 +930,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 85"
+        "description": "TOA radiance for FLEX HR1 spectral channel 85",
+        "scaleFactor": 0.013299031183123589,
+        "addOffset": -0.021696528419852257
     },
     {
         "name": "FLORIS_HR1U_86_radiance",
@@ -771,7 +941,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 86"
+        "description": "TOA radiance for FLEX HR1 spectral channel 86",
+        "scaleFactor": 0.013240178115665913,
+        "addOffset": -0.022004123777151108
     },
     {
         "name": "FLORIS_HR1U_87_radiance",
@@ -780,7 +952,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 87"
+        "description": "TOA radiance for FLEX HR1 spectral channel 87",
+        "scaleFactor": 0.01331928838044405,
+        "addOffset": -0.021456345915794373
     },
     {
         "name": "FLORIS_HR1U_88_radiance",
@@ -789,7 +963,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 88"
+        "description": "TOA radiance for FLEX HR1 spectral channel 88",
+        "scaleFactor": 0.013431468047201633,
+        "addOffset": -16.364566802978516
     },
     {
         "name": "FLORIS_HR1U_89_radiance",
@@ -798,7 +974,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 89"
+        "description": "TOA radiance for FLEX HR1 spectral channel 89",
+        "scaleFactor": 0.013281753286719322,
+        "addOffset": -0.13372424244880676
     },
     {
         "name": "FLORIS_HR1U_90_radiance",
@@ -807,7 +985,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 90"
+        "description": "TOA radiance for FLEX HR1 spectral channel 90",
+        "scaleFactor": 0.013173239305615425,
+        "addOffset": -14.251016616821289
     },
     {
         "name": "FLORIS_HR1U_91_radiance",
@@ -816,7 +996,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 91"
+        "description": "TOA radiance for FLEX HR1 spectral channel 91",
+        "scaleFactor": 0.013491603545844555,
+        "addOffset": -24.209545135498047
     },
     {
         "name": "FLORIS_HR1U_92_radiance",
@@ -825,7 +1007,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 92"
+        "description": "TOA radiance for FLEX HR1 spectral channel 92",
+        "scaleFactor": 0.01332862488925457,
+        "addOffset": -10.82290267944336
     },
     {
         "name": "FLORIS_HR1U_93_radiance",
@@ -834,7 +1018,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 93"
+        "description": "TOA radiance for FLEX HR1 spectral channel 93",
+        "scaleFactor": 0.013422232121229172,
+        "addOffset": -22.652193069458008
     },
     {
         "name": "FLORIS_HR1U_94_radiance",
@@ -843,7 +1029,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 94"
+        "description": "TOA radiance for FLEX HR1 spectral channel 94",
+        "scaleFactor": 0.01307135634124279,
+        "addOffset": -0.021246736869215965
     },
     {
         "name": "FLORIS_HR1U_95_radiance",
@@ -852,7 +1040,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 95"
+        "description": "TOA radiance for FLEX HR1 spectral channel 95",
+        "scaleFactor": 0.013265722431242466,
+        "addOffset": -0.021959712728857994
     },
     {
         "name": "FLORIS_HR1U_96_radiance",
@@ -861,7 +1051,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 96"
+        "description": "TOA radiance for FLEX HR1 spectral channel 96",
+        "scaleFactor": 0.013053624890744686,
+        "addOffset": -0.021559666842222214
     },
     {
         "name": "FLORIS_HR1U_97_radiance",
@@ -870,7 +1062,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 97"
+        "description": "TOA radiance for FLEX HR1 spectral channel 97",
+        "scaleFactor": 0.01316132489591837,
+        "addOffset": -0.021424604579806328
     },
     {
         "name": "FLORIS_HR1U_98_radiance",
@@ -879,7 +1073,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 98"
+        "description": "TOA radiance for FLEX HR1 spectral channel 98",
+        "scaleFactor": 0.013583960942924023,
+        "addOffset": -16.322986602783203
     },
     {
         "name": "FLORIS_HR1U_99_radiance",
@@ -888,7 +1084,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 99"
+        "description": "TOA radiance for FLEX HR1 spectral channel 99",
+        "scaleFactor": 0.0134266447275877,
+        "addOffset": -23.722715377807617
     },
     {
         "name": "FLORIS_HR1U_100_radiance",
@@ -897,7 +1095,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 100"
+        "description": "TOA radiance for FLEX HR1 spectral channel 100",
+        "scaleFactor": 0.013101564720273018,
+        "addOffset": -1.248783826828003
     },
     {
         "name": "FLORIS_HR1U_101_radiance",
@@ -906,7 +1106,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 101"
+        "description": "TOA radiance for FLEX HR1 spectral channel 101",
+        "scaleFactor": 0.013059506192803383,
+        "addOffset": -0.02131071127951145
     },
     {
         "name": "FLORIS_HR1U_102_radiance",
@@ -915,7 +1117,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 102"
+        "description": "TOA radiance for FLEX HR1 spectral channel 102",
+        "scaleFactor": 0.013066589832305908,
+        "addOffset": -7.613434314727783
     },
     {
         "name": "FLORIS_HR1U_103_radiance",
@@ -924,7 +1128,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 103"
+        "description": "TOA radiance for FLEX HR1 spectral channel 103",
+        "scaleFactor": 0.013132505118846893,
+        "addOffset": -9.462655067443848
     },
     {
         "name": "FLORIS_HR1U_104_radiance",
@@ -933,7 +1139,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 104"
+        "description": "TOA radiance for FLEX HR1 spectral channel 104",
+        "scaleFactor": 0.013164895586669445,
+        "addOffset": -9.201581001281738
     },
     {
         "name": "FLORIS_HR1U_105_radiance",
@@ -942,7 +1150,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 105"
+        "description": "TOA radiance for FLEX HR1 spectral channel 105",
+        "scaleFactor": 0.013650565408170223,
+        "addOffset": -9.439379692077637
     },
     {
         "name": "FLORIS_HR1U_106_radiance",
@@ -951,7 +1161,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 106"
+        "description": "TOA radiance for FLEX HR1 spectral channel 106",
+        "scaleFactor": 0.013547436334192753,
+        "addOffset": -8.97707462310791
     },
     {
         "name": "FLORIS_HR1U_107_radiance",
@@ -960,7 +1172,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 107"
+        "description": "TOA radiance for FLEX HR1 spectral channel 107",
+        "scaleFactor": 0.013033428229391575,
+        "addOffset": -0.020999373868107796
     },
     {
         "name": "FLORIS_HR1U_108_radiance",
@@ -969,7 +1183,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 108"
+        "description": "TOA radiance for FLEX HR1 spectral channel 108",
+        "scaleFactor": 0.013213466852903366,
+        "addOffset": -8.977197647094727
     },
     {
         "name": "FLORIS_HR1U_109_radiance",
@@ -978,7 +1194,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 109"
+        "description": "TOA radiance for FLEX HR1 spectral channel 109",
+        "scaleFactor": 0.013076054863631725,
+        "addOffset": -0.02120846137404442
     },
     {
         "name": "FLORIS_HR1U_110_radiance",
@@ -987,7 +1205,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 110"
+        "description": "TOA radiance for FLEX HR1 spectral channel 110",
+        "scaleFactor": 0.013145552948117256,
+        "addOffset": -9.560542106628418
     },
     {
         "name": "FLORIS_HR1U_111_radiance",
@@ -996,7 +1216,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 111"
+        "description": "TOA radiance for FLEX HR1 spectral channel 111",
+        "scaleFactor": 0.013449246995151043,
+        "addOffset": -23.970067977905273
     },
     {
         "name": "FLORIS_HR1U_112_radiance",
@@ -1005,7 +1227,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 112"
+        "description": "TOA radiance for FLEX HR1 spectral channel 112",
+        "scaleFactor": 0.013115759938955307,
+        "addOffset": -10.798691749572754
     },
     {
         "name": "FLORIS_HR1U_113_radiance",
@@ -1014,7 +1238,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 113"
+        "description": "TOA radiance for FLEX HR1 spectral channel 113",
+        "scaleFactor": 0.013388554565608501,
+        "addOffset": -23.951372146606445
     },
     {
         "name": "FLORIS_HR1U_114_radiance",
@@ -1023,7 +1249,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 114"
+        "description": "TOA radiance for FLEX HR1 spectral channel 114",
+        "scaleFactor": 0.013177644461393356,
+        "addOffset": -10.66083812713623
     },
     {
         "name": "FLORIS_HR1U_115_radiance",
@@ -1032,7 +1260,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 115"
+        "description": "TOA radiance for FLEX HR1 spectral channel 115",
+        "scaleFactor": 0.01332814246416092,
+        "addOffset": -23.76904296875
     },
     {
         "name": "FLORIS_HR1U_116_radiance",
@@ -1041,7 +1271,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 116"
+        "description": "TOA radiance for FLEX HR1 spectral channel 116",
+        "scaleFactor": 0.013272956945002079,
+        "addOffset": -0.056509148329496384
     },
     {
         "name": "FLORIS_HR1U_117_radiance",
@@ -1050,7 +1282,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 117"
+        "description": "TOA radiance for FLEX HR1 spectral channel 117",
+        "scaleFactor": 0.013297743164002895,
+        "addOffset": -23.884885787963867
     },
     {
         "name": "FLORIS_HR1U_118_radiance",
@@ -1059,7 +1293,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 118"
+        "description": "TOA radiance for FLEX HR1 spectral channel 118",
+        "scaleFactor": 0.013486781157553196,
+        "addOffset": -25.474079132080078
     },
     {
         "name": "FLORIS_HR1U_119_radiance",
@@ -1068,7 +1304,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 119"
+        "description": "TOA radiance for FLEX HR1 spectral channel 119",
+        "scaleFactor": 0.013353453017771244,
+        "addOffset": -23.551626205444336
     },
     {
         "name": "FLORIS_HR1U_120_radiance",
@@ -1077,7 +1315,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 120"
+        "description": "TOA radiance for FLEX HR1 spectral channel 120",
+        "scaleFactor": 0.012976772151887417,
+        "addOffset": -1.0160377025604248
     },
     {
         "name": "FLORIS_HR1U_121_radiance",
@@ -1086,7 +1326,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 121"
+        "description": "TOA radiance for FLEX HR1 spectral channel 121",
+        "scaleFactor": 0.013017851859331131,
+        "addOffset": -0.02111891098320484
     },
     {
         "name": "FLORIS_HR1U_122_radiance",
@@ -1095,7 +1337,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 122"
+        "description": "TOA radiance for FLEX HR1 spectral channel 122",
+        "scaleFactor": 0.013205775059759617,
+        "addOffset": -7.678035259246826
     },
     {
         "name": "FLORIS_HR1U_123_radiance",
@@ -1104,7 +1348,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 123"
+        "description": "TOA radiance for FLEX HR1 spectral channel 123",
+        "scaleFactor": 0.013053077273070812,
+        "addOffset": -10.637228965759277
     },
     {
         "name": "FLORIS_HR1U_124_radiance",
@@ -1113,7 +1359,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 124"
+        "description": "TOA radiance for FLEX HR1 spectral channel 124",
+        "scaleFactor": 0.013040433637797832,
+        "addOffset": -8.175771713256836
     },
     {
         "name": "FLORIS_HR1U_125_radiance",
@@ -1122,7 +1370,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 125"
+        "description": "TOA radiance for FLEX HR1 spectral channel 125",
+        "scaleFactor": 0.012970633804798126,
+        "addOffset": -0.02108374796807766
     },
     {
         "name": "FLORIS_HR1U_126_radiance",
@@ -1131,7 +1381,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 126"
+        "description": "TOA radiance for FLEX HR1 spectral channel 126",
+        "scaleFactor": 0.01326821930706501,
+        "addOffset": -17.82398223876953
     },
     {
         "name": "FLORIS_HR1U_127_radiance",
@@ -1140,7 +1392,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 127"
+        "description": "TOA radiance for FLEX HR1 spectral channel 127",
+        "scaleFactor": 0.013058412820100784,
+        "addOffset": -0.021329756826162338
     },
     {
         "name": "FLORIS_HR1U_128_radiance",
@@ -1149,7 +1403,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 128"
+        "description": "TOA radiance for FLEX HR1 spectral channel 128",
+        "scaleFactor": 0.01344144158065319,
+        "addOffset": -8.908904075622559
     },
     {
         "name": "FLORIS_HR1U_129_radiance",
@@ -1158,7 +1414,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 129"
+        "description": "TOA radiance for FLEX HR1 spectral channel 129",
+        "scaleFactor": 0.01316597405821085,
+        "addOffset": -0.021688807755708694
     },
     {
         "name": "FLORIS_HR1U_130_radiance",
@@ -1167,7 +1425,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 130"
+        "description": "TOA radiance for FLEX HR1 spectral channel 130",
+        "scaleFactor": 0.013485949486494064,
+        "addOffset": -16.830368041992188
     },
     {
         "name": "FLORIS_HR1U_131_radiance",
@@ -1176,7 +1436,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 131"
+        "description": "TOA radiance for FLEX HR1 spectral channel 131",
+        "scaleFactor": 0.013472191989421844,
+        "addOffset": -24.00322914123535
     },
     {
         "name": "FLORIS_HR1U_132_radiance",
@@ -1185,7 +1447,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 132"
+        "description": "TOA radiance for FLEX HR1 spectral channel 132",
+        "scaleFactor": 0.013123603537678719,
+        "addOffset": -19.444564819335938
     },
     {
         "name": "FLORIS_HR1U_133_radiance",
@@ -1194,7 +1458,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 133"
+        "description": "TOA radiance for FLEX HR1 spectral channel 133",
+        "scaleFactor": 0.013276561163365841,
+        "addOffset": -23.71953773498535
     },
     {
         "name": "FLORIS_HR1U_134_radiance",
@@ -1203,7 +1469,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 134"
+        "description": "TOA radiance for FLEX HR1 spectral channel 134",
+        "scaleFactor": 0.013158404268324375,
+        "addOffset": -3.626599073410034
     },
     {
         "name": "FLORIS_HR1U_135_radiance",
@@ -1212,7 +1480,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 135"
+        "description": "TOA radiance for FLEX HR1 spectral channel 135",
+        "scaleFactor": 0.013253716751933098,
+        "addOffset": -23.987491607666016
     },
     {
         "name": "FLORIS_HR1U_136_radiance",
@@ -1221,7 +1491,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 136"
+        "description": "TOA radiance for FLEX HR1 spectral channel 136",
+        "scaleFactor": 0.013555056415498257,
+        "addOffset": -9.042012214660645
     },
     {
         "name": "FLORIS_HR1U_137_radiance",
@@ -1230,7 +1502,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 137"
+        "description": "TOA radiance for FLEX HR1 spectral channel 137",
+        "scaleFactor": 0.01324754860252142,
+        "addOffset": -24.088241577148438
     },
     {
         "name": "FLORIS_HR1U_138_radiance",
@@ -1239,7 +1513,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 138"
+        "description": "TOA radiance for FLEX HR1 spectral channel 138",
+        "scaleFactor": 0.013040437363088131,
+        "addOffset": -5.369101047515869
     },
     {
         "name": "FLORIS_HR1U_139_radiance",
@@ -1248,7 +1524,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 139"
+        "description": "TOA radiance for FLEX HR1 spectral channel 139",
+        "scaleFactor": 0.013442832976579666,
+        "addOffset": -23.569366455078125
     },
     {
         "name": "FLORIS_HR1U_140_radiance",
@@ -1257,7 +1535,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance for FLEX HR1 spectral channel 140"
+        "description": "TOA radiance for FLEX HR1 spectral channel 140",
+        "scaleFactor": 0.01317728590220213,
+        "addOffset": -1.4769102334976196
     },
     {
         "name": "FLORIS_HR1B_1_radiance_unc",
@@ -1266,7 +1546,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 1"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 1",
+        "scaleFactor": 0.34264886379241943,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_2_radiance_unc",
@@ -1275,7 +1557,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 2"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 2",
+        "scaleFactor": 0.3457704186439514,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_3_radiance_unc",
@@ -1284,7 +1568,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 3"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 3",
+        "scaleFactor": 0.34171828627586365,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_4_radiance_unc",
@@ -1293,7 +1579,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 4"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 4",
+        "scaleFactor": 0.3423873484134674,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_5_radiance_unc",
@@ -1302,7 +1590,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 5"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 5",
+        "scaleFactor": 0.3403996527194977,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_6_radiance_unc",
@@ -1311,7 +1601,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 6"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 6",
+        "scaleFactor": 0.34873610734939575,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_7_radiance_unc",
@@ -1320,7 +1612,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 7"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 7",
+        "scaleFactor": 0.33927270770072937,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_8_radiance_unc",
@@ -1329,7 +1623,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 8"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 8",
+        "scaleFactor": 0.341635525226593,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_9_radiance_unc",
@@ -1338,7 +1634,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 9"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 9",
+        "scaleFactor": 0.338895708322525,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_10_radiance_unc",
@@ -1347,7 +1645,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 10"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 10",
+        "scaleFactor": 0.34248974919319153,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_11_radiance_unc",
@@ -1356,7 +1656,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 11"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 11",
+        "scaleFactor": 0.3463703989982605,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_12_radiance_unc",
@@ -1365,7 +1667,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 12"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 12",
+        "scaleFactor": 0.34827300906181335,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_13_radiance_unc",
@@ -1374,7 +1678,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 13"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 13",
+        "scaleFactor": 0.34494122862815857,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_14_radiance_unc",
@@ -1383,7 +1689,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 14"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 14",
+        "scaleFactor": 0.33608660101890564,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_15_radiance_unc",
@@ -1392,7 +1700,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 15"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 15",
+        "scaleFactor": 0.3349408507347107,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_16_radiance_unc",
@@ -1401,7 +1711,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 16"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 16",
+        "scaleFactor": 0.33437591791152954,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_17_radiance_unc",
@@ -1410,7 +1722,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 17"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 17",
+        "scaleFactor": 0.3346748948097229,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_18_radiance_unc",
@@ -1419,7 +1733,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 18"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 18",
+        "scaleFactor": 0.33672207593917847,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_19_radiance_unc",
@@ -1428,7 +1744,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 19"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 19",
+        "scaleFactor": 0.341695636510849,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1B_20_radiance_unc",
@@ -1437,7 +1755,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 20"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 20",
+        "scaleFactor": 0.33372026681900024,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_21_radiance_unc",
@@ -1446,7 +1766,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 21"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 21",
+        "scaleFactor": 0.3508150577545166,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_22_radiance_unc",
@@ -1455,7 +1777,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 22"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 22",
+        "scaleFactor": 0.34242361783981323,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_23_radiance_unc",
@@ -1464,7 +1788,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 23"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 23",
+        "scaleFactor": 0.34352079033851624,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_24_radiance_unc",
@@ -1473,7 +1799,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 24"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 24",
+        "scaleFactor": 0.3406004309654236,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_25_radiance_unc",
@@ -1482,7 +1810,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 25"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 25",
+        "scaleFactor": 0.341128408908844,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_26_radiance_unc",
@@ -1491,7 +1821,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 26"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 26",
+        "scaleFactor": 0.34414345026016235,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_27_radiance_unc",
@@ -1500,7 +1832,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 27"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 27",
+        "scaleFactor": 0.3527737259864807,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_28_radiance_unc",
@@ -1509,7 +1843,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 28"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 28",
+        "scaleFactor": 0.34563201665878296,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_29_radiance_unc",
@@ -1518,7 +1854,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 29"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 29",
+        "scaleFactor": 0.34335431456565857,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_30_radiance_unc",
@@ -1527,7 +1865,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 30"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 30",
+        "scaleFactor": 0.35612303018569946,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_31_radiance_unc",
@@ -1536,7 +1876,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 31"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 31",
+        "scaleFactor": 0.35087448358535767,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_32_radiance_unc",
@@ -1545,7 +1887,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 32"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 32",
+        "scaleFactor": 0.34307199716567993,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_33_radiance_unc",
@@ -1554,7 +1898,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 33"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 33",
+        "scaleFactor": 0.3465918004512787,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_34_radiance_unc",
@@ -1563,7 +1909,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 34"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 34",
+        "scaleFactor": 0.3409859538078308,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_35_radiance_unc",
@@ -1572,7 +1920,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 35"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 35",
+        "scaleFactor": 0.3465491831302643,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_36_radiance_unc",
@@ -1581,7 +1931,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 36"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 36",
+        "scaleFactor": 0.3424611985683441,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_37_radiance_unc",
@@ -1590,7 +1942,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 37"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 37",
+        "scaleFactor": 0.3466424345970154,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_38_radiance_unc",
@@ -1599,7 +1953,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 38"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 38",
+        "scaleFactor": 0.3503386378288269,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_39_radiance_unc",
@@ -1608,7 +1964,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 39"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 39",
+        "scaleFactor": 0.35167139768600464,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_40_radiance_unc",
@@ -1617,7 +1975,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 40"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 40",
+        "scaleFactor": 0.3449367582798004,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_41_radiance_unc",
@@ -1626,7 +1986,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 41"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 41",
+        "scaleFactor": 0.3438146710395813,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_42_radiance_unc",
@@ -1635,7 +1997,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 42"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 42",
+        "scaleFactor": 0.34673982858657837,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_43_radiance_unc",
@@ -1644,7 +2008,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 43"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 43",
+        "scaleFactor": 0.3488791584968567,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_44_radiance_unc",
@@ -1653,7 +2019,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 44"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 44",
+        "scaleFactor": 0.3431336283683777,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_45_radiance_unc",
@@ -1662,7 +2030,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 45"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 45",
+        "scaleFactor": 0.33982259035110474,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_46_radiance_unc",
@@ -1671,7 +2041,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 46"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 46",
+        "scaleFactor": 0.3453119397163391,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_47_radiance_unc",
@@ -1680,7 +2052,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 47"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 47",
+        "scaleFactor": 0.34397491812705994,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_48_radiance_unc",
@@ -1689,7 +2063,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 48"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 48",
+        "scaleFactor": 0.34282955527305603,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_49_radiance_unc",
@@ -1698,7 +2074,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 49"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 49",
+        "scaleFactor": 0.3455488085746765,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_50_radiance_unc",
@@ -1707,7 +2085,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 50"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 50",
+        "scaleFactor": 0.35227108001708984,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_51_radiance_unc",
@@ -1716,7 +2096,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 51"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 51",
+        "scaleFactor": 0.35517793893814087,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_52_radiance_unc",
@@ -1725,7 +2107,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 52"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 52",
+        "scaleFactor": 0.34751540422439575,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_53_radiance_unc",
@@ -1734,7 +2118,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 53"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 53",
+        "scaleFactor": 0.34954318404197693,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_54_radiance_unc",
@@ -1743,7 +2129,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 54"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 54",
+        "scaleFactor": 0.34511691331863403,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_55_radiance_unc",
@@ -1752,7 +2140,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 55"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 55",
+        "scaleFactor": 0.3381504416465759,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_56_radiance_unc",
@@ -1761,7 +2151,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 56"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 56",
+        "scaleFactor": 0.3451959490776062,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_57_radiance_unc",
@@ -1770,7 +2162,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 57"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 57",
+        "scaleFactor": 0.3447422385215759,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_58_radiance_unc",
@@ -1779,7 +2173,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 58"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 58",
+        "scaleFactor": 0.34993240237236023,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_59_radiance_unc",
@@ -1788,7 +2184,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 59"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 59",
+        "scaleFactor": 0.34672611951828003,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_60_radiance_unc",
@@ -1797,7 +2195,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 60"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 60",
+        "scaleFactor": 0.34011682868003845,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_61_radiance_unc",
@@ -1806,7 +2206,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 61"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 61",
+        "scaleFactor": 0.3398588299751282,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_62_radiance_unc",
@@ -1815,7 +2217,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 62"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 62",
+        "scaleFactor": 0.34219393134117126,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_63_radiance_unc",
@@ -1824,7 +2228,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 63"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 63",
+        "scaleFactor": 0.3369393050670624,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_64_radiance_unc",
@@ -1833,7 +2239,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 64"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 64",
+        "scaleFactor": 0.3452994227409363,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_65_radiance_unc",
@@ -1842,7 +2250,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 65"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 65",
+        "scaleFactor": 0.34495121240615845,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_66_radiance_unc",
@@ -1851,7 +2261,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 66"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 66",
+        "scaleFactor": 0.33988332748413086,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_67_radiance_unc",
@@ -1860,7 +2272,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 67"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 67",
+        "scaleFactor": 0.33757543563842773,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_68_radiance_unc",
@@ -1869,7 +2283,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 68"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 68",
+        "scaleFactor": 0.3417123258113861,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_69_radiance_unc",
@@ -1878,7 +2294,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 69"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 69",
+        "scaleFactor": 0.3408530652523041,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_70_radiance_unc",
@@ -1887,7 +2305,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 70"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 70",
+        "scaleFactor": 0.3418324291706085,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_71_radiance_unc",
@@ -1896,7 +2316,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 71"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 71",
+        "scaleFactor": 0.3454715311527252,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_72_radiance_unc",
@@ -1905,7 +2327,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 72"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 72",
+        "scaleFactor": 0.35095348954200745,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_73_radiance_unc",
@@ -1914,7 +2338,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 73"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 73",
+        "scaleFactor": 0.34438377618789673,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_74_radiance_unc",
@@ -1923,7 +2349,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 74"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 74",
+        "scaleFactor": 0.3409557342529297,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_75_radiance_unc",
@@ -1932,7 +2360,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 75"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 75",
+        "scaleFactor": 0.3382038176059723,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_76_radiance_unc",
@@ -1941,7 +2371,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 76"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 76",
+        "scaleFactor": 0.33643096685409546,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_77_radiance_unc",
@@ -1950,7 +2382,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 77"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 77",
+        "scaleFactor": 0.34140023589134216,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_78_radiance_unc",
@@ -1959,7 +2393,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 78"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 78",
+        "scaleFactor": 0.34256598353385925,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_79_radiance_unc",
@@ -1968,7 +2404,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 79"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 79",
+        "scaleFactor": 0.34417062997817993,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_80_radiance_unc",
@@ -1977,7 +2415,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 80"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 80",
+        "scaleFactor": 0.33818238973617554,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_81_radiance_unc",
@@ -1986,7 +2426,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 81"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 81",
+        "scaleFactor": 0.33607620000839233,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_82_radiance_unc",
@@ -1995,7 +2437,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 82"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 82",
+        "scaleFactor": 0.3405376374721527,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_83_radiance_unc",
@@ -2004,7 +2448,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 83"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 83",
+        "scaleFactor": 0.33845800161361694,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_84_radiance_unc",
@@ -2013,7 +2459,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 84"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 84",
+        "scaleFactor": 0.33597269654273987,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_85_radiance_unc",
@@ -2022,7 +2470,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 85"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 85",
+        "scaleFactor": 0.34045520424842834,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_86_radiance_unc",
@@ -2031,7 +2481,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 86"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 86",
+        "scaleFactor": 0.3389485478401184,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_87_radiance_unc",
@@ -2040,7 +2492,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 87"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 87",
+        "scaleFactor": 0.34097379446029663,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_88_radiance_unc",
@@ -2049,7 +2503,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 88"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 88",
+        "scaleFactor": 0.34384557604789734,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_89_radiance_unc",
@@ -2058,7 +2514,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 89"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 89",
+        "scaleFactor": 0.34001287817955017,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_90_radiance_unc",
@@ -2067,7 +2525,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 90"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 90",
+        "scaleFactor": 0.3372349143028259,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_91_radiance_unc",
@@ -2076,7 +2536,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 91"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 91",
+        "scaleFactor": 0.34538504481315613,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_92_radiance_unc",
@@ -2085,7 +2547,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 92"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 92",
+        "scaleFactor": 0.34121280908584595,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_93_radiance_unc",
@@ -2094,7 +2558,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 93"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 93",
+        "scaleFactor": 0.34360915422439575,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_94_radiance_unc",
@@ -2103,7 +2569,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 94"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 94",
+        "scaleFactor": 0.3346267342567444,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_95_radiance_unc",
@@ -2112,7 +2580,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 95"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 95",
+        "scaleFactor": 0.3396025002002716,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_96_radiance_unc",
@@ -2121,7 +2591,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 96"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 96",
+        "scaleFactor": 0.334172785282135,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_97_radiance_unc",
@@ -2130,7 +2602,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 97"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 97",
+        "scaleFactor": 0.33692991733551025,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_98_radiance_unc",
@@ -2139,7 +2613,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 98"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 98",
+        "scaleFactor": 0.34774941205978394,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_99_radiance_unc",
@@ -2148,7 +2624,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 99"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 99",
+        "scaleFactor": 0.3437221050262451,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_100_radiance_unc",
@@ -2157,7 +2635,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 100"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 100",
+        "scaleFactor": 0.3354000449180603,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_101_radiance_unc",
@@ -2166,7 +2646,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 101"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 101",
+        "scaleFactor": 0.33432334661483765,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_102_radiance_unc",
@@ -2175,7 +2657,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 102"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 102",
+        "scaleFactor": 0.3345046937465668,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_103_radiance_unc",
@@ -2184,7 +2668,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 103"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 103",
+        "scaleFactor": 0.33619213104248047,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_104_radiance_unc",
@@ -2193,7 +2679,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 104"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 104",
+        "scaleFactor": 0.3370213210582733,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_105_radiance_unc",
@@ -2202,7 +2690,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 105"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 105",
+        "scaleFactor": 0.34945446252822876,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_106_radiance_unc",
@@ -2211,7 +2701,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 106"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 106",
+        "scaleFactor": 0.34681436419487,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_107_radiance_unc",
@@ -2220,7 +2712,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 107"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 107",
+        "scaleFactor": 0.33365577459335327,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_108_radiance_unc",
@@ -2229,7 +2723,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 108"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 108",
+        "scaleFactor": 0.3382647633552551,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_109_radiance_unc",
@@ -2238,7 +2734,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 109"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 109",
+        "scaleFactor": 0.3347470164299011,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_110_radiance_unc",
@@ -2247,7 +2745,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 110"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 110",
+        "scaleFactor": 0.33652615547180176,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_111_radiance_unc",
@@ -2256,7 +2756,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 111"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 111",
+        "scaleFactor": 0.3443007171154022,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_112_radiance_unc",
@@ -2265,7 +2767,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 112"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 112",
+        "scaleFactor": 0.33576345443725586,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_113_radiance_unc",
@@ -2274,7 +2778,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 113"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 113",
+        "scaleFactor": 0.3427470028400421,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_114_radiance_unc",
@@ -2283,7 +2789,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 114"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 114",
+        "scaleFactor": 0.33734768629074097,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_115_radiance_unc",
@@ -2292,7 +2800,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 115"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 115",
+        "scaleFactor": 0.34120044112205505,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_116_radiance_unc",
@@ -2301,7 +2811,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 116"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 116",
+        "scaleFactor": 0.33978769183158875,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_117_radiance_unc",
@@ -2310,7 +2822,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 117"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 117",
+        "scaleFactor": 0.34042221307754517,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_118_radiance_unc",
@@ -2319,7 +2833,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 118"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 118",
+        "scaleFactor": 0.3452616035938263,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_119_radiance_unc",
@@ -2328,7 +2844,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 119"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 119",
+        "scaleFactor": 0.3418484032154083,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_120_radiance_unc",
@@ -2337,7 +2855,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 120"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 120",
+        "scaleFactor": 0.3322053551673889,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_121_radiance_unc",
@@ -2346,7 +2866,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 121"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 121",
+        "scaleFactor": 0.3332570195198059,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_122_radiance_unc",
@@ -2355,7 +2877,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 122"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 122",
+        "scaleFactor": 0.33806782960891724,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_123_radiance_unc",
@@ -2364,7 +2888,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 123"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 123",
+        "scaleFactor": 0.3341587781906128,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_124_radiance_unc",
@@ -2373,7 +2899,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 124"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 124",
+        "scaleFactor": 0.33383509516716003,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_125_radiance_unc",
@@ -2382,7 +2910,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 125"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 125",
+        "scaleFactor": 0.332048237323761,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_126_radiance_unc",
@@ -2391,7 +2921,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 126"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 126",
+        "scaleFactor": 0.3396664261817932,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_127_radiance_unc",
@@ -2400,7 +2932,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 127"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 127",
+        "scaleFactor": 0.3342953622341156,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_128_radiance_unc",
@@ -2409,7 +2943,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 128"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 128",
+        "scaleFactor": 0.3441008925437927,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_129_radiance_unc",
@@ -2418,7 +2954,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 129"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 129",
+        "scaleFactor": 0.3370489478111267,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_130_radiance_unc",
@@ -2427,7 +2965,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 130"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 130",
+        "scaleFactor": 0.3452402949333191,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_131_radiance_unc",
@@ -2436,7 +2976,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 131"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 131",
+        "scaleFactor": 0.3448881208896637,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_132_radiance_unc",
@@ -2445,7 +2987,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 132"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 132",
+        "scaleFactor": 0.33596426248550415,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_133_radiance_unc",
@@ -2454,7 +2998,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 133"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 133",
+        "scaleFactor": 0.33987995982170105,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_134_radiance_unc",
@@ -2463,7 +3009,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 134"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 134",
+        "scaleFactor": 0.3368551433086395,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_135_radiance_unc",
@@ -2472,7 +3020,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 135"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 135",
+        "scaleFactor": 0.3392951488494873,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_136_radiance_unc",
@@ -2481,7 +3031,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 136"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 136",
+        "scaleFactor": 0.34700945019721985,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_137_radiance_unc",
@@ -2490,7 +3042,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 137"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 137",
+        "scaleFactor": 0.3391372561454773,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_138_radiance_unc",
@@ -2499,7 +3053,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 138"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 138",
+        "scaleFactor": 0.3338351845741272,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_139_radiance_unc",
@@ -2508,7 +3064,9 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 139"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 139",
+        "scaleFactor": 0.3441365361213684,
+        "fillValue": 0
     },
     {
         "name": "FLORIS_HR1U_140_radiance_unc",
@@ -2517,6 +3075,8 @@
         "type": "v",
         "dataType": "uint16",
         "units": "mW.m-2.sr-1.nm-1",
-        "description": "TOA radiance error for FLEX HR1 spectral channel 140"
+        "description": "TOA radiance error for FLEX HR1 spectral channel 140",
+        "scaleFactor": 0.33733850717544556,
+        "fillValue": 0
     }
 ]

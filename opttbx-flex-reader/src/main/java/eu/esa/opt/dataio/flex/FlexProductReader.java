@@ -545,8 +545,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
         band.setDescription(descriptor.getDescription());
         band.setUnit(descriptor.getUnits());
-        FlexReaderUtils.setScaleAndOffset(band, ncVariable);
-        FlexReaderUtils.setFillValue(band, ncVariable);
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor);
         product.addBand(band);
         bandToVariableMap.put(bandName, ncVariable);
 
@@ -648,8 +647,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
                 band.setDescription(descriptor.getDescription());
                 band.setUnit(descriptor.getUnits());
-                FlexReaderUtils.setScaleAndOffset(band, ncVariable);
-                FlexReaderUtils.setFillValue(band, ncVariable);
+                FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor);
                 FlexReaderUtils.setSpectralWavelength(band, product, descriptor.getWavelengthReference(), layer);
                 FlexReaderUtils.setSpectralFwhm(band, product, descriptor.getFwhmReference(), layer);
                 product.addBand(band);

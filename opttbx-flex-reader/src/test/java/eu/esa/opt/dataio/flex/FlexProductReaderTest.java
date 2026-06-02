@@ -345,6 +345,37 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    public void testAddBand_usesDescriptorScaleOffsetAndFillValueWithoutReadingNcAttributes() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 4, 3);
+
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setName("FLORIS_HR1B_1_radiance");
+        descriptor.setNcVarName("FLORIS_HR1B_1_radiance");
+        descriptor.setNcGroupPath("Measurement_data");
+        descriptor.setDataType("uint16");
+        descriptor.setScaleFactor(0.01338472);
+        descriptor.setAddOffset(-0.02064825);
+        descriptor.setFillValue(0.0);
+
+        final Variable variable = mock(Variable.class);
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
+        ncFilesMap(reader).put("sample_hre1.nc", ncFile);
+
+        invokeAddBand(reader, product, descriptor);
+
+        final Band band = product.getBand("FLORIS_HR1B_1_radiance");
+        assertNotNull(band);
+        assertEquals(0.01338472, band.getScalingFactor(), 1.0e-12);
+        assertEquals(-0.02064825, band.getScalingOffset(), 1.0e-12);
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(0.0, band.getNoDataValue(), 1.0e-12);
+        assertSame(variable, bandToVariableMap(reader).get("FLORIS_HR1B_1_radiance"));
+        verify(variable, never()).findAttribute(anyString());
+    }
+
+    @Test
     public void testAddFlagMask_usesDirectMaskCreation() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = spy(new Product("p", "t", 10, 10));
@@ -450,6 +481,9 @@ public class FlexProductReaderTest {
         descriptor.setDepth(2);
         descriptor.setDepthPrefixToken("_");
         descriptor.setDescription("Channel quality");
+        descriptor.setScaleFactor(2.0);
+        descriptor.setAddOffset(3.0);
+        descriptor.setFillValue(0.0);
         specialsMap(reader).put(descriptor.getName(), descriptor);
 
         final Variable variable = mock(Variable.class);
@@ -469,6 +503,11 @@ public class FlexProductReaderTest {
         final Band layerBand = product.getBand("HRE2_channel_quality_flags_1");
         assertNotNull(layerBand);
         assertTrue(layerBand.getSampleCoding() instanceof FlagCoding);
+        assertEquals(2.0, layerBand.getScalingFactor(), 1.0e-12);
+        assertEquals(3.0, layerBand.getScalingOffset(), 1.0e-12);
+        assertTrue(layerBand.isNoDataValueUsed());
+        assertEquals(0.0, layerBand.getNoDataValue(), 1.0e-12);
+        verify(variable, never()).findAttribute(anyString());
 
         final FlagCoding flagCoding = (FlagCoding) layerBand.getSampleCoding();
         assertEquals(2, flagCoding.getNumAttributes());
@@ -551,6 +590,13 @@ public class FlexProductReaderTest {
                 "addSpecialBands", Product.class, FlexProductDescriptor.class);
         method.setAccessible(true);
         method.invoke(reader, product, productDescriptor);
+    }
+
+    private void invokeAddBand(FlexProductReader reader, Product product, FlexVariableDescriptor descriptor) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "addBand", Product.class, FlexVariableDescriptor.class);
+        method.setAccessible(true);
+        method.invoke(reader, product, descriptor);
     }
 
     private void invokeInitializeCache(FlexProductReader reader) throws Exception {

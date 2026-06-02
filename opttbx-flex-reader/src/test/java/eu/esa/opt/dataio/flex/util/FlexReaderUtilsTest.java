@@ -4,6 +4,7 @@ import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.flex.FlexProductReader;
 import eu.esa.opt.dataio.flex.compatibility.EarlyProcessorCompatibility;
 import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
+import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import org.esa.snap.core.datamodel.*;
 import org.junit.Rule;
@@ -220,6 +221,36 @@ public class FlexReaderUtilsTest {
 
         FlexReaderUtils.setFillValue(band, variable);
 
+        assertFalse(band.isNoDataValueUsed());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testSetScaleOffsetAndFillValue_fromDescriptor() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setScaleFactor(0.01);
+        descriptor.setAddOffset(-2.5);
+        descriptor.setFillValue(0.0);
+
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor);
+
+        assertEquals(0.01, band.getScalingFactor(), 1.0e-12);
+        assertEquals(-2.5, band.getScalingOffset(), 1.0e-12);
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(0.0, band.getNoDataValue(), 1.0e-12);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testSetScaleOffsetAndFillValue_descriptorDefaultsKeepBandDefaults() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor);
+
+        assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
+        assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
         assertFalse(band.isNoDataValueUsed());
     }
 
