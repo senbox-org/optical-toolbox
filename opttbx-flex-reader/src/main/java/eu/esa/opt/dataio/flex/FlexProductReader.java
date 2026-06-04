@@ -51,7 +51,9 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private static final String DIM_ACROSS_TRACK = "number_of_across_track_samples";
     private static final String DIM_ALONG_TRACK = "number_of_along_track_samples";
     public static final String PREFERENCE_KEY_ENABLE_CACHE = "opttbx.flex.reader.enable.cache";
+    public static final String PREFERENCE_KEY_ENABLE_NATIVE_NETCDF = "opttbx.flex.reader.enable.native.netcdf";
     public static final boolean CACHE_ENABLED_DEFAULT = false;
+    public static final boolean NATIVE_NETCDF_ENABLED_DEFAULT = true;
     public static final int L1B_L1C_TILE_HEIGHT_DEFAULT = 520;
 
     private final FlexDDDB dddb;
@@ -74,6 +76,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private NetcdfCacheDataProvider cacheDataProvider;
     private ProductCache productCache;
     private boolean cacheEnabled = CACHE_ENABLED_DEFAULT;
+    private boolean nativeNetcdfEnabled = NATIVE_NETCDF_ENABLED_DEFAULT;
 
     public static final String NETCDF_BASE_METADATA_ELEMENT = "NetCDF";
 
@@ -196,6 +199,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         cacheEnabled = preferences.getBoolean(PREFERENCE_KEY_ENABLE_CACHE, CACHE_ENABLED_DEFAULT);
+        nativeNetcdfEnabled = preferences.getBoolean(PREFERENCE_KEY_ENABLE_NATIVE_NETCDF, NATIVE_NETCDF_ENABLED_DEFAULT);
         if (!cacheEnabled) {
             return;
         }
@@ -351,6 +355,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         dddbProductType = null;
         compatibility = null;
         cacheEnabled = CACHE_ENABLED_DEFAULT;
+        nativeNetcdfEnabled = NATIVE_NETCDF_ENABLED_DEFAULT;
 
         super.close();
     }
@@ -441,9 +446,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             try {
                 final File file = virtualDir.getFile(resolvedName);
                 if (file != null && file.exists()) {
-                    final NetcdfFile ncFile = NetcdfFileOpener.open(file);
+                    final NetcdfFile ncFile = openFlexNetcdfFile(file, resolvedName);
                     ncFilesMap.put(ncKey, ncFile);
-                    logger.fine("Opened data file: " + resolvedName + " (" + ncFile.getVariables().size() + " variables)");
                 } else {
                     logger.fine("Data file not found: " + resolvedName);
                 }
@@ -468,13 +472,46 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                 try {
                     final File file = virtualDir.getFile(fileName);
                     if (file != null && file.exists()) {
-                        ncFilesMap.put(fileName.toLowerCase(), NetcdfFileOpener.open(file));
+                        ncFilesMap.put(fileName.toLowerCase(), openFlexNetcdfFile(file, fileName));
                     }
                 } catch (IOException e) {
                     logger.warning("Cannot open: " + fileName + " - " + e.getMessage());
                 }
             }
         }
+    }
+
+    private NetcdfFile openFlexNetcdfFile(File file, String resolvedName) throws IOException {
+        if (shouldUseNativeNetcdfOpen()) {
+            try {
+                final NetcdfFile netcdfFile = openNativeNetcdfFile(file);
+                return netcdfFile;
+            } catch (IOException e) {
+                logger.warning("Cannot open native NetCDF4 data file: " + resolvedName + " - " + e.getMessage()
+                        + ". Falling back to default NetCDF opener.");
+            }
+        }
+        return openDefaultNetcdfFile(file);
+    }
+
+    private boolean shouldUseNativeNetcdfOpen() {
+        return nativeNetcdfEnabled && isL1cOrL2Product();
+    }
+
+    private boolean isL1cOrL2Product() {
+        if (dddbProductType == null) {
+            return false;
+        }
+        final String productType = dddbProductType.toLowerCase(Locale.ROOT);
+        return productType.contains("l1c") || productType.contains("l2");
+    }
+
+    NetcdfFile openNativeNetcdfFile(File file) throws IOException {
+        return NetcdfFileOpener.openNativeNc4(file);
+    }
+
+    NetcdfFile openDefaultNetcdfFile(File file) throws IOException {
+        return NetcdfFileOpener.open(file);
     }
 
     private void setProductTimes(Product product, FlexProductHeader header) {

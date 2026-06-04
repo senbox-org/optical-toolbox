@@ -21,6 +21,8 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -268,6 +270,7 @@ public class FlexProductReaderTest {
         ncFilesMap(reader).put("data.nc", ncFile);
         ncVariablesCache(reader).put("cached", mock(Variable.class));
         descriptorToFileMap(reader).put("band", "file");
+        setField(reader, "nativeNetcdfEnabled", false);
 
         reader.close();
 
@@ -276,6 +279,7 @@ public class FlexProductReaderTest {
         assertTrue(ncVariablesCache(reader).isEmpty());
         assertTrue(descriptorToFileMap(reader).isEmpty());
         assertTrue(geoCodingMap(reader).isEmpty());
+        assertEquals(FlexProductReader.NATIVE_NETCDF_ENABLED_DEFAULT, getField(reader, "nativeNetcdfEnabled"));
     }
 
 //    @Test
@@ -316,6 +320,153 @@ public class FlexProductReaderTest {
             restorePreference(preferences, oldValue);
             reader.close();
         }
+    }
+
+    @Test
+    public void testInitializeCache_readsNativeNetcdfPreference() throws Exception {
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
+        final String oldCacheValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
+        final String oldNativeValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF, null);
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+
+        try {
+            preferences.putBoolean(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, false);
+            preferences.putBoolean(FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF, false);
+
+            invokeInitializeCache(reader);
+
+            assertFalse((Boolean) getField(reader, "cacheEnabled"));
+            assertFalse((Boolean) getField(reader, "nativeNetcdfEnabled"));
+            assertNull(getField(reader, "cacheDataProvider"));
+            assertNull(getField(reader, "productCache"));
+        } finally {
+            restorePreference(preferences, FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, oldCacheValue);
+            restorePreference(preferences, FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF, oldNativeValue);
+            reader.close();
+        }
+    }
+
+    @Test
+    public void testInitializeCache_defaultsNativeNetcdfPreferenceToEnabled() throws Exception {
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
+        final String oldCacheValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
+        final String oldNativeValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF, null);
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+
+        try {
+            preferences.putBoolean(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, false);
+            preferences.remove(FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF);
+
+            invokeInitializeCache(reader);
+
+            assertFalse((Boolean) getField(reader, "cacheEnabled"));
+            assertTrue((Boolean) getField(reader, "nativeNetcdfEnabled"));
+            assertNull(getField(reader, "cacheDataProvider"));
+            assertNull(getField(reader, "productCache"));
+        } finally {
+            restorePreference(preferences, FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, oldCacheValue);
+            restorePreference(preferences, FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF, oldNativeValue);
+            reader.close();
+        }
+    }
+
+    @Test
+    public void testOpenFlexNetcdfFile_l1cWithoutCacheUsesNativeOpen() throws Exception {
+        final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
+        setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
+        setField(reader, "cacheEnabled", false);
+        setField(reader, "nativeNetcdfEnabled", true);
+
+        final NetcdfFile opened = invokeOpenFlexNetcdfFile(reader);
+
+        assertSame(reader.nativeFile, opened);
+        assertEquals(1, reader.nativeOpenCalls);
+        assertEquals(0, reader.defaultOpenCalls);
+    }
+
+    @Test
+    public void testOpenFlexNetcdfFile_l2WithoutCacheUsesNativeOpen() throws Exception {
+        final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
+        setField(reader, "dddbProductType", "FLX_L2_FLEX");
+        setField(reader, "cacheEnabled", false);
+        setField(reader, "nativeNetcdfEnabled", true);
+
+        final NetcdfFile opened = invokeOpenFlexNetcdfFile(reader);
+
+        assertSame(reader.nativeFile, opened);
+        assertEquals(1, reader.nativeOpenCalls);
+        assertEquals(0, reader.defaultOpenCalls);
+    }
+
+    @Test
+    public void testOpenFlexNetcdfFile_lowercaseL1cProductTypeUsesNativeOpen() throws Exception {
+        final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
+        setField(reader, "dddbProductType", "flx_l1c_flxsyn");
+        setField(reader, "cacheEnabled", false);
+        setField(reader, "nativeNetcdfEnabled", true);
+
+        final NetcdfFile opened = invokeOpenFlexNetcdfFile(reader);
+
+        assertSame(reader.nativeFile, opened);
+        assertEquals(1, reader.nativeOpenCalls);
+        assertEquals(0, reader.defaultOpenCalls);
+    }
+
+    @Test
+    public void testOpenFlexNetcdfFile_l1bNeverUsesNativeOpen() throws Exception {
+        final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
+        setField(reader, "dddbProductType", "FLX_L1B_FLXSYN");
+        setField(reader, "cacheEnabled", false);
+        setField(reader, "nativeNetcdfEnabled", true);
+
+        final NetcdfFile opened = invokeOpenFlexNetcdfFile(reader);
+
+        assertSame(reader.defaultFile, opened);
+        assertEquals(0, reader.nativeOpenCalls);
+        assertEquals(1, reader.defaultOpenCalls);
+    }
+
+    @Test
+    public void testOpenFlexNetcdfFile_cacheEnabledL1cUsesNativeOpen() throws Exception {
+        final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
+        setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
+        setField(reader, "cacheEnabled", true);
+        setField(reader, "nativeNetcdfEnabled", true);
+
+        final NetcdfFile opened = invokeOpenFlexNetcdfFile(reader);
+
+        assertSame(reader.nativeFile, opened);
+        assertEquals(1, reader.nativeOpenCalls);
+        assertEquals(0, reader.defaultOpenCalls);
+    }
+
+    @Test
+    public void testOpenFlexNetcdfFile_nativePreferenceDisabledUsesDefaultOpen() throws Exception {
+        final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
+        setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
+        setField(reader, "cacheEnabled", false);
+        setField(reader, "nativeNetcdfEnabled", false);
+
+        final NetcdfFile opened = invokeOpenFlexNetcdfFile(reader);
+
+        assertSame(reader.defaultFile, opened);
+        assertEquals(0, reader.nativeOpenCalls);
+        assertEquals(1, reader.defaultOpenCalls);
+    }
+
+    @Test
+    public void testOpenFlexNetcdfFile_nativeOpenFailureFallsBackToDefaultOpen() throws Exception {
+        final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
+        setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
+        setField(reader, "cacheEnabled", false);
+        setField(reader, "nativeNetcdfEnabled", true);
+        reader.nativeOpenException = new IOException("native unavailable");
+
+        final NetcdfFile opened = invokeOpenFlexNetcdfFile(reader);
+
+        assertSame(reader.defaultFile, opened);
+        assertEquals(1, reader.nativeOpenCalls);
+        assertEquals(1, reader.defaultOpenCalls);
     }
 
     @Test
@@ -605,6 +756,12 @@ public class FlexProductReaderTest {
         method.invoke(reader);
     }
 
+    private NetcdfFile invokeOpenFlexNetcdfFile(FlexProductReader reader) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod("openFlexNetcdfFile", File.class, String.class);
+        method.setAccessible(true);
+        return (NetcdfFile) method.invoke(reader, new File("dummy.nc"), "dummy.nc");
+    }
+
     private double[] invokeReadGeoData(FlexProductReader reader, String bandName, int width, int height,
                                        Band band) throws Exception {
         final Method method = FlexProductReader.class.getDeclaredMethod(
@@ -614,10 +771,14 @@ public class FlexProductReaderTest {
     }
 
     private void restorePreference(Preferences preferences, String oldValue) {
+        restorePreference(preferences, FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, oldValue);
+    }
+
+    private void restorePreference(Preferences preferences, String key, String oldValue) {
         if (oldValue == null) {
-            preferences.remove(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE);
+            preferences.remove(key);
         } else {
-            preferences.put(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, oldValue);
+            preferences.put(key, oldValue);
         }
     }
 
@@ -636,5 +797,32 @@ public class FlexProductReaderTest {
         final Field field = FlexProductReader.class.getDeclaredField(name);
         field.setAccessible(true);
         field.set(reader, value);
+    }
+
+    private static class OpenTrackingFlexProductReader extends FlexProductReader {
+        private final NetcdfFile nativeFile = mock(NetcdfFile.class);
+        private final NetcdfFile defaultFile = mock(NetcdfFile.class);
+        private int nativeOpenCalls;
+        private int defaultOpenCalls;
+        private IOException nativeOpenException;
+
+        OpenTrackingFlexProductReader() {
+            super(mock(ProductReaderPlugIn.class));
+        }
+
+        @Override
+        NetcdfFile openNativeNetcdfFile(File file) throws IOException {
+            nativeOpenCalls++;
+            if (nativeOpenException != null) {
+                throw nativeOpenException;
+            }
+            return nativeFile;
+        }
+
+        @Override
+        NetcdfFile openDefaultNetcdfFile(File file) {
+            defaultOpenCalls++;
+            return defaultFile;
+        }
     }
 }
