@@ -335,7 +335,7 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testInitializeCache_falsePreferenceDoesNotCreateCacheObjects() throws Exception {
+    public void testInitializeOperationMode_falsePreferenceDoesNotCreateOperationModeObjects() throws Exception {
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String oldValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
@@ -343,7 +343,7 @@ public class FlexProductReaderTest {
         try {
             preferences.putBoolean(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, false);
 
-            invokeInitializeCache(reader);
+            invokeInitializeOperationMode(reader);
 
             assertFalse((Boolean) getField(reader, "cacheEnabled"));
             assertNull(getField(reader, "cacheDataProvider"));
@@ -356,7 +356,7 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testInitializeCache_readsNativeNetcdfPreference() throws Exception {
+    public void testInitializeOperationMode_readsNativeNetcdfPreference() throws Exception {
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String oldCacheValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
         final String oldNativeValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF, null);
@@ -366,7 +366,7 @@ public class FlexProductReaderTest {
             preferences.putBoolean(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, false);
             preferences.putBoolean(FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF, false);
 
-            invokeInitializeCache(reader);
+            invokeInitializeOperationMode(reader);
 
             assertFalse((Boolean) getField(reader, "cacheEnabled"));
             assertFalse((Boolean) getField(reader, "nativeNetcdfEnabled"));
@@ -381,7 +381,7 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testInitializeCache_defaultsNativeNetcdfPreferenceToEnabled() throws Exception {
+    public void testInitializeOperationMode_defaultsNativeNetcdfPreferenceToEnabled() throws Exception {
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String oldCacheValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
         final String oldNativeValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF, null);
@@ -391,7 +391,7 @@ public class FlexProductReaderTest {
             preferences.putBoolean(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, false);
             preferences.remove(FlexProductReader.PREFERENCE_KEY_ENABLE_NATIVE_NETCDF);
 
-            invokeInitializeCache(reader);
+            invokeInitializeOperationMode(reader);
 
             assertFalse((Boolean) getField(reader, "cacheEnabled"));
             assertTrue((Boolean) getField(reader, "nativeNetcdfEnabled"));
@@ -946,8 +946,8 @@ public class FlexProductReaderTest {
         method.invoke(reader, product, descriptor);
     }
 
-    private void invokeInitializeCache(FlexProductReader reader) throws Exception {
-        final Method method = FlexProductReader.class.getDeclaredMethod("initializeCache");
+    private void invokeInitializeOperationMode(FlexProductReader reader) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod("initializeOperationMode");
         method.setAccessible(true);
         method.invoke(reader);
     }

@@ -101,7 +101,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final Path inputPath = getProductPath();
         virtualDir = ProductUtils.getProductVirtualDir(inputPath);
 
-        initializeCache();
+        initializeOperationMode();
 
         final Path headerFile = FlexReaderUtils.findHeaderFile(inputPath);
         final FlexHeaderParser parser = new FlexHeaderParser();
@@ -191,7 +191,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         return true;
     }
 
-    private void initializeCache() {
+    private void initializeOperationMode() {
         if (productCache != null) {
             CacheManager.getInstance().remove(productCache);
         }
