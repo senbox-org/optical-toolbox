@@ -129,6 +129,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         addMetadataVariables(product);
         addBands(product, productDescriptor);
         addSpecialBands(product, productDescriptor);
+        assignSpectralAxes(product);
         addFlagMasks(product, productDescriptor);
         assignPerBandGeoCoding(product);
 
@@ -228,7 +229,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     private void assignPerBandGeoCoding(Product product) throws IOException {
-        if (!isL1bProduct()) {
+        if (!FlexSpectralHelper.isL1bProduct(dddbProductType)) {
             return;
         }
 
@@ -317,10 +318,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         }
 
         return null;
-    }
-
-    private boolean isL1bProduct() {
-        return dddbProductType != null && dddbProductType.contains("L1B");
     }
 
     @Override
@@ -495,15 +492,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     private boolean shouldUseNativeNetcdfOpen() {
-        return nativeNetcdfEnabled && isL1cOrL2Product();
-    }
-
-    private boolean isL1cOrL2Product() {
-        if (dddbProductType == null) {
-            return false;
-        }
-        final String productType = dddbProductType.toLowerCase(Locale.ROOT);
-        return productType.contains("l1c") || productType.contains("l2");
+        return nativeNetcdfEnabled && (FlexSpectralHelper.isL1cProduct(dddbProductType) || FlexSpectralHelper.isL2Product(dddbProductType));
     }
 
     NetcdfFile openNativeNetcdfFile(File file) throws IOException {
@@ -764,6 +753,10 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             }
         }
         return true;
+    }
+
+    private void assignSpectralAxes(Product product) {
+        product.setSpectralAxes(FlexSpectralHelper.createSpectralAxes(product, dddbProductType, specialsMap));
     }
 
     private void addFlagMask(Product product, String bandName, FlexFlagMask mask, int colorIndex) {
