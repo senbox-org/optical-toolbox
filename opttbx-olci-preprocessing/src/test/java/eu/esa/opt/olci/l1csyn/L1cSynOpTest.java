@@ -1,9 +1,11 @@
 package eu.esa.opt.olci.l1csyn;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.Operator;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -29,41 +31,41 @@ public class L1cSynOpTest {
 
     private static Product slstrProduct;
     private static Product olciProduct;
+    private L1cSynOp l1cSynOp;
 
     @BeforeClass
     public static void initTestClass() throws IOException {
-        String slstrFilePath = L1cSynOpTest.class.getResource("S3A_SL_1_RBT____20170313T110343_20170313T110643_20170314T172757_0179_015_208_2520_LN2_O_NT_002.SEN3.nc").getFile();
+        final String slstrFilePath = L1cSynOpTest.class.getResource("S3A_SL_1_RBT____20170313T110343_20170313T110643_20170314T172757_0179_015_208_2520_LN2_O_NT_002.SEN3.nc").getFile();
         slstrProduct = ProductIO.readProduct(slstrFilePath);
         slstrProduct.setAutoGrouping(SLSTR_AUTO_GROUPING);
 
-        String olciFilePath = L1cSynOpTest.class.getResource("S3A_OL_1_EFR____20170313T110342_20170313T110642_20170314T162839_0179_015_208_2520_LN1_O_NT_002.nc").getFile();
+        final String olciFilePath = L1cSynOpTest.class.getResource("S3A_OL_1_EFR____20170313T110342_20170313T110642_20170314T162839_0179_015_208_2520_LN1_O_NT_002.nc").getFile();
         olciProduct = ProductIO.readProduct(olciFilePath);
         olciProduct.setAutoGrouping(OLCI_AUTO_GROUPING);
     }
 
+    @Before
+    public void setUp(){
+        l1cSynOp = new L1cSynOp();
+    }
+
     @Test
+    @STTM("SNAP-4201")
     public void testL1cSynOpTest() {
-        Operator l1cSynOp = new L1cSynOp();
         l1cSynOp.setParameterDefaultValues();
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
-        Product result = l1cSynOp.getTargetProduct();
-        int numBands = result.getNumBands();
-        String productType = result.getProductType();
-        Band oa03band = result.getBand("Oa03_radiance");
-        int height = result.getSceneRasterHeight();
-        int width = result.getSceneRasterWidth();
 
-        assertEquals(41, height);
-        assertEquals(49, width);
-        assertEquals(418, numBands);
-        assertEquals("S3_L1C_SYN", productType);
-        assertNotNull(oa03band);
+        final Product result = l1cSynOp.getTargetProduct();
+        assertEquals(41, result.getSceneRasterHeight());
+        assertEquals(49, result.getSceneRasterWidth());
+        assertEquals(414, result.getNumBands());
+        assertEquals("S3_L1C_SYN", result.getProductType());
+        assertNotNull(result.getBand("Oa03_radiance"));
     }
 
     @Test
     public void testGetCollocateParams() {
-        L1cSynOp l1cSynOp = new L1cSynOp();
         Map<String, Object> map = l1cSynOp.getCollocateParams();
         boolean renameMasterComponents = (boolean) map.get("renameReferenceComponents");
         boolean renameSlaveComponents = (boolean) map.get("renameSecondaryComponents");
@@ -77,7 +79,6 @@ public class L1cSynOpTest {
 
     @Test
     public void testGetReprojectParams() {
-        L1cSynOp l1cSynOp = new L1cSynOp();
         l1cSynOp.setParameterDefaultValues();
         Map<String, Object> map = l1cSynOp.getReprojectParams();
         String resampling = (String) map.get("resampling");
@@ -91,7 +92,6 @@ public class L1cSynOpTest {
 
     @Test
     public void testGetResampleParameters() {
-        L1cSynOp l1cSynOp = new L1cSynOp();
         l1cSynOp.setParameterDefaultValues();
         Map<String, Object> map = l1cSynOp.getSlstrResampleParams(slstrProduct, "Nearest");
         int width = (int) map.get("targetWidth");
@@ -111,7 +111,6 @@ public class L1cSynOpTest {
 
     @Test
     public  void testBandSelection() {
-        Operator l1cSynOp = new L1cSynOp();
         l1cSynOp.setParameterDefaultValues();
         String[] bandsOlci = {"Oa.._radiance", "FWHM_band_.*", "solar_flux_band_.*",
                 "atmospheric_temperature_profile_.*", "TP_.*"};
@@ -135,7 +134,6 @@ public class L1cSynOpTest {
 
     @Test
     public void testDefaultNameCreation() {
-        Operator l1cSynOp = new L1cSynOp();
         l1cSynOp.setParameterDefaultValues();
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
@@ -145,13 +143,14 @@ public class L1cSynOpTest {
     }
 
     @Test
+    @STTM("SNAP-4201")
     public void testBandsRegExps() {
-        Operator l1cSynOp = new L1cSynOp();
         l1cSynOp.setParameterDefaultValues();
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
         l1cSynOp.setParameter("olciRegexp","Oa.._radiance, lambda0_band_.*");
         l1cSynOp.setParameter("slstrRegexp","S*._radiance_an, .*_an.*");
+
         Product result = l1cSynOp.getTargetProduct();
         assertTrue(result.containsBand("Oa01_radiance"));
         assertTrue(result.containsBand("Oa11_radiance"));
@@ -163,12 +162,11 @@ public class L1cSynOpTest {
         assertTrue(result.containsBand("quality_flags"));
         assertFalse(result.containsBand("bayes_bn"));
         assertFalse(result.containsBand("solar_flux_band_4"));
-        assertEquals(76,result.getNumBands());
+        assertEquals(74,result.getNumBands());
     }
 
     @Test
     public void testWKTRegion() {
-        Operator l1cSynOp = new L1cSynOp();
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
         l1cSynOp.setParameterDefaultValues();
@@ -180,7 +178,6 @@ public class L1cSynOpTest {
 
     @Test
     public void testNoReprojection() {
-        Operator l1cSynOp = new L1cSynOp();
         l1cSynOp.setSourceProduct("olciProduct", olciProduct);
         l1cSynOp.setSourceProduct("slstrProduct", slstrProduct);
         l1cSynOp.setParameterDefaultValues();
