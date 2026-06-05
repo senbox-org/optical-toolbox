@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.flex;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -77,6 +78,7 @@ public class FlexDirectNetcdfBandReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testRead2dFullBlock() throws IOException {
         final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
 
@@ -88,6 +90,7 @@ public class FlexDirectNetcdfBandReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testRead2dWithSubsamplingUsesNetcdfStride() throws IOException {
         final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
 
@@ -99,6 +102,7 @@ public class FlexDirectNetcdfBandReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testRead2dNormalizesTransposedDimensionsToRowMajorYX() throws IOException {
         final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
 
@@ -110,6 +114,7 @@ public class FlexDirectNetcdfBandReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testRead3dLayerFullBlockForYXChannelLayout() throws IOException {
         final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 6);
 
@@ -121,6 +126,7 @@ public class FlexDirectNetcdfBandReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testRead3dLayerWithSubsamplingUsesNetcdfStride() throws IOException {
         final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
 
@@ -132,6 +138,7 @@ public class FlexDirectNetcdfBandReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadConvertsSupportedProductDataTypes() throws IOException {
         final FlexDirectNetcdfBandReader reader = new FlexDirectNetcdfBandReader();
         final ProductData doubleDest = ProductData.createInstance(ProductData.TYPE_FLOAT64, 2);

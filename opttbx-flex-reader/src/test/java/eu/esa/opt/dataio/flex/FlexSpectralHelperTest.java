@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.flex;
 
+import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
@@ -19,6 +20,7 @@ import static org.junit.Assert.*;
 public class FlexSpectralHelperTest {
 
     @Test
+    @STTM("SNAP-4126")
     public void testProductLevelChecks_areNullSafeAndCaseInsensitive() {
         assertTrue(FlexSpectralHelper.isL1bProduct("FLX_L1B_OBS"));
         assertTrue(FlexSpectralHelper.isL1cProduct("flx_l1c_flxsyn"));
@@ -30,6 +32,7 @@ public class FlexSpectralHelperTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testCreateSpectralAxes_unknownProductTypeReturnsNoExplicitAxes() {
         final Product product = new Product("p", "unknown", 4, 3);
 
@@ -40,6 +43,7 @@ public class FlexSpectralHelperTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testCreateSpectralAxes_l1cUsesDescriptorSeriesAndMergesSlstrRadiance() {
         final Product product = new Product("p", "FLX_L1C_FLXSYN", 4, 3);
         final Map<String, FlexVariableDescriptor> specials = new LinkedHashMap<>();
@@ -89,6 +93,7 @@ public class FlexSpectralHelperTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testCreateSpectralAxes_l1cSkipsDescriptorsWithoutUsableBandsOrWavelengthReference() {
         final Product product = new Product("p", "FLX_L1C_FLXSYN", 4, 3);
         final Map<String, FlexVariableDescriptor> specials = new LinkedHashMap<>();
@@ -110,6 +115,7 @@ public class FlexSpectralHelperTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testCreateSpectralAxes_l2UsesAllWavelengthReferenceSeries() {
         final Product product = new Product("p", "FLX_L2_FLXSYN", 4, 3);
         final Map<String, FlexVariableDescriptor> specials = new LinkedHashMap<>();
@@ -151,6 +157,7 @@ public class FlexSpectralHelperTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testCreateSpectralAxes_l1bCreatesSeparatedAxesAndSetsWavelengths() {
         final Product product = new Product("p", "FLX_L1B_OBS", 4, 3);
         addL1bRadianceBands(product, "HR1", 140, false);
@@ -186,6 +193,7 @@ public class FlexSpectralHelperTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testCreateSpectralAxes_l1bUsesFirstPositiveAcrossTrackSpectralValue() {
         final Product product = new Product("p", "FLX_L1B_OBS", 4, 3);
         product.addBand("FLORIS_HR1B_2_radiance", ProductData.TYPE_FLOAT32);

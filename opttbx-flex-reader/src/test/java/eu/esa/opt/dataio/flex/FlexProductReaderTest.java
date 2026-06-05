@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.flex;
 
+import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import eu.esa.opt.dataio.flex.dddb.FlexFlagMask;
 import eu.esa.opt.dataio.flex.dddb.FlexProductDescriptor;
@@ -41,6 +42,7 @@ public class FlexProductReaderTest {
 
 
     @Test
+    @STTM("SNAP-4126")
     public void testIsSubsetReadingFullySupported() {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -48,6 +50,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadGeoCoding_withoutLatitudeLongitudeBands_returnsNull() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 10, 10);
@@ -58,6 +61,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadGeoCoding_withOnlyLongitudeBand_returnsNull() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 10, 10);
@@ -67,6 +71,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadGeoCoding_withOnlyPrefixedLongitudeBand_returnsNull() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 10, 10);
@@ -76,6 +81,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadGeoCoding_usesCachedL1bGridGeoCoding() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "FLX_L1B_OBS", 10, 10);
@@ -86,6 +92,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadElement_descriptorMissing_returnsNull() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -93,6 +100,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadElement_variableMissing_returnsNull() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -114,6 +122,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadElement_variableFoundByFullPath_returnsMetadataElement() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -140,6 +149,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadElement_variableFoundByAlternativeGroupPath_returnsMetadataElement() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -167,6 +177,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadElement_respectsNcDataFileFilter() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -197,6 +208,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadElement_usesVariableCache() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -224,6 +236,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetGridId_fromDescriptorToFileMap() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         descriptorToFileMap(reader).put("FLORIS_HR1B_1_radiance", "measurement_data_hre1");
@@ -236,6 +249,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetGridId_fromAnnotationBandPrefix() {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -249,6 +263,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetGridId_fromMeasurementBandPrefix() {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -259,6 +274,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetGridId_unknownBand_returnsNull() {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -267,6 +283,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testGetGridId_descriptorToFileMapTakesPrecedence() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         // Band name looks like HRE1 prefix but is mapped to lres file
@@ -276,6 +293,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAssignPerBandGeoCoding_reusesSameGridGeoCodingForBands() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         setField(reader, "dddbProductType", "FLX_L1B_OBS");
@@ -295,6 +313,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testClose_clearsStateAndClosesNcFiles() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
 
@@ -314,27 +333,8 @@ public class FlexProductReaderTest {
         assertEquals(FlexProductReader.NATIVE_NETCDF_ENABLED_DEFAULT, getField(reader, "nativeNetcdfEnabled"));
     }
 
-//    @Test
-//    public void testInitializeCache_defaultPreferenceCreatesCacheObjects() throws Exception {
-//        final Preferences preferences = Config.instance("opttbx").load().preferences();
-//        final String oldValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
-//        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
-//
-//        try {
-//            preferences.remove(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE);
-//
-//            invokeInitializeCache(reader);
-//
-//            assertFalse((Boolean) getField(reader, "cacheEnabled"));
-//            assertNull(getField(reader, "cacheDataProvider"));
-//            assertNull(getField(reader, "productCache"));
-//        } finally {
-//            restorePreference(preferences, oldValue);
-//            reader.close();
-//        }
-//    }
-
     @Test
+    @STTM("SNAP-4126")
     public void testInitializeCache_falsePreferenceDoesNotCreateCacheObjects() throws Exception {
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String oldValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
@@ -355,6 +355,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testInitializeCache_readsNativeNetcdfPreference() throws Exception {
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String oldCacheValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
@@ -379,6 +380,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testInitializeCache_defaultsNativeNetcdfPreferenceToEnabled() throws Exception {
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String oldCacheValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
@@ -403,6 +405,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testOpenFlexNetcdfFile_l1cWithoutCacheUsesNativeOpen() throws Exception {
         final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
         setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
@@ -417,6 +420,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testOpenFlexNetcdfFile_l2WithoutCacheUsesNativeOpen() throws Exception {
         final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
         setField(reader, "dddbProductType", "FLX_L2_FLEX");
@@ -431,6 +435,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testOpenFlexNetcdfFile_lowercaseL1cProductTypeUsesNativeOpen() throws Exception {
         final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
         setField(reader, "dddbProductType", "flx_l1c_flxsyn");
@@ -445,6 +450,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testOpenFlexNetcdfFile_l1bNeverUsesNativeOpen() throws Exception {
         final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
         setField(reader, "dddbProductType", "FLX_L1B_FLXSYN");
@@ -459,6 +465,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testOpenFlexNetcdfFile_cacheEnabledL1cUsesNativeOpen() throws Exception {
         final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
         setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
@@ -473,6 +480,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testOpenFlexNetcdfFile_nativePreferenceDisabledUsesDefaultOpen() throws Exception {
         final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
         setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
@@ -487,6 +495,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testOpenFlexNetcdfFile_nativeOpenFailureFallsBackToDefaultOpen() throws Exception {
         final OpenTrackingFlexProductReader reader = new OpenTrackingFlexProductReader();
         setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
@@ -502,6 +511,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testReadGeoData_noCacheUsesDirectVariableRead() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Variable variable = mock(Variable.class);
@@ -528,6 +538,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAddBand_usesDescriptorScaleOffsetAndFillValueWithoutReadingNcAttributes() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 4, 3);
@@ -559,6 +570,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAddFlagMask_usesDirectMaskCreation() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = spy(new Product("p", "t", 10, 10));
@@ -572,6 +584,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAddFlagMask_preservesBitmaskExpression() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 10, 10);
@@ -586,6 +599,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAddFlagMask_preservesIndexExpression() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 10, 10);
@@ -600,6 +614,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAddFlagMask_usesReferencedBandGeometry() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 20, 30);
@@ -615,6 +630,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAddFlagMasks_expandsChannelQualityMasksForAllLayerBands() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 10, 10);
@@ -650,6 +666,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAddSpecialBands_usesProductDescriptorFlagMasksForChannelQualityFlagCoding() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 4, 3);
@@ -702,6 +719,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAssignSpectralAxes_l1cUsesDescriptorSeriesAndMergesSlstrRadiance() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
@@ -752,6 +770,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAssignSpectralAxes_l2UsesAllWavelengthReferenceSeries() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         setField(reader, "dddbProductType", "FLX_L2_FLXSYN");
@@ -796,6 +815,7 @@ public class FlexProductReaderTest {
     }
 
     @Test
+    @STTM("SNAP-4126")
     public void testAssignSpectralAxes_l1bCreatesSeparatedAxesAndSetsWavelengths() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         setField(reader, "dddbProductType", "FLX_L1B_OBS");
