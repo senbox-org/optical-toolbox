@@ -5,6 +5,7 @@ The release notes are provided on the STEP website at https://step.esa.int/main/
 
 # New in SNAP 14.0.0
     [SNAP-4152] Re-organise S3 reader DDDB 
+    [SNAP-1641] Wrong computation of water reflectance from atmosphere path reflectance
 
 # New in SNAP 13.0.2
     [SNAP-4182] Incorrect TiePointGeoCoding for OLCI data
