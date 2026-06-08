@@ -428,7 +428,8 @@ public class C2rccOlciAlgorithm {
                 // needs outputRpath & outputTdown & outputTup
                 log_rw = new double[r_tosa.length];
                 for (int i = 0; i < r_tosa.length; i++) {
-                    log_rw[i] = r_tosa[i] - rpath_nn[i] / (transu_nn[i] * transd_nn[i]);
+                    final double rwa_tmp = (r_tosa[i] - rpath_nn[i]) / (transu_nn[i] * transd_nn[i]);
+                    log_rw[i] = Math.log(rwa_tmp);
                 }
             }else {
                 log_rw = nn_rtosa_rw.get().calc(nn_in);
