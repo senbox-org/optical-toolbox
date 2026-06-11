@@ -1597,11 +1597,11 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                 else if  ( product.getProductType().contains("HARP2"))
                     add4DHARP2NewBands(product, variable, bandToVariableMap);
                 else
-                    add4DNewBands(product, variable,bandToVariableMap);
+                    add4DNewBands(product, variable, bandToVariableMap);
             } else if (variableRank == 1) {
                 Band band = add1DNewBand(product, variable);
                 if (band != null) {
-                    bandToVariableMap.put(band, variable);
+                    bandToVariableMap.put(band.getName(), variable);
                 }
             }
 
@@ -1911,7 +1911,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
         return bandToVariableMap;
     }
 
-protected Map<Band, Variable> add4DHARP2NewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
+protected Map<String, Variable> add4DHARP2NewBands(Product product, Variable variable, Map<String, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
@@ -1986,7 +1986,7 @@ protected Map<Band, Variable> add4DHARP2NewBands(Product product, Variable varia
                             } catch (InvalidRangeException e) {
                                 e.printStackTrace();  //Todo change body of catch statement.
                             }
-                            bandToVariableMap.put(band, sliced);
+                            bandToVariableMap.put(band.getName(), sliced);
 
                             try {
                                 Attribute fillValue = variable.findAttribute("_FillValue");
@@ -2082,7 +2082,7 @@ protected Map<Band, Variable> add4DHARP2NewBands(Product product, Variable varia
 }
 
 
-protected Map<Band, Variable> add4DSPEXNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
+protected Map<String, Variable> add4DSPEXNewBands(Product product, Variable variable, Map<String, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
@@ -2158,7 +2158,7 @@ protected Map<Band, Variable> add4DSPEXNewBands(Product product, Variable variab
                             } catch (InvalidRangeException e) {
                                 e.printStackTrace();  //Todo change body of catch statement.
                             }
-                            bandToVariableMap.put(band, sliced);
+                            bandToVariableMap.put(band.getName(), sliced);
 
                             try {
                                 Attribute fillValue = variable.findAttribute("_FillValue");
@@ -2254,7 +2254,7 @@ protected Map<Band, Variable> add4DSPEXNewBands(Product product, Variable variab
     }
 
 
-    protected Map<Band, Variable> add4DNewBands(Product product, Variable variable, Map<Band, Variable> bandToVariableMap) {
+    protected Map<String, Variable> add4DNewBands(Product product, Variable variable, Map<String, Variable> bandToVariableMap) {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
@@ -2275,7 +2275,7 @@ protected Map<Band, Variable> add4DSPEXNewBands(Product product, Variable variab
                 e.printStackTrace();  //Todo change body of catch statement.
             }
 
-            bandToVariableMap.put(band, sliced);
+            bandToVariableMap.put(band.getName(), sliced);
             product.addBand(band);
 
             try {
