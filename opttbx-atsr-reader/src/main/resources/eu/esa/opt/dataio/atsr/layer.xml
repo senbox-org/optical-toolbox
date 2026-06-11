@@ -24,7 +24,9 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="Envisat">
+                        <attr name="position" intvalue="7"/>
                         <file name="eu-esa-opt-dataio-atsr-ImportAtsrProduct.shadow">
+                            <attr name="position" intvalue="2"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-atsr-ImportAtsrProduct.instance"/>
                         </file>

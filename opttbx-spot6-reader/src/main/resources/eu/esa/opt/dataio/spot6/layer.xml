@@ -35,7 +35,9 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="Spot">
+                        <attr name="position" intvalue="25"/>
                         <file name="eu-esa-opt-dataio-spot6-ImportSpot6DimapProduct.shadow">
+                            <attr name="position" intvalue="3"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-spot6-ImportSpot6DimapProduct.instance"/>
                         </file>

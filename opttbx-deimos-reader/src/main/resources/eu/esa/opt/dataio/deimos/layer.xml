@@ -35,6 +35,7 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <file name="eu-esa-opt-dataio-deimos-ImportDeimosProduct.shadow">
+                        <attr name="position" intvalue="3"/>
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/eu-esa-opt-dataio-deimos-ImportDeimosProduct.instance"/>
                     </file>

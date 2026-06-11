@@ -50,11 +50,14 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="RapidEye">
+                        <attr name="position" intvalue="21"/>
                         <file name="eu-esa-opt-dataio-rapideye-ImportRapidEyeL1Product.shadow">
+                            <attr name="position" intvalue="1"/>
                             <attr name="originalFile"
                               stringvalue="Actions/Readers/eu-esa-opt-dataio-rapideye-ImportRapidEyeL1Product.instance"/>
                         </file>
                         <file name="eu-esa-opt-dataio-rapideye-ImportRapidEyeL3Product.shadow">
+                            <attr name="position" intvalue="2"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-rapideye-ImportRapidEyeL3Product.instance"/>
                         </file>

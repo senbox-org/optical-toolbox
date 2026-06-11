@@ -37,19 +37,24 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="Sentinel-2">
+                        <attr name="position" intvalue="23"/>
                         <file name="eu-esa-opt-dataio-s2-ImportS2L1BProduct.shadow">
+                            <attr name="position" intvalue="1"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s2-ImportS2L1BProduct.instance"/>
                         </file>
                         <file name="eu-esa-opt-dataio-S2-ImportS2Product.shadow">
+                            <attr name="position" intvalue="2"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s2-ImportS2Product.instance"/>
                         </file>
                         <file name="eu-esa-opt-dataio-s2-ImportS2L2AProduct.shadow">
+                            <attr name="position" intvalue="3"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s2-ImportS2L2AProduct.instance"/>
                         </file>
                         <file name="eu-esa-opt-dataio-s2-ImportS2L2HProduct.shadow">
+                            <attr name="position" intvalue="4"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s2-ImportS2L2HProduct.instance"/>
                         </file>

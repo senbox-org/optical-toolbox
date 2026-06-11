@@ -25,6 +25,7 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <file name="eu-esa-opt-dataio-ecostress-ImportECOSTRESSProduct.shadow">
+                        <attr name="position" intvalue="5"/>
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/eu-esa-opt-dataio-ecostress-ImportECOSTRESSProduct.instance"/>
                     </file>

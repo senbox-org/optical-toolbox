@@ -35,7 +35,9 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="Kompsat">
+                        <attr name="position" intvalue="11"/>
                         <file name="eu-esa-opt-dataio-kompsat2-ImportKompsat2Product.shadow">
+                            <attr name="position" intvalue="1"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-kompsat2-ImportKompsat2Product.instance"/>
                         </file>

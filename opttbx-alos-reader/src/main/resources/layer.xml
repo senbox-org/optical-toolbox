@@ -41,23 +41,30 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="Alos">
+                        <attr name="position" intvalue="1"/>
                         <file name="eu-esa-opt-dataio-ceos-ImportAvnir2Product.shadow">
+                            <attr name="position" intvalue="2"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-ceos-ImportAvnir2Product.instance"/>
                         </file>
                         <folder name="Alos AVNIR-2">
+                            <attr name="position" intvalue="1"/>
                             <file name="eu-esa-opt-dataio-alos-av2-ImportAlosAV2Product.shadow">
+                                <attr name="position" intvalue="1"/>
                                 <attr name="originalFile"
                                       stringvalue="Actions/Readers/eu-esa-opt-dataio-alos-av2-ImportAlosAV2Product.instance"/>
                             </file>
                         </folder>
 
                         <file name="eu-esa-opt-dataio-ceos-ImportPrismProduct.shadow">
+                            <attr name="position" intvalue="4"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-ceos-ImportPrismProduct.instance"/>
                         </file>
                         <folder name="Alos PRISM">
+                            <attr name="position" intvalue="3"/>
                             <file name="eu-esa-opt-dataio-alos-pri-ImportAlosPRIProduct.shadow">
+                                <attr name="position" intvalue="1"/>
                                 <attr name="originalFile"
                                       stringvalue="Actions/Readers/eu-esa-opt-dataio-alos-pri-ImportAlosPRIProduct.instance"/>
                             </file>
