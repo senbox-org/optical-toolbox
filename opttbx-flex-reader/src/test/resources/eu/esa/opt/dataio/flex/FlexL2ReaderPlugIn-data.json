@@ -1,0 +1,14 @@
+{
+  "testProducts": [
+    {
+      "id": "FLX_L2__FLXSYN_20230712T075954",
+      "relativePath": "sensors_platforms/FLEX/L2/FLX_L2__FLXSYN_20230712T075954_20230712T075958_20260326T210006_36TYK_100_064_01/flx_l2__flxsyn_20230712T075954_20230712T075958_20260326T210006_36TYK_100_064_01.xml",
+      "description": "FLEX L2 flxsyn"
+    },
+    {
+      "id": "FLX_L2__FLXSYN_20230712T075958",
+      "relativePath": "sensors_platforms/FLEX/L2/FLX_L2__FLXSYN_20230712T075958_20230712T080002_20260326T210006_36SYJ_100_064_01/flx_l2__flxsyn_20230712T075958_20230712T080002_20260326T210006_36SYJ_100_064_01.xml",
+      "description": "FLEX L2 flxsyn"
+    }
+  ]
+}

@@ -4,16 +4,28 @@ import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
+import eu.esa.opt.dataio.s3.util.S3CacheLayerMapper;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.ProductCache;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.dataio.netcdf.cache.NetcdfCacheDataProvider;
 import org.junit.Test;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.AdditionalMatchers.aryEq;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("AnonymousInnerClass")
 public class Sentinel3DddbReaderTest {
@@ -257,5 +269,94 @@ public class Sentinel3DddbReaderTest {
         assertEquals(6, Sentinel3DddbReader.getLayerIndexFromPressureLevelName("Gandasum_pressure_level_6"));
 
         assertEquals(-1, Sentinel3DddbReader.getLayerIndexFromPressureLevelName("Nasenmann.org"));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void testReadCacheData_usesMappedLayerReference() throws Exception {
+        Sentinel3DddbReader reader = new Sentinel3DddbReader(new Sentinel3ProductReaderPlugIn());
+        ProductCache productCache = mock(ProductCache.class);
+        NetcdfCacheDataProvider cacheDataProvider = mock(NetcdfCacheDataProvider.class);
+        setField(reader, "productCache", productCache);
+        setField(reader, "cacheDataProvider", cacheDataProvider);
+
+        eu.esa.snap.core.dataio.cache.VariableDescriptor descriptor =
+                new eu.esa.snap.core.dataio.cache.VariableDescriptor();
+        descriptor.name = "atmospheric_temperature_profile";
+        descriptor.layers = 11;
+        when(cacheDataProvider.getVariableDescriptor("atmospheric_temperature_profile")).thenReturn(descriptor);
+
+        @SuppressWarnings("unchecked")
+        Map<String, S3CacheLayerMapper.LayerReference> mappings =
+                (Map<String, S3CacheLayerMapper.LayerReference>) getField(reader, "cacheLayerMappings");
+        mappings.put("atmospheric_temperature_profile_pressure_level_3",
+                new S3CacheLayerMapper.LayerReference("atmospheric_temperature_profile", 2));
+
+        final int[] offsets = new int[]{4, 5};
+        final int[] shapes = new int[]{2, 3};
+        final ProductData data = ProductData.createInstance(ProductData.TYPE_FLOAT32, 6);
+        final DataBuffer buffer = new DataBuffer(data, offsets, shapes);
+
+        reader.readCacheData("atmospheric_temperature_profile_pressure_level_3", offsets, shapes, buffer);
+
+        verify(productCache).read(eq("atmospheric_temperature_profile"),
+                aryEq(new int[]{2, 4, 5}), aryEq(new int[]{1, 2, 3}), same(buffer));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void testReadCacheData_singleLayerMappingUses2DOffsets() throws Exception {
+        Sentinel3DddbReader reader = new Sentinel3DddbReader(new Sentinel3ProductReaderPlugIn());
+        ProductCache productCache = mock(ProductCache.class);
+        NetcdfCacheDataProvider cacheDataProvider = mock(NetcdfCacheDataProvider.class);
+        setField(reader, "productCache", productCache);
+        setField(reader, "cacheDataProvider", cacheDataProvider);
+
+        eu.esa.snap.core.dataio.cache.VariableDescriptor descriptor =
+                new eu.esa.snap.core.dataio.cache.VariableDescriptor();
+        descriptor.name = "surface_pressure";
+        descriptor.layers = 1;
+        when(cacheDataProvider.getVariableDescriptor("surface_pressure")).thenReturn(descriptor);
+
+        @SuppressWarnings("unchecked")
+        Map<String, S3CacheLayerMapper.LayerReference> mappings =
+                (Map<String, S3CacheLayerMapper.LayerReference>) getField(reader, "cacheLayerMappings");
+        mappings.put("surface_pressure_layer_1", new S3CacheLayerMapper.LayerReference("surface_pressure", 0));
+
+        final int[] offsets = new int[]{4, 5};
+        final int[] shapes = new int[]{2, 3};
+        final DataBuffer buffer = new DataBuffer(ProductData.TYPE_FLOAT32, offsets, shapes);
+
+        reader.readCacheData("surface_pressure_layer_1", offsets, shapes, buffer);
+
+        verify(productCache).read(eq("surface_pressure"), aryEq(offsets), aryEq(shapes), same(buffer));
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void testReadCacheData_withoutMappingUses2DOffsets() throws Exception {
+        Sentinel3DddbReader reader = new Sentinel3DddbReader(new Sentinel3ProductReaderPlugIn());
+        ProductCache productCache = mock(ProductCache.class);
+        setField(reader, "productCache", productCache);
+
+        final int[] offsets = new int[]{1, 2};
+        final int[] shapes = new int[]{3, 4};
+        final DataBuffer buffer = new DataBuffer(ProductData.TYPE_FLOAT32, offsets, shapes);
+
+        reader.readCacheData("latitude", offsets, shapes, buffer);
+
+        verify(productCache).read(eq("latitude"), aryEq(offsets), aryEq(shapes), same(buffer));
+    }
+
+    private static Object getField(Object target, String fieldName) throws Exception {
+        final Field field = target.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return field.get(target);
+    }
+
+    private static void setField(Object target, String fieldName, Object value) throws Exception {
+        final Field field = target.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(target, value);
     }
 }

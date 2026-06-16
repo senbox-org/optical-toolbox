@@ -3,6 +3,7 @@ package eu.esa.opt.dataio.s3.util;
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.snap.core.dataio.cache.CacheManager;
 import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
 import eu.esa.snap.core.dataio.cache.ProductCache;
 import eu.esa.snap.core.datamodel.band.SparseDataBand;
 import org.esa.snap.core.dataio.AbstractProductReader;
@@ -21,13 +22,17 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
  * @author Tonio Fincke
  */
-public class S3NetcdfReader extends AbstractProductReader {
+public class S3NetcdfReader extends AbstractProductReader implements S3CacheDataReader {
 
     //todo check whether this class is still necessary as most of its functionality is also provided by the default netcdf reader
     private static final String product_type = "product_type";
@@ -35,10 +40,14 @@ public class S3NetcdfReader extends AbstractProductReader {
     private NetcdfFile netcdfFile;
     private NetcdfCacheDataProvider cacheDataProvider;
     private ProductCache productCache;
+    private final Map<String, S3CacheLayerMapper.LayerReference> cacheLayerMappings;
+    private final Set<String> registeredCacheKeys;
 
 
     public S3NetcdfReader() {
         super(null);
+        cacheLayerMappings = new HashMap<>();
+        registeredCacheKeys = new HashSet<>();
     }
 
 
@@ -52,6 +61,9 @@ public class S3NetcdfReader extends AbstractProductReader {
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
+        cacheLayerMappings.clear();
+        registeredCacheKeys.clear();
+
         File inputFile = getInputFile();
         netcdfFile = NetcdfFileOpener.open(inputFile);
 
@@ -112,6 +124,8 @@ public class S3NetcdfReader extends AbstractProductReader {
             productCache = null;
         }
         cacheDataProvider = null;
+        cacheLayerMappings.clear();
+        registeredCacheKeys.clear();
 
         if (netcdfFile != null) {
             netcdfFile.close();
@@ -124,12 +138,82 @@ public class S3NetcdfReader extends AbstractProductReader {
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
                                           Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
                                           ProgressMonitor pm) throws IOException {
-        CachedSubsamplingReader.read(productCache, destBand.getName(), destBand.getDataType(),
+        readBandRasterData(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
+                destBand, destWidth, destHeight, destBuffer);
+    }
+
+    public void readBandRasterData(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+                                   Band destBand, int destWidth, int destHeight, ProductData destBuffer) throws IOException {
+        readBandRasterData(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
+                destBand.getName(), destBand, destWidth, destHeight, destBuffer);
+    }
+
+    public void readBandRasterData(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+                                   String cacheKey, Band destBand, int destWidth, int destHeight, ProductData destBuffer) throws IOException {
+        final S3CacheLayerMapper.LayerReference layerReference = cacheLayerMappings.get(cacheKey);
+        if (layerReference != null) {
+            final String mappedCacheKey = layerReference.getCacheKey();
+            if (use2DCacheRead(layerReference)) {
+                CachedSubsamplingReader.read(productCache, mappedCacheKey, destBand.getDataType(),
+                        sourceOffsetX, sourceOffsetY,
+                        sourceWidth, sourceHeight,
+                        sourceStepX, sourceStepY,
+                        destWidth, destHeight, destBuffer
+                );
+                return;
+            }
+            CachedSubsamplingReader.readLayer(productCache, mappedCacheKey, layerReference.getLayer(), destBand.getDataType(),
+                    sourceOffsetX, sourceOffsetY,
+                    sourceWidth, sourceHeight,
+                    sourceStepX, sourceStepY,
+                    destWidth, destHeight, destBuffer
+            );
+            return;
+        }
+
+        CachedSubsamplingReader.read(productCache, cacheKey, destBand.getDataType(),
                 sourceOffsetX, sourceOffsetY,
                 sourceWidth, sourceHeight,
                 sourceStepX, sourceStepY,
                 destWidth, destHeight, destBuffer
         );
+    }
+
+    @Override
+    public void readCacheData(String cacheKey, int[] offsets, int[] shapes, DataBuffer targetBuffer) throws IOException {
+        final S3CacheLayerMapper.LayerReference layerReference = cacheLayerMappings.get(cacheKey);
+        if (layerReference != null) {
+            final String mappedCacheKey = layerReference.getCacheKey();
+            if (use2DCacheRead(layerReference)) {
+                productCache.read(mappedCacheKey, offsets, shapes, targetBuffer);
+                return;
+            }
+            productCache.read(layerReference.getCacheKey(),
+                    new int[]{layerReference.getLayer(), offsets[0], offsets[1]},
+                    new int[]{1, shapes[0], shapes[1]},
+                    targetBuffer);
+            return;
+        }
+
+        productCache.read(cacheKey, offsets, shapes, targetBuffer);
+    }
+
+    private boolean use2DCacheRead(S3CacheLayerMapper.LayerReference layerReference) throws IOException {
+        final String cacheKey = layerReference.getCacheKey();
+        final eu.esa.snap.core.dataio.cache.VariableDescriptor descriptor = cacheDataProvider.getVariableDescriptor(cacheKey);
+        if (descriptor == null) {
+            throw new IOException("No cache descriptor registered for variable: " + cacheKey);
+        }
+        if (descriptor.layers == 1) {
+            if (layerReference.getLayer() != 0) {
+                throw new IOException("Layer index out of range: " + layerReference.getLayer() + " (layers: 1)");
+            }
+            return true;
+        }
+        if (descriptor.layers < 1) {
+            throw new IOException("Invalid cache layer count for variable '" + cacheKey + "': " + descriptor.layers);
+        }
+        return false;
     }
 
     @Override
@@ -204,6 +288,21 @@ public class S3NetcdfReader extends AbstractProductReader {
         final int[] imageOrigin = createImageOrigin(variable, bandName);
 
         final java.awt.Dimension tileSize = S3Util.getTileSizeForVariable(variable, band.getProduct());
+
+        registerVariableWithCache(bandName, variable, imageOrigin, dataType, converter, tileSize);
+    }
+
+    private void registerVariableWithCache(String bandName, Variable variable, int[] imageOrigin, int dataType,
+                                           ArrayConverter converter, java.awt.Dimension tileSize) {
+        if (S3CacheLayerMapper.isLayered(variable)) {
+            final String cacheKey = S3CacheLayerMapper.createCacheKey(variable.getFullName(), converter);
+            final int layer = S3CacheLayerMapper.getLayer(variable, imageOrigin);
+            cacheLayerMappings.put(bandName, new S3CacheLayerMapper.LayerReference(cacheKey, layer));
+            if (registeredCacheKeys.add(cacheKey)) {
+                cacheDataProvider.register(cacheKey, variable, new int[0], false, dataType, converter, tileSize);
+            }
+            return;
+        }
 
         cacheDataProvider.register(bandName, variable, imageOrigin, false, dataType, converter, tileSize);
     }

@@ -1,0 +1,112 @@
+[
+  {
+    "name": "floris_spectral_channel_central_wavelengths",
+    "ncVarName": "floris_spectral_channel_central_wavelengths",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "m",
+    "dataType": "float64",
+    "width": 580,
+    "height": 536,
+    "units": "nm",
+    "description": "FLORIS spectral channel central wavelengths"
+  },
+  {
+    "name": "floris_instrument_flag",
+    "ncVarName": "floris_instrument_flag",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "m",
+    "dataType": "float64",
+    "width": 580,
+    "height": 536,
+    "units": "",
+    "description": "FLORIS instrument flag"
+  },
+  {
+    "name": "floris_spectral_channel_fwhm",
+    "ncVarName": "floris_spectral_channel_fwhm",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "m",
+    "dataType": "float64",
+    "width": 580,
+    "height": 536,
+    "units": "nm",
+    "description": "FLORIS spectral channel FWHM"
+  },
+  {
+    "name": "hr_lr_scaling_coefficients",
+    "ncVarName": "hr_lr_scaling_coefficients",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "s",
+    "dataType": "float64",
+    "depth": 4,
+    "depthPrefixToken": "_coeff_",
+    "units": "",
+    "description": "HR/LR scaling coefficients"
+  },
+  {
+    "name": "floris_spectral_channel_central_wavelengths_uncertainty",
+    "ncVarName": "floris_spectral_channel_central_wavelengths_uncertainty",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "m",
+    "dataType": "float64",
+    "width": 3,
+    "height": 1,
+    "units": "nm",
+    "description": "FLORIS spectral channel central wavelengths uncertainty"
+  },
+  {
+    "name": "floris_spectral_channel_fwhm_uncertainty",
+    "ncVarName": "floris_spectral_channel_fwhm_uncertainty",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "m",
+    "dataType": "float64",
+    "width": 3,
+    "height": 1,
+    "units": "nm",
+    "description": "FLORIS spectral channel FWHM uncertainty"
+  },
+  {
+    "name": "olci_spectral_channel_central_wavelengths",
+    "ncVarName": "olci_spectral_channel_central_wavelengths",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "m",
+    "dataType": "float64",
+    "width": 21,
+    "height": 1,
+    "units": "nm",
+    "description": "OLCI spectral channel central wavelengths"
+  },
+  {
+    "name": "slstr_vswir_spectral_channel_central_wavelengths",
+    "ncVarName": "slstr_vswir_spectral_channel_central_wavelengths",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "m",
+    "dataType": "float64",
+    "width": 6,
+    "height": 1,
+    "units": "nm",
+    "description": "SLSTR VSWIR spectral channel central wavelengths"
+  },
+  {
+    "name": "slstr_tir_spectral_channel_central_wavelengths",
+    "ncVarName": "slstr_tir_spectral_channel_central_wavelengths",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "m",
+    "dataType": "float64",
+    "width": 3,
+    "height": 1,
+    "units": "nm",
+    "description": "SLSTR TIR spectral channel central wavelengths"
+  },
+  {
+    "name": "crosscalibration_coefficients",
+    "ncVarName": "crosscalibration_coefficients",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "type": "m",
+    "dataType": "float64",
+    "width": 8,
+    "height": 1,
+    "units": "",
+    "description": "Cross-calibration coefficients"
+  }
+]

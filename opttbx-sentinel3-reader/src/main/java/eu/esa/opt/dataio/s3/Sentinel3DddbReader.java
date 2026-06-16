@@ -43,15 +43,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
 import static eu.esa.opt.dataio.s3.util.S3Util.*;
 
-public class Sentinel3DddbReader extends AbstractProductReader implements MetadataProvider, ReaderContext {
+public class Sentinel3DddbReader extends AbstractProductReader implements MetadataProvider, ReaderContext, S3CacheDataReader {
 
     private final DDDB dddb;
     private final Map<String, VariableDescriptor> tiepointMap;
@@ -64,6 +66,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     private final Map<String, Float> nameToWavelengthMap;
     private final Map<String, Float> nameToBandwidthMap;
     private final Map<String, Integer> nameToIndexMap;
+    private final Map<String, S3CacheLayerMapper.LayerReference> cacheLayerMappings;
+    private final Set<String> registeredCacheKeys;
     private VirtualDir virtualDir;
     private Manifest manifest;
     private ColorProvider colorProvider;
@@ -91,6 +95,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         nameToWavelengthMap = new HashMap<>();
         nameToBandwidthMap = new HashMap<>();
         nameToIndexMap = new HashMap<>();
+        cacheLayerMappings = new HashMap<>();
+        registeredCacheKeys = new HashSet<>();
     }
 
     // package access for testing only tb 2024-12-17
@@ -242,6 +248,9 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
+        cacheLayerMappings.clear();
+        registeredCacheKeys.clear();
+
         initalizeInput();
 
         cacheDataProvider = new NetcdfCacheDataProvider();
@@ -327,8 +336,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
             return null;
         }
 
-        final double[] lonData = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(productCache, lonBand);
-        final double[] latData = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(productCache, latBand);
+        final double[] lonData = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(this, lonBand);
+        final double[] latData = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(this, latBand);
         final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
 
         final GeoRaster geoRaster = new GeoRaster(lonData, latData,
@@ -361,8 +370,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         final int width = lonDescriptor.getWidth();
         final int height = lonDescriptor.getHeight();
 
-        final double[] lonData = S3CachedGeoDataUtil.readCachedRawDataAsDouble(productCache, geoLocationNames.getTpLongitudeName(), width, height, lonGrid.getDataType());
-        final double[] latData = S3CachedGeoDataUtil.readCachedRawDataAsDouble(productCache, geoLocationNames.getTpLatitudeName(), width, height, latGrid.getDataType());
+        final double[] lonData = S3CachedGeoDataUtil.readCachedRawDataAsDouble(this, geoLocationNames.getTpLongitudeName(), width, height, lonGrid.getDataType());
+        final double[] latData = S3CachedGeoDataUtil.readCachedRawDataAsDouble(this, geoLocationNames.getTpLatitudeName(), width, height, latGrid.getDataType());
         final double resolutionInKm = sensorContext.getResolutionInKm(product.getProductType());
 
         final GeoRaster geoRaster = new GeoRaster(lonData, latData,
@@ -413,7 +422,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         sensorContext.addDescriptionAndUnit(band, descriptor);
         S3Util.addFillValue(band, netCDFVariable);
 
-        cacheDataProvider.register(bandname, netCDFVariable, new int[0], false, ProductData.TYPE_UINT32,
+        registerVariableWithCache(bandname, bandname, netCDFVariable, new int[0], ProductData.TYPE_UINT32,
                 getArrayConverter(bandname), S3Util.getTileSizeForVariable(netCDFVariable, product));
     }
 
@@ -436,7 +445,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         sensorContext.addDescriptionAndUnit(band, descriptor);
         S3Util.addFillValue(band, netCDFVariable);
 
-        cacheDataProvider.register(bandName, netCDFVariable, new int[0], false, dataType,
+        registerVariableWithCache(bandName, bandName, netCDFVariable, new int[0], dataType,
                 getArrayConverter(bandName), S3Util.getTileSizeForVariable(netCDFVariable, product));
     }
 
@@ -500,8 +509,23 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
             return;
         }
 
-        cacheDataProvider.register(cacheKey, netCDFVariable, imageOrigin, false, S3Util.getRasterDataType(netCDFVariable),
+        final String baseCacheKey = S3CacheLayerMapper.createCacheKey(descriptor.getName(), getArrayConverter(cacheKey));
+        registerVariableWithCache(cacheKey, baseCacheKey, netCDFVariable, imageOrigin, S3Util.getRasterDataType(netCDFVariable),
                 getArrayConverter(cacheKey), S3Util.getTileSizeForVariable(netCDFVariable, product));
+    }
+
+    private void registerVariableWithCache(String publicKey, String cacheKey, Variable netCDFVariable, int[] imageOrigin,
+                                           int dataType, ArrayConverter converter, java.awt.Dimension tileSize) {
+        if (S3CacheLayerMapper.isLayered(netCDFVariable)) {
+            final int layer = S3CacheLayerMapper.getLayer(netCDFVariable, imageOrigin);
+            cacheLayerMappings.put(publicKey, new S3CacheLayerMapper.LayerReference(cacheKey, layer));
+            if (registeredCacheKeys.add(cacheKey)) {
+                cacheDataProvider.register(cacheKey, netCDFVariable, new int[0], false, dataType, converter, tileSize);
+            }
+            return;
+        }
+
+        cacheDataProvider.register(publicKey, netCDFVariable, imageOrigin, false, dataType, converter, tileSize);
     }
 
     private void addSpecialBands(Product product) throws IOException {
@@ -599,10 +623,70 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
             return;
         }
 
-        CachedSubsamplingReader.read(productCache, destBandName, destBand.getDataType(),
+        readBandRasterData(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY,
+                destBand, destWidth, destHeight, destBuffer);
+    }
+
+    private void readBandRasterData(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
+                                    Band destBand, int destWidth, int destHeight, ProductData destBuffer) throws IOException {
+        final S3CacheLayerMapper.LayerReference layerReference = cacheLayerMappings.get(destBand.getName());
+        if (layerReference != null) {
+            final String cacheKey = layerReference.getCacheKey();
+            if (use2DCacheRead(layerReference)) {
+                CachedSubsamplingReader.read(productCache, cacheKey, destBand.getDataType(),
+                        sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                        sourceStepX, sourceStepY, destWidth, destHeight, destBuffer
+                );
+                return;
+            }
+            CachedSubsamplingReader.readLayer(productCache, cacheKey, layerReference.getLayer(), destBand.getDataType(),
+                    sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                    sourceStepX, sourceStepY, destWidth, destHeight, destBuffer
+            );
+            return;
+        }
+
+        CachedSubsamplingReader.read(productCache, destBand.getName(), destBand.getDataType(),
                 sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
                 sourceStepX, sourceStepY, destWidth, destHeight, destBuffer
         );
+    }
+
+    @Override
+    public void readCacheData(String cacheKey, int[] offsets, int[] shapes, DataBuffer targetBuffer) throws IOException {
+        final S3CacheLayerMapper.LayerReference layerReference = cacheLayerMappings.get(cacheKey);
+        if (layerReference != null) {
+            final String mappedCacheKey = layerReference.getCacheKey();
+            if (use2DCacheRead(layerReference)) {
+                productCache.read(mappedCacheKey, offsets, shapes, targetBuffer);
+                return;
+            }
+            productCache.read(layerReference.getCacheKey(),
+                    new int[]{layerReference.getLayer(), offsets[0], offsets[1]},
+                    new int[]{1, shapes[0], shapes[1]},
+                    targetBuffer);
+            return;
+        }
+
+        productCache.read(cacheKey, offsets, shapes, targetBuffer);
+    }
+
+    private boolean use2DCacheRead(S3CacheLayerMapper.LayerReference layerReference) throws IOException {
+        final String cacheKey = layerReference.getCacheKey();
+        final eu.esa.snap.core.dataio.cache.VariableDescriptor descriptor = cacheDataProvider.getVariableDescriptor(cacheKey);
+        if (descriptor == null) {
+            throw new IOException("No cache descriptor registered for variable: " + cacheKey);
+        }
+        if (descriptor.layers == 1) {
+            if (layerReference.getLayer() != 0) {
+                throw new IOException("Layer index out of range: " + layerReference.getLayer() + " (layers: 1)");
+            }
+            return true;
+        }
+        if (descriptor.layers < 1) {
+            throw new IOException("Invalid cache layer count for variable '" + cacheKey + "': " + descriptor.layers);
+        }
+        return false;
     }
 
     @Override
@@ -622,7 +706,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
         final int sourceType = S3Util.getRasterDataType(netCDFVariable);
         final DataBuffer sourceBuffer = new DataBuffer(sourceType, offsets, shapes);
-        productCache.read(cacheKey, offsets, shapes, sourceBuffer);
+        readCacheData(cacheKey, offsets, shapes, sourceBuffer);
 
         final ProductData sourceData = sourceBuffer.getData();
         final double scale = getScalingFactor(netCDFVariable);
@@ -735,6 +819,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         ncVariablesMap.clear();
         tiepointMap.clear();
         specialsMap.clear();
+        cacheLayerMappings.clear();
+        registeredCacheKeys.clear();
 
         for (final NetcdfFile ncFile : filesMap.values()) {
             ncFile.close();

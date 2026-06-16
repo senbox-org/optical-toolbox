@@ -1,0 +1,44 @@
+[
+  {
+    "name": "olci_extraterrestrial_solar_irradiance",
+    "ncVarName": "olci_extraterrestrial_solar_irradiance",
+    "ncGroupPath": "Annotation_data/Ancillary_data",
+    "type": "m",
+    "dataType": "float32",
+    "width": 21,
+    "height": 1,
+    "units": "mW.m-2.nm-1",
+    "description": "OLCI extraterrestrial solar irradiance"
+  },
+  {
+    "name": "floris_extraterrestrial_solar_irradiance",
+    "ncVarName": "floris_extraterrestrial_solar_irradiance",
+    "ncGroupPath": "Annotation_data/Ancillary_data",
+    "type": "m",
+    "dataType": "float64",
+    "width": 580,
+    "height": 536,
+    "units": "mW.m-2.nm-1",
+    "description": "FLORIS extraterrestrial solar irradiance"
+  },
+  {
+    "name": "slstr_extraterrestrial_solar_irradiance",
+    "ncVarName": "slstr_extraterrestrial_solar_irradiance",
+    "ncGroupPath": "Annotation_data/Ancillary_data",
+    "type": "m",
+    "dataType": "float64",
+    "width": 6,
+    "height": 1,
+    "units": "mW.m-2.nm-1",
+    "description": "SLSTR extraterrestrial solar irradiance"
+  },
+  {
+    "name": "pixel_classification",
+    "ncVarName": "pixel_classification",
+    "ncGroupPath": "Annotation_data/Ancillary_data",
+    "type": "f",
+    "dataType": "int16",
+    "units": "",
+    "description": "Pixel classification flag"
+  }
+]

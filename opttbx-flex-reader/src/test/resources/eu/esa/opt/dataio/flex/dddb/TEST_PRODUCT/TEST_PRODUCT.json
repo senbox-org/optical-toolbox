@@ -1,0 +1,21 @@
+{
+  "productType": "TEST_PRODUCT",
+  "width": 536,
+  "height": 3640,
+  "dataFiles": ["test_variables", "test_flags"],
+  "bandGroupingPattern": "radiance_ch_*:reflectance_ch_*",
+  "flagMasks": [
+    {
+      "bandName": "pixel_classification",
+      "name": "not_valid",
+      "value": 0,
+      "description": "Not-valid pixel"
+    },
+    {
+      "bandName": "pixel_classification",
+      "name": "land",
+      "value": 1,
+      "description": "Land pixel"
+    }
+  ]
+}

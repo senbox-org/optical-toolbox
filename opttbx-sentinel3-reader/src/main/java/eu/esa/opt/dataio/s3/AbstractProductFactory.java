@@ -500,7 +500,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         final int[] shapes = new int[]{h, w};
 
         final ProductData data = ProductData.createInstance(entry.sourceBand.getDataType(), w * h);
-        entry.reader.getProductCache().read(entry.cacheKey, offsets, shapes, new DataBuffer(data, offsets, shapes));
+        entry.reader.readCacheData(entry.cacheKey, offsets, shapes, new DataBuffer(data, offsets, shapes));
 
         final double[] result = new double[w * h];
         for (int ii = 0; ii < result.length; ii++) {

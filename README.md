@@ -19,7 +19,7 @@ More information can be found in the [Developer Guide](https://senbox.atlassian.
 
 Download and install the required build tools
 
-* Install Java 21 JDK and set JAVA_HOME accordingly. 
+* Install Java 21 JDK and set JAVA_HOME accordingly.
 * Install Maven and set MAVEN_HOME accordingly.
 * Install git
 

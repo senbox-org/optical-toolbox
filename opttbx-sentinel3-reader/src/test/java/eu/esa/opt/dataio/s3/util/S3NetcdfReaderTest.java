@@ -3,9 +3,12 @@ package eu.esa.opt.dataio.s3.util;
 import com.bc.ceres.annotation.STTM;
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.snap.core.dataio.cache.CacheManager;
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.ProductCache;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.dataio.netcdf.cache.NetcdfCacheDataProvider;
 import org.junit.*;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
@@ -16,12 +19,20 @@ import ucar.nc2.Variable;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
+import static org.mockito.AdditionalMatchers.aryEq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Tonio Fincke
@@ -32,6 +43,7 @@ public class S3NetcdfReaderTest {
     private static final int SYNTH_HEIGHT = 10;
 
     private static File synthFile;
+    private static File layeredSynthFile;
 
     private S3NetcdfReader reader;
 
@@ -57,6 +69,57 @@ public class S3NetcdfReaderTest {
             throw new IOException(e);
         }
         writer.close();
+
+        layeredSynthFile = File.createTempFile("S3NetcdfReaderTest_layered", ".nc");
+
+        writer = NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, layeredSynthFile.getAbsolutePath());
+        writer.addDimension("time", 2);
+        writer.addDimension("channel", 3);
+        writer.addDimension("single_channel", 1);
+        writer.addDimension("rows", SYNTH_HEIGHT);
+        writer.addDimension("columns", SYNTH_WIDTH);
+        Variable varChannel = writer.addVariable("cube", DataType.INT, "channel rows columns");
+        Variable varRank4 = writer.addVariable("rank4cube", DataType.INT, "time channel rows columns");
+        Variable varSingleLayer = writer.addVariable("single_layer_cube", DataType.INT, "single_channel rows columns");
+        writer.create();
+
+        int[] channelData = new int[3 * SYNTH_HEIGHT * SYNTH_WIDTH];
+        for (int channel = 0; channel < 3; channel++) {
+            for (int y = 0; y < SYNTH_HEIGHT; y++) {
+                for (int x = 0; x < SYNTH_WIDTH; x++) {
+                    channelData[channel * SYNTH_HEIGHT * SYNTH_WIDTH + y * SYNTH_WIDTH + x] =
+                            1000 * channel + y * SYNTH_WIDTH + x;
+                }
+            }
+        }
+
+        int[] rank4Data = new int[2 * 3 * SYNTH_HEIGHT * SYNTH_WIDTH];
+        for (int time = 0; time < 2; time++) {
+            for (int channel = 0; channel < 3; channel++) {
+                for (int y = 0; y < SYNTH_HEIGHT; y++) {
+                    for (int x = 0; x < SYNTH_WIDTH; x++) {
+                        rank4Data[((time * 3 + channel) * SYNTH_HEIGHT + y) * SYNTH_WIDTH + x] =
+                                10000 * time + 1000 * channel + y * SYNTH_WIDTH + x;
+                    }
+                }
+            }
+        }
+
+        int[] singleLayerData = new int[SYNTH_HEIGHT * SYNTH_WIDTH];
+        for (int y = 0; y < SYNTH_HEIGHT; y++) {
+            for (int x = 0; x < SYNTH_WIDTH; x++) {
+                singleLayerData[y * SYNTH_WIDTH + x] = 5000 + y * SYNTH_WIDTH + x;
+            }
+        }
+
+        try {
+            writer.write(varChannel, Array.factory(DataType.INT, new int[]{3, SYNTH_HEIGHT, SYNTH_WIDTH}, channelData));
+            writer.write(varRank4, Array.factory(DataType.INT, new int[]{2, 3, SYNTH_HEIGHT, SYNTH_WIDTH}, rank4Data));
+            writer.write(varSingleLayer, Array.factory(DataType.INT, new int[]{1, SYNTH_HEIGHT, SYNTH_WIDTH}, singleLayerData));
+        } catch (InvalidRangeException e) {
+            throw new IOException(e);
+        }
+        writer.close();
     }
 
     @AfterClass
@@ -64,6 +127,9 @@ public class S3NetcdfReaderTest {
         CacheManager.dispose();
         if (synthFile != null) {
             synthFile.delete();
+        }
+        if (layeredSynthFile != null) {
+            layeredSynthFile.delete();
         }
     }
 
@@ -304,10 +370,151 @@ public class S3NetcdfReaderTest {
         }
     }
 
+    @Test
+    @STTM("SNAP-4200")
+    public void testReadBandRasterData_rank3SeparatedBand_readsRequestedLayer() throws Exception {
+        reader = new ChannelSeparatingReader();
+        final Product product = reader.readProductNodes(layeredSynthFile.getAbsolutePath(), null);
+        final Band band = product.getBand("cube_channel_2");
+        Assert.assertNotNull("Synthetic channel band must be present in product", band);
+
+        final int w = 4;
+        final int h = 3;
+        final ProductData destBuffer = ProductData.createInstance(ProductData.TYPE_INT32, w * h);
+
+        reader.readBandRasterDataImpl(1, 2, w, h, 1, 1,
+                band, 1, 2, w, h, destBuffer, ProgressMonitor.NULL);
+
+        assertArrayEquals(new int[]{1017, 1018, 1019, 1020, 1025, 1026, 1027, 1028, 1033, 1034, 1035, 1036},
+                (int[]) destBuffer.getElems());
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void testReadBandRasterData_rank4SeparatedBand_flattensLayerIndexLikeCacheProvider() throws Exception {
+        reader = new ChannelSeparatingReader();
+        final Product product = reader.readProductNodes(layeredSynthFile.getAbsolutePath(), null);
+        final Band band = product.getBand("rank4cube_channel_3");
+        Assert.assertNotNull("Synthetic rank-4 channel band must be present in product", band);
+
+        final int sourceWidth = 6;
+        final int sourceHeight = 4;
+        final int stepX = 2;
+        final int stepY = 2;
+        final ProductData destBuffer = ProductData.createInstance(ProductData.TYPE_INT32, 6);
+
+        reader.readBandRasterDataImpl(0, 0, sourceWidth, sourceHeight, stepX, stepY,
+                band, 0, 0, 3, 2, destBuffer, ProgressMonitor.NULL);
+
+        assertArrayEquals(new int[]{2000, 2002, 2004, 2016, 2018, 2020}, (int[]) destBuffer.getElems());
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void testReadBandRasterData_singleLayerRank3SeparatedBand_uses2DCacheRead() throws Exception {
+        reader = new SingleChannelSeparatingReader();
+        final Product product = reader.readProductNodes(layeredSynthFile.getAbsolutePath(), null);
+        final Band band = product.getBand("single_layer_cube_slice_1");
+        Assert.assertNotNull("Synthetic single-layer band must be present in product", band);
+
+        final int w = 4;
+        final int h = 3;
+        final ProductData destBuffer = ProductData.createInstance(ProductData.TYPE_INT32, w * h);
+
+        reader.readBandRasterDataImpl(1, 2, w, h, 1, 1,
+                band, 1, 2, w, h, destBuffer, ProgressMonitor.NULL);
+
+        assertArrayEquals(new int[]{5017, 5018, 5019, 5020, 5025, 5026, 5027, 5028, 5033, 5034, 5035, 5036},
+                (int[]) destBuffer.getElems());
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void testReadCacheData_singleLayerRank3Mapping_uses2DCacheRead() throws Exception {
+        reader = new SingleChannelSeparatingReader();
+        final Product product = reader.readProductNodes(layeredSynthFile.getAbsolutePath(), null);
+        Assert.assertNotNull(product.getBand("single_layer_cube_slice_1"));
+
+        final int[] offsets = new int[]{2, 1};
+        final int[] shapes = new int[]{3, 4};
+        final DataBuffer buffer = new DataBuffer(ProductData.TYPE_INT32, offsets, shapes);
+
+        reader.readCacheData("single_layer_cube_slice_1", offsets, shapes, buffer);
+
+        assertArrayEquals(new int[]{5017, 5018, 5019, 5020, 5025, 5026, 5027, 5028, 5033, 5034, 5035, 5036},
+                (int[]) buffer.getData().getElems());
+    }
+
+    @Test
+    @STTM("SNAP-4200")
+    public void testReadBandRasterData_singleLayerMappingUses2DOffsets() throws Exception {
+        reader = new S3NetcdfReader();
+        ProductCache productCache = mock(ProductCache.class);
+        NetcdfCacheDataProvider cacheDataProvider = mock(NetcdfCacheDataProvider.class);
+        setField(reader, "productCache", productCache);
+        setField(reader, "cacheDataProvider", cacheDataProvider);
+
+        eu.esa.snap.core.dataio.cache.VariableDescriptor descriptor =
+                new eu.esa.snap.core.dataio.cache.VariableDescriptor();
+        descriptor.name = "surface_pressure";
+        descriptor.layers = 1;
+        when(cacheDataProvider.getVariableDescriptor("surface_pressure")).thenReturn(descriptor);
+
+        @SuppressWarnings("unchecked")
+        Map<String, S3CacheLayerMapper.LayerReference> mappings =
+                (Map<String, S3CacheLayerMapper.LayerReference>) getField(reader, "cacheLayerMappings");
+        mappings.put("surface_pressure_layer_1", new S3CacheLayerMapper.LayerReference("surface_pressure", 0));
+
+        Band band = new Band("surface_pressure_layer_1", ProductData.TYPE_FLOAT32, 8, 10);
+        ProductData destBuffer = ProductData.createInstance(ProductData.TYPE_FLOAT32, 6);
+
+        reader.readBandRasterData(5, 4, 3, 2, 1, 1, band, 3, 2, destBuffer);
+
+        verify(productCache).read(eq("surface_pressure"), aryEq(new int[]{4, 5}), aryEq(new int[]{2, 3}), any(DataBuffer.class));
+    }
+
     private String getTestFilePath(String name) throws Exception {
         URL url = getClass().getResource(name);
         URI uri = new URI(url.toString());
         return uri.getPath();
+    }
+
+    private static class ChannelSeparatingReader extends S3NetcdfReader {
+
+        @Override
+        protected String[] getSeparatingDimensions() {
+            return new String[]{"channel"};
+        }
+
+        @Override
+        public String[] getSuffixesForSeparatingDimensions() {
+            return new String[]{"channel"};
+        }
+    }
+
+    private static class SingleChannelSeparatingReader extends S3NetcdfReader {
+
+        @Override
+        protected String[] getSeparatingDimensions() {
+            return new String[]{"single_channel"};
+        }
+
+        @Override
+        public String[] getSuffixesForSeparatingDimensions() {
+            return new String[]{"slice"};
+        }
+    }
+
+    private static Object getField(Object target, String fieldName) throws Exception {
+        final Field field = target.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return field.get(target);
+    }
+
+    private static void setField(Object target, String fieldName, Object value) throws Exception {
+        final Field field = target.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(target, value);
     }
 
 }
