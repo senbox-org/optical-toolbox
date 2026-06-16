@@ -35,7 +35,9 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="Ikonos">
+                        <attr name="position" intvalue="10"/>
                         <file name="eu-esa-opt-dataio-ikonos-ImportIkonosProduct.shadow">
+                            <attr name="position" intvalue="1"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-ikonos-ImportIkonosProduct.instance"/>
                         </file>

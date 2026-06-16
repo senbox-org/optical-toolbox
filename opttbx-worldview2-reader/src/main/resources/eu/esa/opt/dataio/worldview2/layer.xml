@@ -35,7 +35,9 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="WorldView">
+                        <attr name="position" intvalue="28"/>
                         <file name="eu-esa-opt-dataio-worldview2-ImportWorldView2Product.shadow">
+                            <attr name="position" intvalue="1"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-worldview2-ImportWorldView2Product.instance"/>
                         </file>

@@ -17,6 +17,7 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <file name="eu-esa-opt-dataio-muscate-ImportMuscateProduct.shadow">
+                        <attr name="position" intvalue="14"/>
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/eu-esa-opt-dataio-muscate-ImportMuscateProduct.instance"/>
                     </file>

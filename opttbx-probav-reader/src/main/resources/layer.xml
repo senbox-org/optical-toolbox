@@ -25,6 +25,7 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <file name="eu-esa-opt-dataio-probav-ImportProbaVProduct.shadow">
+                        <attr name="position" intvalue="20"/>
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/eu-esa-opt-dataio-probav-ImportProbaVProduct.instance"/>
                     </file>

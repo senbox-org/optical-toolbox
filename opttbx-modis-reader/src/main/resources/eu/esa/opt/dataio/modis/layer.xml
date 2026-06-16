@@ -20,7 +20,9 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="Modis">
+                        <attr name="position" intvalue="13"/>
                         <file name="eu-esa-opt-dataio-modis-ImportMODISProduct.shadow">
+                            <attr name="position" intvalue="2"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-modis-ImportMODISProduct.instance"/>
                         </file>

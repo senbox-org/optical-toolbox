@@ -18,6 +18,7 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <file name="org-esa-snap-ImportEnmapProduct.shadow">
+                        <attr name="position" intvalue="6"/>
                         <attr name="originalFile"
                               stringvalue="Actions/Readers/org-esa-snap-ImportEnmapProduct.instance"/>
                     </file>

@@ -83,32 +83,41 @@
             <folder name="Import">
                 <folder name="Optical Sensors">
                     <folder name="Sentinel-3">
+                        <attr name="position" intvalue="24"/>
                         <file name="eu-esa-opt-dataio-s3-ImportSentinel3Product.shadow">
+                            <attr name="position" intvalue="1"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-ImportSentinel3Product.instance"/>
                         </file>
                         <file name="eu-esa-opt-dataio-s3-slstr-ImportSlstrL1B500mProduct.shadow">
+                            <attr name="position" intvalue="3"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-slstr-ImportSlstrL1B500mProduct.instance"/>
                         </file>
                         <file name="eu-esa-opt-dataio-s3-slstr-ImportSlstrL1B1kmProduct.shadow">
+                            <attr name="position" intvalue="2"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-slstr-ImportSlstrL1B1kmProduct.instance"/>
                         </file>
                     </folder>
 
-                    <folder name="Envisat">
+                    <folder name="Envisat">>
+                        <attr name="position" intvalue="7"/>
+                        <file name="eu-esa-opt-dataio-s3-aatsr-ImportAatsrL1InS3FormatProduct.shadow">
+                            <attr name="position" intvalue="1"/>
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-aatsr-ImportAatsrL1InS3FormatProduct.instance"/>
+                        </file>
+                        <attr name="position" intvalue="7"/>
                         <file name="eu-esa-opt-dataio-s3-meris-ImportMerisL1InS3FormatProduct.shadow">
+                            <attr name="position" intvalue="6"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-meris-ImportMerisL1InS3FormatProduct.instance"/>
                         </file>
                         <file name="eu-esa-opt-dataio-s3-meris-ImportMerisL2InS3FormatProduct.shadow">
+                            <attr name="position" intvalue="7"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-meris-ImportMerisL2InS3FormatProduct.instance"/>
-                        </file>
-                        <file name="eu-esa-opt-dataio-s3-aatsr-ImportAatsrL1InS3FormatProduct.shadow">
-                            <attr name="originalFile"
-                                  stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-aatsr-ImportAatsrL1InS3FormatProduct.instance"/>
                         </file>
                     </folder>
                 </folder>
