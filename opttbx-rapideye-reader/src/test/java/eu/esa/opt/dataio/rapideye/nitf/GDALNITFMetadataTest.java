@@ -27,6 +27,7 @@ import org.junit.Test;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
@@ -44,6 +45,7 @@ public class GDALNITFMetadataTest {
     public void setUp() throws Exception {
         assumeTrue(TestUtil.testdataAvailable());
 
+        Locale.setDefault(Locale.US);
         GDALNITFReaderWrapper reader = new GDALNITFReaderWrapper(TestUtil.getTestFile(productsFolder + "2009-04-16T104920_RE4_1B-NAC_3436599_84303_band2.ntf"));
         metadata = reader.getMetadata();
     }

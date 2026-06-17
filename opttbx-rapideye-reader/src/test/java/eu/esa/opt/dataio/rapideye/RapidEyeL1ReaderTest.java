@@ -156,23 +156,23 @@ public class RapidEyeL1ReaderTest {
         assertEquals(3000, band.getRasterWidth());
         assertEquals(4000, band.getRasterHeight());
 
-        assertEquals(28.25f, band.getSampleFloat(0, 0), 0.0f);
-        assertEquals(22.64f, band.getSampleFloat(22, 20), 0.0f);
-        assertEquals(40.01f, band.getSampleFloat(123, 3221), 0.0f);
-        assertEquals(39.399998f, band.getSampleFloat(246, 134), 0.0f);
-        assertEquals(31.38f, band.getSampleFloat(435, 3543), 0.0f);
-        assertEquals(17.96f, band.getSampleFloat(1000, 3245), 0.0f);
-        assertEquals(30.81f, band.getSampleFloat(2214, 3242), 0.0f);
-        assertEquals(27.23f, band.getSampleFloat(221, 1233), 0.0f);
-        assertEquals(21.46f, band.getSampleFloat(864, 532), 0.0f);
-        assertEquals(25.24f, band.getSampleFloat(2763, 1445), 0.0f);
-        assertEquals(20.38f, band.getSampleFloat(2642, 3354), 0.0f);
-        assertEquals(59.449997f, band.getSampleFloat(544, 544), 0.0f);
-        assertEquals(23.97f, band.getSampleFloat(1332, 2345), 0.0f);
-        assertEquals(20.779999f, band.getSampleFloat(2200, 700), 0.0f);
-        assertEquals(20.99f, band.getSampleFloat(543, 12), 0.0f);
-        assertEquals(48.25f, band.getSampleFloat(32, 547), 0.0f);
-        assertEquals(18.5f, band.getSampleFloat(3000, 4000), 0.0f);
+        assertEquals(25.699999f, band.getSampleFloat(0, 0), 0.0f);
+        assertEquals(25.9f, band.getSampleFloat(22, 20), 0.0f);
+        assertEquals(23.3f, band.getSampleFloat(123, 3221), 0.0f);
+        assertEquals(21.64f, band.getSampleFloat(246, 134), 0.0f);
+        assertEquals(34.86f, band.getSampleFloat(435, 3543), 0.0f);
+        assertEquals(33.67f, band.getSampleFloat(1000, 3245), 0.0f);
+        assertEquals(35.329998f, band.getSampleFloat(2214, 3242), 0.0f);
+        assertEquals(16.619999f, band.getSampleFloat(221, 1233), 0.0f);
+        assertEquals(30.42f, band.getSampleFloat(864, 532), 0.0f);
+        assertEquals(24.1f, band.getSampleFloat(2763, 1445), 0.0f);
+        assertEquals(29.0f, band.getSampleFloat(2642, 3354), 0.0f);
+        assertEquals(27.98f, band.getSampleFloat(544, 544), 0.0f);
+        assertEquals(23.33f, band.getSampleFloat(1332, 2345), 0.0f);
+        assertEquals(24.609999f, band.getSampleFloat(2200, 700), 0.0f);
+        assertEquals(24.57f, band.getSampleFloat(543, 12), 0.0f);
+        assertEquals(52.11f, band.getSampleFloat(32, 547), 0.0f);
+        assertEquals(0.0f, band.getSampleFloat(3000, 4000), 0.0f);
     }
 
     @Test
@@ -221,12 +221,12 @@ public class RapidEyeL1ReaderTest {
         assertEquals(3017, band.getRasterWidth());
         assertEquals(4002, band.getRasterHeight());
 
-        assertEquals(28.25f, band.getSampleFloat(0, 0), 2);
-        assertEquals(22.64f, band.getSampleFloat(22, 20), 2);
-        assertEquals(40.01f, band.getSampleFloat(123, 3221), 2);
-        assertEquals(39.399998f, band.getSampleFloat(246, 134), 2);
-        assertEquals(31.38f, band.getSampleFloat(435, 3543), 2);
-        assertEquals(17.96f, band.getSampleFloat(1000, 3245), 2);
+        assertEquals(24.59f, band.getSampleFloat(0, 0), 2);
+        assertEquals(27.0f, band.getSampleFloat(22, 20), 2);
+        assertEquals(30.97f, band.getSampleFloat(123, 3221), 2);
+        assertEquals(42.75f, band.getSampleFloat(246, 134), 2);
+        assertEquals(25.05f, band.getSampleFloat(435, 3543), 2);
+        assertEquals(81.369995f, band.getSampleFloat(1000, 3245), 2);
     }
 
     private static ProductReader buildProductReader() {
