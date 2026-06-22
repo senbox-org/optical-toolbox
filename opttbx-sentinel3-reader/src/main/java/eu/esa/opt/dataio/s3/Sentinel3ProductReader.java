@@ -145,22 +145,19 @@ public class Sentinel3ProductReader extends AbstractProductReader {
                                                 int sourceStepX, int sourceStepY, Band destBand, int destOffsetX,
                                                 int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
                                                 ProgressMonitor pm) throws IOException {
-        final S3NetcdfReader s3Reader = ((AbstractProductFactory) factory).getBandCacheMap().get(destBand.getName());
+
+        final AbstractProductFactory productFactory = (AbstractProductFactory) factory;
+        final S3NetcdfReader s3Reader = productFactory.getBandCacheMap().get(destBand.getName());
         if (s3Reader == null) {
             throw new IOException("No cache reader registered for band '" + destBand.getName() + "'. " +
                     "The band may require a JAI source image that was not set up correctly.");
         }
 
-        final String cacheKey = getBandCacheKey(destBand);
+        final String cacheKey = productFactory.getBandCacheKey(destBand);
         s3Reader.readBandRasterData(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
                 sourceStepX, sourceStepY, cacheKey, destBand, destWidth, destHeight, destBuffer);
 
     }
-
-    protected String getBandCacheKey(Band destBand) {
-        return destBand.getName();
-    }
-
 
     @Override
     public void readTiePointGridRasterData(TiePointGrid tpg,
@@ -175,21 +172,21 @@ public class Sentinel3ProductReader extends AbstractProductReader {
             throw new IOException("No cache reader registered for tie-point grid '" + tpg.getName() + "'.");
         }
 
-        final int srcOffsetX = entry.dataOffsetX + destOffsetX;
-        final int srcOffsetY = entry.dataOffsetY + destOffsetY;
+        final int srcOffsetX = entry.dataOffsetX() + destOffsetX;
+        final int srcOffsetY = entry.dataOffsetY() + destOffsetY;
         final int[] offsets = new int[]{srcOffsetY, srcOffsetX};
         final int[] shapes = new int[]{destHeight, destWidth};
 
-        String cacheKey = entry.cacheKey;
+        String cacheKey = entry.cacheKey();
         final ProductData sourceData;
-        final int sourceType = entry.sourceBand.getDataType();
+        final int sourceType = entry.sourceBand().getDataType();
 
         if (sourceType == destBuffer.getType()) {
-            entry.reader.readCacheData(cacheKey, offsets, shapes, new DataBuffer(destBuffer, offsets, shapes));
+            entry.reader().readCacheData(cacheKey, offsets, shapes, new DataBuffer(destBuffer, offsets, shapes));
             sourceData = destBuffer;
         } else {
             final DataBuffer intermediateBuffer = new DataBuffer(sourceType, offsets, shapes);
-            entry.reader.readCacheData(cacheKey, offsets, shapes, intermediateBuffer);
+            entry.reader().readCacheData(cacheKey, offsets, shapes, intermediateBuffer);
             sourceData = intermediateBuffer.getData();
         }
 
@@ -197,7 +194,7 @@ public class Sentinel3ProductReader extends AbstractProductReader {
         final int count = destWidth * destHeight;
         for (int ii = 0; ii < count; ii++) {
             final double rawValue = sourceData.getElemDoubleAt(ii);
-            final double geoValue = S3Util.getGeophysicalValue(entry.sourceBand, rawValue);
+            final double geoValue = S3Util.getGeophysicalValue(entry.sourceBand(), rawValue);
             destBuffer.setElemDoubleAt(ii, geoValue);
         }
     }
