@@ -65,13 +65,13 @@ public class AbstractProductFactoryTest {
                 reader, band, 5, 10, 100, 200, "my_cache_key"
         );
 
-        assertSame("reader", reader, entry.reader);
-        assertSame("sourceBand", band, entry.sourceBand);
-        assertEquals("dataOffsetX", 5, entry.dataOffsetX);
-        assertEquals("dataOffsetY", 10, entry.dataOffsetY);
-        assertEquals("gridWidth", 100, entry.gridWidth);
-        assertEquals("gridHeight", 200, entry.gridHeight);
-        assertEquals("cacheKey", "my_cache_key", entry.cacheKey);
+        assertSame("reader", reader, entry.reader());
+        assertSame("sourceBand", band, entry.sourceBand());
+        assertEquals("dataOffsetX", 5, entry.dataOffsetX());
+        assertEquals("dataOffsetY", 10, entry.dataOffsetY());
+        assertEquals("gridWidth", 100, entry.gridWidth());
+        assertEquals("gridHeight", 200, entry.gridHeight());
+        assertEquals("cacheKey", "my_cache_key", entry.cacheKey());
     }
 
     @Test(expected = UnsupportedOperationException.class)

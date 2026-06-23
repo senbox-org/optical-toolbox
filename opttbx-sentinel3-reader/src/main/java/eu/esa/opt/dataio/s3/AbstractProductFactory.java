@@ -50,11 +50,7 @@ import static eu.esa.opt.dataio.s3.util.S3Util.getFileFromVirtualDir;
 
 public abstract class AbstractProductFactory implements ProductFactory {
 
-    private final static Color[] uncertainty_colors = {
-            new Color(0, 0, 0),
-            new Color(255, 255, 255)
-    };
-    private final List<Product> openProductList = new ArrayList<>();
+    protected final List<Product> openProductList = new ArrayList<>();
     private final Sentinel3ProductReader productReader;
     private final Logger logger;
     private final List<String> separatingDimensions;
@@ -62,7 +58,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
     private volatile Manifest manifest;
     private final ColorProvider colorProvider;
 
-    private final Map<String, S3NetcdfReader> bandCacheMap = new HashMap<>();
+    protected final Map<String, S3NetcdfReader> bandCacheMap = new HashMap<>();
     private final Map<String, TpgEntry> tpgReaderMap = new HashMap<>();
 
 
@@ -77,12 +73,26 @@ public abstract class AbstractProductFactory implements ProductFactory {
         return ProductUtils.copyBand(sourceBand.getName(), sourceBand.getProduct(), targetProduct, copySourceImage);
     }
 
-    /** Returns an unmodifiable view of the band → reader mapping. */
+    protected static Band copyBand(Band sourceBand, Product targetProduct, String postfix, boolean copySourceImage) {
+        final String sourceBandName = sourceBand.getName();
+        final String targetBandName = sourceBandName + "_" + postfix;
+        return ProductUtils.copyBand(sourceBandName, sourceBand.getProduct(), targetBandName, targetProduct, copySourceImage);
+    }
+
+    /**
+     * Returns an unmodifiable view of the band → reader mapping.
+     */
     protected Map<String, S3NetcdfReader> getBandCacheMap() {
         return Collections.unmodifiableMap(bandCacheMap);
     }
 
-    /** Returns an unmodifiable view of the TPG → cache-entry mapping. */
+    public String getBandCacheKey(Band destBand) {
+        return destBand.getName();
+    }
+
+    /**
+     * Returns an unmodifiable view of the TPG → cache-entry mapping.
+     */
     Map<String, TpgEntry> getTpgReaderMap() {
         return Collections.unmodifiableMap(tpgReaderMap);
     }
@@ -92,8 +102,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         final InputStream manifestInputStream = getManifestInputStream(virtualDir);
         manifest = createManifest(manifestInputStream);
 
-        final List<String> fileNames = getFileNames(manifest);
-        final List<String> ensuredNames = removeLeadingSlash(fileNames);
+        final List<String> ensuredNames = removeLeadingSlash(getFileNames(manifest));
 
         // @todo 1 tb/** replace this logic with something faster 2025-02-06
         readProducts(ensuredNames, virtualDir);
@@ -299,6 +308,10 @@ public abstract class AbstractProductFactory implements ProductFactory {
         return copyBand(sourceBand, targetProduct, sourceBand.isSourceImageSet());
     }
 
+    protected Band addBand(Band sourceBand, Product targetProduct, String postfix) {
+        return copyBand(sourceBand, targetProduct, postfix, sourceBand.isSourceImageSet());
+    }
+
     // package access for testing only tb 2025-04-08
     static ColorPaletteDef getCounterWaterColorPalette() {
         final ColorPaletteDef.Point[] points = new ColorPaletteDef.Point[8];
@@ -309,7 +322,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         points[4] = new ColorPaletteDef.Point(4.0, new Color(130, 160, 95));
         points[5] = new ColorPaletteDef.Point(5.0, new Color(95, 160, 120));
         points[6] = new ColorPaletteDef.Point(6.0, new Color(25, 140, 180));
-        points[7] = new ColorPaletteDef.Point(7.0, new Color(0,0,0));
+        points[7] = new ColorPaletteDef.Point(7.0, new Color(0, 0, 0));
         return new ColorPaletteDef(points);
     }
 
@@ -592,25 +605,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
 
-    static class TpgEntry {
-        final S3NetcdfReader reader;
-        final Band sourceBand;
-        final int dataOffsetX;
-        final int dataOffsetY;
-        final int gridWidth;
-        final int gridHeight;
-        final String cacheKey;
-
-
-        TpgEntry(S3NetcdfReader reader, Band sourceBand, int dataOffsetX, int dataOffsetY,
-                 int gridWidth, int gridHeight, String cacheKey) {
-            this.reader = reader;
-            this.sourceBand = sourceBand;
-            this.dataOffsetX = dataOffsetX;
-            this.dataOffsetY = dataOffsetY;
-            this.gridWidth = gridWidth;
-            this.gridHeight = gridHeight;
-            this.cacheKey = cacheKey;
-        }
+    record TpgEntry(S3NetcdfReader reader, Band sourceBand, int dataOffsetX, int dataOffsetY, int gridWidth,
+                    int gridHeight, String cacheKey) {
     }
 }

@@ -4,6 +4,7 @@ import eu.esa.snap.core.dataio.cache.DataBuffer;
 import eu.esa.snap.core.dataio.cache.ProductCache;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.ProductData;
+import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
 
@@ -41,6 +42,10 @@ public final class S3CachedGeoDataUtil {
 
     public static double[] readCachedGeophysicalBandAsDouble(S3CacheDataReader cacheReader, Band band) throws IOException {
         final String cacheKey = band.getName();
+        return readCachedGeophysicalBandAsDouble(cacheReader, band, cacheKey);
+    }
+
+    public static double @NonNull [] readCachedGeophysicalBandAsDouble(S3CacheDataReader cacheReader, Band band, String cacheKey) throws IOException {
         final int width = band.getRasterWidth();
         final int height = band.getRasterHeight();
         final int sourceDataType = band.getDataType();

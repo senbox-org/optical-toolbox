@@ -20,47 +20,72 @@ import eu.esa.opt.dataio.s3.Sentinel3ProductReader;
 import eu.esa.opt.dataio.s3.util.S3CachedGeoDataUtil;
 import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import eu.esa.opt.dataio.s3.util.S3Util;
-import org.esa.snap.core.dataio.geocoding.ComponentFactory;
-import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
-import org.esa.snap.core.dataio.geocoding.ForwardCoding;
-import org.esa.snap.core.dataio.geocoding.GeoChecks;
-import org.esa.snap.core.dataio.geocoding.GeoRaster;
-import org.esa.snap.core.dataio.geocoding.InverseCoding;
+import org.apache.commons.lang3.StringUtils;
+import org.esa.snap.core.dataio.ProductReader;
+import org.esa.snap.core.dataio.geocoding.*;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.RasterDataNode;
+import org.jspecify.annotations.Nullable;
 
+import javax.print.attribute.standard.MediaSize;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SlstrWstProductFactory extends SlstrSstProductFactory {
 
     private static final short[] RESOLUTIONS = new short[]{1000, 1000};
     private static final double RESOLUTION_IN_KM = 1.0;
-    private final static String SYSPROP_SLSTR_WST_PIXEL_INVERSE = "opttbx.reader.slstr.wst.pixelGeoCoding.inverse";
+    private static final String SYSPROP_SLSTR_WST_PIXEL_INVERSE = "opttbx.reader.slstr.wst.pixelGeoCoding.inverse";
+    private static final String NADIR = "NADIR";
+    private static final String DUAL = "DUAL";
+    private final HashMap<String, ComponentGeoCoding> geoCodings;
 
     public SlstrWstProductFactory(Sentinel3ProductReader productReader) {
         super(productReader);
+
+        geoCodings = new HashMap<>();
     }
 
     @Override
     protected void setGeoCoding(Product targetProduct) throws IOException {
-        final String lonVariableName = "lon";
-        final String latVariableName = "lat";
+        if (targetProduct.containsBand("lon_NADIR")) {
+            final ComponentGeoCoding nadirGeoCoding = createGeoCoding(targetProduct, "lon_NADIR", "lat_NADIR");
+            if (nadirGeoCoding != null) {
+                geoCodings.put(NADIR, nadirGeoCoding);
+                targetProduct.setSceneGeoCoding(nadirGeoCoding);
+            }
+            final ComponentGeoCoding dualGeoCoding = createGeoCoding(targetProduct, "lon_DUAL", "lat_DUAL");
+            if (dualGeoCoding != null) {
+                geoCodings.put(DUAL, dualGeoCoding);
+            }
+        } else {
+            final ComponentGeoCoding geoCoding = createGeoCoding(targetProduct, "lon", "lat");
+            if (geoCoding == null) {
+                return;
+            }
+
+            targetProduct.setSceneGeoCoding(geoCoding);
+        }
+    }
+
+    private @Nullable ComponentGeoCoding createGeoCoding(Product targetProduct, String lonVariableName, String latVariableName) throws IOException {
         final Band lonBand = targetProduct.getBand(lonVariableName);
         final Band latBand = targetProduct.getBand(latVariableName);
         if (lonBand == null || latBand == null) {
             // no way to create a geocoding tb 2020-01-24
-            return;
+            return null;
         }
 
         final S3NetcdfReader readerLon = getBandCacheMap().get(lonBand.getName());
         final S3NetcdfReader readerLat = getBandCacheMap().get(latBand.getName());
 
-        final double[] longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLon, lonBand);
-        final double[] latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLat, latBand);
+        final double[] longitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLon, lonBand, getBandCacheKey(lonBand));
+        final double[] latitudes = S3CachedGeoDataUtil.readCachedGeophysicalBandAsDouble(readerLat, latBand, getBandCacheKey(latBand));
 
         final GeoRaster geoRaster = new GeoRaster(longitudes, latitudes, lonVariableName, latVariableName,
-                                                  targetProduct.getSceneRasterWidth(), targetProduct.getSceneRasterHeight(), RESOLUTION_IN_KM);
+                lonBand.getRasterWidth(), lonBand.getRasterHeight(), RESOLUTION_IN_KM);
 
         final String[] keys = S3Util.getForwardAndInverseKeys_pixelCoding(SYSPROP_SLSTR_WST_PIXEL_INVERSE);
         final ForwardCoding forward = ComponentFactory.getForward(keys[0]);
@@ -68,13 +93,58 @@ public class SlstrWstProductFactory extends SlstrSstProductFactory {
 
         final ComponentGeoCoding geoCoding = new ComponentGeoCoding(geoRaster, forward, inverse, GeoChecks.POLES);
         geoCoding.initialize();
+        return geoCoding;
+    }
 
-        targetProduct.setSceneGeoCoding(geoCoding);
+    @Override
+    protected void addDataNodes(Product masterProduct, Product targetProduct) throws IOException {
+        final String masterProductName = masterProduct.getName();
+        String prefix = getBaseline004Prefix(masterProductName);
+        if (StringUtils.isEmpty(prefix)) {
+            // all product earlier than baseline 004 2026-06-23 tb
+            super.addDataNodes(masterProduct, targetProduct);
+            return;
+        }
+
+        for (final Product sourceProduct : openProductList) {
+            prefix = getBaseline004Prefix(sourceProduct.getName());
+            final Map<String, String> mapping = new HashMap<>();
+            for (final Band sourceBand : sourceProduct.getBands()) {
+                final RasterDataNode targetNode = addBand(sourceBand, targetProduct, prefix);
+
+                if (targetNode != null) {
+                    mapping.put(sourceBand.getName(), targetNode.getName());
+                }
+                final ProductReader sourceReader = sourceProduct.getProductReader();
+                if (sourceReader instanceof S3NetcdfReader && !sourceBand.isSourceImageSet()) {
+                    bandCacheMap.put(targetNode.getName(), (S3NetcdfReader) sourceReader);
+                }
+            }
+            copyMasks(sourceProduct, targetProduct, mapping);
+        }
     }
 
     @Override
     protected void setAutoGrouping(Product[] sourceProducts, Product targetProduct) {
-        targetProduct.setAutoGrouping("brightness_temperature:nedt");
+        setAutoGrouping(targetProduct);
+    }
+
+    @Override
+    public String getBandCacheKey(Band destBand) {
+        final String destBandName = destBand.getName();
+        if (destBandName.contains(NADIR)) {
+            final int index = destBandName.indexOf(NADIR);
+            return destBandName.substring(0, index - 1);
+        } else if (destBandName.contains(DUAL)) {
+            final int index = destBandName.indexOf(DUAL);
+            return destBandName.substring(0, index - 1);
+        } else {
+            return destBandName;
+        }
+    }
+
+    static void setAutoGrouping(Product targetProduct) {
+        targetProduct.setAutoGrouping("NADIR:DUAL:brightness_temperature:nedt");
     }
 
     @Override
@@ -126,11 +196,28 @@ public class SlstrWstProductFactory extends SlstrSstProductFactory {
 
     @Override
     protected void setBandGeoCodings(Product product) {
-        // this is intended - we do not have band geo-codings for this product type tb 2020-04-20
+        for (Band band : product.getBands()) {
+            final String bandName = band.getName();
+            if (bandName.contains(NADIR)) {
+                band.setGeoCoding(geoCodings.get(NADIR));
+            } else if (bandName.contains(DUAL)) {
+                band.setGeoCoding(geoCodings.get(DUAL));
+            }
+        }
     }
 
     @Override
     protected void setTimeCoding(Product targetProduct, VirtualDir virtualDir) throws IOException {
         // empty by design - prevents the SlstrSstProductFactory implementation from being called tb 2021-01-19
+    }
+
+    // package access for testing only tb 2026-06-22
+    static String getBaseline004Prefix(String productName) {
+        if (productName.contains(NADIR)) {
+            return NADIR;
+        } else if (productName.contains(DUAL)) {
+            return DUAL;
+        }
+        return null;
     }
 }

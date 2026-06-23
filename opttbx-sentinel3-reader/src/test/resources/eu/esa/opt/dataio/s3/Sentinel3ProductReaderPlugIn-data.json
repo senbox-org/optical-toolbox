@@ -79,6 +79,11 @@
       "description": "S3A_SL_2_WST"
     },
     {
+      "id": "S3B_SL_2_WST____20260623T075304",
+      "relativePath": "sensors_platforms/SENTINEL-3/slstr/L2/S3B_SL_2_WST____20260623T075304_20260623T075604_20260623T093029_0179_121_263_3240_MAR_O_NR_004.SEN3.zip",
+      "description": "S3A_SL_2_WST baseline version 004"
+    },
+    {
       "id": "S3B_SL_2_FRP____20240325T213812",
       "relativePath": "sensors_platforms/SENTINEL-3/slstr/L2/S3B_SL_2_FRP____20240325T213812_20240325T214112_20240327T003545_0179_091_129_0720_PS2_O_NT_004.SEN3/xfdumanifest.xml",
       "description": "S3B_SL2_FRP v4"
