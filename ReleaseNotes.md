@@ -6,6 +6,7 @@ The release notes are provided on the STEP website at https://step.esa.int/main/
 # New in SNAP 14.0.0
     [SNAP-4215] Add support for Sentinel‑3 SL_2_WST product BV 004
     [SNAP-4152] Re-organise S3 reader DDDB 
+    [SNAP-4200] Implement ReaderCache in Sentinel 3 readers
     [SNAP-1641] Wrong computation of water reflectance from atmosphere path reflectance
 
 # New in SNAP 13.0.2
