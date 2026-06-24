@@ -143,7 +143,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -181,7 +181,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -219,7 +219,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -257,7 +257,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -295,7 +295,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -333,7 +333,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -371,7 +371,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -409,7 +409,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -447,7 +447,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -485,7 +485,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -523,7 +523,7 @@
           {
             "x": 1266,
             "y": 1761,
-            "value": "NaN"
+            "value": 0.0
           }
         ]
       },
@@ -720,8 +720,8 @@
       {
         "name": "view_zenith_mean",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -758,8 +758,8 @@
       {
         "name": "view_azimuth_mean",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -796,8 +796,8 @@
       {
         "name": "sun_zenith",
         "description": "Solar zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -834,8 +834,8 @@
       {
         "name": "sun_azimuth",
         "description": "Solar azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -872,8 +872,8 @@
       {
         "name": "view_zenith_B1",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -910,8 +910,8 @@
       {
         "name": "view_azimuth_B1",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -948,8 +948,8 @@
       {
         "name": "view_zenith_B2",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -986,8 +986,8 @@
       {
         "name": "view_azimuth_B2",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1024,8 +1024,8 @@
       {
         "name": "view_zenith_B3",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1062,8 +1062,8 @@
       {
         "name": "view_azimuth_B3",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1100,8 +1100,8 @@
       {
         "name": "view_zenith_B4",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1138,8 +1138,8 @@
       {
         "name": "view_azimuth_B4",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1176,8 +1176,8 @@
       {
         "name": "view_zenith_B5",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1214,8 +1214,8 @@
       {
         "name": "view_azimuth_B5",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1252,8 +1252,8 @@
       {
         "name": "view_zenith_B6",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1290,8 +1290,8 @@
       {
         "name": "view_azimuth_B6",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1328,8 +1328,8 @@
       {
         "name": "view_zenith_B7",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1366,8 +1366,8 @@
       {
         "name": "view_azimuth_B7",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1404,8 +1404,8 @@
       {
         "name": "view_zenith_B8",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1442,8 +1442,8 @@
       {
         "name": "view_azimuth_B8",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1480,8 +1480,8 @@
       {
         "name": "view_zenith_B8A",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1518,8 +1518,8 @@
       {
         "name": "view_azimuth_B8A",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1556,8 +1556,8 @@
       {
         "name": "view_zenith_B9",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1594,8 +1594,8 @@
       {
         "name": "view_azimuth_B9",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1632,8 +1632,8 @@
       {
         "name": "view_zenith_B10",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1670,8 +1670,8 @@
       {
         "name": "view_azimuth_B10",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1708,8 +1708,8 @@
       {
         "name": "view_zenith_B11",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1746,8 +1746,8 @@
       {
         "name": "view_azimuth_B11",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1784,8 +1784,8 @@
       {
         "name": "view_zenith_B12",
         "description": "Viewing incidence zenith angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
@@ -1822,8 +1822,8 @@
       {
         "name": "view_azimuth_B12",
         "description": "Viewing incidence azimuth angle",
-        "bandWidth": 22,
-        "bandHeight": 22,
+        "bandWidth": 23,
+        "bandHeight": 23,
         "geophysicalUnit": "deg",
         "noDataValue": "NaN",
         "noDataValueUsed": "true",
