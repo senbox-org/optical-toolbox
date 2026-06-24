@@ -28,7 +28,6 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.RasterDataNode;
 import org.jspecify.annotations.Nullable;
 
-import javax.print.attribute.standard.MediaSize;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
