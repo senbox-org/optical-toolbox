@@ -29,12 +29,4 @@ public class MerisLevel2ProductReader extends Sentinel3ProductReader {
         }
         return createProduct();
     }
-
-    public String getBandCacheKey(Band band) {
-        String name = band.getName();
-        if (name.equals("W_IWV") || name.equals("L_IWV")) {
-            return "IWV";
-        }
-        return name;
-    }
 }

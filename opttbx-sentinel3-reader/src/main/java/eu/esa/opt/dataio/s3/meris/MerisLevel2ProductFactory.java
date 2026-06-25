@@ -71,6 +71,15 @@ public class MerisLevel2ProductFactory extends MerisProductFactory {
     }
 
     @Override
+    public String getBandCacheKey(Band band) {
+        String name = band.getName();
+        if (name.equals("W_IWV") || name.equals("L_IWV")) {
+            return "IWV";
+        }
+        return name;
+    }
+
+    @Override
     protected void setAutoGrouping(Product[] sourceProducts, Product targetProduct) {
         targetProduct.setAutoGrouping("M*_rho_toa:M*_rho_toa_err:M*_rho_top:M*_rho_top_err:M*_rho_w:M*_rho_w_err:" +
                                       "atmospheric_temperature_profile:lambda0:FWHM:solar_flux");
