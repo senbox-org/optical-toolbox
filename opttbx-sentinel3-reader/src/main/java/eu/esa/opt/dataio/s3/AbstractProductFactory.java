@@ -21,6 +21,7 @@ import com.bc.ceres.multilevel.support.DefaultMultiLevelSource;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.manifest.XfduManifest;
 import eu.esa.opt.dataio.s3.util.ColorProvider;
+import eu.esa.opt.dataio.s3.util.S3NetcdfReader;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.datamodel.*;
@@ -60,13 +61,15 @@ public abstract class AbstractProductFactory implements ProductFactory {
             new Color(255, 255, 255)
     };
     private final Map<String, MultiLevelImage> tpgImageMap;
-    private final List<Product> openProductList = new ArrayList<>();
+    protected final List<Product> openProductList = new ArrayList<>();
     private final Sentinel3ProductReader productReader;
     private final Logger logger;
     private final List<String> separatingDimensions;
 
     private volatile Manifest manifest;
     private final ColorProvider colorProvider;
+
+    protected final Map<String, S3NetcdfReader> bandCacheMap = new HashMap<>();
 
     public AbstractProductFactory(Sentinel3ProductReader productReader) {
         this.productReader = productReader;
@@ -80,13 +83,18 @@ public abstract class AbstractProductFactory implements ProductFactory {
         return ProductUtils.copyBand(sourceBand.getName(), sourceBand.getProduct(), targetProduct, copySourceImage);
     }
 
+    protected static Band copyBand(Band sourceBand, Product targetProduct, String postfix, boolean copySourceImage) {
+        final String sourceBandName = sourceBand.getName();
+        final String targetBandName = sourceBandName + "_" + postfix;
+        return ProductUtils.copyBand(sourceBandName, sourceBand.getProduct(), targetBandName, targetProduct, copySourceImage);
+    }
+
     @Override
     public final Product createProduct(VirtualDir virtualDir) throws IOException {
         final InputStream manifestInputStream = getManifestInputStream(virtualDir);
         manifest = createManifest(manifestInputStream);
 
-        final List<String> fileNames = getFileNames(manifest);
-        final List<String> ensuredNames = removeLeadingSlash(fileNames);
+        final List<String> ensuredNames = removeLeadingSlash(getFileNames(manifest));
 
         // @todo 1 tb/** replace this logic with something faster 2025-02-06
         readProducts(ensuredNames, virtualDir);
@@ -140,6 +148,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     @Override
     public void dispose() throws IOException {
+        bandCacheMap.clear();
+
         openProductList.forEach(Product::dispose);
         openProductList.clear();
     }
@@ -302,6 +312,10 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     protected Band addBand(Band sourceBand, Product targetProduct) {
         return copyBand(sourceBand, targetProduct, true);
+    }
+
+    protected Band addBand(Band sourceBand, Product targetProduct, String postfix) {
+        return copyBand(sourceBand, targetProduct, postfix, sourceBand.isSourceImageSet());
     }
 
     // package access for testing only tb 2025-04-08
