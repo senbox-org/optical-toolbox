@@ -925,12 +925,42 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                         geoCoding = buildGeoCoding(sceneDescription, mapCRS, pixelSize, pixelSize,
                                                    defaultBandSize, bandBounds);
                         band.setGeoCoding(geoCoding);
-                        GDALMultiLevelSource multiLevelSource = new GDALMultiLevelSource(dataBufferType, bandBounds,
-                                                                            i,
-                                                                            resolutionCount, band.getGeoCoding(), band.getNoDataValue(),
-                                                                            maskPath.getLocalFile());
+                        Path maskLocalFile = maskPath.getLocalFile();
+                        Dimension maskImageSize = GDALMultiLevelSource.readBandImageSize(maskLocalFile, i);
+                        boolean resampleDetectorFootprint =
+                                maskInfo.getMainType().contains("MSK_DETFOO")
+                                        && (maskImageSize.width != defaultBandSize.width || maskImageSize.height != defaultBandSize.height);
+
+                        Rectangle maskBounds = resampleDetectorFootprint
+                                ? scaleBounds(bandBounds, maskImageSize, defaultBandSize)
+                                : bandBounds;
+
+                        GDALMultiLevelSource multiLevelSource = new GDALMultiLevelSource(dataBufferType, maskBounds,
+                                i,
+                                resolutionCount, band.getGeoCoding(), band.getNoDataValue(),
+                                maskLocalFile);
                         ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
-                        band.setSourceImage(new DefaultMultiLevelImage(multiLevelSource, imageLayout));
+                        MultiLevelImage sourceImage = new DefaultMultiLevelImage(multiLevelSource, imageLayout);
+
+                        if (resampleDetectorFootprint) {
+                            String physicalBandName = spectralInfo.getPhysicalBand();
+                            Band targetBand = product.getBand(physicalBandName);
+                            if (targetBand != null) {
+                                ImageLayout resampledLayout = new ImageLayout();
+                                RenderingHints renderingHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, resampledLayout);
+                                float[] scalings = new float[]{
+                                        targetBand.getRasterWidth() / (float) sourceImage.getWidth(),
+                                        targetBand.getRasterHeight() / (float) sourceImage.getHeight()
+                                };
+
+                                sourceImage = SourceImageScaler.scaleMultiLevelImage(targetBand.getSourceImage(), sourceImage,
+                                        scalings, null, renderingHints,
+                                        band.getNoDataValue(),
+                                        Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+                            }
+                        }
+
+                        band.setSourceImage(sourceImage);
                         band.setNoDataValueUsed(false);
                         if(maskInfo.isMultiBand()) {
                             band.setScalingFactor(1);
@@ -1735,5 +1765,17 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                 + "detector_footprint-B07:" + "detector_footprint-B08:" + "detector_footprint-B8A:"
                 + "detector_footprint-B09:" + "detector_footprint-B10:" + "detector_footprint-B11:"
                 + "detector_footprint-B12:" + "qualit_mask";
+    }
+
+    private static Rectangle scaleBounds(Rectangle targetBounds, Dimension sourceSize, Dimension targetSize) {
+        float scaleX = sourceSize.width / (float) targetSize.width;
+        float scaleY = sourceSize.height / (float) targetSize.height;
+
+        int x = (int) Math.floor(targetBounds.x * scaleX);
+        int y = (int) Math.floor(targetBounds.y * scaleY);
+        int maxX = (int) Math.ceil((targetBounds.x + targetBounds.width) * scaleX);
+        int maxY = (int) Math.ceil((targetBounds.y + targetBounds.height) * scaleY);
+
+        return new Rectangle(x, y, Math.max(1, maxX - x), Math.max(1, maxY - y));
     }
 }
