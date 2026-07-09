@@ -87,7 +87,7 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4222")
     public void testGetVariableDescriptors() throws IOException {
         VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("geo_coordinates.nc", "OL_1_EFR", "004");
 
@@ -105,6 +105,7 @@ public class DDDBTest {
         assertEquals(6, variableDescriptors.length);
         assertEquals("FWHM", variableDescriptors[0].getName());
         assertEquals("int16", variableDescriptors[1].getDataType());
+        assertEquals("frame_offset", variableDescriptors[2].getName());
         assertEquals('v', variableDescriptors[2].getType());
         assertEquals("nm", variableDescriptors[3].getUnits());
         assertEquals("Relative spectral covariance matrix", variableDescriptors[4].getDescription());
@@ -162,6 +163,18 @@ public class DDDBTest {
         variableDescriptors = dddb.getVariableDescriptors("time_coordinates.nc", "OL_1_EFR", null);
         assertEquals(1, variableDescriptors.length);
         assertEquals("Elapsed time since 01 Jan 2000 0h", variableDescriptors[0].getDescription());
+    }
+
+    @Test
+    @STTM("SNAP-4222")
+    public void testGetVariableDescriptors_olciL1Baseline001FrameOffsetIsSpecial() throws IOException {
+        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("instrument_data.nc", "OL_1_EFR", "001");
+
+        assertEquals(6, variableDescriptors.length);
+        assertEquals("frame_offset", variableDescriptors[2].getName());
+        assertEquals('s', variableDescriptors[2].getType());
+        assertEquals(3700, variableDescriptors[2].getWidth());
+        assertEquals(1, variableDescriptors[2].getHeight());
     }
 
     @Test

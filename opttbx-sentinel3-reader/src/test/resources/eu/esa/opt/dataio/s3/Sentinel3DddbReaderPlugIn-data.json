@@ -36,6 +36,11 @@
       "description": "S3B_OL_1_EFR zipped, processed by EUMETSAT"
     },
     {
+      "id": "S3A_OL_1_EFR____20160310T014756",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L1/S3A_OL_1_EFR____20160310T014756_20160310T015056_20160404T062452_0179_001_345_3060_LN1_O_NT_001.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_1_ERR v1 baseline 001"
+    },
+    {
       "id": "S3A_OL_2_WRR____20070910T095130",
       "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_WRR____20070910T095130_20070910T095442_20140610T110535_0192_000_000______MAR_D_NR____.SEN3/xfdumanifest.xml",
       "description": "S3A_OL_2_WRR v1"
