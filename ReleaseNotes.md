@@ -8,6 +8,7 @@ The release notes are provided on the STEP website at https://step.esa.int/main/
     [SNAP-4152] Re-organise S3 reader DDDB 
     [SNAP-4200] Implement ReaderCache in Sentinel 3 readers
     [SNAP-1641] Wrong computation of water reflectance from atmosphere path reflectance
+    [SNAP-4222] S3 OLCI L1 Baseline 001 fails to open
 
 # New in SNAP 13.0.2
     [SNAP-4182] Incorrect TiePointGeoCoding for OLCI data
