@@ -58,7 +58,5 @@
 
     <mapID target="l1cSynTool" url="l1csyn/Intro.html"/>
     <mapID target="l1cSynTool_Tool" url="l1csyn/ToolDescription.html"/>
-    <mapID target="l1cSynTool_MisrAlgo" url="l1csyn/MisrAlgo.html"/>
-    <mapID target="l1cSynTool_MisrFile" url="l1csyn/MisrFile.html"/>
     <mapID target="l1cSynTool_Cmd" url="l1csyn/CommandLine.html"/>
 </map>
