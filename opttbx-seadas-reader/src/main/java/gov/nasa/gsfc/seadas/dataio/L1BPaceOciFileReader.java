@@ -326,7 +326,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     // package access for testing only tb 2026-04-28
     static @NonNull String getVariableName(String description, float wavelength) {
-        return description + "_" + wavelength;
+        return description + "_" + Math.round(wavelength);
     }
 
     @Override
