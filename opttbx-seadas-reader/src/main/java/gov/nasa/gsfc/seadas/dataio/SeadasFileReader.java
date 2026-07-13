@@ -106,7 +106,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
         globalAttributes = ncFile.getGlobalAttributes();
         isHeadless = GraphicsEnvironment.isHeadless();
 
-        wantsCaching = false;
+        wantsCaching = true;
         applyScaling = true;
     }
 
