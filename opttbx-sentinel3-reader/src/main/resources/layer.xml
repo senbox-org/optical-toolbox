@@ -13,6 +13,15 @@
                 <attr name="helpId" stringvalue="importSentinel3Product"/>
                 <attr name="ShortDescription" stringvalue="Import a Sentinel-3 data product."/>
             </file>
+            <file name="eu-esa-opt-dataio-s3-ImportSentinel3DddbProduct.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
+                <attr name="displayName" stringvalue="Sentinel-3 OLCI DDDB"/>
+                <attr name="formatName" stringvalue="Sen3_DDDB"/>
+                <attr name="useAllFileFilter" boolvalue="true"/>
+                <attr name="helpId" stringvalue="importSentinel3Product"/>
+                <attr name="ShortDescription" stringvalue="Import a Sentinel-3 OLCI product using the DDDB reader."/>
+            </file>
             <file name="eu-esa-opt-dataio-s3-slstr-ImportSlstrL1B500mProduct.instance">
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
                 <attr name="delegate" methodvalue="org.esa.snap.rcp.actions.file.ImportProductAction.create"/>
@@ -98,6 +107,11 @@
                             <attr name="position" intvalue="2"/>
                             <attr name="originalFile"
                                   stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-slstr-ImportSlstrL1B1kmProduct.instance"/>
+                        </file>
+                        <file name="eu-esa-opt-dataio-s3-ImportSentinel3DddbProduct.shadow">
+                            <attr name="position" intvalue="4"/>
+                            <attr name="originalFile"
+                                  stringvalue="Actions/Readers/eu-esa-opt-dataio-s3-ImportSentinel3DddbProduct.instance"/>
                         </file>
                     </folder>
 
