@@ -38,6 +38,7 @@ import java.util.prefs.Preferences;
  */
 public class CCILandCoverModelDescriptor extends AbstractLandCoverModelDescriptor {
     private static final String NAME = "CCILandCover-2015";
+    private static final String DEFAULT_REMOTE_PATH = "https://step.esa.int/auxdata/landcover/cci/";
 
     private static final File INSTALL_DIR = new File(Settings.instance().getAuxDataFolder().getAbsolutePath(),
                                                      "LandCover" + File.separator + NAME);
@@ -48,10 +49,8 @@ public class CCILandCoverModelDescriptor extends AbstractLandCoverModelDescripto
     public final static String CCI_LAND_COVER_REMOTE_PATH = "cci.land.cover.remotePath";
 
     public CCILandCoverModelDescriptor() {
-        // SIITBX-448: CCI LandCover Data - location changed
-        //remotePath = "https://storage.googleapis.com/cci-lc-v207/";
         final Preferences preferences = Config.instance("opttbx").load().preferences();
-        remotePath = preferences.get(CCI_LAND_COVER_REMOTE_PATH, "ftp://geo10.elie.ucl.ac.be/CCI/LandCover/");
+        remotePath = preferences.get(CCI_LAND_COVER_REMOTE_PATH, DEFAULT_REMOTE_PATH);
 
         name = NAME;
         NO_DATA_VALUE = 0;
