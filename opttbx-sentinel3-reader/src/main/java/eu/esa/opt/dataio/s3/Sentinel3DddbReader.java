@@ -765,7 +765,11 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         synchronized (dataMap) {
             fullDataArray = dataMap.get(name);
             if (fullDataArray == null) {
-                fullDataArray = variable.read();
+                // Use the cache provider's lock so direct reads cannot overlap with
+                // cached reads of this product's NetCDF variables.
+                synchronized (cacheDataProvider) {
+                    fullDataArray = variable.read();
+                }
 
                 final ArrayConverter converter = getArrayConverter(name);
                 fullDataArray = converter.convert(fullDataArray);
