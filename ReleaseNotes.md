@@ -4,12 +4,15 @@ Optical Toolbox Release Notes
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
 # New in SNAP 14.0.0
+    [SNAP-4227] Land cover remote url not reachable
+    [SNAP-4226] Locking issue in Sen3DddbReader
+    [SNAP-4224] Sentinel3DddbReader not showing up in menu
     [SNAP-4223] SNAP Online Help - Missing "MISR Algo" and "MISR File" files
+    [SNAP-4222] S3 OLCI L1 Baseline 001 fails to open
     [SNAP-4215] Add support for Sentinel‑3 SL_2_WST product BV 004
     [SNAP-4152] Re-organise S3 reader DDDB 
     [SNAP-4200] Implement ReaderCache in Sentinel 3 readers
     [SNAP-1641] Wrong computation of water reflectance from atmosphere path reflectance
-    [SNAP-4222] S3 OLCI L1 Baseline 001 fails to open
 
 # New in SNAP 13.0.2
     [SNAP-4182] Incorrect TiePointGeoCoding for OLCI data
