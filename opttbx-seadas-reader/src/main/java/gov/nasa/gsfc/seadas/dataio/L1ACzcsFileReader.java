@@ -110,6 +110,8 @@ public class L1ACzcsFileReader extends SeadasFileReader {
         if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
                 productType == SeadasProductReader.ProductType.Level2_CZCS ||
                 productType == SeadasProductReader.ProductType.Level2_Pace ||
+                productType == SeadasProductReader.ProductType.Level2_PaceSPEX ||
+                productType == SeadasProductReader.ProductType.Level2_PaceHARP2 ||
                 productType == SeadasProductReader.ProductType.Level2_PaceOCIS)
             mustFlipX = false;
 
