@@ -39,7 +39,6 @@ public class ReflectanceToRadianceUI extends BaseOperatorUI {
 
         initializeOperatorUI(operatorName, parameterMap);
         this.bindingContext = this.bindingContext == null ? new BindingContext(this.propertySet) : this.bindingContext;
-        this.propertySet.setDefaultValues();
         PropertyPane parametersPane = new PropertyPane(this.bindingContext);
         final JComponent panel = parametersPane.createPanel();
 

@@ -2,14 +2,7 @@ package eu.esa.opt.reflectance2radiance;
 
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.dataio.s2.S2BandConstants;
-import org.esa.snap.core.datamodel.Band;
-import org.esa.snap.core.datamodel.Mask;
-import org.esa.snap.core.datamodel.MetadataAttribute;
-import org.esa.snap.core.datamodel.MetadataElement;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.ProductData;
-import org.esa.snap.core.datamodel.ProductNodeGroup;
-import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
@@ -27,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Reflectance-to-radiance operator
@@ -213,9 +207,9 @@ public class ReflectanceToRadianceOp extends Operator {
         ProductUtils.copyGeoCoding(sourceProduct, targetProduct);
         ProductUtils.copyFlagBands(sourceProduct, targetProduct, true);
         if (this.copyMasks) {
+            ProductUtils.copyVectorData(sourceProduct, targetProduct);
             copyMasks(sourceProduct, targetProduct, this.sourceBandNames);
         }
-        ProductUtils.copyOverlayMasks(sourceProduct, targetProduct);
 
         Band[] sourceBands = new Band[this.sourceBandNames.length];
         this.tiePointGrids = new HashMap<>();
@@ -254,6 +248,7 @@ public class ReflectanceToRadianceOp extends Operator {
                 this.tiePointGrids.put(sourceBand.getName(), new TiePointGrid("angles_" + sourceBand.getName(), sunZenithBandWidth, sunZenithBandHeight, 0, 0, sourceBandWidth, sourceBandHeight, tiePoints));
             }
         }
+        ProductUtils.copyOverlayMasks(sourceProduct, targetProduct);
 
         this.d2 = 1.0d / this.u;
         this.scale = 1.0d;
@@ -321,8 +316,10 @@ public class ReflectanceToRadianceOp extends Operator {
                 final Mask mask = sourceMaskGroup.get(i);
                 String maskName = mask.getName();
                 if (!targetProduct.getMaskGroup().contains(maskName)
-                    && StringUtils.endsWithIgnoreCase(maskName, bandNames)) {
-                    if (mask.getImageType().transferMask(mask, targetProduct) == null) {
+                    && Arrays.stream(bandNames).anyMatch(band -> belongsToSelectedBand(maskName, band))) {
+                    if (mask.getImageType() == Mask.VectorDataType.INSTANCE) {
+                        copyVectorMask(mask, targetProduct);
+                    } else if (mask.getImageType().transferMask(mask, targetProduct) == null) {
                         Mask targetMask = new Mask(maskName, mask.getRasterWidth(), mask.getRasterHeight(), mask.getImageType());
                         ProductUtils.copyRasterDataNodeProperties(mask, targetMask);
                         targetMask.setSourceImage(mask.getSourceImage());
@@ -335,10 +332,37 @@ public class ReflectanceToRadianceOp extends Operator {
             for (int i = 0; i < sourceMaskGroup.getNodeCount(); i++) {
                 final Mask mask = sourceMaskGroup.get(i);
                 if (!targetProduct.getMaskGroup().contains(mask.getName())) {
-                    mask.getImageType().transferMask(mask, targetProduct);
+                    if (mask.getImageType() == Mask.VectorDataType.INSTANCE) {
+                        copyVectorMask(mask, targetProduct);
+                    } else {
+                        mask.getImageType().transferMask(mask, targetProduct);
+                    }
                 }
             }
         }
+    }
+
+    private static void copyVectorMask(Mask sourceMask, Product targetProduct) {
+        VectorDataNode sourceVectorDataNode = Mask.VectorDataType.getVectorData(sourceMask);
+        if (sourceVectorDataNode == null) {
+            return;
+        }
+
+        VectorDataNode targetVectorDataNode = targetProduct.getVectorDataGroup().get(sourceVectorDataNode.getName());
+
+        if (targetVectorDataNode != null) {
+            targetProduct.addMask(sourceMask.getName(), targetVectorDataNode, sourceMask.getDescription(), sourceMask.getImageColor(), sourceMask.getImageTransparency());
+        }
+    }
+
+    private static boolean belongsToSelectedBand(String maskName, String bandName) {
+        String bandPattern = bandName.matches("B\\d")
+                ? "B0?" + bandName.substring(1)
+                : Pattern.quote(bandName);
+
+        return Pattern.compile("(?i)(?:^|[_-])" + bandPattern + "(?:[_-]|$)")
+                .matcher(maskName)
+                .find();
     }
 
     /**
