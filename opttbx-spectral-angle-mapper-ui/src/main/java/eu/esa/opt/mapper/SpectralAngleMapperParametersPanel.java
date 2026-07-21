@@ -9,6 +9,7 @@ import eu.esa.opt.mapper.common.SpectrumInput;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductNodeGroup;
+import org.esa.snap.graphbuilder.gpf.ui.OperatorUIUtils;
 import org.esa.snap.tango.TangoIcons;
 import org.esa.snap.ui.AppContext;
 import org.esa.snap.ui.tool.ToolButtonFactory;
@@ -28,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +63,6 @@ class SpectralAngleMapperParametersPanel extends JPanel {
     private String[] downsamplingMethodValues;
     private JLabel messageLabel;
 
-    private DefaultListModel<String> model;
     SpectralAngleMapperParametersPanel(SpectralAngleMapperForm samForm, AppContext appContext, SpectralAngleMapperFormModel samModel) {
         this.appContext = appContext;
         this.samModel = samModel;
@@ -85,6 +86,7 @@ class SpectralAngleMapperParametersPanel extends JPanel {
         this.formModel = new SAMSpectralFormModel(this.appContext, productAccessor);
         this.thresholdPanel = thresholdPanel;
         this.sourceProductAccessor = productAccessor;
+        restoreSpectrumClasses();
     }
 
     SAMSpectralFormModel getFormModel() {
@@ -93,6 +95,53 @@ class SpectralAngleMapperParametersPanel extends JPanel {
 
     JList<String> getSourceBandNames() {
         return this.sourceBandNames;
+    }
+
+    private void restoreSpectrumClasses() {
+        SpectrumInput[] spectra = samModel.getPropertySet()
+                .getProperty(SpectralAngleMapperFormModel.SPECTRA_PROPERTY)
+                .getValue();
+        SpectrumInput[] hiddenSpectra = samModel.getPropertySet()
+                .getProperty(SpectralAngleMapperFormModel.HIDDEN_SPECTRA_PROPERTY)
+                .getValue();
+
+        if (spectra == null || spectra.length == 0) {
+            return;
+        }
+
+        DefaultListModel<SpectrumInput> spectrumListModel = (DefaultListModel<SpectrumInput>) spectrumList.getModel();
+        if (spectrumListModel.isEmpty()) {
+            for (SpectrumInput spectrum : spectra) {
+                spectrumListModel.addElement(spectrum);
+            }
+        }
+
+        if (hiddenSpectra == null || hiddenSpectra.length == 0) {
+            return;
+        }
+
+        if (hiddenSpectrumListModel.isEmpty()) {
+            for (SpectrumInput hiddenSpectrum : hiddenSpectra) {
+                hiddenSpectrumListModel.addElement(hiddenSpectrum);
+            }
+        }
+
+        List<Integer> selectedIndices = new ArrayList<>();
+        List<String> selectedNames = new ArrayList<>();
+        for (SpectrumInput hiddenSpectrum : hiddenSpectra) {
+            selectedNames.add(hiddenSpectrum.getName());
+        }
+        for (int index = 0; index < spectrumListModel.size(); index++) {
+            if (selectedNames.contains(spectrumListModel.getElementAt(index).getName())) {
+                selectedIndices.add(index);
+            }
+        }
+        spectrumList.setSelectedIndices(selectedIndices.stream().mapToInt(Integer::intValue).toArray());
+        hiddenSpectrumList.clearSelection();
+        for (int index = 0; index < hiddenSpectrumListModel.size(); index++) {
+            hiddenSpectrumList.addSelectionInterval(index, index);
+        }
+        thresholdPanel.updateThresholdComponents(Arrays.asList(hiddenSpectra));
     }
 
     private void initResampleValues() {
@@ -236,9 +285,7 @@ class SpectralAngleMapperParametersPanel extends JPanel {
     private JPanel selectionBandsPanel() {
         final JPanel panel = new JPanel(getTableLayout(1));
         panel.setBorder(BorderFactory.createTitledBorder("Bands Selection"));
-        model = new DefaultListModel<>();
         sourceBandNames =  new JList<>();
-        sourceBandNames.setModel(model);
         sourceBandNames.addListSelectionListener(e -> checkResampling());
         JPanel spectrumSelectionPanel = new JPanel(new BorderLayout());
         spectrumSelectionPanel.add(new JScrollPane(sourceBandNames), BorderLayout.CENTER);
@@ -339,12 +386,10 @@ class SpectralAngleMapperParametersPanel extends JPanel {
                     bandNames.add(band.getName());
                 }
             }
-            if(this.model != null) {
-                this.model.clear();
-                for(String band: bandNames){
-                    this.model.addElement(band);
-                }
-            }
+            String[] configuredBands = samModel.getPropertySet()
+                    .getProperty(SpectralAngleMapperFormModel.REFERENCE_BANDS_PROPERTY)
+                    .getValue();
+            OperatorUIUtils.initParamList(sourceBandNames, bandNames.toArray(new String[0]), configuredBands);
         }
     }
 

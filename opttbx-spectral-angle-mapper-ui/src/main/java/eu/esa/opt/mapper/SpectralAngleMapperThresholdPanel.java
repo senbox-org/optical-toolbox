@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import eu.esa.opt.mapper.common.SpectrumInput;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -32,6 +33,7 @@ public class SpectralAngleMapperThresholdPanel extends JPanel {
     private List<JTextField> componentList;
 
     private boolean adjustingSlider;
+    private boolean updatingThresholdComponents;
 
     SpectralAngleMapperThresholdPanel(SpectralAngleMapperFormModel samModel) {
 
@@ -42,6 +44,7 @@ public class SpectralAngleMapperThresholdPanel extends JPanel {
 
     void updateThresholdComponents(List<SpectrumInput> spectrumInputList) {
         this.removeAll();
+        List<String> configuredThresholds = getConfiguredThresholds();
         final TableLayout layout = new TableLayout(1);
         layout.setTableAnchor(TableLayout.Anchor.WEST);
         layout.setTableFill(TableLayout.Fill.BOTH);
@@ -57,7 +60,9 @@ public class SpectralAngleMapperThresholdPanel extends JPanel {
         GridBagLayout gbl = new GridBagLayout();
         JPanel content = new JPanel(gbl);
         gbl.setConstraints(content, gbc);
-        for(SpectrumInput spectrumInput : spectrumInputList){
+        updatingThresholdComponents = true;
+        for (int spectrumIndex = 0; spectrumIndex < spectrumInputList.size(); spectrumIndex++) {
+            SpectrumInput spectrumInput = spectrumInputList.get(spectrumIndex);
             final JPanel panel = new JPanel(layout);
             panel.setBorder(BorderFactory.createTitledBorder(spectrumInput.getName()));
             JLabel label = new JLabel("Value:  ");
@@ -73,13 +78,13 @@ public class SpectralAngleMapperThresholdPanel extends JPanel {
             componentList.add(threshold);
             threshold.getDocument().addDocumentListener(new DocumentListener() {
                 public void changedUpdate(DocumentEvent e) {
-                    updateTextField(componentList);
+                    updateThresholdsIfReady();
                 }
                 public void removeUpdate(DocumentEvent e) {
-                    updateTextField(componentList);
+                    updateThresholdsIfReady();
                 }
                 public void insertUpdate(DocumentEvent e) {
-                    updateTextField(componentList);
+                    updateThresholdsIfReady();
                 }
             });
             toleranceSlider.addChangeListener(e -> {
@@ -89,7 +94,13 @@ public class SpectralAngleMapperThresholdPanel extends JPanel {
                 }
             });
 
-            threshold.setText("0.25");
+            String thresholdValue = spectrumIndex < configuredThresholds.size()
+                    ? configuredThresholds.get(spectrumIndex)
+                    : "0.25";
+            threshold.setText(thresholdValue);
+            adjustingSlider = true;
+            toleranceSlider.setValue(toleranceToSlider(thresholdValue));
+            adjustingSlider = false;
             JLabel minToleranceField = new JLabel("0.0");
             JLabel maxToleranceField = new JLabel("0.5");
 
@@ -109,9 +120,30 @@ public class SpectralAngleMapperThresholdPanel extends JPanel {
             content.add(panel, gbc);
             gbc.gridy++;
         }
+        updatingThresholdComponents = false;
         scrollPane.setViewportView(content);
         this.add(scrollPane);
         updateTextField(componentList);
+    }
+
+    private List<String> getConfiguredThresholds() {
+        List<String> configuredThresholds = new ArrayList<>();
+        String thresholds = bindingCtx.getPropertySet().getProperty(SpectralAngleMapperFormModel.THRESHOLDS_PROPERTY).getValue();
+        if (thresholds == null) {
+            return configuredThresholds;
+        }
+        for (String threshold : thresholds.split("\\s*,\\s*")) {
+            if (!threshold.trim().isEmpty()) {
+                configuredThresholds.add(threshold.trim());
+            }
+        }
+        return configuredThresholds;
+    }
+
+    private void updateThresholdsIfReady() {
+        if (!updatingThresholdComponents) {
+            updateTextField(componentList);
+        }
     }
 
 
@@ -123,14 +155,23 @@ public class SpectralAngleMapperThresholdPanel extends JPanel {
         return String.valueOf(value);
     }
 
+    private int toleranceToSlider(String value) {
+        try {
+            double tolerance = Double.parseDouble(value);
+            double clampedTolerance = Math.max(0.0, Math.min(0.5, tolerance));
+            return (int) Math.round(clampedTolerance * TOLERANCE_SLIDER_RESOLUTION / 0.5);
+        } catch (NumberFormatException e) {
+            return TOLERANCE_SLIDER_RESOLUTION / 2;
+        }
+    }
+
     private void updateTextField(List<JTextField> componentList)  {
-        StringBuilder stringBuilder = new StringBuilder();
-        for(JTextField textField : componentList) {
-            stringBuilder.append(textField.getText());
-            stringBuilder.append(", ");
+        StringJoiner thresholdValues = new StringJoiner(", ");
+        for (JTextField textField : componentList) {
+            thresholdValues.add(textField.getText());
         }
         try {
-            bindingCtx.getPropertySet().getProperty(SpectralAngleMapperFormModel.THRESHOLDS_PROPERTY).setValue(String.valueOf(stringBuilder));
+            bindingCtx.getPropertySet().getProperty(SpectralAngleMapperFormModel.THRESHOLDS_PROPERTY).setValue(thresholdValues.toString());
         } catch (ValidationException e) {
             e.printStackTrace();
         }

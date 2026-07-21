@@ -84,7 +84,10 @@ public class SpectralAngleMapperUI extends BaseOperatorUI {
     private boolean validateThresholds(SpectralAngleMapperFormModel formModel) {
         String thresholds = formModel.getPropertySet().getProperty(SpectralAngleMapperFormModel.THRESHOLDS_PROPERTY).getValue();
         SpectrumInput[] spectra = formModel.getPropertySet().getProperty(SpectralAngleMapperFormModel.SPECTRA_PROPERTY).getValue();
-        return thresholds != null && spectra != null && thresholds.split(",").length - 1 > 0 && thresholds.split(",").length - 1 == spectra.length;
+        return thresholds != null
+                && spectra != null
+                && !thresholds.trim().isEmpty()
+                && thresholds.trim().split("\\s*,\\s*").length == spectra.length;
     }
 
     private Product getCurrentProduct() {
