@@ -1,10 +1,15 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
+
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
+import org.esa.snap.runtime.Config;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
@@ -20,6 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 import static java.lang.String.format;
 
@@ -30,6 +36,10 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
     Level3_SeadasMappedFileReader(SeadasProductReader productReader) {
         super(productReader);
+
+        final Preferences preferences = Config.instance("seadas").preferences();
+        wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
     }
 
     @Override
@@ -298,5 +308,24 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
                     product.getSceneRasterHeight(), "qual_sst4 == -1",
                     SeadasFileReader.MediumGray, 0.6));
         }
+    }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        return SeadasCacheUtils.getDefaultVariableDescriptor(netcdfVariable, variableName);
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        final int rasterDataType = DataTypeUtils.getRasterDataType(netcdfVariable);
+
+        Array rawBuffer;
+        synchronized (ncFile) {
+            rawBuffer = SeadasCacheUtils.readArray(netcdfVariable, offsets, shapes);
+        }
+
+        return SeadasCacheUtils.constructDataBuffer(rawBuffer, offsets, shapes, targetData, rasterDataType);
     }
 }
