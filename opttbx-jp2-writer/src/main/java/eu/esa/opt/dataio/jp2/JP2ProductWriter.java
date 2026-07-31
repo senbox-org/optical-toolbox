@@ -70,6 +70,10 @@ public class JP2ProductWriter extends AbstractProductWriter {
             String message = "Source product " + sourceProduct.getName() + " has more than 4 bands. The product can not be exported due to OpenJpeg library limitations";
             throw new IOException(message);
         }
+        if (haveBandsWithDifferentDataTypeSize(sourceProduct.getBands())) {
+            String message = "Source product " + sourceProduct.getName() + " has bands with different datatype size. The product cannot be exported due to OpenJpeg library limitations";
+            throw new IOException(message);
+        }
         final File file;
         if (getOutput() instanceof String) {
             file = new File((String) getOutput());
@@ -237,4 +241,12 @@ public class JP2ProductWriter extends AbstractProductWriter {
         return sourceImage;
     }
 
+    private static boolean haveBandsWithDifferentDataTypeSize(Band[] productBands) {
+        for (Band band : productBands) {
+            if (ProductData.getElemSize(productBands[0].getDataType()) != ProductData.getElemSize(band.getDataType())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
