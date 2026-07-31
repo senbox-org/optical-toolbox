@@ -1,10 +1,15 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
+
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
+import org.esa.snap.runtime.Config;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
@@ -20,6 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 import static java.lang.String.format;
 
@@ -30,6 +36,10 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
     Level3_SeadasMappedFileReader(SeadasProductReader productReader) {
         super(productReader);
+
+        final Preferences preferences = Config.instance("seadas").preferences();
+        wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
     }
 
     @Override
@@ -117,17 +127,10 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
         addGlobalMetadata(product);
         addSmiMetadata(product);
+
         variableMap = addBands(product, ncFile.getVariables());
 
-        final Attribute mapProjectionAttribute = ncFile.findGlobalAttribute("map_projection");
-        if (productReader.checkEqcProjection(mapProjectionAttribute)) {
-            addEqcGeocoding(product);
-        } else {
-            try {
-                addGeocoding(product);
-            } catch (Exception ignored) {
-            }
-        }
+        addGeocoding(product);
         addFlagsAndMasks(product);
         if (productReader.getProductType() == SeadasProductReader.ProductType.Bathy) {
             mustFlipY = true;
@@ -137,65 +140,6 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
         product.setAutoGrouping(getBandGroupingL3Mapped());
         return product;
-    }
-
-    public void addEqcGeocoding(final Product product) throws ProductIOException {
-        double pixelX = 0.5;
-        double pixelY = 0.5;
-        double easting;
-        double northing;
-        double pixelSizeX;
-        double pixelSizeY;
-        boolean pixelRegistered = true;
-        String east = "Easternmost_Longitude";
-        String west = "Westernmost_Longitude";
-        String north = "Northernmost_Latitude";
-        String south = "Southernmost_Latitude";
-        Attribute latmax = ncFile.findGlobalAttributeIgnoreCase("geospatial_lat_max");
-        if (latmax != null) {
-            east = "geospatial_lon_max";
-            west = "geospatial_lon_min";
-            north = "geospatial_lat_max";
-            south = "geospatial_lat_min";
-        } else {
-            latmax = ncFile.findGlobalAttributeIgnoreCase("upper_lat");
-            if (latmax != null) {
-                east = "right_lon";
-                west = "left_lon";
-                north = "upper_lat";
-                south = "lower_lat";
-            }
-        }
-
-        final MetadataElement globalAttributes = product.getMetadataRoot().getElement("Global_Attributes");
-        easting = (float) globalAttributes.getAttribute(east).getData().getElemDouble();
-        float westing = (float) globalAttributes.getAttribute(west).getData().getElemDouble();
-        pixelSizeX = Math.abs(easting - westing) / product.getSceneRasterWidth();
-        northing = (float) globalAttributes.getAttribute(north).getData().getElemDouble();
-        float southing = (float) globalAttributes.getAttribute(south).getData().getElemDouble();
-        if (northing < southing) {
-            mustFlipY = true;
-            northing = (float) globalAttributes.getAttribute(south).getData().getElemDouble();
-            southing = (float) globalAttributes.getAttribute(north).getData().getElemDouble();
-        }
-        pixelSizeY = Math.abs(northing - southing) / product.getSceneRasterHeight();
-        if (pixelRegistered) {
-            northing -= pixelSizeY / 2.0;
-            westing += pixelSizeX / 2.0;
-        } else {
-            pixelX = 0.0;
-            pixelY = 0.0;
-        }
-        try {
-            product.setSceneGeoCoding(new CrsGeoCoding(DefaultGeographicCRS.WGS84,
-                    product.getSceneRasterWidth(),
-                    product.getSceneRasterHeight(),
-                    westing, northing,
-                    pixelSizeX, pixelSizeY,
-                    pixelX, pixelY));
-        } catch (FactoryException | TransformException e) {
-            throw new IllegalStateException(e);
-        }
     }
 
     public void addGeocoding(final Product product) throws ProductIOException {
@@ -364,5 +308,24 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
                     product.getSceneRasterHeight(), "qual_sst4 == -1",
                     SeadasFileReader.MediumGray, 0.6));
         }
+    }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        return SeadasCacheUtils.getDefaultVariableDescriptor(netcdfVariable, variableName);
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        final int rasterDataType = DataTypeUtils.getRasterDataType(netcdfVariable);
+
+        Array rawBuffer;
+        synchronized (ncFile) {
+            rawBuffer = SeadasCacheUtils.readArray(netcdfVariable, offsets, shapes);
+        }
+
+        return SeadasCacheUtils.constructDataBuffer(rawBuffer, offsets, shapes, targetData, rasterDataType);
     }
 }
