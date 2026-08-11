@@ -1229,10 +1229,8 @@ public class SeadasReaderDefaults {
             "i_stdev_*_440:i_stdev_*_549:i_stdev_*_664:i_stdev_*_865:q_stdev_*_440:q_stdev_*_549:q_stdev_*_664:q_stdev_*_865:" +
             "u_stdev_*_440:u_stdev_*_549:u_stdev_*_664:u_stdev_*_865:dolp_stdev_*_440:dolp_stdev_*_549:dolp_stdev_*_664:dolp_stdev_*_865:" +
             "aolp_stdev_*_440:aolp_stdev_*_549:aolp_stdev_*_664:aolp_stdev_*_865:" +
-            "sensor_zenith_*_440:sensor_zenith_*_549:sensor_zenith_*_664:sensor_zenith_*_865:sensor_azimuth_*_440:sensor_azimuth_*_549:sensor_azimuth_*_664:sensor_azimuth_*_865:" +
-            "solar_zenith_*_440:solar_zenith_*_549:solar_zenith_*_664:solar_zenith_*_865:solar_azimuth_*_440:solar_azimuth_*_549:solar_azimuth_*_664:solar_azimuth_*_865:" +
-            "scattering_angle_*_440:scattering_angle_*_549:scattering_angle_*_664:scattering_angle_*_865:rotation_angle_*_440:rotation_angle_*_549:rotation_angle_*_664:rotation_angle_*_865:" +
-            "view_time_offsets_*_440:view_time_offsets_*_549:view_time_offsets_*_664:view_time_offsets_*_865:number_of_observations_*_440:number_of_observations_*_549:number_of_observations_*_664:number_of_observations_*_865";
+            "sensor_zenith:sensor_azimuth:solar_zenith:solar_azimuth:" +
+            "scattering_angle:rotation_angle:view_time_offsets:number_of_observations";
 
 
     public static final String PROPERTY_L1C_PACE_SPEXONE_BAND_GROUPING_KEY = PROPERTY_L1C_PACE_ROOT_KEY + ".band_grouping.spexone";
