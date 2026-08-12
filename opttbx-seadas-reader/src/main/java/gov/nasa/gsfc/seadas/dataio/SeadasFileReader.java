@@ -1800,7 +1800,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                     if (intWvl != null && bandIdx != null) {
                         longname.append(intWavelengths.getInt(band_indices.getInt(i)));
                     } else {
-                        longname.append(wavelengths.getInt(i));
+                        longname.append(Math.round(wavelengths.getFloat(i)));
                     }
                     String name = longname.toString();
                     String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
@@ -1937,26 +1937,26 @@ protected Map<String, Variable> add4DHARP2NewBands(Product product, Variable var
             String description = variable.getShortName();
 
             // find wvl variable for  HARP2 L2  files
-//            wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
-            for (int i = 0; i < 10; i++) {
-                wavelengths.setFloat(i, 549.645F);
-            }
-            for (int i = 10; i < 70; i++) {
-                wavelengths.setFloat(i, 664.564F);
-            }
-            for (int i = 70; i < 80; i++) {
-                wavelengths.setFloat(i, 865.283F);;
-            }
-            for (int i = 80; i < 90; i++) {
-                wavelengths.setFloat(i, 440.159F);;
-            }
+            wvl = ncFile.findVariable("sensor_band_parameters/intensity_wavelength");
+//            for (int i = 0; i < 10; i++) {
+//                wavelengths.setFloat(i, 549.465F);
+//            }
+//            for (int i = 10; i < 70; i++) {
+//                wavelengths.setFloat(i, 664.564F);
+//            }
+//            for (int i = 70; i < 80; i++) {
+//                wavelengths.setFloat(i, 865.283F);;
+//            }
+//            for (int i = 80; i < 90; i++) {
+//                wavelengths.setFloat(i, 440.159F);;
+//            }
             view_angle = ncFile.findVariable("sensor_band_parameters/sensor_view_angle");
 
             if (view_angle != null) {
-//                try {
-//                    wavelengths = wvl.read();
-//                } catch (IOException e) {
-//                }
+                try {
+                    wavelengths = wvl.read();
+                } catch (IOException e) {
+                }
                 try {
                     view_angles = view_angle.read();
                 } catch (IOException e) {
@@ -1996,7 +1996,7 @@ protected Map<String, Variable> add4DHARP2NewBands(Product product, Variable var
                                 band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
                                 band.setNoDataValueUsed(true);
                                 band.setSpectralWavelength(wavelengths.getFloat(j));
-                                band.setSpectralBandIndex(spectralBandIndex++);
+                                band.setSpectralBandIndex(++spectralBandIndex);
 
                                 band.setAngularValue(view_angles.getFloat(j));
                                 band.setAngularBandIndex(angularBandIndex++);

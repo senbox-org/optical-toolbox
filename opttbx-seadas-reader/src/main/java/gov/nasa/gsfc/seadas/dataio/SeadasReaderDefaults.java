@@ -1152,9 +1152,11 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_TOOLTIP = "<html>NASA PACE HARP2 Level-2 File Reader:<br>Expression to create a group of bands</html>";
     public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_DEFAULT = "angstrom:fmf:" +
             "aot_*:aot_fine:aot_coarse:mi_:mi_fine:mi_coarse:mr:mr_fine:mr_coarse:ssa:ssa_fine:ssa_coarse:"+
-            "Rrs1_*_440:Rrs1_*_550:Rrs1_*_665:Rrs1_*_865:Rrs2_*_440:Rrs2_*_550:Rrs2_*_665:Rrs2_*_865:" +
-            "Rrs1_mean:Rrs1_std:Rrs2_mean:Rrs2_std:" +
-            "mask_dolp_*_440:mask_dolp_*_550:mask_dolp_*_665:mask_dolp_*_865:mask_ref_*_440:mask_ref_*_550:mask_ref_*_665:mask_ref_*_865:" ;
+            "Rrs1_*_440:Rrs1_*_549:Rrs1_*_665:Rrs1_*_865:Rrs2_*_440:Rrs2_*_549:Rrs2_*_665:Rrs2_*_865:" +
+            "Rrs1_mean_*:Rrs1_std_*:Rrs2_mean_*:Rrs2_std_*:" +
+            "aerosol_lidar_ratio:aerosol_depol_ratio:Rrs_angular_mean_*:Rrs_angular_std_*:Rrs_nadir_mean_*:Rrs_nadir_std_*:" +
+            "Rrs_angular_*_440:Rrs_angular_*_549:Rrs_angular_*_665:Rrs_angular_*_865:Rrs_nadir_*_440:Rrs_nadir_*_549:Rrs_nadir_*_665:Rrs_nadir_*_865:" +
+            "mask_dolp_*_440:mask_dolp_*_549:mask_dolp_*_665:mask_dolp_*_865:mask_ref_*_440:mask_ref_*_549:mask_ref_*_665:mask_ref_*_865:" ;
 
     public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".band_grouping.spexone";
     public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_LABEL = "Band Grouping (SPEXONE)";
