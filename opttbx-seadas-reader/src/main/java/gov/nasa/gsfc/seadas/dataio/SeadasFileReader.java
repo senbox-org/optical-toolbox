@@ -1800,7 +1800,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                     if (intWvl != null && bandIdx != null) {
                         longname.append(intWavelengths.getInt(band_indices.getInt(i)));
                     } else {
-                        longname.append(wavelengths.getInt(i));
+                        longname.append(Math.round(wavelengths.getFloat(i)));
                     }
                     String name = longname.toString();
                     String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
@@ -1937,26 +1937,26 @@ protected Map<String, Variable> add4DHARP2NewBands(Product product, Variable var
             String description = variable.getShortName();
 
             // find wvl variable for  HARP2 L2  files
-//            wvl = ncFile.findVariable("sensor_band_parameters/wavelength");
-            for (int i = 0; i < 10; i++) {
-                wavelengths.setFloat(i, 549.645F);
-            }
-            for (int i = 10; i < 70; i++) {
-                wavelengths.setFloat(i, 664.564F);
-            }
-            for (int i = 70; i < 80; i++) {
-                wavelengths.setFloat(i, 865.283F);;
-            }
-            for (int i = 80; i < 90; i++) {
-                wavelengths.setFloat(i, 440.159F);;
-            }
+            wvl = ncFile.findVariable("sensor_band_parameters/intensity_wavelength");
+//            for (int i = 0; i < 10; i++) {
+//                wavelengths.setFloat(i, 549.465F);
+//            }
+//            for (int i = 10; i < 70; i++) {
+//                wavelengths.setFloat(i, 664.564F);
+//            }
+//            for (int i = 70; i < 80; i++) {
+//                wavelengths.setFloat(i, 865.283F);;
+//            }
+//            for (int i = 80; i < 90; i++) {
+//                wavelengths.setFloat(i, 440.159F);;
+//            }
             view_angle = ncFile.findVariable("sensor_band_parameters/sensor_view_angle");
 
             if (view_angle != null) {
-//                try {
-//                    wavelengths = wvl.read();
-//                } catch (IOException e) {
-//                }
+                try {
+                    wavelengths = wvl.read();
+                } catch (IOException e) {
+                }
                 try {
                     view_angles = view_angle.read();
                 } catch (IOException e) {
@@ -1996,7 +1996,7 @@ protected Map<String, Variable> add4DHARP2NewBands(Product product, Variable var
                                 band.setNoDataValue((double) fillValue.getNumericValue().floatValue());
                                 band.setNoDataValueUsed(true);
                                 band.setSpectralWavelength(wavelengths.getFloat(j));
-                                band.setSpectralBandIndex(spectralBandIndex++);
+                                band.setSpectralBandIndex(++spectralBandIndex);
 
                                 band.setAngularValue(view_angles.getFloat(j));
                                 band.setAngularBandIndex(angularBandIndex++);
@@ -2343,7 +2343,7 @@ protected Map<String, Variable> add4DSPEXNewBands(Product product, Variable vari
         }
 
         // Create the 2D band
-        band = new Band(name, dataType, sceneRasterWidth, sceneRasterHeight);
+        band = createBand(name, dataType, sceneRasterWidth, sceneRasterHeight);
         product.addBand(band);
 
         // Read 1D data and expand to 2D
@@ -2354,19 +2354,25 @@ protected Map<String, Variable> add4DSPEXNewBands(Product product, Variable vari
 
             if (isLat) {
                 // Lat: repeat each value across all columns (same value per row)
+                float[] rawData = (float[]) productData.getElems();
                 for (int i = 0; i < sceneRasterHeight; i++) {
-                    double val = data1D.getDouble(i);
-                    for (int j = 0; j < sceneRasterWidth; j++) {
-                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
-                    }
+                    float val = data1D.getFloat(i);
+                    int startIndex = i * sceneRasterWidth;
+                    Arrays.fill(rawData, startIndex, startIndex + sceneRasterWidth, val);
+//                    for (int j = 0; j < sceneRasterWidth; j++) {
+//                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
+//                    }
                 }
             } else {
                 // Lon: repeat each value across all rows (same value per column)
+                float[] rawData = (float[]) productData.getElems();
                 for (int j = 0; j < sceneRasterWidth; j++) {
-                    double val = data1D.getDouble(j);
-                    for (int i = 0; i < sceneRasterHeight; i++) {
-                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
-                    }
+                    float val = data1D.getFloat(j);
+                    int startIndex = j * sceneRasterHeight;
+                    Arrays.fill(rawData, startIndex, startIndex + sceneRasterHeight, val);
+//                    for (int i = 0; i < sceneRasterHeight; i++) {
+//                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
+//                    }
                 }
             }
 

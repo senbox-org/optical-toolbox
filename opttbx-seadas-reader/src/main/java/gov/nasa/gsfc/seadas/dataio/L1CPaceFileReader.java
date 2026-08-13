@@ -348,9 +348,9 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         for (int i = 0; i < views; i++) {
                             StringBuilder longname = new StringBuilder(description);
                             longname.append("_");
-                            longname.append(view_angles.getInt(i));
-                            longname.append("_");
-                            longname.append(wavelengths.getInt(i));
+                            longname.append(view_angles.getFloat(i));
+//                            longname.append("_");
+//                            longname.append(wavelengths.getInt(i));
                             String name = longname.toString();
                             String safeName = (name != null && name.contains("-")) ? "'" + name + "'" : name;
 
@@ -358,13 +358,13 @@ public class L1CPaceFileReader extends SeadasFileReader {
                             band = createBand(name, dataType, width, height);
                             product.addBand(band);
 
-                            band.setSpectralWavelength(wavelengths.getFloat(i));
-                            if (!wavelength_list.contains(wavelengths.getInt(i))) {
-                                wavelength_list.add(wavelengths.getInt(i));
-                                angularBandIndex = 0;
-                                spectralBandIndex++;
-                            }
-                            band.setSpectralBandIndex(spectralBandIndex);
+//                            band.setSpectralWavelength(wavelengths.getFloat(i));
+//                            if (!wavelength_list.contains(wavelengths.getInt(i))) {
+//                                wavelength_list.add(wavelengths.getInt(i));
+//                                angularBandIndex = 0;
+//                                spectralBandIndex++;
+//                            }
+//                            band.setSpectralBandIndex(spectralBandIndex);
 
                             band.setAngularValue(view_angles.getFloat(i));
                             band.setAngularBandIndex(angularBandIndex++); // should angularBandIndex be 0 - 89 or 0 - 9 (0 -59)?
