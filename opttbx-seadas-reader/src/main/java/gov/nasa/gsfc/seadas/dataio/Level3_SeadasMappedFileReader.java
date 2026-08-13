@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
+//import static gov.nasa.gsfc.seadas.dataio.L2DscovrEpicFileReader.addPixelGeocoding;
 import static java.lang.String.format;
 
 /**
@@ -130,7 +131,11 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
         variableMap = addBands(product, ncFile.getVariables());
 
-        addGeocoding(product);
+        if (productName.contains("0p01deg")) {
+            addEqcGeocoding(product);
+        } else {
+            addGeocoding(product);
+        }
         addFlagsAndMasks(product);
         if (productReader.getProductType() == SeadasProductReader.ProductType.Bathy) {
             mustFlipY = true;
@@ -167,6 +172,64 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
             product.setSceneGeoCoding(geoCoding);
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage());
+        }
+    }
+
+    public void addEqcGeocoding(final Product product) throws ProductIOException {
+        String east = "Easternmost_Longitude";
+        String west = "Westernmost_Longitude";
+        String north = "Northernmost_Latitude";
+        String south = "Southernmost_Latitude";
+        double pixelX = 0.5;
+        double pixelY = 0.5;
+        double easting;
+        double northing;
+        double pixelSizeX;
+        double pixelSizeY;
+        boolean pixelRegistered = true;
+        Attribute latmax = ncFile.findGlobalAttributeIgnoreCase("geospatial_lat_max");
+        if (latmax != null) {
+            east = "geospatial_lon_max";
+            west = "geospatial_lon_min";
+            north = "geospatial_lat_max";
+            south = "geospatial_lat_min";
+        } else {
+            latmax = ncFile.findGlobalAttributeIgnoreCase("upper_lat");
+            if (latmax != null) {
+                east = "right_lon";
+                west = "left_lon";
+                north = "upper_lat";
+                south = "lower_lat";
+            }
+        }
+        final MetadataElement globalAttributes = product.getMetadataRoot().getElement("Global_Attributes");
+        easting = (float) globalAttributes.getAttribute(east).getData().getElemDouble();
+        float westing = (float) globalAttributes.getAttribute(west).getData().getElemDouble();
+        pixelSizeX = Math.abs(easting - westing) / product.getSceneRasterWidth();
+        northing = (float) globalAttributes.getAttribute(north).getData().getElemDouble();
+        float southing = (float) globalAttributes.getAttribute(south).getData().getElemDouble();
+        if (northing < southing) {
+            mustFlipY = true;
+            northing = (float) globalAttributes.getAttribute(south).getData().getElemDouble();
+            southing = (float) globalAttributes.getAttribute(north).getData().getElemDouble();
+        }
+        pixelSizeY = Math.abs(northing - southing) / product.getSceneRasterHeight();
+        if (pixelRegistered) {
+            northing -= pixelSizeY / 2.0;
+            westing += pixelSizeX / 2.0;
+        } else {
+            pixelX = 0.0;
+            pixelY = 0.0;
+        }
+        try {
+            product.setSceneGeoCoding(new CrsGeoCoding(DefaultGeographicCRS.WGS84,
+                    product.getSceneRasterWidth(),
+                    product.getSceneRasterHeight(),
+                    westing, northing,
+                    pixelSizeX, pixelSizeY,
+                    pixelX, pixelY));
+        } catch (FactoryException | TransformException e) {
+            throw new IllegalStateException(e);
         }
     }
 
