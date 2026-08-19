@@ -1179,9 +1179,9 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_LEVEL2_FLIPY_TOOLTIP = "<html>NASA Level-2 Reader:<br>Flip image about the Y-axis (vertically)</html>";
     public static final String PROPERTY_LEVEL2_FLIPY_DEFAULT = FlIP_MISSION_DEFAULT;
 
-    public static final String PROPERTY_LEVEL2_KEEPBADNAV_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".keepbadnav";
-    public static final String PROPERTY_LEVEL2_KEEPBADNAV_LABEL = "Keep Bad Nav";
-    public static final String PROPERTY_LEVEL2_KEEPBADNAV_TOOLTIP = "<html>NASA Level-2 Reader:<br>Keep the bad navagation line</html>";
+    public static final String PROPERTY_LEVEL2_KEEPBADNAV_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".keepBadNavLines";
+    public static final String PROPERTY_LEVEL2_KEEPBADNAV_LABEL = "Keep Bad Nav Lines";
+    public static final String PROPERTY_LEVEL2_KEEPBADNAV_TOOLTIP = "<html>NASA Level-2 Reader:<br>Keep the bad navigation (geocoding) lines at top/bottom of files</html>";
     public static final boolean PROPERTY_LEVEL2_KEEPBADNAV_DEFAULT = true;
 
 
