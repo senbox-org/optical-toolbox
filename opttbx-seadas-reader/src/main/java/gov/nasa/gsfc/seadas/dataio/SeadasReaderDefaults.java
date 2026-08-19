@@ -1126,7 +1126,7 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_LEVEL2_SECTION_TOOLTIP = "SeaDAS File Reader options for NASA Level-2 files";
 
 
-    public static final String  PROPERTY_LEVEL2_BAND_GROUPING_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".band_grouping";
+    public static final String PROPERTY_LEVEL2_BAND_GROUPING_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".band_grouping";
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_LABEL = "Band Grouping";
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_TOOLTIP = "<html>NASA Level-2 File Reader:<br>Expression to create a group of bands</html>";
     public static final String PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT = "Rrs_*:Rrs_unc_*:Rrs_raman:" +
@@ -1179,7 +1179,10 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_LEVEL2_FLIPY_TOOLTIP = "<html>NASA Level-2 Reader:<br>Flip image about the Y-axis (vertically)</html>";
     public static final String PROPERTY_LEVEL2_FLIPY_DEFAULT = FlIP_MISSION_DEFAULT;
 
-
+    public static final String PROPERTY_LEVEL2_KEEPBADNAV_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".keepbadnav";
+    public static final String PROPERTY_LEVEL2_KEEPBADNAV_LABEL = "Keep Bad Nav";
+    public static final String PROPERTY_LEVEL2_KEEPBADNAV_TOOLTIP = "<html>NASA Level-2 Reader:<br>Keep the bad navagation line</html>";
+    public static final boolean PROPERTY_LEVEL2_KEEPBADNAV_DEFAULT = true;
 
 
     // L1B_PACE FILE READER

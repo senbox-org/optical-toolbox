@@ -43,7 +43,9 @@ import java.util.prefs.Preferences;
 public class L2FileReader extends SeadasFileReader {
 
     private static final String KEEP_BAD_NAV_PROPERTY = "snap.seadasl2reader.keepBadNavLines";
-    private static final boolean keepBadNavLines = Boolean.getBoolean(KEEP_BAD_NAV_PROPERTY);
+//    private static final boolean keepBadNavLines = Boolean.getBoolean(KEEP_BAD_NAV_PROPERTY);
+    private final boolean keepBadNavLines;
+
 
     L2FileReader(SeadasProductReader productReader) {
         super(productReader);
@@ -51,6 +53,9 @@ public class L2FileReader extends SeadasFileReader {
         final Preferences preferences = Config.instance("seadas").preferences();
         wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
         applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
+
+        // Read keepBadNavLines from preferences with a default value of false
+        keepBadNavLines = getKeepBadNavLevel2();
     }
 
     @Override
