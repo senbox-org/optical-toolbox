@@ -1729,7 +1729,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
 //        List<Dimension> variable_dimensions = variable.getDimensions();
         String wavelength_name = variable.getDimensionsString().split(" ")[2].trim();
         final int bands = dimensions[2];
-        final int height = dimensions[0];
+        final int height = dimensions[0]- leadLineSkip - tailLineSkip;
         final int width = dimensions[1];
         int dim = 0;
         Variable wvl = null;
@@ -1924,7 +1924,7 @@ protected Map<String, Variable> add4DHARP2NewBands(Product product, Variable var
         int  spectralBandIndex = -1;
 
         final int views = dimensions[2];
-        final int height = dimensions[0];
+        final int height = dimensions[0] - leadLineSkip - tailLineSkip;;
         final int width = dimensions[1];
         final int bands = dimensions[3];
 
@@ -1937,26 +1937,26 @@ protected Map<String, Variable> add4DHARP2NewBands(Product product, Variable var
             String description = variable.getShortName();
 
             // find wvl variable for  HARP2 L2  files
-            wvl = ncFile.findVariable("sensor_band_parameters/intensity_wavelength");
-//            for (int i = 0; i < 10; i++) {
-//                wavelengths.setFloat(i, 549.465F);
-//            }
-//            for (int i = 10; i < 70; i++) {
-//                wavelengths.setFloat(i, 664.564F);
-//            }
-//            for (int i = 70; i < 80; i++) {
-//                wavelengths.setFloat(i, 865.283F);;
-//            }
-//            for (int i = 80; i < 90; i++) {
-//                wavelengths.setFloat(i, 440.159F);;
-//            }
+//            wvl = ncFile.findVariable("sensor_band_parameters/intensity_wavelength");
+            for (int i = 0; i < 10; i++) {
+                wavelengths.setFloat(i, 549.465F);
+            }
+            for (int i = 10; i < 70; i++) {
+                wavelengths.setFloat(i, 664.564F);
+            }
+            for (int i = 70; i < 80; i++) {
+                wavelengths.setFloat(i, 865.283F);;
+            }
+            for (int i = 80; i < 90; i++) {
+                wavelengths.setFloat(i, 440.159F);;
+            }
             view_angle = ncFile.findVariable("sensor_band_parameters/sensor_view_angle");
 
             if (view_angle != null) {
-                try {
-                    wavelengths = wvl.read();
-                } catch (IOException e) {
-                }
+//                try {
+//                    wavelengths = wvl.read();
+//                } catch (IOException e) {
+//                }
                 try {
                     view_angles = view_angle.read();
                 } catch (IOException e) {
@@ -2096,7 +2096,7 @@ protected Map<String, Variable> add4DSPEXNewBands(Product product, Variable vari
 //        List<Dimension> variable_dimensions = variable.getDimensions();
         String wavelength_name = variable.getDimensionsString().split(" ")[2].trim();
         final int views = dimensions[2];
-        final int height = dimensions[0];
+        final int height = dimensions[0] - leadLineSkip - tailLineSkip;;
         final int width = dimensions[1];
         final int bands = dimensions[3];
         int dim = 0;
@@ -2259,7 +2259,7 @@ protected Map<String, Variable> add4DSPEXNewBands(Product product, Variable vari
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
         final int[] dimensions = variable.getShape();
-        final int height = dimensions[2];
+        final int height = dimensions[2] - leadLineSkip - tailLineSkip;
         final int width = dimensions[3];
         if (height == sceneRasterHeight && width == sceneRasterWidth) {
             String name = variable.getShortName();
@@ -2421,7 +2421,7 @@ protected Map<String, Variable> add4DSPEXNewBands(Product product, Variable vari
         int variableRank = variable.getRank();
         if (variableRank == 2) {
             final int[] dimensions = variable.getShape();
-            final int height = dimensions[0] - leadLineSkip - tailLineSkip;
+            final int height = dimensions[0]- leadLineSkip - tailLineSkip;
             final int width = dimensions[1];
             if (height == sceneRasterHeight && width == sceneRasterWidth) {
                 final String name = variable.getShortName();
@@ -3359,6 +3359,14 @@ protected Map<String, Variable> add4DSPEXNewBands(Product product, Variable vari
         }
         final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
         return preferences.getPropertyString(SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_DEFAULT);
+    }
+
+    public boolean getKeepBadNavLevel2() {
+        if (this.isHeadless) {
+            return SeadasReaderDefaults.PROPERTY_LEVEL2_KEEPBADNAV_DEFAULT;
+        }
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_LEVEL2_KEEPBADNAV_KEY, true);
     }
 
 
