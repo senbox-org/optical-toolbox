@@ -130,8 +130,8 @@
     <properties>
         <snap.version>14.0.0</snap.version>
         <opttbx.version>14.0.0</opttbx.version>
-        <seadas.reader.version>1.10.5</seadas.reader.version>
-        <seadas.reader.ui.version>1.10.5</seadas.reader.ui.version>
+        <seadas.reader.version>1.10.6</seadas.reader.version>
+        <seadas.reader.ui.version>1.10.6</seadas.reader.ui.version>
         <snap-help-system.version>1.0.3</snap-help-system.version>
         <netbeans.version>RELEASE210</netbeans.version>
         <geotools.version>28.6</geotools.version>
