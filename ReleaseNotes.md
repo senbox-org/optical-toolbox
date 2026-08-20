@@ -3,7 +3,7 @@ Optical Toolbox Release Notes
 
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
-# New in SNAP 14.0.0
+# New in SNAP 14.0.1-SNAPSHOT
     [SNAP-4233] "Spectral Angle Mapper" graph fails when executed through the GUI
     [SNAP-4232] Masks not copied when the “Reflectance to Radiance” graph is executed through the GUI
     [SNAP-4227] Land cover remote url not reachable
