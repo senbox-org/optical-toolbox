@@ -257,6 +257,11 @@ public class OlciContextTest {
             }
 
             @Override
+            public String getProcessingBaseline() {
+                throw new RuntimeException("not implemented");
+            }
+
+            @Override
             public String getDescription() {
                 throw new RuntimeException("not implemented");
             }

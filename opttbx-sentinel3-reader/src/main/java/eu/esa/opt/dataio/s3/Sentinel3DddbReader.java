@@ -27,6 +27,7 @@ import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
 import org.esa.snap.runtime.Config;
+import org.jspecify.annotations.NonNull;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import ucar.ma2.Array;
@@ -42,12 +43,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
@@ -279,8 +276,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
         // create a naked product
         final String productName = manifest.getProductName();
-        final String baselineCollection = manifest.getBaselineCollection();
-        final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, baselineCollection);
+        final Version version = getVersionFromManifest(manifest);
+        final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, version);
         ensureWidthAndHeight(productDescriptor, manifest);
 
         final Product product = new Product(productName, productType, productDescriptor.getWidth(), productDescriptor.getHeight(), this);
@@ -292,7 +289,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         product.setStartTime(manifest.getStartTime());
         product.setEndTime(manifest.getStopTime());
 
-        initializeDDDBDescriptors(manifest, productDescriptor);
+        initializeDDDBDescriptors(productDescriptor);
         addVariables(product);
         addTiePointGrids(product, manifest);
         addSpecialBands(product);
@@ -567,13 +564,13 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         product.addBand(band);
     }
 
-    private void initializeDDDBDescriptors(Manifest manifest, ProductDescriptor productDescriptor) throws IOException {
+    private void initializeDDDBDescriptors(ProductDescriptor productDescriptor) throws IOException {
         final String productType = manifest.getProductType();
-        final String baselineCollection = manifest.getBaselineCollection();
+        final Version version = getVersionFromManifest(manifest);
 
         final List<String> fileNames = manifest.getFileNames(productDescriptor.getExcludedIdsAsArray());
         for (final String fileName : fileNames) {
-            final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors(fileName, productType, baselineCollection);
+            final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors(fileName, productType, version);
             for (final VariableDescriptor descriptor : variableDescriptors) {
                 descriptor.setFileName(fileName);
 
@@ -590,6 +587,13 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
                 }
             }
         }
+    }
+
+    // package access for testing only tb 2026-08-21
+    static @NonNull Version getVersionFromManifest(Manifest manifest) {
+        final String baselineCollection = manifest.getBaselineCollection();
+        final String processingBaseline = manifest.getProcessingBaseline();
+        return new Version(baselineCollection, processingBaseline);
     }
 
     private void initalizeInput() {

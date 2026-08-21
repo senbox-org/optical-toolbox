@@ -3,6 +3,7 @@ package eu.esa.opt.dataio.s3;
 import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.s3.dddb.ProductDescriptor;
 import eu.esa.opt.dataio.s3.dddb.VariableDescriptor;
+import eu.esa.opt.dataio.s3.dddb.Version;
 import eu.esa.opt.dataio.s3.manifest.Manifest;
 import eu.esa.opt.dataio.s3.util.S3CacheLayerMapper;
 import eu.esa.snap.core.dataio.cache.DataBuffer;
@@ -44,7 +45,12 @@ public class Sentinel3DddbReaderTest {
 
             @Override
             public String getBaselineCollection() {
-                throw new RuntimeException("not implemented");
+                return "baseVer";
+            }
+
+            @Override
+            public String getProcessingBaseline() {
+                return "procBase";
             }
 
             @Override
@@ -346,6 +352,16 @@ public class Sentinel3DddbReaderTest {
         reader.readCacheData("latitude", offsets, shapes, buffer);
 
         verify(productCache).read(eq("latitude"), aryEq(offsets), aryEq(shapes), same(buffer));
+    }
+
+    @Test
+    @STTM("SNAP-4253")
+    public void testGetVersionFromManifest() {
+        final Manifest manifest = createManifest();
+
+        final Version version = Sentinel3DddbReader.getVersionFromManifest(manifest);
+        assertEquals("baseVer", version.baselineCollection());
+        assertEquals("procBase", version.processingBaseline());
     }
 
     private static Object getField(Object target, String fieldName) throws Exception {

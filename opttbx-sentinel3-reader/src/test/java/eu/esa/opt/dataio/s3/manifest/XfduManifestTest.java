@@ -53,9 +53,16 @@ public class XfduManifestTest {
 
     @Test
     @STTM("SNAP-3711")
-    public void testGetbaselineCollection() {
+    public void testGetBaselineCollection() {
         assertEquals("004", olci_manifest.getBaselineCollection());
         assertEquals("004", slstr_manifest.getBaselineCollection());
+    }
+
+    @Test
+    @STTM("SNAP-4253")
+    public void testGetProcessingBaseline() {
+        assertEquals("OL__L1_.004.00.00", olci_manifest.getProcessingBaseline());
+        assertEquals("SL__L1_.004.07.00", slstr_manifest.getProcessingBaseline());
     }
 
     @Test

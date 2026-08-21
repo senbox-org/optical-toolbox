@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.s3.dddb;
 
 import com.bc.ceres.annotation.STTM;
+import eu.esa.opt.dataio.s3.manifest.Manifest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,39 +27,44 @@ public class DDDBTest {
     }
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711,SNAP-4152")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4152,SNAP-4253")
     public void testGetProductDescriptor() throws IOException {
-        ProductDescriptor olciL1Descriptor = dddb.getProductDescriptor("OL_1_EFR", "004");
+        ProductDescriptor olciL1Descriptor = dddb.getProductDescriptor("OL_1_EFR", new Version("004", "whocares"));
         assertEquals("removedPixelsData", olciL1Descriptor.getExcludedIds());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", olciL1Descriptor.getWidthXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows", olciL1Descriptor.getHeightXPath());
         assertEquals("Oa*_radiance:Oa*_radiance_unc:Oa*_radiance_err:atmospheric_temperature_profile:lambda0:FWHM:solar_flux", olciL1Descriptor.getBandGroupingPattern());
         assertEquals(0, olciL1Descriptor.getFlagMasks().length);
 
-        olciL1Descriptor = dddb.getProductDescriptor("OL_1_ERR", "___");
+        olciL1Descriptor = dddb.getProductDescriptor("OL_1_ERR", new Version("___", "whocares"));
         assertEquals("removedPixelsData", olciL1Descriptor.getExcludedIds());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", olciL1Descriptor.getWidthXPath());
 
-        final ProductDescriptor slstrL1Descriptor = dddb.getProductDescriptor("SL_1_RBT", "004");
+        final ProductDescriptor slstrL1Descriptor = dddb.getProductDescriptor("SL_1_RBT", new Version("004", "whocares"));
         assertEquals("", slstrL1Descriptor.getExcludedIds());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/columns", slstrL1Descriptor.getWidthXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='slstrProductInformation']//metadataWrap/xmlData/slstrProductInformation/nadirImageSize[@grid=\"0.5 km stripe A\"]/rows", slstrL1Descriptor.getHeightXPath());
         assertEquals("", slstrL1Descriptor.getBandGroupingPattern());
 
-        final ProductDescriptor ol2Wfr = dddb.getProductDescriptor("OL_2_WFR", "004");
+        final ProductDescriptor ol2Wfr = dddb.getProductDescriptor("OL_2_WFR", new Version("004", "whocares"));
         assertEquals("Oa*_reflectance:Oa*_reflectance_err:Oa*_reflectance_unc:A865:ADG443_NN:CHL_NN:chlor_a:IWV:PAR:T865:TSM_NN:FWHM:lambda0:solar_flux", ol2Wfr.getBandGroupingPattern());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", ol2Wfr.getWidthXPath());
 
-        final ProductDescriptor ol2Wrr = dddb.getProductDescriptor("OL_2_WRR", "003");
+        final ProductDescriptor ol2Wrr = dddb.getProductDescriptor("OL_2_WRR", new Version("004", "whocares"));
         assertEquals("removedPixelsData", ol2Wrr.getExcludedIds());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", ol2Wrr.getWidthXPath());
+/*
+        olciL1Descriptor = dddb.getProductDescriptor("OL_1_EFR", new Version("003", "OL__L1_.003.00.00"));
+        assertEquals("removedPixelsData", olciL1Descriptor.getExcludedIds());
+        assertEquals("Oa*_radiance:Oa*_radiance_unc:Oa*_radiance_err:atmospheric_temperature_profile:lambda0:FWHM:solar_flux", olciL1Descriptor.getBandGroupingPattern());
+ */
     }
 
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testGetProductDescriptor_invalidResource() {
         try {
-            dddb.getProductDescriptor("IN_V_ALI", "D");
+            dddb.getProductDescriptor("IN_V_ALI", new Version("D", "inexistent"));
             fail("IOException expected");
         } catch (IOException expected) {
         }
@@ -89,8 +95,9 @@ public class DDDBTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711,SNAP-4222")
     public void testGetVariableDescriptors() throws IOException {
-        VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("geo_coordinates.nc", "OL_1_EFR", "004");
+        Version version = new Version("004", "whocares");
 
+        VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("geo_coordinates.nc", "OL_1_EFR", version);
         assertEquals(3, variableDescriptors.length);
         assertEquals("altitude", variableDescriptors[0].getName());
         assertEquals("float32", variableDescriptors[1].getDataType());
@@ -100,8 +107,8 @@ public class DDDBTest {
         assertEquals("degrees_north", variableDescriptors[1].getUnits());
         assertEquals("DEM corrected altitude", variableDescriptors[0].getDescription());
 
-        variableDescriptors = dddb.getVariableDescriptors("instrument_data.nc", "OL_1_EFR", "004");
-
+        version = new Version("004", "whocares");
+        variableDescriptors = dddb.getVariableDescriptors("instrument_data.nc", "OL_1_EFR", version);
         assertEquals(6, variableDescriptors.length);
         assertEquals("FWHM", variableDescriptors[0].getName());
         assertEquals("int16", variableDescriptors[1].getDataType());
@@ -117,7 +124,8 @@ public class DDDBTest {
         assertEquals(21, variableDescriptors[4].getHeight());
         assertEquals('m', variableDescriptors[4].getType());
 
-        variableDescriptors = dddb.getVariableDescriptors("Oa07_radiance.nc", "OL_1_EFR", null);
+        version = new Version(null, null);
+        variableDescriptors = dddb.getVariableDescriptors("Oa07_radiance.nc", "OL_1_EFR", version);
         assertEquals(1, variableDescriptors.length);
         assertEquals("Oa07_radiance", variableDescriptors[0].getName());
         assertEquals("uint16", variableDescriptors[0].getDataType());
@@ -125,18 +133,21 @@ public class DDDBTest {
         assertEquals("mW.m-2.sr-1.nm-1", variableDescriptors[0].getUnits());
         assertEquals("TOA radiance for OLCI acquisition band Oa07", variableDescriptors[0].getDescription());
 
-        variableDescriptors = dddb.getVariableDescriptors("Oa14_radiance_unc.nc", "OL_1_EFR", "003");
+        version = new Version("003", "whocares");
+        variableDescriptors = dddb.getVariableDescriptors("Oa14_radiance_unc.nc", "OL_1_EFR", version);
         assertEquals(1, variableDescriptors.length);
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/rows", variableDescriptors[0].getHeightXPath());
         assertEquals("/XFDU/metadataSection/metadataObject[@ID='olciProductInformation']//metadataWrap/xmlData/olciProductInformation/imageSize/columns", variableDescriptors[0].getWidthXPath());
         assertEquals("!quality_flags.invalid", variableDescriptors[0].getValidExpression());
         assertEquals("log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa14", variableDescriptors[0].getDescription());
 
-        variableDescriptors = dddb.getVariableDescriptors("qualityFlags.nc", "OL_1_EFR", "003");
+        version = new Version("003", "whocares");
+        variableDescriptors = dddb.getVariableDescriptors("qualityFlags.nc", "OL_1_EFR", version);
         assertEquals(1, variableDescriptors.length);
         assertEquals("Classification and quality flags", variableDescriptors[0].getDescription());
 
-        variableDescriptors = dddb.getVariableDescriptors("tie_geo_coordinates.nc", "OL_1_EFR", "004");
+        version = new Version("004", "whocares");
+        variableDescriptors = dddb.getVariableDescriptors("tie_geo_coordinates.nc", "OL_1_EFR", version);
         assertEquals(2, variableDescriptors.length);
         assertEquals("TP_latitude", variableDescriptors[0].getName());
         assertEquals("latitude", variableDescriptors[0].getNcVarName());
@@ -148,11 +159,13 @@ public class DDDBTest {
         assertEquals(-1, variableDescriptors[1].getHeight());
         assertEquals("degrees_north", variableDescriptors[0].getUnits());
 
-        variableDescriptors = dddb.getVariableDescriptors("tie_geometries.nc", "OL_1_EFR", "003");
+        version = new Version("003", "whocares");
+        variableDescriptors = dddb.getVariableDescriptors("tie_geometries.nc", "OL_1_EFR", version);
         assertEquals(4, variableDescriptors.length);
         assertEquals("Sun Zenith Angle", variableDescriptors[3].getDescription());
 
-        variableDescriptors = dddb.getVariableDescriptors("tie_meteo.nc", "OL_1_EFR", null);
+        version = new Version("003", null);
+        variableDescriptors = dddb.getVariableDescriptors("tie_meteo.nc", "OL_1_EFR", version);
         assertEquals(7, variableDescriptors.length);
         assertEquals("Air temperature profile", variableDescriptors[0].getDescription());
         assertEquals("_pressure_level_", variableDescriptors[0].getDepthPrefixToken());
@@ -160,7 +173,8 @@ public class DDDBTest {
         assertEquals("_vector_", variableDescriptors[1].getDepthPrefixToken());
         assertEquals("Mean sea level pressure", variableDescriptors[4].getDescription());
 
-        variableDescriptors = dddb.getVariableDescriptors("time_coordinates.nc", "OL_1_EFR", null);
+        version = new Version("003", null);
+        variableDescriptors = dddb.getVariableDescriptors("time_coordinates.nc", "OL_1_EFR", version);
         assertEquals(1, variableDescriptors.length);
         assertEquals("Elapsed time since 01 Jan 2000 0h", variableDescriptors[0].getDescription());
     }
@@ -168,7 +182,21 @@ public class DDDBTest {
     @Test
     @STTM("SNAP-4222")
     public void testGetVariableDescriptors_olciL1Baseline001FrameOffsetIsSpecial() throws IOException {
-        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("instrument_data.nc", "OL_1_EFR", "001");
+        Version version = new Version("001", "whocares");
+        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("instrument_data.nc", "OL_1_EFR", version);
+
+        assertEquals(6, variableDescriptors.length);
+        assertEquals("frame_offset", variableDescriptors[2].getName());
+        assertEquals('s', variableDescriptors[2].getType());
+        assertEquals(3700, variableDescriptors[2].getWidth());
+        assertEquals(1, variableDescriptors[2].getHeight());
+    }
+
+    @Test
+    @STTM("SNAP-4253")
+    public void testGetVariableDescriptors_olciL1Baseline003_00_00_FrameOffsetIsSpecial() throws IOException {
+        Version version = new Version("003", "OL__L1_.003.00.00");
+        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("instrument_data.nc", "OL_1_EFR", version);
 
         assertEquals(6, variableDescriptors.length);
         assertEquals("frame_offset", variableDescriptors[2].getName());
@@ -181,7 +209,8 @@ public class DDDBTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testGetVariableDescriptors_notExisting() {
         try {
-            dddb.getVariableDescriptors("now_way_this_exist.ts", "OL_1_EFR", "004");
+            final Version version = new Version("004", "whocares");
+            dddb.getVariableDescriptors("now_way_this_exist.ts", "OL_1_EFR", version);
             fail("IOException expected");
         } catch (IOException expected) {
         }
@@ -190,7 +219,8 @@ public class DDDBTest {
     @Test
     @STTM("SNAP-4170")
     public void testGetVariableDescriptors_optionalFlag() throws IOException {
-        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("iop_nn.nc", "OL_2_WRR", "003");
+        final Version version = new Version("003", null);
+        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("iop_nn.nc", "OL_2_WRR", version);
         assertEquals(3, variableDescriptors.length);
 
         assertEquals("ADG443_NN",  variableDescriptors[0].getName());

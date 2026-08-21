@@ -26,6 +26,7 @@ public class XfduManifest implements Manifest {
     private String productType;
     private String productName;
     private String baselineCollection;
+    private String processingBaseline;
 
     private XfduManifest(Document manifestDocument) {
         doc = manifestDocument;
@@ -33,6 +34,7 @@ public class XfduManifest implements Manifest {
         productType = null;
         productName = null;
         baselineCollection = null;
+        processingBaseline = null;
     }
 
     public static Manifest createManifest(Document manifestDocument) {
@@ -108,6 +110,15 @@ public class XfduManifest implements Manifest {
             baselineCollection = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/baselineCollection", gpi);
         }
         return baselineCollection;
+    }
+
+    @Override
+    public String getProcessingBaseline() {
+        if (processingBaseline == null) {
+            final Node gpi = xPathHelper.getNode("/XFDU/metadataSection/metadataObject[@ID='generalProductInformation']", doc);
+            processingBaseline = xPathHelper.getString("//metadataWrap/xmlData/generalProductInformation/processingBaseline", gpi);
+        }
+        return processingBaseline;
     }
 
     @Override

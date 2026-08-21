@@ -41,6 +41,11 @@
       "description": "S3A_OL_1_ERR v1 baseline 001"
     },
     {
+      "id": "S3B_OL_1_EFR____20230717T104859",
+      "relativePath": "sensors_platforms/SENTINEL-3/olci/L1/S3B_OL_1_EFR____20230717T104859_20230717T105159_20230717T232729_0180_081_379_2160_PS2_O_NT_003.SEN3/xfdumanifest.xml",
+      "description": "S3A_OL_1_ERR v1 baseline 003, processing version OL__L1_.003.00.00"
+    },
+    {
       "id": "S3A_OL_2_WRR____20070910T095130",
       "relativePath": "sensors_platforms/SENTINEL-3/olci/L2/S3A_OL_2_WRR____20070910T095130_20070910T095442_20140610T110535_0192_000_000______MAR_D_NR____.SEN3/xfdumanifest.xml",
       "description": "S3A_OL_2_WRR v1"

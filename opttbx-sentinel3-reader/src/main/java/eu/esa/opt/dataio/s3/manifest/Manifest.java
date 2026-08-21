@@ -27,6 +27,8 @@ public interface Manifest {
 
     String getBaselineCollection();
 
+    String getProcessingBaseline();
+
     String getDescription();
 
     ProductData.UTC getStartTime();
