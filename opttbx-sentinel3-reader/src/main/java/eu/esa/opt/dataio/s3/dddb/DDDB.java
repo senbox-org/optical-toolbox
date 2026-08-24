@@ -47,8 +47,8 @@ public class DDDB {
         productDescriptorMap = new HashMap<>();
     }
 
-    public ProductDescriptor getProductDescriptor(String productType, String version) throws IOException {
-        String resourceName = getResourceFileName(productType, version);
+    public ProductDescriptor getProductDescriptor(String productType, Version version) throws IOException {
+        String resourceName = getResourceFileName(productType, version.baselineCollection());
 
         ProductDescriptor productDescriptor = productDescriptorMap.get(resourceName);
         if (productDescriptor == null) {
@@ -70,16 +70,23 @@ public class DDDB {
         return productDescriptor;
     }
 
-    public VariableDescriptor[] getVariableDescriptors(String dataFile, String productType, String version) throws IOException {
+    public VariableDescriptor[] getVariableDescriptors(String dataFile, String productType, Version version) throws IOException {
         final String inputFileName = FileUtils.getFilenameWithoutExtension(dataFile);
 
-        String resourceDirectoryName = "variables" + "_" + version;
-        String resourceFileName = getResourceFileName(resourceDirectoryName + "/" + inputFileName, version);
+        // first test - baseline version and processing baseline tb 2026-08-21
+        String resourceDirectoryName = "variables" + "_" + version.baselineCollection() + "/" + version.processingBaseline();
+        String resourceFileName = getResourceFileName(resourceDirectoryName + "/" + inputFileName, version.baselineCollection());
         URL resourceUrl = getResourceUrl(productType, resourceFileName);
         if (resourceUrl == null) {
-            // try if we have a default, unversioned, version of the file tb 2024-12-13
-            resourceFileName = getResourceFileName("variables/" + inputFileName, null);
+            // second try - only baseline version tb 2026-08-21
+            resourceDirectoryName = "variables" + "_" + version.baselineCollection();
+            resourceFileName = getResourceFileName(resourceDirectoryName + "/" + inputFileName, version.baselineCollection());
             resourceUrl = getResourceUrl(productType, resourceFileName);
+            if (resourceUrl == null) {
+                // last try - do we have a default, unversioned, version of the file tb 2024-12-13
+                resourceFileName = getResourceFileName("variables/" + inputFileName, null);
+                resourceUrl = getResourceUrl(productType, resourceFileName);
+            }
         }
 
         if (resourceUrl == null) {
@@ -148,11 +155,11 @@ public class DDDB {
         return DB_RESOURCE_PATH + productType + "/" + resourceName;
     }
 
-    static String getResourceFileName(String productType, String version) {
-        if (StringUtils.isNullOrEmpty(version)) {
+    static String getResourceFileName(String productType, String baselineVersion) {
+        if (StringUtils.isNullOrEmpty(baselineVersion)) {
             return productType + ".json";
         }
-        return productType + "_" + version + ".json";
+        return productType + "_" + baselineVersion + ".json";
     }
 
     private static class InstanceHolder {

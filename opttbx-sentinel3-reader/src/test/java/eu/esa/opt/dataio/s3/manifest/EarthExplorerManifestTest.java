@@ -15,6 +15,7 @@
 
 package eu.esa.opt.dataio.s3.manifest;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.BeforeClass;
@@ -43,13 +44,23 @@ public class EarthExplorerManifestTest {
     }
 
     @Test
-    public void testGetProductName() throws Exception {
+    public void testGetProductName() {
         assertEquals("S3_OL_1_ERR_20130621T100921_20130621T101413_00291_000001_001_EST_TEST_00", manifest.getProductName());
     }
 
     @Test
-    public void testGetProductType() throws Exception {
+    public void testGetProductType() {
         assertEquals("OL_1_ERR", manifest.getProductType());
+    }
+
+    @Test
+    @STTM("SNAP-4253")
+    public void testGetProcessingBaseline() {
+        try {
+            manifest.getProcessingBaseline();
+            fail("Exception expected");
+        } catch (Exception expected) {
+        }
     }
 
     @Test

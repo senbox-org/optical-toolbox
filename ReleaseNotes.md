@@ -3,6 +3,9 @@ Optical Toolbox Release Notes
 
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
+# New in SNAP 14.0.1
+    [SNAP-4253] Add support for OLCI L1 data baseline Version OL__L1_.003.00.00
+
 # New in SNAP 14.0.0
     [SNAP-4215] Add support for Sentinel‑3 SL_2_WST product BV 004
     [SNAP-4152] Re-organise S3 reader DDDB 
