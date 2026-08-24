@@ -22,7 +22,7 @@
     <parent>
         <groupId>eu.esa.opt</groupId>
         <artifactId>optical-toolbox</artifactId>
-        <version>14.0.1-SNAPSHOT</version>
+        <version>14.0.1</version>
     </parent>
 
     <artifactId>opttbx-hyperspectral-preprocessing-ui</artifactId>
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-hyperspectral-preprocessing</artifactId>
-            <version>14.0.1-SNAPSHOT</version>
+            <version>14.0.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
