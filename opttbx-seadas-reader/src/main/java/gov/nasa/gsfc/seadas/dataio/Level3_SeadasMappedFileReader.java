@@ -1,10 +1,15 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import com.bc.ceres.core.ProgressMonitor;
+
+import eu.esa.snap.core.dataio.cache.DataBuffer;
+import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
+import org.esa.snap.runtime.Config;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
@@ -20,7 +25,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
+//import static gov.nasa.gsfc.seadas.dataio.L2DscovrEpicFileReader.addPixelGeocoding;
 import static java.lang.String.format;
 
 /**
@@ -30,6 +37,10 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
     Level3_SeadasMappedFileReader(SeadasProductReader productReader) {
         super(productReader);
+
+        final Preferences preferences = Config.instance("seadas").preferences();
+        wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
+        applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
     }
 
     @Override
@@ -117,16 +128,13 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
         addGlobalMetadata(product);
         addSmiMetadata(product);
+
         variableMap = addBands(product, ncFile.getVariables());
 
-        final Attribute mapProjectionAttribute = ncFile.findGlobalAttribute("map_projection");
-        if (productReader.checkEqcProjection(mapProjectionAttribute)) {
+        if (productName.contains("0p01deg")) {
             addEqcGeocoding(product);
         } else {
-            try {
-                addGeocoding(product);
-            } catch (Exception ignored) {
-            }
+            addGeocoding(product);
         }
         addFlagsAndMasks(product);
         if (productReader.getProductType() == SeadasProductReader.ProductType.Bathy) {
@@ -139,7 +147,39 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         return product;
     }
 
+    public void addGeocoding(final Product product) throws ProductIOException {
+        final String longitude = "longitude";
+        final String latitude = "latitude";
+        Band latBand;
+        Band lonBand;
+
+        latBand = product.getBand(latitude);
+        if (latBand == null) {
+            latBand = product.getBand("lat");
+        }
+        lonBand = product.getBand(longitude);
+        if (lonBand == null) {
+            lonBand = product.getBand("lon");
+        }
+
+        latBand.setNoDataValue(-999.);
+        lonBand.setNoDataValue(-999.);
+        latBand.setNoDataValueUsed(true);
+        lonBand.setNoDataValueUsed(true);
+
+        try {
+            final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
+            product.setSceneGeoCoding(geoCoding);
+        } catch (IOException e) {
+            throw new ProductIOException(e.getMessage());
+        }
+    }
+
     public void addEqcGeocoding(final Product product) throws ProductIOException {
+        String east = "Easternmost_Longitude";
+        String west = "Westernmost_Longitude";
+        String north = "Northernmost_Latitude";
+        String south = "Southernmost_Latitude";
         double pixelX = 0.5;
         double pixelY = 0.5;
         double easting;
@@ -147,10 +187,6 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         double pixelSizeX;
         double pixelSizeY;
         boolean pixelRegistered = true;
-        String east = "Easternmost_Longitude";
-        String west = "Westernmost_Longitude";
-        String north = "Northernmost_Latitude";
-        String south = "Southernmost_Latitude";
         Attribute latmax = ncFile.findGlobalAttributeIgnoreCase("geospatial_lat_max");
         if (latmax != null) {
             east = "geospatial_lon_max";
@@ -166,7 +202,6 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
                 south = "lower_lat";
             }
         }
-
         final MetadataElement globalAttributes = product.getMetadataRoot().getElement("Global_Attributes");
         easting = (float) globalAttributes.getAttribute(east).getData().getElemDouble();
         float westing = (float) globalAttributes.getAttribute(west).getData().getElemDouble();
@@ -195,34 +230,6 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
                     pixelX, pixelY));
         } catch (FactoryException | TransformException e) {
             throw new IllegalStateException(e);
-        }
-    }
-
-    public void addGeocoding(final Product product) throws ProductIOException {
-        final String longitude = "longitude";
-        final String latitude = "latitude";
-        Band latBand;
-        Band lonBand;
-
-        latBand = product.getBand(latitude);
-        if (latBand == null) {
-            latBand = product.getBand("lat");
-        }
-        lonBand = product.getBand(longitude);
-        if (lonBand == null) {
-            lonBand = product.getBand("lon");
-        }
-
-        latBand.setNoDataValue(-999.);
-        lonBand.setNoDataValue(-999.);
-        latBand.setNoDataValueUsed(true);
-        lonBand.setNoDataValueUsed(true);
-
-        try {
-            final ComponentGeoCoding geoCoding = GeoCodingFactory.createPixelGeoCoding(latBand, lonBand);
-            product.setSceneGeoCoding(geoCoding);
-        } catch (IOException e) {
-            throw new ProductIOException(e.getMessage());
         }
     }
 
@@ -364,5 +371,24 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
                     product.getSceneRasterHeight(), "qual_sst4 == -1",
                     SeadasFileReader.MediumGray, 0.6));
         }
+    }
+
+    @Override
+    public VariableDescriptor getVariableDescriptor(String variableName) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        return SeadasCacheUtils.getDefaultVariableDescriptor(netcdfVariable, variableName);
+    }
+
+    @Override
+    public DataBuffer readCacheBlock(String variableName, int[] offsets, int[] shapes, ProductData targetData) throws IOException {
+        final Variable netcdfVariable = variableMap.get(variableName);
+        final int rasterDataType = DataTypeUtils.getRasterDataType(netcdfVariable);
+
+        Array rawBuffer;
+        synchronized (ncFile) {
+            rawBuffer = SeadasCacheUtils.readArray(netcdfVariable, offsets, shapes);
+        }
+
+        return SeadasCacheUtils.constructDataBuffer(rawBuffer, offsets, shapes, targetData, rasterDataType);
     }
 }

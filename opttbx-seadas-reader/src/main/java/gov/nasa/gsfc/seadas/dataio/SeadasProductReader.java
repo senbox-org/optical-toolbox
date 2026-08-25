@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.List;
 
 
+
 public class SeadasProductReader extends AbstractProductReader implements CacheDataProvider {
 
     private NetcdfFile ncfile;
@@ -49,7 +50,6 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
         Mission(String nm) {
             name = nm;
         }
-
         public String toString() {
             return name;
         }
@@ -68,11 +68,11 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
         ProcessingLevel(String nm) {
             name = nm;
         }
-
         public String toString() {
             return name;
         }
     }
+
 
 
     enum ProductType {
@@ -98,6 +98,8 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
         Level2("Level 2"),
         Level2_DscovrEpic("DscovrEpic Level 2"),
         Level2_Pace("Pace Level-2"),
+        Level2_PaceSPEX("SPEX Level-2"),
+        Level2_PaceHARP2("HARP2 Level-2"),
         Level2_PaceOCIS("OCIS Level-2"),
         Level3_Bin("Level 3 Binned"),
         Level3_NSIDC_CDR("Level 3 NSIDC CDR"),
@@ -135,7 +137,6 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
      */
     protected SeadasProductReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
-
         productCache = null;
         ncfile = null;
     }
@@ -176,6 +177,8 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
             case Level2_CZCS:
             case Level2_Pace:
             case Level2_PaceOCIS:
+            case Level2_PaceSPEX:
+            case Level2_PaceHARP2:
                 return new L2FileReader(reader);
             case Level2_DscovrEpic:
                 return new L2DscovrEpicFileReader(reader);
@@ -229,13 +232,13 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
         }
     }
 
+
     @Override
     public void close() throws IOException {
         if (productCache != null) {
             CacheManager.getInstance().remove(productCache);
             productCache = null;
         }
-
         if (ncfile != null) {
             ncfile.close();
             ncfile = null;
@@ -247,6 +250,8 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
                                           int sourceStepX, int sourceStepY, Band destBand, int destOffsetX,
                                           int destOffsetY, int destWidth, int destHeight, ProductData destBuffer,
                                           ProgressMonitor pm) throws IOException {
+
+
         try {
             seadasFileReader.readBandData(destBand, sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
                     sourceStepX, sourceStepY, destBuffer, pm);
@@ -267,18 +272,6 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
 
     public ProductType getProductType() {
         return productType;
-    }
-
-    static boolean checkEqcProjection(Attribute mapProjectionAttribute) {
-        if (mapProjectionAttribute == null) {
-            return false;
-        }
-        try {
-            String projection = mapProjectionAttribute.getStringValue();
-            return projection.contains("proj=eqc") || projection.contains("Equidistant Cylindrical");
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     public boolean checkSeadasMapped() {
@@ -423,14 +416,12 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
                     || instrument.toUpperCase().contains("SPEXONE")) {
                 return ProductType.Level1C_Pace;
             }
-        } else if ("OCIS Level-2 Data".equals(title)) {
-            return ProductType.Level2_PaceOCIS;
         } else if (title.contains("OCI Level-2 Data")) {
             return ProductType.Level2_Pace;
         } else if (title.contains("HARP2 Level-2")) {
-            return ProductType.Level2_Pace;
-        } else if (title.contains("SPEXone Level-2")) {
-            return ProductType.Level2_Pace;
+            return ProductType.Level2_PaceHARP2;
+        } else if (title.contains("SPEXONE Level-2")) {
+            return ProductType.Level2_PaceSPEX;
         } else if (title.contains("Level-1B")) {
             return ProductType.Level1B;
         } else if ("CZCS Level-1A Data".equals(title)) {
@@ -461,8 +452,8 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
             return ProductType.ANCCLIM;
         } else if (title.contains("Level-3") && title.contains("Mapped Image")) {
             return ProductType.Level3_SeadasMapped;
-        } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
-            return ProductType.SMI;
+//            } else if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")) {
+//                return ProductType.SMI;
         } else if (title.contains("Level-3 Binned Data") || title.contains("level-3_binned_data")) {
             return ProductType.Level3_Bin;
         }

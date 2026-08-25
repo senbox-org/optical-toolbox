@@ -43,7 +43,9 @@ import java.util.prefs.Preferences;
 public class L2FileReader extends SeadasFileReader {
 
     private static final String KEEP_BAD_NAV_PROPERTY = "snap.seadasl2reader.keepBadNavLines";
-    private static final boolean keepBadNavLines = Boolean.getBoolean(KEEP_BAD_NAV_PROPERTY);
+//    private static final boolean keepBadNavLines = Boolean.getBoolean(KEEP_BAD_NAV_PROPERTY);
+    private final boolean keepBadNavLines;
+
 
     L2FileReader(SeadasProductReader productReader) {
         super(productReader);
@@ -51,6 +53,9 @@ public class L2FileReader extends SeadasFileReader {
         final Preferences preferences = Config.instance("seadas").preferences();
         wantsCaching = preferences.getBoolean("seadas.reader.enable.cache", true);
         applyScaling = preferences.getBoolean("seadas.reader.apply.scaling", true);
+
+        // Read keepBadNavLines from preferences with a default value of false
+        keepBadNavLines = getKeepBadNavLevel2();
     }
 
     @Override
@@ -141,6 +146,8 @@ public class L2FileReader extends SeadasFileReader {
             if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
                     productType == SeadasProductReader.ProductType.Level2_CZCS ||
                     productType == SeadasProductReader.ProductType.Level2_Pace ||
+                    productType == SeadasProductReader.ProductType.Level2_PaceSPEX ||
+                    productType == SeadasProductReader.ProductType.Level2_PaceHARP2 ||
                     productType == SeadasProductReader.ProductType.Level2_PaceOCIS) {
                 mustFlipX = false; // mission default
             } else {
@@ -153,7 +160,10 @@ public class L2FileReader extends SeadasFileReader {
         } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYLevel2())) {
             mustFlipY = false;
         } else {
-            if (productType == SeadasProductReader.ProductType.Level2_Pace) {
+            if (productType == SeadasProductReader.ProductType.Level2_Pace ||
+                    productType == SeadasProductReader.ProductType.Level2_PaceSPEX ||
+                    productType == SeadasProductReader.ProductType.Level2_PaceHARP2
+            ) {
                 mustFlipY = getDefaultFlip(true);  // mission default
             } else {
                 mustFlipY = getDefaultFlip(); // mission default
@@ -209,8 +219,10 @@ public class L2FileReader extends SeadasFileReader {
         addFlagsAndMasks(product);
 //        product.setAutoGrouping("Rrs_unc:Rrs:Rrs_raman:nLw:Lt:La:Lr:Lw:L_q:L_u:Es:rhom:rhos:rhot:Taua:taua:Kd:aot:adg:aph_:bbp:bb:vgain:BT:tg_sen:tg_sol:t_sen:t_sol:tLf:TLg:brdf");
 // todo not yet implementing any mission dependent band grouping - but this if statement is a stub for that
-        if (productType == SeadasProductReader.ProductType.Level2_Pace) {
-            product.setAutoGrouping(getBandGroupingLevel2());
+        if (productType == SeadasProductReader.ProductType. Level2_PaceHARP2) {
+            product.setAutoGrouping(getBandGroupingLevel2PaceHarp2());
+        } else if (productType == SeadasProductReader.ProductType. Level2_PaceSPEX) {
+            product.setAutoGrouping(getBandGroupingLevel2PaceSPEXONE());
         } else {
             product.setAutoGrouping(getBandGroupingLevel2());
         }
