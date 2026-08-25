@@ -1147,7 +1147,7 @@ public class SeadasReaderDefaults {
             "NUV_AerosolOpticalDepthOverCloud:NUV_UncertaintyACAODToSSA:AAOD:" +
             "Rrs1_mean:Rrs1_std:Rrs1_model_mean:Rrs1_model_std:Rrs2_mean:Rrs2_std:Rrs2_model_mean:Rrs2_model_std:";
 
-    public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".band_grouping.harp2";
+    public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_KEY = PROPERTY_LEVEL2_BAND_GROUPING_KEY + "v2.harp2";
     public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_LABEL = "Band Grouping (HARP2)";
     public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_TOOLTIP = "<html>NASA PACE HARP2 Level-2 File Reader:<br>Expression to create a group of bands</html>";
     public static final String PROPERTY_LEVE2_PACE_HARP2_BAND_GROUPING_DEFAULT = "angstrom:fmf:" +
@@ -1158,7 +1158,7 @@ public class SeadasReaderDefaults {
             "Rrs_angular_*_440:Rrs_angular_*_549:Rrs_angular_*_665:Rrs_angular_*_865:Rrs_nadir_*_440:Rrs_nadir_*_549:Rrs_nadir_*_665:Rrs_nadir_*_865:" +
             "mask_dolp_*_440:mask_dolp_*_549:mask_dolp_*_665:mask_dolp_*_865:mask_ref_*_440:mask_ref_*_549:mask_ref_*_665:mask_ref_*_865:" ;
 
-    public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_KEY = PROPERTY_LEVEL2_ROOT_KEY + ".band_grouping.spexone";
+    public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_KEY = PROPERTY_LEVEL2_BAND_GROUPING_KEY + ".v2.spexone";
     public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_LABEL = "Band Grouping (SPEXONE)";
     public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_TOOLTIP = "<html>NASA PACE SPEXONE Level-2 File Reader:<br>Expression to create a group of bands</html>";
     public static final String PROPERTY_LEVE2_PACE_SPEXONE_BAND_GROUPING_DEFAULT = "angstrom:fmf:" +
