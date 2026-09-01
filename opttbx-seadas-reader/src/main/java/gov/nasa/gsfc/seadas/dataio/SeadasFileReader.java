@@ -1797,7 +1797,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                     final String shortname = variable.getShortName();
                     StringBuilder longname = new StringBuilder(shortname);
                     longname.append("_");
-                    if (intWvl != null && bandIdx != null) {
+                    if (intWvl != null && bandIdx != null && !shortname.contains("Lt_interp")){
                         longname.append(intWavelengths.getInt(band_indices.getInt(i)));
                     } else {
                         longname.append(Math.round(wavelengths.getFloat(i)));
