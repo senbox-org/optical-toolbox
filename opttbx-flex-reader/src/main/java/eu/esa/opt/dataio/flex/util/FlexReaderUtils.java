@@ -2,11 +2,7 @@ package eu.esa.opt.dataio.flex.util;
 
 
 import eu.esa.opt.dataio.flex.FlexProductReader;
-import eu.esa.opt.dataio.flex.compatibility.EarlyProcessorCompatibility;
-import eu.esa.opt.dataio.flex.compatibility.FlexProductCompatibility;
-import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
-import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import ucar.ma2.DataType;
@@ -54,15 +50,6 @@ public class FlexReaderUtils {
         }
     }
 
-
-    public static FlexProductCompatibility detectCompatibility(FlexProductHeader header) {
-        for (final String fileName : header.getDataFileNames()) {
-            if (fileName.endsWith(".nc.nc")) {
-                return new EarlyProcessorCompatibility();
-            }
-        }
-        return new StandardFlexCompatibility();
-    }
 
 
     public static void setScaleAndOffset(Band band, Variable ncVariable) {

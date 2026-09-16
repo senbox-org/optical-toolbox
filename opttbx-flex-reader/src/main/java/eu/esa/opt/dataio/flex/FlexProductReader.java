@@ -3,6 +3,7 @@ package eu.esa.opt.dataio.flex;
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.flex.compatibility.FlexProductCompatibility;
+import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
 import eu.esa.opt.dataio.flex.dddb.*;
 import eu.esa.opt.dataio.flex.metadata.FlexMetadataElementLazy;
 import eu.esa.opt.dataio.flex.metadata.FlexMetadataProvider;
@@ -50,11 +51,14 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private static final double FLEX_RESOLUTION_KM = 0.3;
     private static final String DIM_ACROSS_TRACK = "number_of_across_track_samples";
     private static final String DIM_ALONG_TRACK = "number_of_along_track_samples";
+    private static final String DIM_EASTING_PIXELS = "number_of_easting_pixels";
+    private static final String DIM_NORTHING_PIXELS = "number_of_northing_pixels";
     public static final String PREFERENCE_KEY_ENABLE_CACHE = "opttbx.flex.reader.enable.cache";
     public static final String PREFERENCE_KEY_ENABLE_NATIVE_NETCDF = "opttbx.flex.reader.enable.native.netcdf";
     public static final boolean CACHE_ENABLED_DEFAULT = false;
     public static final boolean NATIVE_NETCDF_ENABLED_DEFAULT = true;
     public static final int L1B_L1C_TILE_HEIGHT_DEFAULT = 520;
+    private static final int DIMENSION_NOT_FOUND = -1;
 
     private final FlexDDDB dddb;
     private final Map<String, FlexVariableDescriptor> variablesMap;
@@ -72,7 +76,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
     private String dddbProductType;
     private VirtualDir virtualDir;
-    private FlexProductCompatibility compatibility;
+    private FlexProductCompatibility compatibility = new StandardFlexCompatibility();
     private NetcdfCacheDataProvider cacheDataProvider;
     private ProductCache productCache;
     private boolean cacheEnabled = CACHE_ENABLED_DEFAULT;
@@ -108,15 +112,13 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final FlexProductHeader header = parser.parse(headerFile);
 
         dddbProductType = FlexReaderUtils.mapProductType(header.getProductType());
-        compatibility = FlexReaderUtils.detectCompatibility(header);
-
         final FlexProductDescriptor productDescriptor = dddb.getProductDescriptor(dddbProductType);
 
         openNcFiles(header);
         loadDescriptors(productDescriptor, dddbProductType);
 
-        final int width = resolveProductWidth(productDescriptor);
-        final int height = resolveProductHeight(productDescriptor);
+        final int width = resolveProductWidth(dddbProductType, productDescriptor);
+        final int height = resolveProductHeight(dddbProductType, productDescriptor);
 
         final Product product = new Product(header.getProductName(), dddbProductType, width, height, this);
 
@@ -389,31 +391,44 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         return data;
     }
 
-    private int resolveProductWidth(FlexProductDescriptor productDescriptor) {
-        final String groupPath = findFirstGroupPath();
-        for (final NetcdfFile ncFile : ncFilesMap.values()) {
-            final int resolved = compatibility.resolveDimension(ncFile, groupPath, DIM_ACROSS_TRACK, productDescriptor.getWidth());
-
-            if (resolved != productDescriptor.getWidth()) {
-                logger.fine("Resolved width from netCDF: " + resolved + " (spec default: " + productDescriptor.getWidth() + ")");
-            }
-            return resolved;
-        }
-        return productDescriptor.getWidth();
+    private int resolveProductWidth(String productType, FlexProductDescriptor productDescriptor) {
+        final String dim = getWidthDimensionName(productType);
+        return resolveProductDimension("width", dim, productDescriptor.getWidth());
     }
 
-    private int resolveProductHeight(FlexProductDescriptor productDescriptor) {
-        final String groupPath = findFirstGroupPath();
-        for (final NetcdfFile ncFile : ncFilesMap.values()) {
-            final int resolved = compatibility.resolveDimension(ncFile, groupPath, DIM_ALONG_TRACK, productDescriptor.getHeight());
-
-            if (resolved != productDescriptor.getHeight()) {
-                logger.fine("Resolved height from netCDF: " + resolved + " (spec default: " + productDescriptor.getHeight() + ")");
-            }
-            return resolved;
-        }
-        return productDescriptor.getHeight();
+    private int resolveProductHeight(String productType, FlexProductDescriptor productDescriptor) {
+        final String dim = getHeightDimensionName(productType);
+        return resolveProductDimension("height", dim, productDescriptor.getHeight());
     }
+
+    private int resolveProductDimension(String dimensionType, String dimName, int dddbDefault) {
+        final String groupPath = findFirstGroupPath();
+
+        for (final NetcdfFile ncFile : ncFilesMap.values()) {
+            final int resolved = compatibility.resolveDimension(ncFile, groupPath, dimName, DIMENSION_NOT_FOUND);
+
+            if (resolved != DIMENSION_NOT_FOUND) {
+                if (resolved != dddbDefault) {
+                    logger.fine("Resolved product " + dimensionType + " from netCDF dimension '" + dimName
+                            + "': " + resolved + " (DDDB default: " + dddbDefault + ")");
+                }
+                return resolved;
+            }
+        }
+
+        logger.warning("Cannot resolve product " + dimensionType + " from netCDF dimension '" + dimName
+                + "'. Falling back to DDDB default: " + dddbDefault);
+        return dddbDefault;
+    }
+
+    private static String getWidthDimensionName(String productType) {
+        return FlexSpectralHelper.isL2Product(productType) ? DIM_EASTING_PIXELS : DIM_ACROSS_TRACK;
+    }
+
+    private static String getHeightDimensionName(String productType) {
+        return FlexSpectralHelper.isL2Product(productType) ? DIM_NORTHING_PIXELS : DIM_ALONG_TRACK;
+    }
+
 
     private String findFirstGroupPath() {
         for (final FlexVariableDescriptor descriptor : variablesMap.values()) {

@@ -2,10 +2,7 @@ package eu.esa.opt.dataio.flex.util;
 
 import com.bc.ceres.annotation.STTM;
 import eu.esa.opt.dataio.flex.FlexProductReader;
-import eu.esa.opt.dataio.flex.compatibility.EarlyProcessorCompatibility;
-import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
-import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import org.esa.snap.core.datamodel.*;
 import org.junit.Rule;
 import org.junit.Test;
@@ -90,24 +87,6 @@ public class FlexReaderUtilsTest {
         assertTrue(new File(dir, "data.nc").createNewFile());
 
         FlexReaderUtils.findHeaderFile(dir.toPath());
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testDetectCompatibility_standard() {
-        final FlexProductHeader header = new FlexProductHeader();
-        header.setDataFileNames(Arrays.asList("data_1.nc", "data_2.nc"));
-
-        assertTrue(FlexReaderUtils.detectCompatibility(header) instanceof StandardFlexCompatibility);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testDetectCompatibility_earlyProcessor() {
-        final FlexProductHeader header = new FlexProductHeader();
-        header.setDataFileNames(Arrays.asList("data_1.nc", "data_2.nc.nc"));
-
-        assertTrue(FlexReaderUtils.detectCompatibility(header) instanceof EarlyProcessorCompatibility);
     }
 
     @Test

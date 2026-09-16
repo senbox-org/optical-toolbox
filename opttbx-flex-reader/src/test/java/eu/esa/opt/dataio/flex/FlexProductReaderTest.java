@@ -335,6 +335,61 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testResolveProductDimensions_l1cUsesAcrossAlongTrackDimensions() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final FlexProductDescriptor productDescriptor = productDescriptor(536, 3640);
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findDimension("number_of_across_track_samples"))
+                .thenReturn(new Dimension("number_of_across_track_samples", 530));
+        when(ncFile.findDimension("number_of_along_track_samples"))
+                .thenReturn(new Dimension("number_of_along_track_samples", 4138));
+        ncFilesMap(reader).put("data.nc", ncFile);
+
+        assertEquals(530, invokeResolveProductWidth(reader, "FLX_L1C_FLXSYN", productDescriptor));
+        assertEquals(4138, invokeResolveProductHeight(reader, "FLX_L1C_FLXSYN", productDescriptor));
+        verify(ncFile).findDimension("number_of_across_track_samples");
+        verify(ncFile).findDimension("number_of_along_track_samples");
+        verify(ncFile, never()).findDimension("number_of_easting_pixels");
+        verify(ncFile, never()).findDimension("number_of_northing_pixels");
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testResolveProductDimensions_l2UsesEastingNorthingDimensions() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final FlexProductDescriptor productDescriptor = productDescriptor(366, 366);
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findDimension("number_of_easting_pixels"))
+                .thenReturn(new Dimension("number_of_easting_pixels", 367));
+        when(ncFile.findDimension("number_of_northing_pixels"))
+                .thenReturn(new Dimension("number_of_northing_pixels", 367));
+        ncFilesMap(reader).put("data.nc", ncFile);
+
+        assertEquals(367, invokeResolveProductWidth(reader, "FLX_L2_FLXSYN", productDescriptor));
+        assertEquals(367, invokeResolveProductHeight(reader, "FLX_L2_FLXSYN", productDescriptor));
+        verify(ncFile).findDimension("number_of_easting_pixels");
+        verify(ncFile).findDimension("number_of_northing_pixels");
+        verify(ncFile, never()).findDimension("number_of_across_track_samples");
+        verify(ncFile, never()).findDimension("number_of_along_track_samples");
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testResolveProductDimensions_fallsBackToDddbDefaultsWhenDimensionsAreMissing() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final FlexProductDescriptor productDescriptor = productDescriptor(536, 3640);
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findDimension(anyString())).thenReturn(null);
+        ncFilesMap(reader).put("data.nc", ncFile);
+
+        assertEquals(536, invokeResolveProductWidth(reader, "FLX_L1C_FLXSYN", productDescriptor));
+        assertEquals(3640, invokeResolveProductHeight(reader, "FLX_L1C_FLXSYN", productDescriptor));
+        verify(ncFile).findDimension("number_of_across_track_samples");
+        verify(ncFile).findDimension("number_of_along_track_samples");
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testInitializeOperationMode_falsePreferenceDoesNotCreateOperationModeObjects() throws Exception {
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String oldValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
@@ -952,6 +1007,22 @@ public class FlexProductReaderTest {
         method.invoke(reader);
     }
 
+    private int invokeResolveProductWidth(FlexProductReader reader, String productType,
+                                          FlexProductDescriptor productDescriptor) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "resolveProductWidth", String.class, FlexProductDescriptor.class);
+        method.setAccessible(true);
+        return (int) method.invoke(reader, productType, productDescriptor);
+    }
+
+    private int invokeResolveProductHeight(FlexProductReader reader, String productType,
+                                           FlexProductDescriptor productDescriptor) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "resolveProductHeight", String.class, FlexProductDescriptor.class);
+        method.setAccessible(true);
+        return (int) method.invoke(reader, productType, productDescriptor);
+    }
+
     private NetcdfFile invokeOpenFlexNetcdfFile(FlexProductReader reader) throws Exception {
         final Method method = FlexProductReader.class.getDeclaredMethod("openFlexNetcdfFile", File.class, String.class);
         method.setAccessible(true);
@@ -993,6 +1064,13 @@ public class FlexProductReaderTest {
         final Field field = FlexProductReader.class.getDeclaredField(name);
         field.setAccessible(true);
         field.set(reader, value);
+    }
+
+    private static FlexProductDescriptor productDescriptor(int width, int height) {
+        final FlexProductDescriptor descriptor = new FlexProductDescriptor();
+        descriptor.setWidth(width);
+        descriptor.setHeight(height);
+        return descriptor;
     }
 
     private static void addSpectralBand(Product product, String name, float wavelength) {
