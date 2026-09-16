@@ -35,6 +35,8 @@ public class FlexDirectNetcdfBandReaderTest {
 
         writer.addDimension("number_of_along_track_samples", HEIGHT);
         writer.addDimension("number_of_across_track_samples", WIDTH);
+        writer.addDimension("number_of_northing_pixels", HEIGHT);
+        writer.addDimension("number_of_easting_pixels", WIDTH);
         writer.addDimension("number_of_floris_spectral_channels", CHANNELS);
         writer.addDimension("two", 2);
         writer.addDimension("one", 1);
@@ -43,6 +45,10 @@ public class FlexDirectNetcdfBandReaderTest {
                 "number_of_along_track_samples number_of_across_track_samples");
         final Variable data2dTransposed = writer.addVariable("data2d_transposed", DataType.INT,
                 "number_of_across_track_samples number_of_along_track_samples");
+        final Variable l2Data2d = writer.addVariable("l2_data2d", DataType.INT,
+                "number_of_northing_pixels number_of_easting_pixels");
+        final Variable l2Data2dTransposed = writer.addVariable("l2_data2d_transposed", DataType.INT,
+                "number_of_easting_pixels number_of_northing_pixels");
         final Variable data3d = writer.addVariable("data3d", DataType.INT,
                 "number_of_along_track_samples number_of_across_track_samples number_of_floris_spectral_channels");
         final Variable doubleData = writer.addVariable("double_data", DataType.DOUBLE, "one two");
@@ -54,6 +60,8 @@ public class FlexDirectNetcdfBandReaderTest {
         try {
             writer.write(data2d, Array.factory(DataType.INT, new int[]{HEIGHT, WIDTH}, create2dData()));
             writer.write(data2dTransposed, Array.factory(DataType.INT, new int[]{WIDTH, HEIGHT}, createTransposed2dData()));
+            writer.write(l2Data2d, Array.factory(DataType.INT, new int[]{HEIGHT, WIDTH}, create2dData()));
+            writer.write(l2Data2dTransposed, Array.factory(DataType.INT, new int[]{WIDTH, HEIGHT}, createTransposed2dData()));
             writer.write(data3d, Array.factory(DataType.INT, new int[]{HEIGHT, WIDTH, CHANNELS}, create3dData()));
             writer.write(doubleData, Array.factory(DataType.DOUBLE, new int[]{1, 2}, new double[]{1.5, 2.5}));
             writer.write(floatData, Array.factory(DataType.FLOAT, new int[]{1, 2}, new float[]{3.5f, 4.5f}));
@@ -91,6 +99,18 @@ public class FlexDirectNetcdfBandReaderTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testRead2dFullBlockForL2NorthingEastingDimensions() throws IOException {
+        final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
+
+        new FlexDirectNetcdfBandReader().read(netcdfFile.findVariable("l2_data2d"), ProductData.TYPE_INT32,
+                1, 1, 2, 2,
+                1, 1, 2, 2, dest);
+
+        assertArrayEquals(new int[]{11, 12, 21, 22}, (int[]) dest.getElems());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testRead2dWithSubsamplingUsesNetcdfStride() throws IOException {
         final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
 
@@ -107,6 +127,18 @@ public class FlexDirectNetcdfBandReaderTest {
         final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
 
         new FlexDirectNetcdfBandReader().read(netcdfFile.findVariable("data2d_transposed"), ProductData.TYPE_INT32,
+                1, 1, 2, 2,
+                1, 1, 2, 2, dest);
+
+        assertArrayEquals(new int[]{11, 12, 21, 22}, (int[]) dest.getElems());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testRead2dNormalizesTransposedL2EastingNorthingDimensionsToRowMajorYX() throws IOException {
+        final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
+
+        new FlexDirectNetcdfBandReader().read(netcdfFile.findVariable("l2_data2d_transposed"), ProductData.TYPE_INT32,
                 1, 1, 2, 2,
                 1, 1, 2, 2, dest);
 
