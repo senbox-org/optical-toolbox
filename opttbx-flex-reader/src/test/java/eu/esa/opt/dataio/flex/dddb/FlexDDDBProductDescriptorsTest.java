@@ -33,6 +33,25 @@ public class FlexDDDBProductDescriptorsTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testLoadL1bProductDescriptor_versionedResources() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        assertDddbResourceExists("FLX_L1B_OBS/FLX_L1B_OBS_03.02.json");
+        final FlexProductDescriptor descriptor = dddb.getProductDescriptor("FLX_L1B_OBS", "03.02");
+        assertEquals("FLX_L1B_OBS", descriptor.getProductType());
+        assertEquals("number_of_across_track_samples", descriptor.getWidthDimensionName());
+        for (String dataFile : descriptor.getDataFiles()) {
+            assertDddbResourceExists("FLX_L1B_OBS/variables_03.02/" + dataFile + "_03.02.json");
+        }
+
+        final FlexVariableDescriptor[] descriptors =
+                dddb.getVariableDescriptors("measurement_data_hre1", "FLX_L1B_OBS", "03.02");
+        assertEquals(280, descriptors.length);
+        assertEquals("FLORIS_HR1B_1_radiance", descriptors[0].getName());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testLoadL1cProductDescriptor() throws IOException {
         final FlexProductDescriptor descriptor = FlexDDDB.getInstance().getProductDescriptor("FLX_L1C_FLXSYN");
 
@@ -55,6 +74,40 @@ public class FlexDDDBProductDescriptorsTest {
         assertEquals("number_of_northing_pixels", descriptor.getHeightDimensionName());
         assertEquals(5, descriptor.getDataFiles().length);
         assertEquals(0, descriptor.getFlagMasks().length);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testLoadL1cProductDescriptor_versionedResources() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexProductDescriptor oldDescriptor = dddb.getProductDescriptor("FLX_L1C_FLXSYN", "03.02");
+        assertEquals("Measurement_data", oldDescriptor.getDimensionGroupPath());
+        assertEquals("number_of_across_track_samples", oldDescriptor.getWidthDimensionName());
+        assertEquals("number_of_along_track_samples", oldDescriptor.getHeightDimensionName());
+        assertFalse(oldDescriptor.getBandGroupingPattern().contains("floris_toa_radiance_coregis_uncertainty_ch_*"));
+
+        final FlexProductDescriptor newDescriptor = dddb.getProductDescriptor("FLX_L1C_FLXSYN", "04.02");
+        assertEquals("Measurement_data", newDescriptor.getDimensionGroupPath());
+        assertTrue(newDescriptor.getBandGroupingPattern().contains("floris_toa_radiance_coregis_uncertainty_ch_*"));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testLoadL2ProductDescriptor_versionedResources() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexProductDescriptor oldDescriptor = dddb.getProductDescriptor("FLX_L2_FLXSYN", "03.02");
+        assertEquals("L2_Atmosphere", oldDescriptor.getDimensionGroupPath());
+        assertEquals("number_of_across_track_samples", oldDescriptor.getWidthDimensionName());
+        assertEquals("number_of_along_track_samples", oldDescriptor.getHeightDimensionName());
+        assertTrue(oldDescriptor.getFlagMasks().length > 0);
+
+        final FlexProductDescriptor newDescriptor = dddb.getProductDescriptor("FLX_L2_FLXSYN", "04.01");
+        assertEquals("L2_Atmosphere", newDescriptor.getDimensionGroupPath());
+        assertEquals("number_of_easting_pixels", newDescriptor.getWidthDimensionName());
+        assertEquals("number_of_northing_pixels", newDescriptor.getHeightDimensionName());
+        assertEquals(0, newDescriptor.getFlagMasks().length);
     }
 
     @Test
@@ -194,6 +247,22 @@ public class FlexDDDBProductDescriptorsTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testLoadL1cMeasurementData_oldVersion() throws IOException {
+        final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors(
+                "measurement_data", "FLX_L1C_FLXSYN", "03.02");
+
+        assertEquals(11, vars.length);
+        assertDescriptorMissing(vars, "floris_toa_radiance_coregis_uncertainty");
+
+        final FlexVariableDescriptor florisRadiance = findDescriptor(vars, "floris_toa_radiance");
+        assertEquals("float64", florisRadiance.getDataType());
+
+        final FlexVariableDescriptor tirRadiance = findDescriptor(vars, "slstr_nadir_tir_toa_radiance");
+        assertEquals("float64", tirRadiance.getDataType());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testLoadL2VariableDescriptors_allFiles() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
         final FlexProductDescriptor pd = dddb.getProductDescriptor("FLX_L2_FLXSYN");
@@ -231,6 +300,19 @@ public class FlexDDDBProductDescriptorsTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testLoadL2Quality_oldVersion() throws IOException {
+        final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors(
+                "quality", "FLX_L2_FLXSYN", "03.02");
+
+        assertEquals(1, vars.length);
+
+        final FlexVariableDescriptor qualityFlags = findDescriptor(vars, "quality_flags");
+        assertEquals("L2_Quality", qualityFlags.getNcGroupPath());
+        assertEquals("int16", qualityFlags.getDataType());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testLoadL1cAndL2VariableDescriptors_includeCurrentScaleOffsetFillValues() throws IOException {
         assertScaleOffsetFillValueCounts("FLX_L1C_FLXSYN", 10, 0, 38, 38);
         assertScaleOffsetFillValueCounts("FLX_L2_FLXSYN", 16, 1, 61, 61);
@@ -244,6 +326,20 @@ public class FlexDDDBProductDescriptorsTest {
         }
         fail("Descriptor not found: " + name);
         return null;
+    }
+
+    private static void assertDescriptorMissing(FlexVariableDescriptor[] descriptors, String name) {
+        for (final FlexVariableDescriptor descriptor : descriptors) {
+            if (descriptor.getName().equals(name)) {
+                fail("Descriptor should not be present: " + name);
+            }
+        }
+    }
+
+    private static void assertDddbResourceExists(String resourceName) {
+        assertNotNull("Missing DDDB resource: " + resourceName,
+                FlexDDDBProductDescriptorsTest.class.getClassLoader()
+                        .getResource("eu/esa/opt/dataio/flex/dddb/" + resourceName));
     }
 
     private static void assertScaleOffsetFillValueCounts(String productType, int expectedScaleFactors,

@@ -1,0 +1,9 @@
+{
+  "productType": "TEST_PRODUCT",
+  "dimensionGroupPath": "Versioned_data",
+  "widthDimensionName": "versioned_width",
+  "heightDimensionName": "versioned_height",
+  "dataFiles": ["test_variables"],
+  "bandGroupingPattern": "versioned_ch_*",
+  "flagMasks": []
+}

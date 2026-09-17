@@ -108,10 +108,11 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final FlexProductHeader header = parser.parse(headerFile);
 
         dddbProductType = FlexReaderUtils.mapProductType(header.getProductType());
-        final FlexProductDescriptor productDescriptor = dddb.getProductDescriptor(dddbProductType);
+        final String dddbVersion = header.getProcessorVersion();
+        final FlexProductDescriptor productDescriptor = dddb.getProductDescriptor(dddbProductType, dddbVersion);
 
         openNcFiles(header);
-        loadDescriptors(productDescriptor, dddbProductType);
+        loadDescriptors(productDescriptor, dddbProductType, dddbVersion);
 
         final int width = resolveProductWidth(productDescriptor);
         final int height = resolveProductHeight(productDescriptor);
@@ -507,9 +508,9 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         }
     }
 
-    private void loadDescriptors(FlexProductDescriptor productDescriptor, String productType) throws IOException {
+    private void loadDescriptors(FlexProductDescriptor productDescriptor, String productType, String version) throws IOException {
         for (final String dataFile : productDescriptor.getDataFiles()) {
-            final FlexVariableDescriptor[] descriptors = dddb.getVariableDescriptors(dataFile, productType);
+            final FlexVariableDescriptor[] descriptors = dddb.getVariableDescriptors(dataFile, productType, version);
             for (final FlexVariableDescriptor descriptor : descriptors) {
                 final String name = descriptor.getName();
                 descriptorToFileMap.put(name, dataFile);

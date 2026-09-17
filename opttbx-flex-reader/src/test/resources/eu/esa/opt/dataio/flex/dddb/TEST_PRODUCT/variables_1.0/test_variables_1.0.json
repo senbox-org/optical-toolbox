@@ -1,0 +1,11 @@
+[
+  {
+    "name": "versioned_radiance",
+    "ncVarName": "versioned_radiance",
+    "ncGroupPath": "Versioned_data",
+    "type": "v",
+    "dataType": "float32",
+    "units": "1",
+    "description": "Versioned test variable"
+  }
+]
