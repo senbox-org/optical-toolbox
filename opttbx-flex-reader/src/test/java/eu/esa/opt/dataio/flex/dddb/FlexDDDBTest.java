@@ -278,7 +278,10 @@ public class FlexDDDBTest {
         final FlexProductDescriptor productDescriptor = dddb.getProductDescriptor("FLX_L2_FLXSYN");
         assertTrue(productDescriptor.getBandGroupingPattern().contains("olci_apparent_reflectance_uncertainty_ch_*"));
         assertTrue(productDescriptor.getBandGroupingPattern().contains("slstr_apparent_reflectance_uncertainty_ch_*"));
-        assertEquals(0, productDescriptor.getFlagMasks().length);
+        assertTrue(productDescriptor.getFlagMasks().length > 0);
+        assertFlagMask(productDescriptor, "quality_flags_atmosphere", "wsa", 1);
+        assertFlagMask(productDescriptor, "quality_flags_s3_reflectance", "saturated_sample_o21", 0x80000000);
+        assertFlagMask(productDescriptor, "pixel_classification", "dense_vegetation", 128);
 
         final FlexVariableDescriptor[] atmosphereDescriptors = dddb.getVariableDescriptors("atmosphere", "FLX_L2_FLXSYN");
         final FlexVariableDescriptor olciUncertainty = findDescriptor(atmosphereDescriptors, "olci_apparent_reflectance_uncertainty");
@@ -320,5 +323,16 @@ public class FlexDDDBTest {
                 fail("Descriptor should not be present: " + name);
             }
         }
+    }
+
+    private static void assertFlagMask(FlexProductDescriptor descriptor, String bandName, String name, int value) {
+        for (final FlexFlagMask flagMask : descriptor.getFlagMasks()) {
+            if (bandName.equals(flagMask.getBandName()) && name.equals(flagMask.getName())) {
+                assertEquals(value, flagMask.getValue());
+                assertTrue(flagMask.isBitmask());
+                return;
+            }
+        }
+        fail("Flag mask not found: " + bandName + "." + name);
     }
 }
