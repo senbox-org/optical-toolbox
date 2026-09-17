@@ -1,7 +1,8 @@
 {
   "productType": "TEST_PRODUCT",
-  "width": 536,
-  "height": 3640,
+  "dimensionGroupPath": "Measurement_data",
+  "widthDimensionName": "number_of_across_track_samples",
+  "heightDimensionName": "number_of_along_track_samples",
   "dataFiles": ["test_variables", "test_flags"],
   "bandGroupingPattern": "radiance_ch_*:reflectance_ch_*",
   "flagMasks": [

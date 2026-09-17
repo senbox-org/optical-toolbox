@@ -17,8 +17,9 @@ public class FlexDDDBProductDescriptorsTest {
         final FlexProductDescriptor descriptor = FlexDDDB.getInstance().getProductDescriptor("FLX_L1B_OBS");
 
         assertEquals("FLX_L1B_OBS", descriptor.getProductType());
-        assertEquals(536, descriptor.getWidth());
-        assertEquals(3640, descriptor.getHeight());
+        assertEquals("Measurement_data", descriptor.getDimensionGroupPath());
+        assertEquals("number_of_across_track_samples", descriptor.getWidthDimensionName());
+        assertEquals("number_of_along_track_samples", descriptor.getHeightDimensionName());
         assertEquals(6, descriptor.getDataFiles().length);
         assertEquals("measurement_data_hre1", descriptor.getDataFiles()[0]);
         assertEquals("measurement_data_hre2", descriptor.getDataFiles()[1]);
@@ -36,8 +37,9 @@ public class FlexDDDBProductDescriptorsTest {
         final FlexProductDescriptor descriptor = FlexDDDB.getInstance().getProductDescriptor("FLX_L1C_FLXSYN");
 
         assertEquals("FLX_L1C_FLXSYN", descriptor.getProductType());
-        assertEquals(536, descriptor.getWidth());
-        assertEquals(3640, descriptor.getHeight());
+        assertEquals("Measurement_data", descriptor.getDimensionGroupPath());
+        assertEquals("number_of_across_track_samples", descriptor.getWidthDimensionName());
+        assertEquals("number_of_along_track_samples", descriptor.getHeightDimensionName());
         assertEquals(7, descriptor.getDataFiles().length);
         assertTrue(descriptor.getFlagMasks().length > 0);
     }
@@ -48,10 +50,11 @@ public class FlexDDDBProductDescriptorsTest {
         final FlexProductDescriptor descriptor = FlexDDDB.getInstance().getProductDescriptor("FLX_L2_FLXSYN");
 
         assertEquals("FLX_L2_FLXSYN", descriptor.getProductType());
-        assertEquals(366, descriptor.getWidth());
-        assertEquals(366, descriptor.getHeight());
+        assertEquals("L2_Atmosphere", descriptor.getDimensionGroupPath());
+        assertEquals("number_of_easting_pixels", descriptor.getWidthDimensionName());
+        assertEquals("number_of_northing_pixels", descriptor.getHeightDimensionName());
         assertEquals(5, descriptor.getDataFiles().length);
-        assertTrue(descriptor.getFlagMasks().length > 0);
+        assertEquals(0, descriptor.getFlagMasks().length);
     }
 
     @Test
@@ -167,7 +170,8 @@ public class FlexDDDBProductDescriptorsTest {
         assertEquals(10, vars.length);
         assertEquals("latitude", vars[0].getName());
         assertEquals("Annotation_data/Geometry", vars[0].getNcGroupPath());
-        assertEquals("float64", vars[0].getDataType());
+        assertEquals("float32", vars[0].getDataType());
+        assertEquals(-999.0, vars[0].getFillValue(), 1.0e-12);
     }
 
     @Test
@@ -180,6 +184,12 @@ public class FlexDDDBProductDescriptorsTest {
         assertEquals(580, vars[0].getDepth());
         assertEquals("_ch_", vars[0].getDepthPrefixToken());
         assertEquals('s', vars[0].getType());
+        assertEquals("float32", vars[0].getDataType());
+
+        final FlexVariableDescriptor olciRadiance = findDescriptor(vars, "olci_toa_radiance");
+        assertEquals("uint16", olciRadiance.getDataType());
+        assertEquals(0.009155552843, olciRadiance.getScaleFactor(), 1.0e-15);
+        assertEquals(65535.0, olciRadiance.getFillValue(), 1.0e-12);
     }
 
     @Test
@@ -221,9 +231,9 @@ public class FlexDDDBProductDescriptorsTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testLoadL1cAndL2VariableDescriptors_keepDefaultScaleOffsetFillValuesImplicit() throws IOException {
-        assertScaleOffsetFillValueCounts("FLX_L1C_FLXSYN", 0, 0, 0, 0);
-        assertScaleOffsetFillValueCounts("FLX_L2_FLXSYN", 0, 0, 0, 0);
+    public void testLoadL1cAndL2VariableDescriptors_includeCurrentScaleOffsetFillValues() throws IOException {
+        assertScaleOffsetFillValueCounts("FLX_L1C_FLXSYN", 10, 0, 38, 38);
+        assertScaleOffsetFillValueCounts("FLX_L2_FLXSYN", 16, 1, 61, 61);
     }
 
     private static FlexVariableDescriptor findDescriptor(FlexVariableDescriptor[] descriptors, String name) {

@@ -28,8 +28,9 @@ public class FlexDDDBTest {
 
         assertNotNull(descriptor);
         assertEquals("TEST_PRODUCT", descriptor.getProductType());
-        assertEquals(536, descriptor.getWidth());
-        assertEquals(3640, descriptor.getHeight());
+        assertEquals("Measurement_data", descriptor.getDimensionGroupPath());
+        assertEquals("number_of_across_track_samples", descriptor.getWidthDimensionName());
+        assertEquals("number_of_along_track_samples", descriptor.getHeightDimensionName());
         assertEquals(2, descriptor.getDataFiles().length);
         assertEquals("test_variables", descriptor.getDataFiles()[0]);
         assertEquals("test_flags", descriptor.getDataFiles()[1]);
@@ -160,5 +161,86 @@ public class FlexDDDBTest {
         final FlexProductDescriptor second = dddb.getProductDescriptor("TEST_PRODUCT");
 
         assertSame(first, second);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testFlexL1CDescriptors_includeCurrentVariables() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexProductDescriptor productDescriptor = dddb.getProductDescriptor("FLX_L1C_FLXSYN");
+        assertTrue(productDescriptor.getBandGroupingPattern().contains("floris_toa_radiance_coregis_uncertainty_ch_*"));
+
+        final FlexVariableDescriptor[] measurementDescriptors = dddb.getVariableDescriptors("measurement_data", "FLX_L1C_FLXSYN");
+        final FlexVariableDescriptor coregisUncertainty = findDescriptor(measurementDescriptors, "floris_toa_radiance_coregis_uncertainty");
+        assertEquals("Measurement_data", coregisUncertainty.getNcGroupPath());
+        assertEquals('s', coregisUncertainty.getType());
+        assertEquals("uint16", coregisUncertainty.getDataType());
+        assertEquals(580, coregisUncertainty.getDepth());
+        assertFalse(coregisUncertainty.isOptional());
+        assertDescriptorMissing(measurementDescriptors, "slstr_nadir_tir_toa_radiance");
+
+        final FlexVariableDescriptor[] qualityDescriptors = dddb.getVariableDescriptors("quality", "FLX_L1C_FLXSYN");
+        final FlexVariableDescriptor olciFlags = findDescriptor(qualityDescriptors, "quality_flags_olci");
+        assertEquals("Annotation_data/Quality", olciFlags.getNcGroupPath());
+        assertEquals('b', olciFlags.getType());
+        assertEquals("uint16", olciFlags.getDataType());
+        assertFalse(olciFlags.isOptional());
+
+        final FlexVariableDescriptor hr1Flags = findDescriptor(qualityDescriptors, "quality_flags_hr1");
+        assertEquals("uint8", hr1Flags.getDataType());
+        assertFalse(hr1Flags.isOptional());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testFlexL2Descriptors_includeCurrentVariables() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexProductDescriptor productDescriptor = dddb.getProductDescriptor("FLX_L2_FLXSYN");
+        assertTrue(productDescriptor.getBandGroupingPattern().contains("olci_apparent_reflectance_uncertainty_ch_*"));
+        assertTrue(productDescriptor.getBandGroupingPattern().contains("slstr_apparent_reflectance_uncertainty_ch_*"));
+        assertEquals(0, productDescriptor.getFlagMasks().length);
+
+        final FlexVariableDescriptor[] atmosphereDescriptors = dddb.getVariableDescriptors("atmosphere", "FLX_L2_FLXSYN");
+        final FlexVariableDescriptor olciUncertainty = findDescriptor(atmosphereDescriptors, "olci_apparent_reflectance_uncertainty");
+        assertEquals("L2_Atmosphere", olciUncertainty.getNcGroupPath());
+        assertEquals('s', olciUncertainty.getType());
+        assertEquals("uint16", olciUncertainty.getDataType());
+        assertEquals(21, olciUncertainty.getDepth());
+        assertFalse(olciUncertainty.isOptional());
+
+        final FlexVariableDescriptor[] qualityDescriptors = dddb.getVariableDescriptors("quality", "FLX_L2_FLXSYN");
+        assertDescriptorMissing(qualityDescriptors, "quality_flags");
+
+        final FlexVariableDescriptor atmosphereFlags = findDescriptor(qualityDescriptors, "quality_flags_atmosphere");
+        assertEquals("Quality", atmosphereFlags.getNcGroupPath());
+        assertEquals('b', atmosphereFlags.getType());
+        assertEquals("uint8", atmosphereFlags.getDataType());
+        assertFalse(atmosphereFlags.isOptional());
+
+        final FlexVariableDescriptor s3Flags = findDescriptor(qualityDescriptors, "quality_flags_s3_reflectance");
+        assertEquals("uint32", s3Flags.getDataType());
+
+        final FlexVariableDescriptor pixelClassification = findDescriptor(qualityDescriptors, "pixel_classification");
+        assertEquals("uint16", pixelClassification.getDataType());
+    }
+
+    private static FlexVariableDescriptor findDescriptor(FlexVariableDescriptor[] descriptors, String name) {
+        for (final FlexVariableDescriptor descriptor : descriptors) {
+            if (name.equals(descriptor.getName())) {
+                return descriptor;
+            }
+        }
+        fail("Descriptor not found: " + name);
+        return null;
+    }
+
+    private static void assertDescriptorMissing(FlexVariableDescriptor[] descriptors, String name) {
+        for (final FlexVariableDescriptor descriptor : descriptors) {
+            if (name.equals(descriptor.getName())) {
+                fail("Descriptor should not be present: " + name);
+            }
+        }
     }
 }

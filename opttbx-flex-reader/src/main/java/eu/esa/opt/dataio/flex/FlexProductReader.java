@@ -49,10 +49,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private static final String LATITUDE_BAND_NAME = "latitude";
     private static final String LONGITUDE_BAND_NAME = "longitude";
     private static final double FLEX_RESOLUTION_KM = 0.3;
-    private static final String DIM_ACROSS_TRACK = "number_of_across_track_samples";
-    private static final String DIM_ALONG_TRACK = "number_of_along_track_samples";
-    private static final String DIM_EASTING_PIXELS = "number_of_easting_pixels";
-    private static final String DIM_NORTHING_PIXELS = "number_of_northing_pixels";
     public static final String PREFERENCE_KEY_ENABLE_CACHE = "opttbx.flex.reader.enable.cache";
     public static final String PREFERENCE_KEY_ENABLE_NATIVE_NETCDF = "opttbx.flex.reader.enable.native.netcdf";
     public static final boolean CACHE_ENABLED_DEFAULT = false;
@@ -117,8 +113,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         openNcFiles(header);
         loadDescriptors(productDescriptor, dddbProductType);
 
-        final int width = resolveProductWidth(dddbProductType, productDescriptor);
-        final int height = resolveProductHeight(dddbProductType, productDescriptor);
+        final int width = resolveProductWidth(productDescriptor);
+        final int height = resolveProductHeight(productDescriptor);
 
         final Product product = new Product(header.getProductName(), dddbProductType, width, height, this);
 
@@ -391,57 +387,29 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         return data;
     }
 
-    private int resolveProductWidth(String productType, FlexProductDescriptor productDescriptor) {
-        final String dim = getWidthDimensionName(productType);
-        return resolveProductDimension("width", dim, productDescriptor.getWidth());
+    private int resolveProductWidth(FlexProductDescriptor productDescriptor) throws IOException {
+        return resolveProductDimension("width", productDescriptor.getWidthDimensionName(), productDescriptor.getDimensionGroupPath());
     }
 
-    private int resolveProductHeight(String productType, FlexProductDescriptor productDescriptor) {
-        final String dim = getHeightDimensionName(productType);
-        return resolveProductDimension("height", dim, productDescriptor.getHeight());
+    private int resolveProductHeight(FlexProductDescriptor productDescriptor) throws IOException {
+        return resolveProductDimension("height", productDescriptor.getHeightDimensionName(), productDescriptor.getDimensionGroupPath());
     }
 
-    private int resolveProductDimension(String dimensionType, String dimName, int dddbDefault) {
-        final String groupPath = findFirstGroupPath();
+    private int resolveProductDimension(String dimensionType, String dimName, String groupPath) throws IOException {
+        if (dimName == null || dimName.isEmpty()) {
+            throw new IOException("Missing DDDB " + dimensionType + " dimension name for product type: " + dddbProductType);
+        }
 
         for (final NetcdfFile ncFile : ncFilesMap.values()) {
             final int resolved = compatibility.resolveDimension(ncFile, groupPath, dimName, DIMENSION_NOT_FOUND);
 
             if (resolved != DIMENSION_NOT_FOUND) {
-                if (resolved != dddbDefault) {
-                    logger.fine("Resolved product " + dimensionType + " from netCDF dimension '" + dimName
-                            + "': " + resolved + " (DDDB default: " + dddbDefault + ")");
-                }
+                logger.fine("Resolved product " + dimensionType + " from netCDF dimension '" + dimName + "': " + resolved);
                 return resolved;
             }
         }
 
-        logger.warning("Cannot resolve product " + dimensionType + " from netCDF dimension '" + dimName
-                + "'. Falling back to DDDB default: " + dddbDefault);
-        return dddbDefault;
-    }
-
-    private static String getWidthDimensionName(String productType) {
-        return FlexSpectralHelper.isL2Product(productType) ? DIM_EASTING_PIXELS : DIM_ACROSS_TRACK;
-    }
-
-    private static String getHeightDimensionName(String productType) {
-        return FlexSpectralHelper.isL2Product(productType) ? DIM_NORTHING_PIXELS : DIM_ALONG_TRACK;
-    }
-
-
-    private String findFirstGroupPath() {
-        for (final FlexVariableDescriptor descriptor : variablesMap.values()) {
-            if (descriptor.getNcGroupPath() != null && !descriptor.getNcGroupPath().isEmpty()) {
-                return descriptor.getNcGroupPath();
-            }
-        }
-        for (final FlexVariableDescriptor descriptor : specialsMap.values()) {
-            if (descriptor.getNcGroupPath() != null && !descriptor.getNcGroupPath().isEmpty()) {
-                return descriptor.getNcGroupPath();
-            }
-        }
-        return "";
+        throw new IOException("Cannot resolve product " + dimensionType + " from netCDF dimension '" + dimName + "'");
     }
 
 
@@ -571,7 +539,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     private void addBand(Product product, FlexVariableDescriptor descriptor) {
-        final int dataType = ProductData.getType(descriptor.getDataType());
         final String bandName = descriptor.getName();
 
         final Variable ncVariable = findNcVariable(descriptor);
@@ -582,6 +549,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             return;
         }
 
+        final int dataType = ProductData.getType(descriptor.getDataType());
         final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
 
         band.setDescription(descriptor.getDescription());
@@ -595,7 +563,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
     private void addFlagBand(Product product, FlexVariableDescriptor descriptor,
                              FlexProductDescriptor productDescriptor) {
-        final int dataType = ProductData.getType(descriptor.getDataType());
         final String bandName = descriptor.getName();
 
         final Variable ncVariable = findNcVariable(descriptor);
@@ -606,6 +573,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             return;
         }
 
+        final int dataType = ProductData.getType(descriptor.getDataType());
         final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(descriptor.getDescription());
 
@@ -628,7 +596,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
     private void addBitmaskFlagBand(Product product, FlexVariableDescriptor descriptor,
                                     FlexProductDescriptor productDescriptor) {
-        final int dataType = ProductData.getType(descriptor.getDataType());
         final String bandName = descriptor.getName();
 
         final Variable ncVariable = findNcVariable(descriptor);
@@ -639,6 +606,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             return;
         }
 
+        final int dataType = ProductData.getType(descriptor.getDataType());
         final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(descriptor.getDescription());
 

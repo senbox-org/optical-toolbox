@@ -3,16 +3,18 @@ package eu.esa.opt.dataio.flex.dddb;
 public class FlexProductDescriptor {
 
     private String productType;
-    private int width;
-    private int height;
+    private String dimensionGroupPath;
+    private String widthDimensionName;
+    private String heightDimensionName;
     private String[] dataFiles;
     private String bandGroupingPattern;
     private FlexFlagMask[] flagMasks;
 
     public FlexProductDescriptor() {
         productType = "";
-        width = -1;
-        height = -1;
+        dimensionGroupPath = "";
+        widthDimensionName = "";
+        heightDimensionName = "";
         dataFiles = new String[0];
         bandGroupingPattern = "";
         flagMasks = new FlexFlagMask[0];
@@ -26,20 +28,28 @@ public class FlexProductDescriptor {
         this.productType = productType;
     }
 
-    public int getWidth() {
-        return width;
+    public String getDimensionGroupPath() {
+        return dimensionGroupPath;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setDimensionGroupPath(String dimensionGroupPath) {
+        this.dimensionGroupPath = dimensionGroupPath;
     }
 
-    public int getHeight() {
-        return height;
+    public String getWidthDimensionName() {
+        return widthDimensionName;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setWidthDimensionName(String widthDimensionName) {
+        this.widthDimensionName = widthDimensionName;
+    }
+
+    public String getHeightDimensionName() {
+        return heightDimensionName;
+    }
+
+    public void setHeightDimensionName(String heightDimensionName) {
+        this.heightDimensionName = heightDimensionName;
     }
 
     public String[] getDataFiles() {
