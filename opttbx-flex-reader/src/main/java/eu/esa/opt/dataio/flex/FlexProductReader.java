@@ -500,8 +500,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final String stopTime = header.getStopTime();
         if (!stopTime.isEmpty()) {
             try {
-                String normalizedStartTime = startTime.replace("Z", "");
-                product.setEndTime(ProductData.UTC.parse(normalizedStartTime, "yyyy-MM-dd'T'HH:mm:ss"));
+                String normalizedStopTime = stopTime.replace("Z", "");
+                product.setEndTime(ProductData.UTC.parse(normalizedStopTime, "yyyy-MM-dd'T'HH:mm:ss"));
             } catch (ParseException e) {
                 logger.warning("Cannot parse stop time: " + stopTime);
             }

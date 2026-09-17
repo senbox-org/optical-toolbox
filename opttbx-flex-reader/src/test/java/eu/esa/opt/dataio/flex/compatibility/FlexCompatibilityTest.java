@@ -89,6 +89,18 @@ public class FlexCompatibilityTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testStandard_resolveDimension_nullGroupPathReturnsDefault() {
+        final StandardFlexCompatibility compat = new StandardFlexCompatibility();
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findDimension("rows")).thenReturn(null);
+
+        assertEquals(3640, compat.resolveDimension(ncFile, null, "rows", 3640));
+        assertEquals(3640, compat.resolveDimension(ncFile, "", "rows", 3640));
+        verify(ncFile, never()).findGroup(anyString());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testStandard_resolveDimension_groupFoundButDimensionMissing_returnsDefault() {
         final StandardFlexCompatibility compat = new StandardFlexCompatibility();
         final NetcdfFile ncFile = mock(NetcdfFile.class);

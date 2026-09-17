@@ -89,6 +89,12 @@ public class FlexDDDBTest {
         FlexDDDB.getInstance().getProductDescriptor("NON_EXISTENT_PRODUCT");
     }
 
+    @Test(expected = IOException.class)
+    @STTM("SNAP-4126")
+    public void testGetProductDescriptor_malformedJsonThrowsIOException() throws IOException {
+        FlexDDDB.getInstance().getProductDescriptor("BROKEN_PRODUCT");
+    }
+
     @Test
     @STTM("SNAP-4126")
     public void testGetVariableDescriptors() throws IOException {
@@ -192,6 +198,12 @@ public class FlexDDDBTest {
     @STTM("SNAP-4126")
     public void testGetVariableDescriptors_nonExistentFile() throws IOException {
         FlexDDDB.getInstance().getVariableDescriptors("non_existent", "TEST_PRODUCT");
+    }
+
+    @Test(expected = IOException.class)
+    @STTM("SNAP-4126")
+    public void testGetVariableDescriptors_malformedJsonThrowsIOException() throws IOException {
+        FlexDDDB.getInstance().getVariableDescriptors("broken_variables", "BROKEN_PRODUCT");
     }
 
     @Test
