@@ -264,6 +264,23 @@ public class FlexReaderUtilsTest {
         assertEquals(0, element.getNumAttributes());
     }
 
+    @Test
+    @STTM("SNAP-4126")
+    public void testExtractMetadata_ignoresUnsupportedAttributeDataType() throws Exception {
+        final Attribute attribute = mock(Attribute.class);
+        when(attribute.getDataType()).thenReturn(DataType.STRUCTURE);
+        when(attribute.getValues()).thenReturn(Array.factory(DataType.INT, new int[]{1}, new int[]{7}));
+
+        final Variable variable = mock(Variable.class);
+        when(variable.getFullName()).thenReturn("var");
+        when(variable.getAttributes()).thenReturn(Collections.singletonList(attribute));
+        when(variable.getDataType()).thenReturn(DataType.STRING);
+
+        final MetadataElement element = FlexReaderUtils.extractMetadata(variable);
+
+        assertEquals(0, element.getNumAttributes());
+    }
+
     @Test(expected = IOException.class)
     @STTM("SNAP-4126")
     public void testExtractMetadata_readThrowsIOException() throws Exception {
