@@ -52,34 +52,6 @@ public class FlexReaderUtils {
 
 
 
-    public static void setScaleAndOffset(Band band, Variable ncVariable) {
-        final Attribute scaleFactor = ncVariable.findAttribute("scale_factor");
-        if (scaleFactor != null) {
-            final Double scale = getNumericAttributeValue(scaleFactor);
-            if (scale != null) {
-                band.setScalingFactor(scale);
-            }
-        }
-        final Attribute addOffset = ncVariable.findAttribute("add_offset");
-        if (addOffset != null) {
-            final Double offset = getNumericAttributeValue(addOffset);
-            if (offset != null) {
-                band.setScalingOffset(offset);
-            }
-        }
-    }
-
-    public static void setFillValue(Band band, Variable ncVariable) {
-        final Attribute fillValue = ncVariable.findAttribute("_FillValue");
-        if (fillValue != null) {
-            final Double value = getNumericAttributeValue(fillValue);
-            if (value != null) {
-                band.setNoDataValue(value);
-                band.setNoDataValueUsed(true);
-            }
-        }
-    }
-
     public static void setScaleOffsetAndFillValue(Band band, FlexVariableDescriptor descriptor) {
         if (Double.compare(descriptor.getScaleFactor(), 1.0) != 0) {
             band.setScalingFactor(descriptor.getScaleFactor());
@@ -93,22 +65,6 @@ public class FlexReaderUtils {
             band.setNoDataValueUsed(true);
         }
     }
-
-    private static Double getNumericAttributeValue(Attribute attribute) {
-        final Number numericValue = attribute.getNumericValue();
-        if (numericValue != null) {
-            return numericValue.doubleValue();
-        }
-        final String stringValue = attribute.getStringValue();
-        if (stringValue != null) {
-            try {
-                return Double.parseDouble(stringValue.trim());
-            } catch (NumberFormatException ignored) {
-            }
-        }
-        return null;
-    }
-
 
     public static void setSpectralWavelength(Band band, Product product, String metaElementName, int elementIndex) {
         final Float value = getSpectralValue(product, metaElementName, elementIndex);

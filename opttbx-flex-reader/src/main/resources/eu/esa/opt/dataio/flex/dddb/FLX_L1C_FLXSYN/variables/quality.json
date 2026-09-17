@@ -7,5 +7,50 @@
     "dataType": "int16",
     "units": "",
     "description": "Quality flags"
+  },
+  {
+    "name": "quality_flags_olci",
+    "ncVarName": "quality_flags_olci",
+    "ncGroupPath": "Annotation_data/Quality",
+    "type": "b",
+    "dataType": "uint16",
+    "units": "",
+    "description": "OLCI quality flags"
+  },
+  {
+    "name": "quality_flags_slstr",
+    "ncVarName": "quality_flags_slstr",
+    "ncGroupPath": "Annotation_data/Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "SLSTR quality flags"
+  },
+  {
+    "name": "quality_flags_hr1",
+    "ncVarName": "quality_flags_hr1",
+    "ncGroupPath": "Annotation_data/Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "FLORIS-HR1 quality flags"
+  },
+  {
+    "name": "quality_flags_hr2",
+    "ncVarName": "quality_flags_hr2",
+    "ncGroupPath": "Annotation_data/Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "FLORIS-HR2 quality flags"
+  },
+  {
+    "name": "quality_flags_lr",
+    "ncVarName": "quality_flags_lr",
+    "ncGroupPath": "Annotation_data/Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "FLORIS-LR quality flags"
   }
 ]

@@ -1,7 +1,8 @@
 {
   "productType": "FLX_L1B_OBS",
-  "width": 536,
-  "height": 3640,
+  "dimensionGroupPath": "Measurement_data",
+  "widthDimensionName": "number_of_across_track_samples",
+  "heightDimensionName": "number_of_along_track_samples",
   "dataFiles": [
     "measurement_data_hre1", "measurement_data_hre2", "measurement_data_lres",
     "annotation_data_hre1", "annotation_data_hre2", "annotation_data_lres"

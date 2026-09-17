@@ -5,9 +5,10 @@
     "ncGroupPath": "Annotation_data/Datation",
     "type": "m",
     "dataType": "int64",
-    "width": 3640,
+    "width": 4138,
     "height": 1,
-    "units": "microseconds since 2000-01-01",
-    "description": "Acquisition time stamp per along-track line"
+    "units": "microseconds",
+    "description": "Elapsed time since 01 Jan 2000",
+    "fillValue": -1
   }
 ]
