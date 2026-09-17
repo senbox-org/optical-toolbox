@@ -39,6 +39,33 @@ public class FlexDDDBTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testGetProductDescriptor_withVersion() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexProductDescriptor descriptor = dddb.getProductDescriptor("TEST_PRODUCT", "1.0");
+
+        assertNotNull(descriptor);
+        assertEquals("TEST_PRODUCT", descriptor.getProductType());
+        assertEquals("Versioned_data", descriptor.getDimensionGroupPath());
+        assertEquals("versioned_width", descriptor.getWidthDimensionName());
+        assertEquals("versioned_height", descriptor.getHeightDimensionName());
+        assertEquals("versioned_ch_*", descriptor.getBandGroupingPattern());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testGetProductDescriptor_withMissingVersionFallsBackToDefault() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexProductDescriptor descriptor = dddb.getProductDescriptor("TEST_PRODUCT", "9.9");
+
+        assertNotNull(descriptor);
+        assertEquals("Measurement_data", descriptor.getDimensionGroupPath());
+        assertEquals("radiance_ch_*:reflectance_ch_*", descriptor.getBandGroupingPattern());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testGetProductDescriptor_flagMasks() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
@@ -83,6 +110,32 @@ public class FlexDDDBTest {
 
         assertEquals("longitude", descriptors[1].getName());
         assertEquals("degrees_east", descriptors[1].getUnits());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testGetVariableDescriptors_withVersion() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexVariableDescriptor[] descriptors = dddb.getVariableDescriptors("test_variables", "TEST_PRODUCT", "1.0");
+
+        assertNotNull(descriptors);
+        assertEquals(1, descriptors.length);
+        assertEquals("versioned_radiance", descriptors[0].getName());
+        assertEquals("Versioned_data", descriptors[0].getNcGroupPath());
+        assertEquals("float32", descriptors[0].getDataType());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testGetVariableDescriptors_withMissingVersionFallsBackToDefault() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexVariableDescriptor[] descriptors = dddb.getVariableDescriptors("test_variables", "TEST_PRODUCT", "9.9");
+
+        assertNotNull(descriptors);
+        assertEquals(4, descriptors.length);
+        assertEquals("latitude", descriptors[0].getName());
     }
 
     @Test
@@ -161,6 +214,19 @@ public class FlexDDDBTest {
         final FlexProductDescriptor second = dddb.getProductDescriptor("TEST_PRODUCT");
 
         assertSame(first, second);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testResourceNames() {
+        assertEquals("TEST_PRODUCT/TEST_PRODUCT.json",
+                FlexDDDB.getProductResourceName("TEST_PRODUCT", null));
+        assertEquals("TEST_PRODUCT/TEST_PRODUCT_1.0.json",
+                FlexDDDB.getProductResourceName("TEST_PRODUCT", "1.0"));
+        assertEquals("TEST_PRODUCT/variables/test_variables.json",
+                FlexDDDB.getVariableResourceName("test_variables", "TEST_PRODUCT", null));
+        assertEquals("TEST_PRODUCT/variables_1.0/test_variables_1.0.json",
+                FlexDDDB.getVariableResourceName("test_variables", "TEST_PRODUCT", "1.0"));
     }
 
     @Test

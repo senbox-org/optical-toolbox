@@ -1,0 +1,210 @@
+[
+  {
+    "name": "leaf_area_index",
+    "ncVarName": "leaf_area_index",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "m2.m-2",
+    "description": "Leaf area index",
+    "fillValue": -1
+  },
+  {
+    "name": "leaf_area_index_uncertainty",
+    "ncVarName": "leaf_area_index_uncertainty",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "m2.m-2",
+    "description": "Leaf area index uncertainty",
+    "fillValue": -1
+  },
+  {
+    "name": "leaf_chlorophyll_content",
+    "ncVarName": "leaf_chlorophyll_content",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "ug.cm-2",
+    "description": "Leaf chlorophyll content",
+    "fillValue": -1
+  },
+  {
+    "name": "leaf_chlorophyll_content_uncertainty",
+    "ncVarName": "leaf_chlorophyll_content_uncertainty",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "ug.cm-2",
+    "description": "Leaf chlorophyll content uncertainty",
+    "fillValue": -1
+  },
+  {
+    "name": "leaf_carotenoid_content",
+    "ncVarName": "leaf_carotenoid_content",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "ug.cm-2",
+    "description": "Leaf carotenoid content",
+    "fillValue": -1
+  },
+  {
+    "name": "leaf_carotenoid_content_uncertainty",
+    "ncVarName": "leaf_carotenoid_content_uncertainty",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "ug.cm-2",
+    "description": "Leaf carotenoid content uncertainty",
+    "fillValue": -1
+  },
+  {
+    "name": "fapar_chlorophyll",
+    "ncVarName": "fapar_chlorophyll",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.umol-1",
+    "description": "Fraction of absorbed PAR by chlorophyll",
+    "fillValue": -1
+  },
+  {
+    "name": "fapar_chlorophyll_uncertainty",
+    "ncVarName": "fapar_chlorophyll_uncertainty",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.umol-1",
+    "description": "Fraction of absorbed PAR by chlorophyll uncertainty",
+    "fillValue": -1
+  },
+  {
+    "name": "apar_chlorophyll_photons",
+    "ncVarName": "apar_chlorophyll_photons",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.photons.m-2.s-1",
+    "description": "Absorbed PAR by chlorophyll photons",
+    "fillValue": -1
+  },
+  {
+    "name": "apar_chlorophyll_photons_uncertainty",
+    "ncVarName": "apar_chlorophyll_photons_uncertainty",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.photons.m-2.s-1",
+    "description": "Absorbed PAR by chlorophyll photons uncertainty",
+    "fillValue": -1
+  },
+  {
+    "name": "fraction_of_absorbed_photosynthetically_active_radiation",
+    "ncVarName": "fraction_of_absorbed_photosynthetically_active_radiation",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.umol-1",
+    "description": "Fraction of absorbed photosynthetically active radiation",
+    "fillValue": -1
+  },
+  {
+    "name": "fraction_of_absorbed_photosynthetically_active_radiation_uncertainty",
+    "ncVarName": "fraction_of_absorbed_photosynthetically_active_radiation_uncertainty",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "",
+    "description": "FAPAR uncertainty",
+    "fillValue": -1
+  },
+  {
+    "name": "reversible_energy_dissipation",
+    "ncVarName": "reversible_energy_dissipation",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.m-2.s-1",
+    "description": "Reversible energy dissipation",
+    "fillValue": -1
+  },
+  {
+    "name": "electron_transport_rate",
+    "ncVarName": "electron_transport_rate",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.m-2.s-1",
+    "description": "Electron transport rate",
+    "fillValue": -1
+  },
+  {
+    "name": "electron_transport_rate_uncertainty",
+    "ncVarName": "electron_transport_rate_uncertainty",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.m-2.s-1",
+    "description": "Electron transport rate uncertainty",
+    "fillValue": -1
+  },
+  {
+    "name": "fluorescence_quantum_efficiency",
+    "ncVarName": "fluorescence_quantum_efficiency",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.umol-1",
+    "description": "Fluorescence quantum efficiency",
+    "fillValue": -1
+  },
+  {
+    "name": "fluorescence_quantum_efficiency_uncertainty",
+    "ncVarName": "fluorescence_quantum_efficiency_uncertainty",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "umol.umol-1",
+    "description": "Fluorescence quantum efficiency uncertainty",
+    "fillValue": -1
+  },
+  {
+    "name": "fluorescence_escape_probability",
+    "ncVarName": "fluorescence_escape_probability",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "s",
+    "dataType": "uint16",
+    "depth": 111,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "sif_wavelength_grid",
+    "units": "",
+    "description": "Fluorescence escape probability",
+    "scaleFactor": 0.00001525925474,
+    "fillValue": 65535
+  },
+  {
+    "name": "fluorescence_escape_probability_uncertainty",
+    "ncVarName": "fluorescence_escape_probability_uncertainty",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "s",
+    "dataType": "uint16",
+    "depth": 111,
+    "depthPrefixToken": "_ch_",
+    "wavelengthReference": "sif_wavelength_grid",
+    "units": "",
+    "description": "Fluorescence escape probability uncertainty",
+    "scaleFactor": 0.00001525925474,
+    "fillValue": 65535
+  },
+  {
+    "name": "PSI_PSII_relative_contribution",
+    "ncVarName": "PSI_PSII_relative_contribution",
+    "ncGroupPath": "L2_Vegetation",
+    "type": "v",
+    "dataType": "float32",
+    "units": "",
+    "description": "PSI/PSII relative contribution",
+    "fillValue": -1
+  }
+]
