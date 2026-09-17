@@ -73,7 +73,7 @@ public class FlexDDDBProductDescriptorsTest {
         assertEquals("number_of_easting_pixels", descriptor.getWidthDimensionName());
         assertEquals("number_of_northing_pixels", descriptor.getHeightDimensionName());
         assertEquals(5, descriptor.getDataFiles().length);
-        assertEquals(0, descriptor.getFlagMasks().length);
+        assertCurrentL2FlagMasks(descriptor);
     }
 
     @Test
@@ -107,7 +107,7 @@ public class FlexDDDBProductDescriptorsTest {
         assertEquals("L2_Atmosphere", newDescriptor.getDimensionGroupPath());
         assertEquals("number_of_easting_pixels", newDescriptor.getWidthDimensionName());
         assertEquals("number_of_northing_pixels", newDescriptor.getHeightDimensionName());
-        assertEquals(0, newDescriptor.getFlagMasks().length);
+        assertCurrentL2FlagMasks(newDescriptor);
     }
 
     @Test
@@ -334,6 +334,31 @@ public class FlexDDDBProductDescriptorsTest {
                 fail("Descriptor should not be present: " + name);
             }
         }
+    }
+
+    private static void assertCurrentL2FlagMasks(FlexProductDescriptor descriptor) {
+        assertEquals(103, descriptor.getFlagMasks().length);
+
+        assertFlagMask(descriptor, "quality_flags_atmosphere", "wsa", 1);
+        assertFlagMask(descriptor, "quality_flags_atmosphere", "wde", 2);
+        assertFlagMask(descriptor, "quality_flags_floris_app_reflectance", "ext", 64);
+        assertFlagMask(descriptor, "quality_flags_sif", "rat", 16);
+        assertFlagMask(descriptor, "quality_flags_lcc", "fai", 16);
+        assertFlagMask(descriptor, "quality_flags_fqe", "fai", 8);
+        assertFlagMask(descriptor, "quality_flags_photo", "nda", 8);
+        assertFlagMask(descriptor, "quality_flags_s3_reflectance", "saturated_sample_o21", 0x80000000);
+        assertFlagMask(descriptor, "pixel_classification", "dense_vegetation", 128);
+    }
+
+    private static void assertFlagMask(FlexProductDescriptor descriptor, String bandName, String name, int value) {
+        for (final FlexFlagMask flagMask : descriptor.getFlagMasks()) {
+            if (bandName.equals(flagMask.getBandName()) && name.equals(flagMask.getName())) {
+                assertEquals(value, flagMask.getValue());
+                assertTrue(flagMask.isBitmask());
+                return;
+            }
+        }
+        fail("Flag mask not found: " + bandName + "." + name);
     }
 
     private static void assertDddbResourceExists(String resourceName) {
