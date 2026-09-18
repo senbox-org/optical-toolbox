@@ -1,7 +1,6 @@
 package eu.esa.opt.dataio.flex.util;
 
 
-import eu.esa.opt.dataio.flex.FlexProductReader;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
@@ -65,44 +64,6 @@ public class FlexReaderUtils {
             band.setNoDataValueUsed(true);
         }
     }
-
-    public static void setSpectralWavelength(Band band, Product product, String metaElementName, int elementIndex) {
-        final Float value = getSpectralValue(product, metaElementName, elementIndex);
-        if (value != null) {
-            band.setSpectralWavelength(value);
-        }
-    }
-
-    public static void setSpectralFwhm(Band band, Product product, String metaElementName, int elementIndex) {
-        final Float value = getSpectralValue(product, metaElementName, elementIndex);
-        if (value != null) {
-            band.setSpectralBandwidth(value);
-        }
-    }
-
-    private static Float getSpectralValue(Product product, String metaElementName, int elementIndex) {
-        if (metaElementName == null || metaElementName.isEmpty() || elementIndex <= 0) {
-            return null;
-        }
-
-        final MetadataElement netcdfElement = product.getMetadataRoot().getElement(FlexProductReader.NETCDF_BASE_METADATA_ELEMENT);
-        if (netcdfElement == null) {
-            return null;
-        }
-
-        final MetadataElement element = netcdfElement.getElement(metaElementName);
-        if (element == null) {
-            return null;
-        }
-
-        final MetadataAttribute valueAttr = element.getAttribute("value");
-        if (valueAttr == null || elementIndex > valueAttr.getData().getNumElems()) {
-            return null;
-        }
-
-        return (float) valueAttr.getData().getElemDoubleAt(elementIndex - 1);
-    }
-
 
     public static MetadataElement extractMetadata(Variable variable) throws IOException {
         final MetadataElement element = new MetadataElement(variable.getFullName());

@@ -10,6 +10,7 @@ import eu.esa.opt.dataio.flex.metadata.FlexMetadataProvider;
 import eu.esa.opt.dataio.flex.header.FlexHeaderParser;
 import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import eu.esa.opt.dataio.flex.util.FlexReaderUtils;
+import eu.esa.opt.dataio.flex.util.FlexSpectralMetadata;
 import eu.esa.snap.core.dataio.cache.CacheManager;
 import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
 import eu.esa.snap.core.dataio.cache.DataBuffer;
@@ -629,6 +630,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     private void addSpecialBands(Product product, FlexProductDescriptor productDescriptor) {
+        final Map<String, float[]> spectralReferences = FlexSpectralMetadata.resolveReferences(product, specialsMap.values());
         for (final FlexVariableDescriptor descriptor : specialsMap.values()) {
             final Variable ncVariable = findNcVariable(descriptor);
             if (ncVariable == null) {
@@ -646,6 +648,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             final int dataType = ProductData.getType(descriptor.getDataType());
             final String baseName = descriptor.getName();
             final String token = descriptor.getDepthPrefixToken();
+            final float[] spectralWavelengths = spectralReferences.get(descriptor.getWavelengthReference());
+            final float[] spectralBandwidths = spectralReferences.get(descriptor.getFwhmReference());
 
             final String cacheKey = descriptor.getFullNcPath();
             registerCacheVariable(product, cacheKey, ncVariable, dataType);
@@ -658,8 +662,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                 band.setDescription(descriptor.getDescription());
                 band.setUnit(descriptor.getUnits());
                 FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor);
-                FlexReaderUtils.setSpectralWavelength(band, product, descriptor.getWavelengthReference(), layer);
-                FlexReaderUtils.setSpectralFwhm(band, product, descriptor.getFwhmReference(), layer);
+                FlexSpectralMetadata.setSpectralWavelength(band, spectralWavelengths, layer);
+                FlexSpectralMetadata.setSpectralBandwidth(band, spectralBandwidths, layer);
                 product.addBand(band);
 
                 if (baseName.contains("channel_quality_flags")) {
