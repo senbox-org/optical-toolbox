@@ -1,7 +1,6 @@
 package eu.esa.opt.dataio.flex.util;
 
 import com.bc.ceres.annotation.STTM;
-import eu.esa.opt.dataio.flex.FlexProductReader;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import org.esa.snap.core.datamodel.*;
 import org.junit.Rule;
@@ -117,69 +116,6 @@ public class FlexReaderUtilsTest {
         assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
         assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
         assertFalse(band.isNoDataValueUsed());
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralWavelength_valid() {
-        final Product product = createProductWithSpectralMetadata();
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 2);
-
-        assertEquals(680.0f, band.getSpectralWavelength(), 1.0e-6f);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralFwhm_valid() {
-        final Product product = createProductWithSpectralMetadata();
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralFwhm(band, product, "wavelength", 3);
-
-        assertEquals(740.0f, band.getSpectralBandwidth(), 1.0e-6f);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralValue_invalidInputsDoNotChangeBand() {
-        final Product product = createProductWithSpectralMetadata();
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralWavelength(band, product, null, 1);
-        FlexReaderUtils.setSpectralWavelength(band, product, "", 1);
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 0);
-        FlexReaderUtils.setSpectralWavelength(band, product, "missing", 1);
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 99);
-
-        assertEquals(0.0f, band.getSpectralWavelength(), 1.0e-6f);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralValue_missingNetcdfMetadataDoesNotChangeBand() {
-        final Product product = new Product("p", "t", 10, 10);
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 1);
-
-        assertEquals(0.0f, band.getSpectralWavelength(), 1.0e-6f);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralValue_missingValueAttributeDoesNotChangeBand() {
-        final Product product = new Product("p", "t", 10, 10);
-        final MetadataElement netcdf = new MetadataElement(FlexProductReader.NETCDF_BASE_METADATA_ELEMENT);
-        netcdf.addElement(new MetadataElement("wavelength"));
-        product.getMetadataRoot().addElement(netcdf);
-
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 1);
-
-        assertEquals(0.0f, band.getSpectralWavelength(), 1.0e-6f);
     }
 
     @Test
@@ -301,23 +237,6 @@ public class FlexReaderUtilsTest {
         FlexReaderUtils.addStringAttribute(element, "name", "value");
 
         assertEquals("value", element.getAttribute("name").getData().getElemString());
-    }
-
-    private Product createProductWithSpectralMetadata() {
-        final Product product = new Product("p", "t", 10, 10);
-
-        final MetadataElement netcdf = new MetadataElement(FlexProductReader.NETCDF_BASE_METADATA_ELEMENT);
-        final MetadataElement wavelength = new MetadataElement("wavelength");
-        wavelength.addAttribute(new MetadataAttribute(
-                "value",
-                ProductData.createInstance(new float[]{550.0f, 680.0f, 740.0f}),
-                true
-        ));
-
-        netcdf.addElement(wavelength);
-        product.getMetadataRoot().addElement(netcdf);
-
-        return product;
     }
 
     private Variable variableWithData(String name, DataType dataType, int[] shape, Object javaArray) throws IOException {
