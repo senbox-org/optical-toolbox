@@ -953,6 +953,23 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testAddFlagMask_formatsSignBitMaskAsParseableExpression() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 10, 10);
+        product.addBand("quality", ProductData.TYPE_UINT32);
+        final FlexFlagMask flagMask = new FlexFlagMask("quality", "sign_bit", Integer.MIN_VALUE, "Sign bit", true);
+
+        invokeAddFlagMask(reader, product, "quality", flagMask, 0);
+
+        final Mask mask = product.getMaskGroup().get("quality_sign_bit");
+        assertNotNull(mask);
+        final String expression = Mask.BandMathsType.getExpression(mask);
+        assertEquals("quality & ~2147483647 != 0", expression);
+        product.parseExpression(expression);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testAddFlagMask_preservesIndexExpression() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 10, 10);

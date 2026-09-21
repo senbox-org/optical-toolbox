@@ -754,7 +754,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         }
 
         final String expression = mask.isBitmask()
-                ? bandName + " & " + mask.getValue() + " != 0"
+                ? bandName + " & " + formatBitmaskValue(mask.getValue()) + " != 0"
                 : bandName + " == " + mask.getValue();
 
         final String maskName = bandName + "_" + mask.getName();
@@ -765,6 +765,13 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             flagMask.setGeoCoding(new GeoCodingLazyProxy(band.getProduct()));
         }
         product.addMask(flagMask);
+    }
+
+    private static String formatBitmaskValue(int value) {
+        if (value >= 0) {
+            return Integer.toString(value);
+        }
+        return "~" + Integer.toString(~value);
     }
 
     private static void addMetadata(Product product, FlexProductHeader header) {
