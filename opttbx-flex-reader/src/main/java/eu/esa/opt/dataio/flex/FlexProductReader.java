@@ -705,6 +705,10 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private void addFlagMasks(Product product, FlexProductDescriptor productDescriptor) {
         int colorIndex = 0;
         for (final FlexFlagMask mask : productDescriptor.getFlagMasks()) {
+            if (!mask.isOverlayMask()) {
+                continue;
+            }
+
             final String baseBandName = mask.getBandName();
 
             if (baseBandName.contains("channel_quality_flags")) {

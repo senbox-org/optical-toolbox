@@ -77,10 +77,12 @@ public class FlexDDDBTest {
         assertEquals("not_valid", flagMasks[0].getName());
         assertEquals(0, flagMasks[0].getValue());
         assertEquals("Not-valid pixel", flagMasks[0].getDescription());
+        assertTrue(flagMasks[0].isOverlayMask());
 
         assertEquals("pixel_classification", flagMasks[1].getBandName());
         assertEquals("land", flagMasks[1].getName());
         assertEquals(1, flagMasks[1].getValue());
+        assertTrue(flagMasks[1].isOverlayMask());
     }
 
     @Test(expected = IOException.class)
