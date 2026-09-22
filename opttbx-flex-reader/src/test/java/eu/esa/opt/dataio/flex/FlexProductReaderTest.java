@@ -1049,6 +1049,32 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testAddFlagMasks_skipsMasksWithDisabledOverlayMask() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 10, 10);
+        product.addBand("HRE1_channel_quality_flags_1", ProductData.TYPE_UINT8);
+        product.addBand("HRE1_channel_quality_flags_2", ProductData.TYPE_UINT8);
+        product.addBand("HRE1_common_quality_flags", ProductData.TYPE_UINT8);
+
+        final FlexFlagMask disabledChannelMask = new FlexFlagMask("HRE1_channel_quality_flags", "bad", 1, "Bad pixel", true);
+        disabledChannelMask.setOverlayMask(false);
+
+        final FlexProductDescriptor descriptor = new FlexProductDescriptor();
+        descriptor.setFlagMasks(new FlexFlagMask[]{
+                disabledChannelMask,
+                new FlexFlagMask("HRE1_common_quality_flags", "invalid", 1, "Invalid pixel", true)
+        });
+
+        invokeAddFlagMasks(reader, product, descriptor);
+
+        assertNull(product.getMaskGroup().get("HRE1_channel_quality_flags_1_bad"));
+        assertNull(product.getMaskGroup().get("HRE1_channel_quality_flags_2_bad"));
+        assertNotNull(product.getMaskGroup().get("HRE1_common_quality_flags_invalid"));
+        assertEquals(1, product.getMaskGroup().getNodeCount());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testAddFlagMasks_addsMaskForExistingRegularBand() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 10, 10);
@@ -1094,9 +1120,12 @@ public class FlexProductReaderTest {
         when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
         ncFilesMap(reader).put("sample_hre2.nc", ncFile);
 
+        final FlexFlagMask badMask = new FlexFlagMask("HRE2_channel_quality_flags", "bad", 1,
+                "DDDB bad sample", true);
+        badMask.setOverlayMask(false);
         final FlexProductDescriptor productDescriptor = new FlexProductDescriptor();
         productDescriptor.setFlagMasks(new FlexFlagMask[]{
-                new FlexFlagMask("HRE2_channel_quality_flags", "bad", 1, "DDDB bad sample", true),
+                badMask,
                 new FlexFlagMask("HRE2_channel_quality_flags", "dead", 2, "DDDB dead sample", true),
                 new FlexFlagMask("LRES_channel_quality_flags", "bad", 1, "Wrong base", true)
         });

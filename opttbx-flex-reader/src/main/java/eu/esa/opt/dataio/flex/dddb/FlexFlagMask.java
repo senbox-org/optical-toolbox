@@ -7,6 +7,7 @@ public class FlexFlagMask {
     private int value;
     private String description;
     private boolean bitmask;
+    private boolean overlayMask = true;
 
     public FlexFlagMask() {}
 
@@ -48,5 +49,13 @@ public class FlexFlagMask {
 
     public void setBitmask(boolean bitmask) {
         this.bitmask = bitmask;
+    }
+
+    public boolean isOverlayMask() {
+        return overlayMask;
+    }
+
+    public void setOverlayMask(boolean overlayMask) {
+        this.overlayMask = overlayMask;
     }
 }

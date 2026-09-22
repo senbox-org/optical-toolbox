@@ -29,6 +29,8 @@ public class FlexDDDBProductDescriptorsTest {
         assertEquals("annotation_data_lres", descriptor.getDataFiles()[5]);
         assertTrue("L1B should have bitmask flag masks", descriptor.getFlagMasks().length > 0);
         assertTrue("L1B flag masks should be bitmask", descriptor.getFlagMasks()[0].isBitmask());
+        assertOverlayMask(descriptor, "HRE1_common_quality_flags", "invalid", true);
+        assertOverlayMask(descriptor, "HRE1_channel_quality_flags", "bad", false);
     }
 
     @Test
@@ -40,6 +42,8 @@ public class FlexDDDBProductDescriptorsTest {
         final FlexProductDescriptor descriptor = dddb.getProductDescriptor("FLX_L1B_OBS", "03.02");
         assertEquals("FLX_L1B_OBS", descriptor.getProductType());
         assertEquals("number_of_across_track_samples", descriptor.getWidthDimensionName());
+        assertOverlayMask(descriptor, "HRE1_common_quality_flags", "invalid", true);
+        assertOverlayMask(descriptor, "HRE1_channel_quality_flags", "bad", false);
         for (String dataFile : descriptor.getDataFiles()) {
             assertDddbResourceExists("FLX_L1B_OBS/variables_03.02/" + dataFile + "_03.02.json");
         }
@@ -355,6 +359,17 @@ public class FlexDDDBProductDescriptorsTest {
             if (bandName.equals(flagMask.getBandName()) && name.equals(flagMask.getName())) {
                 assertEquals(value, flagMask.getValue());
                 assertTrue(flagMask.isBitmask());
+                return;
+            }
+        }
+        fail("Flag mask not found: " + bandName + "." + name);
+    }
+
+    private static void assertOverlayMask(FlexProductDescriptor descriptor, String bandName, String name,
+                                          boolean expected) {
+        for (final FlexFlagMask flagMask : descriptor.getFlagMasks()) {
+            if (bandName.equals(flagMask.getBandName()) && name.equals(flagMask.getName())) {
+                assertEquals(expected, flagMask.isOverlayMask());
                 return;
             }
         }
