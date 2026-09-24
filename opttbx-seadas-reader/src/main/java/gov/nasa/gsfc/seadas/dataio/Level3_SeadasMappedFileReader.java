@@ -8,6 +8,7 @@ import org.esa.snap.core.dataio.ProductIOException;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
 import org.esa.snap.core.dataio.geocoding.GeoCodingFactory;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.runtime.Config;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -130,8 +131,9 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         addSmiMetadata(product);
 
         variableMap = addBands(product, ncFile.getVariables());
-
-        if (productName.contains("0p01deg")) {
+        
+//        if (productName.contains("0p01deg")) {
+        if (useEqcLargeFileAlternate(product)) {
             addEqcGeocoding(product);
         } else {
             addGeocoding(product);
@@ -146,6 +148,52 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         product.setAutoGrouping(getBandGroupingL3Mapped());
         return product;
     }
+
+
+
+    boolean useEqcLargeFileAlternate(Product product) {
+
+        boolean isLargeFile = false;
+        int largeFileThreshold = 15000;
+        if (product.getSceneRasterWidth() >= largeFileThreshold && product.getSceneRasterHeight() >= largeFileThreshold) {
+            isLargeFile = true;
+        }
+
+        if (!isLargeFile) {
+            return false;
+        }
+
+
+        boolean projectionFound = false;
+        String projection = ProductUtils.getMetaData(product, "projection");
+        String map_projection = ProductUtils.getMetaData(product, "map_projection");
+        if (projection == null | projection.trim().length() == 0 ) {
+            // projection not found so try map_projection
+            if (map_projection != null && map_projection.trim().length() > 0) {
+                projection = map_projection;
+                projectionFound = true;
+//                System.out.println("INFO:   projection=" +projection);
+            }
+        }
+
+        boolean isEqc = false;
+        if (projectionFound) {
+            if (projection.equalsIgnoreCase("Equidistant Cylindrical") || projection.equalsIgnoreCase("smi")  || projection.equalsIgnoreCase("platecarree") || projection.startsWith("+proj=eqc ")) {
+                isEqc = true;
+//                System.out.println("INFO:   isEqc");
+            }
+        }
+
+
+        if (isEqc ) {
+            System.out.println("INFO:  using large file projection method");
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 
     public void addGeocoding(final Product product) throws ProductIOException {
         final String longitude = "longitude";
