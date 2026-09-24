@@ -2354,25 +2354,21 @@ protected Map<String, Variable> add4DSPEXNewBands(Product product, Variable vari
 
             if (isLat) {
                 // Lat: repeat each value across all columns (same value per row)
-                float[] rawData = (float[]) productData.getElems();
+//                float[] rawData = (float[]) productData.getElems();
                 for (int i = 0; i < sceneRasterHeight; i++) {
-                    float val = data1D.getFloat(i);
-                    int startIndex = i * sceneRasterWidth;
-                    Arrays.fill(rawData, startIndex, startIndex + sceneRasterWidth, val);
-//                    for (int j = 0; j < sceneRasterWidth; j++) {
-//                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
-//                    }
+                    double val = data1D.getDouble(i);
+                    for (int j = 0; j < sceneRasterWidth; j++) {
+                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
+                    }
                 }
             } else {
                 // Lon: repeat each value across all rows (same value per column)
-                float[] rawData = (float[]) productData.getElems();
+//                float[] rawData = (float[]) productData.getElems();
                 for (int j = 0; j < sceneRasterWidth; j++) {
-                    float val = data1D.getFloat(j);
-                    int startIndex = j * sceneRasterHeight;
-                    Arrays.fill(rawData, startIndex, startIndex + sceneRasterHeight, val);
-//                    for (int i = 0; i < sceneRasterHeight; i++) {
-//                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
-//                    }
+                    double val = data1D.getDouble(j);
+                    for (int i = 0; i < sceneRasterHeight; i++) {
+                        productData.setElemDoubleAt(i * sceneRasterWidth + j, val);
+                    }
                 }
             }
 
