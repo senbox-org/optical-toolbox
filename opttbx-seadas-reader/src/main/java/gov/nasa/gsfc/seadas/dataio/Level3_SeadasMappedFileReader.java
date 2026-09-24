@@ -131,7 +131,7 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         addSmiMetadata(product);
 
         variableMap = addBands(product, ncFile.getVariables());
-        
+
 //        if (productName.contains("0p01deg")) {
         if (useEqcLargeFileAlternate(product)) {
             addEqcGeocoding(product);
@@ -154,7 +154,7 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
     boolean useEqcLargeFileAlternate(Product product) {
 
         boolean isLargeFile = false;
-        int largeFileThreshold = 15000;
+        int largeFileThreshold = 20000;
         if (product.getSceneRasterWidth() >= largeFileThreshold && product.getSceneRasterHeight() >= largeFileThreshold) {
             isLargeFile = true;
         }
