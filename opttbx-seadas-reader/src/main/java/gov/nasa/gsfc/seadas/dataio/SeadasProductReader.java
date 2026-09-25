@@ -101,6 +101,7 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
         Level2_PaceSPEX("SPEX Level-2"),
         Level2_PaceHARP2("HARP2 Level-2"),
         Level2_PaceOCIS("OCIS Level-2"),
+        Level2_OLCI("OLCI Level-2"),
         Level3_Bin("Level 3 Binned"),
         Level3_NSIDC_CDR("Level 3 NSIDC CDR"),
         MEaSUREs("MEaSUREs Mapped"),
@@ -177,6 +178,7 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
             case Level2_CZCS:
             case Level2_Pace:
             case Level2_PaceOCIS:
+            case Level2_OLCI:
             case Level2_PaceSPEX:
             case Level2_PaceHARP2:
                 return new L2FileReader(reader);
@@ -406,6 +408,8 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
             return ProductType.Level2_Aquarius;
         } else if (title.contains("PACE OCI Level-1B Data")) {
             return ProductType.Level1B_PaceOCI;
+        } else if (title.toUpperCase().contains("OLCIS3") && (title.toUpperCase().contains("LEVEL-2") || title.toUpperCase().contains("LEVEL 2") || title.toUpperCase().contains("LEVEL2")) ) {
+            return ProductType.Level2_OLCI;
         } else if (title.contains("PACE OCI Level-1C Data")
                 || title.contains("PACE SPEXone Level-1C Data")
                 || title.contains("HARP2 Level-1C Data")) {
