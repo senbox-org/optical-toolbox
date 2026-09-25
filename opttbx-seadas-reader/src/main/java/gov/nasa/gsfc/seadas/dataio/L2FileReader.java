@@ -143,16 +143,45 @@ public class L2FileReader extends SeadasFileReader {
         } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipXLevel2())) {
             mustFlipX = false;
         } else {
-            if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
-                    productType == SeadasProductReader.ProductType.Level2_CZCS ||
-                    productType == SeadasProductReader.ProductType.Level2_Pace ||
-                    productType == SeadasProductReader.ProductType.Level2_PaceSPEX ||
-                    productType == SeadasProductReader.ProductType.Level2_PaceHARP2 ||
-                    productType == SeadasProductReader.ProductType.Level2_PaceOCIS) {
-                mustFlipX = false; // mission default
-            } else {
-                mustFlipX = getDefaultFlip(); // mission default
+            switch (productType) {
+                case Level1A_CZCS:
+                    mustFlipX = false;
+                    break;
+                case Level2_CZCS:
+                    mustFlipX = false;
+                    break;
+                case Level2_Pace:
+                    mustFlipX = false;
+                    break;
+                case Level2_PaceSPEX:
+                    mustFlipX = false;
+                    break;
+                case Level2_PaceHARP2:
+                    mustFlipX = true;
+                    break;
+                case Level2_PaceOCIS:
+                    mustFlipX = false;
+                    break;
+                case Level2_OLCI:
+                    mustFlipX = false;
+                    break;
+                default:
+                    mustFlipX = getDefaultFlip();
+                    break;
             }
+
+//            if (productType == SeadasProductReader.ProductType.Level1A_CZCS ||
+//                    productType == SeadasProductReader.ProductType.Level2_CZCS ||
+//                    productType == SeadasProductReader.ProductType.Level2_Pace ||
+//                    productType == SeadasProductReader.ProductType.Level2_PaceSPEX ||
+//                    productType == SeadasProductReader.ProductType.Level2_PaceHARP2 ||
+//                    productType == SeadasProductReader.ProductType.Level2_PaceOCIS) {
+//                mustFlipX = false; // mission default
+//            } else if (productType == SeadasProductReader.ProductType.Level2_OLCI) {
+//                mustFlipX = false; // mission default
+//            } else {
+//                mustFlipX = getDefaultFlip(); // mission default
+//            }
         }
 
         if (SeadasReaderDefaults.FlIP_YES.equals(getBandFlipYLevel2())) {
@@ -160,14 +189,34 @@ public class L2FileReader extends SeadasFileReader {
         } else if (SeadasReaderDefaults.FlIP_NO.equals(getBandFlipYLevel2())) {
             mustFlipY = false;
         } else {
-            if (productType == SeadasProductReader.ProductType.Level2_Pace ||
-                    productType == SeadasProductReader.ProductType.Level2_PaceSPEX ||
-                    productType == SeadasProductReader.ProductType.Level2_PaceHARP2
-            ) {
-                mustFlipY = getDefaultFlip(true);  // mission default
-            } else {
-                mustFlipY = getDefaultFlip(); // mission default
+            switch (productType) {
+                case Level2_Pace:
+                    mustFlipY = getDefaultFlip(true);
+                    break;
+                case Level2_PaceSPEX:
+                    mustFlipY = getDefaultFlip(true);
+                    break;
+                case Level2_PaceHARP2:
+                    mustFlipY = getDefaultFlip(true);
+                    break;
+                case Level2_OLCI:
+                    mustFlipY = false; // mission default
+                    break;
+                default:
+                    mustFlipY = getDefaultFlip(); // mission default
+                    break;
             }
+
+//            if (productType == SeadasProductReader.ProductType.Level2_Pace ||
+//                    productType == SeadasProductReader.ProductType.Level2_PaceSPEX ||
+//                    productType == SeadasProductReader.ProductType.Level2_PaceHARP2
+//            ) {
+//                mustFlipY = getDefaultFlip(true);  // mission default
+//            } else if (productType == SeadasProductReader.ProductType.Level2_OLCI) {
+//                mustFlipY = false; // mission default
+//            } else {
+//                mustFlipY = getDefaultFlip(); // mission default
+//            }
         }
 
 
