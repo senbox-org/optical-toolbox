@@ -1112,7 +1112,15 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_L3_MAPPED_FLIPY_TOOLTIP = "<html>NASA Level-3 Mapped Reader:<br>Flip image about the Y-axis (vertically)</html>";
     public static final String PROPERTY_L3_MAPPED_FLIPY_DEFAULT = FlIP_NO_L3;
 
+    public static final String PROPERTY_EQC_LARGE_FILE_READER_KEY = PROPERTY_L3_MAPPED_ROOT_KEY + ".eqc_large_reader";
+    public static final String PROPERTY_EQC_LARGE_FILE_READER_LABEL = "Enable Large EQC File Reader";
+    public static final String PROPERTY_EQC_LARGE_FILE_READER_TOOLTIP = "<html>For large level-3 files of equidistant cylindrical projection <br>enables alternate reader for better performance</html>";
+    public static final boolean PROPERTY_EQC_LARGE_FILE_READER_DEFAULT = true;
 
+    public static final String PROPERTY_EQC_LARGE_FILE_THRESH_KEY = PROPERTY_L3_MAPPED_ROOT_KEY + ".eqc_large_file_thresh";
+    public static final String PROPERTY_EQC_LARGE_FILE_THRESH_LABEL = "Large EQC File Thresh";
+    public static final String PROPERTY_EQC_LARGE_FILE_THRESH_TOOLTIP = "<html>For large level-3 files of equidistant cylindrical projection <br>enable alternate reader for better performance<br> if file size (in pixels) threshold exceeded in either dimension</html>";
+    public static final int PROPERTY_EQC_LARGE_FILE_THRESH_DEFAULT = 10000;
 
 
 
@@ -1183,6 +1191,8 @@ public class SeadasReaderDefaults {
     public static final String PROPERTY_LEVEL2_KEEPBADNAV_LABEL = "Keep Bad Nav Lines";
     public static final String PROPERTY_LEVEL2_KEEPBADNAV_TOOLTIP = "<html>NASA Level-2 Reader:<br>Keep the bad navigation (geocoding) lines at top/bottom of files</html>";
     public static final boolean PROPERTY_LEVEL2_KEEPBADNAV_DEFAULT = true;
+
+
 
 
     // L1B_PACE FILE READER
