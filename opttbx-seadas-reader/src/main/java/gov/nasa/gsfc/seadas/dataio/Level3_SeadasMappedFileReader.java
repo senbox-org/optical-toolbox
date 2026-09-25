@@ -1,7 +1,5 @@
 package gov.nasa.gsfc.seadas.dataio;
 
-import com.bc.ceres.core.ProgressMonitor;
-
 import eu.esa.snap.core.dataio.cache.DataBuffer;
 import eu.esa.snap.core.dataio.cache.VariableDescriptor;
 import org.esa.snap.core.dataio.ProductIOException;
@@ -16,19 +14,17 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 import ucar.ma2.Array;
 import ucar.ma2.Index;
-import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
 import ucar.nc2.Group;
 import ucar.nc2.Variable;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.prefs.Preferences;
 
 //import static gov.nasa.gsfc.seadas.dataio.L2DscovrEpicFileReader.addPixelGeocoding;
+import static gov.nasa.gsfc.seadas.dataio.SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_THRESH_KEY;
 import static java.lang.String.format;
 
 /**
@@ -133,7 +129,8 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
         variableMap = addBands(product, ncFile.getVariables());
 
 //        if (productName.contains("0p01deg")) {
-        if (useEqcLargeFileAlternate(product)) {
+        if (preferenceUseEqcLargeFileReader() && isLargeFileEqcProjection(product)) {
+            System.out.println("INFO: large file size determined, using method addEqcGeocoding()");
             addEqcGeocoding(product);
         } else {
             addGeocoding(product);
@@ -150,20 +147,17 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
     }
 
 
-
-    boolean useEqcLargeFileAlternate(Product product) {
-
-        boolean isLargeFile = false;
-        int largeFileThreshold = 20000;
-        if (product.getSceneRasterWidth() >= largeFileThreshold && product.getSceneRasterHeight() >= largeFileThreshold) {
-            isLargeFile = true;
-        }
-
-        if (!isLargeFile) {
+    boolean isLargeFile(Product product) {
+        int largeFileThreshold = preferenceEqcLargeFileThresh();
+        if (product.getSceneRasterWidth() >= largeFileThreshold || product.getSceneRasterHeight() >= largeFileThreshold) {
+            return true;
+        } else {
             return false;
         }
+    }
 
 
+    boolean isEqcProjection(Product product) {
         boolean projectionFound = false;
         String projection = ProductUtils.getMetaData(product, "projection");
         String map_projection = ProductUtils.getMetaData(product, "map_projection");
@@ -176,23 +170,93 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
             }
         }
 
-        boolean isEqc = false;
         if (projectionFound) {
             if (projection.equalsIgnoreCase("Equidistant Cylindrical") || projection.equalsIgnoreCase("smi")  || projection.equalsIgnoreCase("platecarree") || projection.startsWith("+proj=eqc ")) {
-                isEqc = true;
-//                System.out.println("INFO:   isEqc");
+                //                System.out.println("INFO:   isEqc");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    boolean isNotFlippedNoDatelineCrossing(Product product) {
+
+        // confirm if dateline not crossed
+
+        String east;
+        String west;
+        String north;
+        String south;
+
+        double eastValue;
+        double westValue;
+        double northValue;
+        double southValue;
+
+        west = ProductUtils.getMetaData(product, "geospatial_lon_min");
+        if (west == null || west.trim().length() == 0) {
+            west = ProductUtils.getMetaData(product, "west");
+            if (west == null || west.trim().length() == 0) {
+                return false;
+            }
+        }
+
+        east = ProductUtils.getMetaData(product, "geospatial_lon_max");
+        if (east == null || east.trim().length() == 0) {
+            east = ProductUtils.getMetaData(product, "east");
+            if (east == null || east.trim().length() == 0) {
+                return false;
+            }
+        }
+
+        north = ProductUtils.getMetaData(product, "geospatial_lat_max");
+        if (north == null || north.trim().length() == 0) {
+            north = ProductUtils.getMetaData(product, "north");
+            if (north == null || north.trim().length() == 0) {
+                return false;
+            }
+        }
+
+        south = ProductUtils.getMetaData(product, "geospatial_lat_min");
+        if (south == null || south.trim().length() == 0) {
+            south = ProductUtils.getMetaData(product, "south");
+            if (south == null || south.trim().length() == 0) {
+                return false;
             }
         }
 
 
-        if (isEqc ) {
-            System.out.println("INFO:  using large file projection method");
-            return true;
-        } else {
+        try {
+            eastValue = Double.parseDouble(east);
+            westValue = Double.parseDouble(west);
+            northValue = Double.parseDouble(north);
+            southValue = Double.parseDouble(south);
+
+        } catch (NumberFormatException e) {
             return false;
         }
 
+        if (eastValue > westValue && northValue > southValue) {
+            return true;
+        }
+
+        return false;
+
     }
+
+
+
+    boolean isLargeFileEqcProjection(Product product) {
+
+        if (isLargeFile(product) && isEqcProjection(product) && isNotFlippedNoDatelineCrossing(product)) {
+            return true;
+        }
+
+        return false;
+    }
+
 
 
     public void addGeocoding(final Product product) throws ProductIOException {
@@ -224,6 +288,8 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
     }
 
     public void addEqcGeocoding(final Product product) throws ProductIOException {
+        // Note: this would fail for dateline crossing so this isn't being called currently for dateline crossing cases
+
         String east = "Easternmost_Longitude";
         String west = "Westernmost_Longitude";
         String north = "Northernmost_Latitude";

@@ -3365,6 +3365,22 @@ protected Map<String, Variable> add4DSPEXNewBands(Product product, Variable vari
         return preferences.getPropertyBool(SeadasReaderDefaults.PROPERTY_LEVEL2_KEEPBADNAV_KEY, true);
     }
 
+    public boolean preferenceUseEqcLargeFileReader() {
+        if (this.isHeadless) {
+            return PROPERTY_EQC_LARGE_FILE_READER_DEFAULT;
+        }
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyBool(PROPERTY_EQC_LARGE_FILE_READER_KEY, true);
+    }
+
+    public int preferenceEqcLargeFileThresh() {
+        if (this.isHeadless) {
+            return PROPERTY_EQC_LARGE_FILE_THRESH_DEFAULT;
+        }
+        final PropertyMap preferences = SnapApp.getDefault().getAppContext().getPreferences();
+        return preferences.getPropertyInt(PROPERTY_EQC_LARGE_FILE_THRESH_KEY, PROPERTY_EQC_LARGE_FILE_THRESH_DEFAULT);
+    }
+
 
     public String getBandGroupingL1BPace() {
         if (this.isHeadless) {
