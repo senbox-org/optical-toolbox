@@ -86,12 +86,15 @@ public final class SeadasReaderMainController extends DefaultConfigController {
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_BAND_GROUPING_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPX_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_READER_KEY, SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_READER_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_THRESH_KEY, SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_THRESH_DEFAULT);
 
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_LEVEL2_SECTION_KEY, true);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_BAND_GROUPING_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPX_DEFAULT);
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_FLIPY_DEFAULT);
+        initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_LEVEL2_KEEPBADNAV_KEY, SeadasReaderDefaults.PROPERTY_LEVEL2_KEEPBADNAV_DEFAULT);
 
 
         initPropertyDefaults(context, SeadasReaderDefaults.PROPERTY_L1B_PACE_SECTION_KEY, true);
@@ -360,7 +363,15 @@ public final class SeadasReaderMainController extends DefaultConfigController {
         String l3MappedFlipyDefault = SeadasReaderDefaults.PROPERTY_L3_MAPPED_FLIPY_DEFAULT;
 
 
+        @Preference(key = SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_READER_KEY,
+                label = SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_READER_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_READER_TOOLTIP)
+        boolean eqcLargeFileReaderDefault = SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_READER_DEFAULT;
 
+        @Preference(key = SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_THRESH_KEY,
+                label = SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_THRESH_LABEL,
+                description = SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_THRESH_TOOLTIP)
+        int eqcLargeFileThreshDefault = SeadasReaderDefaults.PROPERTY_EQC_LARGE_FILE_THRESH_DEFAULT;
 
 
 
@@ -400,6 +411,8 @@ public final class SeadasReaderMainController extends DefaultConfigController {
                 label = SeadasReaderDefaults.PROPERTY_LEVEL2_KEEPBADNAV_LABEL,
                 description = SeadasReaderDefaults.PROPERTY_LEVEL2_KEEPBADNAV_TOOLTIP)
         boolean level2KEEPBADNAVDefault = SeadasReaderDefaults.PROPERTY_LEVEL2_KEEPBADNAV_DEFAULT;
+
+
 
 
 
