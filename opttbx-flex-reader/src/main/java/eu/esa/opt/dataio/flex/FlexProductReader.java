@@ -3,12 +3,14 @@ package eu.esa.opt.dataio.flex;
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.flex.compatibility.FlexProductCompatibility;
+import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
 import eu.esa.opt.dataio.flex.dddb.*;
 import eu.esa.opt.dataio.flex.metadata.FlexMetadataElementLazy;
 import eu.esa.opt.dataio.flex.metadata.FlexMetadataProvider;
 import eu.esa.opt.dataio.flex.header.FlexHeaderParser;
 import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import eu.esa.opt.dataio.flex.util.FlexReaderUtils;
+import eu.esa.opt.dataio.flex.util.FlexSpectralMetadata;
 import eu.esa.snap.core.dataio.cache.CacheManager;
 import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
 import eu.esa.snap.core.dataio.cache.DataBuffer;
@@ -48,13 +50,12 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private static final String LATITUDE_BAND_NAME = "latitude";
     private static final String LONGITUDE_BAND_NAME = "longitude";
     private static final double FLEX_RESOLUTION_KM = 0.3;
-    private static final String DIM_ACROSS_TRACK = "number_of_across_track_samples";
-    private static final String DIM_ALONG_TRACK = "number_of_along_track_samples";
     public static final String PREFERENCE_KEY_ENABLE_CACHE = "opttbx.flex.reader.enable.cache";
     public static final String PREFERENCE_KEY_ENABLE_NATIVE_NETCDF = "opttbx.flex.reader.enable.native.netcdf";
     public static final boolean CACHE_ENABLED_DEFAULT = false;
     public static final boolean NATIVE_NETCDF_ENABLED_DEFAULT = true;
     public static final int L1B_L1C_TILE_HEIGHT_DEFAULT = 520;
+    private static final int DIMENSION_NOT_FOUND = -1;
 
     private final FlexDDDB dddb;
     private final Map<String, FlexVariableDescriptor> variablesMap;
@@ -72,7 +73,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
     private String dddbProductType;
     private VirtualDir virtualDir;
-    private FlexProductCompatibility compatibility;
+    private FlexProductCompatibility compatibility = new StandardFlexCompatibility();
     private NetcdfCacheDataProvider cacheDataProvider;
     private ProductCache productCache;
     private boolean cacheEnabled = CACHE_ENABLED_DEFAULT;
@@ -108,12 +109,11 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final FlexProductHeader header = parser.parse(headerFile);
 
         dddbProductType = FlexReaderUtils.mapProductType(header.getProductType());
-        compatibility = FlexReaderUtils.detectCompatibility(header);
-
-        final FlexProductDescriptor productDescriptor = dddb.getProductDescriptor(dddbProductType);
+        final String dddbVersion = header.getProcessorVersion();
+        final FlexProductDescriptor productDescriptor = dddb.getProductDescriptor(dddbProductType, dddbVersion);
 
         openNcFiles(header);
-        loadDescriptors(productDescriptor, dddbProductType);
+        loadDescriptors(productDescriptor, dddbProductType, dddbVersion);
 
         final int width = resolveProductWidth(productDescriptor);
         final int height = resolveProductHeight(productDescriptor);
@@ -389,44 +389,29 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         return data;
     }
 
-    private int resolveProductWidth(FlexProductDescriptor productDescriptor) {
-        final String groupPath = findFirstGroupPath();
-        for (final NetcdfFile ncFile : ncFilesMap.values()) {
-            final int resolved = compatibility.resolveDimension(ncFile, groupPath, DIM_ACROSS_TRACK, productDescriptor.getWidth());
-
-            if (resolved != productDescriptor.getWidth()) {
-                logger.fine("Resolved width from netCDF: " + resolved + " (spec default: " + productDescriptor.getWidth() + ")");
-            }
-            return resolved;
-        }
-        return productDescriptor.getWidth();
+    private int resolveProductWidth(FlexProductDescriptor productDescriptor) throws IOException {
+        return resolveProductDimension("width", productDescriptor.getWidthDimensionName(), productDescriptor.getDimensionGroupPath());
     }
 
-    private int resolveProductHeight(FlexProductDescriptor productDescriptor) {
-        final String groupPath = findFirstGroupPath();
-        for (final NetcdfFile ncFile : ncFilesMap.values()) {
-            final int resolved = compatibility.resolveDimension(ncFile, groupPath, DIM_ALONG_TRACK, productDescriptor.getHeight());
-
-            if (resolved != productDescriptor.getHeight()) {
-                logger.fine("Resolved height from netCDF: " + resolved + " (spec default: " + productDescriptor.getHeight() + ")");
-            }
-            return resolved;
-        }
-        return productDescriptor.getHeight();
+    private int resolveProductHeight(FlexProductDescriptor productDescriptor) throws IOException {
+        return resolveProductDimension("height", productDescriptor.getHeightDimensionName(), productDescriptor.getDimensionGroupPath());
     }
 
-    private String findFirstGroupPath() {
-        for (final FlexVariableDescriptor descriptor : variablesMap.values()) {
-            if (descriptor.getNcGroupPath() != null && !descriptor.getNcGroupPath().isEmpty()) {
-                return descriptor.getNcGroupPath();
+    private int resolveProductDimension(String dimensionType, String dimName, String groupPath) throws IOException {
+        if (dimName == null || dimName.isEmpty()) {
+            throw new IOException("Missing DDDB " + dimensionType + " dimension name for product type: " + dddbProductType);
+        }
+
+        for (final NetcdfFile ncFile : ncFilesMap.values()) {
+            final int resolved = compatibility.resolveDimension(ncFile, groupPath, dimName, DIMENSION_NOT_FOUND);
+
+            if (resolved != DIMENSION_NOT_FOUND) {
+                logger.fine("Resolved product " + dimensionType + " from netCDF dimension '" + dimName + "': " + resolved);
+                return resolved;
             }
         }
-        for (final FlexVariableDescriptor descriptor : specialsMap.values()) {
-            if (descriptor.getNcGroupPath() != null && !descriptor.getNcGroupPath().isEmpty()) {
-                return descriptor.getNcGroupPath();
-            }
-        }
-        return "";
+
+        throw new IOException("Cannot resolve product " + dimensionType + " from netCDF dimension '" + dimName + "'");
     }
 
 
@@ -516,17 +501,17 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final String stopTime = header.getStopTime();
         if (!stopTime.isEmpty()) {
             try {
-                String normalizedStartTime = startTime.replace("Z", "");
-                product.setEndTime(ProductData.UTC.parse(normalizedStartTime, "yyyy-MM-dd'T'HH:mm:ss"));
+                String normalizedStopTime = stopTime.replace("Z", "");
+                product.setEndTime(ProductData.UTC.parse(normalizedStopTime, "yyyy-MM-dd'T'HH:mm:ss"));
             } catch (ParseException e) {
                 logger.warning("Cannot parse stop time: " + stopTime);
             }
         }
     }
 
-    private void loadDescriptors(FlexProductDescriptor productDescriptor, String productType) throws IOException {
+    private void loadDescriptors(FlexProductDescriptor productDescriptor, String productType, String version) throws IOException {
         for (final String dataFile : productDescriptor.getDataFiles()) {
-            final FlexVariableDescriptor[] descriptors = dddb.getVariableDescriptors(dataFile, productType);
+            final FlexVariableDescriptor[] descriptors = dddb.getVariableDescriptors(dataFile, productType, version);
             for (final FlexVariableDescriptor descriptor : descriptors) {
                 final String name = descriptor.getName();
                 descriptorToFileMap.put(name, dataFile);
@@ -556,7 +541,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     private void addBand(Product product, FlexVariableDescriptor descriptor) {
-        final int dataType = ProductData.getType(descriptor.getDataType());
         final String bandName = descriptor.getName();
 
         final Variable ncVariable = findNcVariable(descriptor);
@@ -567,6 +551,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             return;
         }
 
+        final int dataType = ProductData.getType(descriptor.getDataType());
         final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
 
         band.setDescription(descriptor.getDescription());
@@ -580,7 +565,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
     private void addFlagBand(Product product, FlexVariableDescriptor descriptor,
                              FlexProductDescriptor productDescriptor) {
-        final int dataType = ProductData.getType(descriptor.getDataType());
         final String bandName = descriptor.getName();
 
         final Variable ncVariable = findNcVariable(descriptor);
@@ -591,6 +575,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             return;
         }
 
+        final int dataType = ProductData.getType(descriptor.getDataType());
         final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(descriptor.getDescription());
 
@@ -613,7 +598,6 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
     private void addBitmaskFlagBand(Product product, FlexVariableDescriptor descriptor,
                                     FlexProductDescriptor productDescriptor) {
-        final int dataType = ProductData.getType(descriptor.getDataType());
         final String bandName = descriptor.getName();
 
         final Variable ncVariable = findNcVariable(descriptor);
@@ -624,6 +608,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             return;
         }
 
+        final int dataType = ProductData.getType(descriptor.getDataType());
         final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(descriptor.getDescription());
 
@@ -645,6 +630,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     private void addSpecialBands(Product product, FlexProductDescriptor productDescriptor) {
+        final Map<String, float[]> spectralReferences = FlexSpectralMetadata.resolveReferences(product, specialsMap.values());
         for (final FlexVariableDescriptor descriptor : specialsMap.values()) {
             final Variable ncVariable = findNcVariable(descriptor);
             if (ncVariable == null) {
@@ -662,6 +648,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             final int dataType = ProductData.getType(descriptor.getDataType());
             final String baseName = descriptor.getName();
             final String token = descriptor.getDepthPrefixToken();
+            final float[] spectralWavelengths = spectralReferences.get(descriptor.getWavelengthReference());
+            final float[] spectralBandwidths = spectralReferences.get(descriptor.getFwhmReference());
 
             final String cacheKey = descriptor.getFullNcPath();
             registerCacheVariable(product, cacheKey, ncVariable, dataType);
@@ -674,8 +662,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
                 band.setDescription(descriptor.getDescription());
                 band.setUnit(descriptor.getUnits());
                 FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor);
-                FlexReaderUtils.setSpectralWavelength(band, product, descriptor.getWavelengthReference(), layer);
-                FlexReaderUtils.setSpectralFwhm(band, product, descriptor.getFwhmReference(), layer);
+                FlexSpectralMetadata.setSpectralWavelength(band, spectralWavelengths, layer);
+                FlexSpectralMetadata.setSpectralBandwidth(band, spectralBandwidths, layer);
                 product.addBand(band);
 
                 if (baseName.contains("channel_quality_flags")) {
@@ -717,6 +705,10 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private void addFlagMasks(Product product, FlexProductDescriptor productDescriptor) {
         int colorIndex = 0;
         for (final FlexFlagMask mask : productDescriptor.getFlagMasks()) {
+            if (!mask.isOverlayMask()) {
+                continue;
+            }
+
             final String baseBandName = mask.getBandName();
 
             if (baseBandName.contains("channel_quality_flags")) {
@@ -766,7 +758,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         }
 
         final String expression = mask.isBitmask()
-                ? bandName + " & " + mask.getValue() + " != 0"
+                ? bandName + " & " + formatBitmaskValue(mask.getValue()) + " != 0"
                 : bandName + " == " + mask.getValue();
 
         final String maskName = bandName + "_" + mask.getName();
@@ -777,6 +769,13 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             flagMask.setGeoCoding(new GeoCodingLazyProxy(band.getProduct()));
         }
         product.addMask(flagMask);
+    }
+
+    private static String formatBitmaskValue(int value) {
+        if (value >= 0) {
+            return Integer.toString(value);
+        }
+        return "~" + Integer.toString(~value);
     }
 
     private static void addMetadata(Product product, FlexProductHeader header) {

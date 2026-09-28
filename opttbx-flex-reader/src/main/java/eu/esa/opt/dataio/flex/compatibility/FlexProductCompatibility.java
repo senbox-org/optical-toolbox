@@ -6,5 +6,5 @@ public interface FlexProductCompatibility {
 
     String resolveDataFilePath(String headerReferencedPath);
 
-    int resolveDimension(NetcdfFile ncFile, String groupPath, String dimName, int specDefault);
+    int resolveDimension(NetcdfFile ncFile, String groupPath, String dimName, int defaultValue);
 }

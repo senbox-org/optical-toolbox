@@ -1,13 +1,17 @@
 package eu.esa.opt.dataio.flex;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.ProgressMonitor;
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import eu.esa.opt.dataio.flex.dddb.FlexFlagMask;
 import eu.esa.opt.dataio.flex.dddb.FlexProductDescriptor;
+import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.FlagCoding;
 import org.esa.snap.core.datamodel.GeoCoding;
+import org.esa.snap.core.datamodel.IndexCoding;
 import org.esa.snap.core.datamodel.Mask;
 import org.esa.snap.core.datamodel.MetadataAttribute;
 import org.esa.snap.core.datamodel.MetadataElement;
@@ -19,6 +23,7 @@ import org.junit.Test;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.Section;
+import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
@@ -27,6 +32,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
@@ -78,6 +84,22 @@ public class FlexProductReaderTest {
         product.addBand("HRE1_longitude", ProductData.TYPE_FLOAT32);
 
         assertNull(reader.readGeoCoding(product));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testReadGeoCoding_withLatitudeLongitudeBandsWithoutRegisteredVariablesThrowsIOException() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 2, 2);
+        product.addBand("longitude", ProductData.TYPE_FLOAT32);
+        product.addBand("latitude", ProductData.TYPE_FLOAT32);
+
+        try {
+            reader.readGeoCoding(product);
+            fail("Expected IOException");
+        } catch (IOException expected) {
+            assertTrue(expected.getMessage().contains("No NetCDF variable registered for geocoding band: longitude"));
+        }
     }
 
     @Test
@@ -335,6 +357,148 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testClose_closesVirtualDir() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final VirtualDir virtualDir = mock(VirtualDir.class);
+        setField(reader, "virtualDir", virtualDir);
+
+        reader.close();
+
+        verify(virtualDir).close();
+        assertNull(getField(reader, "virtualDir"));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testResolveProductDimensions_l1cUsesAcrossAlongTrackDimensions() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final FlexProductDescriptor productDescriptor = productDescriptor(
+                "Measurement_data", "number_of_across_track_samples", "number_of_along_track_samples");
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findDimension("number_of_across_track_samples"))
+                .thenReturn(new Dimension("number_of_across_track_samples", 530));
+        when(ncFile.findDimension("number_of_along_track_samples"))
+                .thenReturn(new Dimension("number_of_along_track_samples", 4138));
+        ncFilesMap(reader).put("data.nc", ncFile);
+
+        assertEquals(530, invokeResolveProductWidth(reader, productDescriptor));
+        assertEquals(4138, invokeResolveProductHeight(reader, productDescriptor));
+        verify(ncFile).findDimension("number_of_across_track_samples");
+        verify(ncFile).findDimension("number_of_along_track_samples");
+        verify(ncFile, never()).findDimension("number_of_easting_pixels");
+        verify(ncFile, never()).findDimension("number_of_northing_pixels");
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testResolveProductDimensions_l2UsesEastingNorthingDimensions() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final FlexProductDescriptor productDescriptor = productDescriptor(
+                "L2_Atmosphere", "number_of_easting_pixels", "number_of_northing_pixels");
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findDimension("number_of_easting_pixels"))
+                .thenReturn(new Dimension("number_of_easting_pixels", 367));
+        when(ncFile.findDimension("number_of_northing_pixels"))
+                .thenReturn(new Dimension("number_of_northing_pixels", 367));
+        ncFilesMap(reader).put("data.nc", ncFile);
+
+        assertEquals(367, invokeResolveProductWidth(reader, productDescriptor));
+        assertEquals(367, invokeResolveProductHeight(reader, productDescriptor));
+        verify(ncFile).findDimension("number_of_easting_pixels");
+        verify(ncFile).findDimension("number_of_northing_pixels");
+        verify(ncFile, never()).findDimension("number_of_across_track_samples");
+        verify(ncFile, never()).findDimension("number_of_along_track_samples");
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testResolveProductDimensions_throwsWhenDimensionsAreMissing() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final FlexProductDescriptor productDescriptor = productDescriptor(
+                "Measurement_data", "number_of_across_track_samples", "number_of_along_track_samples");
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findDimension(anyString())).thenReturn(null);
+        ncFilesMap(reader).put("data.nc", ncFile);
+
+        try {
+            invokeResolveProductWidth(reader, productDescriptor);
+            fail("Expected IOException");
+        } catch (IOException expected) {
+            assertTrue(expected.getMessage().contains("Cannot resolve product width"));
+        }
+        verify(ncFile).findDimension("number_of_across_track_samples");
+        verify(ncFile, never()).findDimension("number_of_along_track_samples");
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testResolveProductWidth_throwsWhenDimensionNameIsMissing() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        setField(reader, "dddbProductType", "FLX_L1C_FLXSYN");
+        final FlexProductDescriptor productDescriptor = productDescriptor("Measurement_data", null, "height");
+
+        try {
+            invokeResolveProductWidth(reader, productDescriptor);
+            fail("Expected IOException");
+        } catch (IOException expected) {
+            assertTrue(expected.getMessage().contains("Missing DDDB width dimension name"));
+            assertTrue(expected.getMessage().contains("FLX_L1C_FLXSYN"));
+        }
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testResolveProductHeight_throwsWhenDimensionNameIsEmpty() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        setField(reader, "dddbProductType", "FLX_L2_FLXSYN");
+        final FlexProductDescriptor productDescriptor = productDescriptor("L2_Atmosphere", "width", "");
+
+        try {
+            invokeResolveProductHeight(reader, productDescriptor);
+            fail("Expected IOException");
+        } catch (IOException expected) {
+            assertTrue(expected.getMessage().contains("Missing DDDB height dimension name"));
+            assertTrue(expected.getMessage().contains("FLX_L2_FLXSYN"));
+        }
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testCreatePreferredTileSize_l2UsesFullProductSize() throws Exception {
+        final java.awt.Dimension tileSize = invokeCreatePreferredTileSize("FLX_L2_FLXSYN", 367, 366);
+
+        assertEquals(367, tileSize.width);
+        assertEquals(366, tileSize.height);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testCreatePreferredTileSize_l1cUsesDefaultTileHeight() throws Exception {
+        final java.awt.Dimension tileSize = invokeCreatePreferredTileSize("FLX_L1C_FLXSYN", 530, 4138);
+
+        assertEquals(530, tileSize.width);
+        assertEquals(FlexProductReader.L1B_L1C_TILE_HEIGHT_DEFAULT, tileSize.height);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testSetProductTimes_usesStartAndStopTime() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 1, 1);
+        final FlexProductHeader header = new FlexProductHeader();
+        header.setStartTime("2026-09-17T10:00:00Z");
+        header.setStopTime("2026-09-17T10:05:00Z");
+
+        invokeSetProductTimes(reader, product, header);
+
+        final ProductData.UTC expectedStart = ProductData.UTC.parse("2026-09-17T10:00:00", "yyyy-MM-dd'T'HH:mm:ss");
+        final ProductData.UTC expectedEnd = ProductData.UTC.parse("2026-09-17T10:05:00", "yyyy-MM-dd'T'HH:mm:ss");
+        assertEquals(expectedStart.getMJD(), product.getStartTime().getMJD(), 1.0e-12);
+        assertEquals(expectedEnd.getMJD(), product.getEndTime().getMJD(), 1.0e-12);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testInitializeOperationMode_falsePreferenceDoesNotCreateOperationModeObjects() throws Exception {
         final Preferences preferences = Config.instance("opttbx").load().preferences();
         final String oldValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
@@ -348,6 +512,27 @@ public class FlexProductReaderTest {
             assertFalse((Boolean) getField(reader, "cacheEnabled"));
             assertNull(getField(reader, "cacheDataProvider"));
             assertNull(getField(reader, "productCache"));
+        } finally {
+            restorePreference(preferences, oldValue);
+            reader.close();
+        }
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testInitializeOperationMode_truePreferenceCreatesCacheObjects() throws Exception {
+        final Preferences preferences = Config.instance("opttbx").load().preferences();
+        final String oldValue = preferences.get(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, null);
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+
+        try {
+            preferences.putBoolean(FlexProductReader.PREFERENCE_KEY_ENABLE_CACHE, true);
+
+            invokeInitializeOperationMode(reader);
+
+            assertTrue((Boolean) getField(reader, "cacheEnabled"));
+            assertNotNull(getField(reader, "cacheDataProvider"));
+            assertNotNull(getField(reader, "productCache"));
         } finally {
             restorePreference(preferences, oldValue);
             reader.close();
@@ -512,6 +697,56 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testReadBandRasterData_noRegisteredVariableThrowsIOException() throws Exception {
+        final ExposedFlexProductReader reader = new ExposedFlexProductReader();
+        final Band band = new Band("missing_band", ProductData.TYPE_INT32, 2, 2);
+        final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
+
+        try {
+            reader.readRaster(0, 0, 2, 2, 1, 1, band, 2, 2, dest);
+            fail("Expected IOException");
+        } catch (IOException expected) {
+            assertTrue(expected.getMessage().contains("No NetCDF variable registered for band: missing_band"));
+        }
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testReadBandRasterData_noCacheReadsRegisteredVariableDirectly() throws Exception {
+        final ExposedFlexProductReader reader = new ExposedFlexProductReader();
+        setField(reader, "cacheEnabled", false);
+        final Variable variable = mockRasterVariable("radiance", new int[]{2, 2}, new int[]{1, 2, 3, 4});
+        bandToVariableMap(reader).put("radiance", variable);
+
+        final Band band = new Band("radiance", ProductData.TYPE_INT32, 2, 2);
+        final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
+
+        reader.readRaster(0, 0, 2, 2, 1, 1, band, 2, 2, dest);
+
+        assertArrayEquals(new int[]{1, 2, 3, 4}, (int[]) dest.getElems());
+        verify(variable).read(any(Section.class));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testReadBandRasterData_noCacheReadsRegisteredLayerDirectly() throws Exception {
+        final ExposedFlexProductReader reader = new ExposedFlexProductReader();
+        setField(reader, "cacheEnabled", false);
+        final Variable variable = mockLayerVariable("spectrum", new int[]{10, 11, 12, 13});
+        bandToVariableMap(reader).put("spectrum_2", variable);
+        bandToLayerMap(reader).put("spectrum_2", 1);
+
+        final Band band = new Band("spectrum_2", ProductData.TYPE_INT32, 2, 2);
+        final ProductData dest = ProductData.createInstance(ProductData.TYPE_INT32, 4);
+
+        reader.readRaster(0, 0, 2, 2, 1, 1, band, 2, 2, dest);
+
+        assertArrayEquals(new int[]{10, 11, 12, 13}, (int[]) dest.getElems());
+        verify(variable).read(any(Section.class));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testReadGeoData_noCacheUsesDirectVariableRead() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Variable variable = mock(Variable.class);
@@ -539,7 +774,22 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testAddBand_usesDescriptorScaleOffsetAndFillValueWithoutReadingNcAttributes() throws Exception {
+    public void testReadGeoData_noCacheWithoutRegisteredVariableThrowsIOException() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        setField(reader, "cacheEnabled", false);
+        final Band band = new Band("latitude", ProductData.TYPE_FLOAT64, 2, 2);
+
+        try {
+            invokeReadGeoData(reader, "latitude", 2, 2, band);
+            fail("Expected IOException");
+        } catch (IOException expected) {
+            assertTrue(expected.getMessage().contains("No NetCDF variable registered for geocoding band: latitude"));
+        }
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddBand_usesDescriptorScaleOffsetAndFillValueAsFallback() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 4, 3);
 
@@ -566,7 +816,110 @@ public class FlexProductReaderTest {
         assertTrue(band.isNoDataValueUsed());
         assertEquals(0.0, band.getNoDataValue(), 1.0e-12);
         assertSame(variable, bandToVariableMap(reader).get("FLORIS_HR1B_1_radiance"));
-        verify(variable, never()).findAttribute(anyString());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddBand_usesDescriptorDataTypeScaleOffsetAndFillValueWhenNetcdfDiffers() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 4, 3);
+
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setName("olci_toa_radiance");
+        descriptor.setNcVarName("olci_toa_radiance");
+        descriptor.setNcGroupPath("Measurement_data");
+        descriptor.setDataType("float32");
+        descriptor.setScaleFactor(2.0);
+        descriptor.setAddOffset(3.0);
+        descriptor.setFillValue(-1.0);
+
+        final Variable variable = mock(Variable.class);
+        when(variable.getDataType()).thenReturn(DataType.USHORT);
+        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", 0.009155552843));
+        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", -0.25));
+        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", 65535));
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
+        ncFilesMap(reader).put("sample_l1c.nc", ncFile);
+
+        invokeAddBand(reader, product, descriptor);
+
+        final Band band = product.getBand("olci_toa_radiance");
+        assertNotNull(band);
+        assertEquals(ProductData.TYPE_FLOAT32, band.getDataType());
+        assertEquals(2.0, band.getScalingFactor(), 1.0e-12);
+        assertEquals(3.0, band.getScalingOffset(), 1.0e-12);
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(-1.0, band.getNoDataValue(), 1.0e-12);
+        assertSame(variable, bandToVariableMap(reader).get("olci_toa_radiance"));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddBand_missingOptionalVariableDoesNotAddBand() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 4, 3);
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setName("optional_band");
+        descriptor.setNcVarName("optional_band");
+        descriptor.setNcGroupPath("Measurement_data");
+        descriptor.setDataType("float32");
+        descriptor.setOptional(true);
+
+        invokeAddBand(reader, product, descriptor);
+
+        assertNull(product.getBand("optional_band"));
+        assertFalse(bandToVariableMap(reader).containsKey("optional_band"));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddFlagBand_createsIndexCodingFromProductDescriptorMasks() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 4, 3);
+        final FlexVariableDescriptor descriptor = flagDescriptor("classification", "uint8");
+        final Variable variable = registerVariable(reader, "classification.nc", descriptor);
+        final FlexProductDescriptor productDescriptor = new FlexProductDescriptor();
+        productDescriptor.setFlagMasks(new FlexFlagMask[]{
+                new FlexFlagMask("classification", "land", 2, "Land pixel", false),
+                new FlexFlagMask("other", "ignored", 3, "Ignored", false)
+        });
+
+        invokeAddFlagBand(reader, product, descriptor, productDescriptor);
+
+        final Band band = product.getBand("classification");
+        assertNotNull(band);
+        assertTrue(band.getSampleCoding() instanceof IndexCoding);
+        final IndexCoding indexCoding = (IndexCoding) band.getSampleCoding();
+        assertEquals(1, indexCoding.getNumAttributes());
+        assertEquals(2, indexCoding.getIndexValue("land"));
+        assertEquals("Land pixel", indexCoding.getIndex("land").getDescription());
+        assertSame(variable, bandToVariableMap(reader).get("classification"));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddBitmaskFlagBand_createsFlagCodingFromProductDescriptorMasks() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 4, 3);
+        final FlexVariableDescriptor descriptor = flagDescriptor("quality", "uint8");
+        final Variable variable = registerVariable(reader, "quality.nc", descriptor);
+        final FlexProductDescriptor productDescriptor = new FlexProductDescriptor();
+        productDescriptor.setFlagMasks(new FlexFlagMask[]{
+                new FlexFlagMask("quality", "cloud", 4, "Cloud pixel", true),
+                new FlexFlagMask("other", "ignored", 8, "Ignored", true)
+        });
+
+        invokeAddBitmaskFlagBand(reader, product, descriptor, productDescriptor);
+
+        final Band band = product.getBand("quality");
+        assertNotNull(band);
+        assertTrue(band.getSampleCoding() instanceof FlagCoding);
+        final FlagCoding flagCoding = (FlagCoding) band.getSampleCoding();
+        assertEquals(1, flagCoding.getNumAttributes());
+        assertEquals(4, flagCoding.getFlagMask("cloud"));
+        assertEquals("Cloud pixel", flagCoding.getFlag("cloud").getDescription());
+        assertSame(variable, bandToVariableMap(reader).get("quality"));
     }
 
     @Test
@@ -600,6 +953,23 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testAddFlagMask_formatsSignBitMaskAsParseableExpression() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 10, 10);
+        product.addBand("quality", ProductData.TYPE_UINT32);
+        final FlexFlagMask flagMask = new FlexFlagMask("quality", "sign_bit", Integer.MIN_VALUE, "Sign bit", true);
+
+        invokeAddFlagMask(reader, product, "quality", flagMask, 0);
+
+        final Mask mask = product.getMaskGroup().get("quality_sign_bit");
+        assertNotNull(mask);
+        final String expression = Mask.BandMathsType.getExpression(mask);
+        assertEquals("quality & ~2147483647 != 0", expression);
+        product.parseExpression(expression);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testAddFlagMask_preservesIndexExpression() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 10, 10);
@@ -627,6 +997,18 @@ public class FlexProductReaderTest {
         assertNotNull(mask);
         assertEquals(4, mask.getRasterWidth());
         assertEquals(5, mask.getRasterHeight());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddFlagMask_ignoresMissingBand() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 10, 10);
+        final FlexFlagMask flagMask = new FlexFlagMask("missing", "bad", 1, "Bad pixel", true);
+
+        invokeAddFlagMask(reader, product, "missing", flagMask, 0);
+
+        assertEquals(0, product.getMaskGroup().getNodeCount());
     }
 
     @Test
@@ -667,6 +1049,53 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testAddFlagMasks_skipsMasksWithDisabledOverlayMask() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 10, 10);
+        product.addBand("HRE1_channel_quality_flags_1", ProductData.TYPE_UINT8);
+        product.addBand("HRE1_channel_quality_flags_2", ProductData.TYPE_UINT8);
+        product.addBand("HRE1_common_quality_flags", ProductData.TYPE_UINT8);
+
+        final FlexFlagMask disabledChannelMask = new FlexFlagMask("HRE1_channel_quality_flags", "bad", 1, "Bad pixel", true);
+        disabledChannelMask.setOverlayMask(false);
+
+        final FlexProductDescriptor descriptor = new FlexProductDescriptor();
+        descriptor.setFlagMasks(new FlexFlagMask[]{
+                disabledChannelMask,
+                new FlexFlagMask("HRE1_common_quality_flags", "invalid", 1, "Invalid pixel", true)
+        });
+
+        invokeAddFlagMasks(reader, product, descriptor);
+
+        assertNull(product.getMaskGroup().get("HRE1_channel_quality_flags_1_bad"));
+        assertNull(product.getMaskGroup().get("HRE1_channel_quality_flags_2_bad"));
+        assertNotNull(product.getMaskGroup().get("HRE1_common_quality_flags_invalid"));
+        assertEquals(1, product.getMaskGroup().getNodeCount());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddFlagMasks_addsMaskForExistingRegularBand() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 10, 10);
+        product.addBand("classification", ProductData.TYPE_UINT8);
+
+        final FlexProductDescriptor descriptor = new FlexProductDescriptor();
+        descriptor.setFlagMasks(new FlexFlagMask[]{
+                new FlexFlagMask("classification", "land", 2, "Land pixel", false),
+                new FlexFlagMask("missing", "ignored", 3, "Ignored", false)
+        });
+
+        invokeAddFlagMasks(reader, product, descriptor);
+
+        final Mask mask = product.getMaskGroup().get("classification_land");
+        assertNotNull(mask);
+        assertEquals("classification == 2", Mask.BandMathsType.getExpression(mask));
+        assertNull(product.getMaskGroup().get("missing_ignored"));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testAddSpecialBands_usesProductDescriptorFlagMasksForChannelQualityFlagCoding() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 4, 3);
@@ -691,9 +1120,12 @@ public class FlexProductReaderTest {
         when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
         ncFilesMap(reader).put("sample_hre2.nc", ncFile);
 
+        final FlexFlagMask badMask = new FlexFlagMask("HRE2_channel_quality_flags", "bad", 1,
+                "DDDB bad sample", true);
+        badMask.setOverlayMask(false);
         final FlexProductDescriptor productDescriptor = new FlexProductDescriptor();
         productDescriptor.setFlagMasks(new FlexFlagMask[]{
-                new FlexFlagMask("HRE2_channel_quality_flags", "bad", 1, "DDDB bad sample", true),
+                badMask,
                 new FlexFlagMask("HRE2_channel_quality_flags", "dead", 2, "DDDB dead sample", true),
                 new FlexFlagMask("LRES_channel_quality_flags", "bad", 1, "Wrong base", true)
         });
@@ -707,7 +1139,6 @@ public class FlexProductReaderTest {
         assertEquals(3.0, layerBand.getScalingOffset(), 1.0e-12);
         assertTrue(layerBand.isNoDataValueUsed());
         assertEquals(0.0, layerBand.getNoDataValue(), 1.0e-12);
-        verify(variable, never()).findAttribute(anyString());
 
         final FlagCoding flagCoding = (FlagCoding) layerBand.getSampleCoding();
         assertEquals(2, flagCoding.getNumAttributes());
@@ -716,6 +1147,54 @@ public class FlexProductReaderTest {
         assertEquals(2, flagCoding.getFlagMask("dead"));
         assertEquals("DDDB dead sample", flagCoding.getFlag("dead").getDescription());
         assertNull(flagCoding.getFlag("saturated"));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddSpecialBands_usesDescriptorDataTypeScaleOffsetAndFillValueWhenNetcdfDiffers() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 4, 3);
+
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setName("floris_apparent_reflectance");
+        descriptor.setNcVarName("floris_apparent_reflectance");
+        descriptor.setNcGroupPath("L2_Atmosphere");
+        descriptor.setType('s');
+        descriptor.setDataType("float32");
+        descriptor.setDepth(2);
+        descriptor.setDepthPrefixToken("_ch_");
+        descriptor.setDescription("FLORIS apparent reflectance");
+        descriptor.setUnits("-");
+        descriptor.setScaleFactor(2.0);
+        descriptor.setAddOffset(3.0);
+        descriptor.setFillValue(-1.0);
+        specialsMap(reader).put(descriptor.getName(), descriptor);
+
+        final Variable variable = mock(Variable.class);
+        when(variable.getDataType()).thenReturn(DataType.USHORT);
+        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", 1.525925474E-5));
+        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", 0.5));
+        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", 65535));
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
+        ncFilesMap(reader).put("sample_l2.nc", ncFile);
+
+        invokeAddSpecialBands(reader, product, new FlexProductDescriptor());
+
+        final Band firstLayerBand = product.getBand("floris_apparent_reflectance_ch_1");
+        final Band secondLayerBand = product.getBand("floris_apparent_reflectance_ch_2");
+        assertNotNull(firstLayerBand);
+        assertNotNull(secondLayerBand);
+        assertEquals(ProductData.TYPE_FLOAT32, firstLayerBand.getDataType());
+        assertEquals(2.0, firstLayerBand.getScalingFactor(), 1.0e-12);
+        assertEquals(3.0, firstLayerBand.getScalingOffset(), 1.0e-12);
+        assertTrue(firstLayerBand.isNoDataValueUsed());
+        assertEquals(-1.0, firstLayerBand.getNoDataValue(), 1.0e-12);
+        assertEquals(ProductData.TYPE_FLOAT32, secondLayerBand.getDataType());
+        assertEquals(2.0, secondLayerBand.getScalingFactor(), 1.0e-12);
+        assertEquals(3.0, secondLayerBand.getScalingOffset(), 1.0e-12);
+        assertTrue(secondLayerBand.isNoDataValueUsed());
+        assertEquals(-1.0, secondLayerBand.getNoDataValue(), 1.0e-12);
     }
 
     @Test
@@ -853,6 +1332,63 @@ public class FlexProductReaderTest {
         assertEquals(700.0f, product.getBand("FLORIS_LRB_1_radiance").getSpectralWavelength(), 1.0e-6f);
     }
 
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddMetadata_addsHeaderAndVendorSpecificMetadata() throws Exception {
+        final Product product = new Product("p", "t", 1, 1);
+        final FlexProductHeader header = new FlexProductHeader();
+        header.setProductName("FLEX_PRODUCT");
+        header.setProductType("L1C");
+        header.setStartTime("2026-09-17T10:00:00Z");
+        header.setStopTime("2026-09-17T10:05:00Z");
+        header.setPlatformName("FLEX");
+        header.setInstrumentName("FLORIS");
+        header.setOrbitNumber(42);
+        header.setOrbitDirection("ASCENDING");
+        header.setProcessorName("processor");
+        header.setProcessorVersion("03.03");
+        header.setVendorSpecific(Collections.singletonMap("custom", "value"));
+
+        invokeAddMetadata(product, header);
+
+        final MetadataElement headerElement = product.getMetadataRoot().getElement("Header");
+        assertNotNull(headerElement);
+        assertEquals("FLEX_PRODUCT", headerElement.getAttribute("productName").getData().getElemString());
+        assertEquals("03.03", headerElement.getAttribute("processorVersion").getData().getElemString());
+        assertEquals(42, headerElement.getAttribute("orbitNumber").getData().getElemInt());
+
+        final MetadataElement vendorElement = product.getMetadataRoot().getElement("VendorSpecific");
+        assertNotNull(vendorElement);
+        assertEquals("value", vendorElement.getAttribute("custom").getData().getElemString());
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddMetadataVariables_addsLazyNetcdfElementsForMetadataDescriptors() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        metadataMap(reader).put("metadata_a", mockDescriptor("metadata_a", "Group/metadata_a", "", "Group", "metadata_a"));
+        metadataMap(reader).put("metadata_b", mockDescriptor("metadata_b", "Group/metadata_b", "", "Group", "metadata_b"));
+        final Product product = new Product("p", "t", 1, 1);
+
+        invokeAddMetadataVariables(reader, product);
+
+        final MetadataElement netcdfElement = product.getMetadataRoot().getElement(FlexProductReader.NETCDF_BASE_METADATA_ELEMENT);
+        assertNotNull(netcdfElement);
+        assertNotNull(netcdfElement.getElement("metadata_a"));
+        assertNotNull(netcdfElement.getElement("metadata_b"));
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testAddMetadataVariables_ignoresEmptyMetadataDescriptorMap() throws Exception {
+        final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
+        final Product product = new Product("p", "t", 1, 1);
+
+        invokeAddMetadataVariables(reader, product);
+
+        assertNull(product.getMetadataRoot().getElement(FlexProductReader.NETCDF_BASE_METADATA_ELEMENT));
+    }
+
     private Variable mockStringVariable(String fullName) {
         final Variable variable = mock(Variable.class);
         when(variable.getFullName()).thenReturn(fullName);
@@ -871,6 +1407,50 @@ public class FlexProductReaderTest {
         when(descriptor.getNcVarName()).thenReturn(ncVarName);
 
         return descriptor;
+    }
+
+    private Variable mockRasterVariable(String fullName, int[] shape, int[] values) throws Exception {
+        final Variable variable = mock(Variable.class);
+        when(variable.getFullName()).thenReturn(fullName);
+        when(variable.getRank()).thenReturn(2);
+        when(variable.getDimensions()).thenReturn(Arrays.asList(
+                new Dimension("y", shape[0]),
+                new Dimension("x", shape[1])
+        ));
+        when(variable.read(any(Section.class))).thenReturn(Array.factory(DataType.INT, shape, values));
+        return variable;
+    }
+
+    private Variable mockLayerVariable(String fullName, int[] values) throws Exception {
+        final Variable variable = mock(Variable.class);
+        when(variable.getFullName()).thenReturn(fullName);
+        when(variable.getRank()).thenReturn(3);
+        when(variable.getDimensions()).thenReturn(Arrays.asList(
+                new Dimension("channel", 2),
+                new Dimension("y", 2),
+                new Dimension("x", 2)
+        ));
+        when(variable.read(any(Section.class))).thenReturn(Array.factory(DataType.INT, new int[]{1, 2, 2}, values));
+        return variable;
+    }
+
+    private FlexVariableDescriptor flagDescriptor(String name, String dataType) {
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setName(name);
+        descriptor.setNcVarName(name);
+        descriptor.setNcGroupPath("Quality_flags");
+        descriptor.setDataType(dataType);
+        descriptor.setDescription(name + " description");
+        return descriptor;
+    }
+
+    private Variable registerVariable(FlexProductReader reader, String fileName,
+                                      FlexVariableDescriptor descriptor) throws Exception {
+        final Variable variable = mock(Variable.class);
+        final NetcdfFile ncFile = mock(NetcdfFile.class);
+        when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
+        ncFilesMap(reader).put(fileName, ncFile);
+        return variable;
     }
 
     @SuppressWarnings("unchecked")
@@ -911,12 +1491,40 @@ public class FlexProductReaderTest {
         method.invoke(reader, product, bandName, mask, colorIndex);
     }
 
+    private void invokeAddFlagBand(FlexProductReader reader, Product product, FlexVariableDescriptor descriptor,
+                                   FlexProductDescriptor productDescriptor) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "addFlagBand", Product.class, FlexVariableDescriptor.class, FlexProductDescriptor.class);
+        method.setAccessible(true);
+        method.invoke(reader, product, descriptor, productDescriptor);
+    }
+
+    private void invokeAddBitmaskFlagBand(FlexProductReader reader, Product product, FlexVariableDescriptor descriptor,
+                                          FlexProductDescriptor productDescriptor) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "addBitmaskFlagBand", Product.class, FlexVariableDescriptor.class, FlexProductDescriptor.class);
+        method.setAccessible(true);
+        method.invoke(reader, product, descriptor, productDescriptor);
+    }
+
     private void invokeAddFlagMasks(FlexProductReader reader, Product product,
                                     FlexProductDescriptor productDescriptor) throws Exception {
         final Method method = FlexProductReader.class.getDeclaredMethod(
                 "addFlagMasks", Product.class, FlexProductDescriptor.class);
         method.setAccessible(true);
         method.invoke(reader, product, productDescriptor);
+    }
+
+    private void invokeAddMetadata(Product product, FlexProductHeader header) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod("addMetadata", Product.class, FlexProductHeader.class);
+        method.setAccessible(true);
+        method.invoke(null, product, header);
+    }
+
+    private void invokeAddMetadataVariables(FlexProductReader reader, Product product) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod("addMetadataVariables", Product.class);
+        method.setAccessible(true);
+        method.invoke(reader, product);
     }
 
     private void invokeAddSpecialBands(FlexProductReader reader, Product product,
@@ -952,6 +1560,45 @@ public class FlexProductReaderTest {
         method.invoke(reader);
     }
 
+    private java.awt.Dimension invokeCreatePreferredTileSize(String productType, int width, int height) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "createPreferredTileSize", String.class, int.class, int.class);
+        method.setAccessible(true);
+        return (java.awt.Dimension) method.invoke(null, productType, width, height);
+    }
+
+    private void invokeSetProductTimes(FlexProductReader reader, Product product, FlexProductHeader header) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod("setProductTimes", Product.class, FlexProductHeader.class);
+        method.setAccessible(true);
+        method.invoke(reader, product, header);
+    }
+
+    private int invokeResolveProductWidth(FlexProductReader reader, FlexProductDescriptor productDescriptor) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "resolveProductWidth", FlexProductDescriptor.class);
+        method.setAccessible(true);
+        return invokeDimensionResolver(method, reader, productDescriptor);
+    }
+
+    private int invokeResolveProductHeight(FlexProductReader reader, FlexProductDescriptor productDescriptor) throws Exception {
+        final Method method = FlexProductReader.class.getDeclaredMethod(
+                "resolveProductHeight", FlexProductDescriptor.class);
+        method.setAccessible(true);
+        return invokeDimensionResolver(method, reader, productDescriptor);
+    }
+
+    private int invokeDimensionResolver(Method method, FlexProductReader reader,
+                                        FlexProductDescriptor productDescriptor) throws Exception {
+        try {
+            return (int) method.invoke(reader, productDescriptor);
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof Exception) {
+                throw (Exception) e.getCause();
+            }
+            throw e;
+        }
+    }
+
     private NetcdfFile invokeOpenFlexNetcdfFile(FlexProductReader reader) throws Exception {
         final Method method = FlexProductReader.class.getDeclaredMethod("openFlexNetcdfFile", File.class, String.class);
         method.setAccessible(true);
@@ -963,7 +1610,14 @@ public class FlexProductReaderTest {
         final Method method = FlexProductReader.class.getDeclaredMethod(
                 "readGeoData", String.class, int.class, int.class, Band.class);
         method.setAccessible(true);
-        return (double[]) method.invoke(reader, bandName, width, height, band);
+        try {
+            return (double[]) method.invoke(reader, bandName, width, height, band);
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof Exception) {
+                throw (Exception) e.getCause();
+            }
+            throw e;
+        }
     }
 
     private void restorePreference(Preferences preferences, String oldValue) {
@@ -989,10 +1643,25 @@ public class FlexProductReaderTest {
         return (Map<String, Variable>) getField(reader, "bandToVariableMap");
     }
 
+    @SuppressWarnings("unchecked")
+    private Map<String, Integer> bandToLayerMap(FlexProductReader reader) throws Exception {
+        return (Map<String, Integer>) getField(reader, "bandToLayerMap");
+    }
+
     private void setField(FlexProductReader reader, String name, Object value) throws Exception {
         final Field field = FlexProductReader.class.getDeclaredField(name);
         field.setAccessible(true);
         field.set(reader, value);
+    }
+
+    private static FlexProductDescriptor productDescriptor(String dimensionGroupPath,
+                                                           String widthDimensionName,
+                                                           String heightDimensionName) {
+        final FlexProductDescriptor descriptor = new FlexProductDescriptor();
+        descriptor.setDimensionGroupPath(dimensionGroupPath);
+        descriptor.setWidthDimensionName(widthDimensionName);
+        descriptor.setHeightDimensionName(heightDimensionName);
+        return descriptor;
     }
 
     private static void addSpectralBand(Product product, String name, float wavelength) {
@@ -1046,6 +1715,20 @@ public class FlexProductReaderTest {
         assertEquals(id, axis.getId());
         assertEquals(name, axis.getName());
         assertEquals(Arrays.asList(bandNames), axis.getBandNames());
+    }
+
+    private static class ExposedFlexProductReader extends FlexProductReader {
+        ExposedFlexProductReader() {
+            super(mock(ProductReaderPlugIn.class));
+        }
+
+        void readRaster(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight,
+                        int sourceStepX, int sourceStepY, Band destBand,
+                        int destWidth, int destHeight, ProductData destBuffer) throws IOException {
+            readBandRasterDataImpl(sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
+                    sourceStepX, sourceStepY, destBand,
+                    0, 0, destWidth, destHeight, destBuffer, ProgressMonitor.NULL);
+        }
     }
 
     private static class OpenTrackingFlexProductReader extends FlexProductReader {
