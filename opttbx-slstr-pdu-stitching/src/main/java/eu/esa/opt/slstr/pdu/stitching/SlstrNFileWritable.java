@@ -2,6 +2,7 @@ package eu.esa.opt.slstr.pdu.stitching;
 
 import org.esa.snap.core.util.jai.JAIUtils;
 import org.esa.snap.dataio.netcdf.NetCDF4Chunking;
+import org.esa.snap.dataio.netcdf.NetCdfActivator;
 import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
@@ -21,6 +22,8 @@ public class SlstrNFileWritable {
     protected Map<String, SlstrN4Variable> variables = new HashMap<>();
 
     SlstrNFileWritable(String filename) throws IOException {
+        // NetCDF-4 writing uses the native library, which may still be loading in the background
+        NetCdfActivator.activate();
         netcdfFileWriter = NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf4, filename, new NetCDF4Chunking());
     }
 
