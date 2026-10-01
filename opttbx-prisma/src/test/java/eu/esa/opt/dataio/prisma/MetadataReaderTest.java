@@ -20,6 +20,7 @@ import ucar.nc2.dataset.VariableDS;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -1037,10 +1038,10 @@ public class MetadataReaderTest {
         final Group mockRootGroup = Mockito.mock(Group.class);
 
         Mockito.when(mockedHdfFile.getRootGroup()).thenReturn(mockRootGroup);
-        Mockito.when(mockedHdfFile.getGlobalAttributes()).thenReturn(List.of(
+        Mockito.when(mockedHdfFile.getGlobalAttributes()).thenReturn(ImmutableList.copyOf(List.of(
                 new Attribute("Att ints", Array.makeFromJavaArray(new int[]{2, 5})),
                 new Attribute("Att String", "# 5% --==>> Any Characters")
-        ));
+        )));
 
         //execution
         MetadataReader.readMetadata(mockedHdfFile, testProduct);
@@ -1071,8 +1072,8 @@ public class MetadataReaderTest {
         final Group mockNestedGroup1 = Mockito.mock(Group.class);
         final Group mockNestedGroup2 = Mockito.mock(Group.class);
 
-        Mockito.when(mockRootGroup.getGroups()).thenReturn(List.of(mockNestedGroup1));
-        Mockito.when(mockNestedGroup1.getGroups()).thenReturn(List.of(mockNestedGroup2));
+        Mockito.when(mockRootGroup.getGroups()).thenReturn(ImmutableList.copyOf(List.of(mockNestedGroup1)));
+        Mockito.when(mockNestedGroup1.getGroups()).thenReturn(ImmutableList.copyOf(List.of(mockNestedGroup2)));
 
         Mockito.when(mockNestedGroup1.getShortName()).thenReturn("nested1");
         Mockito.when(mockNestedGroup1.getAttributes()).thenReturn(List.of(
@@ -1124,26 +1125,24 @@ public class MetadataReaderTest {
         Mockito.when(mockNestedGroup1.getShortName()).thenReturn("nested1");
         Mockito.when(mockNestedGroup2.getShortName()).thenReturn("HDFEOS");
 
-        Mockito.when(mockRootGroup.getGroups()).thenReturn(List.of(mockNestedGroup1));
-        Mockito.when(mockNestedGroup1.getGroups()).thenReturn(List.of(mockNestedGroup2));
+        Mockito.when(mockRootGroup.getGroups()).thenReturn(ImmutableList.copyOf(List.of(mockNestedGroup1)));
+        Mockito.when(mockNestedGroup1.getGroups()).thenReturn(ImmutableList.copyOf(List.of(mockNestedGroup2)));
 
         final Variable var1 = Variable.builder()
                 .setName("var1")
                 .setDataType(DataType.INT)
                 .setDimensionsAnonymous(new int[]{3, 2})
                 .setCachedData(Array.makeFromJavaArray(new int[][]{{1, 2}, {3, 4}, {5, 6}}), false)
-                .setGroup(mockNestedGroup1)
-                .build();
+                .build(mockNestedGroup1);
         final Variable var2 = Variable.builder()
                 .setName("var2")
                 .setDataType(DataType.INT)
                 .setDimensionsAnonymous(new int[]{3, 1})
                 .setCachedData(Array.makeFromJavaArray(new int[]{7, 8, 9}), false)
-                .setGroup(mockNestedGroup2)
-                .build();
+                .build(mockNestedGroup2);
 
-        Mockito.when(mockNestedGroup1.getVariables()).thenReturn(List.of(var1));
-        Mockito.when(mockNestedGroup2.getVariables()).thenReturn(List.of(var2));
+        Mockito.when(mockNestedGroup1.getVariables()).thenReturn(ImmutableList.copyOf(List.of(var1)));
+        Mockito.when(mockNestedGroup2.getVariables()).thenReturn(ImmutableList.copyOf(List.of(var2)));
 
         final MetadataElement metadataRoot = new MetadataElement("metadataRoot");
 

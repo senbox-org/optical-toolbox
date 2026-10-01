@@ -6,6 +6,7 @@ import ucar.nc2.NetcdfFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import com.google.common.collect.ImmutableList;
 
 import static gov.nasa.gsfc.seadas.dataio.SeadasProductReader.ProductType.Level2;
 import static gov.nasa.gsfc.seadas.dataio.SeadasProductReader.ProductType.Level3_SeadasMapped;
@@ -18,7 +19,7 @@ public class SeadasProductReaderTest {
     @Test
     public void testGetReaderFromProductType() throws IOException {
         final NetcdfFile netcdfFile = mock(NetcdfFile.class);
-        when(netcdfFile.getGlobalAttributes()).thenReturn(new ArrayList<>());
+        when(netcdfFile.getGlobalAttributes()).thenReturn(ImmutableList.copyOf(new ArrayList<>()));
         final SeadasProductReader seadasProductReader = mock(SeadasProductReader.class);
         when(seadasProductReader.getNcfile()).thenReturn(netcdfFile);
 

@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
+import com.google.common.collect.ImmutableList;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -752,10 +753,10 @@ public class FlexProductReaderTest {
         final Variable variable = mock(Variable.class);
         when(variable.getFullName()).thenReturn("latitude");
         when(variable.getRank()).thenReturn(2);
-        when(variable.getDimensions()).thenReturn(Arrays.asList(
+        when(variable.getDimensions()).thenReturn(ImmutableList.copyOf(Arrays.asList(
                 new Dimension("number_of_along_track_samples", 2),
                 new Dimension("number_of_across_track_samples", 2)
-        ));
+        )));
         when(variable.read(any(Section.class))).thenReturn(
                 Array.factory(DataType.DOUBLE, new int[]{2, 2}, new double[]{1.0, 2.0, 3.0, 4.0}));
 
@@ -1413,10 +1414,10 @@ public class FlexProductReaderTest {
         final Variable variable = mock(Variable.class);
         when(variable.getFullName()).thenReturn(fullName);
         when(variable.getRank()).thenReturn(2);
-        when(variable.getDimensions()).thenReturn(Arrays.asList(
+        when(variable.getDimensions()).thenReturn(ImmutableList.copyOf(Arrays.asList(
                 new Dimension("y", shape[0]),
                 new Dimension("x", shape[1])
-        ));
+        )));
         when(variable.read(any(Section.class))).thenReturn(Array.factory(DataType.INT, shape, values));
         return variable;
     }
@@ -1425,11 +1426,11 @@ public class FlexProductReaderTest {
         final Variable variable = mock(Variable.class);
         when(variable.getFullName()).thenReturn(fullName);
         when(variable.getRank()).thenReturn(3);
-        when(variable.getDimensions()).thenReturn(Arrays.asList(
+        when(variable.getDimensions()).thenReturn(ImmutableList.copyOf(Arrays.asList(
                 new Dimension("channel", 2),
                 new Dimension("y", 2),
                 new Dimension("x", 2)
-        ));
+        )));
         when(variable.read(any(Section.class))).thenReturn(Array.factory(DataType.INT, new int[]{1, 2, 2}, values));
         return variable;
     }
