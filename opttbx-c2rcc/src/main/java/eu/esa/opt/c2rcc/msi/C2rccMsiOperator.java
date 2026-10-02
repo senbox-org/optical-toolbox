@@ -452,6 +452,8 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
                 && product.containsRasterDataNode(RASTER_NAME_VIEW_AZIMUTH);
     }
 
+    boolean firstTime = true;
+
     @Override
     protected void computePixel(int x, int y, Sample[] sourceSamples, WritableSample[] targetSamples) {
         final double[] reflectances = new double[C2rccMsiAlgorithm.SOURCE_BAND_REFL_NAMES.length];
@@ -470,6 +472,11 @@ public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable
         double atmPress = fetchSurfacePressure(atmosphericAuxdata, mjd, x, y, lat, lon);
 
         final double altitude = getAltitude(geoPos);
+
+        if (firstTime && ! Double.isNaN(ozone)) {
+            System.err.println("ozone=" + ozone + " pressure=" + atmPress + " altitude=" + altitude);
+            firstTime = false;
+        }
 
         Result result = algorithm.processPixel(x, y, lat, lon,
                                                reflectances,
