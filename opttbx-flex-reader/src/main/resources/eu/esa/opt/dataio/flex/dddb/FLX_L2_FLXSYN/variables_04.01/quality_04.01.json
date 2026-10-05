@@ -1,0 +1,155 @@
+[
+  {
+    "name": "quality_flags_atmosphere",
+    "ncVarName": "quality_flags_atmosphere",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Atmosphere quality flags"
+  },
+  {
+    "name": "quality_flags_floris_app_reflectance",
+    "ncVarName": "quality_flags_floris_app_reflectance",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "FLORIS apparent reflectance quality flags"
+  },
+  {
+    "name": "quality_flags_s3_reflectance",
+    "ncVarName": "quality_flags_s3_reflectance",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint32",
+    "units": "",
+    "description": "Sentinel-3 reflectance quality flags"
+  },
+  {
+    "name": "quality_flags_sif",
+    "ncVarName": "quality_flags_sif",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Sun induced fluorescence quality flags"
+  },
+  {
+    "name": "quality_flags_lst",
+    "ncVarName": "quality_flags_lst",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Land surface temperature quality flags"
+  },
+  {
+    "name": "quality_flags_lcc",
+    "ncVarName": "quality_flags_lcc",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Leaf chlorophyll content quality flags"
+  },
+  {
+    "name": "quality_flags_lcar",
+    "ncVarName": "quality_flags_lcar",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Leaf carotenoid content quality flags"
+  },
+  {
+    "name": "quality_flags_lai",
+    "ncVarName": "quality_flags_lai",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Leaf area index quality flags"
+  },
+  {
+    "name": "quality_flags_fpar",
+    "ncVarName": "quality_flags_fpar",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "FAPAR quality flags"
+  },
+  {
+    "name": "quality_flags_fparch",
+    "ncVarName": "quality_flags_fparch",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "FAPAR chlorophyll quality flags"
+  },
+  {
+    "name": "quality_flags_fesc",
+    "ncVarName": "quality_flags_fesc",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Fluorescence escape probability quality flags"
+  },
+  {
+    "name": "quality_flags_fparchfesc",
+    "ncVarName": "quality_flags_fparchfesc",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "FAPAR chlorophyll and fluorescence escape probability quality flags"
+  },
+  {
+    "name": "quality_flags_fqe",
+    "ncVarName": "quality_flags_fqe",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Fluorescence quantum efficiency quality flags"
+  },
+  {
+    "name": "quality_flags_npq",
+    "ncVarName": "quality_flags_npq",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Non-photochemical quenching quality flags"
+  },
+  {
+    "name": "quality_flags_photo",
+    "ncVarName": "quality_flags_photo",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "Photochemical variables quality flags"
+  },
+  {
+    "name": "quality_flags_psi",
+    "ncVarName": "quality_flags_psi",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint8",
+    "units": "",
+    "description": "PSI contribution quality flags"
+  },
+  {
+    "name": "pixel_classification",
+    "ncVarName": "pixel_classification",
+    "ncGroupPath": "Quality",
+    "type": "b",
+    "dataType": "uint16",
+    "units": "",
+    "description": "Pixel classification"
+  }
+]

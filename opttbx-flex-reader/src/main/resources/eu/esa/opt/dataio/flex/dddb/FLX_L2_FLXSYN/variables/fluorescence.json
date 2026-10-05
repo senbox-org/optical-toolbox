@@ -4,44 +4,51 @@
     "ncVarName": "sif_emission_spectrum",
     "ncGroupPath": "L2_Fluorescence",
     "type": "s",
-    "dataType": "float64",
+    "dataType": "uint16",
     "depth": 111,
     "depthPrefixToken": "_ch_",
     "wavelengthReference": "sif_wavelength_grid",
     "units": "mW.m-2.sr-1.nm-1",
-    "description": "SIF emission spectrum"
+    "description": "SIF emission spectrum",
+    "scaleFactor": 0.0001602221747,
+    "addOffset": -0.5,
+    "fillValue": 65535
   },
   {
     "name": "sif_emission_spectrum_uncertainty",
     "ncVarName": "sif_emission_spectrum_uncertainty",
     "ncGroupPath": "L2_Fluorescence",
     "type": "s",
-    "dataType": "float32",
+    "dataType": "uint16",
     "depth": 111,
     "depthPrefixToken": "_ch_",
     "wavelengthReference": "sif_wavelength_grid",
     "units": "",
-    "description": "SIF emission spectrum uncertainty"
+    "description": "SIF emission spectrum uncertainty",
+    "scaleFactor": 0.0001602221747,
+    "fillValue": 65535
   },
   {
     "name": "sif_wavelength_grid",
     "ncVarName": "sif_wavelength_grid",
     "ncGroupPath": "L2_Fluorescence",
     "type": "m",
-    "dataType": "float64",
+    "dataType": "float32",
     "width": 111,
     "height": 1,
     "units": "nm",
-    "description": "SIF wavelength grid"
+    "description": "SIF wavelength grid",
+    "fillValue": -1
   },
   {
     "name": "total_integrated_sif",
     "ncVarName": "total_integrated_sif",
     "ncGroupPath": "L2_Fluorescence",
     "type": "v",
-    "dataType": "float64",
+    "dataType": "float32",
     "units": "mW.m-2.sr-1",
-    "description": "Total integrated SIF"
+    "description": "Total integrated SIF",
+    "fillValue": -1
   },
   {
     "name": "total_integrated_sif_uncertainty",
@@ -50,18 +57,20 @@
     "type": "v",
     "dataType": "float32",
     "units": "",
-    "description": "Total integrated SIF uncertainty"
+    "description": "Total integrated SIF uncertainty",
+    "fillValue": -1
   },
   {
     "name": "sif_peak_values",
     "ncVarName": "sif_peak_values",
     "ncGroupPath": "L2_Fluorescence",
     "type": "s",
-    "dataType": "float64",
+    "dataType": "float32",
     "depth": 2,
     "depthPrefixToken": "_peak_",
     "units": "mW.m-2.sr-1.nm-1",
-    "description": "SIF peak values"
+    "description": "SIF peak values",
+    "fillValue": -1
   },
   {
     "name": "sif_peak_values_uncertainty",
@@ -72,18 +81,20 @@
     "depth": 2,
     "depthPrefixToken": "_peak_",
     "units": "",
-    "description": "SIF peak values uncertainty"
+    "description": "SIF peak values uncertainty",
+    "fillValue": -1
   },
   {
     "name": "sif_peak_positions",
     "ncVarName": "sif_peak_positions",
     "ncGroupPath": "L2_Fluorescence",
     "type": "s",
-    "dataType": "float64",
+    "dataType": "float32",
     "depth": 2,
     "depthPrefixToken": "_peak_",
     "units": "nm",
-    "description": "SIF peak positions"
+    "description": "SIF peak positions",
+    "fillValue": -1
   },
   {
     "name": "sif_peak_positions_uncertainty",
@@ -94,18 +105,20 @@
     "depth": 2,
     "depthPrefixToken": "_peak_",
     "units": "",
-    "description": "SIF peak positions uncertainty"
+    "description": "SIF peak positions uncertainty",
+    "fillValue": -1
   },
   {
     "name": "sif_O2_bands_value",
     "ncVarName": "sif_O2_bands_value",
     "ncGroupPath": "L2_Fluorescence",
     "type": "s",
-    "dataType": "float64",
+    "dataType": "float32",
     "depth": 2,
     "depthPrefixToken": "_band_",
     "units": "mW.m-2.sr-1.nm-1",
-    "description": "SIF at O2 absorption bands"
+    "description": "SIF at O2 absorption bands",
+    "fillValue": -1
   },
   {
     "name": "sif_O2_bands_value_uncertainty",
@@ -116,41 +129,47 @@
     "depth": 2,
     "depthPrefixToken": "_band_",
     "units": "",
-    "description": "SIF at O2 absorption bands uncertainty"
+    "description": "SIF at O2 absorption bands uncertainty",
+    "fillValue": -1
   },
   {
     "name": "floris_real_reflectance",
     "ncVarName": "floris_real_reflectance",
     "ncGroupPath": "L2_Fluorescence",
     "type": "s",
-    "dataType": "float64",
+    "dataType": "uint16",
     "depth": 281,
     "depthPrefixToken": "_ch_",
     "wavelengthReference": "reflectance_wavelength_grid",
     "units": "",
-    "description": "FLORIS real reflectance"
+    "description": "FLORIS real reflectance",
+    "scaleFactor": 0.00001525925474,
+    "fillValue": 65535
   },
   {
     "name": "floris_real_reflectance_uncertainty",
     "ncVarName": "floris_real_reflectance_uncertainty",
     "ncGroupPath": "L2_Fluorescence",
     "type": "s",
-    "dataType": "float32",
+    "dataType": "uint16",
     "depth": 281,
     "depthPrefixToken": "_ch_",
     "wavelengthReference": "reflectance_wavelength_grid",
     "units": "",
-    "description": "FLORIS real reflectance uncertainty"
+    "description": "FLORIS real reflectance uncertainty",
+    "scaleFactor": 0.00001525925474,
+    "fillValue": 65535
   },
   {
     "name": "reflectance_wavelength_grid",
     "ncVarName": "reflectance_wavelength_grid",
     "ncGroupPath": "L2_Fluorescence",
     "type": "m",
-    "dataType": "float64",
+    "dataType": "float32",
     "width": 281,
     "height": 1,
     "units": "nm",
-    "description": "Reflectance wavelength grid"
+    "description": "Reflectance wavelength grid",
+    "fillValue": -1
   }
 ]

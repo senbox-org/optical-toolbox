@@ -17,12 +17,14 @@ class FlexDirectNetcdfBandReader {
     private static final String[] TYPICAL_X_DIM_NAMES = {
             "lon", "long", "longitude", "ni", "NX", "SX", "x", "xc",
             "across_track", "number_of_across_track_samples",
+            "easting", "eastings", "number_of_easting_pixels",
             "numCells", "col", "cols", "column", "columns", "tie_columns"
     };
 
     private static final String[] TYPICAL_Y_DIM_NAMES = {
             "lat", "latitude", "nj", "NY", "SY", "y", "yc",
             "along_track", "number_of_along_track_samples",
+            "northing", "northings", "number_of_northing_pixels",
             "numRows", "row", "rows", "tie_rows"
     };
 

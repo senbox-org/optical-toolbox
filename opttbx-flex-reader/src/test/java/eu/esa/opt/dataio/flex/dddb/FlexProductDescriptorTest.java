@@ -15,8 +15,9 @@ public class FlexProductDescriptorTest {
         final FlexProductDescriptor descriptor = new FlexProductDescriptor();
 
         assertEquals("", descriptor.getProductType());
-        assertEquals(-1, descriptor.getWidth());
-        assertEquals(-1, descriptor.getHeight());
+        assertEquals("", descriptor.getDimensionGroupPath());
+        assertEquals("", descriptor.getWidthDimensionName());
+        assertEquals("", descriptor.getHeightDimensionName());
         assertEquals(0, descriptor.getDataFiles().length);
         assertEquals("", descriptor.getBandGroupingPattern());
         assertEquals(0, descriptor.getFlagMasks().length);
@@ -28,8 +29,9 @@ public class FlexProductDescriptorTest {
         final FlexProductDescriptor descriptor = new FlexProductDescriptor();
 
         descriptor.setProductType("FLX_L1C_FLXSYN");
-        descriptor.setWidth(536);
-        descriptor.setHeight(3640);
+        descriptor.setDimensionGroupPath("Measurement_data");
+        descriptor.setWidthDimensionName("number_of_across_track_samples");
+        descriptor.setHeightDimensionName("number_of_along_track_samples");
         descriptor.setDataFiles(new String[]{"geometry", "measurement_data"});
         descriptor.setBandGroupingPattern("floris_toa_radiance_ch_*:olci_toa_radiance_ch_*");
 
@@ -37,8 +39,9 @@ public class FlexProductDescriptorTest {
         descriptor.setFlagMasks(new FlexFlagMask[]{mask});
 
         assertEquals("FLX_L1C_FLXSYN", descriptor.getProductType());
-        assertEquals(536, descriptor.getWidth());
-        assertEquals(3640, descriptor.getHeight());
+        assertEquals("Measurement_data", descriptor.getDimensionGroupPath());
+        assertEquals("number_of_across_track_samples", descriptor.getWidthDimensionName());
+        assertEquals("number_of_along_track_samples", descriptor.getHeightDimensionName());
         assertArrayEquals(new String[]{"geometry", "measurement_data"}, descriptor.getDataFiles());
         assertEquals("floris_toa_radiance_ch_*:olci_toa_radiance_ch_*", descriptor.getBandGroupingPattern());
         assertEquals(1, descriptor.getFlagMasks().length);

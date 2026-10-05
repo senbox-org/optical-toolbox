@@ -1,0 +1,14 @@
+[
+  {
+    "name": "time_stamp",
+    "ncVarName": "time_stamp",
+    "ncGroupPath": "Annotation_data/Datation",
+    "type": "m",
+    "dataType": "int64",
+    "width": 4138,
+    "height": 1,
+    "units": "microseconds",
+    "description": "Elapsed time since 01 Jan 2000",
+    "fillValue": -1
+  }
+]

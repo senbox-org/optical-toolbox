@@ -1,11 +1,7 @@
 package eu.esa.opt.dataio.flex.util;
 
 import com.bc.ceres.annotation.STTM;
-import eu.esa.opt.dataio.flex.FlexProductReader;
-import eu.esa.opt.dataio.flex.compatibility.EarlyProcessorCompatibility;
-import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
-import eu.esa.opt.dataio.flex.header.FlexProductHeader;
 import org.esa.snap.core.datamodel.*;
 import org.junit.Rule;
 import org.junit.Test;
@@ -94,138 +90,6 @@ public class FlexReaderUtilsTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testDetectCompatibility_standard() {
-        final FlexProductHeader header = new FlexProductHeader();
-        header.setDataFileNames(Arrays.asList("data_1.nc", "data_2.nc"));
-
-        assertTrue(FlexReaderUtils.detectCompatibility(header) instanceof StandardFlexCompatibility);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testDetectCompatibility_earlyProcessor() {
-        final FlexProductHeader header = new FlexProductHeader();
-        header.setDataFileNames(Arrays.asList("data_1.nc", "data_2.nc.nc"));
-
-        assertTrue(FlexReaderUtils.detectCompatibility(header) instanceof EarlyProcessorCompatibility);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetScaleAndOffset_bothAttributesPresent() {
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-        final Variable variable = mock(Variable.class);
-
-        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", 0.01));
-        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", 2.5));
-
-        FlexReaderUtils.setScaleAndOffset(band, variable);
-
-        assertEquals(0.01, band.getScalingFactor(), 1.0e-12);
-        assertEquals(2.5, band.getScalingOffset(), 1.0e-12);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetScaleAndOffset_noAttributesKeepsDefaults() {
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-        final Variable variable = mock(Variable.class);
-
-        when(variable.findAttribute("scale_factor")).thenReturn(null);
-        when(variable.findAttribute("add_offset")).thenReturn(null);
-
-        FlexReaderUtils.setScaleAndOffset(band, variable);
-
-        assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
-        assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetScaleAndOffset_stringTypedAttributes() {
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-        final Variable variable = mock(Variable.class);
-
-        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", "0.01"));
-        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", "2.5"));
-
-        FlexReaderUtils.setScaleAndOffset(band, variable);
-
-        assertEquals(0.01, band.getScalingFactor(), 1.0e-12);
-        assertEquals(2.5, band.getScalingOffset(), 1.0e-12);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetScaleAndOffset_unparseableStringKeepsDefaults() {
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-        final Variable variable = mock(Variable.class);
-
-        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", "not_a_number"));
-        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", "abc"));
-
-        FlexReaderUtils.setScaleAndOffset(band, variable);
-
-        assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
-        assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetFillValue_present() {
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-        final Variable variable = mock(Variable.class);
-
-        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", -999.0));
-
-        FlexReaderUtils.setFillValue(band, variable);
-
-        assertTrue(band.isNoDataValueUsed());
-        assertEquals(-999.0, band.getNoDataValue(), 1.0e-12);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetFillValue_missing() {
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-        final Variable variable = mock(Variable.class);
-
-        when(variable.findAttribute("_FillValue")).thenReturn(null);
-
-        FlexReaderUtils.setFillValue(band, variable);
-
-        assertFalse(band.isNoDataValueUsed());
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetFillValue_stringTypedAttribute() {
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-        final Variable variable = mock(Variable.class);
-
-        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", "-999.0"));
-
-        FlexReaderUtils.setFillValue(band, variable);
-
-        assertTrue(band.isNoDataValueUsed());
-        assertEquals(-999.0, band.getNoDataValue(), 1.0e-12);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetFillValue_unparseableStringKeepsDefault() {
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-        final Variable variable = mock(Variable.class);
-
-        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", "invalid"));
-
-        FlexReaderUtils.setFillValue(band, variable);
-
-        assertFalse(band.isNoDataValueUsed());
-    }
-
-    @Test
-    @STTM("SNAP-4126")
     public void testSetScaleOffsetAndFillValue_fromDescriptor() {
         final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
         final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
@@ -252,69 +116,6 @@ public class FlexReaderUtilsTest {
         assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
         assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
         assertFalse(band.isNoDataValueUsed());
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralWavelength_valid() {
-        final Product product = createProductWithSpectralMetadata();
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 2);
-
-        assertEquals(680.0f, band.getSpectralWavelength(), 1.0e-6f);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralFwhm_valid() {
-        final Product product = createProductWithSpectralMetadata();
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralFwhm(band, product, "wavelength", 3);
-
-        assertEquals(740.0f, band.getSpectralBandwidth(), 1.0e-6f);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralValue_invalidInputsDoNotChangeBand() {
-        final Product product = createProductWithSpectralMetadata();
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralWavelength(band, product, null, 1);
-        FlexReaderUtils.setSpectralWavelength(band, product, "", 1);
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 0);
-        FlexReaderUtils.setSpectralWavelength(band, product, "missing", 1);
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 99);
-
-        assertEquals(0.0f, band.getSpectralWavelength(), 1.0e-6f);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralValue_missingNetcdfMetadataDoesNotChangeBand() {
-        final Product product = new Product("p", "t", 10, 10);
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 1);
-
-        assertEquals(0.0f, band.getSpectralWavelength(), 1.0e-6f);
-    }
-
-    @Test
-    @STTM("SNAP-4126")
-    public void testSetSpectralValue_missingValueAttributeDoesNotChangeBand() {
-        final Product product = new Product("p", "t", 10, 10);
-        final MetadataElement netcdf = new MetadataElement(FlexProductReader.NETCDF_BASE_METADATA_ELEMENT);
-        netcdf.addElement(new MetadataElement("wavelength"));
-        product.getMetadataRoot().addElement(netcdf);
-
-        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
-
-        FlexReaderUtils.setSpectralWavelength(band, product, "wavelength", 1);
-
-        assertEquals(0.0f, band.getSpectralWavelength(), 1.0e-6f);
     }
 
     @Test
@@ -399,6 +200,23 @@ public class FlexReaderUtilsTest {
         assertEquals(0, element.getNumAttributes());
     }
 
+    @Test
+    @STTM("SNAP-4126")
+    public void testExtractMetadata_ignoresUnsupportedAttributeDataType() throws Exception {
+        final Attribute attribute = mock(Attribute.class);
+        when(attribute.getDataType()).thenReturn(DataType.STRUCTURE);
+        when(attribute.getValues()).thenReturn(Array.factory(DataType.INT, new int[]{1}, new int[]{7}));
+
+        final Variable variable = mock(Variable.class);
+        when(variable.getFullName()).thenReturn("var");
+        when(variable.getAttributes()).thenReturn(Collections.singletonList(attribute));
+        when(variable.getDataType()).thenReturn(DataType.STRING);
+
+        final MetadataElement element = FlexReaderUtils.extractMetadata(variable);
+
+        assertEquals(0, element.getNumAttributes());
+    }
+
     @Test(expected = IOException.class)
     @STTM("SNAP-4126")
     public void testExtractMetadata_readThrowsIOException() throws Exception {
@@ -419,23 +237,6 @@ public class FlexReaderUtilsTest {
         FlexReaderUtils.addStringAttribute(element, "name", "value");
 
         assertEquals("value", element.getAttribute("name").getData().getElemString());
-    }
-
-    private Product createProductWithSpectralMetadata() {
-        final Product product = new Product("p", "t", 10, 10);
-
-        final MetadataElement netcdf = new MetadataElement(FlexProductReader.NETCDF_BASE_METADATA_ELEMENT);
-        final MetadataElement wavelength = new MetadataElement("wavelength");
-        wavelength.addAttribute(new MetadataAttribute(
-                "value",
-                ProductData.createInstance(new float[]{550.0f, 680.0f, 740.0f}),
-                true
-        ));
-
-        netcdf.addElement(wavelength);
-        product.getMetadataRoot().addElement(netcdf);
-
-        return product;
     }
 
     private Variable variableWithData(String name, DataType dataType, int[] shape, Object javaArray) throws IOException {

@@ -28,27 +28,64 @@ public class FlexDDDB {
     }
 
     public FlexProductDescriptor getProductDescriptor(String productType) throws IOException {
-        FlexProductDescriptor productDescriptor = productDescriptorMap.get(productType);
+        return getProductDescriptor(productType, null);
+    }
+
+    public FlexProductDescriptor getProductDescriptor(String productType, String version) throws IOException {
+        String resourceName = getProductResourceName(productType, version);
+        URL resourceUrl = getResourceUrl(resourceName);
+        if (resourceUrl == null && !isNullOrEmpty(version)) {
+            resourceName = getProductResourceName(productType, null);
+            resourceUrl = getResourceUrl(resourceName);
+        }
+
+        FlexProductDescriptor productDescriptor = productDescriptorMap.get(resourceName);
         if (productDescriptor == null) {
-            final String resourceName = productType + "/" + productType + ".json";
-            final URL resourceUrl = getResourceUrl(resourceName);
             if (resourceUrl == null) {
                 throw new IOException("Invalid DDDB resource: " + resourceName);
             }
 
             productDescriptor = readProductDescriptor(resourceUrl);
-            productDescriptorMap.put(productType, productDescriptor);
+            productDescriptorMap.put(resourceName, productDescriptor);
         }
         return productDescriptor;
     }
 
     public FlexVariableDescriptor[] getVariableDescriptors(String dataFile, String productType) throws IOException {
-        final String resourceName = productType + "/variables/" + dataFile + ".json";
-        final URL resourceUrl = getResourceUrl(resourceName);
+        return getVariableDescriptors(dataFile, productType, null);
+    }
+
+    public FlexVariableDescriptor[] getVariableDescriptors(String dataFile, String productType, String version) throws IOException {
+        String resourceName = getVariableResourceName(dataFile, productType, version);
+        URL resourceUrl = getResourceUrl(resourceName);
+        if (resourceUrl == null && !isNullOrEmpty(version)) {
+            resourceName = getVariableResourceName(dataFile, productType, null);
+            resourceUrl = getResourceUrl(resourceName);
+        }
+
         if (resourceUrl == null) {
             throw new IOException("Requested resource not found: " + resourceName);
         }
         return readVariableDescriptors(resourceUrl);
+    }
+
+    static String getProductResourceName(String productType, String version) {
+        return productType + "/" + getResourceFileName(productType, version);
+    }
+
+    static String getVariableResourceName(String dataFile, String productType, String version) {
+        if (isNullOrEmpty(version)) {
+            return productType + "/variables/" + dataFile + ".json";
+        }
+        final String normalizedVersion = version.trim();
+        return productType + "/variables_" + normalizedVersion + "/" + dataFile + "_" + normalizedVersion + ".json";
+    }
+
+    static String getResourceFileName(String name, String version) {
+        if (isNullOrEmpty(version)) {
+            return name + ".json";
+        }
+        return name + "_" + version.trim() + ".json";
     }
 
     private static FlexProductDescriptor readProductDescriptor(URL resourceUrl) throws IOException {
@@ -79,6 +116,10 @@ public class FlexDDDB {
 
     private URL getResourceUrl(String resourceName) {
         return FlexDDDB.class.getClassLoader().getResource(DB_RESOURCE_PATH + resourceName);
+    }
+
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.trim().isEmpty();
     }
 
     private static ObjectMapper getObjectMapper() {

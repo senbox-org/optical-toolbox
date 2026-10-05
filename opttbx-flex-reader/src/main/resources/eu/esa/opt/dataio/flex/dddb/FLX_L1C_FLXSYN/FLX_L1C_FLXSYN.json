@@ -1,9 +1,10 @@
 {
   "productType": "FLX_L1C_FLXSYN",
-  "width": 536,
-  "height": 3640,
+  "dimensionGroupPath": "Measurement_data",
+  "widthDimensionName": "number_of_across_track_samples",
+  "heightDimensionName": "number_of_along_track_samples",
   "dataFiles": ["ancillary_data", "meteorology", "geometry", "instrumental_info", "quality", "datation", "measurement_data"],
-  "bandGroupingPattern": "floris_toa_radiance_ch_*:floris_toa_radiance_noise_uncertainty_ch_*:olci_toa_radiance_ch_*:olci_toa_radiance_uncertainty_ch_*:slstr_nadir_toa_radiance_ch_*:slstr_nadir_brightness_temperature_ch_*:slstr_oblique_toa_radiance_ch_*:viewing_zenith_angle_instrument_*:sun_zenith_angle_instrument_*:sun_azimuth_angle_instrument_*:relative_azimuth_angle_instrument_*:temperature_profile_level_*:aerosol_optical_thickness_band_*:hr_lr_scaling_coefficients_coeff_*",
+  "bandGroupingPattern": "floris_toa_radiance_ch_*:floris_toa_radiance_noise_uncertainty_ch_*:floris_toa_radiance_coregis_uncertainty_ch_*:olci_toa_radiance_ch_*:olci_toa_radiance_uncertainty_ch_*:slstr_nadir_toa_radiance_ch_*:slstr_nadir_brightness_temperature_ch_*:slstr_oblique_toa_radiance_ch_*:viewing_zenith_angle_instrument_*:sun_zenith_angle_instrument_*:sun_azimuth_angle_instrument_*:relative_azimuth_angle_instrument_*:temperature_profile_level_*:aerosol_optical_thickness_band_*:hr_lr_scaling_coefficients_coeff_*",
   "flagMasks": [
     {"bandName": "pixel_classification", "name": "not_valid", "value": 0, "description": "Not-valid pixel"},
     {"bandName": "pixel_classification", "name": "land", "value": 1, "description": "Land (non-vegetation)"},
