@@ -157,7 +157,7 @@ public class L2FileReader extends SeadasFileReader {
                     mustFlipX = false;
                     break;
                 case Level2_PaceHARP2:
-                    mustFlipX = true;
+                    mustFlipX = false;
                     break;
                 case Level2_PaceOCIS:
                     mustFlipX = false;
