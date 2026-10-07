@@ -20,7 +20,6 @@
         <dependency>
             <groupId>org.openpnp</groupId>
             <artifactId>opencv</artifactId>
-            <version>3.2.0-1</version>
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
@@ -67,6 +66,7 @@
             <artifactId>junit</artifactId>
         </dependency>
 
+        <!-- version kept local: managing it in the root pom would downgrade the jt-utilities 1.1.24 other modules get transitively -->
         <dependency>
             <groupId>it.geosolutions.jaiext.utilities</groupId>
             <artifactId>jt-utilities</artifactId>

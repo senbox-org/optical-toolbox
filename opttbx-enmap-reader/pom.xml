@@ -66,6 +66,7 @@
                     Supposedly external classes are used in the project's binaries but the classes are not found on classpath.
                     Class usages: [com.sun.xml.bind.v2.ContextFactory]
             -->
+            <!-- version kept local: managing it in the root pom would change the jaxb-runtime 2.4.0-b other modules get transitively -->
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
             <version>2.3.5</version>
@@ -74,19 +75,10 @@
             <!--            Class usages: [com.sun.activation.registries.MimeTypeFile, com.sun.activation.registries.LogSupport, com.sun.activation.registries.MailcapFile]-->
             <groupId>com.sun.activation</groupId>
             <artifactId>jakarta.activation</artifactId>
-            <version>2.0.1</version>
         </dependency>
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>javax.activation-api</artifactId>
-            <version>1.2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>5.21.0</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -98,7 +90,6 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.22.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
