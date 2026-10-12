@@ -918,11 +918,11 @@ public final class S2tbxReprojectionOp extends Operator {
 
     }
 
-    private class ReprojectionSettings {
+    private static class ReprojectionSettings {
 
-        private GeoCoding geoCoding;
-        private MultiLevelModel sourceModel;
-        private ImageGeometry imageGeometry;
+        private final GeoCoding geoCoding;
+        private final MultiLevelModel sourceModel;
+        private final ImageGeometry imageGeometry;
 
         public void setTargetModel(MultiLevelModel targetModel) {
             this.targetModel = targetModel;

@@ -17,7 +17,7 @@ public class BiophysicalAlgo {
     private HashMap<Integer, String> definitionGridMap;
     private int definitionGridSize;
 
-    public class Result {
+    public static class Result {
 
         private double outputValue = 0.0;
 

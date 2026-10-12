@@ -29,18 +29,14 @@ public class ReaderLoadedAsServiceTest {
     public void testReaderIsLoaded() {
         int readerCount = 0;
 
-        ProductIOPlugInManager plugInManager = ProductIOPlugInManager.getInstance();
-        Iterator readerPlugIns = plugInManager.getReaderPlugIns("NOAA_AVHRR_3_L1B");
+        final ProductIOPlugInManager plugInManager = ProductIOPlugInManager.getInstance();
+        final Iterator<ProductReaderPlugIn> readerPlugIns = plugInManager.getReaderPlugIns("NOAA_AVHRR_3_L1B");
 
         while (readerPlugIns.hasNext()) {
             readerCount++;
             ProductReaderPlugIn plugIn = (ProductReaderPlugIn) readerPlugIns.next();
-            System.out.println("readerPlugIn.Class = " + plugIn.getClass());
-            System.out.println("readerPlugIn.Descr = " + plugIn.getDescription(null));
         }
 
         assertEquals(1, readerCount);
-
     }
-
 }
