@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.alos.geotiff.av2.internal;
 
+import eu.esa.opt.dataio.alos.geotiff.DataUtils;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.DateTimeUtils;
@@ -274,32 +275,16 @@ public class AlosAV2Metadata extends XmlMetadata {
     }
 
     public int getPixelDataType() {
-        int retVal;
         int value = 8;
         try {
             value = Integer.parseInt(getAttributeValue(AlosAV2Constants.PATH_IMG_NBITS, "8"));
         } catch (NumberFormatException e) {
             warn(MISSING_ELEMENT_WARNING, AlosAV2Constants.PATH_IMG_NBITS);
         }
-        switch (value) {
-            case 8:
-                retVal = ProductData.TYPE_UINT8;
-                break;
-            case 16:
-                retVal = ProductData.TYPE_INT16;
-                break;
-            case 32:
-                retVal = ProductData.TYPE_FLOAT32;
-                break;
-            default:
-                retVal = ProductData.TYPE_UINT8;
-                break;
-
-        }
-        return retVal;
+        return DataUtils.getDataType(value);
     }
 
-    public class InsertionPoint {
+    public static class InsertionPoint {
         public float x;
         public float y;
         public float stepX;
