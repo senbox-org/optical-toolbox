@@ -91,7 +91,7 @@ public class MosaicMultiLevelSource extends AbstractMultiLevelSource {
         imageLayout.setTileGridYOffset(0);
 
 
-        RenderedOp mosaicOp = MosaicDescriptor.create(tileImages.toArray(new RenderedImage[tileImages.size()]),
+        RenderedOp mosaicOp = MosaicDescriptor.create(tileImages.toArray(new RenderedImage[0]),
                 MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
                 null, null, null, new double[] { Float.NaN },
                 new RenderingHints(JAI.KEY_IMAGE_LAYOUT, imageLayout));

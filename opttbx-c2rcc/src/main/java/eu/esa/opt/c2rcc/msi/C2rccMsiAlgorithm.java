@@ -594,7 +594,7 @@ public class C2rccMsiAlgorithm {
     }
 
     public String[] getUsedNeuronalNetNames() {
-        return nnNames.toArray(new String[nnNames.size()]);
+        return nnNames.toArray(new String[0]);
     }
 
     private ThreadLocal<NNffbpAlphaTabFast> nnhs(String sourcePath, boolean loadFromResource) throws IOException {

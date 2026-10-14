@@ -267,7 +267,7 @@ public class HdfEosStructMetadata {
             tokens.remove("");
         }
 
-        return tokens.toArray(new String[tokens.size()]);
+        return tokens.toArray(new String[0]);
     }
 
     private static interface EosMetadata {

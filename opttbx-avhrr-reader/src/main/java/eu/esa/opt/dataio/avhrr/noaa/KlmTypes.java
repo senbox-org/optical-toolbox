@@ -342,7 +342,7 @@ class KlmTypes {
 
         final Type dataRecordType = getDataRecordType(productFormat);
         members.add(MEMBER("DataRecord", SEQUENCE(dataRecordType, dataRecordcount)));
-        return COMPOUND("NOAA", members.toArray(new CompoundMember[members.size()]));
+        return COMPOUND("NOAA", members.toArray(new CompoundMember[0]));
     }
 
 }

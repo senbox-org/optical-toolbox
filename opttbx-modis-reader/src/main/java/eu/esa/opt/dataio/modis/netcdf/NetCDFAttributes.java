@@ -28,6 +28,6 @@ public class NetCDFAttributes {
     }
 
     public Attribute[] getAll() {
-        return attributeHashMap.values().toArray(new Attribute[attributeHashMap.size()]);
+        return attributeHashMap.values().toArray(new Attribute[0]);
     }
 }

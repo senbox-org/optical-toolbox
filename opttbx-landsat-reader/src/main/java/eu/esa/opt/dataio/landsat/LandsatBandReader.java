@@ -91,8 +91,7 @@ public abstract class LandsatBandReader {
      */
     final void setStreamPos(final int sourceOffsetX, final int sourceOffsetY, final int pixelSize) throws
             IOException {
-        // calculate offset in stream and wind to position
-        long currentOffset = (sourceOffsetY * width + sourceOffsetX) * pixelSize;
+        final long currentOffset = ((long) sourceOffsetY * width + sourceOffsetX) * pixelSize;
         stream.seek(currentOffset);
     }
 
@@ -106,7 +105,7 @@ public abstract class LandsatBandReader {
     final void updateStreamPos(final int delta, final int pixelSize) throws
             IOException {
         long currentOffset = (int) stream.getStreamPosition();
-        currentOffset += delta * pixelSize;
+        currentOffset += (long) delta * pixelSize;
         stream.seek(currentOffset);
     }
 

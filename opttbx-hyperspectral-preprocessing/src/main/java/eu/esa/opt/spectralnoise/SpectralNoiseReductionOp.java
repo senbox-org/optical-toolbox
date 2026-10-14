@@ -160,7 +160,7 @@ public class SpectralNoiseReductionOp extends Operator {
             }
         }
 
-        sourceBands = srcBandNameList.toArray(new String[srcBandNameList.size()]);
+        sourceBands = srcBandNameList.toArray(new String[0]);
     }
 
     private boolean isSpectralBand(Band band) {

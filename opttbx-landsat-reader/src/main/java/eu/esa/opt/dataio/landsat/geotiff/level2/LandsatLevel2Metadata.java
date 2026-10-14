@@ -164,12 +164,11 @@ public class LandsatLevel2Metadata extends XmlMetadata {
             String name = bandElement.getAttribute("file_name").getData().toString();
             fileNamesArray.add(name);
         }
-        return fileNamesArray.toArray(new String[fileNamesArray.size()]);
+        return fileNamesArray.toArray(new String[0]);
     }
 
     @Override
     public ProductData.UTC getProductStartTime() {
-        //return the centerTime
         return getCenterTime();
     }
 
