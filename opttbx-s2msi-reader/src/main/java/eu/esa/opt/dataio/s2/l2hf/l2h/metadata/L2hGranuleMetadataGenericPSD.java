@@ -243,7 +243,7 @@ public class L2hGranuleMetadataGenericPSD extends GenericXmlMetadata implements 
                                                                                metadataPathProvider.getPATH_GRANULE_METADATA_MASK_TYPE(), null),
                                                       GmlData));
         }
-        maskFileNamesArray = aMaskList.toArray(new S2Metadata.MaskFilename[aMaskList.size()]);
+        maskFileNamesArray = aMaskList.toArray(new S2Metadata.MaskFilename[0]);
         return maskFileNamesArray;
     }
 
