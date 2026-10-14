@@ -58,61 +58,32 @@ import java.io.IOException;
 public class N1PatcherOp extends MerisBasisOp {
 
     // MPH:
-    private static final int MPH_PRODUCTNAME_OFFSET = 9;
-
-    private static final int MPH_PRODUCTNAME_LENGTH = 62;
-
-    private static final int MPH_TOT_SIZE_OFFSET = 1076;
-
-    private static final int MPH_TOT_SIZE_LENGTH = 20;
-
     private static final int MPH_SPH_SIZE_OFFSET = 1114;
-
     private static final int MPH_SPH_SIZE_LENGTH = 10;
-
     private static final int MPH_NUM_DSD_OFFSET = 1141;
-
     private static final int MPH_NUM_DSD_LENGTH = 10;
-
     private static final int MPH_DSD_SIZE_OFFSET = 1162;
-
     private static final int MPH_DSD_SIZE_LENGTH = 10;
-
     private static final int MPH_SIZE = 1247; // Size of main product header
 
     // DSD:
     private static final int DSD_DS_NAME_OFFSET = 9;
-
     private static final int DSD_DS_NAME_LENGTH = 28;
-
     private static final int DSD_DS_TYPE_OFFSET = 47;
-
     private static final int DSD_DS_OFFSET_LENGTH = 21;
-
     private static final int DSD_DS_OFFSET_OFFSET = 133;
-
     private static final int DSD_DS_SIZE_LENGTH = 21;
-
     private static final int DSD_DS_SIZE_OFFSET = 170;
-
     private static final int DSD_NUM_DSR_LENGTH = 11;
-
     private static final int DSD_NUM_DSR_OFFSET = 207;
-
     private static final int DSD_DSR_SIZE_LENGTH = 11;
-
     private static final int DSD_DSR_SIZE_OFFSET = 228;
-
     private static final int DSR_HEADER_SIZE = 13;
 
     private int dsd_size; // Size of a dataset descriptor
-
     private int num_dsd; // Number of dataset descriptors
-
     private int sph_size; // Size of specific product header
-
     private DatasetDescriptor[] dsDescriptors;
-
     private ImageInputStream inputStream;
     private ImageOutputStream outputStream;
     private final Object syncObject = new Object();
@@ -281,7 +252,7 @@ public class N1PatcherOp extends MerisBasisOp {
                         short[] data = (short[]) srcTile.getRawSamples().getElems();
 
                         byte[] buf = new byte[rectangle.height * descriptor.dsrSize];
-                        final long dsrOffset = descriptor.dsOffset + rectangle.y * descriptor.dsrSize;
+                        final long dsrOffset = descriptor.dsOffset + (long) rectangle.y * descriptor.dsrSize;
                         inputStream.seek(dsrOffset);
                         inputStream.read(buf);
                         outputStream.seek(dsrOffset);
@@ -302,7 +273,7 @@ public class N1PatcherOp extends MerisBasisOp {
                     if (descriptor != null) {
                         byte[] data = (byte[]) srcTile.getRawSamples().getElems();
 
-                        final long dsrOffset = descriptor.dsOffset + rectangle.y * descriptor.dsrSize;
+                        final long dsrOffset = descriptor.dsOffset + (long) rectangle.y * descriptor.dsrSize;
                         outputStream.seek(dsrOffset);
                         for (int y = 0; y < rectangle.height; y++) {
                             outputStream.skipBytes(DSR_HEADER_SIZE);

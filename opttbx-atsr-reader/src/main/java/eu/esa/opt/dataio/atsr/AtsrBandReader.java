@@ -62,7 +62,7 @@ abstract class AtsrBandReader {
      */
     void setStreamPos(int sourceOffsetX, int sourceOffsetY, int pixelSize) throws IOException {
         // calculate offset in stream and wind to position
-        _currentOffset = (sourceOffsetY * AtsrConstants.ATSR_SCENE_RASTER_WIDTH + sourceOffsetX) * pixelSize;
+        _currentOffset = ((long) sourceOffsetY * AtsrConstants.ATSR_SCENE_RASTER_WIDTH + sourceOffsetX) * pixelSize;
         _currentOffset += _startOffset;
         _stream.seek(_currentOffset);
     }
@@ -72,7 +72,7 @@ abstract class AtsrBandReader {
      */
     void updateStreamPos(int delta, int pixelSize) throws IOException {
         _currentOffset = (int) _stream.getStreamPosition();
-        _currentOffset += delta * pixelSize;
+        _currentOffset += (long) delta * pixelSize;
         _stream.seek(_currentOffset);
     }
 }

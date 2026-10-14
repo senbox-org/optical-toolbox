@@ -119,8 +119,8 @@ public class EqualizationAlgorithm {
     private static EqualizationLUT createLut(ReprocessingVersion reprocessingVersion, boolean fullResolution) {
         EqualizationLUT lut;
         try {
-            List<Reader> readerList = getCoefficientsReaders(reprocessingVersion, fullResolution);
-            Reader[] readers = readerList.toArray(new Reader[readerList.size()]);
+            final List<Reader> readerList = getCoefficientsReaders(reprocessingVersion, fullResolution);
+            final Reader[] readers = readerList.toArray(new Reader[0]);
             lut = new EqualizationLUT(readers);
         } catch (IOException e) {
             throw new IllegalStateException("Not able to create LUT.", e);

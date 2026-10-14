@@ -178,7 +178,7 @@ public final class S2MosaicMultiLevelSource extends AbstractMultiLevelSource {
                     }
                     numberOfOverlaps++;
                 }
-                mosaicOp = MosaicDescriptor.create(newTiles.toArray(new RenderedImage[newTiles.size()]),
+                mosaicOp = MosaicDescriptor.create(newTiles.toArray(new RenderedImage[0]),
                         MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
                         null,
                         null,
@@ -226,8 +226,8 @@ public final class S2MosaicMultiLevelSource extends AbstractMultiLevelSource {
             ySet.add(image.getMinY());
             ySet.add(image.getMinY() + image.getHeight());
         }
-        Integer[] xArray = xSet.toArray(new Integer[xSet.size()]);
-        Integer[] yArray = ySet.toArray(new Integer[ySet.size()]);
+        final Integer[] xArray = xSet.toArray(new Integer[0]);
+        final Integer[] yArray = ySet.toArray(new Integer[0]);
         for(int x = 0; x < xArray.length - 1; x++){
             for(int y = 0; y < yArray.length - 1; y++ ){
                 reg.add(new Rectangle(xArray[x],yArray[y], xArray[x+1]-xArray[x], yArray[y+1]-yArray[y]));

@@ -101,7 +101,7 @@ public class IkonosProductReader extends AbstractProductReader {
 
     private Product readProduct(IkonosMetadata metadata, Path zipArchivePath) throws Exception {
         List<BandMetadata> bandMetadataList = readBandMetadata(zipArchivePath);
-        BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[bandMetadataList.size()]));
+        BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[0]));
 
         Dimension defaultProductSize = new Dimension(metadataUtil.getMaxNumColumns(), metadataUtil.getMaxNumLines());
         ProductSubsetDef subsetDef = getSubsetDef();

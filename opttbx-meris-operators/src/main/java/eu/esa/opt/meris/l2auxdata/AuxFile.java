@@ -103,7 +103,7 @@ public class AuxFile {
                 _recordCounts[i] = 1;
             }
             _datasetOffsets[i] = datasetOffset;
-            datasetOffset += _recordCounts[i] * datasetInfo.getRecordSize();
+            datasetOffset += (long) _recordCounts[i] * datasetInfo.getRecordSize();
         }
         _computedFileSize = datasetOffset;
 
@@ -334,7 +334,7 @@ public class AuxFile {
     private long getOffset(final AuxDatasetInfo datasetInfo, final AuxVariableInfo variableInfo, int recordIndex) {
         final long datasetOffset = _datasetOffsets[datasetInfo.getIndex()];
         final int variableOffset = variableInfo.getOffset();
-        return datasetOffset + variableOffset + recordIndex * datasetInfo.getRecordSize();
+        return datasetOffset + variableOffset + (long) recordIndex * datasetInfo.getRecordSize();
     }
 
     private int convertData(final AuxVariableInfo variableInfo, final ProductData storageData, ProductData memoryData) throws IOException {

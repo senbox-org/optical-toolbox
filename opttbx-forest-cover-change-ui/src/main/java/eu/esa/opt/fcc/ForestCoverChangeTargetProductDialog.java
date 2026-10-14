@@ -324,7 +324,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
                             }
                         };
                         Collections.sort(names, comparator);
-                        String[] landCoverNames = names.toArray(new String[names.size()]);
+                        String[] landCoverNames = names.toArray(new String[0]);
                         DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>(landCoverNames);
                         this.landCoverNamesComboBox = new JComboBox<String>(comboBoxModel);
                         this.bindingContext.bind(LAND_COVER_NAME, this.landCoverNamesComboBox);

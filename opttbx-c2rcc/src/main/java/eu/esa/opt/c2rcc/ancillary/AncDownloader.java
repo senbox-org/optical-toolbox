@@ -154,7 +154,7 @@ class AncDownloader {
                     filenames.add(filename);
                 }
             }
-            return filenames.toArray(new String[filenames.size()]);
+            return filenames.toArray(new String[0]);
         }
     }
 }

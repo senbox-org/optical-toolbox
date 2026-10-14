@@ -103,7 +103,7 @@ public class Kompsat2ProductReader extends AbstractProductReader {
     }
 
     private Product readProduct(Kompsat2Metadata productMetadata, List<BandMetadata> bandMetadataList, Path imagesMetadataParentPath) throws Exception {
-        BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[bandMetadataList.size()]));
+        BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[0]));
 
         Dimension defaultProductSize = new Dimension(metadataUtil.getMaxNumColumns(), metadataUtil.getMaxNumLines());
         ProductSubsetDef subsetDef = getSubsetDef();

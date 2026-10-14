@@ -30,21 +30,21 @@ import java.io.IOException;
  * @author Sabine Embacher
  * @version $Revision$ $Date$
  */
+@SuppressWarnings("SynchronizeOnNonFinalField")
 class PrismImageFile {
 
-    public final ImageFileDescriptorRecord _imageFileDescriptorRecord;
-    public final ImageRecord[] _imageRecords;
+    private final ImageRecord[] _imageRecords;
     private final int _height;
     private final int _width;
-    private CeosFileReader _ceosReader;
     private final int _imageNumber;
-    private int _imageRecordLength;
-    private long _startPosImageRecords;
+    private final int _imageRecordLength;
+    private final long _startPosImageRecords;
 
-    public PrismImageFile(final ImageInputStream imageStream) throws IOException,
-            IllegalCeosFormatException {
+    private CeosFileReader _ceosReader;
+
+    public PrismImageFile(final ImageInputStream imageStream) throws IOException, IllegalCeosFormatException {
         _ceosReader = new CeosFileReader(imageStream);
-        _imageFileDescriptorRecord = new ImageFileDescriptorRecord(_ceosReader);
+        final ImageFileDescriptorRecord _imageFileDescriptorRecord = new ImageFileDescriptorRecord(_ceosReader);
         _width = _imageFileDescriptorRecord.getNumImagePixelsPerLine();
         _height = _imageFileDescriptorRecord.getNumLinesPerBand();
         _imageRecords = new ImageRecord[_height];
@@ -94,8 +94,7 @@ class PrismImageFile {
         }
     }
 
-    private void readSourceLine(final int y, final int sourceOffsetX, final byte[] srcLine) throws IOException,
-            IllegalCeosFormatException {
+    private void readSourceLine(final int y, final int sourceOffsetX, final byte[] srcLine) throws IOException, IllegalCeosFormatException {
         synchronized (_ceosReader) {
             final ImageRecord imageRecord = getImageRecord(y);
             _ceosReader.seek(imageRecord.getImageDataStart() + sourceOffsetX);
@@ -103,11 +102,12 @@ class PrismImageFile {
         }
     }
 
-    private ImageRecord getImageRecord(final int line) throws IOException,
-            IllegalCeosFormatException {
+    private ImageRecord getImageRecord(final int line) throws IOException, IllegalCeosFormatException {
         if (_imageRecords[line] == null) {
-            _ceosReader.seek(_imageRecordLength * line + _startPosImageRecords);
-            _imageRecords[line] = new ImageRecord(_ceosReader);
+            synchronized (_ceosReader) {
+                _ceosReader.seek((long) _imageRecordLength * line + _startPosImageRecords);
+                _imageRecords[line] = new ImageRecord(_ceosReader);
+            }
         }
         return _imageRecords[line];
     }

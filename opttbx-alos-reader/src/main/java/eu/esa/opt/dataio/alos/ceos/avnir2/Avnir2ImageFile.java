@@ -32,14 +32,17 @@ import java.io.IOException;
  * @author Marco Peters
  * @version $Revision$ $Date$
  */
+@SuppressWarnings("SynchronizeOnNonFinalField")
 class Avnir2ImageFile {
 
-    public final Avnir2ImageFDR _imageFDR;
-    public final ImageRecord[] _imageRecords;
-    private CeosFileReader _ceosReader;
+    private final Avnir2ImageFDR _imageFDR;
+    private final ImageRecord[] _imageRecords;
+
     private final int _imageNumber;
-    private int _imageRecordLength;
-    private long _startPosImageRecords;
+    private final int _imageRecordLength;
+    private final long _startPosImageRecords;
+
+    private CeosFileReader _ceosReader;
 
     public Avnir2ImageFile(final ImageInputStream imageStream) throws IOException,
             IllegalCeosFormatException {
@@ -52,28 +55,24 @@ class Avnir2ImageFile {
         _imageNumber = _imageRecords[0].getImageNumber();
     }
 
-    public String getBandName() throws IOException,
-                                       IllegalCeosFormatException {
+    public String getBandName() {
         return Avnir2Constants.BANDNAME_PREFIX + getBandIndex();
     }
 
-    public String getBandDescription() throws IOException,
-                                              IllegalCeosFormatException {
-        return String.format(Avnir2Constants.BAND_DESCRIPTION_FORMAT_STRING, new Object[]{getBandIndex()});
+    @Deprecated
+    public String getBandDescription() {
+        return String.format(Avnir2Constants.BAND_DESCRIPTION_FORMAT_STRING, getBandIndex());
     }
 
-    public int getBandIndex() throws IOException,
-                                     IllegalCeosFormatException {
+    public int getBandIndex() {
         return _imageNumber;
     }
 
-    public int getRasterWidth() throws IOException,
-                                       IllegalCeosFormatException {
+    public int getRasterWidth() throws IOException, IllegalCeosFormatException {
         return _imageFDR.getNumImagePixelsPerLine();
     }
 
-    public int getRasterHeight() throws IOException,
-                                        IllegalCeosFormatException {
+    public int getRasterHeight() throws IOException, IllegalCeosFormatException {
         return _imageFDR.getNumLinesPerBand();
     }
 
@@ -81,8 +80,7 @@ class Avnir2ImageFile {
         return Avnir2Constants.GEOPHYSICAL_UNIT;
     }
 
-    public float getSpectralWavelength() throws IOException,
-                                                IllegalCeosFormatException {
+    public float getSpectralWavelength() {
         final int bandIndex = getBandIndex();
 
         switch (bandIndex) {
@@ -99,8 +97,7 @@ class Avnir2ImageFile {
         }
     }
 
-    public float getSpectralBandwidth() throws IOException,
-                                               IllegalCeosFormatException {
+    public float getSpectralBandwidth() {
         final int bandIndex = getBandIndex();
 
         switch (bandIndex) {
@@ -117,13 +114,11 @@ class Avnir2ImageFile {
         }
     }
 
-    public int getTotalMillisInDayOfLine(final int y) throws IOException,
-                                                             IllegalCeosFormatException {
+    public int getTotalMillisInDayOfLine(final int y) throws IOException, IllegalCeosFormatException {
         return getImageRecord(y).getScanStartTimeMillisAtDay();
     }
 
-    public int getMicrosecondsOfLine(final int y) throws IOException,
-                                                         IllegalCeosFormatException {
+    public int getMicrosecondsOfLine(final int y) throws IOException, IllegalCeosFormatException {
         return getImageRecord(y).getScanStartTimeMicros();
     }
 
@@ -133,12 +128,10 @@ class Avnir2ImageFile {
                                    final int sourceStepX, final int sourceStepY,
                                    final int destOffsetX, final int destOffsetY,
                                    final int destWidth, final int destHeight,
-                                   final ProductData destBuffer, ProgressMonitor pm) throws IOException,
-                                                                                            IllegalCeosFormatException {
+                                   final ProductData destBuffer, ProgressMonitor pm) throws IOException, IllegalCeosFormatException {
 
         final int sourceMinY = sourceOffsetY;
         final int sourceMaxY = sourceOffsetY + sourceHeight - 1;
-
 
         pm.beginTask("Reading band '" + getBandName() + "'...", sourceMaxY - sourceMinY);
         try {
@@ -164,8 +157,7 @@ class Avnir2ImageFile {
 
     }
 
-    private void readSourceLine(final int y, final int sourceOffsetX, final byte[] srcLine) throws IOException,
-                                                                                                   IllegalCeosFormatException {
+    private void readSourceLine(final int y, final int sourceOffsetX, final byte[] srcLine) throws IOException, IllegalCeosFormatException {
         synchronized (_ceosReader) {
             final ImageRecord imageRecord = getImageRecord(y);
             _ceosReader.seek(imageRecord.getImageDataStart() + sourceOffsetX);
@@ -173,17 +165,15 @@ class Avnir2ImageFile {
         }
     }
 
-    private ImageRecord getImageRecord(final int line) throws IOException,
-                                                              IllegalCeosFormatException {
+    private ImageRecord getImageRecord(final int line) throws IOException, IllegalCeosFormatException {
         if (_imageRecords[line] == null) {
-            _ceosReader.seek(_imageRecordLength * line + _startPosImageRecords);
+            _ceosReader.seek((long) _imageRecordLength * line + _startPosImageRecords);
             _imageRecords[line] = new ImageRecord(_ceosReader);
         }
         return _imageRecords[line];
     }
 
-    private void copyLine(final byte[] srcLine, final byte[] destLine,
-                          final int sourceStepX) {
+    private void copyLine(final byte[] srcLine, final byte[] destLine, final int sourceStepX) {
         if (sourceStepX == 1) {
             System.arraycopy(srcLine, 0, destLine, 0, destLine.length);
         } else {

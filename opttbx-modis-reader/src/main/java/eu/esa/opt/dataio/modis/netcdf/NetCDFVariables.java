@@ -26,6 +26,6 @@ public class NetCDFVariables {
     }
 
     public Variable[] getAll() {
-        return variablesMap.values().toArray(new Variable[variablesMap.size()]);
+        return variablesMap.values().toArray(new Variable[0]);
     }
 }
