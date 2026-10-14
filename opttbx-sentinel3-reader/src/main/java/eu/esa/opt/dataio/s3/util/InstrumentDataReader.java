@@ -163,7 +163,7 @@ class InstrumentDataReader extends S3NetcdfReader {
         if (heightDimension != null) {
             yIndex = variable.findDimensionIndex(heightDimension.getFullName());
         }
-        String[] dimensionNames = dimensionNameList.toArray(new String[dimensionNameList.size()]);
+        String[] dimensionNames = dimensionNameList.toArray(new String[0]);
         int[] dimensionIndexes = new int[dimensionIndexList.size()];
 
         for (int ii = 0; ii < dimensionIndexList.size(); ii++) {

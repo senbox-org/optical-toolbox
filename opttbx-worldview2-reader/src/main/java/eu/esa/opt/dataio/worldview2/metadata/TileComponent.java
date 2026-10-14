@@ -228,7 +228,7 @@ public class TileComponent {
     }
 
     public String[] getDeliveredTiles() {
-        return this.deliveredTiles.toArray(new String[this.deliveredTiles.size()]);
+        return this.deliveredTiles.toArray(new String[0]);
     }
 
     public void addDeliveredTile(String deliveredTile) {
