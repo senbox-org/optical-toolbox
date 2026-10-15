@@ -205,7 +205,7 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
         // because the tile layout is obtained with the tile in zone UTM 30.
         // But the sceneLayout is computed with the tiles that are in the zone UTM 31 if
         // we select this PlugIn
-        if (sceneDescription.getTileIds().size() == 0) {
+        if (sceneDescription.getTileIds().isEmpty()) {
             throw new IOException(String.format("No valid tiles associated to product [%s]",
                                                 rootMetadataPath.getFileName().toString()));
         }
@@ -927,11 +927,11 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                         band.setGeoCoding(geoCoding);
                         Path maskLocalFile = maskPath.getLocalFile();
                         Dimension maskImageSize = GDALMultiLevelSource.readBandImageSize(maskLocalFile, i);
-                        boolean resampleDetectorFootprint =
-                                maskInfo.getMainType().contains("MSK_DETFOO")
-                                        && (maskImageSize.width != defaultBandSize.width || maskImageSize.height != defaultBandSize.height);
+                        // resample masks at band's resolution
+                        boolean resampleMask = maskImageSize.width != defaultBandSize.width
+                                || maskImageSize.height != defaultBandSize.height;
 
-                        Rectangle maskBounds = resampleDetectorFootprint
+                        Rectangle maskBounds = resampleMask
                                 ? scaleBounds(bandBounds, maskImageSize, defaultBandSize)
                                 : bandBounds;
 
@@ -942,22 +942,9 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                         ImageLayout imageLayout = multiLevelSource.buildMultiLevelImageLayout();
                         MultiLevelImage sourceImage = new DefaultMultiLevelImage(multiLevelSource, imageLayout);
 
-                        if (resampleDetectorFootprint) {
-                            String physicalBandName = spectralInfo.getPhysicalBand();
-                            Band targetBand = product.getBand(physicalBandName);
-                            if (targetBand != null) {
-                                ImageLayout resampledLayout = new ImageLayout();
-                                RenderingHints renderingHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, resampledLayout);
-                                float[] scalings = new float[]{
-                                        targetBand.getRasterWidth() / (float) sourceImage.getWidth(),
-                                        targetBand.getRasterHeight() / (float) sourceImage.getHeight()
-                                };
-
-                                sourceImage = SourceImageScaler.scaleMultiLevelImage(targetBand.getSourceImage(), sourceImage,
-                                        scalings, null, renderingHints,
-                                        band.getNoDataValue(),
-                                        Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-                            }
+                        Band targetBand = product.getBand(spectralInfo.getPhysicalBand());
+                        if (targetBand != null) {
+                            sourceImage = alignMaskImage(targetBand.getSourceImage(), sourceImage, band.getNoDataValue());
                         }
 
                         band.setSourceImage(sourceImage);
@@ -1765,6 +1752,21 @@ public abstract class Sentinel2OrthoProductReader extends Sentinel2ProductReader
                 + "detector_footprint-B07:" + "detector_footprint-B08:" + "detector_footprint-B8A:"
                 + "detector_footprint-B09:" + "detector_footprint-B10:" + "detector_footprint-B11:"
                 + "detector_footprint-B12:" + "qualit_mask";
+    }
+
+    static MultiLevelImage alignMaskImage(MultiLevelImage targetImage, MultiLevelImage maskImage, double noDataValue) {
+        if (targetImage.getWidth() == maskImage.getWidth()
+                && targetImage.getHeight() == maskImage.getHeight()
+                && targetImage.getModel().getLevelCount() == maskImage.getModel().getLevelCount()) {
+            return maskImage;
+        }
+        // Valid-pixel expressions request the spectral band's level from every referenced mask.
+        // The scaler supplies missing levels from an available source level using nearest-neighbour sampling.
+        float[] scalings = new float[]{targetImage.getWidth() / (float) maskImage.getWidth(),
+                targetImage.getHeight() / (float) maskImage.getHeight()};
+        RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, new ImageLayout());
+        return SourceImageScaler.scaleMultiLevelImage(targetImage, maskImage, scalings, null, hints,
+                noDataValue, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
     }
 
     private static Rectangle scaleBounds(Rectangle targetBounds, Dimension sourceSize, Dimension targetSize) {
