@@ -283,7 +283,7 @@ public class WaterProcessorOp extends PixelOperator {
             top[l] = toa[n] / solarFlux[n];
             o3f[l] = Math.exp(-(TOTAL_OZONE_DU_MOMO - o3) * exO3[n] / 1000.0 * (1.0 / Math.cos(
                     (double) vza * d2r) + 1.0 / Math.cos((double) sza * d2r)));
-            top[l] *= o3f[l];
+            top[l] = (float) (top[l] * o3f[l]);
         }
         for (n = 8; n <= 9; n++, l++) {
             tops[l] = toa[n];
@@ -291,7 +291,7 @@ public class WaterProcessorOp extends PixelOperator {
             top[l] = toa[n] / solarFlux[n];
             o3f[l] = Math.exp(-(TOTAL_OZONE_DU_MOMO - o3) * exO3[n] / 1000.0 * (1.0 / Math.cos(
                     (double) vza * d2r) + 1.0 / Math.cos((double) sza * d2r)));
-            top[l] *= o3f[l];
+            top[l] = (float) (top[l] * o3f[l]);
         }
         for (n = 11; n <= 13; n++, l++) {
             tops[l] = toa[n];
@@ -299,7 +299,7 @@ public class WaterProcessorOp extends PixelOperator {
             top[l] = toa[n] / solarFlux[n];
             o3f[l] = Math.exp(-(TOTAL_OZONE_DU_MOMO - o3) * exO3[n] / 1000.0 * (1.0 / Math.cos(
                     (double) vza * d2r) + 1.0 / Math.cos((double) sza * d2r)));
-            top[l] *= o3f[l];
+            top[l] = (float) (top[l] * o3f[l]);
         }
 
         // Get the wind speed
@@ -318,7 +318,7 @@ public class WaterProcessorOp extends PixelOperator {
         }
         float tmp = dazi;
         if (tmp >= 0.0f) {
-            dazi = +180.0f - dazi;
+            dazi = 180.0f - dazi;
         }
         if (tmp < 0.0f) {
             dazi = -180.0f - dazi;

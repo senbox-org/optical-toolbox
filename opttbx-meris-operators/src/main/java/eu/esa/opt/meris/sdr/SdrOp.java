@@ -201,18 +201,18 @@ public class SdrOp extends MerisBasisOp {
                             t_sdr = sdrAlgoOutput[0];
                             if (Double.isInfinite(t_sdr) || Double.isNaN(t_sdr)) {
                                 t_sdr = 0.0;
-                                sdrFlags |= 1 << (reflInputBand.getSpectralBandIndex() + 1);
+                                sdrFlags = (short) (sdrFlags | 1 << (reflInputBand.getSpectralBandIndex() + 1));
                             } else if (t_sdr < 0.0) {
                                 t_sdr = 0.0;
-                                sdrFlags |= 1 << (reflInputBand.getSpectralBandIndex() + 1);
+                                sdrFlags = (short) (sdrFlags | 1 << (reflInputBand.getSpectralBandIndex() + 1));
                             } else if (t_sdr > 1.0) {
                                 t_sdr = 1.0;
-                                sdrFlags |= 1 << (reflInputBand.getSpectralBandIndex() + 1);
+                                sdrFlags = (short) (sdrFlags | 1 << (reflInputBand.getSpectralBandIndex() + 1));
                             }
                             sdr[bandId].setSample(x, y, (float) t_sdr);
                         }
                         // Combine SDR-Flags to single INVALID Flag
-                        sdrFlags |= (sdrFlags == 0 ? 0 : 1);
+                        sdrFlags = (short) (sdrFlags | (sdrFlags == 0 ? 0 : 1));
                         sdrFlag.setSample(x, y, sdrFlags);
                     } else {
                         for (int j = 0; j < reflectanceBands.length; j++) {

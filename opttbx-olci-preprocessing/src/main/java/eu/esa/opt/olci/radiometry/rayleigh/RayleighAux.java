@@ -41,17 +41,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -422,7 +417,7 @@ public class RayleighAux {
         this.latitudes = new double[rectangle.width * rectangle.height];
         this.longitudes = new double[rectangle.width * rectangle.height];
 
-        final PixelPos pixelPos = new PixelPos(rectangle.x + rectangle.width/2, rectangle.y + rectangle.height/2);
+        final PixelPos pixelPos = new PixelPos(rectangle.x + rectangle.width * 0.5, rectangle.y + rectangle.height * 0.5);
 
         final GeoPos geoPos = geoCoding.getGeoPos(pixelPos, null);
         Arrays.fill(this.latitudes, geoPos.getLat());

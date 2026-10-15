@@ -104,7 +104,7 @@ public class FlagReader implements BandReader {
 
         byte flag = 0;
         for (int i = 0; i < flags.length; i++) {
-            flag |= (flags[i] != 0 ? 1 : 0) << i;
+            flag = (byte) (flag | (flags[i] != 0 ? 1 : 0) << i);
         }
         return flag;
     }

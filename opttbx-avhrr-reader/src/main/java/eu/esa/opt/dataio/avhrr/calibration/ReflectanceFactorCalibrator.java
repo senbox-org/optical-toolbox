@@ -61,6 +61,7 @@ public class ReflectanceFactorCalibrator extends AbstractCalibrator {
         return dataRequired;
     }
 
+    @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     public boolean processCalibrationData(int[] calibrationData) {
         final int offset = OPERATIONAL_DATA_OFFSET[operationalDataIndex];

@@ -83,7 +83,7 @@ public class ImageOperations {
         SampleModel sampleModel = new PixelInterleavedSampleModel(DataBuffer.TYPE_FLOAT, width, height, 1, width, new int[]{0});
         ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
         ColorModel colorModel = new ComponentColorModel(colorSpace, false, false, Transparency.TRANSLUCENT, DataBuffer.TYPE_FLOAT);
-        DataBuffer buffer = new DataBufferFloat(width * height * 1);
+        DataBuffer buffer = new DataBufferFloat(width * height);
         WritableRaster raster = Raster.createWritableRaster(sampleModel, buffer, null);
         raster.setPixels(0, 0, width, height, input);
         return new BufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), null);

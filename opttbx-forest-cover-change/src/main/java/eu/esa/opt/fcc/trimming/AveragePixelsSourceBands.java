@@ -47,7 +47,7 @@ public class AveragePixelsSourceBands {
         float sum = 0.0f;
         for (float pixelValue : standardDeviationPixelValues) {
             float value = pixelValue - averageStandardDeviationB8PixelValue;
-            sum += Math.pow((value), 2);
+            sum = (float) (sum + Math.pow((value), 2));
         }
         float average = sum / (float)standardDeviationPixelValues.size();
         return (float)Math.sqrt(average);
