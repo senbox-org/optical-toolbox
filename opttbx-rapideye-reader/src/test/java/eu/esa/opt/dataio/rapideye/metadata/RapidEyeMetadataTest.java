@@ -77,11 +77,12 @@ public class RapidEyeMetadataTest {
 
     @Test
     public void testGetReferenceSystem() {
-        assertNotNull(metadata.getReferenceSystem());
-        assertEquals("4326", metadata.getReferenceSystem().epsgCode);
-        assertEquals("N/A", metadata.getReferenceSystem().geodeticDatum);
-        assertEquals("N/A", metadata.getReferenceSystem().projectionCode);
-        assertEquals("N/A", metadata.getReferenceSystem().projectionZone);
+        final RapidEyeMetadata.SpatialReferenceSystem referenceSystem = metadata.getReferenceSystem();
+        assertNotNull(referenceSystem);
+        assertEquals("4326", referenceSystem.getEpsgCode());
+        assertEquals("N/A", referenceSystem.getGeodeticDatum());
+        assertEquals("N/A", referenceSystem.getProjectionCode());
+        assertEquals("N/A", referenceSystem.getProjectionZone());
     }
 
     @Test

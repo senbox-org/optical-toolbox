@@ -708,7 +708,7 @@ public class SmacOperator extends Operator {
 
     }
 
-    private class SourceData {
+    private static class SourceData {
 
         float[] sza;
         float[] saa;
