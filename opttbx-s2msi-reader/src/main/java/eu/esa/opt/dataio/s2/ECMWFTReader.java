@@ -91,7 +91,7 @@ public class ECMWFTReader {
         }
         String units = variable.getUnitsString();
         final int[] shape = variable.getShape();
-        float[] tiePoints = null;
+        float[] tiePoints;
         int width;
         int height;
         if(shape.length == 4)
@@ -109,7 +109,7 @@ public class ECMWFTReader {
         final TiePointGrid tiePointGrid;
         if (shape.length >= 3) {
             // atmospheric data bands
-            tiePointGrid = new TiePointGrid(gridPair.name, width, height, 0.5, 0.5, 1220, 1220, tiePoints);
+            tiePointGrid = new TiePointGrid(gridPair.getName(), width, height, 0.5, 0.5, 1220, 1220, tiePoints);
         } else if ("lat".equals(gridPair.getKey())) {
             // lat band
             final float[] tiePoints2D = new float[shape[0] * shape[0]];
@@ -118,38 +118,19 @@ public class ECMWFTReader {
                     tiePoints2D[j*shape[0]+i] = tiePoints[j];
                 }
             }
-            tiePointGrid = new TiePointGrid(gridPair.name, width, height, 0.5, 0.5, 1220, 1220, tiePoints2D);
+            tiePointGrid = new TiePointGrid(gridPair.getName(), width, height, 0.5, 0.5, 1220, 1220, tiePoints2D);
         } else {
             // lon band
             final float[] tiePoints2D = new float[shape[0] * shape[0]];
             for (int i=0; i<shape[0]; ++i) {
                 System.arraycopy(tiePoints, 0, tiePoints2D, i*shape[0], shape[0]);
             }
-            tiePointGrid = new TiePointGrid(gridPair.name, width, height, 0.5, 0.5, 1220, 1220, tiePoints2D);
+            tiePointGrid = new TiePointGrid(gridPair.getName(), width, height, 0.5, 0.5, 1220, 1220, tiePoints2D);
         }
         tiePointGrid.setUnit(units);
         tiePointGrid.setNoDataValue(Double.NaN);
         tiePointGrid.setNoDataValueUsed(true);
         tiePointGrid.setDescription(description);
         return tiePointGrid;
-    }
-
-    public class GridPair {
-        private String key;
-        private String name;
-    
-        public GridPair(String key, String name) {
-            this.key = key;
-            this.name = name;
-        }
-
-        protected final String getKey() {
-            return key;
-        }
-
-        protected final String getName() {
-            return name;
-        }
-
     }
 }

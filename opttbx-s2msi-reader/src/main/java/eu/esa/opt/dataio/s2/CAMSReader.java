@@ -92,31 +92,12 @@ public class CAMSReader {
         String units = variable.getUnitsString();
         final int[] shape = variable.getShape();
         final float[] tiePoints = (float[])variable.read().getStorage();
-        final TiePointGrid tiePointGrid = new TiePointGrid(GridPair.name, shape[1],shape[2], 0.5, 0.5, 1220, 1220,tiePoints);
+        final TiePointGrid tiePointGrid = new TiePointGrid(GridPair.getName(), shape[1],shape[2], 0.5, 0.5, 1220, 1220,tiePoints);
         tiePointGrid.setUnit(units);
         tiePointGrid.setNoDataValue(Double.NaN);
         tiePointGrid.setNoDataValueUsed(true);
         tiePointGrid.setDescription(description);
         return tiePointGrid;
-    }
-
-    public class GridPair {
-        private String key;
-        private String name;
-    
-        public GridPair(String key, String name) {
-            this.key = key;
-            this.name = name;
-        }
-
-        protected final String getKey() {
-            return key;
-        }
-
-        protected final String getName() {
-            return name;
-        }
-
     }
 }
 

@@ -173,7 +173,7 @@ class S3ReferencingVariableOpImage extends SingleBandedOpImage {
         }
     }
 
-    private class NullDimensionValuesProvider implements DimensionValuesProvider {
+    private static class NullDimensionValuesProvider implements DimensionValuesProvider {
 
         @Override
         public void readValues(int[] variableOrigin, int[] variableShape) {
@@ -183,5 +183,4 @@ class S3ReferencingVariableOpImage extends SingleBandedOpImage {
         public void setVariableValues(int[] referencedValues, Array variableValues) {
         }
     }
-
 }

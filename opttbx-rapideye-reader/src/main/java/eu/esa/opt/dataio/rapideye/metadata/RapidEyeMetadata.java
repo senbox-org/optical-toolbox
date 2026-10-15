@@ -462,7 +462,7 @@ public class RapidEyeMetadata extends XmlMetadata {
         return (metadataProfile != null && metadataProfile.startsWith(RapidEyeConstants.PROFILE_L1));
     }
 
-    public class SpatialReferenceSystem {
+    public static class SpatialReferenceSystem {
         public String getEpsgCode() {
             return epsgCode;
         }
@@ -485,7 +485,7 @@ public class RapidEyeMetadata extends XmlMetadata {
         String projectionZone;
     }
 
-    public class RationalCoefficients {
+    public static class RationalCoefficients {
         float[] lineNumCoefficients;
         float[] lineDenomCoefficients;
         float[] sampleNumCoefficients;

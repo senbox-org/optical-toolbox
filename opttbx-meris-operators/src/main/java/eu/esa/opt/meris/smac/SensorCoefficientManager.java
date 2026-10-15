@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -204,7 +205,7 @@ public class SensorCoefficientManager {
     /**
      * Class holding the coefficient file information for one satellite sensor.
      */
-    private class SensorDb {
+    private static class SensorDb {
 
         private String name;
         private List<BandDb> bands;
@@ -284,7 +285,7 @@ public class SensorCoefficientManager {
     /**
      * Class holding the band information of a specific sensor coefficient set.
      */
-    private class BandDb {
+    private static class BandDb {
 
         String bandName;
         String aerosolType;
