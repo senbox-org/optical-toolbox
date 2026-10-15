@@ -273,6 +273,7 @@ public final class L2AuxData implements Constants {
         }
     }
 
+    @SuppressWarnings("PointlessArithmeticExpression")
     private void loadConfigurationAuxData(final AuxFile auxFileO) throws IOException, L2AuxDataException {
 
         // Default radiance for saturated pixels.

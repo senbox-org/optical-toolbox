@@ -95,6 +95,7 @@ import static eu.esa.opt.c2rcc.msi.C2rccMsiAlgorithm.SOURCE_BAND_REFL_NAMES;
         copyright = "Copyright (C) 2016 by Brockmann Consult",
         description = "Performs atmospheric correction and IOP retrieval with uncertainties on Sentinel-2 MSI L1C data products.")
 public class C2rccMsiOperator extends PixelOperator implements C2rccConfigurable {
+    @SuppressWarnings("PointlessArithmeticExpression")
     private static final int SUN_ZEN_IX = SOURCE_BAND_REFL_NAMES.length + 0;
     private static final int SUN_AZI_IX = SOURCE_BAND_REFL_NAMES.length + 1;
     private static final int VIEW_ZEN_IX = SOURCE_BAND_REFL_NAMES.length + 2;

@@ -368,7 +368,7 @@ public class SMIFileReader extends SeadasFileReader {
             pixelSizeY = Math.abs(northing - southing) / product.getSceneRasterHeight();
             if (pixelRegistered) {
                 northing -= pixelSizeY / 2.0;
-                westing += pixelSizeX / 2.0;
+                westing = (float) (westing + pixelSizeX / 2.0);
             } else {
                 pixelX = 0.0;
                 pixelY = 0.0;

@@ -35,7 +35,7 @@ import java.util.Locale;
  *
  * @author Norman Fomferra
  * @version $Revision$ $Date$
- * @see org.esa.snap.dataio.merisl3.MerisL3ProductReader
+ * @see eu.esa.opt.dataio.merisl3.MerisL3ProductReader
  */
 public class MerisL3ProductReaderPlugIn implements ProductReaderPlugIn {
 

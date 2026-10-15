@@ -330,7 +330,7 @@ public class Meris3rd4thReprocessingAdapter implements ReprocessingAdapter {
             final float[] saaTiePoints = saaTargetTPG.getTiePoints();
             for (int i = 0; i < saaTiePoints.length; i++) {
                 if (saaTiePoints[i] <= 0.0) {
-                    saaTiePoints[i] += 360.0;
+                    saaTiePoints[i] += 360.f;
                 }
             }
         }
@@ -351,7 +351,7 @@ public class Meris3rd4thReprocessingAdapter implements ReprocessingAdapter {
             final float[] vaaTiePoints = vaaTargetTPG.getTiePoints();
             for (int i = 0; i < vaaTiePoints.length; i++) {
                 if (vaaTiePoints[i] <= 0.0) {
-                    vaaTiePoints[i] += 360.0;
+                    vaaTiePoints[i] += 360.f;
                 }
             }
         }
@@ -385,7 +385,7 @@ public class Meris3rd4thReprocessingAdapter implements ReprocessingAdapter {
             final double conversionFactor = 1.0 / 2.1415e-5;  // convert from kg/m2 to DU, https://sacs.aeronomie.be/info/dobson.php
             final float[] ozoneTiePoints = ozoneTPG.getTiePoints();
             for (int i = 0; i < ozoneTiePoints.length; i++) {
-                ozoneTiePoints[i] *= conversionFactor;
+                ozoneTiePoints[i] = (float) (ozoneTiePoints[i] * conversionFactor);
             }
         }
 

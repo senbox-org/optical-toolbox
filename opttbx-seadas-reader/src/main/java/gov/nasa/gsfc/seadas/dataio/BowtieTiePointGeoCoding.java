@@ -200,14 +200,14 @@ public class BowtieTiePointGeoCoding extends AbstractBowtieGeoCoding {
             int change = 0;
             if((p0 - p1) < -0.001) {
                 // increase
-                change = +1;
+                change = 1;
             } else if((p1 - p0) < -0.001) {
                 // decrease
                 change = -1;
             }
             if (increaseDecreaseCount > 1 && change == -1) {
                 return (int) (i * latGrid.getSubSamplingY());
-            } else if (increaseDecreaseCount < -1 && change == +1) {
+            } else if (increaseDecreaseCount < -1 && change == 1) {
                 return (int) (i * latGrid.getSubSamplingY());
             } else {
                 increaseDecreaseCount += change;
@@ -262,7 +262,7 @@ public class BowtieTiePointGeoCoding extends AbstractBowtieGeoCoding {
                     lats[y * gridW + x] = refLat - (deltaLat * (gridScanlineOffset - y));
                 }
             }
-            addStripeGeocode(lats, lons, 0 - gridScanlineOffset, gridW, gridScanlineHeight, osX, osY, ssX, ssY);
+            addStripeGeocode(lats, lons, -gridScanlineOffset, gridW, gridScanlineHeight, osX, osY, ssX, ssY);
         }
 
         // add all of the normal scans
