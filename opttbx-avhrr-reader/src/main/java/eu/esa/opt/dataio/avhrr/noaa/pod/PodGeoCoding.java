@@ -38,7 +38,7 @@ import java.awt.Rectangle;
  *
  * @author Ralf Quast
  */
-final class PodGeoCoding extends TiePointGeoCoding {
+public final class PodGeoCoding extends TiePointGeoCoding {
 
     private transient PixelPosEstimator pixelPosEstimator;
     private transient GeoApproximation[] approximations;

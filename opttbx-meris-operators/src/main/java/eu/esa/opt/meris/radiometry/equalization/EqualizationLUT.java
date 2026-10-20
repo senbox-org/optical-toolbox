@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class EqualizationLUT {
+public class EqualizationLUT {
 
-    private List<Map<Integer, double[]>> coefficientsMapList;
+    private final List<Map<Integer, double[]>> coefficientsMapList;
 
     EqualizationLUT(Reader[] bandCoefficientReaders) throws IOException {
         coefficientsMapList = new ArrayList<>(bandCoefficientReaders.length);

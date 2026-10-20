@@ -52,6 +52,7 @@ import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.VARIABLE_DESCRIPT
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.VARIABLE_UNIT;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToFile;
 
+@SuppressWarnings("SynchronizeOnNonFinalField")
 public class PrismaProductReader extends AbstractProductReader {
 
     private final Map<String, Array> _varCache = new HashMap<>();
