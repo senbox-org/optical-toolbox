@@ -206,6 +206,19 @@ public class DDDBTest {
     }
 
     @Test
+    @STTM("SNAP-4261")
+    public void testGetVariableDescriptors_olciL2LrrBaseline003RcGifapar() throws IOException {
+        final Version version = new Version("003", "OL__L2L.003.00.02");
+        final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors("rc_gifapar.nc", "OL_2_LRR", version);
+
+        assertEquals(4, variableDescriptors.length);
+        assertEquals("RC681", variableDescriptors[0].getName());
+        assertEquals("RC681_unc", variableDescriptors[1].getName());
+        assertEquals("RC865", variableDescriptors[2].getName());
+        assertEquals("RC865_unc", variableDescriptors[3].getName());
+    }
+
+    @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testGetVariableDescriptors_notExisting() {
         try {
