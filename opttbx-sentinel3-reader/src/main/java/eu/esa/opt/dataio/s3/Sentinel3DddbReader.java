@@ -50,6 +50,7 @@ import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
 import static eu.esa.opt.dataio.s3.util.S3Util.*;
 
+@SuppressWarnings("SynchronizeOnNonFinalField")
 public class Sentinel3DddbReader extends AbstractProductReader implements MetadataProvider, ReaderContext, S3CacheDataReader {
 
     private final DDDB dddb;

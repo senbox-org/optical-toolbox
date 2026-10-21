@@ -63,13 +63,14 @@ import static java.lang.System.arraycopy;
 
 public abstract class SeadasFileReader implements CacheDataProvider {
 
+    protected final NetcdfFile ncFile;
+
     protected boolean mustFlipX;
     protected boolean mustFlipY;
     protected boolean wantsCaching;
     protected boolean applyScaling;
     protected List<Attribute> globalAttributes;
     protected Map<String, Variable> variableMap;
-    protected NetcdfFile ncFile;
     protected SeadasProductReader productReader;
     protected int[] start = new int[2];
     protected int[] stride = new int[2];
@@ -3002,7 +3003,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
     }
 
 
-    private interface SkipBadNav {
+    protected interface SkipBadNav {
         boolean isBadNav(double value);
     }
 

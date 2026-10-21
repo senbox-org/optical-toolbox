@@ -295,14 +295,14 @@ public final class S2tbxReprojectionOp extends Operator {
     public void dispose() {
         if (elevationModel != null) {
             elevationModel.dispose();
+            elevationModel = null;
         }
         super.dispose();
     }
 
     private ElevationModel createElevationModel() throws OperatorException {
         if (elevationModelName != null) {
-            final ElevationModelDescriptor demDescriptor = ElevationModelRegistry.getInstance().getDescriptor(
-                    elevationModelName);
+            final ElevationModelDescriptor demDescriptor = ElevationModelRegistry.getInstance().getDescriptor(elevationModelName);
             return demDescriptor.createDem(Resampling.BILINEAR_INTERPOLATION);
         }
         return null; // force use of elevation from tie-points
@@ -918,11 +918,14 @@ public final class S2tbxReprojectionOp extends Operator {
 
     }
 
-    private static class ReprojectionSettings {
+    public static class ReprojectionSettings {
 
         private final GeoCoding geoCoding;
         private final MultiLevelModel sourceModel;
         private final ImageGeometry imageGeometry;
+
+        private MultiLevelModel targetModel;
+        private Reproject reprojection;
 
         public void setTargetModel(MultiLevelModel targetModel) {
             this.targetModel = targetModel;
@@ -931,9 +934,6 @@ public final class S2tbxReprojectionOp extends Operator {
         public void setReprojection(Reproject reprojection) {
             this.reprojection = reprojection;
         }
-
-        private MultiLevelModel targetModel;
-        private Reproject reprojection;
 
         ReprojectionSettings(GeoCoding geoCoding, MultiLevelModel sourceModel, ImageGeometry imageGeometry) {
             this.geoCoding = geoCoding;
@@ -969,5 +969,4 @@ public final class S2tbxReprojectionOp extends Operator {
             super(S2tbxReprojectionOp.class);
         }
     }
-
 }

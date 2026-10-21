@@ -23,9 +23,8 @@ import java.io.IOException;
 
 public class FlagReader implements BandReader {
 
-    private AvhrrFile avhrrFile;
-
-    private ImageInputStream inputStream;
+    private final AvhrrFile avhrrFile;
+    private final ImageInputStream inputStream;
 
     public FlagReader(AvhrrFile avhrrFile, ImageInputStream inputStream) {
         this.avhrrFile = avhrrFile;
@@ -85,7 +84,6 @@ public class FlagReader implements BandReader {
         } finally {
             pm.done();
         }
-
     }
 
     private byte readFlags(int rawY) throws IOException {
