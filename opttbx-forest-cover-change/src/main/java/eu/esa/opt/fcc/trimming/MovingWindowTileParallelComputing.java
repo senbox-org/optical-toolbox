@@ -60,9 +60,9 @@ public class MovingWindowTileParallelComputing extends AbstractParallelComputing
 
     @Override
     protected void execute() throws Exception {
-        int imageWidth = this.colorFillerMatrix.getColumnCount();
-        int imageHeight = this.colorFillerMatrix.getRowCount();
-        boolean canContinue = false;
+        final int imageWidth = colorFillerMatrix.getColumnCount();
+        final int imageHeight = colorFillerMatrix.getRowCount();
+        boolean canContinue;
         do {
             int movingLocalTileTopY = -1;
             int movingLocalTileLeftX = -1;

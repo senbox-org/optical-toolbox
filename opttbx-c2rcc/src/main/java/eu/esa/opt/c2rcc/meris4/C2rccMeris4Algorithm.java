@@ -364,15 +364,15 @@ public class C2rccMeris4Algorithm {
 
             // (9.4.2) test out of scope spectra with autoassociative neural network
             // RD20161103 aaNN will always be computed, because needed for flagging
-            rtosa_aann = new double[0];
-            double[] log_rtosa_aann = new double[0];
+            // rtosa_aann = new double[0];
+            double[] log_rtosa_aann;
             //if (outputRtoaGcAann || outputOos) {
                 log_rtosa_aann = this.nn_rtosa_aann.get().calc(nn_in);
                 rtosa_aann = ArrayMath.a_exp(log_rtosa_aann);
             //}
             //double[] rtosa_aaNNrat = adiv(rtosa_aann, r_tosa);
             //rtosa_aaNNrat_a(ipix,:)=rtosa_aaNNrat;
-            rtosa_oos = 0;
+            // rtosa_oos = 0;
             //if (outputOos) {
             //    double[] abs_diff_log_rtosa = a_abs(log_rtosa, log_rtosa_aann);
             //    rtosa_oos = a_max(abs_diff_log_rtosa);
@@ -535,7 +535,7 @@ public class C2rccMeris4Algorithm {
 
             //log_rw_nn2 = nnhs_ff(for_nn9b,nn_in_for); // compute rho_w from IOPs
 
-            rwa_oos = 0;
+            // rwa_oos = 0;
             // RD20161103 no if question, because this calculation is needed for flagging
             //if (outputOos) {
                 double[] log_rw_nn2 = nn_iop_rw.get().calc(nn_in_for);
