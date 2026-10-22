@@ -27,8 +27,8 @@ public abstract class AbstractMatrixCellsParallelComputing extends AbstractParal
 
     @Override
     protected final void execute() throws Exception {
-        int localRowIndex = -1;
-        int localColumnIndex = -1;
+        int localRowIndex;
+        int localColumnIndex;
         do {
             localRowIndex = -1;
             localColumnIndex = -1;

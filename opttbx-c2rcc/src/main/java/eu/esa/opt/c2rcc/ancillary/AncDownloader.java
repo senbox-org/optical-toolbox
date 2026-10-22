@@ -70,17 +70,13 @@ class AncDownloader {
         }
         final String tempFileName = "tmp_" + filename;
         final File tempFile = new File(destPath, tempFileName);
-        FileOutputStream streamOut = null;
         try {
-            streamOut = new FileOutputStream(tempFile);
-            final byte[] buffer = new byte[100000];
-            int len;
-            try {
+            try (FileOutputStream streamOut = new FileOutputStream(tempFile)) {
+                final byte[] buffer = new byte[100000];
+                int len;
                 while ((len = inputStream.read(buffer)) > -1) {
                     streamOut.write(buffer, 0, len);
                 }
-            } finally {
-                streamOut.close();
             }
             if (tempFile.renameTo(destFile)) {
                 LOGGER.fine("The ancillary file '" + destFile.getAbsolutePath() + "' has been written.");
