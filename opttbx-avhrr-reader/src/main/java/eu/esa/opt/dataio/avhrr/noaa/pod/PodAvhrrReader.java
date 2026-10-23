@@ -46,7 +46,7 @@ final class PodAvhrrReader extends AbstractProductReader {
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        Object input = getInput();
+        final Object input = getInput();
         final File file = PodAvhrrReaderPlugIn.getInputFile(input);
         IOHandler ioHandler = null;
         String productName = "unkown";
@@ -66,9 +66,7 @@ final class PodAvhrrReader extends AbstractProductReader {
         try {
             avhrrFile = new PodAvhrrFile(ioHandler, productName);
             product = avhrrFile.createProduct();
-            if (file != null) {
-                product.setFileLocation(file);
-            }
+            product.setFileLocation(file);
         } catch (IOException e) {
             try {
                 close();
@@ -99,12 +97,12 @@ final class PodAvhrrReader extends AbstractProductReader {
         }
 
         bandReader.readBandRasterData(sourceOffsetX,
-                                      sourceOffsetY,
-                                      sourceWidth,
-                                      sourceHeight,
-                                      sourceStepX,
-                                      sourceStepY,
-                                      targetBuffer, pm);
+                sourceOffsetY,
+                sourceWidth,
+                sourceHeight,
+                sourceStepX,
+                sourceStepY,
+                targetBuffer, pm);
     }
 
     @Override

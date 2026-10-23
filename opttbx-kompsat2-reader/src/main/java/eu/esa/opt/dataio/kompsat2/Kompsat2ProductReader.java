@@ -155,7 +155,7 @@ public class Kompsat2ProductReader extends AbstractProductReader {
                     Dimension defaultBandSize = geoTiffImageReader.validateSize(bandMetadata.getNumColumns(), bandMetadata.getNumLines());
                     Kompsat2GeoTiffProductReader geoTiffProductReader = new Kompsat2GeoTiffProductReader(getReaderPlugIn(), productMetadata, product.getSceneRasterSize(), defaultProductSize, subsetDef);
                     Rectangle bandBounds;
-                    if (subsetDef == null || subsetDef.getSubsetRegion() == null) {
+                    if (subsetDef.getSubsetRegion() == null) {
                         bandBounds = new Rectangle(defaultBandSize.width, defaultBandSize.height);
                     } else {
                         GeoCoding bandDefaultGeoCoding = buildDefaultGeoCoding(productMetadata, bandMetadata, imagesMetadataParentPath, defaultProductSize, geoTiffImageReader, null);

@@ -1,7 +1,5 @@
 package eu.esa.opt.dataio.deimos;
 
-import org.esa.snap.engine_utilities.commons.FilePathInputStream;
-import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.deimos.dimap.DeimosConstants;
 import eu.esa.opt.dataio.deimos.dimap.DeimosMetadata;
 import eu.esa.opt.dataio.readers.MetadataList;
@@ -10,6 +8,8 @@ import org.esa.snap.core.datamodel.GeoCoding;
 import org.esa.snap.core.metadata.MetadataInspector;
 import org.esa.snap.dataio.geotiff.GeoTiffImageReader;
 import org.esa.snap.dataio.geotiff.GeoTiffProductReader;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -58,7 +58,7 @@ public class DeimosMetadataInspector implements MetadataInspector {
 
     private GeoCoding addGeoCoding(MetadataList<DeimosMetadata> metadataList, VirtualDirEx productDirectory) throws Exception {
         GeoCoding productGeoCoding = DeimosProductReader.buildProductTiePointGridGeoCoding(metadataList.getMetadataAt(0), metadataList, null);
-        if(productGeoCoding == null) {
+        if (productGeoCoding == null) {
             boolean inputStreamSuccess = false;
             GeoTiffImageReader geoTiffImageReader;
             FilePathInputStream filePathInputStream = productDirectory.getInputStream(metadataList.getMetadataImageRelativePath(0));
@@ -70,9 +70,7 @@ public class DeimosMetadataInspector implements MetadataInspector {
                     filePathInputStream.close();
                 }
             }
-            if (productGeoCoding == null) {
-                productGeoCoding = GeoTiffProductReader.readGeoCoding(geoTiffImageReader, null);
-            }
+            productGeoCoding = GeoTiffProductReader.readGeoCoding(geoTiffImageReader, null);
         }
         return productGeoCoding;
     }

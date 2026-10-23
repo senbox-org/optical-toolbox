@@ -834,19 +834,19 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                 boolean bottomOfStackWater = false;
 
                 for (String bottomOfStack : masksBottomOfStackArray) {
-                    if (bottomOfStack.equals(bottomOfStackComposite1)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackComposite1))) {
                         bottomOfStackComposite1 = true;
                     }
 
-                    if (bottomOfStack.equals(bottomOfStackComposite2)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackComposite2))) {
                         bottomOfStackComposite2 = true;
                     }
 
-                    if (bottomOfStack.equals(bottomOfStackComposite3)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackComposite3))) {
                         bottomOfStackComposite3 = true;
                     }
 
-                    if (bottomOfStack.equals(bottomOfStackWater)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackWater))) {
                         bottomOfStackWater = true;
                     }
                 }

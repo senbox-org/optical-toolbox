@@ -130,7 +130,7 @@ class VirtualDirWrapper extends VirtualDirEx {
                 String fileName = relativePath.substring(0, relativePath.lastIndexOf(".")).toUpperCase();
                 file = new File(wrapped.getTempDir(), fileName + extension);
             }
-            if(file == null || !Files.exists(file.toPath())) {
+            if(!Files.exists(file.toPath())) {
                 String key = FileUtils.getFilenameFromPath(relativePath).toLowerCase();
                 String path = findKeyFile(key);
                 if (path == null) {
