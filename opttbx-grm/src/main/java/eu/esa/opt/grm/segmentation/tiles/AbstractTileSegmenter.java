@@ -242,6 +242,7 @@ public abstract class AbstractTileSegmenter {
         }
     }
 
+    @SuppressWarnings("ThrowFromFinallyBlock")
     public void runTileFirstSegmentation(TileDataSource[] sourceTiles, ProcessingTile tileToProcess, int tileRowIndex, int tileColumnIndex)
                                          throws IllegalAccessException, IOException, InterruptedException {
 
@@ -330,7 +331,7 @@ public abstract class AbstractTileSegmenter {
                 success = true;
             } finally {
                 if (!success) {
-                    ProcessingTile removedTile = null;
+                    ProcessingTile removedTile;
                     synchronized (this.tileSegmenterMetadata) {
                         removedTile = this.tileSegmenterMetadata.removeTile(tileRowIndex, tileColumnIndex);
                     }

@@ -32,13 +32,13 @@ public class CAMSReader {
         final Path cacheFolderPath = cachedir.resolve("aux_camsfo"+tileId);
         try {
             Files.createDirectory(cacheFolderPath);
-        } catch (FileAlreadyExistsException exc) {
+        } catch (FileAlreadyExistsException ignored) {
         }
         try {
             final Path copyPath = cacheFolderPath.resolve(path.getFileName().toString());
             try {
             	Files.createDirectories(copyPath);
-            } catch (FileAlreadyExistsException exc) {
+            } catch (FileAlreadyExistsException ignored) {
             }
             Files.copy(path, copyPath, StandardCopyOption.REPLACE_EXISTING);
             ncfile = NetcdfFile.openInMemory(copyPath.toString());

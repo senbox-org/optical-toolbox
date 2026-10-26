@@ -1765,20 +1765,20 @@ public abstract class SeadasFileReader implements CacheDataProvider {
             if (wvl != null) {
                 try {
                     wavelengths = wvl.read();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
                 bandIdx = ncFile.findVariable("geophysical_data/band_index");
                 if (bandIdx != null) {
                     try {
                         band_indices = bandIdx.read();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
                 }
                 intWvl = ncFile.findVariable("sensor_band_parameters/wavelength");
                 if (intWvl != null) {
                     try {
                         intWavelengths = intWvl.read();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
                 }
 

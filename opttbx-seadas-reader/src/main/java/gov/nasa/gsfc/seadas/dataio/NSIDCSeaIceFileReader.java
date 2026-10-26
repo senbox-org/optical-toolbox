@@ -157,15 +157,12 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
             if (time != null) {
                 try {
                     times = time.read();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
 
                 for (int i = 0; i < bands; i++) {
                     final String shortname = variable.getShortName();
-                    StringBuilder longname = new StringBuilder(shortname);
-                    longname.append("_");
-                    longname.append(times.getInt(i));
-                    String name = longname.toString();
+                    final String name = shortname + "_" + times.getInt(i);
                     final int dataType = getProductDataType(variable);
 
                     if (!product.containsBand(name)) {
