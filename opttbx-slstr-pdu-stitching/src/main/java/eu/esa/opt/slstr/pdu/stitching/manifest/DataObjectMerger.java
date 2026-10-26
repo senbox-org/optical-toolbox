@@ -101,34 +101,23 @@ class DataObjectMerger extends AbstractElementMerger {
 
     //package local for testing
     static String getChecksum(File file) {
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            FileChannel channel = inputStream.getChannel();
-            ByteBuffer buff = ByteBuffer.allocate(2048);
+        try (FileInputStream inputStream = new FileInputStream(file)) {
+            final MessageDigest md = MessageDigest.getInstance("MD5");
+            final FileChannel channel = inputStream.getChannel();
+            final ByteBuffer buff = ByteBuffer.allocate(2048);
             while (channel.read(buff) != -1) {
                 buff.flip();
                 md.update(buff);
                 buff.clear();
             }
             final byte[] digest = md.digest();
-            StringBuilder digestResult = new StringBuilder();
+            final StringBuilder digestResult = new StringBuilder();
             for (byte aDigest : digest) {
                 digestResult.append(Integer.toString((aDigest & 0xff) + 0x100, 16).substring(1));
             }
             return digestResult.toString();
         } catch (NoSuchAlgorithmException | IOException e) {
             return "";
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-
-                }
-            }
         }
     }
-
 }

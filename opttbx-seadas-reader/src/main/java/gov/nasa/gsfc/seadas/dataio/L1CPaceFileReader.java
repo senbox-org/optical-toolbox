@@ -139,7 +139,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     }
                     waveLengths = wvl_sliced.read();
 
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
             variableMap = addOciBands(product, ncFile.getVariables(), view_Angles, waveLengths);
@@ -160,7 +160,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                         e.printStackTrace();  //Todo change body of catch statement.
                     }
                     waveLengths = wvl_sliced.read();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
             variableMap = addHarpBands(product, ncFile.getVariables(), view_Angles, waveLengths, correctHarpDim);
@@ -177,7 +177,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
                     }
                     waveLengths = wvl_sliced.read();
                     waveLengths_pol = wvl_sliced_pol.read();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
             variableMap = addSPEXoneBands(product, ncFile.getVariables(), view_Angles, waveLengths, waveLengths_pol);

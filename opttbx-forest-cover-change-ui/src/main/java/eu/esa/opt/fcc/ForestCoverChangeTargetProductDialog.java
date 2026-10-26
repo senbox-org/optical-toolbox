@@ -281,6 +281,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
         return targetProductNameSuffix;
     }
 
+    @SuppressWarnings("CatchMayIgnoreException")
     private void initForm() {
         this.form = new JTabbedPane();
         this.form.add("I/O Parameters", this.ioParametersPanel);
@@ -309,21 +310,17 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
             if (this.parameterGroupDescriptors != null) {
                 for (Map.Entry<String, List<String>> pair : this.parameterGroupDescriptors.entrySet()) {
                     if (pair.getKey().equals("Land Cover")) {
-                        List<String> names = Arrays.asList(LandCoverFactory.getNameList());
-                        Comparator<String> comparator = new Comparator<String>() {
-                            @Override
-                            public int compare(String o1, String o2) {
-                                return o1.compareToIgnoreCase(o2);
-                            }
-                        };
-                        Collections.sort(names, comparator);
-                        String[] landCoverNames = names.toArray(new String[0]);
-                        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>(landCoverNames);
-                        final JComboBox<String> landCoverNamesComboBox = new JComboBox<>(comboBoxModel);
-                        this.bindingContext.bind(LAND_COVER_NAME, landCoverNamesComboBox);
+                        final List<String> names = Arrays.asList(LandCoverFactory.getNameList());
+                        final Comparator<String> comparator = String::compareToIgnoreCase;
+                        names.sort(comparator);
 
-                        this.landCoverMapIndices = new JTextField();
-                        this.bindingContext.bind(LAND_COVER_MAP_INDICES, this.landCoverMapIndices);
+                        final String[] landCoverNames = names.toArray(new String[0]);
+                        final DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>(landCoverNames);
+                        final JComboBox<String> landCoverNamesComboBox = new JComboBox<>(comboBoxModel);
+                        bindingContext.bind(LAND_COVER_NAME, landCoverNamesComboBox);
+
+                        landCoverMapIndices = new JTextField();
+                        bindingContext.bind(LAND_COVER_MAP_INDICES, this.landCoverMapIndices);
 
                         landCoverNamesComboBox.addItemListener(event -> {
                             try {

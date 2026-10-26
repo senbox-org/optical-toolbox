@@ -33,13 +33,13 @@ public class ECMWFTReader {
         final Path cacheFolderPath = cachedir.resolve("aux_ecmwft"+tileId);
         try {
             Files.createDirectory(cacheFolderPath);
-        } catch (FileAlreadyExistsException exc) {
+        } catch (FileAlreadyExistsException ignored) {
         }
         try {
             final Path copyPath = cacheFolderPath.resolve(path.getFileName().toString());
             try {
             	Files.createDirectories(copyPath);
-            } catch (FileAlreadyExistsException exc) {
+            } catch (FileAlreadyExistsException ignored) {
             }
             final InputStream inputFileStream = ProductUtils.getProductInputStream(path);
             Files.copy(inputFileStream, copyPath, StandardCopyOption.REPLACE_EXISTING);

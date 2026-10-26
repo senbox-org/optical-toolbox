@@ -91,6 +91,7 @@ public final class SdrAlgorithm implements Cloneable {
         _neuralNet.process(inputVector, outputVector);
     }
 
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     protected SdrAlgorithm clone() {
         return new SdrAlgorithm(_neuralNet.clone());
