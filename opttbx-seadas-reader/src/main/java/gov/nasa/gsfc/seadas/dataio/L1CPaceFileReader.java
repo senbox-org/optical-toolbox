@@ -233,15 +233,20 @@ public class L1CPaceFileReader extends SeadasFileReader {
         Band band;
 
         Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
-        int spectralBandIndex = 0;
+        int spectralBandIndex;
         for (Variable variable : variables) {
-            if (variable.getParentGroup().equals("sensor_views_bands"))
+            final Group parentGroup = variable.getParentGroup();
+            final String parentGroupName = parentGroup.getShortName();
+            if (parentGroupName.equals("sensor_views_bands")) {
                 continue;
-            if ((variable.getShortName().toLowerCase().equals("latitude")) ||
-                    (variable.getShortName().toLowerCase().equals("longitude")))
-                continue;
-            int variableRank = variable.getRank();
+            }
 
+            final String variableName = variable.getShortName();
+            if ((variableName.equalsIgnoreCase("latitude")) || (variableName.equalsIgnoreCase("longitude"))) {
+                continue;
+            }
+
+            final int variableRank = variable.getRank();
             if (variableRank == 2) {
                 final int[] dimensions = variable.getShape();
                 final int height = dimensions[0];
@@ -593,16 +598,20 @@ public class L1CPaceFileReader extends SeadasFileReader {
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
-        int spectralBandIndex = 0;
+        final Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
-            if (variable.getParentGroup().equals("sensor_views_bands"))
+            final Group parentGroup = variable.getParentGroup();
+            final String parentGroupName = parentGroup.getShortName();
+            if (parentGroupName.equals("sensor_views_bands")) {
                 continue;
-            if ((variable.getShortName().toLowerCase().equals("latitude")) ||
-                    (variable.getShortName().toLowerCase().equals("longitude")))
-                continue;
-            int variableRank = variable.getRank();
+            }
 
+            final String variableName = variable.getShortName();
+            if ((variableName.equalsIgnoreCase("latitude")) || (variableName.equalsIgnoreCase("longitude"))) {
+                continue;
+            }
+
+            final int variableRank = variable.getRank();
             if (variableRank == 2) {
                 final int[] dimensions = variable.getShape();
                 final int height = dimensions[0];
@@ -914,19 +923,20 @@ public class L1CPaceFileReader extends SeadasFileReader {
         final int sceneRasterHeight = product.getSceneRasterHeight();
         Band band;
 
-//        Array wavelengths = null;
-//        Array wavelengths_pol = null;
-//        Array view_angles = null;
-
-        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
+        final Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
-            if (variable.getParentGroup().equals("sensor_views_bands"))
+            final Group parentGroup = variable.getParentGroup();
+            final String parentGroupName = parentGroup.getShortName();
+            if (parentGroupName.equals("sensor_views_bands")) {
                 continue;
-            if ((variable.getShortName().toLowerCase().equals("latitude")) ||
-                    (variable.getShortName().toLowerCase().equals("longitude")))
-                continue;
-            int variableRank = variable.getRank();
+            }
 
+            final String variableName = variable.getShortName();
+            if ((variableName.equalsIgnoreCase("latitude")) || (variableName.equalsIgnoreCase("longitude"))) {
+                continue;
+            }
+
+            final int variableRank = variable.getRank();
             if (variableRank == 2) {
                 final int[] dimensions = variable.getShape();
                 final int height = dimensions[0];

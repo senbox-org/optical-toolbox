@@ -88,7 +88,7 @@ public class MovingWindowTileParallelComputing extends AbstractParallelComputing
                 }
             }
             canContinue = false;
-            if (movingLocalTileTopY >= 0 && movingLocalTileTopY < imageHeight && movingLocalTileLeftX >= 0 && movingLocalTileLeftX < imageWidth) {
+            if (movingLocalTileTopY >= 0 && movingLocalTileLeftX >= 0 && movingLocalTileLeftX < imageWidth) {
                 canContinue = true;
                 int movingLocalTileBottomY = movingLocalTileTopY + this.movingWindowSize.height;
                 if (movingLocalTileBottomY > imageHeight) {

@@ -105,7 +105,7 @@ public class OdlParser {
         }
         final long openCount = value.chars().filter(ch -> ch == '(').count();
         final long closeCount = value.chars().filter(ch -> ch == ')').count();
-        if (openCount != closeCount || openCount > 1 || closeCount > 2) {
+        if (openCount != closeCount || openCount > 1) {
             throw new IllegalFileFormatException("The number of opening and closing brackets of an attribute value within an ODL file must be equal to and less than 2.");
         }
         final int openIndex = value.indexOf("(");

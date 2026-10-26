@@ -233,14 +233,20 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
-        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
+        final Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
-            if (variable.getParentGroup().equals("sensor_band_parameters") || variable.getParentGroup().equals("scan_line_attributes"))
+            final Group parentGroup = variable.getParentGroup();
+            final String parentGroupName = parentGroup.getShortName();
+            if (parentGroupName.equals("sensor_band_parameters") || parentGroupName.equals("scan_line_attributes")) {
                 continue;
-            if ((variable.getShortName().equals("latitude")) || (variable.getShortName().equals("longitude")))
-                continue;
-            int variableRank = variable.getRank();
+            }
 
+            final String variableName = variable.getShortName();
+            if ((variableName.equals("latitude")) || (variableName.equals("longitude"))){
+                continue;
+            }
+
+            final int variableRank = variable.getRank();
             if (variableRank == 2) {
                 add2DBand(product, variable, sceneRasterHeight, sceneRasterWidth, bandToVariableMap);
             } else if (variableRank == 3) {

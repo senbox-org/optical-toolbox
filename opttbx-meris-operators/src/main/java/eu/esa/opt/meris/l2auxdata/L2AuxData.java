@@ -377,7 +377,6 @@ public final class L2AuxData implements Constants {
         final double[] Df_tabulated_values = auxFileO.readDoubleArray("O50E", DDV_NUM_ADA);
 
         ProductData pdata;
-        assert DDV_NUM_SZA == DDV_NUM_VZA;
 
         // element count of the symetric matrix
         final int elementCount = ((DDV_NUM_SZA * DDV_NUM_SZA + DDV_NUM_SZA) / 2) * DDV_NUM_ADA;
@@ -596,7 +595,6 @@ public final class L2AuxData implements Constants {
     }
 
     private void loadLandAerosolAuxData(final AuxFile auxFileS, final AuxFile auxFileT) throws IOException, L2AuxDataException {
-        assert R7T_NUM_SZA == R7T_NUM_VZA;
         final double[] r7thresh_tab1 = auxFileS.readDoubleArray("S200", R7T_NUM_SZA);
         final double[] r7thresh_tab2 = r7thresh_tab1;
         final double[] r7thresh_tab3 = auxFileS.readDoubleArray("S202", R7T_NUM_ADA);

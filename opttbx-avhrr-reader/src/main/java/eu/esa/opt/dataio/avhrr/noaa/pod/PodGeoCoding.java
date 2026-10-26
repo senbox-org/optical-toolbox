@@ -17,17 +17,10 @@
 package eu.esa.opt.dataio.avhrr.noaa.pod;
 
 import org.esa.snap.core.dataio.ProductSubsetDef;
-import org.esa.snap.core.datamodel.GeoApproximation;
-import org.esa.snap.core.datamodel.GeoPos;
-import org.esa.snap.core.datamodel.PixelPos;
-import org.esa.snap.core.datamodel.PixelPosEstimator;
-import org.esa.snap.core.datamodel.Product;
-import org.esa.snap.core.datamodel.Scene;
-import org.esa.snap.core.datamodel.TiePointGeoCoding;
-import org.esa.snap.core.datamodel.TiePointGrid;
+import org.esa.snap.core.datamodel.*;
 
 import javax.media.jai.PlanarImage;
-import java.awt.Rectangle;
+import java.awt.*;
 
 /**
  * This geo-coding improves the inverse approximations used in the {@code TiePointGeoCoding} in order
@@ -99,6 +92,7 @@ public final class PodGeoCoding extends TiePointGeoCoding {
         final String latGridName = getLatGrid().getName();
         final String lonGridName = getLonGrid().getName();
         final Product destProduct = destScene.getProduct();
+
         TiePointGrid latGrid = destProduct.getTiePointGrid(latGridName);
         if (latGrid == null) {
             latGrid = TiePointGrid.createSubset(getLatGrid(), subsetDef);
@@ -109,17 +103,13 @@ public final class PodGeoCoding extends TiePointGeoCoding {
             lonGrid = TiePointGrid.createSubset(getLonGrid(), subsetDef);
             destProduct.addTiePointGrid(lonGrid);
         }
-        if (latGrid != null && lonGrid != null) {
-            if (subsetDef == null || subsetDef.getRegion() == null) {
-                // re-use approximations
-                destScene.setGeoCoding(new PodGeoCoding(latGrid, lonGrid, approximations));
-            } else {
-                destScene.setGeoCoding(new PodGeoCoding(latGrid, lonGrid));
-            }
-            return true;
+        if (subsetDef == null || subsetDef.getSubsetRegion() == null) {
+            // re-use approximations
+            destScene.setGeoCoding(new PodGeoCoding(latGrid, lonGrid, approximations));
         } else {
-            return false;
+            destScene.setGeoCoding(new PodGeoCoding(latGrid, lonGrid));
         }
+        return true;
     }
 
     @Override

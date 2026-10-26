@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
  */
 public class AlosPRIMetadata extends XmlMetadata {
 
-    private String imageDirectoryPath;
     private ImageMetadata.InsertionPoint upperLeftPointOrigin;
     private List<ImageMetadata> componentMetadata;
 
@@ -155,7 +154,6 @@ public class AlosPRIMetadata extends XmlMetadata {
         return componentMetadata.stream().
                 filter(metadata -> metadata instanceof ImageMetadata).
                 map(ImageMetadata::hasInsertPoint).allMatch(aBoolean -> true);
-
     }
 
     public float getMaxInsertPointX() {
@@ -253,7 +251,7 @@ public class AlosPRIMetadata extends XmlMetadata {
             maxPointXList.add(metadata.getInsertPointMaxRightX());
             maxPointYList.add(metadata.getInsertPointMaxLowerY());
         }
-        return new HashMap<String, Float>() {
+        return new HashMap<>() {
             {
                 put("x", Collections.max(maxPointXList));
                 put("y", Collections.min(maxPointYList));
