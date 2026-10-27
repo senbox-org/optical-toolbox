@@ -142,7 +142,7 @@ public class MatrixUtils {
         int nl = I.length;
         int nc = I[0].length;
         float[][] R = new float[nl][nc];
-        float[][] tmp = new float[nl][nc];
+        float[][] tmp;
         for (int i = 0; i < nl; i++) {
             for (int j = 0; j < nc; j++) {
                 R[i][j] = 0;

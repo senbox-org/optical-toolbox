@@ -71,8 +71,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.prefs.Preferences;
 
-import static com.bc.ceres.swing.TableLayout.cell;
-
 /**
  * @author Razvan Dumitrascu
  * @since 5.0.6
@@ -100,7 +98,6 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
     private Map<String, List<String>> parameterGroupDescriptors;
     private JTabbedPane form;
     private String targetProductNameSuffix;
-    private JComboBox<String> landCoverNamesComboBox;
     private JTextField landCoverMapIndices;
 
     public ForestCoverChangeTargetProductDialog(String operatorName, AppContext appContext, String title, String helpID) {
@@ -211,9 +208,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
                 information = "The forest cover change output product  will take in consideration the cloud masks from this product.";
                 modalDialog.setContent(getModalDialogContent(message, information));
                 final int show = modalDialog.show();
-                if (show == ModalDialog.ID_CANCEL) {
-                    return false;
-                }
+                return show != ModalDialog.ID_CANCEL;
             } else if (ForestCoverChangeOp.isSentinelProduct(currentProduct) && currentProductSourceMask != null
                     && ForestCoverChangeOp.isSentinelProduct(previousProduct) && previousProductSourceMask == null) {
 
@@ -221,9 +216,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
                 information = "The forest cover change output product  will take in consideration the cloud masks from this product.";
                 modalDialog.setContent(getModalDialogContent(message, information));
                 final int show = modalDialog.show();
-                if (show == ModalDialog.ID_CANCEL) {
-                    return false;
-                }
+                return show != ModalDialog.ID_CANCEL;
             }
         }
         return true;
@@ -288,6 +281,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
         return targetProductNameSuffix;
     }
 
+    @SuppressWarnings("CatchMayIgnoreException")
     private void initForm() {
         this.form = new JTabbedPane();
         this.form.add("I/O Parameters", this.ioParametersPanel);
@@ -316,35 +310,28 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
             if (this.parameterGroupDescriptors != null) {
                 for (Map.Entry<String, List<String>> pair : this.parameterGroupDescriptors.entrySet()) {
                     if (pair.getKey().equals("Land Cover")) {
-                        List<String> names = Arrays.asList(LandCoverFactory.getNameList());
-                        Comparator<String> comparator = new Comparator<String>() {
-                            @Override
-                            public int compare(String o1, String o2) {
-                                return o1.compareToIgnoreCase(o2);
-                            }
-                        };
-                        Collections.sort(names, comparator);
-                        String[] landCoverNames = names.toArray(new String[0]);
-                        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>(landCoverNames);
-                        this.landCoverNamesComboBox = new JComboBox<String>(comboBoxModel);
-                        this.bindingContext.bind(LAND_COVER_NAME, this.landCoverNamesComboBox);
+                        final List<String> names = Arrays.asList(LandCoverFactory.getNameList());
+                        final Comparator<String> comparator = String::compareToIgnoreCase;
+                        names.sort(comparator);
 
-                        this.landCoverMapIndices = new JTextField();
-                        this.bindingContext.bind(LAND_COVER_MAP_INDICES, this.landCoverMapIndices);
+                        final String[] landCoverNames = names.toArray(new String[0]);
+                        final DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>(landCoverNames);
+                        final JComboBox<String> landCoverNamesComboBox = new JComboBox<>(comboBoxModel);
+                        bindingContext.bind(LAND_COVER_NAME, landCoverNamesComboBox);
 
-                        this.landCoverNamesComboBox.addItemListener(new ItemListener() {
-                            @Override
-                            public void itemStateChanged(ItemEvent event) {
-                                try {
-                                    landCoverMapIndices.setText("");
-                                    bindingContext.getPropertySet().getProperty(LAND_COVER_MAP_INDICES).setValue("");
-                                } catch (ValidationException e) {
-                                }
+                        landCoverMapIndices = new JTextField();
+                        bindingContext.bind(LAND_COVER_MAP_INDICES, this.landCoverMapIndices);
+
+                        landCoverNamesComboBox.addItemListener(event -> {
+                            try {
+                                landCoverMapIndices.setText("");
+                                bindingContext.getPropertySet().getProperty(LAND_COVER_MAP_INDICES).setValue("");
+                            } catch (ValidationException e) {
                             }
                         });
 
                         List<JComponent[]> componentsList = new ArrayList<>();
-                        JComponent[] firstRow = new JComponent[] {this.landCoverNamesComboBox, new JLabel("Name")};
+                        JComponent[] firstRow = new JComponent[] {landCoverNamesComboBox, new JLabel("Name")};
                         JComponent[] secondRow = new JComponent[] {this.landCoverMapIndices, new JLabel("Map Indices")};
                         componentsList.add(firstRow);
                         componentsList.add(secondRow);
@@ -507,8 +494,8 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
         protected Product doInBackground(ProgressMonitor pm) throws Exception {
             pm.beginTask("Running...", this.model.isOpenInAppSelected() ? 100 : 95);
 
-            Product productToReturn = null;
-            Product operatorTargetProduct = null;
+            Product productToReturn;
+            Product operatorTargetProduct;
             try {
                 long startTime = System.currentTimeMillis();
 

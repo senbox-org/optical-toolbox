@@ -86,9 +86,7 @@ public class IkonosProductReader extends AbstractProductReader {
     @Override
     protected void readBandRasterDataImpl(int sourceOffsetX, int sourceOffsetY, int sourceWidth, int sourceHeight, int sourceStepX, int sourceStepY,
                                           Band destBand, int destOffsetX, int destOffsetY, int destWidth, int destHeight,
-                                          ProductData destBuffer, ProgressMonitor pm)
-                                          throws IOException {
-
+                                          ProductData destBuffer, ProgressMonitor pm) {
         throw new UnsupportedOperationException("Method not implemented");
     }
 
@@ -149,7 +147,7 @@ public class IkonosProductReader extends AbstractProductReader {
                 try (GeoTiffImageReader geoTiffImageReader = GeoTiffImageReader.buildGeoTiffImageReader(zipArchivePath, bandMetadata.getImageFileName())) {
                     Dimension defaultBandSize = new Dimension(geoTiffImageReader.getImageWidth(), geoTiffImageReader.getImageHeight());
                     Rectangle bandBounds;
-                    if (subsetDef == null || subsetDef.getSubsetRegion() == null) {
+                    if (subsetDef.getSubsetRegion() == null) {
                         bandBounds = new Rectangle(defaultBandSize.width, defaultBandSize.height);
                     } else {
                         GeoCoding bandDefaultGeoCoding = buildDefaultGeoCoding(metadata, bandMetadata, zipArchivePath, defaultProductSize, geoTiffImageReader, null);

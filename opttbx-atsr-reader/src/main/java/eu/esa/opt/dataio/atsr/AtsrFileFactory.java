@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
 class AtsrFileFactory implements AtsrConstants {
 
     /**
-     * Retrieves an instance of the factory. If none exoists, creates one. Singleton interface.
+     * Retrieves an instance of the factory. If none exists, creates one. Singleton interface.
      */
     public static AtsrFileFactory getInstance() {
         return Holder.instance;
@@ -71,29 +71,24 @@ class AtsrFileFactory implements AtsrConstants {
         // read the first 68 characters and check for atsr specific stuff
         final byte[] headerBegin = new byte[BYTE_ORDER_SIZE + PRODUCT_FILE_NAME_SIZE + INSTRUMENT_NAME_SIZE];
 
-        try {
-            if (!(inStream instanceof ImageInputStreamImpl) && inStream.length() < headerBegin.length) {
-                bRet = DecodeQualification.UNABLE;
-            } else {
-                inStream.readFully(headerBegin, 0, headerBegin.length);
-                final InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(headerBegin));
-                if (checkByteOrderField(reader)) {
-                    if (checkProductFileNameField(reader)) {
-                        if (checkInstrumentField(reader)) {
-                            bRet = DecodeQualification.INTENDED;
+        try (inStream) {
+            try {
+                if (inStream instanceof ImageInputStreamImpl || inStream.length() >= headerBegin.length) {
+                    inStream.readFully(headerBegin, 0, headerBegin.length);
+                    final InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(headerBegin));
+                    if (checkByteOrderField(reader)) {
+                        if (checkProductFileNameField(reader)) {
+                            if (checkInstrumentField(reader)) {
+                                bRet = DecodeQualification.INTENDED;
+                            }
                         }
                     }
                 }
-            }
-        } catch (IOException e) {
-            Debug.trace(e);
-            bRet = DecodeQualification.UNABLE;
-        } finally {
-            try {
-                inStream.close();
             } catch (IOException e) {
                 Debug.trace(e);
             }
+        } catch (IOException e) {
+            Debug.trace(e);
         }
 
         return bRet;
@@ -118,19 +113,17 @@ class AtsrFileFactory implements AtsrConstants {
      */
     public AtsrFile open(ImageInputStream inStream, File inFile) throws IOException {
         String prodType = readProductType(inStream);
-        AtsrFile file = null;
+        AtsrFile file;
 
         if (prodType == null) {
-            throw new IOException(
-                    "Unsupported product.\nOnly ATSR GBT and GSST products are (currently) supported."); /*I18N*/
+            throw new IOException("Unsupported product.\nOnly ATSR GBT and GSST products are (currently) supported."); /*I18N*/
         }
         if (prodType.equalsIgnoreCase(PRODUCT_TYPES[0])) {
             file = new AtsrGBTFile();
         } else if (prodType.equalsIgnoreCase(PRODUCT_TYPES[1])) {
             file = new AtsrGSSTFile();
         } else {
-            throw new IOException(
-                    "Unsupported ATSR product.\nOnly GBT and GSST products are (currently) supported."); /*I18N*/
+            throw new IOException("Unsupported ATSR product.\nOnly GBT and GSST products are (currently) supported."); /*I18N*/
         }
 
         file.open(inStream, inFile);
@@ -146,8 +139,8 @@ class AtsrFileFactory implements AtsrConstants {
      * Checks that the stream passed in contains the byte order characters AB.
      */
     private boolean checkByteOrderField(InputStreamReader reader) throws IOException {
+        final char[] field = new char[BYTE_ORDER_SIZE];
         boolean bRet = false;
-        char[] field = new char[BYTE_ORDER_SIZE];
 
         reader.read(field, 0, BYTE_ORDER_SIZE);
         if ((field[0] == BYTE_ORDER_FIELD[0]) && (field[1] == BYTE_ORDER_FIELD[1])) {
@@ -163,13 +156,16 @@ class AtsrFileFactory implements AtsrConstants {
      */
     private boolean checkProductFileNameField(InputStreamReader reader) throws IOException {
         boolean bRet = false;
-        char[] field = new char[PRODUCT_FILE_NAME_SIZE];
+        final char[] field = new char[PRODUCT_FILE_NAME_SIZE];
 
-        reader.read(field, 0, PRODUCT_FILE_NAME_SIZE);
-        String productName = new String(field);
+        final int iRead = reader.read(field, 0, PRODUCT_FILE_NAME_SIZE);
+        if (iRead != PRODUCT_FILE_NAME_SIZE) {
+            return bRet;
+        }
 
-        for (int n = 0; n < PRODUCT_TYPES.length; n++) {
-            if (-1 != productName.indexOf(PRODUCT_TYPES[n])) {
+        final String productName = new String(field).trim();
+        for (String productType : PRODUCT_TYPES) {
+            if (productName.contains(productType)) {
                 bRet = true;
                 break;
             }
@@ -186,11 +182,14 @@ class AtsrFileFactory implements AtsrConstants {
         boolean bRet = false;
         char[] field = new char[INSTRUMENT_NAME_SIZE];
 
-        reader.read(field, 0, INSTRUMENT_NAME_SIZE);
-        String instrument = new String(field);
+        final int iRead = reader.read(field, 0, INSTRUMENT_NAME_SIZE);
+        if (iRead != INSTRUMENT_NAME_SIZE) {
+            return bRet;
+        }
 
-        for (int n = 0; n < INSTRUMENTS.length; n++) {
-            if (-1 != instrument.indexOf(INSTRUMENTS[n])) {
+        final String instrument = new String(field).trim();
+        for (String inst : INSTRUMENTS) {
+            if (instrument.contains(inst)) {
                 bRet = true;
                 break;
             }
@@ -206,20 +205,16 @@ class AtsrFileFactory implements AtsrConstants {
         String strRet = null;
 
         // read the first 62 characters and check for filename to contain valid abbreviations
-        byte[] headerBegin = new byte[PRODUCT_FILE_NAME_SIZE];
+        final byte[] headerBegin = new byte[PRODUCT_FILE_NAME_SIZE];
 
         inStream.seek(2);
         inStream.readFully(headerBegin, 0, headerBegin.length);
         inStream.seek(0);
 
-        InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(headerBegin));
-        char[] fileName = new char[PRODUCT_FILE_NAME_SIZE];
-        reader.read(fileName);
-        String productName = new String(fileName);
-
-        for (int n = 0; n < PRODUCT_TYPES.length; n++) {
-            if (-1 != productName.indexOf(PRODUCT_TYPES[n])) {
-                strRet = PRODUCT_TYPES[n];
+        final String productName = new String(headerBegin).trim();
+        for (String productType : PRODUCT_TYPES) {
+            if (productName.contains(productType)) {
+                strRet = productType;
                 break;
             }
         }

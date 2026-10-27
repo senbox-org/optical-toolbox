@@ -18,6 +18,7 @@ package eu.esa.opt.dataio.avhrr.noaa.pod;
 
 import com.bc.ceres.binio.IOHandler;
 import com.bc.ceres.binio.util.RandomAccessFileIOHandler;
+import eu.esa.opt.dataio.avhrr.AvhrrReaderPlugIn;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -71,13 +72,7 @@ public final class PodAvhrrReaderPlugIn implements ProductReaderPlugIn {
     }
 
     public static File getInputFile(Object input) {
-        File file = null;
-        if (input instanceof String) {
-            file = new File((String) input);
-        } else if (input instanceof File) {
-            file = (File) input;
-        }
-        return file;
+        return AvhrrReaderPlugIn.getInputFile(input);
     }
 
     @Override

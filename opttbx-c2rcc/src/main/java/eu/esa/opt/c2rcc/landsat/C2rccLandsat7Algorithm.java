@@ -591,9 +591,6 @@ class C2rccLandsat7Algorithm {
         } else {
             final Path path = Paths.get(sourcePath);
             stream = Files.newInputStream(path, StandardOpenOption.READ);
-            if (stream == null) {
-                throw new IllegalStateException("file not found: " + path.toString());
-            }
             nnNames.add(path.toString());
         }
         final String nnCode = readFully(stream);

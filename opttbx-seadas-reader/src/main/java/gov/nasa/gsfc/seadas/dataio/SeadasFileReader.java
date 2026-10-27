@@ -834,19 +834,19 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                 boolean bottomOfStackWater = false;
 
                 for (String bottomOfStack : masksBottomOfStackArray) {
-                    if (bottomOfStack.equals(bottomOfStackComposite1)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackComposite1))) {
                         bottomOfStackComposite1 = true;
                     }
 
-                    if (bottomOfStack.equals(bottomOfStackComposite2)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackComposite2))) {
                         bottomOfStackComposite2 = true;
                     }
 
-                    if (bottomOfStack.equals(bottomOfStackComposite3)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackComposite3))) {
                         bottomOfStackComposite3 = true;
                     }
 
-                    if (bottomOfStack.equals(bottomOfStackWater)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackWater))) {
                         bottomOfStackWater = true;
                     }
                 }
@@ -1765,20 +1765,20 @@ public abstract class SeadasFileReader implements CacheDataProvider {
             if (wvl != null) {
                 try {
                     wavelengths = wvl.read();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
                 bandIdx = ncFile.findVariable("geophysical_data/band_index");
                 if (bandIdx != null) {
                     try {
                         band_indices = bandIdx.read();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
                 }
                 intWvl = ncFile.findVariable("sensor_band_parameters/wavelength");
                 if (intWvl != null) {
                     try {
                         intWavelengths = intWvl.read();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
                 }
 

@@ -612,9 +612,6 @@ public class C2rccMsiAlgorithm {
         } else {
             final Path path = Paths.get(sourcePath);
             stream = Files.newInputStream(path, StandardOpenOption.READ);
-            if (stream == null) {
-                throw new IllegalStateException("file not found: " + path.toString());
-            }
             nnNames.add(path.toString());
         }
         final String nnCode = readFully(stream);

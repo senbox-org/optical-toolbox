@@ -186,9 +186,8 @@ public class WaterProcessorOp extends PixelOperator {
         // local variables
         double d2r;
         float dazi;
-        int k;
         int l;
-        int ls = 0;
+        int ls;
         int n;
         float[] a = new float[width];
 
@@ -199,7 +198,7 @@ public class WaterProcessorOp extends PixelOperator {
         int stage;
 
         float[][] ipixel = new float[2][1];
-        float[][] ipixels = new float[2][1];
+        float[][] ipixels;
         float[][] opixel = new float[2][1];
 
         // Load the wavelengths and ozone spectral extinction coefficients
