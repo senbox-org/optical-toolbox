@@ -464,11 +464,11 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testCreatePreferredTileSize_l2UsesFullProductSize() throws Exception {
+    public void testCreatePreferredTileSize_l2() throws Exception {
         final java.awt.Dimension tileSize = invokeCreatePreferredTileSize("FLX_L2_FLXSYN", 367, 366);
 
-        assertEquals(367, tileSize.width);
-        assertEquals(366, tileSize.height);
+        assertEquals(128, tileSize.width);
+        assertEquals(128, tileSize.height);
     }
 
     @Test
@@ -476,8 +476,29 @@ public class FlexProductReaderTest {
     public void testCreatePreferredTileSize_l1cUsesDefaultTileHeight() throws Exception {
         final java.awt.Dimension tileSize = invokeCreatePreferredTileSize("FLX_L1C_FLXSYN", 530, 4138);
 
-        assertEquals(530, tileSize.width);
-        assertEquals(FlexProductReader.L1B_L1C_TILE_HEIGHT_DEFAULT, tileSize.height);
+        assertEquals(265, tileSize.width);
+        assertEquals(FlexProductReader.TILE_SIZE_DEFAULT, tileSize.height);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testCreatePreferredTileSize_l1bUsesFullProductWidth() throws Exception {
+        final java.awt.Dimension tileSize = invokeCreatePreferredTileSize("FLX_L1B_OBS", 536, 3640);
+
+        assertEquals(536, tileSize.width);
+        assertEquals(FlexProductReader.TILE_SIZE_DEFAULT, tileSize.height);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testCreatePreferredTileSize_unsupportedProductTypeThrowsException() throws Exception {
+        try {
+            invokeCreatePreferredTileSize("FLX_L0_UNKNOWN", 100, 100);
+            fail("Expected IllegalArgumentException");
+        } catch (InvocationTargetException expected) {
+            assertTrue(expected.getCause() instanceof IllegalArgumentException);
+            assertEquals("Unsupported FLEX product type: FLX_L0_UNKNOWN", expected.getCause().getMessage());
+        }
     }
 
     @Test

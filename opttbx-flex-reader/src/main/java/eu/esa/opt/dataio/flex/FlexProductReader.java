@@ -54,7 +54,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     public static final String PREFERENCE_KEY_ENABLE_NATIVE_NETCDF = "opttbx.flex.reader.enable.native.netcdf";
     public static final boolean CACHE_ENABLED_DEFAULT = false;
     public static final boolean NATIVE_NETCDF_ENABLED_DEFAULT = true;
-    public static final int L1B_L1C_TILE_HEIGHT_DEFAULT = 520;
+    public static final int TILE_SIZE_DEFAULT = 128;
     private static final int DIMENSION_NOT_FOUND = -1;
 
     private final FlexDDDB dddb;
@@ -138,9 +138,15 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
     private static Dimension createPreferredTileSize(String productType, int width, int height) {
         if (productType != null && productType.contains("L2")) {
-            return new Dimension(width, height);
+            return new Dimension(TILE_SIZE_DEFAULT, TILE_SIZE_DEFAULT);
         }
-        return new Dimension(width, L1B_L1C_TILE_HEIGHT_DEFAULT);
+        if (productType != null && productType.contains("L1B")) {
+            return new Dimension(width, TILE_SIZE_DEFAULT);
+        }
+        if (productType != null && productType.contains("L1C")) {
+            return new Dimension((width + 1) / 2, TILE_SIZE_DEFAULT);
+        }
+        throw new IllegalArgumentException("Unsupported FLEX product type: " + productType);
     }
 
     @Override
