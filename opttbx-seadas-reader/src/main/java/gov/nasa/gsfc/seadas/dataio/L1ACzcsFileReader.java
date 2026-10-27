@@ -103,7 +103,7 @@ public class L1ACzcsFileReader extends SeadasFileReader {
         }
         String productName = getStringAttribute("Product_Name");
         if (productName == null) {
-            productName = productReader.getInputFile().getName();
+            productName = productReader.getInputName();
         }
         mustFlipX = mustFlipY = getDefaultFlip();
         SeadasProductReader.ProductType productType = productReader.getProductType();

@@ -23,6 +23,8 @@ import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.util.SystemUtils;
+import org.esa.snap.dataio.netcdf.remote.RemoteFileAccess;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import ucar.nc2.Attribute;
 import ucar.nc2.Group;
@@ -31,7 +33,11 @@ import ucar.nc2.Variable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 
 
@@ -41,6 +47,7 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
     private ProductType productType;
     private SeadasFileReader seadasFileReader;
     private ProductCache productCache;
+    private final Set<String> prefetchedBands = ConcurrentHashMap.newKeySet();
 
     enum Mission {
         OCI("OCI");
@@ -149,9 +156,13 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
 
         try {
 //            Product product;
-            final File inFile = SeadasHelper.getInputFile(getInput());
-
-            ncfile = NetcdfFileOpener.open(inFile);
+            ncfile = NetcdfFileOpener.open(SeadasHelper.getNetcdfInput(getInput()));
+            if (ncfile == null) {
+                throw new IOException("Not a NetCDF/HDF file: " + getInput());
+            }
+            if (isRemoteInput()) {
+                prefetchVariablesReadAtOpen();
+            }
             productType = findProductType();
             seadasFileReader = getReaderFromProductType(productType, this);
             // @todo 1 tb refactor 2026-04-22
@@ -164,6 +175,57 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
 
         } catch (IOException e) {
             throw new ProductIOException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * On the first read of a band from a remote file, fetches all chunks holding that band in parallel.
+     * The image views ask for a band tile by tile, and each tile would otherwise cost a round trip per chunk.
+     */
+    private void prefetchBand(Band band) {
+        Variable variable = seadasFileReader.variableMap == null ? null : seadasFileReader.variableMap.get(band.getName());
+        if (variable == null) {
+            return;
+        }
+        try {
+            RemoteFileAccess.prefetchVariables(ncfile, List.of(variable));
+        } catch (IOException e) {
+            SystemUtils.LOG.log(Level.FINE, "Prefetch failed for band " + band.getName(), e);
+        }
+    }
+
+    /**
+     * Groups and variables the file readers read in full while creating the product
+     * (geolocation for the geocoding, per-scan and per-band metadata).
+     */
+    private static final String[] GROUPS_READ_AT_OPEN = {"scan_line_attributes", "sensor_band_parameters"};
+    private static final String[] VARIABLES_READ_AT_OPEN = {
+            "navigation_data/latitude", "navigation_data/longitude", "navigation_data/tilt",
+            "geolocation_data/latitude", "geolocation_data/longitude"};
+
+    /**
+     * On a remote file, fetches the chunks of everything read at open in parallel, instead of one
+     * network round trip per chunk.
+     */
+    private void prefetchVariablesReadAtOpen() {
+        List<Variable> variables = new ArrayList<>();
+        for (String groupName : GROUPS_READ_AT_OPEN) {
+            Group group = ncfile.findGroup(groupName);
+            if (group != null) {
+                variables.addAll(group.getVariables());
+            }
+        }
+        for (String name : VARIABLES_READ_AT_OPEN) {
+            Variable variable = ncfile.findVariable(name);
+            if (variable != null) {
+                variables.add(variable);
+            }
+        }
+        try {
+            RemoteFileAccess.prefetchVariables(ncfile, variables);
+        } catch (IOException e) {
+            // not fatal: the readers fetch whatever is still missing
+            SystemUtils.LOG.log(Level.FINE, "Prefetch failed for " + getInput(), e);
         }
     }
 
@@ -254,6 +316,9 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
                                           ProgressMonitor pm) throws IOException {
 
 
+        if (isRemoteInput() && prefetchedBands.add(destBand.getName())) {
+            prefetchBand(destBand);
+        }
         try {
             seadasFileReader.readBandData(destBand, sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
                     sourceStepX, sourceStepY, destBuffer, pm);
@@ -264,8 +329,26 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
         }
     }
 
+    /**
+     * @return the local input file, or null when the product is read from a remote (http/https) location
+     */
     public File getInputFile() {
         return SeadasHelper.getInputFile(getInput());
+    }
+
+    /**
+     * @return the input's file name, for local files and remote locations alike
+     */
+    public String getInputName() {
+        Object input = getInput();
+        if (SeadasHelper.isRemote(input)) {
+            return RemoteFileAccess.getFileName(input.toString());
+        }
+        return getInputFile().getName();
+    }
+
+    public boolean isRemoteInput() {
+        return SeadasHelper.isRemote(getInput());
     }
 
     public NetcdfFile getNcfile() {

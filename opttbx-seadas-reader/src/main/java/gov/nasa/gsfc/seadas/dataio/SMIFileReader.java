@@ -80,7 +80,7 @@ public class SMIFileReader extends SeadasFileReader {
             }
         }
 
-        String productName = productReader.getInputFile().getName();
+        String productName = productReader.getInputName();
         try {
             productName = getStringAttribute("Product_Name");
         } catch (Exception ignored) {

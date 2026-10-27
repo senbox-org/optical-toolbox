@@ -90,7 +90,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         try {
             productName = getStringAttribute("product_name");
         } catch (Exception ignored) {
-            productName = productReader.getInputFile().getName();
+            productName = productReader.getInputName();
         }
 
         readWvlVariables();
