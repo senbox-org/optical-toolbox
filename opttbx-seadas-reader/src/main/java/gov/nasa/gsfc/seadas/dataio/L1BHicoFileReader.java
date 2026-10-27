@@ -61,7 +61,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
 
         productName = getStringAttribute("metadata_FGDC_Identification_Information_Dataset_Identifier");
         if (StringUtils.isNullOrEmpty(productName)) {
-            productName = productReader.getInputFile().getName();
+            productName = productReader.getInputName();
         }
 
         String hicoOrientation = getStringAttribute("metadata_HICO_Calibration_hico_orientation_from_quaternion");

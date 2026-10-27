@@ -54,7 +54,7 @@ public class L1AOctsFileReader extends SeadasFileReader {
             utcStart = getUTCAttribute("Start_Time");
             utcEnd = getUTCAttribute("End_Time");
         }
-        String productName = productReader.getInputFile().getName();
+        String productName = productReader.getInputName();
 
         SeadasProductReader.ProductType productType = productReader.getProductType();
 

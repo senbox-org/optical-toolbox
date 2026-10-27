@@ -52,7 +52,7 @@ public class L1ASeawifsFileReader extends SeadasFileReader {
             utcStart = getUTCAttribute("Start_Time");
             utcEnd = getUTCAttribute("End_Time");
         }
-        String productName = productReader.getInputFile().getName();
+        String productName = productReader.getInputName();
 
         mustFlipX = mustFlipY = getDefaultFlip();
         SeadasProductReader.ProductType productType = productReader.getProductType();

@@ -88,14 +88,14 @@ public class L2ProductReaderPlugIn implements ProductReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File inputFile = SeadasHelper.getInputFile(input);
+        final Object netcdfInput = SeadasHelper.getNetcdfInput(input);
 
-        final DecodeQualification decodeQualification = SeadasHelper.checkInputObject(inputFile);
+        final DecodeQualification decodeQualification = SeadasHelper.checkNetcdfInput(netcdfInput);
         if (decodeQualification == DecodeQualification.UNABLE) {
             return decodeQualification;
         }
 
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(netcdfInput)) {
             if (ncfile != null) {
                 String titleattr = "title";
                 Attribute titleAttribute = ncfile.findGlobalAttributeIgnoreCase(titleattr);
@@ -108,7 +108,7 @@ public class L2ProductReaderPlugIn implements ProductReaderPlugIn {
                         final String level = levelAttribute.getStringValue();
                         if (level.equals("L2")) {
                             if (DEBUG) {
-                                System.out.println(inputFile);
+                                System.out.println(netcdfInput);
                             }
                             ncfile.close();
                             return DecodeQualification.INTENDED;
@@ -122,30 +122,30 @@ public class L2ProductReaderPlugIn implements ProductReaderPlugIn {
                         if (title != null) {
                             if (supportedProductTypeSet.contains(title.trim())) {
                                 if (DEBUG) {
-                                    System.out.println(inputFile);
+                                    System.out.println(netcdfInput);
                                 }
                                 ncfile.close();
                                 return DecodeQualification.INTENDED;
                             } else {
                                 if (DEBUG) {
-                                    System.out.println("# Unrecognized attribute Title=[" + title + "]: " + inputFile);
+                                    System.out.println("# Unrecognized attribute Title=[" + title + "]: " + netcdfInput);
                                 }
                             }
                         }
                     }
                 } else {
                     if (DEBUG) {
-                        System.out.println("# Missing attribute 'Title': " + inputFile);
+                        System.out.println("# Missing attribute 'Title': " + netcdfInput);
                     }
                 }
             } else {
                 if (DEBUG) {
-                    System.out.println("# Can't open as NetCDF: " + inputFile);
+                    System.out.println("# Can't open as NetCDF: " + netcdfInput);
                 }
             }
         } catch (Exception ignore) {
             if (DEBUG) {
-                System.out.println("# I/O exception caught: " + inputFile);
+                System.out.println("# I/O exception caught: " + netcdfInput);
             }
         }
         return DecodeQualification.UNABLE;
