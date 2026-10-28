@@ -132,7 +132,7 @@ public class L2FileReader extends SeadasFileReader {
         }
         String productName = getStringAttribute("Product_Name");
         if (productName == null) {
-            productName = productReader.getInputFile().getName();
+            productName = productReader.getInputName();
         }
 
         SeadasProductReader.ProductType productType = productReader.getProductType();

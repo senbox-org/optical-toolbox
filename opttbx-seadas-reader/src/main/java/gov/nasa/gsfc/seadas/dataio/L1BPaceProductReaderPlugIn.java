@@ -34,9 +34,9 @@ public class L1BPaceProductReaderPlugIn implements ProductReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File inputFile = SeadasHelper.getInputFile(input);
+        final Object netcdfInput = SeadasHelper.getNetcdfInput(input);
 
-        final DecodeQualification decodeQualification = SeadasHelper.checkInputObject(inputFile);
+        final DecodeQualification decodeQualification = SeadasHelper.checkNetcdfInput(netcdfInput);
         if (decodeQualification == DecodeQualification.UNABLE) {
             return decodeQualification;
         }
@@ -45,30 +45,30 @@ public class L1BPaceProductReaderPlugIn implements ProductReaderPlugIn {
         H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
 
         try {
-            ncfile = NetcdfFileOpener.open(inputFile);
+            ncfile = NetcdfFileOpener.open(netcdfInput);
             if (ncfile != null) {
                 Attribute scene_title = ncfile.findGlobalAttribute("title");
 
                 if (scene_title != null) {
                     if (scene_title.toString().contains("PACE OCIS Level-1B Data") ||
                             scene_title.toString().contains("PACE OCI Level-1B Data")) {
-                        Debug.trace(inputFile.toString());
+                        Debug.trace(netcdfInput.toString());
                         ncfile.close();
                         DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
                         debugFlags.set("HdfEos/turnOff", false);
                         H5iosp.setDebugFlags(debugFlags);
                         return DecodeQualification.INTENDED;
                     } else {
-                        Debug.trace("# Unrecognized scene title =[" + scene_title + "]: " + inputFile);
+                        Debug.trace("# Unrecognized scene title =[" + scene_title + "]: " + netcdfInput);
                     }
                 } else {
-                    Debug.trace("# Missing scene title attribute': " + inputFile);
+                    Debug.trace("# Missing scene title attribute': " + netcdfInput);
                 }
             } else {
-                Debug.trace("# Can't open as NetCDF: " + inputFile);
+                Debug.trace("# Can't open as NetCDF: " + netcdfInput);
             }
         } catch (Exception ignore) {
-            Debug.trace("# I/O exception caught: " + inputFile);
+            Debug.trace("# I/O exception caught: " + netcdfInput);
         } finally {
             DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
             debugFlags.set("HdfEos/turnOff", false);

@@ -57,7 +57,7 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
 
 //        int sceneWidth = getIntAttribute("Pixels_per_Scan_Line");
 //        int sceneHeight = getIntAttribute("Number_of_Scan_Lines");
-        String productName = productReader.getInputFile().getName();
+        String productName = productReader.getInputName();
         numPixels = getDimension("x");
         numScans = getDimension("y");
         title = getStringAttribute("title");

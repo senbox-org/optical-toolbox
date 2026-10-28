@@ -34,16 +34,16 @@ public class L1CPaceProductReaderPlugIn implements ProductReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File inputFile = SeadasHelper.getInputFile(input);
+        final Object netcdfInput = SeadasHelper.getNetcdfInput(input);
 
-        final DecodeQualification decodeQualification = SeadasHelper.checkInputObject(inputFile);
+        final DecodeQualification decodeQualification = SeadasHelper.checkNetcdfInput(netcdfInput);
         if (decodeQualification == DecodeQualification.UNABLE) {
             return decodeQualification;
         }
 
         H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
 
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(netcdfInput)) {
             if (ncfile != null) {
                 Attribute instrument = ncfile.findGlobalAttributeIgnoreCase("instrument");
                 Attribute processing_level = ncfile.findGlobalAttributeIgnoreCase("processing_level");
@@ -53,23 +53,23 @@ public class L1CPaceProductReaderPlugIn implements ProductReaderPlugIn {
                             (instrument.toString().toUpperCase().contains("OCI")
                                     || instrument.toString().toUpperCase().contains("HARP")
                                     || instrument.toString().toUpperCase().contains("SPEXONE"))) {
-                        Debug.trace(inputFile.toString());
+                        Debug.trace(netcdfInput.toString());
                         ncfile.close();
                         DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
                         debugFlags.set("HdfEos/turnOff", false);
                         H5iosp.setDebugFlags(debugFlags);
                         return DecodeQualification.INTENDED;
                     } else {
-                        Debug.trace("# Unrecognized instrument =[" + instrument + "]: " + inputFile);
+                        Debug.trace("# Unrecognized instrument =[" + instrument + "]: " + netcdfInput);
                     }
                 } else {
-                    Debug.trace("# Missing processing_level or instrument attribute': " + inputFile);
+                    Debug.trace("# Missing processing_level or instrument attribute': " + netcdfInput);
                 }
             } else {
-                Debug.trace("# Can't open as NetCDF: " + inputFile);
+                Debug.trace("# Can't open as NetCDF: " + netcdfInput);
             }
         } catch (Exception ignore) {
-            Debug.trace("# I/O exception caught: " + inputFile);
+            Debug.trace("# I/O exception caught: " + netcdfInput);
         } finally {
             DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
             debugFlags.set("HdfEos/turnOff", false);
