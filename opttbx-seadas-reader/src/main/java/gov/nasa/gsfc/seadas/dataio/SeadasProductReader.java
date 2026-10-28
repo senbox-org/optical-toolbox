@@ -35,7 +35,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
@@ -47,7 +48,8 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
     private ProductType productType;
     private SeadasFileReader seadasFileReader;
     private ProductCache productCache;
-    private final Set<String> prefetchedBands = ConcurrentHashMap.newKeySet();
+    /** Per band, the download of its chunks from a remote file; started by the band's first read. */
+    private final Map<String, CompletableFuture<Void>> bandPrefetches = new ConcurrentHashMap<>();
 
     enum Mission {
         OCI("OCI");
@@ -182,16 +184,32 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
      * On the first read of a band from a remote file, fetches all chunks holding that band in parallel.
      * The image views ask for a band tile by tile, and each tile would otherwise cost a round trip per chunk.
      */
+    /**
+     * The first read of a band downloads all of its chunks; concurrent reads of the same band wait for that
+     * instead of fetching chunks one by one alongside it. Reads of other bands are not held up.
+     */
+    private void awaitBandPrefetch(Band band) {
+        CompletableFuture<Void> mine = new CompletableFuture<>();
+        CompletableFuture<Void> running = bandPrefetches.putIfAbsent(band.getName(), mine);
+        if (running == null) {
+            try {
+                prefetchBand(band);
+            } finally {
+                mine.complete(null);
+            }
+        } else {
+            running.join();
+        }
+    }
+
     private void prefetchBand(Band band) {
         Variable variable = seadasFileReader.variableMap == null ? null : seadasFileReader.variableMap.get(band.getName());
         if (variable == null) {
             return;
         }
-        // the chunk index is read through the file's handle, which readBandData also uses from other threads
         try {
-            synchronized (seadasFileReader) {
-                RemoteFileAccess.prefetchVariables(ncfile, List.of(variable));
-            }
+            // readBandData holds the file reader's lock while it uses the file handle
+            RemoteFileAccess.prefetchVariables(ncfile, List.of(variable), seadasFileReader);
         } catch (IOException e) {
             SystemUtils.LOG.log(Level.FINE, "Prefetch failed for band " + band.getName(), e);
         }
@@ -225,6 +243,8 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
             }
         }
         try {
+            // Chunk indexes of all variables: creating the product and the first read of each band need them.
+            RemoteFileAccess.prefetchChunkIndexes(ncfile, ncfile.getVariables());
             RemoteFileAccess.prefetchVariables(ncfile, variables);
         } catch (IOException e) {
             // not fatal: the readers fetch whatever is still missing
@@ -319,8 +339,8 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
                                           ProgressMonitor pm) throws IOException {
 
 
-        if (isRemoteInput() && prefetchedBands.add(destBand.getName())) {
-            prefetchBand(destBand);
+        if (isRemoteInput()) {
+            awaitBandPrefetch(destBand);
         }
         try {
             seadasFileReader.readBandData(destBand, sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight,
