@@ -187,8 +187,11 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
         if (variable == null) {
             return;
         }
+        // the chunk index is read through the file's handle, which readBandData also uses from other threads
         try {
-            RemoteFileAccess.prefetchVariables(ncfile, List.of(variable));
+            synchronized (seadasFileReader) {
+                RemoteFileAccess.prefetchVariables(ncfile, List.of(variable));
+            }
         } catch (IOException e) {
             SystemUtils.LOG.log(Level.FINE, "Prefetch failed for band " + band.getName(), e);
         }
