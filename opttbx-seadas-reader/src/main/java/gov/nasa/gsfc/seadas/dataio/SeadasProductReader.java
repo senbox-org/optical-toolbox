@@ -203,7 +203,7 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
     }
 
     private void prefetchBand(Band band) {
-        Variable variable = seadasFileReader.variableMap == null ? null : seadasFileReader.variableMap.get(band.getName());
+        Variable variable = variableOf(band);
         if (variable == null) {
             return;
         }
@@ -213,6 +213,31 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
         } catch (IOException e) {
             SystemUtils.LOG.log(Level.FINE, "Prefetch failed for band " + band.getName(), e);
         }
+    }
+
+    /**
+     * The variable, or the one-wavelength slice of a 3-D variable, that holds a band's data. Mirrors the
+     * lookup in {@link SeadasFileReader#readBandData}: the PACE L1B reader maps the file variable's name
+     * (rhot_blue), not each band's (rhot_blue_442).
+     */
+    private Variable variableOf(Band band) {
+        Map<String, Variable> variables = seadasFileReader.variableMap;
+        if (variables == null) {
+            return null;
+        }
+        Variable variable = variables.get(band.getName());
+        int index = band.getSpectralBandIndex();
+        if (variable == null && index >= 0) {
+            Variable spectral = variables.get(seadasFileReader.getNcVariableName(band.getName()));
+            if (spectral != null && spectral.getRank() == 3 && index < spectral.getShape(0)) {
+                try {
+                    variable = spectral.slice(0, index);
+                } catch (ucar.ma2.InvalidRangeException e) {
+                    return null;
+                }
+            }
+        }
+        return variable;
     }
 
     /**
