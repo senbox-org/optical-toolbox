@@ -40,6 +40,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
+
 /**
  * The <code>MerisL3ProductReader</code> class is an implementation of the <code>ProductReader</code> interface
  * exclusively for data products having the standard MERIS Binned Level-3 format.
@@ -193,7 +195,7 @@ public class MerisL3ProductReader extends AbstractProductReader {
                 }
             } else {
                 final Variable binVariable = variableMetadata.variable;
-                final Number fillValueN = getAttributeNumericValue(binVariable, "_FillValue");
+                final Number fillValueN = getAttributeNumericValue(binVariable, FILL_VALUE);
                 final short fillValue = fillValueN != null ? fillValueN.shortValue() : 0;
 
                 int[] lineOffsets = new int[1];
@@ -390,13 +392,13 @@ public class MerisL3ProductReader extends AbstractProductReader {
         stringValue = getAttributeStringValue(variable, "long_name");
         final String description = stringValue;
 
-        numericValue = getAttributeNumericValue(variable, "_FillValue");
+        numericValue = getAttributeNumericValue(variable, FILL_VALUE);
         final double fillValue = numericValue != null ? numericValue.doubleValue() : Double.NaN;
 
-        numericValue = getAttributeNumericValue(variable, "scale_factor");
+        numericValue = getAttributeNumericValue(variable, SCALE_FACTOR);
         final double scale = numericValue != null ? numericValue.doubleValue() : 1.0;
 
-        numericValue = getAttributeNumericValue(variable, "add_offset");
+        numericValue = getAttributeNumericValue(variable, ADD_OFFSET);
         final double offset = numericValue != null ? numericValue.doubleValue() : 0.0;
 
         stringValue = getAttributeStringValue(variable, "scaling_equation");

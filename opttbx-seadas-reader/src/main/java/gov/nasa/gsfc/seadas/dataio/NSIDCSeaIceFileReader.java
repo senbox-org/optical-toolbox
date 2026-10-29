@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static java.lang.String.format;
 
 public class NSIDCSeaIceFileReader extends SeadasFileReader {
@@ -179,7 +180,7 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
                         bandToVariableMap.put(band.getName(), sliced);
 
                         try {
-                            Attribute fillValue = variable.findAttribute("_FillValue");
+                            Attribute fillValue = variable.findAttribute(FILL_VALUE);
                             if (fillValue == null) {
                                 fillValue = variable.findAttribute("bad_value_scaled");
                             }
@@ -192,7 +193,7 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
                         double[] validMinMax = {0.0, 0.0};
                         for (Attribute attribute : list) {
                             final String attribName = attribute.getShortName();
-                            if ("units".equals(attribName)) {
+                            if (UNITS.equals(attribName)) {
                                 band.setUnit(attribute.getStringValue());
                             } else if ("long_name".equals(attribName)) {
                                 band.setDescription(attribute.getStringValue());
@@ -200,9 +201,9 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
                                 band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
                             } else if ("intercept".equals(attribName)) {
                                 band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
-                            } else if ("scale_factor".equals(attribName)) {
+                            } else if (SCALE_FACTOR.equals(attribName)) {
                                 band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
-                            } else if ("add_offset".equals(attribName)) {
+                            } else if (ADD_OFFSET.equals(attribName)) {
                                 band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
                             } else if (attribName.startsWith("valid_")) {
                                 if ("valid_min".equals(attribName)) {

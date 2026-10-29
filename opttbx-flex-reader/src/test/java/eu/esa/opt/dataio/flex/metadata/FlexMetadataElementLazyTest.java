@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static eu.esa.snap.core.dataio.CfConstants.UNITS;
 import static org.junit.Assert.*;
 
 
@@ -35,7 +36,7 @@ public class FlexMetadataElementLazyTest {
         final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
 
         assertEquals(2, lazy.getNumAttributes());
-        assertEquals("units", lazy.getAttributeAt(0).getName());
+        assertEquals(UNITS, lazy.getAttributeAt(0).getName());
         assertEquals("nm", lazy.getAttributeAt(0).getData().getElemString());
         assertEquals("value", lazy.getAttributeAt(1).getName());
     }
@@ -83,7 +84,7 @@ public class FlexMetadataElementLazyTest {
         final FlexMetadataProvider provider = name -> inner;
 
         final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
-        assertTrue(lazy.containsAttribute("units"));
+        assertTrue(lazy.containsAttribute(UNITS));
         assertFalse(lazy.containsAttribute("nonexistent"));
     }
 
@@ -105,7 +106,7 @@ public class FlexMetadataElementLazyTest {
         final FlexMetadataProvider provider = name -> inner;
 
         final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
-        assertNotNull(lazy.getAttribute("units"));
+        assertNotNull(lazy.getAttribute(UNITS));
         assertNull(lazy.getAttribute("nonexistent"));
     }
 
@@ -183,7 +184,7 @@ public class FlexMetadataElementLazyTest {
         final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
         final String[] names = lazy.getAttributeNames();
         assertEquals(2, names.length);
-        assertEquals("units", names[0]);
+        assertEquals(UNITS, names[0]);
         assertEquals("value", names[1]);
     }
 
@@ -231,7 +232,7 @@ public class FlexMetadataElementLazyTest {
         final FlexMetadataProvider provider = name -> inner;
 
         final FlexMetadataElementLazy lazy = new FlexMetadataElementLazy("test_var", provider);
-        final MetadataAttribute attr = lazy.getAttribute("units");
+        final MetadataAttribute attr = lazy.getAttribute(UNITS);
 
         assertEquals(0, lazy.getAttributeIndex(attr));
     }
@@ -257,7 +258,7 @@ public class FlexMetadataElementLazyTest {
 
     private static MetadataElement createTestElement() {
         final MetadataElement element = new MetadataElement("test_var");
-        element.addAttribute(new MetadataAttribute("units", ProductData.createInstance("nm"), true));
+        element.addAttribute(new MetadataAttribute(UNITS, ProductData.createInstance("nm"), true));
         element.addAttribute(new MetadataAttribute("value",
                 ProductData.createInstance(new double[]{550.0, 680.0, 740.0}), true));
 

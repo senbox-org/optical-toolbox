@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static java.lang.String.*;
 
 /**
@@ -143,7 +144,7 @@ public class SMIFileReader extends SeadasFileReader {
                     product.addBand(band);
 
                     try {
-                        Attribute fillvalue = variable.findAttribute("_FillValue");
+                        Attribute fillvalue = variable.findAttribute(FILL_VALUE);
                         if (fillvalue == null) {
                             fillvalue = variable.findAttribute("Fill");
                         }
@@ -157,7 +158,7 @@ public class SMIFileReader extends SeadasFileReader {
                     bandToVariableMap.put(band.getName(), variable);
                     // Set units, if defined
                     try {
-                        band.setUnit(getStringAttribute("Units"));
+                        band.setUnit(getStringAttribute(UNITS));
                     } catch (Exception ignored) {
 
                     }
@@ -166,7 +167,7 @@ public class SMIFileReader extends SeadasFileReader {
                     double[] validMinMax = {0.0,0.0};
                     for (Attribute hdfAttribute : list) {
                         final String attribName = hdfAttribute.getShortName();
-                        if ("units".equals(attribName)) {
+                        if (UNITS.equals(attribName)) {
                             band.setUnit(hdfAttribute.getStringValue());
                         } else if ("long_name".equalsIgnoreCase(attribName)) {
                             band.setDescription(hdfAttribute.getStringValue());
@@ -174,7 +175,7 @@ public class SMIFileReader extends SeadasFileReader {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
                         } else if ("intercept".equalsIgnoreCase(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
+                        } else if (SCALE_FACTOR.equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
                         } else if ("add_offset".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
@@ -231,7 +232,7 @@ public class SMIFileReader extends SeadasFileReader {
                     product.addBand(band);
 
                     try {
-                        Attribute fillvalue = variable.findAttribute("_FillValue");
+                        Attribute fillvalue = variable.findAttribute(FILL_VALUE);
                         if (fillvalue != null) {
                             band.setNoDataValue(fillvalue.getNumericValue().doubleValue());
                             band.setNoDataValueUsed(true);
@@ -241,7 +242,7 @@ public class SMIFileReader extends SeadasFileReader {
                     }
                     // Set units, if defined
                     try {
-                        band.setUnit(getStringAttribute("units"));
+                        band.setUnit(getStringAttribute(UNITS));
                     } catch (Exception ignored) {
 
                     }
@@ -249,7 +250,7 @@ public class SMIFileReader extends SeadasFileReader {
                     final List<Attribute> list = variable.getAttributes();
                     for (Attribute hdfAttribute : list) {
                         final String attribName = hdfAttribute.getShortName();
-                        if ("scale_factor".equals(attribName)) {
+                        if (SCALE_FACTOR.equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
                         } else if ("add_offset".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());

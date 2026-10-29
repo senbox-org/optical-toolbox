@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
 import static org.esa.snap.core.dataio.geocoding.InverseCoding.KEY_SUFFIX_INTERPOLATING;
 
@@ -104,7 +105,7 @@ public class S3Util {
     }
 
     public static double getScalingFactor(Variable variable) {
-        Attribute attribute = variable.findAttribute(CFConstants.SCALE_FACTOR);
+        Attribute attribute = variable.findAttribute(SCALE_FACTOR);
         if (attribute == null) {
             attribute = variable.findAttribute(Constants.SLOPE_ATT_NAME);
         }
@@ -118,7 +119,7 @@ public class S3Util {
     }
 
     public static double getAddOffset(Variable variable) {
-        Attribute attribute = variable.findAttribute(CFConstants.ADD_OFFSET);
+        Attribute attribute = variable.findAttribute(ADD_OFFSET);
         if (attribute == null) {
             attribute = variable.findAttribute(Constants.INTERCEPT_ATT_NAME);
         }
@@ -138,7 +139,7 @@ public class S3Util {
     }
 
     public static void addFillValue(Band band, Variable variable) {
-        final Attribute fillValueAttribute = variable.findAttribute(CFConstants.FILL_VALUE);
+        final Attribute fillValueAttribute = variable.findAttribute(FILL_VALUE);
         if (fillValueAttribute != null) {
             band.setNoDataValueUsed(!band.isFlagBand());
             final int dataType = band.getDataType();
@@ -375,9 +376,9 @@ public class S3Util {
     }
 
     public static void addSampleCodings(Product product, Band band, Variable variable, boolean msb) {
-        final Attribute flagValuesAttribute = variable.findAttribute(CFConstants.FLAG_VALUES);
-        final Attribute flagMasksAttribute = variable.findAttribute(CFConstants.FLAG_MASKS);
-        final Attribute flagMeaningsAttribute = variable.findAttribute(CFConstants.FLAG_MEANINGS);
+        final Attribute flagValuesAttribute = variable.findAttribute(FLAG_VALUES);
+        final Attribute flagMasksAttribute = variable.findAttribute(FLAG_MASKS);
+        final Attribute flagMeaningsAttribute = variable.findAttribute(FLAG_MEANINGS);
         if (flagValuesAttribute != null && flagMasksAttribute != null) {
             final FlagCoding flagCoding = S3Util.createFlagCoding(band.getName(), band.getDescription(), flagMeaningsAttribute, flagValuesAttribute, flagMasksAttribute, msb);
             band.setSampleCoding(flagCoding);

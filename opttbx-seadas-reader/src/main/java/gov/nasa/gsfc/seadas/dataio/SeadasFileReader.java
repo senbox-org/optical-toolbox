@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static gov.nasa.gsfc.seadas.dataio.SeadasReaderDefaults.*;
 import static java.lang.System.arraycopy;
 
@@ -85,8 +86,6 @@ public abstract class SeadasFileReader implements CacheDataProvider {
     protected int leadLineSkip = 0;
     protected int tailLineSkip = 0;
 
-    private static final String FLAG_MASKS = "flag_masks";
-    private static final String FLAG_MEANINGS = "flag_meanings";
     protected Logger logger = Logger.getLogger(getClass().getSimpleName());
 
     private final boolean isHeadless;
@@ -1809,7 +1808,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                         bandToVariableMap.put(band.getName(), sliced);
 
                         try {
-                            Attribute fillValue = variable.findAttribute("_FillValue");
+                            Attribute fillValue = variable.findAttribute(FILL_VALUE);
                             if (fillValue == null && applyScaling) {
                                 fillValue = variable.findAttribute("bad_value_scaled");
                             }
@@ -1826,7 +1825,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                         double[] validMinMax = {0.0, 0.0};
                         for (Attribute attribute : list) {
                             final String attribName = attribute.getShortName();
-                            if ("units".equals(attribName)) {
+                            if (UNITS.equals(attribName)) {
                                 band.setUnit(attribute.getStringValue());
                             } else if ("long_name".equals(attribName)) {
                                 band.setDescription(attribute.getStringValue());
@@ -1834,7 +1833,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                                 band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
                             } else if (applyScaling && "intercept".equals(attribName)) {
                                 band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
-                            } else if (applyScaling && "scale_factor".equals(attribName)) {
+                            } else if (applyScaling && SCALE_FACTOR.equals(attribName)) {
                                 band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
                             } else if (applyScaling && "add_offset".equals(attribName)) {
                                 band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
@@ -1923,7 +1922,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                     product.addBand(band);
 
                     try {
-                        Attribute fillValue = variable.findAttribute("_FillValue");
+                        Attribute fillValue = variable.findAttribute(FILL_VALUE);
                         if (fillValue == null && applyScaling) {
                             fillValue = variable.findAttribute("bad_value_scaled");
                         }
@@ -1938,7 +1937,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                     double[] validMinMax = {0.0, 0.0};
                     for (Attribute attribute : list) {
                         final String attribName = attribute.getShortName();
-                        if ("units".equals(attribName)) {
+                        if (UNITS.equals(attribName)) {
                             band.setUnit(attribute.getStringValue());
                         } else if ("long_name".equals(attribName)) {
                             band.setDescription(attribute.getStringValue());
@@ -1946,7 +1945,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                             band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
                         } else if (applyScaling && "intercept".equals(attribName)) {
                             band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
-                        } else if (applyScaling && "scale_factor".equals(attribName)) {
+                        } else if (applyScaling && SCALE_FACTOR.equals(attribName)) {
                             band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
                         } else if (applyScaling && "add_offset".equals(attribName)) {
                             band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
@@ -2437,7 +2436,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
             final List<Attribute> list = variable.getAttributes();
             for (Attribute hdfAttribute : list) {
                 final String attribName = hdfAttribute.getShortName();
-                if ("units".equals(attribName)) {
+                if (UNITS.equals(attribName)) {
                     attribute.setUnit(hdfAttribute.getStringValue());
                 } else if ("long_name".equals(attribName)) {
                     attribute.setDescription(hdfAttribute.getStringValue());

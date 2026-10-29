@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static org.junit.Assert.*;
 
 /**
@@ -68,9 +69,9 @@ public class NcFileStitcherLongTest {
             assertEquals("toa_brightness_temperature", varF1_BT.findAttribute("standard_name").getStringValue());
             assertEquals("Gridded pixel brightness temperature for channel F1 (1km TIR grid, oblique view)",
                     varF1_BT.findAttribute("long_name").getStringValue());
-            assertEquals("K", varF1_BT.findAttribute("units").getStringValue());
-            assertEquals((short) -32768, varF1_BT.findAttribute("_FillValue").getNumericValue());
-            assertEquals(0.01, varF1_BT.findAttribute("scale_factor").getNumericValue());
+            assertEquals("K", varF1_BT.findAttribute(UNITS).getStringValue());
+            assertEquals((short) -32768, varF1_BT.findAttribute(FILL_VALUE).getNumericValue());
+            assertEquals(0.01, varF1_BT.findAttribute(SCALE_FACTOR).getNumericValue());
             assertEquals(283.73, varF1_BT.findAttribute("add_offset").getNumericValue());
 
             assertEquals("F1_exception_io", variables.get(1).getFullName());
@@ -87,8 +88,8 @@ public class NcFileStitcherLongTest {
             assertEquals(600, chunkLengths.getInt(0));
             assertEquals(112, chunkLengths.getInt(1));
             assertEquals("toa_brightness_temperature_status_flag", varF1_exceptions.findAttribute("standard_name").getStringValue());
-            assertTrue(varF1_exceptions.findAttribute("flag_masks").isArray());
-            final Array F1_exception_orphan_io_values = varF1_exceptions.findAttribute("flag_masks").getValues();
+            assertTrue(varF1_exceptions.findAttribute(FLAG_MASKS).isArray());
+            final Array F1_exception_orphan_io_values = varF1_exceptions.findAttribute(FLAG_MASKS).getValues();
             assertEquals(8, F1_exception_orphan_io_values.getSize());
             assertTrue(F1_exception_orphan_io_values.isUnsigned());
             assertEquals((byte) 1, F1_exception_orphan_io_values.getByte(0));
@@ -100,8 +101,8 @@ public class NcFileStitcherLongTest {
             assertEquals((byte) 64, F1_exception_orphan_io_values.getByte(6));
             assertEquals((byte) 128, F1_exception_orphan_io_values.getByte(7));
             assertEquals("ISP_absent pixel_absent not_decompressed no_signal saturation invalid_radiance no_parameters unfilled_pixel",
-                    varF1_exceptions.findAttribute("flag_meanings").getStringValue());
-            assertEquals((byte) -128, varF1_exceptions.findAttribute("_FillValue").getNumericValue());
+                    varF1_exceptions.findAttribute(FLAG_MEANINGS).getStringValue());
+            assertEquals((byte) -128, varF1_exceptions.findAttribute(FILL_VALUE).getNumericValue());
 
             List<Variable> inputFileVariables = new ArrayList<>();
             for (int i = 0; i < 1; i++) {
@@ -163,7 +164,7 @@ public class NcFileStitcherLongTest {
             assertEquals("1 600 130 ", varSnow_depth.findAttribute("_ChunkSize").getValues().toString());
             assertEquals("Snow liquid water equivalent depth", varSnow_depth.findAttribute("long_name").getStringValue());
             assertEquals("lwe_thickness_of_surface_snow_amount", varSnow_depth.findAttribute("standard_name").getStringValue());
-            assertEquals("metre", varSnow_depth.findAttribute("units").getStringValue());
+            assertEquals("metre", varSnow_depth.findAttribute(UNITS).getStringValue());
             assertEquals("ECMWF_F", varSnow_depth.findAttribute("model").getStringValue());
             assertEquals("141", varSnow_depth.findAttribute("parameter").getStringValue());
 

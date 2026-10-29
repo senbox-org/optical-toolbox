@@ -36,6 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
+
 /**
  * Created by IntelliJ IDEA.
  * User: seadas
@@ -249,7 +251,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
                     final List<Attribute> list = variable.getAttributes();
                     for (Attribute hdfAttribute : list) {
                         final String attribName = hdfAttribute.getShortName();
-                        if ("units".equals(attribName)) {
+                        if (UNITS.equals(attribName)) {
                             band.setUnit(hdfAttribute.getStringValue());
                         } else if ("long_name".equals(attribName)) {
                             band.setDescription(hdfAttribute.getStringValue());
@@ -257,9 +259,9 @@ public class L1BHicoFileReader extends SeadasFileReader {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
                         } else if ("intercept".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("scale_factor".equals(attribName)) {
+                        } else if (SCALE_FACTOR.equals(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                        } else if ("add_offset".equals(attribName)) {
+                        } else if (ADD_OFFSET.equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
                         } else if ("bad_value_scaled".equals(attribName)) {
                             band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());
@@ -304,7 +306,7 @@ public class L1BHicoFileReader extends SeadasFileReader {
                         final List<Attribute> list = variable.getAttributes();
                         for (Attribute hdfAttribute : list) {
                             final String attribName = hdfAttribute.getShortName();
-                            if ("units".equals(attribName)) {
+                            if (UNITS.equals(attribName)) {
                                 band.setUnit(hdfAttribute.getStringValue());
                             } else if ("long_name".equals(attribName)) {
                                 band.setDescription(hdfAttribute.getStringValue());
@@ -312,9 +314,9 @@ public class L1BHicoFileReader extends SeadasFileReader {
                                 band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
                             } else if ("intercept".equals(attribName)) {
                                 band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
-                            } else if ("scale_factor".equals(attribName)) {
+                            } else if (SCALE_FACTOR.equals(attribName)) {
                                 band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
-                            } else if ("add_offset".equals(attribName)) {
+                            } else if (ADD_OFFSET.equals(attribName)) {
                                 band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
                             } else if ("bad_value_scaled".equals(attribName)) {
                                 band.setNoDataValue(hdfAttribute.getNumericValue(0).doubleValue());

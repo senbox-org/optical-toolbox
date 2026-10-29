@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
+
 
 public class L1BPaceOciFileReader extends SeadasFileReader {
 
@@ -297,7 +299,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     // package access for testing only tb 2026-04-28
     static void addAttributes(Variable variable, Band band, boolean applyScaling) {
-        Attribute attribute = variable.findAttribute("units");
+        Attribute attribute = variable.findAttribute(UNITS);
         if (attribute != null) {
             band.setUnit(attribute.getStringValue());
         }
@@ -310,7 +312,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             if (attribute != null) {
                 band.setScalingFactor(attribute.getNumericValue().doubleValue());
             }
-            attribute = variable.findAttribute("scale_factor");
+            attribute = variable.findAttribute(SCALE_FACTOR);
             if (attribute != null) {
                 band.setScalingFactor(attribute.getNumericValue().doubleValue());
             }
@@ -318,7 +320,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             if (attribute != null) {
                 band.setScalingOffset(attribute.getNumericValue().doubleValue());
             }
-            attribute = variable.findAttribute("add_offset");
+            attribute = variable.findAttribute(ADD_OFFSET);
             if (attribute != null) {
                 band.setScalingOffset(attribute.getNumericValue().doubleValue());
             }

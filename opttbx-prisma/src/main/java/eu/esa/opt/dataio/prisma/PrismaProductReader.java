@@ -51,6 +51,7 @@ import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.PRISMA_FILENAME_R
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.VARIABLE_DESCRIPTION;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.VARIABLE_UNIT;
 import static eu.esa.opt.dataio.prisma.PrismaConstantsAndUtils.convertToFile;
+import static eu.esa.snap.core.dataio.CfConstants.UNITS;
 
 @SuppressWarnings("SynchronizeOnNonFinalField")
 public class PrismaProductReader extends AbstractProductReader {
@@ -228,7 +229,7 @@ public class PrismaProductReader extends AbstractProductReader {
             if (dataNode instanceof PrismaBand) {
                 final PrismaBand prismaBand = (PrismaBand) dataNode;
                 final Variable variable = prismaBand.variable;
-                final String attValue = variable.findAttValueIgnoreCase("units", "");
+                final String attValue = variable.findAttValueIgnoreCase(UNITS, "");
                 if (attValue.length() > 0) {
                     prismaBand.setUnit(attValue);
                 }

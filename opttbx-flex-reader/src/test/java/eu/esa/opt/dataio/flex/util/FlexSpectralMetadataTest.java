@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.FILL_VALUE;
 import static org.junit.Assert.*;
 
 public class FlexSpectralMetadataTest {
@@ -140,7 +141,7 @@ public class FlexSpectralMetadataTest {
         final MetadataElement element = new MetadataElement(name);
         element.addAttribute(new MetadataAttribute("value", ProductData.createInstance(values), true));
         if (fillValue != null) {
-            element.addAttribute(new MetadataAttribute("_FillValue",
+            element.addAttribute(new MetadataAttribute(FILL_VALUE,
                     ProductData.createInstance(new float[]{fillValue}), true));
         }
         netcdf.addElement(element);

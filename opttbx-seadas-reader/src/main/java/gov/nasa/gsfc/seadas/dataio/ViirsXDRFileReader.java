@@ -38,6 +38,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import static eu.esa.snap.core.dataio.CfConstants.FILL_VALUE;
+
 public class ViirsXDRFileReader extends SeadasFileReader {
 
     ViirsXDRFileReader(SeadasProductReader productReader) {
@@ -180,7 +182,7 @@ public class ViirsXDRFileReader extends SeadasFileReader {
 //                        band.setValidPixelExpression("Chlorophyll_a > 0.0 && Chlorophyll_a < 100.0");
 //                    }
 
-                    band.setNoDataValue((double) variable.findAttribute("_FillValue").getNumericValue().floatValue());
+                    band.setNoDataValue(variable.findAttribute(FILL_VALUE).getNumericValue().floatValue());
                 } catch (Exception ignored) {
 
                 }

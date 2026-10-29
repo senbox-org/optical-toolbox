@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static eu.esa.snap.core.dataio.CfConstants.FLAG_MEANINGS;
+
 /**
  * @author Tonio Fincke
  */
@@ -445,7 +447,7 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
         final MetadataElement variableElement = new MetadataElement(variable.getFullName());
         final List<Attribute> attributes = variable.getAttributes();
         for (Attribute attribute : attributes) {
-            if (attribute.getFullName().equals(CFConstants.FLAG_MEANINGS)) {
+            if (attribute.getFullName().equals(FLAG_MEANINGS)) {
                 final String[] flagMeanings = attribute.getStringValue().split(" ");
                 for (int i = 0; i < flagMeanings.length; i++) {
                     String flagMeaning = flagMeanings[i];

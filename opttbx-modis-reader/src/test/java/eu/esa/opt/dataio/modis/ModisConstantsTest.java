@@ -105,7 +105,6 @@ public class ModisConstantsTest {
         assertEquals("DataFieldName", ModisConstants.DATA_FIELD_NAME_KEY);
         assertEquals("band_names", ModisConstants.BAND_NAMES_KEY);
         assertEquals("valid_range", ModisConstants.VALID_RANGE_KEY);
-        assertEquals("_FillValue", ModisConstants.FILL_VALUE_KEY);
 
         assertEquals("GLOBAL_METADATA", ModisConstants.GLOBAL_META_NAME);
         assertEquals("LOCALGRANULEID", ModisConstants.LOCAL_GRANULEID_KEY);

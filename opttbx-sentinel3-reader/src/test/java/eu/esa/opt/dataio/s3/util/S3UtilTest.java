@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static eu.esa.opt.dataio.s3.slstr.SlstrLevel1ProductFactory.SLSTR_L1B_PIXEL_GEOCODING_INVERSE;
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static junit.framework.TestCase.assertEquals;
 import static org.esa.snap.core.dataio.geocoding.ComponentGeoCoding.SYSPROP_SNAP_PIXEL_CODING_FRACTION_ACCURACY;
 import static org.junit.Assert.*;
@@ -193,10 +194,10 @@ public class S3UtilTest {
     public void testGetScalingFactor() {
         final Variable variable = mock(Variable.class);
 
-        final Attribute cf_scale_factor = new Attribute(CFConstants.SCALE_FACTOR, 1.25f);
-        when(variable.findAttribute(CFConstants.SCALE_FACTOR)).thenReturn(cf_scale_factor);
+        final Attribute cf_scale_factor = new Attribute(SCALE_FACTOR, 1.25f);
+        when(variable.findAttribute(SCALE_FACTOR)).thenReturn(cf_scale_factor);
         assertEquals(1.25f, S3Util.getScalingFactor(variable), 1e-8);
-        when(variable.findAttribute(CFConstants.SCALE_FACTOR)).thenReturn(null);
+        when(variable.findAttribute(SCALE_FACTOR)).thenReturn(null);
 
         final Attribute slope_scale_factor = new Attribute(Constants.SLOPE_ATT_NAME, 1.125f);
         when(variable.findAttribute(Constants.SLOPE_ATT_NAME)).thenReturn(slope_scale_factor);
@@ -217,10 +218,10 @@ public class S3UtilTest {
     public void testGetAddOffset() {
         final Variable variable = mock(Variable.class);
 
-        final Attribute cf_offset = new Attribute(CFConstants.ADD_OFFSET, 0.11f);
-        when(variable.findAttribute(CFConstants.ADD_OFFSET)).thenReturn(cf_offset);
+        final Attribute cf_offset = new Attribute(ADD_OFFSET, 0.11f);
+        when(variable.findAttribute(ADD_OFFSET)).thenReturn(cf_offset);
         assertEquals(0.11f, S3Util.getAddOffset(variable), 1e-8);
-        when(variable.findAttribute(CFConstants.ADD_OFFSET)).thenReturn(null);
+        when(variable.findAttribute(ADD_OFFSET)).thenReturn(null);
 
         final Attribute intercept = new Attribute(Constants.INTERCEPT_ATT_NAME, 0.22f);
         when(variable.findAttribute(Constants.INTERCEPT_ATT_NAME)).thenReturn(intercept);
@@ -248,8 +249,8 @@ public class S3UtilTest {
     public void testAddFillValue_int() {
         final Band band = new Band("nasenmann", ProductData.TYPE_INT32, 3, 3);
         final Variable variable = mock(Variable.class);
-        final Attribute fillValueAttribute = new Attribute(CFConstants.FILL_VALUE, 16);
-        when(variable.findAttribute(CFConstants.FILL_VALUE)).thenReturn(fillValueAttribute);
+        final Attribute fillValueAttribute = new Attribute(FILL_VALUE, 16);
+        when(variable.findAttribute(FILL_VALUE)).thenReturn(fillValueAttribute);
 
         S3Util.addFillValue(band, variable);
         assertTrue(band.isNoDataValueSet());
@@ -262,8 +263,8 @@ public class S3UtilTest {
     public void testAddFillValue_float() {
         final Band band = new Band("nasenmann", ProductData.TYPE_FLOAT32, 3, 3);
         final Variable variable = mock(Variable.class);
-        final Attribute fillValueAttribute = new Attribute(CFConstants.FILL_VALUE, -99.98f);
-        when(variable.findAttribute(CFConstants.FILL_VALUE)).thenReturn(fillValueAttribute);
+        final Attribute fillValueAttribute = new Attribute(FILL_VALUE, -99.98f);
+        when(variable.findAttribute(FILL_VALUE)).thenReturn(fillValueAttribute);
 
         S3Util.addFillValue(band, variable);
         assertTrue(band.isNoDataValueSet());
@@ -277,8 +278,8 @@ public class S3UtilTest {
         final Band band = new Band("nasenmann", ProductData.TYPE_INT16, 3, 3);
         band.setSampleCoding(new FlagCoding("testFlags"));
         final Variable variable = mock(Variable.class);
-        final Attribute fillValueAttribute = new Attribute(CFConstants.FILL_VALUE, 1);
-        when(variable.findAttribute(CFConstants.FILL_VALUE)).thenReturn(fillValueAttribute);
+        final Attribute fillValueAttribute = new Attribute(FILL_VALUE, 1);
+        when(variable.findAttribute(FILL_VALUE)).thenReturn(fillValueAttribute);
 
         S3Util.addFillValue(band, variable);
         assertTrue(band.isNoDataValueSet());
@@ -315,7 +316,7 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesByte() {
         final String[] uniqueNames = new String[] {"nasenmann", "heffalump"};
-        final Attribute byteAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{28, 33}));
+        final Attribute byteAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{28, 33}));
         SampleCoding sampleCoding = new SampleCoding("byteTest");
 
         S3Util.addSamplesByte(sampleCoding, uniqueNames, byteAttribute);
@@ -330,8 +331,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesByte_withMasks() {
         final String[] uniqueNames = new String[] {"nasenmann", "heffalump"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{1, 2}));
-        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{1, 2}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{1, 2}));
+        final Attribute masksAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{1, 2}));
         SampleCoding sampleCoding = new SampleCoding("byteTest");
 
         S3Util.addSamplesByte(sampleCoding, uniqueNames, masksAttribute, valuesAttribute);
@@ -346,8 +347,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesByte_withMasks_differentValues() {
         final String[] uniqueNames = new String[] {"nasenmann", "heffalump"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{3, 4}));
-        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{5, 6}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{3, 4}));
+        final Attribute masksAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.BYTE, new int[]{2}, new byte[]{5, 6}));
         SampleCoding sampleCoding = new SampleCoding("byteTest");
 
         S3Util.addSamplesByte(sampleCoding, uniqueNames, masksAttribute, valuesAttribute);
@@ -362,7 +363,7 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesShort() {
         final String[] uniqueNames = new String[] {"Alice", "Bertie?", "Charly"};
-        final Attribute shortAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{106, 108, 111}));
+        final Attribute shortAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{106, 108, 111}));
         SampleCoding sampleCoding = new SampleCoding("shortTest");
 
         S3Util.addSamplesShort(sampleCoding, uniqueNames, shortAttribute);
@@ -379,8 +380,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesShort_withMasks() {
         final String[] uniqueNames = new String[] {"Alice", "Bertie?", "Charly"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{7, 8, 9}));
-        final Attribute maskAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.SHORT, new int[]{3}, new short[]{7, 8, 9}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{7, 8, 9}));
+        final Attribute maskAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.SHORT, new int[]{3}, new short[]{7, 8, 9}));
         SampleCoding sampleCoding = new SampleCoding("shortTest");
 
         S3Util.addSamplesShort(sampleCoding, uniqueNames, maskAttribute, valuesAttribute);
@@ -397,8 +398,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesShort_withMasks_differentValues() {
         final String[] uniqueNames = new String[] {"Alice", "Bertie?", "Charly"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{7, 8, 9}));
-        final Attribute maskAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.SHORT, new int[]{3}, new short[]{10, 11, 12}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.SHORT, new int[]{3}, new short[]{7, 8, 9}));
+        final Attribute maskAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.SHORT, new int[]{3}, new short[]{10, 11, 12}));
         SampleCoding sampleCoding = new SampleCoding("shortTest");
 
         S3Util.addSamplesShort(sampleCoding, uniqueNames, maskAttribute, valuesAttribute);
@@ -415,7 +416,7 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesInt() {
         final String[] uniqueNames = new String[] {"DonaldDuck", "Dorette::"};
-        final Attribute intAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{-23, -44}));
+        final Attribute intAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{-23, -44}));
         SampleCoding sampleCoding = new SampleCoding("intTest");
 
         S3Util.addSamplesInt(sampleCoding, uniqueNames, intAttribute);
@@ -430,8 +431,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesInt_withMasks() {
         final String[] uniqueNames = new String[] {"DonaldDuck", "Dorette::"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{13, 14}));
-        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{13, 14}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{13, 14}));
+        final Attribute masksAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{13, 14}));
         SampleCoding sampleCoding = new SampleCoding("intTest");
 
         S3Util.addSamplesInt(sampleCoding, uniqueNames, masksAttribute, valuesAttribute);
@@ -446,8 +447,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesInt_withMasks_differentValues() {
         final String[] uniqueNames = new String[] {"DonaldDuck", "Dorette::"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{15, 16}));
-        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{17, 18}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{15, 16}));
+        final Attribute masksAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{17, 18}));
         SampleCoding sampleCoding = new SampleCoding("intTest");
 
         S3Util.addSamplesInt(sampleCoding, uniqueNames, masksAttribute, valuesAttribute);
@@ -462,7 +463,7 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesLong_msb() {
         final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
-        final Attribute longAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute longAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
         SampleCoding sampleCoding = new SampleCoding("longTest");
 
         S3Util.addSamplesLong(sampleCoding, uniqueNames, longAttribute, true);
@@ -475,8 +476,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesLong_msb_withMasks() {
         final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
-        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute masksAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
         SampleCoding sampleCoding = new SampleCoding("longTest");
 
         S3Util.addSamplesLong(sampleCoding, uniqueNames, masksAttribute, valuesAttribute, true);
@@ -489,8 +490,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesLong_msb_withMasks_differentValues() {
         final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
-        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{223456789012345L, 33456789}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute masksAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{223456789012345L, 33456789}));
         SampleCoding sampleCoding = new SampleCoding("longTest");
 
         S3Util.addSamplesLong(sampleCoding, uniqueNames, masksAttribute, valuesAttribute, true);
@@ -503,7 +504,7 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesLong_lsb() {
         final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
-        final Attribute longAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 234567890123456L}));
+        final Attribute longAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 234567890123456L}));
         SampleCoding sampleCoding = new SampleCoding("longTest");
 
         S3Util.addSamplesLong(sampleCoding, uniqueNames, longAttribute, false);
@@ -518,8 +519,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesLong_lsb_withMasks() {
         final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
-        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute masksAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
         SampleCoding sampleCoding = new SampleCoding("longTest");
 
         S3Util.addSamplesLong(sampleCoding, uniqueNames, masksAttribute, valuesAttribute, false);
@@ -532,8 +533,8 @@ public class S3UtilTest {
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamplesLong_lsb_withMasks_differentValues() {
         final String[] uniqueNames = new String[] {"Loop", "LongJohnSilver"};
-        final Attribute valuesAttribute = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
-        final Attribute masksAttribute = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{223456789012345L, 33456789}));
+        final Attribute valuesAttribute = new Attribute(FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{123456789012345L, 23456789}));
+        final Attribute masksAttribute = new Attribute(FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{223456789012345L, 33456789}));
         SampleCoding sampleCoding = new SampleCoding("longTest");
 
         S3Util.addSamplesLong(sampleCoding, uniqueNames, masksAttribute, valuesAttribute, false);
@@ -545,8 +546,8 @@ public class S3UtilTest {
     @Test    
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_byte() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Lars", "Luisa"}));
-        final Attribute flagValues_byte = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.UBYTE, new int[]{2}, new byte[]{18, 19}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Lars", "Luisa"}));
+        final Attribute flagValues_byte = new Attribute(FLAG_VALUES, Array.factory(DataType.UBYTE, new int[]{2}, new byte[]{18, 19}));
         SampleCoding sampleCoding = new SampleCoding("byteTest");
 
         S3Util.addSamples(sampleCoding, flagMeanings, flagValues_byte, false);
@@ -560,8 +561,8 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_short() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Mara", "Michael"}));
-        final Attribute flagValues_short = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.USHORT, new int[]{2}, new short[]{20, 21}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Mara", "Michael"}));
+        final Attribute flagValues_short = new Attribute(FLAG_VALUES, Array.factory(DataType.USHORT, new int[]{2}, new short[]{20, 21}));
         SampleCoding sampleCoding = new SampleCoding("shortTest");
 
         S3Util.addSamples(sampleCoding, flagMeanings, flagValues_short, false);
@@ -575,8 +576,8 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_int() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Norbert", "Nadine"}));
-        final Attribute flagValues_int = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.UINT, new int[]{2}, new int[]{32768, 32769}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Norbert", "Nadine"}));
+        final Attribute flagValues_int = new Attribute(FLAG_VALUES, Array.factory(DataType.UINT, new int[]{2}, new int[]{32768, 32769}));
         SampleCoding sampleCoding = new SampleCoding("intTest");
 
         S3Util.addSamples(sampleCoding, flagMeanings, flagValues_int, false);
@@ -590,8 +591,8 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_long() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Oppa", "Omma"}));
-        final Attribute flagValues_int = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{24, 25}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Oppa", "Omma"}));
+        final Attribute flagValues_int = new Attribute(FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{24, 25}));
         SampleCoding sampleCoding = new SampleCoding("longTest");
 
         S3Util.addSamples(sampleCoding, flagMeanings, flagValues_int, false);
@@ -605,8 +606,8 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_invalidDataType() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"inv", "alid"}));
-        final Attribute flagValues_int = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.FLOAT, new int[]{2}, new float[]{25, 26}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"inv", "alid"}));
+        final Attribute flagValues_int = new Attribute(FLAG_VALUES, Array.factory(DataType.FLOAT, new int[]{2}, new float[]{25, 26}));
         SampleCoding sampleCoding = new SampleCoding("invalidTest");
 
         try {
@@ -619,9 +620,9 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_byte_withMasks() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Lars", "Luisa"}));
-        final Attribute flagMasks  = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.UBYTE, new int[]{2}, new byte[]{18, 19}));
-        final Attribute flagValues_byte = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.UBYTE, new int[]{2}, new byte[]{18, 19}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Lars", "Luisa"}));
+        final Attribute flagMasks  = new Attribute(FLAG_MASKS, Array.factory(DataType.UBYTE, new int[]{2}, new byte[]{18, 19}));
+        final Attribute flagValues_byte = new Attribute(FLAG_VALUES, Array.factory(DataType.UBYTE, new int[]{2}, new byte[]{18, 19}));
         SampleCoding sampleCoding = new SampleCoding("byteTest");
 
         S3Util.addSamples(sampleCoding, flagMeanings, flagValues_byte, flagMasks, false);
@@ -635,9 +636,9 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_short_withMasks() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Mara", "Michael"}));
-        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.USHORT, new int[]{2}, new short[]{20, 21}));
-        final Attribute flagValues_short = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.USHORT, new int[]{2}, new short[]{22, 23}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Mara", "Michael"}));
+        final Attribute flagMasks = new Attribute(FLAG_MASKS, Array.factory(DataType.USHORT, new int[]{2}, new short[]{20, 21}));
+        final Attribute flagValues_short = new Attribute(FLAG_VALUES, Array.factory(DataType.USHORT, new int[]{2}, new short[]{22, 23}));
         SampleCoding sampleCoding = new SampleCoding("shortTest");
 
         S3Util.addSamples(sampleCoding, flagMeanings, flagValues_short, flagMasks,false);
@@ -651,9 +652,9 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_int_withMasks() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Norbert", "Nadine"}));
-        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.UINT, new int[]{2}, new int[]{32770, 32771}));
-        final Attribute flagValues_int = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.UINT, new int[]{2}, new int[]{32768, 32769}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Norbert", "Nadine"}));
+        final Attribute flagMasks = new Attribute(FLAG_MASKS, Array.factory(DataType.UINT, new int[]{2}, new int[]{32770, 32771}));
+        final Attribute flagValues_int = new Attribute(FLAG_VALUES, Array.factory(DataType.UINT, new int[]{2}, new int[]{32768, 32769}));
         SampleCoding sampleCoding = new SampleCoding("intTest");
 
         S3Util.addSamples(sampleCoding, flagMeanings, flagValues_int, flagMasks,false);
@@ -667,9 +668,9 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_long_withMasks() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Oppa", "Omma"}));
-        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{24, 25}));
-        final Attribute flagValues_long = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{24, 25}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"Oppa", "Omma"}));
+        final Attribute flagMasks = new Attribute(FLAG_MASKS, Array.factory(DataType.ULONG, new int[]{2}, new long[]{24, 25}));
+        final Attribute flagValues_long = new Attribute(FLAG_VALUES, Array.factory(DataType.ULONG, new int[]{2}, new long[]{24, 25}));
         SampleCoding sampleCoding = new SampleCoding("longTest");
 
         S3Util.addSamples(sampleCoding, flagMeanings, flagValues_long, flagMasks,false);
@@ -683,9 +684,9 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testAddSamples_invalidDataType_withMasks() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"inv", "alid"}));
-        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.FLOAT, new int[]{2}, new float[]{25, 26}));
-        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.FLOAT, new int[]{2}, new float[]{25, 26}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"inv", "alid"}));
+        final Attribute flagMasks = new Attribute(FLAG_MASKS, Array.factory(DataType.FLOAT, new int[]{2}, new float[]{25, 26}));
+        final Attribute flagValues = new Attribute(FLAG_VALUES, Array.factory(DataType.FLOAT, new int[]{2}, new float[]{25, 26}));
         SampleCoding sampleCoding = new SampleCoding("invalidTest");
 
         try {
@@ -698,8 +699,8 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testCreateIndexCoding() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"for", "index"}));
-        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{24, 25}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"for", "index"}));
+        final Attribute flagValues = new Attribute(FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{24, 25}));
         final IndexCoding indexCoding = S3Util.createIndexCoding("theName", "theDescription", flagMeanings, flagValues, true);
 
         assertEquals("theName", indexCoding.getName());
@@ -710,8 +711,8 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testCreateFlagCoding() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
-        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{26, 27}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagValues = new Attribute(FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{26, 27}));
         final FlagCoding flagCoding = S3Util.createFlagCoding("theName", "theDescription", flagMeanings, flagValues, true);
 
         assertEquals("theName", flagCoding.getName());
@@ -722,9 +723,9 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-1696,SNAP-3711")
     public void testCreateFlagCoding_withMasks() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
-        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{27, 28}));
-        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{26, 27}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagMasks = new Attribute(FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{27, 28}));
+        final Attribute flagValues = new Attribute(FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{26, 27}));
         final FlagCoding flagCoding = S3Util.createFlagCoding("theName", "theDescription", flagMeanings, flagValues, flagMasks, true);
 
         assertEquals("theName", flagCoding.getName());
@@ -735,14 +736,14 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-3978")
     public void testAddSampleCodings_values_and_masks() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
-        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{27, 28}));
-        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{26, 27}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagMasks = new Attribute(FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{27, 28}));
+        final Attribute flagValues = new Attribute(FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{26, 27}));
 
         final Variable variable = mock(Variable.class);
-        when(variable.findAttribute(CFConstants.FLAG_MEANINGS)).thenReturn(flagMeanings);
-        when(variable.findAttribute(CFConstants.FLAG_MASKS)).thenReturn(flagMasks);
-        when(variable.findAttribute(CFConstants.FLAG_VALUES)).thenReturn(flagValues);
+        when(variable.findAttribute(FLAG_MEANINGS)).thenReturn(flagMeanings);
+        when(variable.findAttribute(FLAG_MASKS)).thenReturn(flagMasks);
+        when(variable.findAttribute(FLAG_VALUES)).thenReturn(flagValues);
 
         final Product product = new Product("test", "test_type", 3, 4);
         final Band testBand = new Band("test_band", ProductData.TYPE_INT16, 3, 4);
@@ -762,13 +763,13 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-3978")
     public void testAddSampleCodings_values() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
-        final Attribute flagValues = new Attribute(CFConstants.FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{31, 32}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagValues = new Attribute(FLAG_VALUES, Array.factory(DataType.INT, new int[]{2}, new int[]{31, 32}));
 
         final Variable variable = mock(Variable.class);
-        when(variable.findAttribute(CFConstants.FLAG_MEANINGS)).thenReturn(flagMeanings);
-        when(variable.findAttribute(CFConstants.FLAG_MASKS)).thenReturn(null);
-        when(variable.findAttribute(CFConstants.FLAG_VALUES)).thenReturn(flagValues);
+        when(variable.findAttribute(FLAG_MEANINGS)).thenReturn(flagMeanings);
+        when(variable.findAttribute(FLAG_MASKS)).thenReturn(null);
+        when(variable.findAttribute(FLAG_VALUES)).thenReturn(flagValues);
 
         final Product product = new Product("test", "test_type", 3, 4);
         final Band testBand = new Band("test_band", ProductData.TYPE_INT16, 3, 4);
@@ -788,13 +789,13 @@ public class S3UtilTest {
     @Test
     @STTM("SNAP-3978")
     public void masks_and_meanings() {
-        final Attribute flagMeanings  = new Attribute(CFConstants.FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
-        final Attribute flagMasks = new Attribute(CFConstants.FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{33, 34}));
+        final Attribute flagMeanings  = new Attribute(FLAG_MEANINGS, Array.factory(DataType.STRING, new int[]{2}, new String[]{"flag", "coding"}));
+        final Attribute flagMasks = new Attribute(FLAG_MASKS, Array.factory(DataType.INT, new int[]{2}, new int[]{33, 34}));
 
         final Variable variable = mock(Variable.class);
-        when(variable.findAttribute(CFConstants.FLAG_MEANINGS)).thenReturn(flagMeanings);
-        when(variable.findAttribute(CFConstants.FLAG_MASKS)).thenReturn(flagMasks);
-        when(variable.findAttribute(CFConstants.FLAG_VALUES)).thenReturn(null);
+        when(variable.findAttribute(FLAG_MEANINGS)).thenReturn(flagMeanings);
+        when(variable.findAttribute(FLAG_MASKS)).thenReturn(flagMasks);
+        when(variable.findAttribute(FLAG_VALUES)).thenReturn(null);
 
         final Product product = new Product("test", "test_type", 3, 4);
         final Band testBand = new Band("test_band", ProductData.TYPE_INT16, 3, 4);

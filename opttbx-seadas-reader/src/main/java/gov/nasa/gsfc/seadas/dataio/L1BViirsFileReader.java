@@ -109,7 +109,7 @@ public class L1BViirsFileReader extends SeadasFileReader {
 //
 //    private float getScaleFactor(Variable variable) {
 //        float scale_factor = 1.f;
-//        final Attribute scale_factor_attribute = findAttribute("scale_factor", variable.getAttributes());
+//        final Attribute scale_factor_attribute = findAttribute(SCALE_FACTOR, variable.getAttributes());
 //        if (scale_factor_attribute != null) {
 //            scale_factor = scale_factor_attribute.getNumericValue().floatValue();
 //        }

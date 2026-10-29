@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.UNITS;
+
 /**
  * Created by IntelliJ IDEA.
  * User: seadas
@@ -168,7 +170,7 @@ public class BrowseProductReader extends SeadasFileReader {
                         final List<Attribute> list = variable.getAttributes();
                         for (Attribute hdfAttribute : list) {
                             final String attribName = hdfAttribute.getShortName();
-                            if ("units".equals(attribName)) {
+                            if (UNITS.equals(attribName)) {
                                 band.setUnit(hdfAttribute.getStringValue());
                             } else if ("long_name".equals(attribName)) {
                                 band.setDescription(hdfAttribute.getStringValue());

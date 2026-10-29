@@ -52,7 +52,6 @@ public class ModisConstants {
 
     public static final String BAND_NAMES_KEY = "band_names";
     public static final String VALID_RANGE_KEY = "valid_range";
-    public static final String FILL_VALUE_KEY = "_FillValue";
 
     public static final String HDF_EOS_VERSION_KEY = "HDFEOSVersion";
 
