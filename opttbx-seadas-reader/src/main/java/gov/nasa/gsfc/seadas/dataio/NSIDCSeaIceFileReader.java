@@ -61,7 +61,7 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
         String productName = productReader.getInputFile().getName();
         numPixels = getDimension("x");
         numScans = getDimension("y");
-        title = getStringAttribute("title");
+        title = getStringAttribute(TITLE);
 
         SeadasProductReader.ProductType productType = productReader.getProductType();
 
@@ -195,7 +195,7 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
                             final String attribName = attribute.getShortName();
                             if (UNITS.equals(attribName)) {
                                 band.setUnit(attribute.getStringValue());
-                            } else if ("long_name".equals(attribName)) {
+                            } else if (LONG_NAME.equals(attribName)) {
                                 band.setDescription(attribute.getStringValue());
                             } else if ("slope".equals(attribName)) {
                                 band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
@@ -206,19 +206,19 @@ public class NSIDCSeaIceFileReader extends SeadasFileReader {
                             } else if (ADD_OFFSET.equals(attribName)) {
                                 band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
                             } else if (attribName.startsWith("valid_")) {
-                                if ("valid_min".equals(attribName)) {
+                                if (VALID_MIN.equals(attribName)) {
                                     if (attribute.getDataType().isUnsigned()) {
                                         validMinMax[0] = getUShortAttribute(attribute);
                                     } else {
                                         validMinMax[0] = attribute.getNumericValue(0).doubleValue();
                                     }
-                                } else if ("valid_max".equals(attribName)) {
+                                } else if (VALID_MAX.equals(attribName)) {
                                     if (attribute.getDataType().isUnsigned()) {
                                         validMinMax[1] = getUShortAttribute(attribute);
                                     } else {
                                         validMinMax[1] = attribute.getNumericValue(0).doubleValue();
                                     }
-                                } else if ("valid_range".equals(attribName)) {
+                                } else if (VALID_RANGE.equals(attribName)) {
                                     validMinMax[0] = attribute.getNumericValue(0).doubleValue();
                                     validMinMax[1] = attribute.getNumericValue(1).doubleValue();
                                 }

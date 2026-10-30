@@ -26,7 +26,7 @@ public class L1BPaceOciFileReaderTest {
     public void testAddAttributes_slope_intercept() {
         final Variable variable = mock(Variable.class);
         when(variable.findAttribute(UNITS)).thenReturn(new Attribute(UNITS, "m^2/kg"));
-        when(variable.findAttribute("long_name")).thenReturn(new Attribute("long_name", "Maria"));
+        when(variable.findAttribute(LONG_NAME)).thenReturn(new Attribute(LONG_NAME, "Maria"));
         when(variable.findAttribute("slope")).thenReturn(new Attribute("slope", 18.65));
         when(variable.findAttribute("intercept")).thenReturn(new Attribute("intercept", -0.887));
         when(variable.findAttribute("bad_value_scaled")).thenReturn(new Attribute("bad_value_scaled", 88.108));
@@ -47,7 +47,7 @@ public class L1BPaceOciFileReaderTest {
     public void testAddAttributes_slope_intercept_applyScalingPath() {
         final Variable variable = mock(Variable.class);
         when(variable.findAttribute(UNITS)).thenReturn(new Attribute(UNITS, "m^2/kg"));
-        when(variable.findAttribute("long_name")).thenReturn(new Attribute("long_name", "Maria"));
+        when(variable.findAttribute(LONG_NAME)).thenReturn(new Attribute(LONG_NAME, "Maria"));
         when(variable.findAttribute("slope")).thenReturn(new Attribute("slope", 18.65));
         when(variable.findAttribute("intercept")).thenReturn(new Attribute("intercept", -0.887));
         when(variable.findAttribute("bad_value_scaled")).thenReturn(new Attribute("bad_value_scaled", 88.108));

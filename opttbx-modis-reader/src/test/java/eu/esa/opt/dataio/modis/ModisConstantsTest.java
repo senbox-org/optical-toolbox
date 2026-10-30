@@ -17,6 +17,8 @@ package eu.esa.opt.dataio.modis;
 
 import org.junit.Test;
 
+import static eu.esa.snap.core.dataio.CfConstants.LONG_NAME;
+import static eu.esa.snap.core.dataio.CfConstants.VALID_RANGE;
 import static org.junit.Assert.assertEquals;
 
 public class ModisConstantsTest {
@@ -104,7 +106,7 @@ public class ModisConstantsTest {
         assertEquals("DimList", ModisConstants.DIMENSION_LIST_KEY);
         assertEquals("DataFieldName", ModisConstants.DATA_FIELD_NAME_KEY);
         assertEquals("band_names", ModisConstants.BAND_NAMES_KEY);
-        assertEquals("valid_range", ModisConstants.VALID_RANGE_KEY);
+        assertEquals(VALID_RANGE, ModisConstants.VALID_RANGE_KEY);
 
         assertEquals("GLOBAL_METADATA", ModisConstants.GLOBAL_META_NAME);
         assertEquals("LOCALGRANULEID", ModisConstants.LOCAL_GRANULEID_KEY);
@@ -137,7 +139,7 @@ public class ModisConstantsTest {
     public void testImappConstants() {
         assertEquals("DAYNIGHTFLAG", ModisConstants.DAY_NIGHT_FLAG_KEY);
         assertEquals("Day", ModisConstants.DAY_NIGHT_FLAG_DAY_VALUE);
-        assertEquals("long_name", ModisConstants.BAND_NAME_KEY);
+        assertEquals(LONG_NAME, ModisConstants.BAND_NAME_KEY);
     }
 
     @Test

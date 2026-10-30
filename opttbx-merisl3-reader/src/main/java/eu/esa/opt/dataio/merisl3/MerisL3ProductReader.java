@@ -389,7 +389,7 @@ public class MerisL3ProductReader extends AbstractProductReader {
         Number numericValue;
         String stringValue;
 
-        stringValue = getAttributeStringValue(variable, "long_name");
+        stringValue = getAttributeStringValue(variable, LONG_NAME);
         final String description = stringValue;
 
         numericValue = getAttributeNumericValue(variable, FILL_VALUE);

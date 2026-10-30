@@ -66,9 +66,9 @@ public class NcFileStitcherLongTest {
             assertEquals(2, chunkLengths.getShape()[0]);
             assertEquals(600, chunkLengths.getInt(0));
             assertEquals(450, chunkLengths.getInt(1));
-            assertEquals("toa_brightness_temperature", varF1_BT.findAttribute("standard_name").getStringValue());
+            assertEquals("toa_brightness_temperature", varF1_BT.findAttribute(STANDARD_NAME).getStringValue());
             assertEquals("Gridded pixel brightness temperature for channel F1 (1km TIR grid, oblique view)",
-                    varF1_BT.findAttribute("long_name").getStringValue());
+                    varF1_BT.findAttribute(LONG_NAME).getStringValue());
             assertEquals("K", varF1_BT.findAttribute(UNITS).getStringValue());
             assertEquals((short) -32768, varF1_BT.findAttribute(FILL_VALUE).getNumericValue());
             assertEquals(0.01, varF1_BT.findAttribute(SCALE_FACTOR).getNumericValue());
@@ -87,7 +87,7 @@ public class NcFileStitcherLongTest {
             assertEquals(2, chunkLengths.getShape()[0]);
             assertEquals(600, chunkLengths.getInt(0));
             assertEquals(112, chunkLengths.getInt(1));
-            assertEquals("toa_brightness_temperature_status_flag", varF1_exceptions.findAttribute("standard_name").getStringValue());
+            assertEquals("toa_brightness_temperature_status_flag", varF1_exceptions.findAttribute(STANDARD_NAME).getStringValue());
             assertTrue(varF1_exceptions.findAttribute(FLAG_MASKS).isArray());
             final Array F1_exception_orphan_io_values = varF1_exceptions.findAttribute(FLAG_MASKS).getValues();
             assertEquals(8, F1_exception_orphan_io_values.getSize());
@@ -162,8 +162,8 @@ public class NcFileStitcherLongTest {
             assertEquals("snow_depth_tx", varSnow_depth.getFullName());
             assertEquals(DataType.FLOAT, varSnow_depth.getDataType());
             assertEquals("1 600 130 ", varSnow_depth.findAttribute("_ChunkSize").getValues().toString());
-            assertEquals("Snow liquid water equivalent depth", varSnow_depth.findAttribute("long_name").getStringValue());
-            assertEquals("lwe_thickness_of_surface_snow_amount", varSnow_depth.findAttribute("standard_name").getStringValue());
+            assertEquals("Snow liquid water equivalent depth", varSnow_depth.findAttribute(LONG_NAME).getStringValue());
+            assertEquals("lwe_thickness_of_surface_snow_amount", varSnow_depth.findAttribute(STANDARD_NAME).getStringValue());
             assertEquals("metre", varSnow_depth.findAttribute(UNITS).getStringValue());
             assertEquals("ECMWF_F", varSnow_depth.findAttribute("model").getStringValue());
             assertEquals("141", varSnow_depth.findAttribute("parameter").getStringValue());

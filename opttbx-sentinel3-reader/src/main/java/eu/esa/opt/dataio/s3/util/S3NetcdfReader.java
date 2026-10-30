@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import static eu.esa.snap.core.dataio.CfConstants.CONVENTIONS;
 import static eu.esa.snap.core.dataio.CfConstants.FLAG_MEANINGS;
 
 /**
@@ -627,7 +628,7 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
     private String readProductType() {
         Attribute typeAttribute = netcdfFile.findGlobalAttribute(product_type);
         if (typeAttribute == null) {
-            typeAttribute = netcdfFile.findGlobalAttribute("Conventions");
+            typeAttribute = netcdfFile.findGlobalAttribute(CONVENTIONS);
         }
         String type = null;
         if (typeAttribute != null) {

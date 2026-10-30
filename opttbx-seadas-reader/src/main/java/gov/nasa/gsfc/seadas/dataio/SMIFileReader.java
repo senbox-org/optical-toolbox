@@ -169,7 +169,7 @@ public class SMIFileReader extends SeadasFileReader {
                         final String attribName = hdfAttribute.getShortName();
                         if (UNITS.equals(attribName)) {
                             band.setUnit(hdfAttribute.getStringValue());
-                        } else if ("long_name".equalsIgnoreCase(attribName)) {
+                        } else if (LONG_NAME.equalsIgnoreCase(attribName)) {
                             band.setDescription(hdfAttribute.getStringValue());
                         } else if ("slope".equalsIgnoreCase(attribName)) {
                             band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());
@@ -180,11 +180,11 @@ public class SMIFileReader extends SeadasFileReader {
                         } else if ("add_offset".equals(attribName)) {
                             band.setScalingOffset(hdfAttribute.getNumericValue(0).doubleValue());
                         } else if (attribName.startsWith("valid_")){
-                            if ("valid_min".equals(attribName)){
+                            if (VALID_MIN.equals(attribName)){
                                 validMinMax[0] = hdfAttribute.getNumericValue(0).doubleValue();
-                            } else if ("valid_max".equals(attribName)){
+                            } else if (VALID_MAX.equals(attribName)){
                                 validMinMax[1] = hdfAttribute.getNumericValue(0).doubleValue();
-                            } else if ("valid_range".equals(attribName)){
+                            } else if (VALID_RANGE.equals(attribName)){
                                 validMinMax[0] = hdfAttribute.getNumericValue(0).doubleValue();
                                 validMinMax[1] = hdfAttribute.getNumericValue(1).doubleValue();
                             }

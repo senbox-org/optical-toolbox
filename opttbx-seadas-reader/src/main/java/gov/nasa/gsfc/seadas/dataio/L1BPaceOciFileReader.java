@@ -303,7 +303,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         if (attribute != null) {
             band.setUnit(attribute.getStringValue());
         }
-        attribute = variable.findAttribute("long_name");
+        attribute = variable.findAttribute(LONG_NAME);
         if (attribute != null) {
             band.setDescription(attribute.getStringValue());
         }

@@ -9,6 +9,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Test;
 
+import static eu.esa.snap.core.dataio.CfConstants.LONG_NAME;
 import static eu.esa.snap.core.dataio.CfConstants.UNITS;
 import static org.junit.Assert.*;
 
@@ -63,7 +64,7 @@ public class MetaDataProviderTest {
         final MetadataElement metazeugs = new MetadataElement("metazeugs");
         final MetadataElement proppy = new MetadataElement("proppy");
 
-        proppy.addAttribute(new MetadataAttribute("long_name", ProductData.createInstance("the description"), true));
+        proppy.addAttribute(new MetadataAttribute(LONG_NAME, ProductData.createInstance("the description"), true));
         proppy.addAttribute(new MetadataAttribute(UNITS, ProductData.createInstance("K"), true));
 
         metazeugs.addElement(proppy);

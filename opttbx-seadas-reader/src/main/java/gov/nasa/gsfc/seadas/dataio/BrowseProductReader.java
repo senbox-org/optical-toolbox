@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.LONG_NAME;
 import static eu.esa.snap.core.dataio.CfConstants.UNITS;
 
 /**
@@ -144,7 +145,7 @@ public class BrowseProductReader extends SeadasFileReader {
                     String name = variable.getShortName();
                     boolean isBrs = false;
                     try {
-                        isBrs = variable.findAttribute("long_name").getStringValue().contains("brs_data");
+                        isBrs = variable.findAttribute(LONG_NAME).getStringValue().contains("brs_data");
                     } catch (Exception ignored) { }
                     if (isBrs){
                         try {
@@ -172,7 +173,7 @@ public class BrowseProductReader extends SeadasFileReader {
                             final String attribName = hdfAttribute.getShortName();
                             if (UNITS.equals(attribName)) {
                                 band.setUnit(hdfAttribute.getStringValue());
-                            } else if ("long_name".equals(attribName)) {
+                            } else if (LONG_NAME.equals(attribName)) {
                                 band.setDescription(hdfAttribute.getStringValue());
                             } else if ("slope".equals(attribName)) {
                                 band.setScalingFactor(hdfAttribute.getNumericValue(0).doubleValue());

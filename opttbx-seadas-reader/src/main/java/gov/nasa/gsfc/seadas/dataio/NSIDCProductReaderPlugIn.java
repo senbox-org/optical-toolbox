@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+import static eu.esa.snap.core.dataio.CfConstants.INSTITUTION;
+
 public class NSIDCProductReaderPlugIn implements ProductReaderPlugIn {
 
     // Set to "true" to output debugging information.
@@ -60,7 +62,7 @@ public class NSIDCProductReaderPlugIn implements ProductReaderPlugIn {
         try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
                 final Attribute sensor = ncfile.findGlobalAttribute("sensor");
-                final Attribute institution = ncfile.findGlobalAttribute("institution");
+                final Attribute institution = ncfile.findGlobalAttribute(INSTITUTION);
 
                 if (sensor != null && institution != null) {
                     if (sensor.toString().contains("Special Sensor Microwave Imager/Sounder") &&

@@ -17,6 +17,8 @@ import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
+import static eu.esa.snap.core.dataio.CfConstants.TITLE;
+
 public class L1BViirsFileReader extends SeadasFileReader {
 
     private static final int[] MODIS_WVL = new int[]{645, 859, 469, 555, 1240, 1640, 2130, 412, 443, 488, 531, 547, 667, 678,
@@ -40,7 +42,7 @@ public class L1BViirsFileReader extends SeadasFileReader {
         numPixels = getDimension("number_of_pixels");
         numScans = getDimension("number_of_scans");
         numLines = getDimension("number_of_lines");
-        title = getStringAttribute("title");
+        title = getStringAttribute(TITLE);
         if (title.contains("I-band")) {
             scanMultiplier = 32;
         } 

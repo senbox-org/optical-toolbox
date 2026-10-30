@@ -15,6 +15,9 @@
  */
 package eu.esa.opt.dataio.modis;
 
+import static eu.esa.snap.core.dataio.CfConstants.LONG_NAME;
+import static eu.esa.snap.core.dataio.CfConstants.VALID_RANGE;
+
 public class ModisConstants {
 
     public static final String DEFAULT_FILE_EXTENSION = ".hdf";
@@ -51,7 +54,7 @@ public class ModisConstants {
     public static final String SHORT_NAME_KEY = "SHORTNAME";
 
     public static final String BAND_NAMES_KEY = "band_names";
-    public static final String VALID_RANGE_KEY = "valid_range";
+    public static final String VALID_RANGE_KEY = VALID_RANGE;
 
     public static final String HDF_EOS_VERSION_KEY = "HDFEOSVersion";
 
@@ -188,7 +191,7 @@ public class ModisConstants {
     // IMAPP specific stuff
     public static final String DAY_NIGHT_FLAG_KEY = "DAYNIGHTFLAG";
     public static final String DAY_NIGHT_FLAG_DAY_VALUE = "Day";
-    public static final String BAND_NAME_KEY = "long_name";
+    public static final String BAND_NAME_KEY = LONG_NAME;
     public static final String EOS_TYPE_GRID = "EOS_TYPE_GRID";
     public static final String EOS_TYPE_SWATH = "EOS_TYPE_SWATH";
     public static final String EOS_TYPE_POINT = "EOS_TYPE_POINT";

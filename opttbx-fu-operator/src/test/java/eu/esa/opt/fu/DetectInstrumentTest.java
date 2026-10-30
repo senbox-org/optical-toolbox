@@ -6,6 +6,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Test;
 
+import static eu.esa.snap.core.dataio.CfConstants.TITLE;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -89,7 +90,7 @@ public class DetectInstrumentTest {
         Product product = new Product("dummy", "dummy-modis1km", 2, 2);
         MetadataElement root = product.getMetadataRoot();
         MetadataElement globalAttributes = new MetadataElement("Global_Attributes");
-        globalAttributes.setAttributeString("title", "HMODISA Level-2 Data");
+        globalAttributes.setAttributeString(TITLE, "HMODISA Level-2 Data");
         globalAttributes.setAttributeString("spatialResolution", "1 km");
         root.addElement(globalAttributes);
 
@@ -112,7 +113,7 @@ public class DetectInstrumentTest {
         Product product = new Product("dummy", "dummy-seawifs", 2, 2);
         MetadataElement root = product.getMetadataRoot();
         MetadataElement dsd23 = new MetadataElement("Global_Attributes");
-        dsd23.setAttributeString("Title", "SeaWiFS Level-2 Data");
+        dsd23.setAttributeString(TITLE, "SeaWiFS Level-2 Data");
         root.addElement(dsd23);
 
         assertEquals(Instrument.SEAWIFS, DetectInstrument.getInstrument(product));
@@ -123,7 +124,7 @@ public class DetectInstrumentTest {
         Product product = new Product("dummy", "dummy-czcs", 2, 2);
         MetadataElement root = product.getMetadataRoot();
         MetadataElement dsd23 = new MetadataElement("Global_Attributes");
-        dsd23.setAttributeString("Title", "CZCS Level-2 Data");
+        dsd23.setAttributeString(TITLE, "CZCS Level-2 Data");
         root.addElement(dsd23);
 
         assertEquals(Instrument.CZCS, DetectInstrument.getInstrument(product));

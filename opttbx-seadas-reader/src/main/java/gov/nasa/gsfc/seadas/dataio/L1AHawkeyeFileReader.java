@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.TITLE;
+
 public class L1AHawkeyeFileReader extends SeadasFileReader {
 
     private static final int[] HAWKEYE_WVL = new int[]{412, 447, 488, 510, 556, 670, 752, 867};
@@ -34,7 +36,7 @@ public class L1AHawkeyeFileReader extends SeadasFileReader {
         String productName = productReader.getInputFile().getName();
         numPixels = getDimension("number_of_pixels");
         numScans = getDimension("number_of_scans");
-        title = getStringAttribute("title");
+        title = getStringAttribute(TITLE);
 
         SeadasProductReader.ProductType productType = productReader.getProductType();
 

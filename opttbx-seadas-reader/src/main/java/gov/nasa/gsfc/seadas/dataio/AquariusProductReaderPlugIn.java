@@ -30,6 +30,8 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import static eu.esa.snap.core.dataio.CfConstants.TITLE;
+
 public class AquariusProductReaderPlugIn implements ProductReaderPlugIn {
 
     // Set to "true" to output debugging information.
@@ -109,7 +111,7 @@ public class AquariusProductReaderPlugIn implements ProductReaderPlugIn {
     static @Nullable Attribute getTitleAttribute(NetcdfFile ncfile) {
         Attribute titleAttribute = ncfile.findGlobalAttribute("Title");
         if (titleAttribute == null) {
-            titleAttribute = ncfile.findGlobalAttribute("title");
+            titleAttribute = ncfile.findGlobalAttribute(TITLE);
         }
         return titleAttribute;
     }

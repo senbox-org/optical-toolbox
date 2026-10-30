@@ -8,6 +8,7 @@ import ucar.nc2.NetcdfFile;
 
 import java.io.File;
 
+import static eu.esa.snap.core.dataio.CfConstants.TITLE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -51,18 +52,18 @@ public class AquariusProductReaderPluginTest {
         final Attribute attribute = new Attribute("theTitle", "hiho");
         final NetcdfFile netcdfFile = mock(NetcdfFile.class);
         when(netcdfFile.findGlobalAttribute("Title")).thenReturn(attribute);
-        when(netcdfFile.findGlobalAttribute("title")).thenReturn(null);
+        when(netcdfFile.findGlobalAttribute(TITLE)).thenReturn(null);
 
         Attribute titleAttribute = AquariusProductReaderPlugIn.getTitleAttribute(netcdfFile);
         assertEquals("hiho", titleAttribute.getStringValue());
 
         when(netcdfFile.findGlobalAttribute("Title")).thenReturn(null);
-        when(netcdfFile.findGlobalAttribute("title")).thenReturn(attribute);
+        when(netcdfFile.findGlobalAttribute(TITLE)).thenReturn(attribute);
         titleAttribute = AquariusProductReaderPlugIn.getTitleAttribute(netcdfFile);
         assertEquals("hiho", titleAttribute.getStringValue());
 
         when(netcdfFile.findGlobalAttribute("Title")).thenReturn(null);
-        when(netcdfFile.findGlobalAttribute("title")).thenReturn(null);
+        when(netcdfFile.findGlobalAttribute(TITLE)).thenReturn(null);
         titleAttribute = AquariusProductReaderPlugIn.getTitleAttribute(netcdfFile);
         assertNull(titleAttribute);
     }

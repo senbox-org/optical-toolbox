@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static eu.esa.snap.core.dataio.CfConstants.LONG_NAME;
 import static eu.esa.snap.core.dataio.CfConstants.SCALE_FACTOR;
 
 /**
@@ -310,7 +311,7 @@ public class LandsatLevel2Metadata extends XmlMetadata {
         for (MetadataElement bandElement : bandElements) {
             String name = bandElement.getAttribute("file_name").getData().toString();
             if(filename.equals(name)) {
-                return bandElement.getAttribute("long_name").getData().toString();
+                return bandElement.getAttribute(LONG_NAME).getData().toString();
             }
         }
         return null;
