@@ -58,7 +58,7 @@ class InstrumentDataReader extends S3NetcdfReader {
         for (final Variable variable : variables) {
             final String variableFullName = variable.getFullName();
             if (variableFullName.equals(DETECTOR_INDEX_NAME)) {
-                addVariableAsBand(product, variable, DETECTOR_INDEX_NAME, false);
+                addVariableAsBand(product, variable, DETECTOR_INDEX_NAME);
                 detectorIndexBand = product.getBand(DETECTOR_INDEX_NAME);
                 continue;
             }
@@ -67,7 +67,7 @@ class InstrumentDataReader extends S3NetcdfReader {
                 final int rank = variable.getRank();
                 final boolean isSynthetic = rank == 1;
                 is2dFrameOffset = !isSynthetic; // store that frame offset is a full variable for later use tb 2024-01-11
-                addVariableAsBand(product, variable, variableFullName, isSynthetic);
+                addVariableAsBand(product, variable, variableFullName);
                 continue;
             }
 
@@ -76,10 +76,10 @@ class InstrumentDataReader extends S3NetcdfReader {
             if (bandsDimensionIndex != -1 && detectorsDimensionIndex != -1) {
                 final int numBands = variable.getDimension(bandsDimensionIndex).getLength();
                 for (int i = 1; i <= numBands; i++) {
-                    addVariableAsBand(product, variable, variableFullName + "_band_" + i, true);
+                    addVariableAsBand(product, variable, variableFullName + "_band_" + i);
                 }
             } else if (variable.getDimensions().size() == 1 && detectorsDimensionIndex != -1) {
-                addVariableAsBand(product, variable, variableFullName, true);
+                addVariableAsBand(product, variable, variableFullName);
             } else {
                 addVariableMetadata(variable, product);
             }

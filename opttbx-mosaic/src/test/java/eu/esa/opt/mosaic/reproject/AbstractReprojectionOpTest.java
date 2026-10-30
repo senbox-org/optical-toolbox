@@ -103,11 +103,9 @@ public abstract class AbstractReprojectionOpTest {
         Band databand1 = new Band(FLOAT_BAND_NAME, ProductData.TYPE_FLOAT32, 50,50);
         databand1.setSourceImage(ConstantDescriptor.create((float) 50, (float) 50, new Float[]{ 299.0f}, null));
         databand1.setRasterData(createDataFor(databand1));
-        databand1.setSynthetic(true);
         Band databand2 = new Band(INT_BAND_NAME, ProductData.TYPE_INT16, 28,28);
         databand2.setSourceImage(ConstantDescriptor.create((float) 28, (float) 28, new Float[]{ 199.0f}, null));
         databand2.setRasterData(createDataFor(databand2));
-        databand2.setSynthetic(true);
         referenceProduct.addBand(databand1);
         referenceProduct.addBand(databand2);
     }
@@ -121,14 +119,15 @@ public abstract class AbstractReprojectionOpTest {
         multiSizeSourceProduct.setSceneGeoCoding(new TiePointGeoCoding(latGrid, lonGrid));
         multiSizeSourceProduct.setStartTime(ProductData.UTC.parse("02-May-2017 10:15:10"));
         multiSizeSourceProduct.setEndTime(ProductData.UTC.parse("02-May-2017 10:45:50"));
-        Band databand1 = new Band(FLOAT_BAND_NAME, ProductData.TYPE_FLOAT32, 50,50);
+
+        final Band databand1 = new Band(FLOAT_BAND_NAME, ProductData.TYPE_FLOAT32, 50,50);
         databand1.setSourceImage(ConstantDescriptor.create((float) 50, (float) 50, new Float[]{ 299.0f}, null));
         databand1.setRasterData(createDataFor(databand1));
-        databand1.setSynthetic(true);
-        Band databand2 = new Band(INT_BAND_NAME, ProductData.TYPE_INT16, 25,25);
+
+        final Band databand2 = new Band(INT_BAND_NAME, ProductData.TYPE_INT16, 25,25);
         databand2.setSourceImage(ConstantDescriptor.create((float) 25, (float) 25, new Float[]{ 199.0f}, null));
         databand2.setRasterData(createDataFor(databand2));
-        databand2.setSynthetic(true);
+
         multiSizeSourceProduct.addBand(databand1);
         multiSizeSourceProduct.addBand(databand2);
     }
