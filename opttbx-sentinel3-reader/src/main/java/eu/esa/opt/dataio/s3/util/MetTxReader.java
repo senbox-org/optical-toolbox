@@ -19,7 +19,7 @@ public class MetTxReader extends S3NetcdfReader {
     }
 
     @Override
-    protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
+    protected void addVariableAsBand(Product product, Variable variable, String variableName) {
         String[] suffixesForSeparatingDimensions = getSuffixesForSeparatingDimensions();
         for (String suffixForSeparatingDimension : suffixesForSeparatingDimensions) {
             if (variableName.contains(suffixForSeparatingDimension)) {
@@ -27,7 +27,7 @@ public class MetTxReader extends S3NetcdfReader {
                 break;
             }
         }
-        super.addVariableAsBand(product, variable, variableName, synthetic);
+        super.addVariableAsBand(product, variable, variableName);
     }
 
     @Override

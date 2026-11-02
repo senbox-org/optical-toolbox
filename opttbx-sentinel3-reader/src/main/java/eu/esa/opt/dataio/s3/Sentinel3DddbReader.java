@@ -145,8 +145,6 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     // @todo 2 tb/tb add tests for this 2025-02-04
     public static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, double scaleFactor, double offset, boolean rawData) throws IOException {
         final int[] sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset()};
-        //final int stepY = Math.max(rasterExtract.getStepY() - 1, 1);
-        //final int stepX = Math.max(rasterExtract.getStepX()-1 , 1);
         final int stepY = Math.max(rasterExtract.getStepY(), 1);
         final int stepX = Math.max(rasterExtract.getStepX(), 1);
         final int dimY = (int) Math.ceil(rasterExtract.getHeight() / (float) stepY);
@@ -539,15 +537,15 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
                 final int numBands = specialVariable.getDimension(dimensionIndex).getLength();
                 for (int i = 1; i <= numBands; i++) {
                     final String layerName = getLayerName(variableFullName, i);
-                    addVariableAsBand(product, specialVariable, layerName, true);
+                    addVariableAsBand(product, specialVariable, layerName);
                 }
             } else {
-                addVariableAsBand(product, specialVariable, variableFullName, false);
+                addVariableAsBand(product, specialVariable, variableFullName);
             }
         }
     }
 
-    protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
+    protected void addVariableAsBand(Product product, Variable variable, String variableName) {
         final int type = S3Util.getRasterDataType(variable);
 
         final InstrumentBand band = new InstrumentBand(variableName, type, product.getSceneRasterWidth(), product.getSceneRasterHeight());
@@ -556,7 +554,6 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         setScalefactorAndOffset(band, variable);
         band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
         band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
-        band.setSynthetic(synthetic);
         S3Util.addSampleCodings(product, band, variable, false);
         S3Util.addFillValue(band, variable);
 
