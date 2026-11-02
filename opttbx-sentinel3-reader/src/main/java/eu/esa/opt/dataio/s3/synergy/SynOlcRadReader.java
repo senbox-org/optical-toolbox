@@ -29,7 +29,7 @@ class SynOlcRadReader extends S3NetcdfReader {
     }
 
     @Override
-    protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
+    protected void addVariableAsBand(Product product, Variable variable, String variableName) {
         if (variableName.contains("MISREGIST_SLST") &&
                 (variableName.contains("row_corresp") || variableName.contains("col_corresp"))) {
             final Band band = product.addBand(variableName, ProductData.TYPE_FLOAT32);
@@ -37,11 +37,10 @@ class SynOlcRadReader extends S3NetcdfReader {
             band.setUnit(variable.getUnitsString());
             band.setScalingFactor(S3Util.getScalingFactor(variable));
             band.setScalingOffset(S3Util.getAddOffset(variable));
-            band.setSynthetic(synthetic);
             S3Util.addSampleCodings(product, band, variable, false);
             S3Util.addFillValue(band, variable);
         } else {
-            super.addVariableAsBand(product, variable, variableName, synthetic);
+            super.addVariableAsBand(product, variable, variableName);
         }
     }
 }

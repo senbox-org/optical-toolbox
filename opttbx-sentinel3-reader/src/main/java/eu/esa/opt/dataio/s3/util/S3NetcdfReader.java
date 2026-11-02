@@ -13,20 +13,13 @@ import org.esa.snap.dataio.netcdf.cache.NetcdfCacheDataProvider;
 import org.esa.snap.dataio.netcdf.util.*;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
-import ucar.nc2.Attribute;
-import ucar.nc2.Dimension;
-import ucar.nc2.NetcdfFile;
-import ucar.nc2.Variable;
+import ucar.nc2.*;
 
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static eu.esa.snap.core.dataio.CfConstants.CONVENTIONS;
@@ -352,8 +345,8 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
 
     private void addGlobalMetadata(Product product) {
         final MetadataElement globalAttributesElement = new MetadataElement("Global_Attributes");
-        final List<Attribute> globalAttributes = netcdfFile.getGlobalAttributes();
-        for (final Attribute attribute : globalAttributes) {
+        final AttributeContainer attributes = netcdfFile.getRootGroup().attributes();
+        for (Attribute attribute : attributes) {
             if (attribute.getValues() != null) {
                 final ProductData attributeData = getAttributeData(attribute);
                 final MetadataAttribute metadataAttribute = new MetadataAttribute(attribute.getFullName(), attributeData, true);
@@ -382,14 +375,14 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
                             final Dimension dimension =
                                     variable.getDimension(variable.findDimensionIndex(dimensionName));
                             for (int j = 0; j < dimension.getLength(); j++) {
-                                addVariableAsBand(product, variable, variableName + "_" + suffixes[i] + "_" + (j + 1), false);
+                                addVariableAsBand(product, variable, variableName + "_" + suffixes[i] + "_" + (j + 1));
                             }
                             variableMustStillBeAdded = false;
                             break;
                         }
                     }
                     if (variableMustStillBeAdded) {
-                        addVariableAsBand(product, variable, variableName, false);
+                        addVariableAsBand(product, variable, variableName);
                     }
                 }
             }
@@ -397,7 +390,7 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
         }
     }
 
-    protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
+    protected void addVariableAsBand(Product product, Variable variable, String variableName) {
         int type = S3Util.getRasterDataType(variable);
         //todo consider unsigned long - split into three bands?
         if (type == ProductData.TYPE_INT64 || type == ProductData.TYPE_UINT64) {
@@ -408,7 +401,6 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
             lowerBand.setScalingOffset(S3Util.getAddOffset(variable));
             lowerBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
             lowerBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
-            lowerBand.setSynthetic(synthetic);
             S3Util.addSampleCodings(product, lowerBand, variable, false);
             S3Util.addFillValue(lowerBand, variable);
 
@@ -419,7 +411,6 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
             upperBand.setScalingOffset(S3Util.getAddOffset(variable));
             upperBand.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
             upperBand.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
-            upperBand.setSynthetic(synthetic);
             S3Util.addSampleCodings(product, upperBand, variable, true);
             S3Util.addFillValue(upperBand, variable);
         } else {
@@ -430,7 +421,6 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
             band.setScalingOffset(S3Util.getAddOffset(variable));
             band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
             band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
-            band.setSynthetic(synthetic);
             S3Util.addSampleCodings(product, band, variable, false);
             S3Util.addFillValue(band, variable);
         }
@@ -446,7 +436,7 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
 
     public static MetadataElement extractMetadata(Variable variable) {
         final MetadataElement variableElement = new MetadataElement(variable.getFullName());
-        final List<Attribute> attributes = variable.getAttributes();
+        final AttributeContainer attributes = variable.attributes();
         for (Attribute attribute : attributes) {
             if (attribute.getFullName().equals(FLAG_MEANINGS)) {
                 final String[] flagMeanings = attribute.getStringValue().split(" ");
@@ -502,6 +492,10 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
     public static ProductData getAttributeData(Attribute attribute) {
         int type = getProductDataType(attribute);
         final Array attributeValues = attribute.getValues();
+        if (attributeValues == null) {
+            return null;
+        }
+
         ProductData productData = null;
         switch (type) {
             case ProductData.TYPE_ASCII: {
