@@ -417,6 +417,12 @@
                 <artifactId>commons-text</artifactId>
                 <version>1.13.1</version>
             </dependency>
+            <!-- 33.4.8 (from snap-engine) has CVE-2026-102554 -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>33.7.2-jre</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
