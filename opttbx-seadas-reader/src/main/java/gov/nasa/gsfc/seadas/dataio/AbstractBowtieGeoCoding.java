@@ -239,7 +239,7 @@ public abstract class AbstractBowtieGeoCoding extends AbstractGeoCoding {
 
         int direction = -1;
         if (index == smallestValidIndex) {
-            direction = +1;
+            direction = 1;
         }
         while (true) {
             index += direction;
@@ -254,12 +254,12 @@ public abstract class AbstractBowtieGeoCoding extends AbstractGeoCoding {
                 vIndex = index;
             } else if (direction == -1) {
                 index++;
-                direction = +1;
+                direction = 1;
                 index = getNextCenterLineIndex(index, direction);
                 if (index == biggestValidIndex) {
                     return index;
                 }
-            } else if (direction == +1) {
+            } else if (direction == 1) {
                 return vIndex;
             }
         }

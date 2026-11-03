@@ -32,7 +32,7 @@ public class IkonosMetadataInspector implements MetadataInspector {
             Path zipArchivePath = IkonosProductReader.buildImagesMetadataParentPath(productDirectory, metadataFileName);
 
             java.util.List<BandMetadata> bandMetadataList = IkonosProductReader.readBandMetadata(zipArchivePath);
-            BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[bandMetadataList.size()]));
+            BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[0]));
 
             Metadata metadata = new Metadata();
             metadata.setProductWidth(metadataUtil.getMaxNumColumns());

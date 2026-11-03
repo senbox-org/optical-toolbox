@@ -442,7 +442,7 @@ public class BandMatrix {
                 }
             }
         }
-        return cells.toArray(new BandMatrixCell[cells.size()]);
+        return cells.toArray(new BandMatrixCell[0]);
     }
 
     /**

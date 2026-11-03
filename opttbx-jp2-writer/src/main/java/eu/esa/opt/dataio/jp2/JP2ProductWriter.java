@@ -47,8 +47,8 @@ public class JP2ProductWriter extends AbstractProductWriter {
 
     private File outputFile;
     private GmlFeatureCollection metadata;
-    private AtomicInteger processedCount = new AtomicInteger(0);
-    private Map<Band, RenderedImage> processedBands = new HashMap<>();
+    private final AtomicInteger processedCount = new AtomicInteger(0);
+    private final Map<Band, RenderedImage> processedBands = new HashMap<>();
 
     /**
      * Constructs a <code>ProductWriter</code>. Since no output destination is set, the <code>setOutput</code>
@@ -131,7 +131,7 @@ public class JP2ProductWriter extends AbstractProductWriter {
         JP2ImageWriter imageWriter = new JP2ImageWriter();
         try {
             imageWriter.setOutput(outputFile);
-            imageWriter.setNumberResolution(width <= 2048 && height <= 2048 ? 1 : (int) (Math.log(Math.max(width, height) / 512) / Math.log(2)) + 2);
+            imageWriter.setNumberResolution(width <= 2048 && height <= 2048 ? 1 : (int) (Math.log((double) Math.max(width, height) / 512) / Math.log(2)) + 2);
             if (geoCoding != null) {
                 if (geoCoding instanceof CrsGeoCoding) {
                     try {
@@ -178,15 +178,15 @@ public class JP2ProductWriter extends AbstractProductWriter {
     }
 
     @Override
-    public void flush() throws IOException {
+    public void flush() {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
     }
 
     @Override
-    public void deleteOutput() throws IOException {
+    public void deleteOutput() {
         if (this.outputFile != null && this.outputFile.isFile()) {
             this.outputFile.delete();
         }

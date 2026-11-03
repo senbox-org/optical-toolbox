@@ -43,12 +43,12 @@ import java.util.Map;
  */
 abstract class AsciiRecord {
 
-    private Map<String, String> map;
-    private int fieldCount;
+    private final Map<String, String> map;
+    private final int fieldCount;
 
     public AsciiRecord(int fieldCount) {
         this.fieldCount = fieldCount;
-        this.map = new HashMap<String, String>();
+        this.map = new HashMap<>();
     }
 
     public void readRecord(ImageInputStream imageInputStream) throws IOException {
@@ -68,21 +68,7 @@ abstract class AsciiRecord {
         return Integer.parseInt(getValue(key));
     }
 
-    public long getLongValue(String key) {
-        return Long.parseLong(getValue(key));
-    }
-
     abstract public MetadataElement getMetaData();
-
-    public void printValues() {
-        List<String> keys = new ArrayList<String>(map.keySet());
-        Collections.sort(keys);
-
-
-        for (final String key : keys) {
-            System.out.println(key + "=" + map.get(key));
-        }
-    }
 
     MetadataAttribute createStringAttribute(String key, String unit) {
         String stringValue = getValue(key);
@@ -134,15 +120,5 @@ abstract class AsciiRecord {
         }
         attribute.setUnit(AvhrrConstants.UNIT_DATE);
         return attribute;
-    }
-
-    private class KeyValuePair {
-        final String key;
-        final String value;
-
-        public KeyValuePair(String field) {
-            key = field.substring(0, 30).trim();
-            value = field.substring(32).trim();
-        }
     }
 }

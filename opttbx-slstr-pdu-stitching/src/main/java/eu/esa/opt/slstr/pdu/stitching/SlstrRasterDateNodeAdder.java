@@ -23,8 +23,8 @@ public class SlstrRasterDateNodeAdder {
             String rasterDataNodeName = rasterDataNodeNames[i];
             if (ending.startsWith("t")) {
                 short[] sourceResolutions = getResolutions(ending);
-                double subSamplingX = sourceResolutions[0] / referenceResolutions[0];
-                double subSamplingY = sourceResolutions[1] / referenceResolutions[1];
+                double subSamplingX = (double) sourceResolutions[0] / referenceResolutions[0];
+                double subSamplingY = (double) sourceResolutions[1] / referenceResolutions[1];
                 double offsetX = referenceImageSize.getTrackOffset() - imageSize.getTrackOffset() * subSamplingX;
                 double offsetY = subSamplingY * imageSize.getStartOffset() - referenceImageSize.getStartOffset();
                 double newOffsetX = offsetX % subSamplingX;

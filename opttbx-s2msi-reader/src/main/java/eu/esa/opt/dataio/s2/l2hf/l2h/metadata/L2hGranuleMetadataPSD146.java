@@ -234,7 +234,7 @@ public class L2hGranuleMetadataPSD146 extends GenericXmlMetadata implements IL2h
                                                                                 L2hPSD146Constants.PATH_GRANULE_METADATA_MASK_TYPE, null),
                                                        GmlData));
         }
-        maskFileNamesArray = aMaskList.toArray(new S2Metadata.MaskFilename[aMaskList.size()]);
+        maskFileNamesArray = aMaskList.toArray(new S2Metadata.MaskFilename[0]);
         return maskFileNamesArray;
     }
 

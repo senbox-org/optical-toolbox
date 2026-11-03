@@ -130,7 +130,7 @@ public class VirtualPath implements JP2LocalFile {
         if (entries != null) {
             found = Arrays.stream(entries).filter(e -> e.toLowerCase().endsWith(suffix)).collect(Collectors.toList());
         }
-        return found != null ? found.toArray(new String[found.size()]) : null;
+        return found != null ? found.toArray(new String[0]) : null;
     }
 
     public VirtualPath[] listPaths() throws IOException {
@@ -159,7 +159,7 @@ public class VirtualPath implements JP2LocalFile {
                 }
             }
             if (listPaths.size() > 0) {
-                return listPaths.toArray(new VirtualPath[listPaths.size()]);
+                return listPaths.toArray(new VirtualPath[0]);
             }
         }
         return null;
@@ -178,7 +178,7 @@ public class VirtualPath implements JP2LocalFile {
                 }
             }
             if (listPaths.size() > 0) {
-                return listPaths.toArray(new VirtualPath[listPaths.size()]);
+                return listPaths.toArray(new VirtualPath[0]);
             }
         }
         return null;

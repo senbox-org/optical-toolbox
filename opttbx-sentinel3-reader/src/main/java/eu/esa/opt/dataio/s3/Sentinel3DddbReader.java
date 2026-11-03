@@ -27,6 +27,7 @@ import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.esa.snap.dataio.netcdf.util.ReaderUtils;
 import org.esa.snap.runtime.Config;
+import org.jspecify.annotations.NonNull;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import ucar.ma2.Array;
@@ -42,17 +43,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import static eu.esa.opt.dataio.s3.dddb.VariableType.*;
 import static eu.esa.opt.dataio.s3.util.S3NetcdfReader.extractMetadata;
 import static eu.esa.opt.dataio.s3.util.S3Util.*;
 
+@SuppressWarnings("SynchronizeOnNonFinalField")
 public class Sentinel3DddbReader extends AbstractProductReader implements MetadataProvider, ReaderContext, S3CacheDataReader {
 
     private final DDDB dddb;
@@ -147,8 +145,6 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
     // @todo 2 tb/tb add tests for this 2025-02-04
     public static void extractSubset(RasterExtract rasterExtract, ProductData destBuffer, Array rawDataArray, double scaleFactor, double offset, boolean rawData) throws IOException {
         final int[] sliceOffset = new int[]{rasterExtract.getYOffset(), rasterExtract.getXOffset()};
-        //final int stepY = Math.max(rasterExtract.getStepY() - 1, 1);
-        //final int stepX = Math.max(rasterExtract.getStepX()-1 , 1);
         final int stepY = Math.max(rasterExtract.getStepY(), 1);
         final int stepX = Math.max(rasterExtract.getStepX(), 1);
         final int dimY = (int) Math.ceil(rasterExtract.getHeight() / (float) stepY);
@@ -279,8 +275,8 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
 
         // create a naked product
         final String productName = manifest.getProductName();
-        final String baselineCollection = manifest.getBaselineCollection();
-        final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, baselineCollection);
+        final Version version = getVersionFromManifest(manifest);
+        final ProductDescriptor productDescriptor = dddb.getProductDescriptor(productType, version);
         ensureWidthAndHeight(productDescriptor, manifest);
 
         final Product product = new Product(productName, productType, productDescriptor.getWidth(), productDescriptor.getHeight(), this);
@@ -292,7 +288,7 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         product.setStartTime(manifest.getStartTime());
         product.setEndTime(manifest.getStopTime());
 
-        initializeDDDBDescriptors(manifest, productDescriptor);
+        initializeDDDBDescriptors(productDescriptor);
         addVariables(product);
         addTiePointGrids(product, manifest);
         addSpecialBands(product);
@@ -541,15 +537,15 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
                 final int numBands = specialVariable.getDimension(dimensionIndex).getLength();
                 for (int i = 1; i <= numBands; i++) {
                     final String layerName = getLayerName(variableFullName, i);
-                    addVariableAsBand(product, specialVariable, layerName, true);
+                    addVariableAsBand(product, specialVariable, layerName);
                 }
             } else {
-                addVariableAsBand(product, specialVariable, variableFullName, false);
+                addVariableAsBand(product, specialVariable, variableFullName);
             }
         }
     }
 
-    protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
+    protected void addVariableAsBand(Product product, Variable variable, String variableName) {
         final int type = S3Util.getRasterDataType(variable);
 
         final InstrumentBand band = new InstrumentBand(variableName, type, product.getSceneRasterWidth(), product.getSceneRasterHeight());
@@ -558,7 +554,6 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         setScalefactorAndOffset(band, variable);
         band.setSpectralWavelength(S3Util.getSpectralWavelength(variable));
         band.setSpectralBandwidth(S3Util.getSpectralBandwidth(variable));
-        band.setSynthetic(synthetic);
         S3Util.addSampleCodings(product, band, variable, false);
         S3Util.addFillValue(band, variable);
 
@@ -567,13 +562,13 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         product.addBand(band);
     }
 
-    private void initializeDDDBDescriptors(Manifest manifest, ProductDescriptor productDescriptor) throws IOException {
+    private void initializeDDDBDescriptors(ProductDescriptor productDescriptor) throws IOException {
         final String productType = manifest.getProductType();
-        final String baselineCollection = manifest.getBaselineCollection();
+        final Version version = getVersionFromManifest(manifest);
 
         final List<String> fileNames = manifest.getFileNames(productDescriptor.getExcludedIdsAsArray());
         for (final String fileName : fileNames) {
-            final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors(fileName, productType, baselineCollection);
+            final VariableDescriptor[] variableDescriptors = dddb.getVariableDescriptors(fileName, productType, version);
             for (final VariableDescriptor descriptor : variableDescriptors) {
                 descriptor.setFileName(fileName);
 
@@ -590,6 +585,13 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
                 }
             }
         }
+    }
+
+    // package access for testing only tb 2026-08-21
+    static @NonNull Version getVersionFromManifest(Manifest manifest) {
+        final String baselineCollection = manifest.getBaselineCollection();
+        final String processingBaseline = manifest.getProcessingBaseline();
+        return new Version(baselineCollection, processingBaseline);
     }
 
     private void initalizeInput() {
@@ -765,7 +767,11 @@ public class Sentinel3DddbReader extends AbstractProductReader implements Metada
         synchronized (dataMap) {
             fullDataArray = dataMap.get(name);
             if (fullDataArray == null) {
-                fullDataArray = variable.read();
+                // Use the cache provider's lock so direct reads cannot overlap with
+                // cached reads of this product's NetCDF variables.
+                synchronized (cacheDataProvider) {
+                    fullDataArray = variable.read();
+                }
 
                 final ArrayConverter converter = getArrayConverter(name);
                 fullDataArray = converter.convert(fullDataArray);

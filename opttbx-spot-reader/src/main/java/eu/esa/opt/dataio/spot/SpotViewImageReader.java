@@ -43,7 +43,7 @@ public class SpotViewImageReader implements Closeable {
         int destPos = 0;
         for (int sourceY = sourceOffsetY; sourceY <= sourceMaxY; sourceY += sourceStepY) {
             long lineStartPos = (sourceY * numBands * lineSizeInBytes) + (bandIndex * lineSizeInBytes);
-            this.imageInputStream.seek(lineStartPos + (destBuffer.getElemSize() * sourceOffsetX));
+            this.imageInputStream.seek(lineStartPos + ((long) destBuffer.getElemSize() * sourceOffsetX));
             destBuffer.readFrom(destPos, destWidth, imageInputStream);
             destPos += destWidth;
         }

@@ -54,6 +54,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static eu.esa.snap.core.dataio.CfConstants.FILL_VALUE;
+
 class ModisFileReader {
 
     private Logger logger;
@@ -241,7 +243,7 @@ class ModisFileReader {
             reader.setValidRange(range);
         }
 
-        final int[] fillValue = getNamedIntAttribute(variable, ModisConstants.FILL_VALUE_KEY);
+        final int[] fillValue = getNamedIntAttribute(variable, FILL_VALUE);
         if (fillValue != null && fillValue.length >= 1) {
             reader.setFillValue(fillValue[0]);
             band.setNoDataValue(fillValue[0]);

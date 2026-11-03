@@ -142,8 +142,8 @@ public class SlstrPduStitcher {
                     }
                 }
                 if (ncFiles.size() > 0) {
-                    final File[] ncFilesArray = ncFiles.toArray(new File[ncFiles.size()]);
-                    final ImageSize[] imageSizeArray = imageSizeList.toArray(new ImageSize[imageSizeList.size()]);
+                    final File[] ncFilesArray = ncFiles.toArray(new File[0]);
+                    final ImageSize[] imageSizeArray = imageSizeList.toArray(new ImageSize[0]);
                     logger.log(Level.INFO, "Stitch " + displayFileName);
                     NcFileStitcher.stitchNcFiles(ncFileName, stitchedProductFileParentDirectory, now,
                             ncFilesArray, targetImageSize, imageSizeArray);

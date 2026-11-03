@@ -47,7 +47,7 @@ public class ImageMetadata extends XmlMetadata {
         }
     }
 
-    public class BandInfo {
+    public static class BandInfo {
         String id;
         int index;
         String unit;
@@ -459,14 +459,14 @@ public class ImageMetadata extends XmlMetadata {
         return masks;
     }
 
-    public class InsertionPoint {
+    public static class InsertionPoint {
         public float x;
         public float y;
         public float stepX;
         public float stepY;
     }
 
-    public class MaskInfo {
+    public static class MaskInfo {
         public String name;
         public String description;
         public Path path;

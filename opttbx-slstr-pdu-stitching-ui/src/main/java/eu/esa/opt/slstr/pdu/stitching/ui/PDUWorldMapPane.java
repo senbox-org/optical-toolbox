@@ -23,7 +23,7 @@ import java.util.List;
 class PDUWorldMapPane extends WorldMapPane {
 
     private final PDUBoundariesProvider provider;
-    private LayerCanvas.Overlay greyOverlay;
+    private final LayerCanvas.Overlay greyOverlay;
 
     PDUWorldMapPane(WorldMapPaneDataModel dataModel, PDUBoundariesProvider provider, LayerCanvas.Overlay overlay) {
         super(dataModel, overlay);
@@ -124,7 +124,7 @@ class PDUWorldMapPane extends WorldMapPane {
         }
     }
 
-    private class NullPanSupport implements PanSupport {
+    private static class NullPanSupport implements PanSupport {
 
         @Override
         public void panStarted(MouseEvent event) {
@@ -139,10 +139,9 @@ class PDUWorldMapPane extends WorldMapPane {
         }
     }
 
-    private class PDUWorldMapPanePanSupport extends WorldMapPane.DefaultPanSupport {
+    private static class PDUWorldMapPanePanSupport extends WorldMapPane.DefaultPanSupport {
         protected PDUWorldMapPanePanSupport(LayerCanvas layerCanvas) {
             super(layerCanvas);
         }
     }
-
 }

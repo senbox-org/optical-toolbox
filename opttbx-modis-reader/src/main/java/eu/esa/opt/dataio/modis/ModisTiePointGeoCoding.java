@@ -357,7 +357,7 @@ public class ModisTiePointGeoCoding extends AbstractGeoCoding {
 
         int direction = -1;
         if (index == smallestValidIndex) {
-            direction = +1;
+            direction = 1;
         }
         while (true) {
             index += direction;
@@ -372,11 +372,11 @@ public class ModisTiePointGeoCoding extends AbstractGeoCoding {
                 vIndex = index;
             } else if (direction == -1) {
                 index++;
-                direction = +1;
+                direction = 1;
                 if (index == biggestValidIndex) {
                     return index;
                 }
-            } else if (direction == +1) {
+            } else if (direction == 1) {
                 return vIndex;
             }
         }

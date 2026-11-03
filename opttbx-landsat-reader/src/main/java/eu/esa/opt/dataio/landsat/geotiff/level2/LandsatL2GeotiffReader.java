@@ -53,9 +53,6 @@ public class LandsatL2GeotiffReader extends AbstractProductReader {
 
         try {
             virtualDir = LandsatL2GeotiffReaderPlugin.getInput(getInput());
-            if (virtualDir == null) {
-                throw new FileNotFoundException(getInput().toString());
-            }
         } catch (IOException e) {
             throw new FileNotFoundException(getInput().toString());
         }
@@ -79,7 +76,7 @@ public class LandsatL2GeotiffReader extends AbstractProductReader {
         }
 
         //close stream
-        if (metadataInputStream != null) try {
+        try {
             metadataInputStream.close();
         } catch (IOException e) {
             // swallowed exception

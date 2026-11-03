@@ -7,6 +7,7 @@ import org.junit.Test;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -24,8 +25,8 @@ public class L1BPaceOciFileReaderTest {
     @STTM("SNAP-4122")
     public void testAddAttributes_slope_intercept() {
         final Variable variable = mock(Variable.class);
-        when(variable.findAttribute("units")).thenReturn(new Attribute("units", "m^2/kg"));
-        when(variable.findAttribute("long_name")).thenReturn(new Attribute("long_name", "Maria"));
+        when(variable.findAttribute(UNITS)).thenReturn(new Attribute(UNITS, "m^2/kg"));
+        when(variable.findAttribute(LONG_NAME)).thenReturn(new Attribute(LONG_NAME, "Maria"));
         when(variable.findAttribute("slope")).thenReturn(new Attribute("slope", 18.65));
         when(variable.findAttribute("intercept")).thenReturn(new Attribute("intercept", -0.887));
         when(variable.findAttribute("bad_value_scaled")).thenReturn(new Attribute("bad_value_scaled", 88.108));
@@ -45,8 +46,8 @@ public class L1BPaceOciFileReaderTest {
     @STTM("SNAP-4122")
     public void testAddAttributes_slope_intercept_applyScalingPath() {
         final Variable variable = mock(Variable.class);
-        when(variable.findAttribute("units")).thenReturn(new Attribute("units", "m^2/kg"));
-        when(variable.findAttribute("long_name")).thenReturn(new Attribute("long_name", "Maria"));
+        when(variable.findAttribute(UNITS)).thenReturn(new Attribute(UNITS, "m^2/kg"));
+        when(variable.findAttribute(LONG_NAME)).thenReturn(new Attribute(LONG_NAME, "Maria"));
         when(variable.findAttribute("slope")).thenReturn(new Attribute("slope", 18.65));
         when(variable.findAttribute("intercept")).thenReturn(new Attribute("intercept", -0.887));
         when(variable.findAttribute("bad_value_scaled")).thenReturn(new Attribute("bad_value_scaled", 88.108));
@@ -66,8 +67,8 @@ public class L1BPaceOciFileReaderTest {
     @STTM("SNAP-4122")
     public void testAddAttributes_scale_offset() {
         final Variable variable = mock(Variable.class);
-        when(variable.findAttribute("slope")).thenReturn(new Attribute("scale_factor", 0.855));
-        when(variable.findAttribute("intercept")).thenReturn(new Attribute("add_offset", 100.4));
+        when(variable.findAttribute("slope")).thenReturn(new Attribute(SCALE_FACTOR, 0.855));
+        when(variable.findAttribute("intercept")).thenReturn(new Attribute(ADD_OFFSET, 100.4));
 
         final Band band = new Band("test", ProductData.TYPE_FLOAT64, 12, 14);
         L1BPaceOciFileReader.addAttributes(variable, band, true);

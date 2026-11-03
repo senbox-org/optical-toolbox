@@ -65,7 +65,7 @@ class Avnir2VolumeDirectoryFile {
 
     public String[] getImageFileNames() throws IOException,
                                                IllegalCeosFormatException {
-        final ArrayList list = new ArrayList();
+        final ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < _filePointerRecords.length; i++) {
             final FilePointerRecord filePointerRecord = _filePointerRecords[i];
             if (filePointerRecord.isImageFileRecord()) {
@@ -73,7 +73,7 @@ class Avnir2VolumeDirectoryFile {
                 list.add(CeosHelper.getImageFileName(_textRecord, fileID.substring(15)));
             }
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return  list.toArray(new String[0]);
 
     }
 

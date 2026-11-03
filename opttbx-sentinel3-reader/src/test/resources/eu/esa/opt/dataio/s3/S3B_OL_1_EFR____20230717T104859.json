@@ -1,0 +1,3694 @@
+{
+  "id": "S3B_OL_1_EFR____20230717T104859",
+  "decodeQualification": "INTENDED",
+  "expectedContent": {
+    "sceneWidth": 4865,
+    "sceneHeight": 4091,
+    "startTime": "17-JUL-2023 10:48:59.492433",
+    "endTime": "17-JUL-2023 10:51:59.492433",
+    "geoCoding": {
+      "coordinates": [
+        {
+          "x": 2098.0,
+          "y": 2199.0,
+          "lat": 46.063204,
+          "lon": -8.885375
+        },
+        {
+          "x": 3612.0,
+          "y": 2654.0,
+          "lat": 44.050432,
+          "lon": -4.209826
+        }
+      ],
+      "reverseAccuracy": 0.5
+    },
+    "flagCodings": [
+      {
+        "name": "quality_flags",
+        "samples": [
+          {
+            "name": "land",
+            "value": 2147483648
+          },
+          {
+            "name": "coastline",
+            "value": 1073741824
+          },
+          {
+            "name": "fresh_inland_water",
+            "value": 536870912
+          },
+          {
+            "name": "tidal_region",
+            "value": 268435456
+          },
+          {
+            "name": "bright",
+            "value": 134217728
+          },
+          {
+            "name": "straylight_risk",
+            "value": 67108864
+          },
+          {
+            "name": "invalid",
+            "value": 33554432
+          },
+          {
+            "name": "cosmetic",
+            "value": 16777216
+          },
+          {
+            "name": "duplicated",
+            "value": 8388608
+          },
+          {
+            "name": "sun_glint_risk",
+            "value": 4194304
+          },
+          {
+            "name": "dubious",
+            "value": 2097152
+          },
+          {
+            "name": "saturated_Oa01",
+            "value": 1048576
+          },
+          {
+            "name": "saturated_Oa02",
+            "value": 524288
+          },
+          {
+            "name": "saturated_Oa03",
+            "value": 262144
+          },
+          {
+            "name": "saturated_Oa04",
+            "value": 131072
+          },
+          {
+            "name": "saturated_Oa05",
+            "value": 65536
+          },
+          {
+            "name": "saturated_Oa06",
+            "value": 32768
+          },
+          {
+            "name": "saturated_Oa07",
+            "value": 16384
+          },
+          {
+            "name": "saturated_Oa08",
+            "value": 8192
+          },
+          {
+            "name": "saturated_Oa09",
+            "value": 4096
+          },
+          {
+            "name": "saturated_Oa10",
+            "value": 2048
+          },
+          {
+            "name": "saturated_Oa11",
+            "value": 1024
+          },
+          {
+            "name": "saturated_Oa12",
+            "value": 512
+          },
+          {
+            "name": "saturated_Oa13",
+            "value": 256
+          },
+          {
+            "name": "saturated_Oa14",
+            "value": 128
+          },
+          {
+            "name": "saturated_Oa15",
+            "value": 64
+          },
+          {
+            "name": "saturated_Oa16",
+            "value": 32
+          },
+          {
+            "name": "saturated_Oa17",
+            "value": 16
+          },
+          {
+            "name": "saturated_Oa18",
+            "value": 8
+          },
+          {
+            "name": "saturated_Oa19",
+            "value": 4
+          },
+          {
+            "name": "saturated_Oa20",
+            "value": 2
+          },
+          {
+            "name": "saturated_Oa21",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "tiePointGrids": [
+      {
+        "name": "OAA",
+        "description": "Observation (Viewing) Azimuth Angle",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 253,
+            "y": 728,
+            "value": 96.34688
+          },
+          {
+            "x": 3332,
+            "y": 3479,
+            "value": 104.934105
+          }
+        ]
+      },
+      {
+        "name": "OZA",
+        "description": "Observation (Viewing) Zenith Angle",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1415,
+            "y": 1050,
+            "value": 40.6381
+          },
+          {
+            "x": 2970,
+            "y": 1494,
+            "value": 13.650461
+          }
+        ]
+      },
+      {
+        "name": "SAA",
+        "description": "Sun Azimuth Angle",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2675,
+            "y": 3049,
+            "value": 127.178696
+          },
+          {
+            "x": 2959,
+            "y": 3798,
+            "value": 124.96796
+          }
+        ]
+      },
+      {
+        "name": "SZA",
+        "description": "Sun Zenith Angle",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 769,
+            "y": 2724,
+            "value": 35.90581
+          },
+          {
+            "x": 2525,
+            "y": 3737,
+            "value": 30.848537
+          }
+        ]
+      },
+      {
+        "name": "TP_latitude",
+        "description": "Latitude",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 3678,
+            "y": 1982,
+            "value": 45.73112
+          },
+          {
+            "x": 4625,
+            "y": 1987,
+            "value": 45.07017
+          }
+        ]
+      },
+      {
+        "name": "TP_longitude",
+        "description": "Longitude",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1656,
+            "y": 3679,
+            "value": -11.369491
+          },
+          {
+            "x": 48,
+            "y": 1925,
+            "value": -15.897589
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_1",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1592,
+            "y": 806,
+            "value": 287.8548
+          },
+          {
+            "x": 1329,
+            "y": 176,
+            "value": 286.98532
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_2",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4726,
+            "y": 2473,
+            "value": 292.12018
+          },
+          {
+            "x": 2784,
+            "y": 2932,
+            "value": 286.43515
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_3",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1128,
+            "y": 2035,
+            "value": 283.00488
+          },
+          {
+            "x": 1562,
+            "y": 2955,
+            "value": 283.12796
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_4",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1742,
+            "y": 2038,
+            "value": 280.52097
+          },
+          {
+            "x": 1959,
+            "y": 1809,
+            "value": 280.3542
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_5",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2795,
+            "y": 375,
+            "value": 277.84134
+          },
+          {
+            "x": 3139,
+            "y": 64,
+            "value": 278.55222
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_6",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4744,
+            "y": 1502,
+            "value": 281.5237
+          },
+          {
+            "x": 4622,
+            "y": 3871,
+            "value": 294.44052
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_7",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 539,
+            "y": 1848,
+            "value": 272.95502
+          },
+          {
+            "x": 2777,
+            "y": 2301,
+            "value": 277.36652
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_8",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2460,
+            "y": 2133,
+            "value": 270.503
+          },
+          {
+            "x": 2192,
+            "y": 2376,
+            "value": 270.49335
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_9",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 70,
+            "y": 1737,
+            "value": 257.98993
+          },
+          {
+            "x": 341,
+            "y": 4061,
+            "value": 261.94058
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_10",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1443,
+            "y": 3048,
+            "value": 250.81197
+          },
+          {
+            "x": 3909,
+            "y": 3012,
+            "value": 253.0795
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_11",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4059,
+            "y": 3868,
+            "value": 237.23706
+          },
+          {
+            "x": 1209,
+            "y": 2175,
+            "value": 235.04373
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_12",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2972,
+            "y": 1064,
+            "value": 224.50505
+          },
+          {
+            "x": 2689,
+            "y": 617,
+            "value": 223.32907
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_13",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2313,
+            "y": 2287,
+            "value": 217.93391
+          },
+          {
+            "x": 464,
+            "y": 3476,
+            "value": 218.0098
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_14",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 467,
+            "y": 318,
+            "value": 223.28398
+          },
+          {
+            "x": 2213,
+            "y": 2766,
+            "value": 216.89996
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_15",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2262,
+            "y": 3662,
+            "value": 212.12656
+          },
+          {
+            "x": 4220,
+            "y": 2454,
+            "value": 211.59717
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_16",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4680,
+            "y": 1558,
+            "value": 216.3797
+          },
+          {
+            "x": 427,
+            "y": 2179,
+            "value": 219.1461
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_17",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 3577,
+            "y": 2433,
+            "value": 218.4892
+          },
+          {
+            "x": 4749,
+            "y": 760,
+            "value": 220.07697
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_18",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2239,
+            "y": 1067,
+            "value": 224.09184
+          },
+          {
+            "x": 1114,
+            "y": 2649,
+            "value": 222.03633
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_19",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 3112,
+            "y": 1790,
+            "value": 225.88002
+          },
+          {
+            "x": 2585,
+            "y": 2320,
+            "value": 225.3565
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_20",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1925,
+            "y": 874,
+            "value": 234.4887
+          },
+          {
+            "x": 1357,
+            "y": 3635,
+            "value": 234.03735
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_21",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 4600,
+            "y": 2372,
+            "value": 239.10767
+          },
+          {
+            "x": 3687,
+            "y": 1342,
+            "value": 240.44841
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_22",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2727,
+            "y": 1189,
+            "value": 246.41145
+          },
+          {
+            "x": 4034,
+            "y": 3562,
+            "value": 245.02135
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_23",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 526,
+            "y": 3629,
+            "value": 253.22292
+          },
+          {
+            "x": 1673,
+            "y": 3330,
+            "value": 252.66286
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_24",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 886,
+            "y": 2832,
+            "value": 261.13382
+          },
+          {
+            "x": 2882,
+            "y": 2246,
+            "value": 262.29605
+          }
+        ]
+      },
+      {
+        "name": "atmospheric_temperature_profile_pressure_level_25",
+        "description": "Air temperature profile",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 1000,
+            "y": 1252,
+            "value": 267.31738
+          },
+          {
+            "x": 1996,
+            "y": 3533,
+            "value": 266.3264
+          }
+        ]
+      },
+      {
+        "name": "horizontal_wind_vector_1",
+        "description": "Horizontal wind vector at 10m altitude",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 3414,
+            "y": 3671,
+            "value": -0.7587508
+          },
+          {
+            "x": 1447,
+            "y": 4061,
+            "value": -1.9647976
+          }
+        ]
+      },
+      {
+        "name": "horizontal_wind_vector_2",
+        "description": "Horizontal wind vector at 10m altitude",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2662,
+            "y": 477,
+            "value": 0.15183824
+          },
+          {
+            "x": 947,
+            "y": 2295,
+            "value": 5.3538985
+          }
+        ]
+      },
+      {
+        "name": "humidity",
+        "description": "Relative humidity",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2228,
+            "y": 527,
+            "value": 74.09675
+          },
+          {
+            "x": 4032,
+            "y": 2343,
+            "value": 83.14079
+          }
+        ]
+      },
+      {
+        "name": "sea_level_pressure",
+        "description": "Mean sea level pressure",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 499,
+            "y": 2768,
+            "value": 1021.36896
+          },
+          {
+            "x": 3556,
+            "y": 1931,
+            "value": 1022.832
+          }
+        ]
+      },
+      {
+        "name": "total_columnar_water_vapour",
+        "description": "Total column water vapour",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 696,
+            "y": 272,
+            "value": 26.137114
+          },
+          {
+            "x": 4093,
+            "y": 1226,
+            "value": 23.433983
+          }
+        ]
+      },
+      {
+        "name": "total_ozone",
+        "description": "Total columnar ozone",
+        "offsetX": "0.0",
+        "offsetY": "0.0",
+        "subSamplingX": "64.0",
+        "subSamplingY": "1.0",
+        "expectedPixels": [
+          {
+            "x": 2881,
+            "y": 3975,
+            "value": 0.006501203
+          },
+          {
+            "x": 3781,
+            "y": 112,
+            "value": 0.0074450094
+          }
+        ]
+      }
+    ],
+    "bands": [
+      {
+        "name": "Oa01_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa01",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "893.5636356007308",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "400.0",
+        "spectralBandwidth": "15.0",
+        "expectedPixels": [
+          {
+            "x": 1054,
+            "y": 1008,
+            "value": 287.1784
+          },
+          {
+            "x": 1553,
+            "y": 792,
+            "value": 91.91291
+          }
+        ]
+      },
+      {
+        "name": "Oa01_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa01",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "15.913915952327704",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "400.0",
+        "spectralBandwidth": "15.0",
+        "expectedPixels": [
+          {
+            "x": 1374,
+            "y": 3613,
+            "value": 2.7616525
+          },
+          {
+            "x": 4853,
+            "y": 309,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Oa02_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa02",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "753.0609577568248",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "412.5",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 3984,
+            "y": 2052,
+            "value": 82.286865
+          },
+          {
+            "x": 305,
+            "y": 1576,
+            "value": 282.40216
+          }
+        ]
+      },
+      {
+        "name": "Oa02_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa02",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.19068155669882",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "412.5",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 1349,
+            "y": 2381,
+            "value": 2.5247943
+          },
+          {
+            "x": 4517,
+            "y": 568,
+            "value": 3.5918317
+          }
+        ]
+      },
+      {
+        "name": "Oa03_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa03",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "824.9871063278988",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.5",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 508,
+            "y": 595,
+            "value": 384.18832
+          },
+          {
+            "x": 4299,
+            "y": 436,
+            "value": 70.19346
+          }
+        ]
+      },
+      {
+        "name": "Oa03_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa03",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.653508096595026",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "442.5",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 1800,
+            "y": 3605,
+            "value": 2.5229053
+          },
+          {
+            "x": 2846,
+            "y": 2354,
+            "value": 1.6142433
+          }
+        ]
+      },
+      {
+        "name": "Oa04_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa04",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "746.8554250057787",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "490.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 1642,
+            "y": 1333,
+            "value": 69.46035
+          },
+          {
+            "x": 1818,
+            "y": 3502,
+            "value": 59.556976
+          }
+        ]
+      },
+      {
+        "name": "Oa04_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa04",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "10.655552094264573",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "490.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 1585,
+            "y": 2802,
+            "value": 1.2878817
+          },
+          {
+            "x": 3130,
+            "y": 2762,
+            "value": 2.8574588
+          }
+        ]
+      },
+      {
+        "name": "Oa05_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa05",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "801.7502172477543",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "510.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 2579,
+            "y": 533,
+            "value": 135.94336
+          },
+          {
+            "x": 2255,
+            "y": 3275,
+            "value": 46.31764
+          }
+        ]
+      },
+      {
+        "name": "Oa05_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa05",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.4102648727268",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "510.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 3903,
+            "y": 3690,
+            "value": 1.5771501
+          },
+          {
+            "x": 124,
+            "y": 2857,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "Oa06_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa06",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "657.8560506273061",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "560.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 4325,
+            "y": 2356,
+            "value": 262.60034
+          },
+          {
+            "x": 3102,
+            "y": 3713,
+            "value": 54.537758
+          }
+        ]
+      },
+      {
+        "name": "Oa06_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa06",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.675994304168194",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "560.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 4778,
+            "y": 1321,
+            "value": 1.2818288
+          },
+          {
+            "x": 1747,
+            "y": 21,
+            "value": 1.9766876
+          }
+        ]
+      },
+      {
+        "name": "Oa07_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa07",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "692.4750292114913",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "620.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 4084,
+            "y": 2328,
+            "value": 60.74676
+          },
+          {
+            "x": 2872,
+            "y": 1628,
+            "value": 15.437644
+          }
+        ]
+      },
+      {
+        "name": "Oa07_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa07",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "15.097393058948203",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "620.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 1919,
+            "y": 4043,
+            "value": 0.63900167
+          },
+          {
+            "x": 1116,
+            "y": 2933,
+            "value": 0.73672426
+          }
+        ]
+      },
+      {
+        "name": "Oa08_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa08",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "588.1560033420101",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "665.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 4566,
+            "y": 1180,
+            "value": 30.163918
+          },
+          {
+            "x": 1530,
+            "y": 3485,
+            "value": 14.628737
+          }
+        ]
+      },
+      {
+        "name": "Oa08_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa08",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "14.100386500401466",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "665.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 1593,
+            "y": 2163,
+            "value": 0.61103207
+          },
+          {
+            "x": 1742,
+            "y": 3271,
+            "value": 0.5446343
+          }
+        ]
+      },
+      {
+        "name": "Oa09_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa09",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "635.0916885165498",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "673.75",
+        "spectralBandwidth": "7.5",
+        "expectedPixels": [
+          {
+            "x": 2726,
+            "y": 892,
+            "value": 12.336488
+          },
+          {
+            "x": 462,
+            "y": 2882,
+            "value": 30.952663
+          }
+        ]
+      },
+      {
+        "name": "Oa09_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa09",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "11.196467955509334",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "673.75",
+        "spectralBandwidth": "7.5",
+        "expectedPixels": [
+          {
+            "x": 3418,
+            "y": 3252,
+            "value": 0.7194176
+          },
+          {
+            "x": 4106,
+            "y": 278,
+            "value": 0.8365291
+          }
+        ]
+      },
+      {
+        "name": "Oa10_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa10",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "588.9224711386487",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "681.25",
+        "spectralBandwidth": "7.5",
+        "expectedPixels": [
+          {
+            "x": 4069,
+            "y": 928,
+            "value": 81.94681
+          },
+          {
+            "x": 3174,
+            "y": 3805,
+            "value": 47.1785
+          }
+        ]
+      },
+      {
+        "name": "Oa10_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa10",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "11.21078374518024",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "681.25",
+        "spectralBandwidth": "7.5",
+        "expectedPixels": [
+          {
+            "x": 1304,
+            "y": 3524,
+            "value": 0.53399354
+          },
+          {
+            "x": 1879,
+            "y": 1517,
+            "value": 0.5175782
+          }
+        ]
+      },
+      {
+        "name": "Oa11_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa11",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "547.9403694346547",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "708.75",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 4728,
+            "y": 2784,
+            "value": 105.75872
+          },
+          {
+            "x": 3526,
+            "y": 1749,
+            "value": 9.690438
+          }
+        ]
+      },
+      {
+        "name": "Oa11_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa11",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.139199757835486",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "708.75",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 2426,
+            "y": 568,
+            "value": 1.2744565
+          },
+          {
+            "x": 4713,
+            "y": 556,
+            "value": 1.2955973
+          }
+        ]
+      },
+      {
+        "name": "Oa12_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa12",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "490.92451580800116",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "753.75",
+        "spectralBandwidth": "7.5",
+        "expectedPixels": [
+          {
+            "x": 3507,
+            "y": 2274,
+            "value": 6.7868714
+          },
+          {
+            "x": 3434,
+            "y": 4049,
+            "value": 62.857216
+          }
+        ]
+      },
+      {
+        "name": "Oa12_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa12",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "8.82579860340686",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "753.75",
+        "spectralBandwidth": "7.5",
+        "expectedPixels": [
+          {
+            "x": 3117,
+            "y": 3706,
+            "value": 1.2754222
+          },
+          {
+            "x": 4063,
+            "y": 2172,
+            "value": 0.99369705
+          }
+        ]
+      },
+      {
+        "name": "Oa13_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa13",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "515.1903808861971",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "761.25",
+        "spectralBandwidth": "2.5",
+        "expectedPixels": [
+          {
+            "x": 2432,
+            "y": 3803,
+            "value": 3.105214
+          },
+          {
+            "x": 2784,
+            "y": 3160,
+            "value": 30.792717
+          }
+        ]
+      },
+      {
+        "name": "Oa13_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa13",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "6.056015766054634",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "761.25",
+        "spectralBandwidth": "2.5",
+        "expectedPixels": [
+          {
+            "x": 4521,
+            "y": 160,
+            "value": 1.1238569
+          },
+          {
+            "x": 3425,
+            "y": 2957,
+            "value": 1.5998712
+          }
+        ]
+      },
+      {
+        "name": "Oa14_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa14",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "493.4550252906047",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "764.375",
+        "spectralBandwidth": "3.75",
+        "expectedPixels": [
+          {
+            "x": 1689,
+            "y": 28,
+            "value": 83.85761
+          },
+          {
+            "x": 1052,
+            "y": 3520,
+            "value": 9.321695
+          }
+        ]
+      },
+      {
+        "name": "Oa14_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa14",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "7.515327886381686",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "764.375",
+        "spectralBandwidth": "3.75",
+        "expectedPixels": [
+          {
+            "x": 611,
+            "y": 415,
+            "value": 2.456156
+          },
+          {
+            "x": 419,
+            "y": 468,
+            "value": 2.4911733
+          }
+        ]
+      },
+      {
+        "name": "Oa15_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa15",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "516.6183986468241",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "767.5",
+        "spectralBandwidth": "2.5",
+        "expectedPixels": [
+          {
+            "x": 3386,
+            "y": 285,
+            "value": 6.9213543
+          },
+          {
+            "x": 2341,
+            "y": 3551,
+            "value": 6.3458886
+          }
+        ]
+      },
+      {
+        "name": "Oa15_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa15",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "9.352807399109343",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "767.5",
+        "spectralBandwidth": "2.5",
+        "expectedPixels": [
+          {
+            "x": 814,
+            "y": 967,
+            "value": 4.558427
+          },
+          {
+            "x": 1221,
+            "y": 3973,
+            "value": 0.56104535
+          }
+        ]
+      },
+      {
+        "name": "Oa16_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa16",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "468.7376595335081",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "778.75",
+        "spectralBandwidth": "15.0",
+        "expectedPixels": [
+          {
+            "x": 3482,
+            "y": 1390,
+            "value": 6.208351
+          },
+          {
+            "x": 3135,
+            "y": 2088,
+            "value": 4.5561285
+          }
+        ]
+      },
+      {
+        "name": "Oa16_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa16",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "12.033694902345514",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "778.75",
+        "spectralBandwidth": "15.0",
+        "expectedPixels": [
+          {
+            "x": 4412,
+            "y": 2082,
+            "value": 2.0849373
+          },
+          {
+            "x": 4189,
+            "y": 2284,
+            "value": 1.435863
+          }
+        ]
+      },
+      {
+        "name": "Oa17_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa17",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "396.86403091298416",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "865.0",
+        "spectralBandwidth": "20.0",
+        "expectedPixels": [
+          {
+            "x": 3894,
+            "y": 3114,
+            "value": 73.692505
+          },
+          {
+            "x": 4063,
+            "y": 3010,
+            "value": 65.05094
+          }
+        ]
+      },
+      {
+        "name": "Oa17_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa17",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "14.193877384343956",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "865.0",
+        "spectralBandwidth": "20.0",
+        "expectedPixels": [
+          {
+            "x": 3061,
+            "y": 1743,
+            "value": 0.2104171
+          },
+          {
+            "x": 2628,
+            "y": 3122,
+            "value": 1.1972395
+          }
+        ]
+      },
+      {
+        "name": "Oa18_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa18",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "395.4465110390447",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "885.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 3084,
+            "y": 621,
+            "value": 3.7351246
+          },
+          {
+            "x": 4292,
+            "y": 1288,
+            "value": 173.26392
+          }
+        ]
+      },
+      {
+        "name": "Oa18_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa18",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "16.015814547852585",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "885.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 1330,
+            "y": 1573,
+            "value": 0.4858464
+          },
+          {
+            "x": 3319,
+            "y": 762,
+            "value": 0.39849603
+          }
+        ]
+      },
+      {
+        "name": "Oa19_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa19",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "363.1269968790002",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "900.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 707,
+            "y": 4037,
+            "value": 3.6681173
+          },
+          {
+            "x": 1911,
+            "y": 3083,
+            "value": 9.009605
+          }
+        ]
+      },
+      {
+        "name": "Oa19_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa19",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "11.30589445827514",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "900.0",
+        "spectralBandwidth": "10.0",
+        "expectedPixels": [
+          {
+            "x": 343,
+            "y": 2851,
+            "value": 0.4212365
+          },
+          {
+            "x": 2957,
+            "y": 3530,
+            "value": 1.3891078
+          }
+        ]
+      },
+      {
+        "name": "Oa20_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa20",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "333.9261179929599",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "940.0",
+        "spectralBandwidth": "20.0",
+        "expectedPixels": [
+          {
+            "x": 2852,
+            "y": 1359,
+            "value": 1.3044188
+          },
+          {
+            "x": 2127,
+            "y": 70,
+            "value": 1.8801974
+          }
+        ]
+      },
+      {
+        "name": "Oa20_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa20",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "14.386828909991552",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "940.0",
+        "spectralBandwidth": "20.0",
+        "expectedPixels": [
+          {
+            "x": 2925,
+            "y": 2731,
+            "value": 0.6110504
+          },
+          {
+            "x": 3818,
+            "y": 365,
+            "value": 0.36093503
+          }
+        ]
+      },
+      {
+        "name": "Oa21_radiance",
+        "description": "TOA radiance for OLCI acquisition band Oa21",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "281.24680708162487",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "1020.0",
+        "spectralBandwidth": "40.0",
+        "expectedPixels": [
+          {
+            "x": 4381,
+            "y": 339,
+            "value": 87.80084
+          },
+          {
+            "x": 375,
+            "y": 3371,
+            "value": 3.2444127
+          }
+        ]
+      },
+      {
+        "name": "Oa21_radiance_unc",
+        "description": "Radiometric Uncertainty Estimate for OLCI acquisition band Oa21",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.sr-1.nm-1",
+        "noDataValue": "7.616001161851203",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "1020.0",
+        "spectralBandwidth": "40.0",
+        "expectedPixels": [
+          {
+            "x": 620,
+            "y": 3736,
+            "value": 0.6484433
+          },
+          {
+            "x": 942,
+            "y": 1317,
+            "value": 5.2456946
+          }
+        ]
+      },
+      {
+        "name": "altitude",
+        "description": "DEM corrected altitude",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "m",
+        "noDataValue": "-32768.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2652,
+            "y": 2919,
+            "value": 52.0
+          },
+          {
+            "x": 572,
+            "y": 893,
+            "value": 56.0
+          }
+        ]
+      },
+      {
+        "name": "detector_index",
+        "description": "Detector index",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1988,
+            "y": 3080,
+            "value": 1010.0
+          },
+          {
+            "x": 395,
+            "y": 3061,
+            "value": 95.0
+          }
+        ]
+      },
+      {
+        "name": "latitude",
+        "description": "DEM corrected latitude",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "degrees_north",
+        "noDataValue": "-2147.483648",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4465,
+            "y": 869,
+            "value": 48.020073
+          },
+          {
+            "x": 4283,
+            "y": 2874,
+            "value": 43.056393
+          }
+        ]
+      },
+      {
+        "name": "longitude",
+        "description": "DEM corrected longitude",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "degrees_east",
+        "noDataValue": "-2147.483648",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 590,
+            "y": 111,
+            "value": -13.063761
+          },
+          {
+            "x": 1386,
+            "y": 3759,
+            "value": -12.296056
+          }
+        ]
+      },
+      {
+        "name": "quality_flags",
+        "description": "Classification and quality flags",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "",
+        "noDataValue": "0.0",
+        "noDataValueUsed": "false",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2912,
+            "y": 2961,
+            "value": 4194304.0
+          },
+          {
+            "x": 2479,
+            "y": 1936,
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_1",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2072,
+            "y": 625,
+            "value": 12.192153
+          },
+          {
+            "x": 126,
+            "y": 3251,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_2",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3281,
+            "y": 2892,
+            "value": 9.889066
+          },
+          {
+            "x": 1436,
+            "y": 805,
+            "value": 9.91117
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_3",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 926,
+            "y": 2289,
+            "value": 9.933719
+          },
+          {
+            "x": 2799,
+            "y": 2658,
+            "value": 9.936838
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_4",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2553,
+            "y": 348,
+            "value": 9.990913
+          },
+          {
+            "x": 3778,
+            "y": 1342,
+            "value": 9.981121
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_5",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4231,
+            "y": 3764,
+            "value": 9.969091
+          },
+          {
+            "x": 2315,
+            "y": 2254,
+            "value": 9.979445
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_6",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2794,
+            "y": 3882,
+            "value": 9.991343
+          },
+          {
+            "x": 4521,
+            "y": 763,
+            "value": 9.988179
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_7",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 332,
+            "y": 3025,
+            "value": 9.956211
+          },
+          {
+            "x": 318,
+            "y": 2220,
+            "value": 9.956319
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_8",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3370,
+            "y": 3534,
+            "value": 10.000277
+          },
+          {
+            "x": 2769,
+            "y": 3594,
+            "value": 10.009287
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_9",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1779,
+            "y": 3838,
+            "value": 7.499167
+          },
+          {
+            "x": 4365,
+            "y": 1007,
+            "value": 7.511462
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_10",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 512,
+            "y": 2973,
+            "value": 7.518041
+          },
+          {
+            "x": 1067,
+            "y": 2782,
+            "value": 7.510664
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_11",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 355,
+            "y": 161,
+            "value": 10.017028
+          },
+          {
+            "x": 1330,
+            "y": 1276,
+            "value": 10.007986
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_12",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4465,
+            "y": 1725,
+            "value": 7.502761
+          },
+          {
+            "x": 382,
+            "y": 2801,
+            "value": 7.50967
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_13",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1014,
+            "y": 1831,
+            "value": 2.573434
+          },
+          {
+            "x": 2501,
+            "y": 216,
+            "value": 2.548127
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_14",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2972,
+            "y": 943,
+            "value": 3.765019
+          },
+          {
+            "x": 1928,
+            "y": 1453,
+            "value": 3.759036
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_15",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 603,
+            "y": 385,
+            "value": 2.583472
+          },
+          {
+            "x": 3810,
+            "y": 2559,
+            "value": 2.6596
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_16",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 729,
+            "y": 271,
+            "value": 15.002207
+          },
+          {
+            "x": 2537,
+            "y": 489,
+            "value": 14.9867
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_17",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4390,
+            "y": 1708,
+            "value": 19.9599
+          },
+          {
+            "x": 1196,
+            "y": 1382,
+            "value": 19.947657
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_18",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3305,
+            "y": 502,
+            "value": 10.00394
+          },
+          {
+            "x": 590,
+            "y": 1231,
+            "value": 9.960242
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_19",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4149,
+            "y": 990,
+            "value": 9.996968
+          },
+          {
+            "x": 480,
+            "y": 4,
+            "value": 9.952248
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_20",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 607,
+            "y": 1868,
+            "value": 19.815903
+          },
+          {
+            "x": 2861,
+            "y": 1996,
+            "value": 19.85545
+          }
+        ]
+      },
+      {
+        "name": "FWHM_band_21",
+        "description": "OLCI bandwidth (Full Widths at Half Maximum)",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 841,
+            "y": 2573,
+            "value": 26.248423
+          },
+          {
+            "x": 2603,
+            "y": 3163,
+            "value": 26.04261
+          }
+        ]
+      },
+      {
+        "name": "frame_offset",
+        "description": "Re-sampling along-track frame offset",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "noDataValue": "-32768.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1954,
+            "y": 1440,
+            "value": 2.0
+          },
+          {
+            "x": 2163,
+            "y": 3714,
+            "value": 3.0
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_1",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 618,
+            "y": 726,
+            "value": 400.816
+          },
+          {
+            "x": 139,
+            "y": 2465,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_2",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1736,
+            "y": 243,
+            "value": 412.33417
+          },
+          {
+            "x": 3121,
+            "y": 2026,
+            "value": 411.32797
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_3",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4333,
+            "y": 2375,
+            "value": 443.1077
+          },
+          {
+            "x": 1985,
+            "y": 816,
+            "value": 443.19247
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_4",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 23,
+            "y": 2620,
+            "value": "NaN"
+          },
+          {
+            "x": 9,
+            "y": 503,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_5",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2663,
+            "y": 1847,
+            "value": 510.2951
+          },
+          {
+            "x": 363,
+            "y": 1880,
+            "value": 510.65814
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_6",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 497,
+            "y": 861,
+            "value": 560.5043
+          },
+          {
+            "x": 3412,
+            "y": 3676,
+            "value": 560.924
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_7",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2917,
+            "y": 2379,
+            "value": 619.8707
+          },
+          {
+            "x": 1802,
+            "y": 1586,
+            "value": 620.5461
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_8",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2992,
+            "y": 3351,
+            "value": 664.7228
+          },
+          {
+            "x": 2959,
+            "y": 2120,
+            "value": 664.7532
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_9",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3609,
+            "y": 3314,
+            "value": 674.27716
+          },
+          {
+            "x": 2651,
+            "y": 3561,
+            "value": 673.8534
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_10",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 826,
+            "y": 2376,
+            "value": 681.4592
+          },
+          {
+            "x": 2425,
+            "y": 1723,
+            "value": 681.1592
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_11",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2878,
+            "y": 2638,
+            "value": 708.6739
+          },
+          {
+            "x": 4782,
+            "y": 390,
+            "value": 708.6195
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_12",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 734,
+            "y": 1784,
+            "value": 754.1391
+          },
+          {
+            "x": 3195,
+            "y": 3619,
+            "value": 753.5062
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_13",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2519,
+            "y": 2488,
+            "value": 761.1839
+          },
+          {
+            "x": 1782,
+            "y": 80,
+            "value": 761.7611
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_14",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3467,
+            "y": 395,
+            "value": 765.15454
+          },
+          {
+            "x": 654,
+            "y": 1089,
+            "value": 764.80414
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_15",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3484,
+            "y": 181,
+            "value": 768.27423
+          },
+          {
+            "x": 1042,
+            "y": 237,
+            "value": 767.7735
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_16",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2940,
+            "y": 1293,
+            "value": 778.76276
+          },
+          {
+            "x": 4795,
+            "y": 1264,
+            "value": 778.7023
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_17",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 929,
+            "y": 3219,
+            "value": 865.2246
+          },
+          {
+            "x": 3974,
+            "y": 285,
+            "value": 865.3297
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_18",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1820,
+            "y": 2523,
+            "value": 884.3078
+          },
+          {
+            "x": 646,
+            "y": 3295,
+            "value": 884.1482
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_19",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1799,
+            "y": 2642,
+            "value": 899.313
+          },
+          {
+            "x": 4484,
+            "y": 3327,
+            "value": 899.13025
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_20",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1030,
+            "y": 4061,
+            "value": 938.6591
+          },
+          {
+            "x": 592,
+            "y": 3827,
+            "value": 938.79346
+          }
+        ]
+      },
+      {
+        "name": "lambda0_band_21",
+        "description": "OLCI characterised central wavelength",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "nm",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3197,
+            "y": 627,
+            "value": 1015.44696
+          },
+          {
+            "x": 3174,
+            "y": 1035,
+            "value": 1015.4691
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_1",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2049,
+            "y": 3755,
+            "value": 1505.3029
+          },
+          {
+            "x": 4455,
+            "y": 1156,
+            "value": 1475.2822
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_2",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1725,
+            "y": 1567,
+            "value": 1657.9972
+          },
+          {
+            "x": 270,
+            "y": 2056,
+            "value": 1656.8503
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_3",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1306,
+            "y": 795,
+            "value": 1825.5883
+          },
+          {
+            "x": 296,
+            "y": 3588,
+            "value": 1837.4929
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_4",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 114,
+            "y": 3888,
+            "value": "NaN"
+          },
+          {
+            "x": 1702,
+            "y": 2986,
+            "value": 1876.6897
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_5",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3614,
+            "y": 3213,
+            "value": 1854.007
+          },
+          {
+            "x": 4820,
+            "y": 2472,
+            "value": 1863.8713
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_6",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2665,
+            "y": 1971,
+            "value": 1740.6796
+          },
+          {
+            "x": 2105,
+            "y": 169,
+            "value": 1738.3024
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_7",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2880,
+            "y": 3296,
+            "value": 1597.262
+          },
+          {
+            "x": 4848,
+            "y": 3988,
+            "value": "NaN"
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_8",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4205,
+            "y": 3909,
+            "value": 1481.1005
+          },
+          {
+            "x": 2130,
+            "y": 960,
+            "value": 1481.1471
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_9",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4088,
+            "y": 1077,
+            "value": 1446.3932
+          },
+          {
+            "x": 1871,
+            "y": 2295,
+            "value": 1446.2721
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_10",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2793,
+            "y": 1243,
+            "value": 1423.3154
+          },
+          {
+            "x": 884,
+            "y": 1252,
+            "value": 1422.2943
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_11",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4314,
+            "y": 4012,
+            "value": 1358.5536
+          },
+          {
+            "x": 3187,
+            "y": 1515,
+            "value": 1362.2686
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_12",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2043,
+            "y": 2436,
+            "value": 1225.7378
+          },
+          {
+            "x": 686,
+            "y": 3182,
+            "value": 1225.7339
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_13",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 936,
+            "y": 1493,
+            "value": 1207.4746
+          },
+          {
+            "x": 529,
+            "y": 206,
+            "value": 1207.1938
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_14",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 4486,
+            "y": 3757,
+            "value": 1200.8307
+          },
+          {
+            "x": 989,
+            "y": 950,
+            "value": 1200.4639
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_15",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2504,
+            "y": 1381,
+            "value": 1188.0094
+          },
+          {
+            "x": 724,
+            "y": 376,
+            "value": 1190.466
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_16",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 1474,
+            "y": 3347,
+            "value": 1137.6398
+          },
+          {
+            "x": 3927,
+            "y": 3774,
+            "value": 1136.3823
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_17",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 3020,
+            "y": 3243,
+            "value": 928.27747
+          },
+          {
+            "x": 3357,
+            "y": 579,
+            "value": 928.94965
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_18",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 948,
+            "y": 3150,
+            "value": 901.50244
+          },
+          {
+            "x": 1193,
+            "y": 3944,
+            "value": 901.7261
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_19",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2072,
+            "y": 1651,
+            "value": 867.1374
+          },
+          {
+            "x": 2465,
+            "y": 471,
+            "value": 867.32227
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_20",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2580,
+            "y": 2886,
+            "value": 799.8116
+          },
+          {
+            "x": 4096,
+            "y": 1676,
+            "value": 799.7527
+          }
+        ]
+      },
+      {
+        "name": "solar_flux_band_21",
+        "description": "In-band solar irradiance, seasonally corrected",
+        "bandWidth": 4865,
+        "bandHeight": 4091,
+        "geophysicalUnit": "mW.m-2.nm-1",
+        "noDataValue": "-1.0",
+        "noDataValueUsed": "true",
+        "spectralWavelength": "0.0",
+        "spectralBandwidth": "0.0",
+        "expectedPixels": [
+          {
+            "x": 2608,
+            "y": 1912,
+            "value": 677.09906
+          },
+          {
+            "x": 266,
+            "y": 242,
+            "value": 677.26825
+          }
+        ]
+      }
+    ],
+    "masks": [
+      {
+        "name": "quality_flags_land",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,63",
+        "description": "quality_flags.land"
+      },
+      {
+        "name": "quality_flags_coastline",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,0",
+        "description": "quality_flags.coastline"
+      },
+      {
+        "name": "quality_flags_fresh_inland_water",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,63",
+        "description": "quality_flags.fresh_inland_water"
+      },
+      {
+        "name": "quality_flags_tidal_region",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,255",
+        "description": "quality_flags.tidal_region"
+      },
+      {
+        "name": "quality_flags_bright",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,0",
+        "description": "quality_flags.bright"
+      },
+      {
+        "name": "quality_flags_straylight_risk",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,255",
+        "description": "quality_flags.straylight_risk"
+      },
+      {
+        "name": "quality_flags_invalid",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,255",
+        "description": "quality_flags.invalid"
+      },
+      {
+        "name": "quality_flags_cosmetic",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,0",
+        "description": "quality_flags.cosmetic"
+      },
+      {
+        "name": "quality_flags_duplicated",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,127",
+        "description": "quality_flags.duplicated"
+      },
+      {
+        "name": "quality_flags_sun_glint_risk",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,0",
+        "description": "quality_flags.sun_glint_risk"
+      },
+      {
+        "name": "quality_flags_dubious",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,127",
+        "description": "quality_flags.dubious"
+      },
+      {
+        "name": "quality_flags_saturated_Oa01",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,255,127",
+        "description": "quality_flags.saturated_Oa01"
+      },
+      {
+        "name": "quality_flags_saturated_Oa02",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,0,0",
+        "description": "quality_flags.saturated_Oa02"
+      },
+      {
+        "name": "quality_flags_saturated_Oa03",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,0,127",
+        "description": "quality_flags.saturated_Oa03"
+      },
+      {
+        "name": "quality_flags_saturated_Oa04",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,0,255",
+        "description": "quality_flags.saturated_Oa04"
+      },
+      {
+        "name": "quality_flags_saturated_Oa05",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,127,0",
+        "description": "quality_flags.saturated_Oa05"
+      },
+      {
+        "name": "quality_flags_saturated_Oa06",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,127,127",
+        "description": "quality_flags.saturated_Oa06"
+      },
+      {
+        "name": "quality_flags_saturated_Oa07",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,127,255",
+        "description": "quality_flags.saturated_Oa07"
+      },
+      {
+        "name": "quality_flags_saturated_Oa08",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,255,0",
+        "description": "quality_flags.saturated_Oa08"
+      },
+      {
+        "name": "quality_flags_saturated_Oa09",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,255,127",
+        "description": "quality_flags.saturated_Oa09"
+      },
+      {
+        "name": "quality_flags_saturated_Oa10",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "127,255,255",
+        "description": "quality_flags.saturated_Oa10"
+      },
+      {
+        "name": "quality_flags_saturated_Oa11",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,0,127",
+        "description": "quality_flags.saturated_Oa11"
+      },
+      {
+        "name": "quality_flags_saturated_Oa12",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,127,0",
+        "description": "quality_flags.saturated_Oa12"
+      },
+      {
+        "name": "quality_flags_saturated_Oa13",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,127,127",
+        "description": "quality_flags.saturated_Oa13"
+      },
+      {
+        "name": "quality_flags_saturated_Oa14",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,127,255",
+        "description": "quality_flags.saturated_Oa14"
+      },
+      {
+        "name": "quality_flags_saturated_Oa15",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "255,255,127",
+        "description": "quality_flags.saturated_Oa15"
+      },
+      {
+        "name": "quality_flags_saturated_Oa16",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,0,63",
+        "description": "quality_flags.saturated_Oa16"
+      },
+      {
+        "name": "quality_flags_saturated_Oa17",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,63,0",
+        "description": "quality_flags.saturated_Oa17"
+      },
+      {
+        "name": "quality_flags_saturated_Oa18",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,63,63",
+        "description": "quality_flags.saturated_Oa18"
+      },
+      {
+        "name": "quality_flags_saturated_Oa19",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,63,127",
+        "description": "quality_flags.saturated_Oa19"
+      },
+      {
+        "name": "quality_flags_saturated_Oa20",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,63,191",
+        "description": "quality_flags.saturated_Oa20"
+      },
+      {
+        "name": "quality_flags_saturated_Oa21",
+        "type": "org.esa.snap.core.datamodel.Mask$BandMathsType",
+        "color": "0,127,191",
+        "description": "quality_flags.saturated_Oa21"
+      }
+    ],
+    "metadata": [
+      {
+        "path": "time_stamp/_FillValue",
+        "value": "-1"
+      },
+      {
+        "path": "time_stamp/standard_name",
+        "value": "time "
+      },
+      {
+        "path": "time_stamp/_ChunkSizes",
+        "value": "4091"
+      },
+      {
+        "path": "time_stamp/units",
+        "value": "microseconds since 2000-01-01 00:00:00 "
+      },
+      {
+        "path": "relative_spectral_covariance/ancillary_variables",
+        "value": "lambda0 "
+      },
+      {
+        "path": "Manifest/metadataSection/platform/instrument/familyName/familyName",
+        "value": "Ocean Land Colour Instrument"
+      },
+      {
+        "path": "reference_pressure_level/valid_max",
+        "value": "1500.0"
+      },
+      {
+        "path": "time_stamp/long_name",
+        "value": "Elapsed time since 01 Jan 2000 0h "
+      },
+      {
+        "path": "relative_spectral_covariance/_FillValue",
+        "value": "NaN"
+      },
+      {
+        "path": "relative_spectral_covariance/long_name",
+        "value": "Relative spectral covariance matrix "
+      }
+    ]
+  }
+}

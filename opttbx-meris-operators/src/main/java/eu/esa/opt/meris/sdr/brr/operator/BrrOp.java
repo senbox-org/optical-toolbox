@@ -299,7 +299,7 @@ public class BrrOp extends BrrBasisOp {
         return frameAndBlock;
     }
 
-    private class FrameAndBlock {
+    private static class FrameAndBlock {
         DpmPixel[] frame;
         DpmPixel[][] block;
 

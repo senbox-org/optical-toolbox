@@ -189,7 +189,7 @@ class PDUStitchingPanel extends JPanel {
                         }
                         final Logger logger = Logger.getLogger(PDUStitchingPanel.class.getName());
                         final Set<File> dissolvedFilePaths = PDUStitchingOp.getSourceProductsPathFileSet(filePaths, logger);
-                        File[] pathFiles = dissolvedFilePaths.toArray(new File[dissolvedFilePaths.size()]);
+                        File[] pathFiles = dissolvedFilePaths.toArray(new File[0]);
                         Product[] validatedProducts = new Product[0];
                         String[] validatedPaths = new String[0];
                         List<String> validatedFileNamesList = new ArrayList<>();
@@ -239,10 +239,10 @@ class PDUStitchingPanel extends JPanel {
                             }
                         }
                         if (validatedProductsList.size() > 0) {
-                            validatedProducts = validatedProductsList.toArray(new Product[validatedProductsList.size()]);
+                            validatedProducts = validatedProductsList.toArray(new Product[0]);
                         }
                         if (validatedPathsList.size() > 0) {
-                            validatedPaths = validatedPathsList.toArray(new String[validatedPathsList.size()]);
+                            validatedPaths = validatedPathsList.toArray(new String[0]);
                         }
                         if (validatedFilesList.size() == 0) {
                             statusLabel.setForeground(Color.BLACK);
@@ -251,7 +251,7 @@ class PDUStitchingPanel extends JPanel {
                         } else {
                             worldMapPane.setEnabled(true);
                             try {
-                                Validator.validate(validatedFilesList.toArray(new File[validatedFilesList.size()]));
+                                Validator.validate(validatedFilesList.toArray(new File[0]));
                                 statusLabel.setForeground(Color.GREEN.darker());
                                 statusLabel.setText(VALID_SOURCE_PRODUCTS_TEXT);
                             } catch (IOException e) {

@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -464,11 +465,11 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testCreatePreferredTileSize_l2UsesFullProductSize() throws Exception {
+    public void testCreatePreferredTileSize_l2() throws Exception {
         final java.awt.Dimension tileSize = invokeCreatePreferredTileSize("FLX_L2_FLXSYN", 367, 366);
 
-        assertEquals(367, tileSize.width);
-        assertEquals(366, tileSize.height);
+        assertEquals(128, tileSize.width);
+        assertEquals(128, tileSize.height);
     }
 
     @Test
@@ -476,8 +477,29 @@ public class FlexProductReaderTest {
     public void testCreatePreferredTileSize_l1cUsesDefaultTileHeight() throws Exception {
         final java.awt.Dimension tileSize = invokeCreatePreferredTileSize("FLX_L1C_FLXSYN", 530, 4138);
 
-        assertEquals(530, tileSize.width);
-        assertEquals(FlexProductReader.L1B_L1C_TILE_HEIGHT_DEFAULT, tileSize.height);
+        assertEquals(265, tileSize.width);
+        assertEquals(FlexProductReader.TILE_SIZE_DEFAULT, tileSize.height);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testCreatePreferredTileSize_l1bUsesFullProductWidth() throws Exception {
+        final java.awt.Dimension tileSize = invokeCreatePreferredTileSize("FLX_L1B_OBS", 536, 3640);
+
+        assertEquals(536, tileSize.width);
+        assertEquals(FlexProductReader.TILE_SIZE_DEFAULT, tileSize.height);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testCreatePreferredTileSize_unsupportedProductTypeThrowsException() throws Exception {
+        try {
+            invokeCreatePreferredTileSize("FLX_L0_UNKNOWN", 100, 100);
+            fail("Expected IllegalArgumentException");
+        } catch (InvocationTargetException expected) {
+            assertTrue(expected.getCause() instanceof IllegalArgumentException);
+            assertEquals("Unsupported FLEX product type: FLX_L0_UNKNOWN", expected.getCause().getMessage());
+        }
     }
 
     @Test
@@ -835,9 +857,9 @@ public class FlexProductReaderTest {
 
         final Variable variable = mock(Variable.class);
         when(variable.getDataType()).thenReturn(DataType.USHORT);
-        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", 0.009155552843));
-        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", -0.25));
-        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", 65535));
+        when(variable.findAttribute(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 0.009155552843));
+        when(variable.findAttribute(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, -0.25));
+        when(variable.findAttribute(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 65535));
         final NetcdfFile ncFile = mock(NetcdfFile.class);
         when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
         ncFilesMap(reader).put("sample_l1c.nc", ncFile);
@@ -1172,9 +1194,9 @@ public class FlexProductReaderTest {
 
         final Variable variable = mock(Variable.class);
         when(variable.getDataType()).thenReturn(DataType.USHORT);
-        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", 1.525925474E-5));
-        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", 0.5));
-        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", 65535));
+        when(variable.findAttribute(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 1.525925474E-5));
+        when(variable.findAttribute(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, 0.5));
+        when(variable.findAttribute(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 65535));
         final NetcdfFile ncFile = mock(NetcdfFile.class);
         when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
         ncFilesMap(reader).put("sample_l2.nc", ncFile);

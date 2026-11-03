@@ -23,6 +23,7 @@ import org.esa.snap.core.datamodel.TiePointGrid;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
 import java.util.Vector;
 
 class AtsrHeader implements AtsrConstants {
@@ -31,7 +32,7 @@ class AtsrHeader implements AtsrConstants {
     private MetadataElement _mph;
     private MetadataElement _qads;
 
-    private Vector _tiePointGrids;
+    private final Vector<TiePointGrid> _tiePointGrids;
     private InputStreamReader _reader;
     private boolean _nadirOnly;
     private boolean _thermalPresent;
@@ -46,7 +47,7 @@ class AtsrHeader implements AtsrConstants {
      * Constructs the object with default parameter
      */
     public AtsrHeader() {
-        _tiePointGrids = new Vector();
+        _tiePointGrids = new Vector<>();
     }
 
     /**
@@ -82,20 +83,14 @@ class AtsrHeader implements AtsrConstants {
      * Retrieves the number of tie point grids parsed
      */
     public int getNumTiePointGrids() {
-        int nRet = 0;
-
-        if (_tiePointGrids != null) {
-            nRet = _tiePointGrids.size();
-        }
-
-        return nRet;
+        return _tiePointGrids.size();
     }
 
     /**
      * Retrieves the tie point grid at the given location.
      */
     public TiePointGrid getTiePointGridAt(int nIndex) {
-        return (TiePointGrid) _tiePointGrids.elementAt(nIndex);
+        return _tiePointGrids.elementAt(nIndex);
     }
 
     /**
@@ -179,7 +174,7 @@ class AtsrHeader implements AtsrConstants {
      * </ul>
      */
     private void parseBaseParameter() throws IOException {
-        MetadataAttribute attribute = null;
+        MetadataAttribute attribute;
 
         // read the byte swap word (and forget it gently :-)
         parseString(BYTE_ORDER_SIZE);
@@ -201,7 +196,7 @@ class AtsrHeader implements AtsrConstants {
      * <li>longitude os ascending node</li> </ul>
      */
     private void parseOrbitParameter() throws IOException {
-        MetadataAttribute attribute = null;
+        MetadataAttribute attribute;
 
         // state vector type
         attribute = parseStringAttribute(STATE_VECTOR_TYPE_SIZE, STATE_VECTOR_FIELD_NAME, null, null);
@@ -270,10 +265,10 @@ class AtsrHeader implements AtsrConstants {
      * clock</li> <li>satellite clock period</li> </ul>
      */
     private void parseClockCalibrationParameter() throws IOException {
-        float fData = 0.f;
-        long nData = 0;
-        MetadataAttribute attribute = null;
-        ProductData data = null;
+        float fData;
+        long nData;
+        MetadataAttribute attribute;
+        ProductData data;
 
         // reference universal time
         fData = parseFloat(REFERENCE_UT_SIZE);
@@ -308,7 +303,6 @@ class AtsrHeader implements AtsrConstants {
      * <li>X/Y coordinates records present</li> <li>Cloudclearing/land flagging records present</li> </ul>
      */
     private void parseProductOptionalContentsParameter() throws IOException {
-
         // nadir only present
         int value = parseAndAddAttributeToSPH(NADIR_ONLY_PRESENT_NAME, NADIR_ONLY_DESCRIPTION);
         _nadirOnly = value > 0;
@@ -340,11 +334,11 @@ class AtsrHeader implements AtsrConstants {
      *
      * @return the <code>int</code> value of the attribute
      *
-     * @throws IOException
+     * @throws IOException on disk access problems
      */
     private int parseAndAddAttributeToSPH(String attributeName, String attributeDescription) throws IOException {
-        int nData = parseInt(RECORD_CONTENTS_SIZE);
-        ProductData data = ProductData.createInstance(new int[]{nData});
+        final int nData = parseInt(RECORD_CONTENTS_SIZE);
+        final ProductData data = ProductData.createInstance(new int[]{nData});
         MetadataAttribute attribute = new MetadataAttribute(attributeName, data, true);
         attribute.setDescription(attributeDescription);
         _sph.addAttribute(attribute);
@@ -356,7 +350,7 @@ class AtsrHeader implements AtsrConstants {
      * acquisition</li> <li>lat/lon of product corners</li> </ul>
      */
     private void parseProductPositionParameters() throws IOException {
-        MetadataAttribute attribute = null;
+        MetadataAttribute attribute;
 
         // track distance of product start
         attribute = parseIntAttribute(TRACK_DISTANCE_SIZE, TRACK_DISTANCE_START_NAME,
@@ -424,9 +418,9 @@ class AtsrHeader implements AtsrConstants {
      * of data acquisition</li> <li>lat/lon of product corners</li> </ul>
      */
     private void parseInstrumentModesAndTemperatureParameter() throws IOException {
-        int[] dataArray = new int[2];
-        ProductData data = null;
-        MetadataAttribute attribute = null;
+        final int[] dataArray = new int[2];
+        ProductData data;
+        MetadataAttribute attribute;
 
         dataArray[0] = parseInt(PIXEL_SELECTION_MAP_SIZE);
         dataArray[1] = parseInt(PIXEL_SELECTION_MAP_SIZE);
@@ -535,7 +529,7 @@ class AtsrHeader implements AtsrConstants {
      * <li>Packet validation</li> <li>maximum pixel error</li> </ul> for nadir and forward view
      */
     private void parseProductConfidenceInformation() throws IOException {
-        MetadataAttribute attribute = null;
+        MetadataAttribute attribute;
 
         attribute = parseIntAttribute(CONFIDENCE_SIZE, ERS_MODE_YSM_NADIR_NAME,
                                       ERS_MODE_YSM_NADIR_DESCRIPTION, null);
@@ -610,23 +604,26 @@ class AtsrHeader implements AtsrConstants {
      * Parses <code>size</code> bytes from the stream and creates a string of it.
      */
     private String parseString(int size) throws IOException {
-        char[] array = new char[size];
-        String strRet;
+        final char[] array = new char[size];
 
-        _reader.read(array, 0, size);
-        strRet = new String(array);
-        strRet = strRet.trim();
+        final int iRead = _reader.read(array, 0, size);
+        if (iRead != size) {
+            return null;
+        }
 
-        return strRet;
+        return new String(array).trim();
     }
 
     /**
      * Parses <code>size</code> bytes from the stream and creates a float of it.
      */
     private float parseFloat(int size) throws IOException {
-        char[] array = new char[size];
+        final char[] array = new char[size];
 
-        _reader.read(array, 0, size);
+        final int iRead = _reader.read(array, 0, size);
+        if (iRead != size) {
+            return Float.NaN;
+        }
 
         return Float.parseFloat(new String(array));
     }
@@ -635,12 +632,16 @@ class AtsrHeader implements AtsrConstants {
      * Parses <code>numElems * size</code> bytes from the stream and creates a float array of numElems elements of it.
      */
     private float[] parseFloatArray(int size, int numElems) throws IOException {
-        char[] array = new char[size];
-        float[] fRet = new float[numElems];
+        final char[] array = new char[size];
+        final float[] fRet = new float[numElems];
 
         for (int n = 0; n < numElems; n++) {
-            _reader.read(array, 0, size);
-            fRet[n] = Float.parseFloat(new String(array));
+            final int iRead = _reader.read(array, 0, size);
+            if (iRead != size) {
+                fRet[n] = Float.NaN;
+            } else {
+                fRet[n] = Float.parseFloat(new String(array));
+            }
         }
 
         return fRet;
@@ -650,11 +651,13 @@ class AtsrHeader implements AtsrConstants {
      * Parses <code>size</code> bytes from the stream and creates an int of it.
      */
     private int parseInt(int size) throws IOException {
-        char[] array = new char[size];
+        final char[] array = new char[size];
 
-        _reader.read(array, 0, size);
-        String bufString = new String(array);
-        bufString = bufString.trim();
+        final int iRead = _reader.read(array, 0, size);
+        if (iRead != size) {
+            return -1;
+        }
+        final String bufString = new String(array).trim();
 
         return Integer.parseInt(bufString);
     }
@@ -663,15 +666,17 @@ class AtsrHeader implements AtsrConstants {
      * Parses <code>numElems * size</code> bytes from the stream and creates an int array of numElems elements of it.
      */
     private int[] parseIntArray(int size, int numElems) throws IOException {
-        char[] array = new char[size];
-        int[] nRet = new int[numElems];
-        String str = null;
+        final char[] array = new char[size];
+        final int[] nRet = new int[numElems];
 
         for (int n = 0; n < numElems; n++) {
-            _reader.read(array, 0, size);
-            str = new String(array);
-            str = str.trim();
-            nRet[n] = Integer.parseInt(str);
+            final int iRead = _reader.read(array, 0, size);
+            if (iRead != size) {
+                nRet[n] = -1;
+            } else {
+                final String str = new String(array).trim();
+                nRet[n] = Integer.parseInt(str);
+            }
         }
 
         return nRet;
@@ -681,11 +686,13 @@ class AtsrHeader implements AtsrConstants {
      * Parses <code>size</code> bytes from the stream and creates a long of it.
      */
     private long parseLong(int size) throws IOException {
-        char[] array = new char[size];
+        final char[] array = new char[size];
 
-        _reader.read(array, 0, size);
-        String bufString = new String(array);
-        bufString = bufString.trim();
+        final int iRead = _reader.read(array, 0, size);
+        if (iRead != size) {
+            return -1;
+        }
+        final String bufString = new String(array).trim();
 
         return Long.parseLong(bufString);
     }
@@ -693,15 +700,10 @@ class AtsrHeader implements AtsrConstants {
     /**
      * Parses a string attribute from the stream
      */
-    private MetadataAttribute parseStringAttribute(int size, String name,
-                                                   String description, String unit) throws IOException {
-        String string = null;
-        MetadataAttribute attribute = null;
-        ProductData data = null;
-
-        string = parseString(size);
-        data = ProductData.createInstance(string);
-        attribute = new MetadataAttribute(name, data, true);
+    private MetadataAttribute parseStringAttribute(int size, String name, String description, String unit) throws IOException {
+        final String string = parseString(size);
+        final ProductData data = ProductData.createInstance(string);
+        final MetadataAttribute attribute = new MetadataAttribute(name, data, true);
         if (description != null) {
             attribute.setDescription(description);
         }
@@ -715,15 +717,10 @@ class AtsrHeader implements AtsrConstants {
     /**
      * Parses an integer attribute from the stream
      */
-    private MetadataAttribute parseIntAttribute(int size, String name,
-                                                String description, String unit) throws IOException {
-        int nData = 0;
-        MetadataAttribute attribute = null;
-        ProductData data = null;
-
-        nData = parseInt(size);
-        data = ProductData.createInstance(new int[]{nData});
-        attribute = new MetadataAttribute(name, data, true);
+    private MetadataAttribute parseIntAttribute(int size, String name, String description, String unit) throws IOException {
+        final int nData = parseInt(size);
+        final ProductData data = ProductData.createInstance(new int[]{nData});
+        final MetadataAttribute attribute = new MetadataAttribute(name, data, true);
         if (description != null) {
             attribute.setDescription(description);
         }
@@ -737,15 +734,10 @@ class AtsrHeader implements AtsrConstants {
     /**
      * Parses an integer array attribute from the stream
      */
-    private MetadataAttribute parseIntArrayAttribute(int size, int numElems, String name,
-                                                     String description, String unit) throws IOException {
-        int[] nData = null;
-        MetadataAttribute attribute = null;
-        ProductData data = null;
-
-        nData = parseIntArray(size, numElems);
-        data = ProductData.createInstance(nData);
-        attribute = new MetadataAttribute(name, data, true);
+    private MetadataAttribute parseIntArrayAttribute(int size, int numElems, String name, String description, String unit) throws IOException {
+        final int[] nData = parseIntArray(size, numElems);
+        final ProductData data = ProductData.createInstance(nData);
+        final MetadataAttribute attribute = new MetadataAttribute(name, data, true);
         if (description != null) {
             attribute.setDescription(description);
         }
@@ -759,15 +751,10 @@ class AtsrHeader implements AtsrConstants {
     /**
      * Parses a float attribute from the stream
      */
-    private MetadataAttribute parseFloatAttribute(int size, String name,
-                                                  String description, String unit) throws IOException {
-        float fData = 0.f;
-        MetadataAttribute attribute = null;
-        ProductData data = null;
-
-        fData = parseFloat(size);
-        data = ProductData.createInstance(new float[]{fData});
-        attribute = new MetadataAttribute(name, data, true);
+    private MetadataAttribute parseFloatAttribute(int size, String name, String description, String unit) throws IOException {
+        final float fData = parseFloat(size);
+        final ProductData data = ProductData.createInstance(new float[]{fData});
+        final MetadataAttribute attribute = new MetadataAttribute(name, data, true);
         if (description != null) {
             attribute.setDescription(description);
         }
@@ -782,12 +769,11 @@ class AtsrHeader implements AtsrConstants {
      * Parses a complete tie point grid and adds it to the tie poinzts grids vector
      */
     private void parseTiePointGrid(String tiePtName, String description) throws IOException {
-        TiePointGrid grid = null;
-        int arraySize = ATSR_TIE_PT_GRID_WIDTH * ATSR_TIE_PT_GRID_HEIGHT;
+        final int arraySize = ATSR_TIE_PT_GRID_WIDTH * ATSR_TIE_PT_GRID_HEIGHT;
 
-        float[] fData = parseFloatArray(ANGLE_PARAMETER_SIZE, arraySize);
+        final float[] fData = parseFloatArray(ANGLE_PARAMETER_SIZE, arraySize);
 
-        grid = new TiePointGrid(tiePtName, ATSR_TIE_PT_GRID_WIDTH, ATSR_TIE_PT_GRID_HEIGHT,
+        final TiePointGrid grid = new TiePointGrid(tiePtName, ATSR_TIE_PT_GRID_WIDTH, ATSR_TIE_PT_GRID_HEIGHT,
                                 ATSR_TIE_PT_OFFS_X, 0, ATSR_TIE_PT_SUBS_X, ATSR_TIE_PT_SUBS_Y, fData);
         grid.setUnit(ANGLE_UNIT);
         if (description != null) {

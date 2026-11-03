@@ -296,8 +296,8 @@ public class ReplaceValueOp extends PointOpImage {
         int srcLineOffset = 0;
         int dstLineOffset = 0;
 
-        int x0 = 0;
-        int y0 = 0;
+        int x0;
+        int y0;
 
         int srcX = src.getX();
         int srcY = src.getY();
@@ -471,8 +471,8 @@ public class ReplaceValueOp extends PointOpImage {
         int srcLineOffset = 0;
         int dstLineOffset = 0;
 
-        int x0 = 0;
-        int y0 = 0;
+        int x0;
+        int y0;
 
         int srcX = src.getX();
         int srcY = src.getY();
@@ -649,8 +649,8 @@ public class ReplaceValueOp extends PointOpImage {
         int srcLineOffset = 0;
         int dstLineOffset = 0;
 
-        int x0 = 0;
-        int y0 = 0;
+        int x0;
+        int y0;
 
         int srcX = src.getX();
         int srcY = src.getY();
@@ -823,8 +823,8 @@ public class ReplaceValueOp extends PointOpImage {
         int srcLineOffset = 0;
         int dstLineOffset = 0;
 
-        int x0 = 0;
-        int y0 = 0;
+        int x0;
+        int y0;
 
         int srcX = src.getX();
         int srcY = src.getY();
@@ -997,8 +997,8 @@ public class ReplaceValueOp extends PointOpImage {
         int srcLineOffset = 0;
         int dstLineOffset = 0;
 
-        int x0 = 0;
-        int y0 = 0;
+        int x0;
+        int y0;
 
         int srcX = src.getX();
         int srcY = src.getY();
@@ -1173,8 +1173,8 @@ public class ReplaceValueOp extends PointOpImage {
         int srcLineOffset = 0;
         int dstLineOffset = 0;
 
-        int x0 = 0;
-        int y0 = 0;
+        int x0;
+        int y0;
 
         int srcX = src.getX();
         int srcY = src.getY();

@@ -368,7 +368,8 @@ public abstract class BaseIndexOp extends Operator {
         }
         return null;
     }
-    private class MaskDescriptor {
+
+    private static class MaskDescriptor {
 
         String name;
         String expression;

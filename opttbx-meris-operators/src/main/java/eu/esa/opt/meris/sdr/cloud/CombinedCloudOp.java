@@ -84,20 +84,7 @@ public class CombinedCloudOp extends MerisBasisOp {
                     boolean snowIndex = BitSetter.isFlagSet(blueBand, BlueBandOp.SNOW_INDEX_BIT);
                     boolean brightLand = BitSetter.isFlagSet(blueBand, BlueBandOp.BRIGHT_LAND_BIT);
 
-                    if (snowPlausible && (snowIndex || combined == FLAG_SNOW)) {
-                        result = FLAG_SNOW;
-                    } else if (!snowPlausible && (snowIndex || combined == FLAG_SNOW)) {
-                        result = FLAG_CLOUD;
-                    } else if (brightLand && !snowPlausible && ((snowIndex && combined != FLAG_CLOUD) || combined == FLAG_SNOW)) {
-                        result = FLAG_CLOUD;
-                    } else if (combined == FLAG_CLOUD && !snowIndex) {
-                        result = FLAG_CLOUD;
-                    } else {
-                        result = FLAG_CLEAR;
-                    }
-                    if (combined == FLAG_CLEAR) {
-                        result = FLAG_CLEAR;
-                    }
+                    result = getCombinedCloudFlag(snowPlausible, snowIndex, combined, brightLand);
                 }
                 combinedCloudData[i] = result;
                 pm.worked(1);
@@ -107,7 +94,26 @@ public class CombinedCloudOp extends MerisBasisOp {
             pm.done();
         }
     }
-    
+
+    static byte getCombinedCloudFlag(boolean snowPlausible, boolean snowIndex, byte combined, boolean brightLand) {
+        byte result;
+        if (snowPlausible && (snowIndex || combined == FLAG_SNOW)) {
+            result = FLAG_SNOW;
+        } else if (!snowPlausible && (snowIndex || combined == FLAG_SNOW)) {
+            result = FLAG_CLOUD;
+        } else if (brightLand && !snowPlausible && ((snowIndex && combined != FLAG_CLOUD) || combined == FLAG_SNOW)) {
+            result = FLAG_CLOUD;
+        } else if (combined == FLAG_CLOUD && !snowIndex) {
+            result = FLAG_CLOUD;
+        } else {
+            result = FLAG_CLEAR;
+        }
+        if (combined == FLAG_CLEAR) {
+            result = FLAG_CLEAR;
+        }
+        return result;
+    }
+
     public static FlagCoding createFlagCoding() {
         MetadataAttribute cloudAttr;
         final FlagCoding flagCoding = new FlagCoding(FLAG_BAND_NAME);

@@ -55,10 +55,10 @@ public class ObjectMemory {
         if (objectClass.isArray()) {
             if (objectClass == long[].class) {
                 long[] objs = (long[]) objectToComputeSizeOf;
-                size += objs.length * LONG_SIZE;
+                size += (long) objs.length * LONG_SIZE;
             } else if (objectClass == int[].class) {
                 int[] objs = (int[]) objectToComputeSizeOf;
-                size += objs.length * INT_SIZE;
+                size += (long) objs.length * INT_SIZE;
             } else if (objectClass == byte[].class) {
                 byte[] objs = (byte[]) objectToComputeSizeOf;
                 size += objs.length * BYTE_SIZE;
@@ -67,16 +67,16 @@ public class ObjectMemory {
                 size += objs.length * BOOLEAN_SIZE;
             } else if (objectClass == char[].class) {
                 char[] objs = (char[]) objectToComputeSizeOf;
-                size += objs.length * CHAR_SIZE;
+                size += (long) objs.length * CHAR_SIZE;
             } else if (objectClass == short[].class) {
                 short[] objs = (short[]) objectToComputeSizeOf;
-                size += objs.length * SHORT_SIZE;
+                size += (long) objs.length * SHORT_SIZE;
             } else if (objectClass == float[].class) {
                 float[] objs = (float[]) objectToComputeSizeOf;
-                size += objs.length * FLOAT_SIZE;
+                size += (long) objs.length * FLOAT_SIZE;
             } else if (objectClass == double[].class) {
                 double[] objs = (double[]) objectToComputeSizeOf;
-                size += objs.length * DOUBLE_SIZE;
+                size += (long) objs.length * DOUBLE_SIZE;
             } else {
                 Object[] objs = (Object[]) objectToComputeSizeOf;
                 for (int i = 0; i < objs.length; i++) {

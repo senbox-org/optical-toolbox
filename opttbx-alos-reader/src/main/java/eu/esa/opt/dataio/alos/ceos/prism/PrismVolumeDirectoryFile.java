@@ -27,6 +27,7 @@ import org.esa.snap.core.util.ImageUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 class PrismVolumeDirectoryFile {
 
@@ -57,7 +58,7 @@ class PrismVolumeDirectoryFile {
     }
 
     public String[] getImageFileNames() {
-        final ArrayList list = new ArrayList();
+        final ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < _filePointerRecords.length; i++) {
             final FilePointerRecord filePointerRecord = _filePointerRecords[i];
             if (filePointerRecord.isImageFileRecord()) {
@@ -65,15 +66,13 @@ class PrismVolumeDirectoryFile {
                 list.add(CeosHelper.getImageFileName(_textRecord, fileID.substring(15)));
             }
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[0]);
     }
 
     public void close() throws IOException {
         _ceosReader.close();
         _ceosReader = null;
-        for (int i = 0; i < _filePointerRecords.length; i++) {
-            _filePointerRecords[i] = null;
-        }
+        Arrays.fill(_filePointerRecords, null);
         _filePointerRecords = null;
         _volumeDescriptorRecord = null;
         _textRecord = null;

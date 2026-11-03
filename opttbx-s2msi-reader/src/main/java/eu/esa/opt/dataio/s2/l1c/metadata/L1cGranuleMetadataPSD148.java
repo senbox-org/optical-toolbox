@@ -236,7 +236,7 @@ public class L1cGranuleMetadataPSD148 extends GenericXmlMetadata implements IL1c
                                                                                 maskData));
         }
 
-        maskFileNamesArray = aMaskList.toArray(new S2Metadata.MaskFilename[aMaskList.size()]);
+        maskFileNamesArray = aMaskList.toArray(new S2Metadata.MaskFilename[0]);
 
         return maskFileNamesArray;
     }

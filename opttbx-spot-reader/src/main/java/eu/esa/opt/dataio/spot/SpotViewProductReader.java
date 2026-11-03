@@ -62,6 +62,7 @@ import java.util.logging.Logger;
  * @author Cosmin Cara
  * modified 20190516 for VFS compatibility by Oana H.
  */
+@SuppressWarnings("SynchronizeOnNonFinalField")
 public class SpotViewProductReader extends AbstractProductReader {
 
     private static final Logger logger = Logger.getLogger(SpotViewProductReader.class.getName());
@@ -195,11 +196,11 @@ public class SpotViewProductReader extends AbstractProductReader {
                                           ProductData destBuffer, ProgressMonitor pm)
                                           throws IOException {
 
-        Product product = destBand.getProduct();
-        int bandIndex = product.getBandIndex(destBand.getName());
-        int numBands = product.getNumBands();
-        synchronized (this.spotViewImageReader) {
-            this.spotViewImageReader.readBandRasterData(bandIndex, numBands, sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer);
+        final Product product = destBand.getProduct();
+        final int bandIndex = product.getBandIndex(destBand.getName());
+        final int numBands = product.getNumBands();
+        synchronized (spotViewImageReader) {
+            spotViewImageReader.readBandRasterData(bandIndex, numBands, sourceOffsetX, sourceOffsetY, sourceWidth, sourceHeight, sourceStepX, sourceStepY, destOffsetX, destOffsetY, destWidth, destHeight, destBuffer);
         }
     }
 

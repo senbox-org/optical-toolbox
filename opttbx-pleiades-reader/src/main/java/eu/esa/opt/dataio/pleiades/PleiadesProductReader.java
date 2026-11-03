@@ -3,13 +3,10 @@ package eu.esa.opt.dataio.pleiades;
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelImage;
 import com.bc.ceres.multilevel.support.DefaultMultiLevelModel;
+import eu.esa.opt.dataio.pleiades.dimap.*;
 import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import eu.esa.opt.dataio.ColorPaletteBand;
 import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
-import eu.esa.opt.dataio.pleiades.dimap.Constants;
-import eu.esa.opt.dataio.pleiades.dimap.ImageMetadata;
-import eu.esa.opt.dataio.pleiades.dimap.VolumeComponent;
-import eu.esa.opt.dataio.pleiades.dimap.VolumeMetadata;
 import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import eu.esa.opt.dataio.readers.ColorIterator;
 import eu.esa.opt.dataio.readers.GMLReader;
@@ -189,7 +186,7 @@ public class PleiadesProductReader extends AbstractProductReader {
                     product.getMetadataRoot().addElement(imageMetadata.getRootElement());
                 }
                 int numBands = imageMetadata.getNumBands();
-                ImageMetadata.BandInfo[] bandInfos = imageMetadata.getBandsInformation();
+                BandInfo[] bandInfos = imageMetadata.getBandsInformation();
 
                 int dataTypeFromMetadata = imageMetadata.getPixelDataType();
                 int noDataValue = imageMetadata.getNoDataValue();

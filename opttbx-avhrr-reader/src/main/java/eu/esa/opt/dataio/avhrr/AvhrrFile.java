@@ -104,7 +104,7 @@ public abstract class AvhrrFile {
 
     public abstract void dispose() throws IOException;
 
-    public class RawCoordinates {
+    public static class RawCoordinates {
 		public int minX;
 		public int maxX;
 		public int minY;

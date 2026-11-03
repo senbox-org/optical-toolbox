@@ -83,7 +83,7 @@ public class AtsrGSSTFile extends AtsrFile {
      * Creates the sst bands and the confidence band and adds them to the bands vector.
      */
     private void createSSTBands() {
-        Band band = null;
+        Band band;
 
         band = new Band(AtsrGSSTConstants.NADIR_SST_NAME, ProductData.TYPE_FLOAT32,
                         AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
@@ -102,7 +102,7 @@ public class AtsrGSSTFile extends AtsrFile {
      * Creates the nadir view coordinate offset bands and adds them to the bands vector.
      */
     private void createNadirOffsetBands() {
-        Band band = null;
+        Band band;
 
         band = new Band(AtsrGSSTConstants.NADIR_X_OFFS_NAME, ProductData.TYPE_FLOAT32,
                         AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
@@ -121,7 +121,7 @@ public class AtsrGSSTFile extends AtsrFile {
      * Creates the forward view coordinate offset bands and adds them to the bands vector.
      */
     private void createForwardOffsetBands() {
-        Band band = null;
+        Band band;
 
         band = new Band(AtsrGSSTConstants.FORWARD_X_OFFS_NAME, ProductData.TYPE_FLOAT32,
                         AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
@@ -140,7 +140,7 @@ public class AtsrGSSTFile extends AtsrFile {
      * Creates the flag bands and the associated coding.
      */
     private void createFlagBands() {
-        Band band = null;
+        Band band;
 
         createFlagCodings();
 
@@ -172,7 +172,7 @@ public class AtsrGSSTFile extends AtsrFile {
      */
     private void createFlagCodings() {
         _flagCodingConfidence = new FlagCoding(AtsrGSSTConstants.CONFIDENCE_FLAGS_NAME);
-        _flagCodingConfidence = addConfidenceFlagsToCoding(_flagCodingConfidence);
+        addConfidenceFlagsToCoding(_flagCodingConfidence);
 
         if (getHeader().areFlagsPresent()) {
             _flagCodingNadir = new FlagCoding(AtsrConstants.NADIR_FLAGS_NAME);
@@ -188,7 +188,7 @@ public class AtsrGSSTFile extends AtsrFile {
     /**
      * Adds the confidence flags to the coding passed in.
      */
-    private FlagCoding addConfidenceFlagsToCoding(FlagCoding coding) {
+    static void addConfidenceFlagsToCoding(FlagCoding coding) {
         coding.addFlag(AtsrGSSTConstants.NADIR_SST_VALID_FLAG_NAME, AtsrGSSTConstants.NADIR_SST_VALID_FLAG_MASK,
                        AtsrGSSTConstants.NADIR_SST_VALID_FLAG_DESCRIPTION);
         coding.addFlag(AtsrGSSTConstants.NADIR_SST_37_FLAG_NAME, AtsrGSSTConstants.NADIR_SST_37_FLAG_MASK,
@@ -212,7 +212,6 @@ public class AtsrGSSTFile extends AtsrFile {
                        AtsrGSSTConstants.FORWARD_BLANKING_FLAG_DESCRIPTION);
         coding.addFlag(AtsrGSSTConstants.FORWARD_COSMETIC_FLAG_NAME, AtsrGSSTConstants.FORWARD_COSMETIC_FLAG_MASK,
                        AtsrGSSTConstants.FORWARD_COSMETIC_FLAG_DESCRIPTION);
-        return coding;
     }
 
     /**
@@ -250,7 +249,6 @@ public class AtsrGSSTFile extends AtsrFile {
             _nadirFlagsOffset = runningOffset;
             runningOffset += AtsrConstants.ATSR_SCENE_RASTER_WIDTH * AtsrConstants.ATSR_SCENE_RASTER_HEIGHT * AtsrConstants.FLAGS_PIXEL_SIZE;
             _forwardFlagsOffset = runningOffset;
-            runningOffset += AtsrConstants.ATSR_SCENE_RASTER_WIDTH * AtsrConstants.ATSR_SCENE_RASTER_HEIGHT * AtsrConstants.FLAGS_PIXEL_SIZE;
         }
     }
 
@@ -258,7 +256,7 @@ public class AtsrGSSTFile extends AtsrFile {
      * Creates the band readers for the gsst file
      */
     private void createBandReader() {
-        AtsrBandReader reader = null;
+        AtsrBandReader reader;
 
         // sst nadir
         reader = new AtsrShortBandReader(AtsrGSSTConstants.NADIR_SST_NAME, _nadirSSTOffset,
