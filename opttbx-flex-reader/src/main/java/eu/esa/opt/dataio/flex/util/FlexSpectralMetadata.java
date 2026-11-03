@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.FILL_VALUE;
+
 
 public final class FlexSpectralMetadata {
 
@@ -146,7 +148,7 @@ public final class FlexSpectralMetadata {
     }
 
     private static Float getFillValue(MetadataElement metadataElement) {
-        final MetadataAttribute fillValueAttribute = metadataElement.getAttribute("_FillValue");
+        final MetadataAttribute fillValueAttribute = metadataElement.getAttribute(FILL_VALUE);
         if (fillValueAttribute == null || fillValueAttribute.getData().getNumElems() == 0) {
             return null;
         }

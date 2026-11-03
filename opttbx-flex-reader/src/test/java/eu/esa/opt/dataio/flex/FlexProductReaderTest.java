@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -856,9 +857,9 @@ public class FlexProductReaderTest {
 
         final Variable variable = mock(Variable.class);
         when(variable.getDataType()).thenReturn(DataType.USHORT);
-        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", 0.009155552843));
-        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", -0.25));
-        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", 65535));
+        when(variable.findAttribute(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 0.009155552843));
+        when(variable.findAttribute(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, -0.25));
+        when(variable.findAttribute(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 65535));
         final NetcdfFile ncFile = mock(NetcdfFile.class);
         when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
         ncFilesMap(reader).put("sample_l1c.nc", ncFile);
@@ -1193,9 +1194,9 @@ public class FlexProductReaderTest {
 
         final Variable variable = mock(Variable.class);
         when(variable.getDataType()).thenReturn(DataType.USHORT);
-        when(variable.findAttribute("scale_factor")).thenReturn(new Attribute("scale_factor", 1.525925474E-5));
-        when(variable.findAttribute("add_offset")).thenReturn(new Attribute("add_offset", 0.5));
-        when(variable.findAttribute("_FillValue")).thenReturn(new Attribute("_FillValue", 65535));
+        when(variable.findAttribute(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 1.525925474E-5));
+        when(variable.findAttribute(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, 0.5));
+        when(variable.findAttribute(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 65535));
         final NetcdfFile ncFile = mock(NetcdfFile.class);
         when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
         ncFilesMap(reader).put("sample_l2.nc", ncFile);
