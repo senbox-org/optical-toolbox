@@ -34,6 +34,8 @@ import ucar.nc2.Variable;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
+import static eu.esa.snap.core.dataio.CfConstants.TITLE;
+
 /**
  * Created by IntelliJ IDEA.
  * User: seadas
@@ -102,7 +104,7 @@ public class L2FileReader extends SeadasFileReader {
             }
             Variable variable = ncFile.findVariable(navGroup + "/" + latitude);
             if (variable == null ) {
-                String  title = getStringAttribute("title");
+                String  title = getStringAttribute(TITLE);
                 if (title.contains("PACE OCI Level-2 Data UAA 1x1")) {
                     variable = ncFile.findVariable(navGroup + "/Latitude");
                 }

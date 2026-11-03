@@ -22,6 +22,9 @@ import java.text.MessageFormat;
 import java.util.*;
 import java.util.logging.Logger;
 
+import static eu.esa.snap.core.dataio.CfConstants.CONVENTIONS;
+import static eu.esa.snap.core.dataio.CfConstants.FLAG_MEANINGS;
+
 /**
  * @author Tonio Fincke
  */
@@ -435,7 +438,7 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
         final MetadataElement variableElement = new MetadataElement(variable.getFullName());
         final AttributeContainer attributes = variable.attributes();
         for (Attribute attribute : attributes) {
-            if (attribute.getFullName().equals(CFConstants.FLAG_MEANINGS)) {
+            if (attribute.getFullName().equals(FLAG_MEANINGS)) {
                 final String[] flagMeanings = attribute.getStringValue().split(" ");
                 for (int i = 0; i < flagMeanings.length; i++) {
                     String flagMeaning = flagMeanings[i];
@@ -619,7 +622,7 @@ public class S3NetcdfReader extends AbstractProductReader implements S3CacheData
     private String readProductType() {
         Attribute typeAttribute = netcdfFile.findGlobalAttribute(product_type);
         if (typeAttribute == null) {
-            typeAttribute = netcdfFile.findGlobalAttribute("Conventions");
+            typeAttribute = netcdfFile.findGlobalAttribute(CONVENTIONS);
         }
         String type = null;
         if (typeAttribute != null) {
