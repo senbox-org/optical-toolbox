@@ -18,7 +18,7 @@ public class VariableDescriptorTest {
         assertEquals(-1, descriptor.getHeight());
         assertEquals(-1, descriptor.getDepth());
         assertEquals("", descriptor.getDepthPrefixToken());
-        assertEquals("", descriptor.getValidExpression());
+        assertEquals(null, descriptor.getValidExpression());
         assertEquals("", descriptor.getUnits());
         assertEquals("", descriptor.getDescription());
         assertEquals("", descriptor.getTpXSubsamplingXPath());
