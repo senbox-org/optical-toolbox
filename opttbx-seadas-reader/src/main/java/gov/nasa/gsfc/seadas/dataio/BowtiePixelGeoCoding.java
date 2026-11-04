@@ -183,14 +183,14 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
             int change = 0;
             if ((p0 - p1) < -0.001) {
                 // increase
-                change = +1;
+                change = 1;
             } else if ((p1 - p0) < -0.001) {
                 // decrease
                 change = -1;
             }
             if (increaseDecreaseCount > 1 && change == -1) {
                 return i;
-            } else if (increaseDecreaseCount < -1 && change == +1) {
+            } else if (increaseDecreaseCount < -1 && change == 1) {
                 return i;
             } else {
                 increaseDecreaseCount += change;

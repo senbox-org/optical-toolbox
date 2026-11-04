@@ -181,7 +181,7 @@ public class BlueBandOp extends MerisBasisOp {
                     final float po2 = toar11[i] / toar10[i];
                     final float alt = altitude.getSampleFloat(x, y);
                     boolean assuredLand = safeLand[i];
-                    boolean isSnowPlausible = isSnowPlausible(latitude.getSampleFloat(x, y), alt, assuredLand);
+                    boolean isSnowPlausible = isSnowPlausible(latitude.getSampleFloat(x, y), alt, month, assuredLand);
 
                     boolean isBrightLand = isBrightLand(toar9[i], toar14[i]);
 
@@ -248,7 +248,7 @@ public class BlueBandOp extends MerisBasisOp {
         return ((bsRatio >= SLOPE2_LOW) && (bsRatio <= SLOPE2_UPPER)) || toar_9 > TOAR_9_SAT;
     }
 
-    private boolean isSnowPlausible(float lat, float alt, boolean land) {
+    static boolean isSnowPlausible(float lat, float alt, int month, boolean land) {
         if (!land) {
             return false;
         }
@@ -259,9 +259,7 @@ public class BlueBandOp extends MerisBasisOp {
             // northern hemisphere
             if (month >= 4 && month <= 10) {
                 //summer
-                if (alt > ALT_MEDIAL) {
-                    return true;
-                }
+                return alt > ALT_MEDIAL;
             } else {
                 // winter
                 return true;
@@ -270,14 +268,12 @@ public class BlueBandOp extends MerisBasisOp {
             // southern hemisphere
             if (month >= 10 || month <= 4) {
                 //summer
-                if (alt > ALT_MEDIAL) {
-                    return true;
-                }
+                return alt > ALT_MEDIAL;
             } else {
                 // winter
                 return true;
             }
-        } else if (lat < LAT_TROPIC && lat > -LAT_TROPIC && alt > ALT_TROPIC) {
+        } else if (lat < LAT_TROPIC && alt > ALT_TROPIC) {
             return true;
         }
         return false;

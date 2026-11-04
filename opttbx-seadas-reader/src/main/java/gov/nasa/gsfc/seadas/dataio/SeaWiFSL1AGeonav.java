@@ -65,7 +65,7 @@ public class SeaWiFSL1AGeonav {
     private float[][] sensorOffsetMatrix = new float[3][3];
     private float[] tiltCosVector = new float[3];
 
-    enum DataType { GAC, LAC }
+    public enum DataType { GAC, LAC }
 
     // The following are input parameters in the Fortran geonav.f function:
     private float[]   scanPathCoef = new float[6];           // coef in Fortran version

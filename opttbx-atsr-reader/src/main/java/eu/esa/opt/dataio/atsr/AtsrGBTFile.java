@@ -84,30 +84,31 @@ public class AtsrGBTFile extends AtsrFile {
      * Scans the product file for contained bands.
      */
     private void scanBands() {
-        if (getHeader().isThermalPresent()) {
+        final AtsrHeader header = getHeader();
+        if (header.isThermalPresent()) {
             createNadirThermalBands();
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 createForwardThermalBands();
             }
         }
 
-        if ((getHeader().isVisiblePresent()) || (getHeader().isThermalPresent())) {
+        if ((header.isVisiblePresent()) || (header.isThermalPresent())) {
             createNadir1600Band();
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 createForward1600Band();
             }
         }
 
-        if (getHeader().isVisiblePresent()) {
+        if (header.isVisiblePresent()) {
             createNadirVisibleBands();
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 createForwardVisibleBands();
             }
         }
 
-        if (getHeader().isXYPresent()) {
+        if (header.isXYPresent()) {
             createNadirOffsetBands();
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 createForwardOffsetBands();
             }
         }
@@ -117,7 +118,6 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates the nadir view thermal bands and adds them to the bands vector.
      */
     private void createNadirThermalBands() {
-
         Band band = new Band(AtsrGBTConstants.NADIR_1200_BT_NAME, ProductData.TYPE_FLOAT32,
                              AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
         band.setUnit(AtsrGBTConstants.BRIGHTNESS_TEMPERATURE_UNIT);
@@ -147,7 +147,6 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates the forward view thermal bands and adds them to the bands vector.
      */
     private void createForwardThermalBands() {
-
         Band band = new Band(AtsrGBTConstants.FORWARD_1200_BT_NAME, ProductData.TYPE_FLOAT32,
                              AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
         band.setUnit(AtsrGBTConstants.BRIGHTNESS_TEMPERATURE_UNIT);
@@ -177,7 +176,6 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates the nadir view visible bands and adds them to the bands vector.
      */
     private void createNadirVisibleBands() {
-
         Band band = new Band(AtsrGBTConstants.NADIR_870_REF_NAME, ProductData.TYPE_FLOAT32,
                              AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
         band.setUnit(AtsrGBTConstants.REFLECTANCE_UNIT);
@@ -207,7 +205,6 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates the forward view visible bands and adds them to the bands vector.
      */
     private void createForwardVisibleBands() {
-
         Band band = new Band(AtsrGBTConstants.FORWARD_870_REF_NAME, ProductData.TYPE_FLOAT32,
                              AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
         band.setUnit(AtsrGBTConstants.REFLECTANCE_UNIT);
@@ -237,7 +234,6 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates the nadir view 1600 nm band
      */
     private void createNadir1600Band() {
-
         Band band = new Band(AtsrGBTConstants.NADIR_1600_REF_NAME, ProductData.TYPE_FLOAT32,
                              AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
         band.setUnit(AtsrGBTConstants.REFLECTANCE_UNIT);
@@ -251,7 +247,6 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates the forward view 1600 nm band
      */
     private void createForward1600Band() {
-
         Band band = new Band(AtsrGBTConstants.FORWARD_1600_REF_NAME, ProductData.TYPE_FLOAT32,
                              AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
         band.setUnit(AtsrGBTConstants.REFLECTANCE_UNIT);
@@ -265,7 +260,6 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates the nadir view coordinate offset bands and adds them to the bands vector.
      */
     private void createNadirOffsetBands() {
-
         Band band = new Band(AtsrGBTConstants.NADIR_X_OFFS_NAME, ProductData.TYPE_FLOAT32,
                              AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
         band.setUnit(AtsrGBTConstants.COORDINATE_OFFSET_UNIT);
@@ -283,7 +277,6 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates the forward view coordinate offset bands and adds them to the bands vector.
      */
     private void createForwardOffsetBands() {
-
         Band band = new Band(AtsrGBTConstants.FORWARD_X_OFFS_NAME, ProductData.TYPE_FLOAT32,
                              AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
         band.setUnit(AtsrGBTConstants.COORDINATE_OFFSET_UNIT);
@@ -376,7 +369,6 @@ public class AtsrGBTFile extends AtsrFile {
             runningOffset += AtsrConstants.ATSR_SCENE_RASTER_WIDTH * AtsrConstants.ATSR_SCENE_RASTER_HEIGHT * AtsrConstants.FLAGS_PIXEL_SIZE;
             if (!getHeader().isNadirOnly()) {
                 _forwardFlagsOffset = runningOffset;
-                runningOffset += AtsrConstants.ATSR_SCENE_RASTER_WIDTH * AtsrConstants.ATSR_SCENE_RASTER_HEIGHT * AtsrConstants.FLAGS_PIXEL_SIZE;
             }
         }
     }
@@ -385,8 +377,8 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates the flag bands and the associated coding.
      */
     private void createFlagBands() {
-        if (getHeader().areFlagsPresent()) {
-
+        final AtsrHeader header = getHeader();
+        if (header.areFlagsPresent()) {
             createFlagCodings();
 
             Band band = new Band(AtsrConstants.NADIR_FLAGS_NAME, ProductData.TYPE_INT16,
@@ -395,7 +387,7 @@ public class AtsrGBTFile extends AtsrFile {
             band.setSampleCoding(_flagCodingNadir);
             addBand(band);
 
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 band = new Band(AtsrConstants.FORWARD_FLAGS_NAME, ProductData.TYPE_INT16,
                                 AtsrConstants.ATSR_SCENE_RASTER_WIDTH, AtsrConstants.ATSR_SCENE_RASTER_HEIGHT);
                 band.setDescription(AtsrConstants.FORWARD_FLAGS_DESCRIPTION);
@@ -422,9 +414,10 @@ public class AtsrGBTFile extends AtsrFile {
      * Creates all band reader necessary and adds them to the list.
      */
     private void createBandReader() {
-        AtsrBandReader reader = null;
+        AtsrBandReader reader;
 
-        if (getHeader().isThermalPresent()) {
+        final AtsrHeader header = getHeader();
+        if (header.isThermalPresent()) {
             // 1200nm brightness temperature nadir
             reader = new AtsrShortBandReader(AtsrGBTConstants.NADIR_1200_BT_NAME, _nadir1200offset,
                                              AtsrGBTConstants.BRIGHTNESS_TEMPERATURE_FACTOR, getStream());
@@ -441,7 +434,7 @@ public class AtsrGBTFile extends AtsrFile {
             addBandReader(reader);
 
             // add forward bands reader if present
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 // 1200nm brightness temperature forward
                 reader = new AtsrShortBandReader(AtsrGBTConstants.FORWARD_1200_BT_NAME, _forward1200offset,
                                                  AtsrGBTConstants.BRIGHTNESS_TEMPERATURE_FACTOR, getStream());
@@ -456,18 +449,17 @@ public class AtsrGBTFile extends AtsrFile {
                 reader = new AtsrShortBandReader(AtsrGBTConstants.FORWARD_370_BT_NAME, _forward370offset,
                                                  AtsrGBTConstants.BRIGHTNESS_TEMPERATURE_FACTOR, getStream());
                 addBandReader(reader);
-
             }
         }
 
-        if (getHeader().isThermalPresent() || getHeader().isVisiblePresent()) {
+        if (header.isThermalPresent() || header.isVisiblePresent()) {
             // 1600nm reflectance nadir
             reader = new AtsrShortBandReader(AtsrGBTConstants.NADIR_1600_REF_NAME, _nadir1600offset,
                                              AtsrGBTConstants.REFLECTANCE_FACTOR, getStream());
             addBandReader(reader);
 
             // add forward band reader if present
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 // 1600nm reflectance forward
                 reader = new AtsrShortBandReader(AtsrGBTConstants.FORWARD_1600_REF_NAME, _forward1600offset,
                                                  AtsrGBTConstants.REFLECTANCE_FACTOR, getStream());
@@ -475,7 +467,7 @@ public class AtsrGBTFile extends AtsrFile {
             }
         }
 
-        if (getHeader().isVisiblePresent()) {
+        if (header.isVisiblePresent()) {
             // 870nm reflectance nadir
             reader = new AtsrShortBandReader(AtsrGBTConstants.NADIR_870_REF_NAME, _nadir870offset,
                                              AtsrGBTConstants.REFLECTANCE_FACTOR, getStream());
@@ -492,7 +484,7 @@ public class AtsrGBTFile extends AtsrFile {
             addBandReader(reader);
 
             // add forward bands reader when needed
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 // 870nm reflectance forward
                 reader = new AtsrShortBandReader(AtsrGBTConstants.FORWARD_870_REF_NAME, _forward870offset,
                                                  AtsrGBTConstants.REFLECTANCE_FACTOR, getStream());
@@ -510,7 +502,7 @@ public class AtsrGBTFile extends AtsrFile {
             }
         }
 
-        if (getHeader().isXYPresent()) {
+        if (header.isXYPresent()) {
             // nadir x offset
             reader = new AtsrByteBandReader(AtsrGBTConstants.NADIR_X_OFFS_NAME, _nadirXOffset,
                                             AtsrGBTConstants.COORDINATE_OFFSET_FACTOR, getStream());
@@ -522,7 +514,7 @@ public class AtsrGBTFile extends AtsrFile {
             addBandReader(reader);
 
             // add forward bands reader when needed
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 // forward x offset
                 reader = new AtsrByteBandReader(AtsrGBTConstants.FORWARD_X_OFFS_NAME, _forwardXOffset,
                                                 AtsrGBTConstants.COORDINATE_OFFSET_FACTOR, getStream());
@@ -535,12 +527,12 @@ public class AtsrGBTFile extends AtsrFile {
             }
         }
 
-        if (getHeader().areFlagsPresent()) {
+        if (header.areFlagsPresent()) {
             reader = new AtsrFlagBandReader(AtsrConstants.NADIR_FLAGS_NAME, _nadirFlagsOffset,
                                             1, getStream());
             addBandReader(reader);
 
-            if (!getHeader().isNadirOnly()) {
+            if (!header.isNadirOnly()) {
                 reader = new AtsrFlagBandReader(AtsrConstants.FORWARD_FLAGS_NAME, _forwardFlagsOffset,
                                                 1, getStream());
                 addBandReader(reader);

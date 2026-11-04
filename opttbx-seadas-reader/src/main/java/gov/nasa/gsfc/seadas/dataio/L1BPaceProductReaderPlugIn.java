@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+import static eu.esa.snap.core.dataio.CfConstants.TITLE;
+
 public class L1BPaceProductReaderPlugIn implements ProductReaderPlugIn {
 
     private static final String DEFAULT_FILE_EXTENSION = ".nc";
@@ -47,7 +49,7 @@ public class L1BPaceProductReaderPlugIn implements ProductReaderPlugIn {
         try {
             ncfile = NetcdfFileOpener.open(inputFile);
             if (ncfile != null) {
-                Attribute scene_title = ncfile.findGlobalAttribute("title");
+                Attribute scene_title = ncfile.findGlobalAttribute(TITLE);
 
                 if (scene_title != null) {
                     if (scene_title.toString().contains("PACE OCIS Level-1B Data") ||

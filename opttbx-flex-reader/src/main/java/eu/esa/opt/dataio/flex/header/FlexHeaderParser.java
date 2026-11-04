@@ -93,7 +93,7 @@ public class FlexHeaderParser {
         for (int i = 0; i < serviceRefs.getLength(); i++) {
             final Element ref = (Element) serviceRefs.item(i);
             final String href = ref.getAttributeNS(NS_XLINK, "href");
-            if (href != null && !href.isEmpty() && href.endsWith(".nc")) {
+            if (href.endsWith(".nc")) {
                 dataFiles.add(href);
             }
         }

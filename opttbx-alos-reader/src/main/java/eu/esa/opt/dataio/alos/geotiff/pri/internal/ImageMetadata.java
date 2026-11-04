@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.alos.geotiff.pri.internal;
 
+import eu.esa.opt.dataio.alos.geotiff.DataUtils;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.datamodel.ProductData;
@@ -173,29 +174,13 @@ public class ImageMetadata extends XmlMetadata {
     }
 
     public int getPixelDataType() {
-        int retVal;
         int value = 8;
         try {
             value = Integer.parseInt(getAttributeValue(AlosPRIConstants.PATH_IMG_NBITS, "8"));
         } catch (NumberFormatException e) {
             warn(MISSING_ELEMENT_WARNING, AlosPRIConstants.PATH_IMG_NBITS);
         }
-        switch (value) {
-            case 8:
-                retVal = ProductData.TYPE_UINT8;
-                break;
-            case 16:
-                retVal = ProductData.TYPE_INT16;
-                break;
-            case 32:
-                retVal = ProductData.TYPE_FLOAT32;
-                break;
-            default:
-                retVal = ProductData.TYPE_UINT8;
-                break;
-
-        }
-        return retVal;
+        return DataUtils.getDataType(value);
     }
 
     public String getBandDescription() {
@@ -300,7 +285,7 @@ public class ImageMetadata extends XmlMetadata {
         return result;
     }
 
-    public class InsertionPoint {
+    public static class InsertionPoint {
         public float x;
         public float y;
         public float stepX;

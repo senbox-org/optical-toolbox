@@ -224,8 +224,8 @@ public class CeosFileReader {
         final int[] ints = new int[arraySize];
         for (int i = 0; i < ints.length; i++) {
             final String integerString = readAn(intValLength).trim();
-            if (integerString.length() > 0) {
-                ints[i] = (int) parseLong(integerString, streamPosition + i * intValLength);
+            if (!integerString.isEmpty()) {
+                ints[i] = (int) parseLong(integerString, streamPosition + (long) i * intValLength);
             }
         }
         return ints;

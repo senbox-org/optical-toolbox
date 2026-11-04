@@ -51,8 +51,8 @@ public class BandsExtractorOp extends Operator {
             throw new OperatorException("Please select at least one band.");
         }
 
-        List<String> lstSourceBandNames =this.sourceBandNames == null ? new ArrayList<>() : new ArrayList<>(Arrays.asList(this.sourceBandNames));
-        List<String> lstSourceMaskNames = this.sourceMaskNames == null ? new ArrayList<>() : new ArrayList<>(Arrays.asList(this.sourceMaskNames));
+       final List<String> lstSourceBandNames = new ArrayList<>(Arrays.asList(this.sourceBandNames));
+       final List<String> lstSourceMaskNames = this.sourceMaskNames == null ? new ArrayList<>() : new ArrayList<>(Arrays.asList(this.sourceMaskNames));
        if (includeReferences ) {
            List<String> lstAllNodes = new ArrayList<String>();
            lstAllNodes.addAll(lstSourceBandNames);

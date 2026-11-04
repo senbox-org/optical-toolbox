@@ -213,7 +213,7 @@ public final class S2tbxMosaicOp extends Operator {
             parameters.put("resampleOnPyramidLevels", true);
             resampledProductList.add(GPF.createProduct("Resample", parameters, sourceProduct));
         }
-        return resampledProductList.toArray(new Product[resampledProductList.size()]);
+        return resampledProductList.toArray(new Product[0]);
     }
 
     private Product generateSelectedBandsProduct(final Product product) {
@@ -251,7 +251,7 @@ public final class S2tbxMosaicOp extends Operator {
             }
         }
 
-        String[] BandNamesArray = bandFromExpression.toArray(new String[bandFromExpression.size()]);
+        final String[] bandNamesArray = bandFromExpression.toArray(new String[0]);
         localProduct = new Product(product.getName(), product.getProductType(), product.getSceneRasterWidth(), product.getSceneRasterHeight());
         localProduct.setStartTime(product.getStartTime());
         localProduct.setEndTime(product.getEndTime());
@@ -261,7 +261,7 @@ public final class S2tbxMosaicOp extends Operator {
         ProductUtils.copyTiePointGrids(product, localProduct);
         ProductUtils.copyVectorData(product, localProduct);
         for (Band band : product.getBands()) {
-            for (String bandName : BandNamesArray) {
+            for (String bandName : bandNamesArray) {
                 if (band.getName().equals(bandName)){
                     ProductUtils.copyBand(band.getName(), product, localProduct, true);
                     ProductUtils.copyGeoCoding(band, localProduct.getBand(bandName));

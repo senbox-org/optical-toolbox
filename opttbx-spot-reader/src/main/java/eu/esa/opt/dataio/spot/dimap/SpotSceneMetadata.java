@@ -171,7 +171,7 @@ public class SpotSceneMetadata {
         File file = null;
         try {
             file = folder.getFile(SpotConstants.DIMAP_VOLUME_FILE);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         if (file == null || !file.exists()) { // no volume, then look for metadata*.dim
             File selectedMetadataFile = folder.getFile(SpotConstants.SPOTSCENE_METADATA_FILE);

@@ -147,8 +147,8 @@ public class SpectralAngleMapperOp extends Operator {
             }
             this.sourceProduct = resample(this.sourceProduct, sceneWidth, sceneHeight);
             if(sceneWidth != initialProductWidth || sceneHeight != initialProductHeight) {
-                xRatio = initialProductWidth / sceneWidth;
-                yRatio = initialProductHeight / sceneHeight;
+                xRatio = (float) initialProductWidth / sceneWidth;
+                yRatio = (float) initialProductHeight / sceneHeight;
             }
         } else if(this.referenceBands != null) {//ensure referenceBands not null for allowing Graph Builder to initialize the UI
             sceneWidth = sourceProduct.getSceneRasterWidth();
@@ -160,8 +160,8 @@ public class SpectralAngleMapperOp extends Operator {
                 sceneHeight = firstSourceBandHeight;
                 this.sourceProduct = resample(this.sourceProduct, sceneWidth, sceneHeight);
             }
-            xRatio = initialProductWidth / sceneWidth;
-            yRatio = initialProductHeight / sceneHeight;
+            xRatio = (float) initialProductWidth / sceneWidth;
+            yRatio = (float) initialProductHeight / sceneHeight;
         }
 
         // if the source product size differs from the source product size before the resampling the
@@ -308,8 +308,8 @@ public class SpectralAngleMapperOp extends Operator {
                             for (int tileIndex = 0; tileIndex < sourceTileList.size(); tileIndex++) {
                                 float testedPixelValue = sourceTileList.get(tileIndex).getSampleFloat(x, y);
                                 valueSum += testedPixelValue * spec.getMeanValue()[tileIndex];
-                                pixelValueSquareSum += Math.pow(testedPixelValue, 2);
-                                spectrumPixelValueSquareSum += Math.pow(spec.getMeanValue()[tileIndex], 2);
+                                pixelValueSquareSum = (float) (pixelValueSquareSum + Math.pow(testedPixelValue, 2));
+                                spectrumPixelValueSquareSum = (float) (spectrumPixelValueSquareSum + Math.pow(spec.getMeanValue()[tileIndex], 2));
                             }
                             double samAngle = Math.acos(valueSum / (Math.sqrt(pixelValueSquareSum) * (Math.sqrt(spectrumPixelValueSquareSum))));
                             for (int spectrumIndex = 0; spectrumIndex < this.spectra.length; spectrumIndex++) {

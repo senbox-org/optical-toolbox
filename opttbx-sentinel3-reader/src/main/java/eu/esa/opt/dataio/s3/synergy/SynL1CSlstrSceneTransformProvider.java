@@ -30,7 +30,7 @@ public class SynL1CSlstrSceneTransformProvider implements SceneTransformProvider
         return sceneToModelTransform;
     }
 
-    private class SynL1CSceneToModelTransform extends AbstractTransform2D {
+    private static class SynL1CSceneToModelTransform extends AbstractTransform2D {
 
         private final Band colCorrespondenceBand;
         private final Band rowCorrespondenceBand;

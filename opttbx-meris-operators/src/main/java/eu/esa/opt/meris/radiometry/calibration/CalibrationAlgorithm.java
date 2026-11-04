@@ -82,6 +82,7 @@ public class CalibrationAlgorithm {
         }
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     private void readJD(ProductFile file, String datasetName, String fieldName, double[] refJDs) throws IOException {
         final RecordReader recordReader = file.getRecordReader(datasetName + "_" + resolution.name());
         for (int b = 0; b < B; b++) {
@@ -90,7 +91,7 @@ public class CalibrationAlgorithm {
             final int days = field.getElemInt(0);
             final int seconds = field.getElemInt(1);
             final int microseconds = field.getElemInt(2);
-            refJDs[b] = microseconds / 1000000 + seconds / 86400 + days;
+            refJDs[b] =  microseconds / 1000000 +  seconds / 86400 + days;
         }
     }
 }

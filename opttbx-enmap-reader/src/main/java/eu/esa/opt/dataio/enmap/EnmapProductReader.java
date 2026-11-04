@@ -102,7 +102,7 @@ class EnmapProductReader extends AbstractProductReader {
         product.setSceneGeoCoding(sceneGeoCoding);
     }
 
-    static String getEPSGCode(String projection) throws Exception {
+    static String getEPSGCode(String projection) {
         int code;
         if (projection.startsWith("UTM")) {
             final int utmZone = Integer.parseInt(projection.substring(8, projection.lastIndexOf('_')));
@@ -515,8 +515,7 @@ class EnmapProductReader extends AbstractProductReader {
             Product product = reader.readProductNodes(inputStream, null);
             GeoCoding geoCoding = product.getSceneGeoCoding();
             MathTransform i2m = geoCoding.getImageToMapTransform();
-            if (i2m instanceof AffineTransform) {
-                AffineTransform i2mAT = (AffineTransform) i2m;
+            if (i2m instanceof AffineTransform i2mAT) {
                 return new Point2D.Double(i2mAT.getTranslateX(), i2mAT.getTranslateY());
             }
         } finally {
@@ -607,9 +606,7 @@ class EnmapProductReader extends AbstractProductReader {
 
         @Override
         public synchronized void run() {
-            if (productCache != null) {
-                CacheManager.getInstance().remove(productCache);
-            }
+            CacheManager.getInstance().remove(productCache);
 
             cacheProvider.clear();
             registeredCacheVariables.clear();

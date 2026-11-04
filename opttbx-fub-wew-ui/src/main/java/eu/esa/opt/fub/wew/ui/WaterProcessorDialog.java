@@ -78,8 +78,7 @@ class WaterProcessorDialog extends SingleTargetProductDialog {
                         rdnTypeProperties.add(parameterDescriptor);
                     }
                 }
-                rasterDataNodeTypeProperties = rdnTypeProperties.toArray(
-                        new PropertyDescriptor[rdnTypeProperties.size()]);
+                rasterDataNodeTypeProperties = rdnTypeProperties.toArray(new PropertyDescriptor[0]);
             }
         }
         productChangedHandler = new ProductChangedHandler();

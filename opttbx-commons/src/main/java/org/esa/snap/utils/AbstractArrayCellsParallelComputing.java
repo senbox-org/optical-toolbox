@@ -20,7 +20,7 @@ public abstract class AbstractArrayCellsParallelComputing extends AbstractParall
 
     @Override
     protected final void execute() {
-        int index = -1;
+        int index;
         do {
             synchronized (this) {
                 if (this.threadException != null) {

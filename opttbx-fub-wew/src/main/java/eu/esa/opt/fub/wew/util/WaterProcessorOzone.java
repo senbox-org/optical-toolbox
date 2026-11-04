@@ -76,17 +76,15 @@ public class WaterProcessorOzone {
         return (inpol(lambda, excoeff, no3data, l));
     }
 
-
     private static double inpol(double[] x, double[] y, int n, double xi) {
-        int found = 0, i;
+        int i;
 
-        for (i = 0; i < n - 1 && (found == 0); i++) {
+        for (i = 0; i < n - 1; i++) {
             if (xi >= x[i] && xi <= x[i + 1]) {
-                found = 1;
                 return (y[i] + (xi - x[i]) * (y[i + 1] - y[i]) / (x[i + 1] - x[i]));
             }
         }
-        return (0.0 / 0.0); // NaN
+        return Double.NaN;
     }
 }
 

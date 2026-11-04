@@ -375,9 +375,7 @@ public final class LandsatTMFile {
             // IMPORTANT NOTE: ZipFile returns an enumeration which might throw
             // an InternalError for invalid or corrupt ZIP files.
             // We have to handle this case here.
-            IOException e = new IOException(t.getMessage());
-            e.initCause(t);
-            throw e;
+            throw new IOException(t.getMessage(), t);
         }
     }
 

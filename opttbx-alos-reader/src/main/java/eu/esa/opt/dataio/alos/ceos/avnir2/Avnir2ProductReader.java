@@ -109,9 +109,7 @@ public class Avnir2ProductReader extends AbstractProductReader {
             _avnir2Dir = new Avnir2ProductDirectory(fileFromInput.getParentFile());
             product = _avnir2Dir.createProduct();
         } catch (IllegalCeosFormatException e) {
-            final IOException ioException = new IOException(e.getMessage());
-            ioException.initCause(e);
-            throw ioException;
+            throw new IOException(e.getMessage(), e);
         }
         product.setProductReader(this);
         product.setModified(false);
@@ -136,10 +134,7 @@ public class Avnir2ProductReader extends AbstractProductReader {
                     destWidth, destHeight,
                     destBuffer, pm);
         } catch (IllegalCeosFormatException e) {
-            final IOException ioException = new IOException(e.getMessage());
-            ioException.initCause(e);
-            throw ioException;
+            throw new IOException(e.getMessage(), e);
         }
-
     }
 }

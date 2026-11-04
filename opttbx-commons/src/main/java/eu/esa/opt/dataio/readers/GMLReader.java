@@ -142,7 +142,7 @@ public class GMLReader {
                 case "LinearRing":
                     if (currentCoordinates != null) {
                         if (currentCoordinates.get(0).equals2D(currentCoordinates.get(currentCoordinates.size() - 1))) {
-                            currentLinearRing = geometryFactory.createLinearRing(currentCoordinates.toArray(new Coordinate[currentCoordinates.size()]));
+                            currentLinearRing = geometryFactory.createLinearRing(currentCoordinates.toArray(new Coordinate[0]));
                         } else {
                             systemLogger.warning(String.format("The linear ring #%s is not a closed polygon!", linRingCount));
                         }
