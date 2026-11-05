@@ -73,14 +73,14 @@ public class L3ProductReaderPlugIn implements ProductReaderPlugIn {
      */
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File inputFile = SeadasHelper.getInputFile(input);
+        final Object netcdfInput = SeadasHelper.getNetcdfInput(input);
 
-        final DecodeQualification decodeQualification = SeadasHelper.checkInputObject(inputFile);
+        final DecodeQualification decodeQualification = SeadasHelper.checkNetcdfInput(netcdfInput);
         if (decodeQualification == DecodeQualification.UNABLE) {
             return decodeQualification;
         }
 
-        try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(netcdfInput)) {
             if (ncfile != null) {
                 Attribute titleAttribute = ncfile.findGlobalAttributeIgnoreCase("Title");
 
@@ -102,13 +102,13 @@ public class L3ProductReaderPlugIn implements ProductReaderPlugIn {
                         if (title.matches("(.*)Level-3 Standard Mapped Image") || title.matches("(.*)Level-3 Equidistant Cylindrical Mapped Image")
                                 || (title.contains("Level-3") && title.contains("Mapped Image"))) {
                             if (DEBUG) {
-                                System.out.println(inputFile);
+                                System.out.println(netcdfInput);
                             }
                             ncfile.close();
                             return DecodeQualification.INTENDED;
                         } else {
                             if (DEBUG) {
-                                System.out.println("# Unrecognized attribute Title=[" + title + "]: " + inputFile);
+                                System.out.println("# Unrecognized attribute Title=[" + title + "]: " + netcdfInput);
                             }
                         }
                     }
@@ -117,17 +117,17 @@ public class L3ProductReaderPlugIn implements ProductReaderPlugIn {
                     return DecodeQualification.INTENDED;
                 } else {
                     if (DEBUG) {
-                        System.out.println("# Missing attribute 'Title': " + inputFile);
+                        System.out.println("# Missing attribute 'Title': " + netcdfInput);
                     }
                 }
             } else {
                 if (DEBUG) {
-                    System.out.println("# Can't open as NetCDF: " + inputFile);
+                    System.out.println("# Can't open as NetCDF: " + netcdfInput);
                 }
             }
         } catch (Exception ignore) {
             if (DEBUG) {
-                System.out.println("# I/O exception caught: " + inputFile);
+                System.out.println("# I/O exception caught: " + netcdfInput);
             }
         }
         return DecodeQualification.UNABLE;
