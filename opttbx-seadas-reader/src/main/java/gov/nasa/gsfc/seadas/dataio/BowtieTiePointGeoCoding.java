@@ -343,7 +343,7 @@ public class BowtieTiePointGeoCoding extends AbstractBowtieGeoCoding {
     public boolean transferGeoCoding(final Scene srcScene, final Scene destScene, final ProductSubsetDef subsetDef) {
         final String latGridName = latGrid.getName();
         final String lonGridName = lonGrid.getName();
-        final Product destProduct = destScene.getProduct();
+        final Product destProduct = destScene.product();
 
         removeTiePointGrid(destScene, latGridName);
         removeTiePointGrid(destScene, lonGridName);
@@ -438,9 +438,9 @@ public class BowtieTiePointGeoCoding extends AbstractBowtieGeoCoding {
     }
 
     private void removeTiePointGrid(Scene destScene, String gridName) {
-        final TiePointGrid tiePointGrid = destScene.getProduct().getTiePointGrid(gridName);
+        final TiePointGrid tiePointGrid = destScene.product().getTiePointGrid(gridName);
         if (tiePointGrid != null) {
-            destScene.getProduct().removeTiePointGrid(tiePointGrid);
+            destScene.product().removeTiePointGrid(tiePointGrid);
         }
     }
 

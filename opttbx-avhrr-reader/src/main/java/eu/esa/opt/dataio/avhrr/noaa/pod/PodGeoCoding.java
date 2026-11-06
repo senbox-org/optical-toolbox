@@ -91,7 +91,7 @@ public final class PodGeoCoding extends TiePointGeoCoding {
     public boolean transferGeoCoding(Scene srcScene, Scene destScene, ProductSubsetDef subsetDef) {
         final String latGridName = getLatGrid().getName();
         final String lonGridName = getLonGrid().getName();
-        final Product destProduct = destScene.getProduct();
+        final Product destProduct = destScene.product();
 
         TiePointGrid latGrid = destProduct.getTiePointGrid(latGridName);
         if (latGrid == null) {
