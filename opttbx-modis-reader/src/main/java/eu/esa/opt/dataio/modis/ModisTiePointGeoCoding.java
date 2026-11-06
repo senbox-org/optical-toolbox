@@ -423,7 +423,7 @@ public class ModisTiePointGeoCoding extends AbstractGeoCoding {
     private boolean recalculateTiePointGrids(Scene srcScene, Scene destScene, ProductSubsetDef subsetDef, String latGridName, String lonGridName) throws IOException {
         // first step - remove location TP grids that have already been transferred. Their size is
         // calculated wrong in most cases
-        final TiePointGrid falseTiePointGrid = destScene.getProduct().getTiePointGrid(latGridName);
+        final TiePointGrid falseTiePointGrid = destScene.product().getTiePointGrid(latGridName);
         final double rightOffsetX = falseTiePointGrid.getOffsetX();
         final double falseOffsetY = falseTiePointGrid.getOffsetY();
         final double rightSubsamplingX = falseTiePointGrid.getSubSamplingX();
@@ -432,7 +432,7 @@ public class ModisTiePointGeoCoding extends AbstractGeoCoding {
         removeTiePointGrid(destScene, latGridName);
         removeTiePointGrid(destScene, lonGridName);
 
-        final Product srcProduct = srcScene.getProduct();
+        final Product srcProduct = srcScene.product();
         final int sceneRasterHeight = srcProduct.getSceneRasterHeight();
         final int tpGridHeight = srcProduct.getTiePointGrid(lonGridName).getGridHeight();
         final int scanlineHeight;
@@ -473,24 +473,24 @@ public class ModisTiePointGeoCoding extends AbstractGeoCoding {
                                                                        rightSubsamplingY,
                                                                        recalculatedLonFloats
         );
-        destScene.getProduct().addTiePointGrid(correctedLatTiePointGrid);
-        destScene.getProduct().addTiePointGrid(correctedLonTiePointGrid);
+        destScene.product().addTiePointGrid(correctedLatTiePointGrid);
+        destScene.product().addTiePointGrid(correctedLonTiePointGrid);
 
         return false;
     }
 
     private void removeTiePointGrid(Scene destScene, String gridName) {
-        final TiePointGrid tiePointGrid = destScene.getProduct().getTiePointGrid(gridName);
+        final TiePointGrid tiePointGrid = destScene.product().getTiePointGrid(gridName);
         if (tiePointGrid != null) {
-            destScene.getProduct().removeTiePointGrid(tiePointGrid);
+            destScene.product().removeTiePointGrid(tiePointGrid);
         }
     }
 
     private boolean createGeocoding(Scene destScene) {
         final String latGridName = latgrid.getName();
         final String lonGridName = lonGrid.getName();
-        final TiePointGrid latGrid = destScene.getProduct().getTiePointGrid(latGridName);
-        final TiePointGrid lonGrid = destScene.getProduct().getTiePointGrid(lonGridName);
+        final TiePointGrid latGrid = destScene.product().getTiePointGrid(latGridName);
+        final TiePointGrid lonGrid = destScene.product().getTiePointGrid(lonGridName);
         if (latGrid != null && lonGrid != null) {
             destScene.setGeoCoding(new ModisTiePointGeoCoding(latGrid, lonGrid));
             return true;

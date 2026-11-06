@@ -329,8 +329,8 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
         } catch (IOException e) {
             return false;
         }
-        final Band targetLatBand = destScene.getProduct().getBand(latBandName);
-        final Band targetLonBand = destScene.getProduct().getBand(lonBandName);
+        final Band targetLatBand = destScene.product().getBand(latBandName);
+        final Band targetLonBand = destScene.product().getBand(lonBandName);
         if (subsetDef != null) {
             if (subsetDef.getSubSamplingY() != 1) {
                 final ComponentGeoCoding geoCoding;
@@ -352,8 +352,8 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
     }
 
     private void ensureLatLonBands(Scene destScene, ProductSubsetDef subsetDef) throws IOException {
-        Band destLatBand = destScene.getProduct().getBand(latBand.getName());
-        Band destLonBand = destScene.getProduct().getBand(lonBand.getName());
+        Band destLatBand = destScene.product().getBand(latBand.getName());
+        Band destLonBand = destScene.product().getBand(lonBand.getName());
         if (destLatBand == null || destLonBand == null) {
             Band tempLatBand;
             Band tempLonBand;
@@ -371,8 +371,8 @@ public class BowtiePixelGeoCoding extends AbstractBowtieGeoCoding {
                 tempLonBand = lonBand;
             }
 
-            ProductUtils.copyBand(tempLatBand.getName(), tempLatBand.getProduct(), destScene.getProduct(), true);
-            ProductUtils.copyBand(tempLonBand.getName(), tempLonBand.getProduct(), destScene.getProduct(), true);
+            ProductUtils.copyBand(tempLatBand.getName(), tempLatBand.getProduct(), destScene.product(), true);
+            ProductUtils.copyBand(tempLonBand.getName(), tempLonBand.getProduct(), destScene.product(), true);
         }
     }
 
