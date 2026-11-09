@@ -3,13 +3,12 @@ package eu.esa.opt.dataio.s3.dddb;
 import com.bc.ceres.annotation.STTM;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class VariableDescriptorTest {
 
     @Test
-    @STTM("SNAP-1696,SNAP-3711,SNAP-4170")
+    @STTM("SNAP-1696,SNAP-3711,SNAP-4170,SNAP-4367")
     public void testConstruction() {
         final VariableDescriptor descriptor = new VariableDescriptor();
 
@@ -18,7 +17,7 @@ public class VariableDescriptorTest {
         assertEquals(-1, descriptor.getHeight());
         assertEquals(-1, descriptor.getDepth());
         assertEquals("", descriptor.getDepthPrefixToken());
-        assertEquals("", descriptor.getValidExpression());
+        assertNull(descriptor.getValidExpression());
         assertEquals("", descriptor.getUnits());
         assertEquals("", descriptor.getDescription());
         assertEquals("", descriptor.getTpXSubsamplingXPath());
