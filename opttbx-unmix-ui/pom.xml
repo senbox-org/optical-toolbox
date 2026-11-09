@@ -67,6 +67,11 @@
             <artifactId>snap-gpf-ui</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-spectral-library</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+        <dependency>
             <groupId>eu.esa.opt</groupId>
             <artifactId>opttbx-unmix</artifactId>
             <version>${opttbx.version}</version>
