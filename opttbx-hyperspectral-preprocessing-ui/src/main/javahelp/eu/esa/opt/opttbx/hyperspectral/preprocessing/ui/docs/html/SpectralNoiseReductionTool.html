@@ -59,13 +59,27 @@
 
 <h4>Filter Method</h4>
 <p>
-    Selects the smoothing method: <b>Savitzky-Golay</b>, <b>Gaussian</b>, or <b>Box</b>.
+    Selects the filtering method: <b>Savitzky-Golay</b>, <b>Gaussian</b>, <b>Box</b>, <b>Ricker Wavelet</b>, or <b>Trapezoid</b>.
 </p>
 <ul>
     <li><b>Savitzky-Golay</b> - preserves local spectral shape and narrow features better than simple averaging.</li>
     <li><b>Gaussian</b> - smooths with stronger weight near the center band and lower weight toward the edges.</li>
     <li><b>Box</b> - applies a simple moving average over the selected spectral window.</li>
+    <li><b>Ricker Wavelet</b> - a zero-integral Mexican-hat bandpass filter that emphasizes spectral features and removes slowly varying background.</li>
+    <li><b>Trapezoid</b> - applies a normalized flat central region with linearly sloping tails.</li>
 </ul>
+
+<h4>Ricker Width</h4>
+<p>
+    Standard deviation of the Gaussian from which the Ricker wavelet is derived. The default is <b>1.0</b>.
+    This parameter is only used for <b>Ricker Wavelet</b>; its kernel support is derived from the width.
+</p>
+
+<h4>Trapezoid Width and Slope</h4>
+<p>
+    Width is the size of the constant central part and slope controls the tails. The defaults are
+    <b>3.0</b> and <b>1.0</b>. These parameters are only used for <b>Trapezoid</b>; its kernel support is derived from them.
+</p>
 
 <h4>Kernel Size</h4>
 <p>
@@ -105,6 +119,8 @@
     <li><b>Savitzky-Golay:</b> Kernel Size = <b>11</b>, Polynomial Order = <b>3</b></li>
     <li><b>Gaussian:</b> Kernel Size = <b>11</b>, Gaussian Sigma = <b>1.0 to 2.0</b></li>
     <li><b>Box:</b> Kernel Size = <b>5 to 11</b></li>
+    <li><b>Ricker Wavelet:</b> Width = <b>1.0</b></li>
+    <li><b>Trapezoid:</b> Width = <b>3.0</b>, Slope = <b>1.0</b></li>
 </ul>
 
 <p>
