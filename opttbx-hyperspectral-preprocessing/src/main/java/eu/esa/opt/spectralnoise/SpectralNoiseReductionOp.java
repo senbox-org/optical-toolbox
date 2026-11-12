@@ -43,7 +43,9 @@ public class SpectralNoiseReductionOp extends Operator {
             label = "Source Bands", rasterDataNodeType = Band.class)
     private String[] sourceBands = null;
 
-    @Parameter(valueSet = {SpectralNoiseKernelFactory.FILTER_SG, SpectralNoiseKernelFactory.FILTER_GAUSSIAN, SpectralNoiseKernelFactory.FILTER_BOX},
+    @Parameter(valueSet = {SpectralNoiseKernelFactory.FILTER_SG, SpectralNoiseKernelFactory.FILTER_GAUSSIAN,
+            SpectralNoiseKernelFactory.FILTER_BOX, SpectralNoiseKernelFactory.FILTER_RICKER_WAVELET,
+            SpectralNoiseKernelFactory.FILTER_TRAPEZOID},
             defaultValue = SpectralNoiseKernelFactory.FILTER_SG, label = "Filter Method")
     private String filterType = SpectralNoiseKernelFactory.FILTER_SG;
 
@@ -63,15 +65,26 @@ public class SpectralNoiseReductionOp extends Operator {
             defaultValue = "3")
     private int sgPolynomialOrder;
 
+    @Parameter(label = "Ricker Width", description = "Standard deviation of the Ricker wavelet.", defaultValue = "1.0")
+    private double rickerWidth;
+
+    @Parameter(label = "Trapezoid Width", description = "Width of the constant part of the trapezoid kernel.", defaultValue = "3.0")
+    private double trapezoidWidth;
+
+    @Parameter(label = "Trapezoid Slope", description = "Slope of the trapezoid kernel tails.", defaultValue = "1.0")
+    private double trapezoidSlope;
+
 
     private static final String PRODUCT_SUFFIX = "_SNR";
     private final Map<Band, Band> targetToSourceBandMap = new LinkedHashMap<>();
     private double[] kernel;
+    private boolean zeroIntegralKernel;
 
 
     @Override
     public void initialize() throws OperatorException {
-        final SpectralNoiseKernelFactory kernelParams = new SpectralNoiseKernelFactory(filterType, kernelSize, gaussianSigma, sgPolynomialOrder);
+        final SpectralNoiseKernelFactory kernelParams = new SpectralNoiseKernelFactory(
+                filterType, kernelSize, gaussianSigma, sgPolynomialOrder, rickerWidth, trapezoidWidth, trapezoidSlope);
         try {
             kernelParams.validateFilterParameters();
         } catch (IllegalArgumentException e) {
@@ -82,6 +95,7 @@ public class SpectralNoiseReductionOp extends Operator {
         try {
             kernelParams.ensureKernelSize(sourceBands.length);
             kernel = kernelParams.createKernel();
+            zeroIntegralKernel = kernelParams.usesZeroIntegralKernel();
         } catch (IllegalArgumentException | IllegalStateException e) {
             throw new OperatorException(e.getMessage(), e);
         }
@@ -95,6 +109,7 @@ public class SpectralNoiseReductionOp extends Operator {
         super.dispose();
         targetToSourceBandMap.clear();
         kernel = null;
+        zeroIntegralKernel = false;
         sourceBands = null;
     }
 
@@ -213,7 +228,8 @@ public class SpectralNoiseReductionOp extends Operator {
                 targetSamples,
                 noDataValues,
                 noDataUsed,
-                kernel
+                kernel,
+                zeroIntegralKernel
         );
     }
 
@@ -245,7 +261,8 @@ public class SpectralNoiseReductionOp extends Operator {
                 final int absoluteX = context.getTargetRectangle().x + x;
 
                 SpectralNoiseUtils.readSpectrumAtPixel(context, absoluteX, absoluteY, tileIndex, spectrum, validMask);
-                SpectralNoiseReducer.applyConvolution(spectrum, validMask, context.getKernel(), filteredSpectrum);
+                SpectralNoiseReducer.applyConvolution(spectrum, validMask, context.getKernel(), filteredSpectrum,
+                                                      !context.isZeroIntegralKernel(), !context.isZeroIntegralKernel());
                 SpectralNoiseUtils.writeFilteredSpectrumAtPixel(context, tileIndex, spectrum, validMask, filteredSpectrum);
             }
 
