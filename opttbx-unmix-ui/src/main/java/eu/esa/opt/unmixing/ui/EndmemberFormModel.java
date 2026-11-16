@@ -22,6 +22,7 @@ import org.esa.snap.core.util.ResourceInstaller;
 import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.runtime.Config;
+import org.esa.snap.speclib.io.CompositeSpectralLibraryIO;
 import org.esa.snap.tango.TangoIcons;
 import org.esa.snap.ui.AppContext;
 import org.esa.snap.ui.diagram.DefaultDiagramGraph;
@@ -46,6 +47,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.prefs.Preferences;
+import java.util.List;
 
 class EndmemberFormModel {
 
@@ -191,13 +193,15 @@ class EndmemberFormModel {
         }
     }
 
-    private Endmember[] importEnviEndmembers() throws IOException {
+    private Endmember[] importSpectralLibraryEndmembers() throws IOException {
         JFileChooser fileChooser = new JFileChooser(getLastImportDir());
-        fileChooser.setDialogTitle("Add Endmembers from ENVI Spectral Library");
+        fileChooser.setDialogTitle("Add Endmembers from Spectral Library");
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.addChoosableFileFilter(
-                new FileNameExtensionFilter("ENVI Spectral Library (*.hdr, *.sli)", "hdr", "sli"));
+        List<String> extensions = new CompositeSpectralLibraryIO().getFileExtensions();
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
+                "Spectral Library (" + extensions.stream().map(ext -> "*." + ext).collect(java.util.stream.Collectors.joining(", ")) + ")",
+                extensions.toArray(new String[0])));
 
         int result = fileChooser.showOpenDialog(null);
         if (result != JFileChooser.APPROVE_OPTION || fileChooser.getSelectedFile() == null) {
@@ -205,7 +209,7 @@ class EndmemberFormModel {
         }
 
         rememberLastImportDir(fileChooser.getSelectedFile());
-        return EndmemberSpectralLibrarySupport.readEnviLibrary(fileChooser.getSelectedFile().toPath());
+        return EndmemberSpectralLibrarySupport.readSpectralLibrary(fileChooser.getSelectedFile().toPath());
     }
 
     private static File getLastImportDir() {
@@ -234,7 +238,7 @@ class EndmemberFormModel {
         public void actionPerformed(ActionEvent e) {
             ensureDefaultDirSet();
 
-            Object[] options = {"CSV Spectra", "ENVI Spectral Library", "Cancel"};
+            Object[] options = {"CSV Spectra", "Spectral Library", "Cancel"};
             int selection = JOptionPane.showOptionDialog(null,
                     "Select the source of the endmembers.",
                     "Add Endmembers",
@@ -252,10 +256,10 @@ class EndmemberFormModel {
                 importEndmembers(convertGraphsToEndmembers(diagramGraphs));
             } else if (selection == 1) {
                 try {
-                    importEndmembers(importEnviEndmembers());
+                    importEndmembers(importSpectralLibraryEndmembers());
                 } catch (IOException ioException) {
                     JOptionPane.showMessageDialog(null,
-                            "Failed to import ENVI spectral library:\n" + ioException.getMessage(),
+                            "Failed to import spectral library:\n" + ioException.getMessage(),
                             "Import Error",
                             JOptionPane.ERROR_MESSAGE);
                 }

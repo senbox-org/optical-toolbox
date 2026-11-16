@@ -70,7 +70,7 @@ public class SpectralUnmixingOp extends Operator {
     @Parameter(description = "The list of endmember spectra. Wavelengths must be given in nanometers.", itemAlias = "endmember")
     Endmember[] endmembers;
 
-    @Parameter(description = "A text file containing (additional) endmembers in a table. Wavelengths must be given in nanometers.")
+    @Parameter(description = "A spectral library or legacy tab-separated table containing (additional) endmembers. Wavelengths must be given in nanometers.")
     File endmemberFile;
 
     @Parameter(description = "The unmixing model.", valueSet = {UC_LSU, C_LSU, FC_LSU}, defaultValue = C_LSU)
@@ -478,14 +478,23 @@ public class SpectralUnmixingOp extends Operator {
                 list.addAll(Arrays.asList(endmembers));
             }
 
-            if (EndmemberSpectralLibrarySupport.isEnviSpectralLibrary(endmemberFile.toPath())) {
-                list.addAll(Arrays.asList(
-                        EndmemberSpectralLibrarySupport.readEnviLibrary(endmemberFile.toPath())
-                ));
-            } else {
+            if (EndmemberSpectralLibrarySupport.isSpectralLibrary(endmemberFile.toPath())) {
+                try {
+                    list.addAll(Arrays.asList(EndmemberSpectralLibrarySupport.readSpectralLibrary(endmemberFile.toPath())));
+                } catch (IOException libraryException) {
+                    if (!endmemberFile.getName().toLowerCase(java.util.Locale.ROOT).endsWith(".csv")) {
+                        throw libraryException;
+                    }
+                    try (FileReader fileReader = new FileReader(endmemberFile)) {
+                        list.addAll(readGraphs(fileReader));
+                    }
+                }
+            } else if (endmemberFile.getName().toLowerCase(java.util.Locale.ROOT).endsWith(".csv")) {
                 try (FileReader fileReader = new FileReader(endmemberFile)) {
                     list.addAll(readGraphs(fileReader));
                 }
+            } else {
+                throw new IOException("Unsupported endmember file format: " + endmemberFile.getName());
             }
 
             endmembers = list.toArray(new Endmember[0]);
