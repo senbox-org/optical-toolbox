@@ -16,6 +16,7 @@ public class SpectralNoiseReductionContext {
     private final double[] noDataValues;
     private final boolean[] noDataUsed;
     private final double[] kernel;
+    private final boolean zeroIntegralKernel;
     private final int bandCount;
     private final int tileWidth;
     private final int tileHeight;
@@ -28,7 +29,8 @@ public class SpectralNoiseReductionContext {
                                    double[][] targetSamples,
                                    double[] noDataValues,
                                    boolean[] noDataUsed,
-                                   double[] kernel) {
+                                   double[] kernel,
+                                   boolean zeroIntegralKernel) {
         this.targetRectangle = targetRectangle;
         this.sourceTiles = sourceTiles;
         this.requestedTargetTiles = requestedTargetTiles;
@@ -37,9 +39,22 @@ public class SpectralNoiseReductionContext {
         this.noDataValues = noDataValues;
         this.noDataUsed = noDataUsed;
         this.kernel = kernel;
+        this.zeroIntegralKernel = zeroIntegralKernel;
         this.bandCount = sourceTiles.length;
         this.tileWidth = targetRectangle.width;
         this.tileHeight = targetRectangle.height;
+    }
+
+    public SpectralNoiseReductionContext(Rectangle targetRectangle,
+                                         Tile[] sourceTiles,
+                                         Tile[] requestedTargetTiles,
+                                         double[][] sourceSamples,
+                                         double[][] targetSamples,
+                                         double[] noDataValues,
+                                         boolean[] noDataUsed,
+                                         double[] kernel) {
+        this(targetRectangle, sourceTiles, requestedTargetTiles, sourceSamples, targetSamples,
+             noDataValues, noDataUsed, kernel, false);
     }
 
     public Rectangle getTargetRectangle() {
@@ -72,6 +87,10 @@ public class SpectralNoiseReductionContext {
 
     public double[] getKernel() {
         return kernel;
+    }
+
+    public boolean isZeroIntegralKernel() {
+        return zeroIntegralKernel;
     }
 
     public int getBandCount() {
