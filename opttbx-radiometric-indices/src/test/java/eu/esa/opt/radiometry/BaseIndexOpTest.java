@@ -18,6 +18,7 @@
 
 package eu.esa.opt.radiometry;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
@@ -50,6 +51,7 @@ public abstract class BaseIndexOpTest<O extends BaseIndexOp> {
     }
 
     @Test
+    @STTM("SNAP-1582")
     public void testOperator() throws OperatorException {
         O operator = null;
         try {
