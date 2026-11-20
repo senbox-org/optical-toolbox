@@ -1,9 +1,9 @@
 package eu.esa.opt.radiometry;
 
 import com.bc.ceres.core.ProgressMonitor;
-import com.bc.ceres.multilevel.MultiLevelImage;
 import eu.esa.opt.radiometry.annotations.BandParameter;
-import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.Tile;
@@ -98,7 +98,7 @@ public class NdviOp extends BaseIndexOp {
                     final float nir = nirFactor * nirSample;
                     final float red = redFactor * redSample;
 
-                    final boolean validMask = redValidMask[maskIndex] || nirValidMask[maskIndex];
+                    final boolean validMask = redValidMask[maskIndex] && nirValidMask[maskIndex];
                     maskIndex++;
 
                     if (!validMask || redNoDataValue.equals(redSample) || nirNoDataValue.equals(nirSample)) {
