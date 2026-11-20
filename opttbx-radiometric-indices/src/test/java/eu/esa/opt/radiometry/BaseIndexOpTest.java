@@ -18,6 +18,7 @@
 
 package eu.esa.opt.radiometry;
 
+import com.bc.ceres.annotation.STTM;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
@@ -31,6 +32,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -49,6 +51,7 @@ public abstract class BaseIndexOpTest<O extends BaseIndexOp> {
     }
 
     @Test
+    @STTM("SNAP-1582")
     public void testOperator() throws OperatorException {
         O operator = null;
         try {
@@ -78,8 +81,8 @@ public abstract class BaseIndexOpTest<O extends BaseIndexOp> {
         Product targetProduct = operator.getTargetProduct();
         Raster data = targetProduct.getBandAt(0).getSourceImage().getData();
         for (int i = 0; i < expectedValues.length; i++) {
-            float aFloat = data.getSampleFloat(i % height, i / width, 0);
-            assertTrue(Math.abs(expectedValues[i] - aFloat) < threshold);
+            final float aFloat = data.getSampleFloat(i % height, i / width, 0);
+            assertEquals(expectedValues[i], aFloat, threshold);
         }
     }
 

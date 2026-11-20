@@ -2,7 +2,8 @@ package eu.esa.opt.radiometry;
 
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.radiometry.annotations.BandParameter;
-import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
 import org.esa.snap.core.gpf.Tile;
@@ -10,6 +11,7 @@ import org.esa.snap.core.gpf.annotations.OperatorMetadata;
 import org.esa.snap.core.gpf.annotations.Parameter;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -19,7 +21,7 @@ import java.util.Map;
  */
 @OperatorMetadata(
         alias = "NdviOp",
-        version = "1.3",
+        version = "1.4",
         category = "Optical/Thematic Land Processing/Vegetation Radiometric Indices",
         description = "The retrieves the Normalized Difference Vegetation Index (NDVI).",
         authors = "Maximilian Aulinger, Thomas Storm",
@@ -66,38 +68,53 @@ public class NdviOp extends BaseIndexOp {
     public void computeTileStack(Map<Band, Tile> targetTiles, Rectangle rectangle, ProgressMonitor pm) throws OperatorException {
         pm.beginTask("Computing NDVI", rectangle.height);
         try {
-            Tile redTile = getSourceTile(getSourceProduct().getBand(redSourceBand), rectangle);
-            Tile nirTile = getSourceTile(getSourceProduct().getBand(nirSourceBand), rectangle);
+            final Product sourceProduct = getSourceProduct();
 
-            Tile ndvi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + NDVI_BAND_NAME));
-            Tile ndviFlags = targetTiles.get(targetProduct.getBand(FLAGS_BAND_NAME));
+            final Band redSource = sourceProduct.getBand(redSourceBand);
+            final Band nirSource = sourceProduct.getBand(nirSourceBand);
 
-            boolean nodataValueUsed = getBandWithSuffix(targetProduct, "_" + NDVI_BAND_NAME).isNoDataValueUsed();
-            Float redNoDataValue = (float) getSourceProduct().getBand(redSourceBand).getGeophysicalNoDataValue();
-            Float nirNoDataValue = (float) getSourceProduct().getBand(nirSourceBand).getGeophysicalNoDataValue();
+            boolean[] redValidMask;
+            boolean[] nirValidMask;
+            synchronized (this) {
+                redValidMask = redSource.readValidMask(rectangle.x, rectangle.y, rectangle.width, rectangle.height, null);
+                nirValidMask = nirSource.readValidMask(rectangle.x, rectangle.y, rectangle.width, rectangle.height, null);
+            }
 
-            float ndviValue;
+            final Tile redTile = getSourceTile(redSource, rectangle);
+            final Tile nirTile = getSourceTile(nirSource, rectangle);
 
+            final Tile ndvi = targetTiles.get(getBandWithSuffix(targetProduct, "_" + NDVI_BAND_NAME));
+            final Tile ndviFlags = targetTiles.get(targetProduct.getBand(FLAGS_BAND_NAME));
+
+            final Float redNoDataValue = (float) redSource.getGeophysicalNoDataValue();
+            final Float nirNoDataValue = (float) nirSource.getGeophysicalNoDataValue();
+
+            int maskIndex = 0;
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
                     final float nirSample = nirTile.getSampleFloat(x, y);
                     final float redSample = redTile.getSampleFloat(x, y);
+
                     final float nir = nirFactor * nirSample;
                     final float red = redFactor * redSample;
 
-                    if (nodataValueUsed && (redNoDataValue.equals(redSample) || nirNoDataValue.equals(nirSample))) {
+                    final boolean validMask = redValidMask[maskIndex] && nirValidMask[maskIndex];
+                    maskIndex++;
+
+                    if (!validMask || redNoDataValue.equals(redSample) || nirNoDataValue.equals(nirSample)) {
                         ndvi.setSample(x, y, noDataValue);
                         ndviFlags.setSample(x, y, 0);
                         continue;
                     }
 
-                    ndviValue = (nir - red) / (nir + red);
-
+                    final float ndviValue = (nir - red) / (nir + red);
                     ndvi.setSample(x, y, computeFlag(x, y, ndviValue, ndviFlags));
                 }
                 checkForCancellation();
                 pm.worked(1);
             }
+        } catch (IOException e) {
+            throw new OperatorException(e);
         } finally {
             pm.done();
         }
