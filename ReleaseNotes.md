@@ -3,6 +3,9 @@ Optical Toolbox Release Notes
 
 The release notes are provided on the STEP website at https://step.esa.int/main/public-roadmap-and-changelog/
 
+# New in SNAP 14.0.3
+    [SNAP-1582] NDVI operator does not consider valid pixel expressions
+
 # New in SNAP 14.0.1
     [SNAP-4253] Add support for OLCI L1 data baseline Version OL__L1_.003.00.00
 
