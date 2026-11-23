@@ -98,7 +98,7 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
                     sceneHeight = latdim.getLength();
                     sceneWidth = londim.getLength();
                 } else {
-                    dims = ncFile.getVariables().get(0).getShape();
+                    dims = findFirstRasterShape(ncFile.getVariables());
                     sceneHeight = dims[0];
                     sceneWidth = dims[1];
                 }
@@ -144,6 +144,15 @@ public class Level3_SeadasMappedFileReader extends SeadasFileReader {
 
         product.setAutoGrouping(getBandGroupingL3Mapped());
         return product;
+    }
+
+    private static int[] findFirstRasterShape(List<Variable> variables) throws ProductIOException {
+        for (Variable variable : variables) {
+            if (variable.getRank() >= 2) {
+                return variable.getShape();
+            }
+        }
+        throw new ProductIOException("No variable with at least two dimensions found.");
     }
 
 
