@@ -11,6 +11,7 @@ import org.esa.snap.core.gpf.annotations.OperatorMetadata;
 import org.esa.snap.core.gpf.annotations.Parameter;
 
 import java.awt.*;
+import java.awt.image.Raster;
 import java.io.IOException;
 import java.util.Map;
 
@@ -73,12 +74,8 @@ public class NdviOp extends BaseIndexOp {
             final Band redSource = sourceProduct.getBand(redSourceBand);
             final Band nirSource = sourceProduct.getBand(nirSourceBand);
 
-            boolean[] redValidMask;
-            boolean[] nirValidMask;
-            synchronized (this) {
-                redValidMask = redSource.readValidMask(rectangle.x, rectangle.y, rectangle.width, rectangle.height, null);
-                nirValidMask = nirSource.readValidMask(rectangle.x, rectangle.y, rectangle.width, rectangle.height, null);
-            }
+            final Raster redValidMask = redSource.isValidMaskUsed() ? redSource.getValidMaskImage().getData(rectangle) : null;
+            final Raster nirValidMask = nirSource.isValidMaskUsed() ? nirSource.getValidMaskImage().getData(rectangle) : null;
 
             final Tile redTile = getSourceTile(redSource, rectangle);
             final Tile nirTile = getSourceTile(nirSource, rectangle);
@@ -89,23 +86,25 @@ public class NdviOp extends BaseIndexOp {
             final Float redNoDataValue = (float) redSource.getGeophysicalNoDataValue();
             final Float nirNoDataValue = (float) nirSource.getGeophysicalNoDataValue();
 
-            int maskIndex = 0;
             for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
                 for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
-                    final float nirSample = nirTile.getSampleFloat(x, y);
-                    final float redSample = redTile.getSampleFloat(x, y);
-
-                    final float nir = nirFactor * nirSample;
-                    final float red = redFactor * redSample;
-
-                    final boolean validMask = redValidMask[maskIndex] && nirValidMask[maskIndex];
-                    maskIndex++;
-
-                    if (!validMask || redNoDataValue.equals(redSample) || nirNoDataValue.equals(nirSample)) {
+                    if ((redValidMask != null && redValidMask.getSample(x, y, 0) == 0)
+                            || (nirValidMask != null && nirValidMask.getSample(x, y, 0) == 0)) {
                         ndvi.setSample(x, y, noDataValue);
                         ndviFlags.setSample(x, y, 0);
                         continue;
                     }
+
+                    final float nirSample = nirTile.getSampleFloat(x, y);
+                    final float redSample = redTile.getSampleFloat(x, y);
+                    if (redNoDataValue.equals(redSample) || nirNoDataValue.equals(nirSample)) {
+                        ndvi.setSample(x, y, noDataValue);
+                        ndviFlags.setSample(x, y, 0);
+                        continue;
+                    }
+
+                    final float nir = nirFactor * nirSample;
+                    final float red = redFactor * redSample;
 
                     final float ndviValue = (nir - red) / (nir + red);
                     ndvi.setSample(x, y, computeFlag(x, y, ndviValue, ndviFlags));
@@ -113,9 +112,7 @@ public class NdviOp extends BaseIndexOp {
                 checkForCancellation();
                 pm.worked(1);
             }
-        } catch (IOException e) {
-            throw new OperatorException(e);
-        } finally {
+        }  finally {
             pm.done();
         }
     }
