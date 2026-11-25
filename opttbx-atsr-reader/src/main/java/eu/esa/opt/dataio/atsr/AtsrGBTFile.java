@@ -20,7 +20,7 @@ import org.esa.snap.core.datamodel.FlagCoding;
 import org.esa.snap.core.datamodel.ProductData;
 
 import javax.imageio.stream.ImageInputStream;
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 
 /**
@@ -66,7 +66,7 @@ public class AtsrGBTFile extends AtsrFile {
      * Opens the ATSR GBT file at the given location.
      */
     @Override
-    public void open(ImageInputStream inStream, File file) throws IOException {
+    public void open(ImageInputStream inStream, Path file) throws IOException {
         super.open(inStream, file);
 
         scanBands();

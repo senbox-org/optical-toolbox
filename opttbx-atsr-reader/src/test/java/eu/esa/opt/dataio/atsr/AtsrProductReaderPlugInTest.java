@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.imageio.stream.ImageInputStream;
-import java.io.File;
+import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -56,7 +56,7 @@ public class AtsrProductReaderPlugInTest {
 
     @Test
     public void testGetInputTypes() {
-        Class[] expected = new Class[]{String.class, File.class, ImageInputStream.class};
+        Class[] expected = new Class[]{String.class, Path.class, ImageInputStream.class};
         Class[] actual = null;
 
         actual = _plugIn.getInputTypes();

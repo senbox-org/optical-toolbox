@@ -23,7 +23,7 @@ import org.esa.snap.core.datamodel.TiePointGeoCoding;
 import org.esa.snap.core.datamodel.TiePointGrid;
 
 import javax.imageio.stream.ImageInputStream;
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ abstract class AtsrFile {
 
     private ImageInputStream _stream;
     private AtsrHeader _header;
-    private File _file;
+    private Path _file;
     private Vector _bands;
     private HashMap _bandReader;
     private GeoCoding _geoCoding;
@@ -49,7 +49,7 @@ abstract class AtsrFile {
     /**
      * Opens the ATSR file at the given location.
      */
-    public void open(ImageInputStream inStream, File file) throws IOException {
+    public void open(ImageInputStream inStream, Path file) throws IOException {
         _stream = inStream;
         _file = file;
 
@@ -102,9 +102,9 @@ abstract class AtsrFile {
     }
 
     /**
-     * Retrieves the <code>File</code>, might be null!
+     * Retrieves the <code>Path</code>, might be null!
      */
-    public File getFile() {
+    public Path getFile() {
         return _file;
     }
 

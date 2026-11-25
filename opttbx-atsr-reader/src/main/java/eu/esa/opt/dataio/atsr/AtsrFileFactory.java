@@ -22,7 +22,7 @@ import org.esa.snap.core.util.ImageUtils;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageInputStreamImpl;
 import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -41,7 +41,7 @@ class AtsrFileFactory implements AtsrConstants {
      * @param path a string containing the path to the file
      */
     public DecodeQualification getDecodeQualification(String path) {
-        return getDecodeQualification(new File(path));
+        return getDecodeQualification(Path.of(path));
     }
 
     /**
@@ -49,7 +49,7 @@ class AtsrFileFactory implements AtsrConstants {
      *
      * @param file a file
      */
-    public DecodeQualification getDecodeQualification(File file) {
+    public DecodeQualification getDecodeQualification(Path file) {
         DecodeQualification bRet = DecodeQualification.UNABLE;
 
         try {
@@ -103,20 +103,20 @@ class AtsrFileFactory implements AtsrConstants {
      * Opens an ATSR file at the location stored in the string
      */
     public AtsrFile open(String path) throws IOException {
-        return open(new File(path));
+        return open(Path.of(path));
     }
 
     /**
      * Opens an ATSR file at the location strored in the file.
      */
-    public AtsrFile open(File file) throws IOException {
+    public AtsrFile open(Path file) throws IOException {
         return open(ImageUtils.getImageInputStream(file), file);
     }
 
     /**
      * Opens an ATSR file from the input stream passed in
      */
-    public AtsrFile open(ImageInputStream inStream, File inFile) throws IOException {
+    public AtsrFile open(ImageInputStream inStream, Path inFile) throws IOException {
         String prodType = readProductType(inStream);
         AtsrFile file = null;
 

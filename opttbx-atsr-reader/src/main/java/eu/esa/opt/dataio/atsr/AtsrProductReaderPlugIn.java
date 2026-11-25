@@ -21,7 +21,7 @@ import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
 import javax.imageio.stream.ImageInputStream;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Locale;
 
 /**
@@ -46,8 +46,8 @@ public class AtsrProductReaderPlugIn implements ProductReaderPlugIn {
         AtsrFileFactory factory = AtsrFileFactory.getInstance();
         if (input instanceof String) {
             return factory.getDecodeQualification((String) input);
-        } else if (input instanceof File) {
-            return factory.getDecodeQualification((File) input);
+        } else if (input instanceof Path inputPath) {
+            return factory.getDecodeQualification(inputPath);
         } else if (input instanceof ImageInputStream) {
             return factory.getDecodeQualification((ImageInputStream) input);
         } else {
@@ -84,7 +84,7 @@ public class AtsrProductReaderPlugIn implements ProductReaderPlugIn {
      * @return an array containing valid input types, never <code>null</code>
      */
     public Class[] getInputTypes() {
-        return new Class[]{String.class, File.class, ImageInputStream.class};
+        return new Class[]{String.class, Path.class, ImageInputStream.class};
     }
 
     /**

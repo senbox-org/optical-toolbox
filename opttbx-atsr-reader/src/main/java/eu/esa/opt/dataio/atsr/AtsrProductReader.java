@@ -25,7 +25,7 @@ import org.esa.snap.core.util.StringUtils;
 
 import javax.imageio.stream.ImageInputStream;
 import java.awt.Color;
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 
 /**
@@ -86,8 +86,8 @@ public class AtsrProductReader extends AbstractProductReader {
 
         if (input instanceof String) {
             _file = factory.open((String) input);
-        } else if (input instanceof File) {
-            _file = factory.open((File) input);
+        } else if (input instanceof Path inputPath) {
+            _file = factory.open(inputPath);
         } else if (input instanceof ImageInputStream) {
             _file = factory.open((ImageInputStream) input, null);
         }
