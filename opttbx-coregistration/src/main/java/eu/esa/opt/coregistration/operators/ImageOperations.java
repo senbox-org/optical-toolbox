@@ -395,18 +395,18 @@ public class ImageOperations {
     }
 
     public static void writeImage(BufferedImage img, String fileLocation) {
-        /*File fileImg = new File(fileLocation);
+        /*Path fileImg = Path.of(fileLocation);
         try {
-            ImageIO.write(img, "tif", fileImg);
+            ImageUtils.writeImage(img, "tif", fileImg);
         } catch (IOException e) {
             e.printStackTrace();
         }*/
     }
 
     public static void writeImage(RenderedImage img, String fileLocation) {
-        /*File fileImg = new File(fileLocation);
+        /*Path fileImg = Path.of(fileLocation);
         try {
-            ImageIO.write(img, "tif", fileImg);
+            ImageUtils.writeImage(img, "tif", fileImg);
         } catch (IOException e) {
             e.printStackTrace();
         }*/

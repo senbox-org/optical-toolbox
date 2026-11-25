@@ -1,6 +1,7 @@
 package eu.esa.opt.coregistration.operators;
 
 import com.bc.ceres.core.VirtualDir;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import com.sun.media.jai.codec.TIFFEncodeParam;
 import eu.esa.opt.coregistration.MatrixUtils;
 
@@ -8,8 +9,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -22,7 +22,7 @@ public class ImagePyramidCache {
     private int levels;
     private boolean computed = false;
     private static final float[] burt1D = new float[]{0.05f, 0.25f, 0.4f, 0.25f, 0.05f};
-    private static File tmpDir;
+    private static Path tmpDir;
 
     static {
         try {
@@ -90,7 +90,7 @@ public class ImagePyramidCache {
 //            try {
 //                GeoTiffProductReader reader = new GeoTiffProductReader(new GeoTiffProductReaderPlugIn());
 //                Product prod;
-//                prod = reader.readProductNodes(new File(prefix + (k + 1) + ".tif"), null);
+//                prod = reader.readProductNodes(Path.of(prefix + (k + 1) + ".tif"), null);
 //                imagePyramid[k] = convertBufferedImage(prod.getBandAt(0).getSourceImage().getImage(0));
 //            } catch (IOException e) {
 //                e.printStackTrace();
@@ -109,32 +109,25 @@ public class ImagePyramidCache {
     }
 
     public static void writeImage(RenderedImage image, String fileName) {
-        String tmpFileName = new File(tmpDir, fileName).getAbsolutePath();
+        String tmpFileName = tmpDir.resolve(fileName).toAbsolutePath().toString();
         TIFFEncodeParam param = new TIFFEncodeParam();
         //param.setCompression(TIFFEncodeParam.COMPRESSION_JPEG_TTN2);
         JAI.create("filestore", image, tmpFileName, "TIFF");//, param);
     }
 
     public static RenderedOp readImage(String fileName) {
-        String tmpFileName = new File(tmpDir, fileName).getAbsolutePath();
+        String tmpFileName = tmpDir.resolve(fileName).toAbsolutePath().toString();
         return JAI.create("fileload", tmpFileName);
     }
 
     public void cleanPyramid() {
         for (int key : imagesLocation.keySet()) {
-            new File(tmpDir, imagesLocation.get(key)).delete();
+            IOHelper.delete(tmpDir.resolve(imagesLocation.get(key)));
         }
     }
 
-    public static void cleanLocation() throws IOException {
-        for (String file : tmpDir.list()) {
-            try {
-                File f = new File(file);
-                f.delete();
-            } catch (Exception ex) {
-            }
-        }
-        tmpDir.delete();
+    public static void cleanLocation() {
+        IOHelper.deleteFileTree(tmpDir);
     }
 
 }

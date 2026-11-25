@@ -13,7 +13,6 @@ import org.esa.snap.dataio.geotiff.GeoTiffProductReaderPlugIn;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,11 +41,11 @@ public class CoregistrationOpTest {
         GeoTiffProductReaderPlugIn readerPlugIn = new GeoTiffProductReaderPlugIn();
         ProductReader reader = readerPlugIn.createReaderInstance();
 
-        File masterProductFile = this.coregistrationTestsFolderPath.resolve("subset_1_of_lidar_georef.tif").toFile();
+        final Path masterProductFile = this.coregistrationTestsFolderPath.resolve("subset_1_of_lidar_georef.tif");
         this.masterSourceProduct = reader.readProductNodes(masterProductFile, null);
 
         reader = readerPlugIn.createReaderInstance(); // create new reader object
-        File slaveProductFile = this.coregistrationTestsFolderPath.resolve("subset_0_of_radar_bandep.tif").toFile();
+        final Path slaveProductFile = this.coregistrationTestsFolderPath.resolve("subset_0_of_radar_bandep.tif");
         this.slaveSourceProduct = reader.readProductNodes(slaveProductFile, null);
     }
 
