@@ -18,6 +18,7 @@ import com.bc.ceres.core.ProgressMonitor;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.dataop.barithm.BandArithmetic;
 import org.esa.snap.core.gpf.Operator;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.gpf.OperatorSpi;
@@ -34,6 +35,8 @@ import org.esa.snap.core.util.math.SpectralUnmixing;
 import org.esa.snap.core.util.math.UnconstrainedLSU;
 
 import java.awt.Rectangle;
+import java.awt.Color;
+import java.awt.image.Raster;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -53,6 +56,9 @@ import java.util.Map;
         copyright = "(c) 2020 by Brockmann Consult",
         description = "Performs a linear spectral unmixing.")
 public class SpectralUnmixingOp extends Operator {
+
+    private static final String INPUT_VALID_MASK_NAME = "unmixing_input_valid";
+    private static final double NO_DATA_VALUE = Double.NaN;
 
     private final String UC_LSU = "Unconstrained LSU";
     private final String C_LSU = "Constrained LSU";
@@ -97,7 +103,7 @@ public class SpectralUnmixingOp extends Operator {
     public SpectralUnmixingOp() {
     }
 
-    private static void computeErrorTiles(Rectangle rectangle, Tile[] errorTilesc, Tile summaryErrorTile, int y, double[][] ia, double[][] ia2) {
+    private static void computeErrorTiles(Rectangle rectangle, Tile[] errorTilesc, Tile summaryErrorTile, int y, double[][] ia, double[][] ia2, boolean[] validMask) {
         final double[] errSqrSumRow = new double[rectangle.width];
         for (int i = 0; i < errorTilesc.length; i++) {
             final Tile errorTile = errorTilesc[i];
@@ -106,27 +112,39 @@ public class SpectralUnmixingOp extends Operator {
             double err;
             int j = 0;
             for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
-                err = iaRow[j] - ia2Row[j];
-                errorTile.setSample(x, y, err);
-                errSqrSumRow[j] += err * err;
+                if (isPixelValid(rectangle, y, j, validMask)) {
+                    err = iaRow[j] - ia2Row[j];
+                    errorTile.setSample(x, y, err);
+                    errSqrSumRow[j] += err * err;
+                } else {
+                    errorTile.setSample(x, y, NO_DATA_VALUE);
+                }
                 j++;
             }
         }
         if (summaryErrorTile != null) {
             int j = 0;
             for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
-                summaryErrorTile.setSample(x, y, Math.sqrt(errSqrSumRow[j] / errorTilesc.length));
+                if (isPixelValid(rectangle, y, j, validMask)) {
+                    summaryErrorTile.setSample(x, y, Math.sqrt(errSqrSumRow[j] / errorTilesc.length));
+                } else {
+                    summaryErrorTile.setSample(x, y, NO_DATA_VALUE);
+                }
                 j++;
             }
         }
     }
 
-    private static void setAbundances(Rectangle rectangle, Tile targetTile, int y, double[] oaRow) {
+    private static void setAbundances(Rectangle rectangle, Tile targetTile, int y, double[] oaRow, boolean[] validMask) {
         int i = 0;
         for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
-            targetTile.setSample(x, y, oaRow[i]);
+            targetTile.setSample(x, y, isPixelValid(rectangle, y, i, validMask) ? oaRow[i] : NO_DATA_VALUE);
             i++;
         }
+    }
+
+    private static boolean isPixelValid(Rectangle rectangle, int y, int xIndex, boolean[] validMask) {
+        return validMask[(y - rectangle.y) * rectangle.width + xIndex];
     }
 
     public static int findEndmemberSpectralIndex(double[] endmemberWavelengths, double sourceBandWavelength, double maxBandwidth) {
@@ -325,16 +343,25 @@ public class SpectralUnmixingOp extends Operator {
         abundanceBands = new Band[numEndmembers];
         for (int i = 0; i < numEndmembers; i++) {
             abundanceBands[i] = targetProduct.addBand(endmembers[i].getName() + abundanceBandNameSuffix, ProductData.TYPE_FLOAT32);
+            configureNoData(abundanceBands[i]);
         }
+
+        targetProduct.addMask(INPUT_VALID_MASK_NAME,
+                              "!nan(" + BandArithmetic.createExternalName(abundanceBands[0].getName()) + ")",
+                              "Pixels with valid source spectra used for spectral unmixing",
+                              Color.GREEN,
+                              0.5);
 
         if (computeErrorBands) {
             errorBands = new Band[numSourceBands];
             for (int i = 0; i < errorBands.length; i++) {
                 final String erroBandName = sourceBands[i].getName() + errorBandNameSuffix;
                 errorBands[i] = targetProduct.addBand(erroBandName, ProductData.TYPE_FLOAT32);
+                configureNoData(errorBands[i]);
                 ProductUtils.copySpectralBandProperties(sourceBands[i], errorBands[i]);
             }
             summaryErrorBand = targetProduct.addBand("summary_error", ProductData.TYPE_FLOAT32);
+            configureNoData(summaryErrorBand);
             summaryErrorBand.setDescription("Root mean square error");
         }
 
@@ -395,10 +422,11 @@ public class SpectralUnmixingOp extends Operator {
             return;
         }
         Tile[] sourceRaster = getSourceTiles(rectangle);
+        boolean[] validMask = getValidMask(rectangle);
         for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++) {
-            double[][] ia = getLineSpectra(sourceRaster, rectangle, y);
+            double[][] ia = getLineSpectra(sourceRaster, rectangle, y, validMask);
             double[][] oa = unmix(ia);
-            setAbundances(rectangle, targetTile, y, oa[i]);
+            setAbundances(rectangle, targetTile, y, oa[i], validMask);
             checkForCancellation();
         }
     }
@@ -407,6 +435,7 @@ public class SpectralUnmixingOp extends Operator {
     public void computeTileStack(Map<Band, Tile> targetTiles, Rectangle targetTileRectangle, ProgressMonitor pm) throws OperatorException {
         Tile[] abundanceTiles = new Tile[abundanceBands.length];
         Tile[] intensityTiles = getSourceTiles(targetTileRectangle);
+        boolean[] validMask = getValidMask(targetTileRectangle);
         for (int i = 0; i < abundanceBands.length; i++) {
             abundanceTiles[i] = targetTiles.get(abundanceBands[i]);
         }
@@ -420,15 +449,15 @@ public class SpectralUnmixingOp extends Operator {
             summaryErrorTile = targetTiles.get(summaryErrorBand);
         }
         for (int y = targetTileRectangle.y; y < targetTileRectangle.y + targetTileRectangle.height; y++) {
-            double[][] ia = getLineSpectra(intensityTiles, targetTileRectangle, y);
+            double[][] ia = getLineSpectra(intensityTiles, targetTileRectangle, y, validMask);
             double[][] oa = unmix(ia);
             for (int i = 0; i < abundanceBands.length; i++) {
-                setAbundances(targetTileRectangle, abundanceTiles[i], y, oa[i]);
+                setAbundances(targetTileRectangle, abundanceTiles[i], y, oa[i], validMask);
                 checkForCancellation();
             }
             if (computeErrorBands) {
                 final double[][] ia2 = mix(oa);
-                computeErrorTiles(targetTileRectangle, errorTiles, summaryErrorTile, y, ia, ia2);
+                computeErrorTiles(targetTileRectangle, errorTiles, summaryErrorTile, y, ia, ia2, validMask);
             }
         }
     }
@@ -441,14 +470,69 @@ public class SpectralUnmixingOp extends Operator {
         return sourceRaster;
     }
 
-    private double[][] getLineSpectra(Tile[] sourceRasters, Rectangle rectangle, int y) throws OperatorException {
+    private double[][] getLineSpectra(Tile[] sourceRasters, Rectangle rectangle, int y, boolean[] validMask) throws OperatorException {
         double[][] ia = new double[sourceBands.length][rectangle.width];
         for (int i = 0; i < sourceBands.length; i++) {
             for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++) {
-                ia[i][x - rectangle.x] = sourceRasters[i].getSampleDouble(x, y);
+                final int xIndex = x - rectangle.x;
+                final double sample = sourceRasters[i].getSampleDouble(x, y);
+                ia[i][xIndex] = sample;
+                if (Double.isNaN(sample) || Double.isInfinite(sample)) {
+                    validMask[(y - rectangle.y) * rectangle.width + xIndex] = false;
+                }
+            }
+        }
+        for (int xIndex = 0; xIndex < rectangle.width; xIndex++) {
+            if (!isPixelValid(rectangle, y, xIndex, validMask)) {
+                for (int i = 0; i < sourceBands.length; i++) {
+                    ia[i][xIndex] = 0.0;
+                }
             }
         }
         return ia;
+    }
+
+    private boolean[] getValidMask(Rectangle rectangle) throws OperatorException {
+        boolean[] validMask = new boolean[rectangle.width * rectangle.height];
+        Arrays.fill(validMask, true);
+
+        for (Band sourceBand : sourceBands) {
+            if (!sourceBand.isValidMaskUsed()) {
+                continue;
+            }
+
+            try {
+                if (sourceBand.getValidMaskImage() == null) {
+                    continue;
+                }
+
+                Rectangle sourceValidMaskBounds = sourceBand.getValidMaskImage().getBounds();
+                Rectangle intersection = rectangle.intersection(sourceValidMaskBounds);
+                boolean[] sourceValidMask = new boolean[validMask.length];
+
+                if (!intersection.isEmpty()) {
+                    Raster sourceValidMaskRaster = sourceBand.getValidMaskImage().getData(intersection);
+                    for (int y = 0; y < intersection.height; y++) {
+                        int targetOffset = (intersection.y - rectangle.y + y) * rectangle.width + intersection.x - rectangle.x;
+                        for (int x = 0; x < intersection.width; x++) {
+                            sourceValidMask[targetOffset + x] = sourceValidMaskRaster.getSample(intersection.x + x, intersection.y + y, 0) != 0;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < validMask.length; i++) {
+                    validMask[i] &= sourceValidMask[i];
+                }
+            } catch (RuntimeException e) {
+                throw new OperatorException("Failed to read source valid-pixel mask for band '" + sourceBand.getName() + "'.", e);
+            }
+        }
+        return validMask;
+    }
+
+    private static void configureNoData(Band band) {
+        band.setNoDataValue(NO_DATA_VALUE);
+        band.setNoDataValueUsed(true);
     }
 
     private int getTargetBandIndex(Tile targetTile) {
