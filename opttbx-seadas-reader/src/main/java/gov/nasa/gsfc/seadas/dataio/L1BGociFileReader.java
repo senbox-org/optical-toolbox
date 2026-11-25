@@ -1,34 +1,45 @@
 package gov.nasa.gsfc.seadas.dataio;
 
 import org.esa.snap.core.datamodel.CrsGeoCoding;
-import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.dataio.netcdf.GenericNetCdfReader;
+import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+import ucar.nc2.Attribute;
+import ucar.nc2.Group;
+import ucar.nc2.NetcdfFile;
 import ucar.nc2.iosp.hdf5.H5iosp;
-import ucar.nc2.util.DebugFlagsImpl;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class L1BGociFileReader extends GenericNetCdfReader {
 
+    private static final double DEFAULT_PROJECTION_CENTRAL_LONGITUDE = 130.0;
+    private static final double DEFAULT_PROJECTION_CENTRAL_LATITUDE = 36.0;
+
     public L1BGociFileReader(L1BGociProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
-        H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
     }
 
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        Product product = super.readProductNodesImpl();
-        addGeocoding(product);
-        return product;
+        H5iosp.useHdfEos(false);
+        try (NetcdfFile ncfile = NetcdfFileOpener.open(getProductFile())) {
+            Product product = super.readProductNodesImpl();
+            addGeocoding(product, ncfile);
+            return product;
+        } finally {
+            H5iosp.useHdfEos(true);
+        }
     }
 
-    public void addGeocoding(Product product) {
+    public void addGeocoding(Product product, NetcdfFile ncfile) {
 
         //This gets VERY close, based on one scene's coastline matching.  Not quite as good as the l2gen output,
         // but can't figure out where the discrepancy lies...so going with this as good enough.
@@ -36,20 +47,21 @@ public class L1BGociFileReader extends GenericNetCdfReader {
         double pixelX = 0.0;
         double pixelY = 0.0;
 
-        String westName = "HDFEOS_POINTS_Scene_Header_Scene_upper-left_longitude";
-        String northName = "HDFEOS_POINTS_Scene_Header_Scene_upper-left_latitude";
-        String centralLatName = "HDFEOS_POINTS_Map_Projection_Central_Latitude_(parallel)";
-        String centralLonName = "HDFEOS_POINTS_Map_Projection_Central_Longitude_(meridian)";
-        String sceneCenterLatName = "HDFEOS_POINTS_Scene_Header_Scene_center_latitude";
-        String sceneCenterLonName = "HDFEOS_POINTS_Scene_Header_Scene_center_longitude";
+        final Group sceneHeader = findGroup(ncfile.getRootGroup(), "Scene Header");
+        final Group mapProjection = findGroup(ncfile.getRootGroup(), "Map Projection");
+        final Double sceneCenterLon = getAttributeValue(sceneHeader, "Scene center longitude");
+        final Double sceneCenterLat = getAttributeValue(sceneHeader, "Scene center latitude");
+        final Double upperLeftLon = getAttributeValue(sceneHeader, "Scene upper-left longitude");
+        final Double upperLeftLat = getAttributeValue(sceneHeader, "Scene upper-left latitude");
+        if (sceneCenterLon == null || sceneCenterLat == null || upperLeftLon == null || upperLeftLat == null) {
+            SystemUtils.LOG.warning("Cannot add GOCI geocoding: required scene location attributes are missing.");
+            return;
+        }
 
-        final MetadataElement globalAttributes = product.getMetadataRoot().getElement("Global_Attributes");
-        float projCentralLon = (float) globalAttributes.getAttribute(centralLonName).getData().getElemDouble();
-        float projCentralLat = (float) globalAttributes.getAttribute(centralLatName).getData().getElemDouble();
-        float sceneCenterLon = (float) globalAttributes.getAttribute(sceneCenterLonName).getData().getElemDouble();
-        float sceneCenterLat = (float) globalAttributes.getAttribute(sceneCenterLatName).getData().getElemDouble();
-        float east = (float) globalAttributes.getAttribute(westName).getData().getElemDouble();
-        float north = (float) globalAttributes.getAttribute(northName).getData().getElemDouble();
+        final double projCentralLon = getAttributeValue(mapProjection, "Central Longitude (meridian)",
+                                                         DEFAULT_PROJECTION_CENTRAL_LONGITUDE);
+        final double projCentralLat = getAttributeValue(mapProjection, "Central Latitude (parallel)",
+                                                         DEFAULT_PROJECTION_CENTRAL_LATITUDE);
 
         // The projection information contained in the GOCI data file suggests slightly odd
         // Earth sphericity values, so not quite WGS84.  Using these, the transform needs the "lenient" keyword
@@ -90,24 +102,74 @@ public class L1BGociFileReader extends GenericNetCdfReader {
             CoordinateReferenceSystem wgs84crs = org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
             MathTransform transform = CRS.findMathTransform(wgs84crs, orthoCRS,true);
             double[] sceneCenter = new double[2];
-            double [] sceneTopRight = new double[2];
+            double [] sceneUpperLeft = new double[2];
 //            transform.transform(new double[] {projCentralLon,projCentralLat}, 0, sceneCenter, 0, 1);
             transform.transform(new double[] {sceneCenterLon,sceneCenterLat}, 0, sceneCenter, 0, 1);
-            transform.transform(new double[] {east,north}, 0, sceneTopRight, 0, 1);
-            double northing = Math.round(sceneTopRight[1]);
-            double easting = Math.round(sceneTopRight[0]);
+            transform.transform(new double[] {upperLeftLon,upperLeftLat}, 0, sceneUpperLeft, 0, 1);
+            double northing = Math.round(sceneUpperLeft[1]);
+            double easting = Math.round(sceneUpperLeft[0]);
 
-            double pixelSize = Math.round((sceneCenter[0]-sceneTopRight[0])/(product.getSceneRasterWidth()/2.0));
+            double pixelSize = Math.round((sceneCenter[0]-sceneUpperLeft[0])/(product.getSceneRasterWidth()/2.0));
 
             product.setSceneGeoCoding(new CrsGeoCoding(orthoCRS,
                                                        product.getSceneRasterWidth(),
                                                        product.getSceneRasterHeight(),
                                                        easting, northing, pixelSize, pixelSize,
                                                        pixelX, pixelY));
-        } catch (FactoryException e) {
-            throw new IllegalStateException(e);
-        } catch (TransformException e) {
-            throw new IllegalStateException(e);
+        } catch (FactoryException | TransformException e) {
+            SystemUtils.LOG.log(Level.WARNING, "Cannot add GOCI geocoding.", e);
         }
+    }
+
+    private static double getAttributeValue(Group group, String attributeName,
+                                            double defaultValue) {
+        final Double value = getAttributeValue(group, attributeName);
+        return value != null ? value : defaultValue;
+    }
+
+    private static Double getAttributeValue(Group group, String attributeName) {
+        final Attribute attribute = findAttribute(group, attributeName);
+        final Number value = attribute != null ? attribute.getNumericValue() : null;
+        return value != null ? value.doubleValue() : null;
+    }
+
+    static Group findGroup(Group parent, String groupName) {
+        if (parent == null) {
+            return null;
+        }
+        if (normalizeName(parent.getShortName()).equals(normalizeName(groupName))) {
+            return parent;
+        }
+        for (Group child : parent.getGroups()) {
+            final Group match = findGroup(child, groupName);
+            if (match != null) {
+                return match;
+            }
+        }
+        return null;
+    }
+
+    static Attribute findAttribute(Group group, String attributeName) {
+        if (group == null) {
+            return null;
+        }
+        final String normalizedName = normalizeName(attributeName);
+        for (Attribute attribute : group.attributes()) {
+            if (normalizeName(attribute.getShortName()).equals(normalizedName)) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
+    private static String normalizeName(String name) {
+        final StringBuilder normalizedName = new StringBuilder(name.length());
+        for (int i = 0; i < name.length(); i++) {
+            final char character = name.charAt(i);
+            if (Character.isLetterOrDigit(character)) {
+                normalizedName.append(Character.toLowerCase(character));
+            }
+        }
+        return normalizedName.toString();
     }
 }

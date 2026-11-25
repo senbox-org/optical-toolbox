@@ -18,19 +18,20 @@ package gov.nasa.gsfc.seadas.dataio;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
+import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.dataio.netcdf.GenericNetCdfReader;
 import org.esa.snap.dataio.netcdf.GenericNetCdfReaderPlugIn;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
 import ucar.nc2.Attribute;
+import ucar.nc2.Group;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.iosp.hdf5.H5iosp;
-import ucar.nc2.util.DebugFlags;
-import ucar.nc2.util.DebugFlagsImpl;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Level;
 
 public class L1BGociProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
 
@@ -58,11 +59,15 @@ public class L1BGociProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
             return decodeQualification;
         }
 
-        H5iosp.setDebugFlags(new DebugFlagsImpl("HdfEos/turnOff"));
+        H5iosp.useHdfEos(false);
 
         try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
                 Attribute scene_title = ncfile.findGlobalAttribute("HDFEOS_POINTS_Scene_Header_Scene_Title");
+                if (scene_title == null) {
+                    final Group sceneHeader = L1BGociFileReader.findGroup(ncfile.getRootGroup(), "Scene Header");
+                    scene_title = L1BGociFileReader.findAttribute(sceneHeader, "Scene Title");
+                }
 
                 if (scene_title != null) {
                     if (scene_title.toString().contains("GOCI Level-1B Data")) {
@@ -70,9 +75,6 @@ public class L1BGociProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
                             System.out.println(inputFile);
                         }
                         ncfile.close();
-                        DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
-                        debugFlags.set("HdfEos/turnOff", false);
-                        H5iosp.setDebugFlags(debugFlags);
                         return DecodeQualification.INTENDED;
                     } else {
                         if (DEBUG) {
@@ -89,14 +91,10 @@ public class L1BGociProductReaderPlugIn extends GenericNetCdfReaderPlugIn {
                     System.out.println("# Can't open as NetCDF: " + inputFile);
                 }
             }
-        } catch (Exception ignore) {
-            if (DEBUG) {
-                System.out.println("# I/O exception caught: " + inputFile);
-            }
+        } catch (Exception e) {
+            SystemUtils.LOG.log(Level.WARNING, "Failed to open GOCI L1B file: " + inputFile, e);
         } finally {
-            DebugFlags debugFlags = new DebugFlagsImpl("HdfEos/turnOff");
-            debugFlags.set("HdfEos/turnOff", false);
-            H5iosp.setDebugFlags(debugFlags);
+            H5iosp.useHdfEos(true);
         }
         return DecodeQualification.UNABLE;
     }
