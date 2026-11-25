@@ -15,17 +15,17 @@
  */
 package eu.esa.opt.arc;
 
+import com.bc.ceres.core.runtime.internal.UrlHelper;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.util.Guardian;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.math.VectorLookupTable;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -80,7 +80,7 @@ public class ArcCoefficientLoader {
     public ArcCoefficients load(URL coeffFile) throws IOException {
         Guardian.assertNotNull("coeffFile", coeffFile);
 
-        _logger.fine("Reading coefficient file: '" + coeffFile.getPath() + "'");
+        _logger.fine("Reading coefficient file: '" + coeffFile + "'");
 
         InputStream inStream = coeffFile.openStream();
         _props.clear();
@@ -133,15 +133,10 @@ public class ArcCoefficientLoader {
         Guardian.assertNotNull("coeffFile", coeffFile);
         String desc = "";
 
-        File file = null;
-        try {
-            file = new File(coeffFile.toURI());
-        } catch (URISyntaxException e) {
-            // ignore
-        }
+        final Path file = UrlHelper.urlToFile(coeffFile);
 
-        if (file != null && file.exists() && file.isFile()) {
-            InputStream inStream = new FileInputStream(file);
+        if (file != null && Files.exists(file) && Files.isRegularFile(file)) {
+            InputStream inStream = Files.newInputStream(file);
             _props.load(inStream);
             inStream.close();
             desc = _props.getProperty(_descriptionKey);

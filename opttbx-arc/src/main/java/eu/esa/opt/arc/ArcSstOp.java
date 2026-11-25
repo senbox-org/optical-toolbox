@@ -37,7 +37,6 @@ import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.converters.BooleanExpressionConverter;
 import org.esa.snap.core.util.converters.GeneralExpressionConverter;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -282,7 +281,7 @@ public class ArcSstOp extends PixelOperator {
     public void doExecute(ProgressMonitor pm) throws OperatorException {
         pm.beginTask("Read in auxiliary data", 2);
         try {
-            final File auxdataDir = installAuxiliaryData();
+            final Path auxdataDir = installAuxiliaryData();
             pm.worked(1);
             initNadirCoefficients(auxdataDir);
             pm.worked(1);
@@ -299,18 +298,18 @@ public class ArcSstOp extends PixelOperator {
         coeff3 = null;
     }
 
-    private void initNadirCoefficients(File auxdataDir) throws OperatorException {
+    private void initNadirCoefficients(Path auxdataDir) throws OperatorException {
         final ArcCoefficientLoader loader = new ArcCoefficientLoader();
         try {
-            if (nadir) coeff1 = loader.load(new File(auxdataDir, nadirCoefficientsFile.getFilename()).toURI().toURL());
-            if (dual) coeff2 = loader.load(new File(auxdataDir, dualCoefficientsFile.getFilename()).toURI().toURL());
-            if (asdi) coeff3 = loader.load(new File(auxdataDir, asdiCoefficientsFile.getFilename()).toURI().toURL());
+            if (nadir) coeff1 = loader.load(auxdataDir.resolve(nadirCoefficientsFile.getFilename()).toUri().toURL());
+            if (dual) coeff2 = loader.load(auxdataDir.resolve(dualCoefficientsFile.getFilename()).toUri().toURL());
+            if (asdi) coeff3 = loader.load(auxdataDir.resolve(asdiCoefficientsFile.getFilename()).toUri().toURL());
         } catch (IOException e) {
             throw new OperatorException(e);
         }
     }
 
-    private File installAuxiliaryData() {
+    private Path installAuxiliaryData() {
         Path auxDataDir = SystemUtils.getAuxDataPath().resolve("arc").toAbsolutePath();
 
         Path sourcePath = ResourceInstaller.findModuleCodeBasePath(getClass()).resolve("auxdata/arc");
@@ -321,7 +320,7 @@ public class ArcSstOp extends PixelOperator {
             throw new OperatorException(e);
         }
 
-        return auxDataDir.toFile();
+        return auxDataDir;
     }
 
     public static class Spi extends OperatorSpi {
