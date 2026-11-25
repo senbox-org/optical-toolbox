@@ -8,7 +8,6 @@ import eu.esa.opt.commons.FilePathInputStream;
 import eu.esa.opt.commons.VirtualDirPath;
 import org.esa.snap.core.util.io.FileUtils;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,7 +63,7 @@ class VirtualDirWrapper extends VirtualDirEx {
     }
 
     @Override
-    public File getBaseFile() {
+    public Path getBaseFile() {
         return this.wrapped.getBaseFile();
     }
 
@@ -106,8 +105,8 @@ class VirtualDirWrapper extends VirtualDirEx {
     }
 
     @Override
-    public File getFile(String relativePath) throws IOException {
-        File file;
+    public Path getFile(String relativePath) throws IOException {
+        Path file;
         try {
             file = this.wrapped.getFile(relativePath);
         } catch (FileNotFoundException e) {
@@ -115,22 +114,22 @@ class VirtualDirWrapper extends VirtualDirEx {
             if (path == null) {
                 file = getFileIgnoreCaseFromTempDirIfExists(relativePath);
             } else {
-                file = path.toFile();
+                file = path;
             }
         }
-        if (file == null || !Files.exists(file.toPath())) {
+        if (file == null || !Files.exists(file)) {
             //If no identical name found, look for a name in uppercase (needed for some Deimos products on Linux)
             if (relativePath.contains("_")) {
                 String extension = relativePath.substring(relativePath.lastIndexOf("."));
                 String fileName = relativePath.substring(0, relativePath.lastIndexOf("_")).toUpperCase();
                 String fileSufix = relativePath.substring(relativePath.lastIndexOf("_"), relativePath.lastIndexOf("."));
-                file = new File(wrapped.getTempDir(), fileName + fileSufix + extension);
+                file = wrapped.getTempDir().resolve(fileName + fileSufix + extension);
             } else {
                 String extension = relativePath.substring(relativePath.lastIndexOf("."));
                 String fileName = relativePath.substring(0, relativePath.lastIndexOf(".")).toUpperCase();
-                file = new File(wrapped.getTempDir(), fileName + extension);
+                file = wrapped.getTempDir().resolve(fileName + extension);
             }
-            if(file == null || !Files.exists(file.toPath())) {
+            if(!Files.exists(file)) {
                 String key = FileUtils.getFilenameFromPath(relativePath).toLowerCase();
                 String path = findKeyFile(key);
                 if (path == null) {
@@ -152,28 +151,24 @@ class VirtualDirWrapper extends VirtualDirEx {
         return file;
     }
 
-    private File getFileIgnoreCaseFromTempDirIfExists(String childRelativePath) throws IOException {
-        File tempDir = this.wrapped.getTempDir();
+    private Path getFileIgnoreCaseFromTempDirIfExists(String childRelativePath) throws IOException {
+        final Path tempDir = this.wrapped.getTempDir();
         if (tempDir != null) {
-            Path file = VirtualDirPath.findFileIgnoreCase(tempDir.toPath(), childRelativePath);
-            if (file != null) {
-                return file.toFile();
-            }
+            return VirtualDirPath.findFileIgnoreCase(tempDir, childRelativePath);
         }
         return null;
     }
 
     private FilePathInputStream getInputStreamIgnoreCaseFromTempDirIfExists(String childRelativePath) throws IOException {
-        File file = getFileIgnoreCaseFromTempDirIfExists(childRelativePath);
-        if (file != null) {
-            Path filePath = file.toPath();
+        final Path filePath = getFileIgnoreCaseFromTempDirIfExists(childRelativePath);
+        if (filePath != null) {
             InputStream inputStream = Files.newInputStream(filePath);
             return new FilePathInputStream(filePath, inputStream, null);
         }
         return null;
     }
 
-    private File getFileInner(String path) throws IOException {
+    private Path getFileInner(String path) throws IOException {
         String pathSeparator;
         if (!this.wrapped.isArchive() && !this.wrapped.getBasePath().toLowerCase().endsWith("tar")) {
             pathSeparator = "\\\\";
@@ -183,7 +178,7 @@ class VirtualDirWrapper extends VirtualDirEx {
         }
         try {
             //if the path letter case is correct, there is no need to read all the path tree
-            File result = this.wrapped.getFile(path);
+            final Path result = this.wrapped.getFile(path);
             if (result != null) {
                 return result;
             }
@@ -272,7 +267,7 @@ class VirtualDirWrapper extends VirtualDirEx {
     }
 
     @Override
-    public File getTempDir() throws IOException {
+    public Path getTempDir() throws IOException {
         return this.wrapped.getTempDir();
     }
 

@@ -27,7 +27,7 @@ import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.engine_utilities.file.FileHelper;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.*;
@@ -189,22 +189,22 @@ public abstract class BaseProductReaderPlugIn implements ProductReaderPlugIn {
      * @return The list of files
      * @throws IOException
      */
-    static List<String> listFiles(File parent, int depth) throws IOException {
+    static List<String> listFiles(Path parent, int depth) throws IOException {
         if (parent == null)
             return null;
         List<String> files = new ArrayList<>();
-        Files.walkFileTree(Paths.get(parent.getAbsolutePath()),
+        Files.walkFileTree(Paths.get(parent.toAbsolutePath().toString()),
                 EnumSet.noneOf(FileVisitOption.class),
                 depth,
-                new FileVisitor<Path>() {
+                new FileVisitor<>() {
                     @Override
                     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                         return FileVisitResult.CONTINUE;
                     }
 
                     @Override
-                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                        files.add(file.toFile().getAbsolutePath().replace(parent.getAbsolutePath(), "").substring(1));
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                        files.add(file.toAbsolutePath().toString().replace(parent.toAbsolutePath().toString(), "").substring(1));
                         return FileVisitResult.CONTINUE;
                     }
 
@@ -226,7 +226,7 @@ public abstract class BaseProductReaderPlugIn implements ProductReaderPlugIn {
      */
     private class BaseProductFileFilter extends SnapFileFilter {
 
-        private final Map<File, Boolean> processed;
+        private final Map<Path, Boolean> processed;
         private final int depth;
 
         public BaseProductFileFilter(BaseProductReaderPlugIn plugIn, int folderDepth) {
@@ -237,10 +237,10 @@ public abstract class BaseProductReaderPlugIn implements ProductReaderPlugIn {
         }
 
         @Override
-        public boolean accept(File file) {
+        public boolean accept(Path file) {
             boolean shouldAccept = super.accept(file);
-            if (shouldAccept && file.isFile() && !VirtualDirEx.isPackedFile(file.toPath())) {
-                File folder = file.getParentFile();
+            if (shouldAccept && Files.isRegularFile(file) && !VirtualDirEx.isPackedFile(file)) {
+                Path folder = file.getParent();
                 if (!processed.containsKey(folder)) {
                     try {
                         List<String> files = listFiles(folder, depth);

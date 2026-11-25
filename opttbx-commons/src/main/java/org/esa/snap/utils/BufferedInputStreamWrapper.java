@@ -1,17 +1,22 @@
 package org.esa.snap.utils;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * @author Jean Coravu
  */
 public class BufferedInputStreamWrapper {
 
-    private final FileInputStream fileInputStream;
+    private final InputStream fileInputStream;
     private final BufferedInputStream bufferredInputStream;
 
-    public BufferedInputStreamWrapper(File file) throws FileNotFoundException {
-        this.fileInputStream = new FileInputStream(file);
+    public BufferedInputStreamWrapper(Path file) throws IOException {
+        this.fileInputStream = Files.newInputStream(file);
         this.bufferredInputStream = new BufferedInputStream(this.fileInputStream);
     }
 

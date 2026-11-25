@@ -19,29 +19,29 @@
 package eu.esa.opt.dataio;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @deprecated since 10.0.0, use {@link org.esa.snap.engine_utilities.dataio.VirtualDirTgzTest} instead
  */
 public class VirtualDirTgzTest {
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    public Path tempFolder = IOHelper.createATempDir();
 
 
     @Test
@@ -62,44 +62,44 @@ public class VirtualDirTgzTest {
     @Test
     @STTM("SNAP-4105")
     public void test_closeDeletesExtractedTempDir() throws Exception {
-        File tarFile = tempFolder.newFile("test.tar");
-        createTarWithSingleFile(tarFile.toPath(), "folder/a.txt", "hello");
-        VirtualDirTgz virtualDir = new VirtualDirTgz(tarFile.toPath());
+        final Path tarFile = tempFolder.resolve("test.tar");
+        createTarWithSingleFile(tarFile, "folder/a.txt", "hello");
+        VirtualDirTgz virtualDir = new VirtualDirTgz(tarFile);
         virtualDir.ensureUnpacked(null);
-        File extractDir = virtualDir.getTempDir();
+        final Path extractDir = virtualDir.getTempDir();
 
         assertNotNull(extractDir);
-        assertTrue(extractDir.exists());
-        assertTrue(new File(extractDir, "folder/a.txt").isFile());
+        assertTrue(Files.exists(extractDir));
+        assertTrue(Files.isRegularFile(extractDir.resolve("folder/a.txt")));
 
         virtualDir.close();
-        assertFalse(extractDir.exists());
+        assertFalse(Files.exists(extractDir));
         assertNull(virtualDir.getTempDir());
     }
 
     @Test
     @STTM("SNAP-4105")
     public void test_closeIsIdempotent() throws Exception {
-        File tarFile = tempFolder.newFile("test.tar");
-        createTarWithSingleFile(tarFile.toPath(), "a.txt", "hello");
-        VirtualDirTgz virtualDir = new VirtualDirTgz(tarFile.toPath());
-        virtualDir.ensureUnpacked(null); File extractDir = virtualDir.getTempDir();
+        final Path tarFile = tempFolder.resolve("test.tar");
+        createTarWithSingleFile(tarFile, "a.txt", "hello");
+        VirtualDirTgz virtualDir = new VirtualDirTgz(tarFile);
+        virtualDir.ensureUnpacked(null); Path extractDir = virtualDir.getTempDir();
 
         assertNotNull(extractDir);
-        assertTrue(extractDir.exists());
+        assertTrue(Files.exists(extractDir));
         virtualDir.close();
         virtualDir.close();
 
-        assertFalse(extractDir.exists());
+        assertFalse(Files.exists(extractDir));
         assertNull(virtualDir.getTempDir());
     }
 
     @Test
     @STTM("SNAP-4105")
     public void test_closeWithoutUnpackDoesNothing() throws Exception {
-        File tarFile = tempFolder.newFile("test.tar");
-        createTarWithSingleFile(tarFile.toPath(), "a.txt", "hello");
-        VirtualDirTgz virtualDir = new VirtualDirTgz(tarFile.toPath());
+        final Path tarFile = tempFolder.resolve("test.tar");
+        createTarWithSingleFile(tarFile, "a.txt", "hello");
+        VirtualDirTgz virtualDir = new VirtualDirTgz(tarFile);
 
         assertNull(virtualDir.getTempDir()); virtualDir.close();
         assertNull(virtualDir.getTempDir());
@@ -108,16 +108,16 @@ public class VirtualDirTgzTest {
     @Test
     @STTM("SNAP-4105")
     public void test_makeLocalTempFolderThenCloseDeletesTempDir() throws Exception {
-        File tarFile = tempFolder.newFile("test.tar");
-        createTarWithSingleFile(tarFile.toPath(), "a.txt", "hello");
-        VirtualDirTgz virtualDir = new VirtualDirTgz(tarFile.toPath());
-        Path tempDirPath = virtualDir.makeLocalTempFolder();
+        final Path tarFile = tempFolder.resolve("test.tar");
+        createTarWithSingleFile(tarFile, "a.txt", "hello");
+        VirtualDirTgz virtualDir = new VirtualDirTgz(tarFile);
+        final Path tempDirPath = virtualDir.makeLocalTempFolder();
 
-        assertNotNull(tempDirPath); assertTrue(tempDirPath.toFile().exists());
-        assertEquals(tempDirPath.toFile(), virtualDir.getTempDir());
+        assertNotNull(tempDirPath); assertTrue(Files.exists(tempDirPath));
+        assertEquals(tempDirPath, virtualDir.getTempDir());
 
         virtualDir.close();
-        assertFalse(tempDirPath.toFile().exists());
+        assertFalse(Files.exists(tempDirPath));
         assertNull(virtualDir.getTempDir());
     }
 
@@ -125,9 +125,9 @@ public class VirtualDirTgzTest {
     private static void createTarWithSingleFile(Path tarPath, String entryName, String content) throws Exception {
         byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
 
-        try (OutputStream fos = new FileOutputStream(tarPath.toFile());
+        try (OutputStream fos = Files.newOutputStream(tarPath);
              TarArchiveOutputStream tos = new TarArchiveOutputStream(fos)) {
-            File parentDir = tarPath.getParent().toFile();
+            final Path parentDir = tarPath.getParent();
             assertNotNull(parentDir);
 
             String normalizedEntry = Objects.requireNonNull(entryName);

@@ -19,12 +19,10 @@ import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
 import org.esa.snap.core.util.jai.JAIUtils;
-import org.esa.snap.dataio.ImageRegistryUtils;
 import org.esa.snap.dataio.geotiff.GeoTiffImageReader;
 import org.esa.snap.dataio.geotiff.GeoTiffProductReader;
 import org.xml.sax.SAXException;
 
-import javax.imageio.spi.ImageInputStreamSpi;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -39,13 +37,10 @@ import java.util.List;
 public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends XmlMetadata> extends AbstractProductReader {
 
     private VirtualDirEx productDirectory;
-    private ImageInputStreamSpi imageInputStreamSpi;
     private List<GeoTiffImageReader> bandImageReaders;
 
     protected MultipleMetadataGeoTiffBasedReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
-
-        this.imageInputStreamSpi = ImageRegistryUtils.registerImageInputStreamSpi();
     }
 
     protected abstract MetadataType findFirstMetadataItem(MetadataList<MetadataType> metadataList);
@@ -104,16 +99,9 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
                 this.bandImageReaders = null;
             }
         } finally {
-            try {
-                if (this.imageInputStreamSpi != null) {
-                    ImageRegistryUtils.deregisterImageInputStreamSpi(this.imageInputStreamSpi);
-                    this.imageInputStreamSpi = null;
-                }
-            } finally {
-                if (this.productDirectory != null) {
-                    this.productDirectory.close();
-                    this.productDirectory = null;
-                }
+            if (this.productDirectory != null) {
+                this.productDirectory.close();
+                this.productDirectory = null;
             }
         }
         System.gc();
@@ -305,7 +293,7 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
             }
 
             Product product = new Product(productName, getProductType(), productBounds.width, productBounds.height, this);
-            product.setFileLocation(productPath.toFile());
+            product.setFileLocation(productPath);
             Dimension preferredTileSize = JAIUtils.computePreferredTileSize(product.getSceneRasterWidth(), product.getSceneRasterHeight(), 1);
             product.setPreferredTileSize(preferredTileSize);
             String groupPattern = computeGroupPattern(metadataList.getCount());
@@ -345,7 +333,7 @@ public abstract class MultipleMetadataGeoTiffBasedReader<MetadataType extends Xm
                 }
                 if (!bandBounds.isEmpty()) {
                     // there is an intersection
-                    GeoTiffProductReader geoTiffProductReader = new GeoTiffProductReader(getReaderPlugIn(), null);
+                    GeoTiffProductReader geoTiffProductReader = new GeoTiffProductReader(getReaderPlugIn());
                     Product getTiffProduct = geoTiffProductReader.readProduct(geoTiffImageReader, null, bandBounds);
                     if (bandCount != getTiffProduct.getNumBands()) {
                         throw new IllegalStateException("Different band count: geo tiff image band count=" + bandCount+", geo tif product band count="+getTiffProduct.getNumBands()+".");

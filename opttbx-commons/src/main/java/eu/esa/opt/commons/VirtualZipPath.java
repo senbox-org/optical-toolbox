@@ -3,7 +3,6 @@ package eu.esa.opt.commons;
 import org.esa.snap.engine_utilities.util.AllFilesVisitor;
 import org.esa.snap.engine_utilities.util.ZipFileSystemBuilder;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -53,8 +52,8 @@ public class VirtualZipPath extends AbstractVirtualPath {
     }
 
     @Override
-    public File getBaseFile() {
-        return this.zipPath.toFile();
+    public Path getBaseFile() {
+        return this.zipPath;
     }
 
     @Override
@@ -105,14 +104,14 @@ public class VirtualZipPath extends AbstractVirtualPath {
     }
 
     @Override
-    public File getFile(String zipEntryPath) throws IOException {
+    public Path getFile(String zipEntryPath) throws IOException {
         try (FileSystem fileSystem = ZipFileSystemBuilder.newZipFileSystem(this.zipPath)) {
             for (Path zipArchiveRoot : fileSystem.getRootDirectories()) {
                 Path entryPath = ZipFileSystemBuilder.buildZipEntryPath(zipArchiveRoot, zipEntryPath);
                 if (Files.exists(entryPath)) {
                     // the entry exists into the zip archive
                     Path fileToReturn = copyFileOnLocalDiskIfNeeded(entryPath, zipEntryPath);
-                    return fileToReturn.toFile();
+                    return fileToReturn;
                 }
             }
             throw new FileNotFoundException(getMissingZipEntryExceptionMessage(zipEntryPath));

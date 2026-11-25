@@ -1,6 +1,10 @@
 package org.esa.snap.utils;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * @author Jean Coravu
@@ -8,11 +12,11 @@ import java.io.*;
 @SuppressWarnings("PointlessBitwiseExpression")
 public class BufferedOutputStreamWrapper {
 
-    private final FileOutputStream fileOutputStream;
+    private final OutputStream fileOutputStream;
     private final BufferedOutputStream bufferedOutputStream;
 
-    public BufferedOutputStreamWrapper(File file) throws FileNotFoundException {
-        this.fileOutputStream = new FileOutputStream(file);
+    public BufferedOutputStreamWrapper(Path file) throws IOException {
+        this.fileOutputStream = Files.newOutputStream(file);
         this.bufferedOutputStream = new BufferedOutputStream(this.fileOutputStream);
     }
 

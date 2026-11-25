@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio;
 
 import com.bc.ceres.core.VirtualDir;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import com.bc.ceres.util.CleanUpState;
 import com.bc.ceres.util.CleanerRegistry;
 import eu.esa.opt.commons.FilePath;
@@ -10,15 +11,15 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.CompressorInputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
+import org.esa.snap.core.util.ProductUtils;
 import org.esa.snap.core.util.io.FileUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,18 +38,9 @@ public class VirtualDirTgz extends VirtualDirEx {
     private final Path archiveFile;
     private final VirtualDirTgzState state;
 
-    public VirtualDirTgz(File tgz) {
-        if (tgz == null) {
-            throw new IllegalArgumentException("Input file shall not be null");
-        }
-        this.archiveFile = tgz.toPath();
-        this.state = new VirtualDirTgzState();
-        CleanerRegistry.getInstance().register(this, state);
-    }
-
     public VirtualDirTgz(Path tgz) {
         if (tgz == null) {
-            throw new NullPointerException("Input file shall not be null");
+            throw new IllegalArgumentException("Input file shall not be null");
         }
         this.archiveFile = tgz;
         this.state = new VirtualDirTgzState();
@@ -84,12 +76,12 @@ public class VirtualDirTgz extends VirtualDirEx {
 
     @Override
     public String getBasePath() {
-        return this.archiveFile.toFile().getPath();
+        return this.archiveFile.toString();
     }
 
     @Override
-    public File getBaseFile() {
-        return this.archiveFile.toFile();
+    public Path getBaseFile() {
+        return this.archiveFile;
     }
 
     @Override
@@ -106,7 +98,7 @@ public class VirtualDirTgz extends VirtualDirEx {
 
     @Override
     public FilePathInputStream getInputStream(String childRelativePath) throws IOException {
-        Path file = getFile(childRelativePath).toPath();
+        Path file = getFile(childRelativePath);
         InputStream inputStream = Files.newInputStream(file);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         return new FilePathInputStream(file, bufferedInputStream, null);
@@ -114,24 +106,24 @@ public class VirtualDirTgz extends VirtualDirEx {
 
     @Override
     public FilePath getFilePath(String childRelativePath) throws IOException {
-        Path file = getFile(childRelativePath).toPath();
+        Path file = getFile(childRelativePath);
         return new FilePath(file, null);
     }
 
     @Override
-    public File getFile(String childRelativePath) throws IOException {
+    public Path getFile(String childRelativePath) throws IOException {
         ensureUnpacked(null);
-        File file = new File(state.extractDir, childRelativePath);
-        if (!(file.isFile() || file.isDirectory())) {
-            throw new FileNotFoundException("The path '"+childRelativePath+"' does not exist in the folder '"+state.extractDir.getAbsolutePath()+"'.");
+        final Path file = state.extractDir.resolve(childRelativePath);
+        if (!(Files.isRegularFile(file) || Files.isDirectory(file))) {
+            throw new FileNotFoundException("The path '"+childRelativePath+"' does not exist in the folder '"+state.extractDir.toAbsolutePath()+"'.");
         }
         return file;
     }
 
     @Override
     public String[] list(String path) throws IOException {
-        final File file = getFile(path);
-        return file.list();
+        final Path file = getFile(path);
+        return IOHelper.list(file).toArray(new String[0]);
     }
 
     @Override
@@ -171,7 +163,7 @@ public class VirtualDirTgz extends VirtualDirEx {
 
 
     @Override
-    public File getTempDir() {
+    public Path getTempDir() {
         return state.extractDir;
     }
 
@@ -180,10 +172,10 @@ public class VirtualDirTgz extends VirtualDirEx {
         if (state.extractDir == null) {
             state.extractDir = VirtualDir.createUniqueTempDir();
         }
-        return state.extractDir.toPath();
+        return state.extractDir;
     }
 
-    public void ensureUnpacked(File unpackFolder) throws IOException {
+    public void ensureUnpacked(Path unpackFolder) throws IOException {
         if (state.extractDir == null) {
             state.extractDir = (unpackFolder == null) ? VirtualDir.createUniqueTempDir() : unpackFolder;
 
@@ -199,7 +191,7 @@ public class VirtualDirTgz extends VirtualDirEx {
                         longLink = null;
                     }
                     if (entry.isDirectory()) {
-                        File directory = new File(state.extractDir, entryName);
+                        final Path directory = state.extractDir.resolve(entryName);
                         ensureDirectory(directory);
                         continue;
                     }
@@ -211,24 +203,24 @@ public class VirtualDirTgz extends VirtualDirEx {
                         tarPath = entryName.substring(0, pathIndex - 1);
                     }
 
-                    File targetDir;
+                    final Path targetDir;
                     if (tarPath == null) {
                         targetDir = state.extractDir;
                     } else {
-                        targetDir = new File(state.extractDir, tarPath);
+                        targetDir = state.extractDir.resolve(tarPath);
                     }
 
                     ensureDirectory(targetDir);
-                    File targetFile = new File(targetDir, fileNameFromPath);
-                    if (!entryIsLink && targetFile.isFile()) {
+                    final Path targetFile = targetDir.resolve(fileNameFromPath);
+                    if (!entryIsLink && Files.isRegularFile(targetFile)) {
                         continue;
                     }
 
-                    if (!entryIsLink && !targetFile.createNewFile()) {
-                        throw new IOException("Unable to create file: " + targetFile.getAbsolutePath());
+                    if (!entryIsLink && !IOHelper.createFile(targetFile)) {
+                        throw new IOException("Unable to create file: " + targetFile.toAbsolutePath());
                     }
 
-                    try (FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
+                    try (OutputStream fileOutputStream = ProductUtils.getProductOutputStream(targetFile);
                          BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream)) {
 
                         int count;
@@ -269,10 +261,10 @@ public class VirtualDirTgz extends VirtualDirEx {
         }
     }
 
-    private void ensureDirectory(File targetDir) throws IOException {
-        if (!targetDir.isDirectory()) {
-            if (!targetDir.mkdirs()) {
-                throw new IOException("unable to create directory: " + targetDir.getAbsolutePath());
+    private void ensureDirectory(Path targetDir) throws IOException {
+        if (!Files.isDirectory(targetDir)) {
+            if (!IOHelper.createDirectories(targetDir)) {
+                throw new IOException("unable to create directory: " + targetDir.toAbsolutePath());
             }
         }
     }
@@ -317,7 +309,7 @@ public class VirtualDirTgz extends VirtualDirEx {
 
 
     private static final class VirtualDirTgzState implements CleanUpState {
-        private File extractDir;
+        private Path extractDir;
 
         @Override
         public synchronized void run() {
