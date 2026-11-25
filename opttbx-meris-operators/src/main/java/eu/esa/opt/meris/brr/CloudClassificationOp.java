@@ -399,7 +399,7 @@ public class CloudClassificationOp extends MerisBasisOp implements Constants {
         return is_cloud;
     }
 
-    private static class SourceData {
+    public static class SourceData {
         private float[][] rhoToa;
         private Tile[] radiance;
         private short[] detectorIndex;
@@ -412,7 +412,7 @@ public class CloudClassificationOp extends MerisBasisOp implements Constants {
         private Tile l1Flags;
     }
 
-    private static class PixelInfo {
+    public static class PixelInfo {
         int index;
         int x;
         int y;

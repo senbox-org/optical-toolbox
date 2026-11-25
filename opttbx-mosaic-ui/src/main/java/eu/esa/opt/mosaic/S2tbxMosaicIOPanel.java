@@ -71,7 +71,7 @@ class S2tbxMosaicIOPanel extends JPanel {
     private final PropertySet propertySet;
     private final TargetProductSelector targetProductSelector;
     private final SourceProductSelector updateProductSelector;
-    private S2tbxFileArrayEditor sourceFileEditor;
+    private final S2tbxFileArrayEditor sourceFileEditor;
 
     S2tbxMosaicIOPanel(AppContext appContext, S2tbxMosaicFormModel mosaicModel, TargetProductSelector selector) {
         this.appContext = appContext;
@@ -184,7 +184,6 @@ class S2tbxMosaicIOPanel extends JPanel {
         tableLayout.setRowWeightY(1, 1.0);
         sourceProductPanel.add(fileArrayComponent);
 
-
         return sourceProductPanel;
     }
 
@@ -292,7 +291,7 @@ class S2tbxMosaicIOPanel extends JPanel {
     private void prepareShowTargetProductSelector() {
         try {
             final List<File> files = sourceFileEditor.getFiles();
-            mosaicModel.setSourceProducts(files.toArray(new File[files.size()]));
+            mosaicModel.setSourceProducts(files.toArray(new File[0]));
         } catch (IOException ignore) {
         }
     }
@@ -382,7 +381,7 @@ class S2tbxMosaicIOPanel extends JPanel {
         }
     }
 
-    public class UpdateProductFilter implements ProductFilter {
+    private static class UpdateProductFilter implements ProductFilter {
 
         @Override
         public boolean accept(Product product) {

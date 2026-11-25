@@ -27,7 +27,7 @@ import ucar.nc2.Variable;
 public class AatsrS3NetcdfReader extends S3NetcdfReader {
 
     @Override
-    protected void addVariableAsBand(Product product, Variable variable, String variableName, boolean synthetic) {
+    protected void addVariableAsBand(Product product, Variable variable, String variableName) {
 // todo ideas+
         if (DataType.CHAR.equals(variable.getDataType())) {
             final Band band = product.addBand(variableName, ProductData.TYPE_INT8);
@@ -35,11 +35,10 @@ public class AatsrS3NetcdfReader extends S3NetcdfReader {
             band.setUnit(variable.getUnitsString());
             band.setScalingFactor(S3Util.getScalingFactor(variable));
             band.setScalingOffset(S3Util.getAddOffset(variable));
-            band.setSynthetic(synthetic);
             S3Util.addSampleCodings(product, band, variable, false);
             S3Util.addFillValue(band, variable);
         } else {
-            super.addVariableAsBand(product, variable, variableName, synthetic);
+            super.addVariableAsBand(product, variable, variableName);
         }
     }
 }

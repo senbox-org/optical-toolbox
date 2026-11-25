@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
@@ -22,7 +21,7 @@ public class AlosAV2MetadataInspectorTest {
     }
 
     @Test
-    public void testMetadataInspector() throws URISyntaxException, IOException {
+    public void testMetadataInspector() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
         File productFile = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+File.separator+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+File.separator+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA");

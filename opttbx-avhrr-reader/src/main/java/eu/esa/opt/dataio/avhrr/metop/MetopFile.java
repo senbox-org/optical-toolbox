@@ -41,24 +41,17 @@ import java.util.List;
  * @author marcoz
  * @version $Revision: 1.1.1.1 $ $Date: 2007/03/22 11:12:51 $
  */
+@SuppressWarnings("SynchronizeOnNonFinalField")
 class MetopFile extends AvhrrFile {
 
     private static final int EXPECTED_PRODUCT_WIDTH = 2048;
-
     private static final int HIGH_PRECISION_SAMPLE_RATE = 20;
-
     private static final int LOW_PRECISION_SAMPLE_RATE = 40;
-
     private static final int LOW_PRECISION_TRIM_X = 24;
-
     private static final int HIGH_PRECISION_TRIM_X = 4;
-
     private static final int LOW_PRECISION_PRODUCT_WIDTH = 2001;
-
     private static final int HIGH_PRECISION_PRODUCT_WIDTH = 2041;
-
     private static final int LOW_PRECISION_TIE_POINT_WIDTH = 51;
-
     private static final int HIGH_PRECISION_TIE_POINT_WIDTH = 103;
 
     /**
@@ -66,36 +59,24 @@ class MetopFile extends AvhrrFile {
      * with a low or high precision sample rate.
      */
     private static final int TIE_POINT_DIFFERENCE = 832;
-
     private static final int TIE_POINT_OFFSET = 20556;
 
-
     private static final int FLAG_OFFSET = 22204;
-
     private static final int FRAME_INDICATOR_OFFSET = 26580;
 
     private ImageInputStream inputStream;
-
-    private GenericRecordHeader mphrHeader;
-
     private AsciiRecord mainProductHeaderRecord;
-
     private AsciiRecord secondaryProductHeaderRecord;
-
     private GiadrRadiance giadrRadiance;
-
     private int firstMdrOffset;
-
     private int mdrSize;
-
     private int numNavPoints;
-
     private int numTrimX;
 
     private ProductData.UTC startTime;
     private ProductData.UTC endTime;
     private MetadataElement geadrMetadata;
-    private MetadataElement readerInfo;
+    private final MetadataElement readerInfo;
 
     public MetopFile(ImageInputStream imageInputStream) {
         this.inputStream = imageInputStream;
@@ -104,7 +85,7 @@ class MetopFile extends AvhrrFile {
 
     @Override
     public void readHeader() throws IOException {
-        mphrHeader = new GenericRecordHeader();
+        final GenericRecordHeader mphrHeader = new GenericRecordHeader();
         boolean correct = mphrHeader.readGenericRecordHeader(inputStream);
 
         if (!correct
@@ -426,7 +407,7 @@ class MetopFile extends AvhrrFile {
         mdrSize = (int) firstMdr.recordSize;
 
         final long fileSize = inputStream.length();
-        final long expectedFileSize = firstMdrOffset + (productHeight * mdrSize);
+        final long expectedFileSize = firstMdrOffset + ((long) productHeight * mdrSize);
         if (fileSize != expectedFileSize) {
             productHeight = (int) ((fileSize - firstMdrOffset) / mdrSize);
         }
@@ -437,7 +418,7 @@ class MetopFile extends AvhrrFile {
         productHeight = productHeight - toSkip;
         GenericRecordHeader lastMdr = new GenericRecordHeader();
         synchronized (inputStream) {
-            inputStream.seek(firstMdrOffset + ((productHeight - 1) * mdrSize));
+            inputStream.seek(firstMdrOffset + ((long) (productHeight - 1) * mdrSize));
             boolean correct = lastMdr.readGenericRecordHeader(inputStream);
             if (!correct) {
                 throw new IllegalArgumentException("Bad GRH in last MDR.");

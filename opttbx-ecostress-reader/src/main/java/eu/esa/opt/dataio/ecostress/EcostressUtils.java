@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static eu.esa.snap.core.dataio.CfConstants.FILL_VALUE;
+
 /**
  * Ecostress utility methods
  *
@@ -29,7 +31,7 @@ public class EcostressUtils {
 
     private static final String BAND_ATTRIBUTE_NAME_DESCRIPTION = "Description";
     private static final String BAND_ATTRIBUTE_NAME_UNIT = "Units";
-    private static final String BAND_ATTRIBUTE_NAME_FILL_VALUE = "_FillValue";
+    private static final String BAND_ATTRIBUTE_NAME_FILL_VALUE = FILL_VALUE;
 
     private static final Logger logger = Logger.getLogger(EcostressUtils.class.getName());
 

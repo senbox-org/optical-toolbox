@@ -65,7 +65,7 @@ public class S2IndexBandInformation extends S2BandInformation {
         return new ImageInfo(
                 new ColorPaletteDef(
                         points.toArray(
-                                new ColorPaletteDef.Point[points.size()]),
+                                new ColorPaletteDef.Point[0]),
                                 points.size())
         );
     }

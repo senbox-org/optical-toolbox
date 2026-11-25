@@ -254,11 +254,10 @@ public class VirtualDirTgz extends VirtualDirEx {
 
     private TarArchiveInputStream buildTarInputStream() throws IOException {
         final CompressorStreamFactory compressorStreamFactory = new CompressorStreamFactory();
-        CompressorInputStream compressorInputStream = null;
         InputStream stream = null;
         try {
             stream = new BufferedInputStream(Files.newInputStream(this.archiveFile));
-            compressorInputStream = compressorStreamFactory.createCompressorInputStream(stream);
+            final CompressorInputStream compressorInputStream = compressorStreamFactory.createCompressorInputStream(stream);
             return new TarArchiveInputStream(compressorInputStream);
         } catch (IOException | CompressorException | IllegalArgumentException ex) {
             if (stream == null) {

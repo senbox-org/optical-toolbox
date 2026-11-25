@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import java.util.Iterator;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ReaderLoadedAsServiceTest {
 
@@ -29,7 +29,7 @@ public class ReaderLoadedAsServiceTest {
     public void testReaderIsLoaded() {
 
         ProductIOPlugInManager plugInManager = ProductIOPlugInManager.getInstance();
-        Iterator readerPlugIns;
+        Iterator<ProductReaderPlugIn> readerPlugIns;
 
         readerPlugIns = plugInManager.getReaderPlugIns("PRISM");
         testRegisteredReader(readerPlugIns, 1);
@@ -39,16 +39,13 @@ public class ReaderLoadedAsServiceTest {
 
     }
 
-    private void testRegisteredReader(Iterator readerPlugIns, int expectedReaderCount) {
+    private void testRegisteredReader(Iterator<ProductReaderPlugIn> readerPlugIns, int expectedReaderCount) {
         int readerCount = 0;
         while (readerPlugIns.hasNext()) {
             readerCount++;
             ProductReaderPlugIn plugIn = (ProductReaderPlugIn) readerPlugIns.next();
-            System.out.println("readerPlugIn.Class = " + plugIn.getClass());
-            System.out.println("readerPlugIn.Descr = " + plugIn.getDescription(null));
         }
 
         assertEquals(expectedReaderCount, readerCount);
     }
-
 }

@@ -380,12 +380,12 @@ class CloudPN extends ProcessingNode {
     private static double computeAda(final double vaa, final double saa) {
         double ada = vaa - saa;
         if (ada <= -180.0) {
-            ada = +360.0 + ada;
-        } else if (ada > +180.0) {
+            ada = 360.0 + ada;
+        } else if (ada > 180.0) {
             ada = -360.0 + ada;
         }
         if (ada >= 0.0) {
-            ada = +180.0 - ada;
+            ada = 180.0 - ada;
         } else {
             ada = -180.0 - ada;
         }

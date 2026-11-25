@@ -75,7 +75,7 @@ public class SeadasProductReader extends AbstractProductReader implements CacheD
     }
 
 
-    enum ProductType {
+    public enum ProductType {
         ANCNRT("SeaWiFS Near Real-Time Ancillary Data"),
         ANCNRT2("NCEP Reanalysis 2 Ancillary Data"),
         ANCCLIM("SeaWiFS Climatological Ancillary Data"),

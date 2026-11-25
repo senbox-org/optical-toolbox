@@ -25,6 +25,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static eu.esa.snap.core.dataio.CfConstants.TITLE;
+
 class DetectInstrument {
 
     private static final String GLOBAL_ATTRIBUTES = "Global_Attributes";
@@ -98,7 +100,7 @@ class DetectInstrument {
     }
 
     private static boolean isModis(MetadataElement globalAttributes) {
-        String attribName = "title";
+        String attribName = TITLE;
         if (globalAttributes != null && globalAttributes.containsAttribute(attribName)) {
             final String sensor_name = globalAttributes.getAttributeString(attribName);
             return sensor_name.contains(MODIS_TITLE_VALUE);
@@ -153,7 +155,7 @@ class DetectInstrument {
     private static boolean seawifs(Product product) {
         MetadataElement globalAttributes = product.getMetadataRoot().getElement(GLOBAL_ATTRIBUTES);
 
-        String attribName = "Title";
+        String attribName = TITLE;
         if (globalAttributes != null && globalAttributes.containsAttribute(attribName)) {
             final String title = globalAttributes.getAttributeString(attribName);
             if (title.equals(SEAWIFS_TITLE)) {
@@ -167,8 +169,8 @@ class DetectInstrument {
     private static boolean czcs(Product product) {
         MetadataElement globalAttributes = product.getMetadataRoot().getElement(GLOBAL_ATTRIBUTES);
 
-        if (globalAttributes != null && globalAttributes.containsAttribute("Title")) {
-            final String title = globalAttributes.getAttributeString("Title");
+        if (globalAttributes != null && globalAttributes.containsAttribute(TITLE)) {
+            final String title = globalAttributes.getAttributeString(TITLE);
             if (title.equals(CZCS_TITLE)) {
                 return true;
             }

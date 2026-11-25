@@ -227,7 +227,7 @@ final class LogVolDescriptor {
                     standardParallel = -90.0;
                 } else {
                     projectionName = "Stereographic_North_Pole";
-                    standardParallel = +90.0;
+                    standardParallel = 90.0;
                 }
 
                 String upsWktPattern = "PROJCS[\"%s\", \n" +

@@ -124,7 +124,7 @@ public class BandExtractorDialog  extends DefaultSingleTargetProductDialog {
         final ArrayList<String> referencedBandNames = new ArrayList<>();
         final ArrayList<String> referencedMaskNames = new ArrayList<>();
         String[] nodeNames = lstSourceBandNames.toArray(new String[0]);
-        if (nodeNames != null) {
+        if (nodeNames.length > 0) {
             for (String nodeName : nodeNames) {
                 collectNotIncludedReferences(nodeName, referencedBandNames, referencedMaskNames);
             }

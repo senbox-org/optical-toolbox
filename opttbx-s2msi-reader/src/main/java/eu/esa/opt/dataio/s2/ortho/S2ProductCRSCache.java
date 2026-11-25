@@ -45,14 +45,13 @@ public class S2ProductCRSCache {
 
 
 
-    public class S2ProductCRSCacheEntry {
+    public static class S2ProductCRSCacheEntry {
         Set<String> epsgCodeList = new HashSet<>();
         private S2Config.Sentinel2ProductLevel level = S2Config.Sentinel2ProductLevel.UNKNOWN;
         private S2Config.Sentinel2InputType inputType;
-        private INamingConvention namingConvention;
-
 
         public S2ProductCRSCacheEntry (Path path) {
+            INamingConvention namingConvention;
             try {
                 VirtualPath virtualPath = S2NamingConventionUtils.transformToSentinel2VirtualPath(path);
                 namingConvention = NamingConventionFactory.createOrthoNamingConvention(virtualPath);

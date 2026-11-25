@@ -317,8 +317,8 @@ public class SeabassReader extends LineNumberReader {
     /**
      * internal class used to hold the information about a column of data from the file.
      */
-    private class ColumnInfo {
-        private String name;
+    private static class ColumnInfo {
+        private final String name;
 
         public ColumnInfo(String name) {
             this.name = name;
@@ -357,14 +357,10 @@ public class SeabassReader extends LineNumberReader {
         public Object convertData(String data) {
             Class c = getDataClass();
             if (c == Double.class) {
-                return new Double(data);
+                return Double.parseDouble(data);
             } else {
                 return data;
             }
         }
-
-
     }
-
-
 }

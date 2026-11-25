@@ -78,7 +78,6 @@ public class SynL1CProductFactory extends AbstractProductFactory {
                 targetProduct.addBand(targetBand);
                 //todo change this later
                 targetBand.setNoDataValueUsed(false);
-                targetBand.setValidPixelExpression("");
                 targetBand.setSourceImage(sourceImage);
                 configureTargetNode(sourceBand, targetBand);
                 mapping.put(sourceBand.getName(), targetBand.getName());

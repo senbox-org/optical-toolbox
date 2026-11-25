@@ -166,7 +166,7 @@ public class MetopReader extends AvhrrReader implements AvhrrConstants {
         double ada = saa - vaa;
         if (ada <= -180.0) {
             ada += 360.0;
-        } else if (ada > +180.0) {
+        } else if (ada > 180.0) {
             ada -= 360.0;
         }
         return ada;

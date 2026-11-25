@@ -30,6 +30,8 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import static eu.esa.snap.core.dataio.CfConstants.TITLE;
+
 public class L1ProductReaderPlugIn implements ProductReaderPlugIn {
 
     // Set to "true" to output debugging information.
@@ -81,7 +83,7 @@ public class L1ProductReaderPlugIn implements ProductReaderPlugIn {
         try (NetcdfFile ncfile = NetcdfFileOpener.open(inputFile)) {
             if (ncfile != null) {
 
-                Attribute titleAttribute = ncfile.findGlobalAttributeIgnoreCase("title");
+                Attribute titleAttribute = ncfile.findGlobalAttributeIgnoreCase(TITLE);
 
                 if (titleAttribute != null) {
 

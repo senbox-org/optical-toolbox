@@ -104,7 +104,7 @@ public class VirtualDirPath extends AbstractVirtualPath {
                     for (Path currentPath : directoryStream) {
                         files.add(currentPath.getFileName().toString());
                     }
-                    return files.toArray(new String[files.size()]);
+                    return files.toArray(new String[0]);
                 }
             } else {
                 throw new NotDirectoryException(child.toString());
@@ -135,10 +135,10 @@ public class VirtualDirPath extends AbstractVirtualPath {
 
     @Override
     public String[] listAllFiles() throws IOException {
-        AllFilesVisitor filesVisitor = new AllFilesVisitor();
+        final AllFilesVisitor filesVisitor = new AllFilesVisitor();
         Files.walkFileTree(this.dirPath, filesVisitor);
-        TreeSet<String> filePaths = filesVisitor.getFilePaths();
-        return filePaths.toArray(new String [filePaths.size()]);
+        final TreeSet<String> filePaths = filesVisitor.getFilePaths();
+        return filePaths.toArray(new String[0]);
     }
 
     @Override

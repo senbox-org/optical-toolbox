@@ -214,7 +214,6 @@ public class SmacOperator extends Operator {
 
         for (Map.Entry<Band, Tile> bandTileEntry : targetTiles.entrySet()) {
             Band sourceBand = sourceProduct.getBand(revertMerisBandName(bandTileEntry.getKey().getName(), bandNameMapping));
-            sourceBand.setValidPixelExpression(""); // necessary in order to mimic the processor behavior
             Tile sourceTile = getSourceTile(sourceBand, targetRectangle);
             sourceData.toa = sourceTile.getSamplesFloat();
             Tile targetTile = bandTileEntry.getValue();
@@ -708,7 +707,7 @@ public class SmacOperator extends Operator {
 
     }
 
-    private class SourceData {
+    private static class SourceData {
 
         float[] sza;
         float[] saa;

@@ -18,7 +18,7 @@ package eu.esa.opt.meris.smac;
 /**
  * Interface for classes implementing a sensor coefficient set for the <code>SmacAlgorithm</code>.
  */
-interface SmacSensorCoefficients {
+public interface SmacSensorCoefficients {
 
     /**
      * Retrieves the gaseous absorption coefficient for h20.

@@ -124,33 +124,33 @@ class MissingElementsMerger extends AbstractElementMerger {
         return "";
     }
 
-    private String getStartTimeFromNode(Node node) throws PDUStitchingException {
+    private String getStartTimeFromNode(Node node) {
         final Node startTimeNode = node.getAttributes().getNamedItem("startTime");
         return startTimeNode.getNodeValue();
     }
 
-    private String getStopTimeFromNode(Node node) throws PDUStitchingException {
+    private String getStopTimeFromNode(Node node) {
         final Node stopTimeNode = node.getAttributes().getNamedItem("stopTime");
         return stopTimeNode.getNodeValue();
     }
 
-    private double getPercentageFromNode(Node node) throws PDUStitchingException {
+    private double getPercentageFromNode(Node node) {
         final Node percentageNode = node.getAttributes().getNamedItem("percentage");
         final String percentageNodeValue = percentageNode.getNodeValue();
         return Double.parseDouble(percentageNodeValue);
     }
 
-    private String getGridFromNode(Node node) throws PDUStitchingException {
+    private String getGridFromNode(Node node) {
         final Node gridNode = node.getAttributes().getNamedItem("grid");
         return gridNode.getNodeValue();
     }
 
-    private String getViewFromNode(Node node) throws PDUStitchingException {
+    private String getViewFromNode(Node node) {
         final Node viewNode = node.getAttributes().getNamedItem("view");
         return viewNode.getNodeValue();
     }
 
-    private int getOverFromNode(Node node) throws PDUStitchingException {
+    private int getOverFromNode(Node node) {
         final Node overNode = node.getAttributes().getNamedItem("over");
         return Integer.parseInt(overNode.getNodeValue());
     }
@@ -249,7 +249,7 @@ class MissingElementsMerger extends AbstractElementMerger {
         return nodesMap;
     }
 
-    private class NewNode {
+    private static class NewNode {
 
         private final String gridValue;
         private final String viewValue;
@@ -305,7 +305,5 @@ class MissingElementsMerger extends AbstractElementMerger {
             }
             value += otherValue;
         }
-
     }
-
 }

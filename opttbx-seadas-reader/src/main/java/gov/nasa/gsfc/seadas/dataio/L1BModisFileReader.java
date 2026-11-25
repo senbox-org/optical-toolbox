@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
+
 /**
  * Created by IntelliJ IDEA.
  * User: seadas
@@ -204,7 +206,7 @@ public class L1BModisFileReader extends SeadasFileReader {
 
     private float getScaleFactor(Variable variable) {
         float scale_factor = 1.f;
-        final Attribute scale_factor_attribute = findAttribute("scale_factor", variable.getAttributes());
+        final Attribute scale_factor_attribute = findAttribute(SCALE_FACTOR, variable.getAttributes());
         if (scale_factor_attribute != null) {
             scale_factor = scale_factor_attribute.getNumericValue().floatValue();
         }
@@ -238,9 +240,9 @@ public class L1BModisFileReader extends SeadasFileReader {
                         Array intercept = null;
                         for (Attribute hdfAttribute : list) {
                             final String attribName = hdfAttribute.getShortName();
-                            if ("units".equals(attribName)) {
+                            if (UNITS.equals(attribName)) {
                                 units = hdfAttribute.getStringValue();
-                            } else if ("long_name".equals(attribName)) {
+                            } else if (LONG_NAME.equals(attribName)) {
                                 description = hdfAttribute.getStringValue();
                             } else if ("reflectance_scales".equals(attribName)) {
                                 slope = hdfAttribute.getValues();

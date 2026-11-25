@@ -73,6 +73,7 @@ public class L3GranuleMetadataPSD13 extends GenericXmlMetadata implements IL3Gra
         return null;
     }
 
+    @SuppressWarnings("CatchMayIgnoreException")
     @Override
     public S2Metadata.ProductCharacteristics getTileProductOrganization(VirtualPath path, S2SpatialResolution resolution) {
 

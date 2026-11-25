@@ -28,7 +28,7 @@ public class VariableDescriptor {
         height = -1;
         depth = -1;
         depthPrefixToken = "";
-        validExpression = "";
+        validExpression = null;
         units = "";
         description = "";
         tpXSubsamplingXPath = "";

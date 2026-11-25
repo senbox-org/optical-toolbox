@@ -557,7 +557,7 @@ public class SpotDimapMetadata extends XmlMetadata {
         }
     }
 
-    public class InsertionPoint {
+    public static class InsertionPoint {
         public float x;
         public float y;
         public float stepX;
@@ -589,5 +589,4 @@ public class SpotDimapMetadata extends XmlMetadata {
         }
         return retVal;
     }
-
 }

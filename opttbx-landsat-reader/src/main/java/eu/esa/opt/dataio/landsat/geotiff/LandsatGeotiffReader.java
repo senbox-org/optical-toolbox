@@ -59,7 +59,7 @@ public class LandsatGeotiffReader extends AbstractProductReader {
     static final String READ_AS_REFLECTANCE = "reflectance";
     private static final GeoTiffProductReaderPlugIn BAND_READER_PLUGIN = new GeoTiffProductReaderPlugIn();
 
-    enum Resolution {
+    public enum Resolution {
         DEFAULT,
         L8_PANCHROMATIC,
         L8_REFLECTIVE,

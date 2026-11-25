@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.FILL_VALUE;
+
 /**
  * @author Tonio Fincke
  */
@@ -72,7 +74,7 @@ class NcFileStitcher {
                     final SlstrN4Variable nVariable = addVariableToWritable(netcdfWriteable, variable);
                     addVariableAttributes(nVariable, variable, i, variableLists);
                     namesOfAddedVariables.add(variableName);
-                    Attribute fillValueAttribute = getAttributeFromList("_FillValue", variable.getAttributes());
+                    Attribute fillValueAttribute = getAttributeFromList(FILL_VALUE, variable.getAttributes());
                     Number fillValue = null;
                     if (fillValueAttribute != null) {
                         fillValue = fillValueAttribute.getNumericValue();

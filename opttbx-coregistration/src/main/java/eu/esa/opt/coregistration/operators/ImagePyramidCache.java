@@ -126,7 +126,7 @@ public class ImagePyramidCache {
         }
     }
 
-    public static void cleanLocation() throws IOException {
+    public static void cleanLocation() {
         for (String file : tmpDir.list()) {
             try {
                 File f = new File(file);

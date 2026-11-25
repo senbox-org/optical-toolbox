@@ -300,7 +300,7 @@ public final class RadiometricData {
         for (int i = 0; i < Lmax.length; i++) {
             if (formularUsed == AFTER1990) {
                 Lmax[i] = gain[i] * 255 + Lmin[i];
-            } else if (formularUsed == BEFORE1990) {
+            } else {
                 Lmax[i] = gain[i] * 254 + (254 * Lmin[i]) / 255;
             }
         }

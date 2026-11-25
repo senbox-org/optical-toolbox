@@ -263,7 +263,7 @@ public class DeimosMetadata extends XmlMetadata {
         return points;
     }
 
-    public class InsertionPoint {
+    public static class InsertionPoint {
         public float x;
         public float y;
         public float stepX;

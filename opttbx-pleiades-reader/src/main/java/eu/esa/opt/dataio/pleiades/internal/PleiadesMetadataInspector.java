@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.pleiades.internal;
 
+import eu.esa.opt.dataio.pleiades.dimap.BandInfo;
 import org.esa.snap.engine_utilities.commons.FilePathInputStream;
 import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.pleiades.PleiadesProductReader;
@@ -51,7 +52,7 @@ public class PleiadesMetadataInspector implements MetadataInspector {
             metadata.getMaskList().add("SATURATED");
 
             for (ImageMetadata imageMetadata : imageMetadataList) {
-                ImageMetadata.BandInfo[] bandInfos = imageMetadata.getBandsInformation();
+                BandInfo[] bandInfos = imageMetadata.getBandsInformation();
                 Arrays.stream(bandInfos).forEach(bandInfo -> metadata.getBandList().add(bandInfo.getId()));
 
                 if (imageMetadata.getMasks() != null && !imageMetadata.getMasks().isEmpty()) {

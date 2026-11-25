@@ -40,17 +40,20 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
+
 /**
  * The <code>MerisL3ProductReader</code> class is an implementation of the <code>ProductReader</code> interface
  * exclusively for data products having the standard MERIS Binned Level-3 format.
  *
  * @author Norman Fomferra
  * @version $Revision$ $Date$
- * @see org.esa.snap.dataio.merisl3.MerisL3ProductReaderPlugIn
+ * @see eu.esa.opt.dataio.merisl3.MerisL3ProductReaderPlugIn
  */
+@SuppressWarnings("SynchronizeOnNonFinalField")
 public class MerisL3ProductReader extends AbstractProductReader {
 
-    public static final String COL_INDEX_BAND_NAME = "col_index";
+    private static final String COL_INDEX_BAND_NAME = "col_index";
 
     private NetcdfFile _netcdfFile;
     private Product _product;
@@ -84,7 +87,7 @@ public class MerisL3ProductReader extends AbstractProductReader {
         if (_netcdfFile == null) {
             throw new IOException("Could not open NetCDF file " + path);
         }
-        bandMap = new HashMap<Band, VariableMetadata>(10);
+        bandMap = new HashMap<>(10);
         try {
             _grid = new ISINGrid(ISINGrid.detectRowCount(path));
             _sceneRasterWidth = _grid.getRowCount() * 2;
@@ -192,7 +195,7 @@ public class MerisL3ProductReader extends AbstractProductReader {
                 }
             } else {
                 final Variable binVariable = variableMetadata.variable;
-                final Number fillValueN = getAttributeNumericValue(binVariable, "_FillValue");
+                final Number fillValueN = getAttributeNumericValue(binVariable, FILL_VALUE);
                 final short fillValue = fillValueN != null ? fillValueN.shortValue() : 0;
 
                 int[] lineOffsets = new int[1];
@@ -295,7 +298,7 @@ public class MerisL3ProductReader extends AbstractProductReader {
         float pixelX = 0.0f;
         float pixelY = 0.0f;
         float easting = -180f;
-        float northing = +90f;
+        float northing = 90f;
         float pixelSizeX = 360.0f / _sceneRasterWidth;
         float pixelSizeY = 180.0f / _sceneRasterHeight;
         try {
@@ -304,9 +307,7 @@ public class MerisL3ProductReader extends AbstractProductReader {
                                                         easting, northing,
                                                         pixelSizeX, pixelSizeY,
                                                         pixelX, pixelY));
-        } catch (FactoryException e) {
-            throw new IOException(e);
-        } catch (TransformException e) {
+        } catch (FactoryException | TransformException e) {
             throw new IOException(e);
         }
     }
@@ -373,7 +374,7 @@ public class MerisL3ProductReader extends AbstractProductReader {
             band.setScalingFactor(variableMetadata.scalingFactor);
             band.setLog10Scaled(variableMetadata.log10Scaled);
             band.setNoDataValue(variableMetadata.fillValue);
-            band.setNoDataValueUsed(variableMetadata.fillValue != Double.NaN);
+            band.setNoDataValueUsed(!Double.isNaN(variableMetadata.fillValue));
             _product.addBand(band);
             bandMap.put(band, variableMetadata);
         }
@@ -388,16 +389,16 @@ public class MerisL3ProductReader extends AbstractProductReader {
         Number numericValue;
         String stringValue;
 
-        stringValue = getAttributeStringValue(variable, "long_name");
+        stringValue = getAttributeStringValue(variable, LONG_NAME);
         final String description = stringValue;
 
-        numericValue = getAttributeNumericValue(variable, "_FillValue");
+        numericValue = getAttributeNumericValue(variable, FILL_VALUE);
         final double fillValue = numericValue != null ? numericValue.doubleValue() : Double.NaN;
 
-        numericValue = getAttributeNumericValue(variable, "scale_factor");
+        numericValue = getAttributeNumericValue(variable, SCALE_FACTOR);
         final double scale = numericValue != null ? numericValue.doubleValue() : 1.0;
 
-        numericValue = getAttributeNumericValue(variable, "add_offset");
+        numericValue = getAttributeNumericValue(variable, ADD_OFFSET);
         final double offset = numericValue != null ? numericValue.doubleValue() : 0.0;
 
         stringValue = getAttributeStringValue(variable, "scaling_equation");
@@ -444,7 +445,7 @@ public class MerisL3ProductReader extends AbstractProductReader {
         // number of bins per row
         final int length;
 
-        public RowInfo(int offset, int length) {
+        RowInfo(int offset, int length) {
             this.offset = offset;
             this.length = length;
         }

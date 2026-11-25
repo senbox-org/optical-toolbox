@@ -60,7 +60,7 @@ public class NNUtils {
             }
         }
 
-        return pathsList.toArray(new String[pathsList.size()]);
+        return pathsList.toArray(new String[0]);
     }
 
     private static String getIgnoreCase(HashSet<String> dirNames, String alternativeNetDirName) {

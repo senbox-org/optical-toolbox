@@ -423,8 +423,6 @@ public class MuscateProductReader extends AbstractProductReader implements S2Ang
             }
         } catch (IOException e) {
             logger.warning(String.format("Unable to get band %d of the product: %s", bandIndex, tiffImageRelativeFilePath));
-        } catch (Exception e) {
-            throw e;
         } finally {
             if (success) {
                 this.bandImageReaders.add(geoTiffImageReader);

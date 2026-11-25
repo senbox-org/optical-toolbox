@@ -29,7 +29,7 @@ public class Kompsat2MetadataInspector implements MetadataInspector {
             Kompsat2Metadata productMetadata = Kompsat2ProductReader.readProductMetadata(productDirectory, metadataFileName);
             List<BandMetadata> bandMetadataList = Kompsat2ProductReader.readBandMetadata(imagesMetadataParentPath);
 
-            BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[bandMetadataList.size()]));
+            BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[0]));
 
             Metadata metadata = new Metadata();
             metadata.setProductWidth(metadataUtil.getMaxNumColumns());

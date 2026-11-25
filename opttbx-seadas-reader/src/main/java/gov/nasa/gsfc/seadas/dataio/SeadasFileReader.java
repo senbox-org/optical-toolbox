@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
 import static gov.nasa.gsfc.seadas.dataio.SeadasReaderDefaults.*;
 import static java.lang.System.arraycopy;
 
@@ -63,13 +64,14 @@ import static java.lang.System.arraycopy;
 
 public abstract class SeadasFileReader implements CacheDataProvider {
 
+    protected final NetcdfFile ncFile;
+
     protected boolean mustFlipX;
     protected boolean mustFlipY;
     protected boolean wantsCaching;
     protected boolean applyScaling;
     protected List<Attribute> globalAttributes;
     protected Map<String, Variable> variableMap;
-    protected NetcdfFile ncFile;
     protected SeadasProductReader productReader;
     protected int[] start = new int[2];
     protected int[] stride = new int[2];
@@ -84,8 +86,6 @@ public abstract class SeadasFileReader implements CacheDataProvider {
     protected int leadLineSkip = 0;
     protected int tailLineSkip = 0;
 
-    private static final String FLAG_MASKS = "flag_masks";
-    private static final String FLAG_MEANINGS = "flag_meanings";
     protected Logger logger = Logger.getLogger(getClass().getSimpleName());
 
     private final boolean isHeadless;
@@ -833,19 +833,19 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                 boolean bottomOfStackWater = false;
 
                 for (String bottomOfStack : masksBottomOfStackArray) {
-                    if (bottomOfStack.equals(bottomOfStackComposite1)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackComposite1))) {
                         bottomOfStackComposite1 = true;
                     }
 
-                    if (bottomOfStack.equals(bottomOfStackComposite2)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackComposite2))) {
                         bottomOfStackComposite2 = true;
                     }
 
-                    if (bottomOfStack.equals(bottomOfStackComposite3)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackComposite3))) {
                         bottomOfStackComposite3 = true;
                     }
 
-                    if (bottomOfStack.equals(bottomOfStackWater)) {
+                    if (bottomOfStack.equals(Boolean.toString(bottomOfStackWater))) {
                         bottomOfStackWater = true;
                     }
                 }
@@ -1764,20 +1764,20 @@ public abstract class SeadasFileReader implements CacheDataProvider {
             if (wvl != null) {
                 try {
                     wavelengths = wvl.read();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
                 bandIdx = ncFile.findVariable("geophysical_data/band_index");
                 if (bandIdx != null) {
                     try {
                         band_indices = bandIdx.read();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
                 }
                 intWvl = ncFile.findVariable("sensor_band_parameters/wavelength");
                 if (intWvl != null) {
                     try {
                         intWavelengths = intWvl.read();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
                 }
 
@@ -1808,7 +1808,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                         bandToVariableMap.put(band.getName(), sliced);
 
                         try {
-                            Attribute fillValue = variable.findAttribute("_FillValue");
+                            Attribute fillValue = variable.findAttribute(FILL_VALUE);
                             if (fillValue == null && applyScaling) {
                                 fillValue = variable.findAttribute("bad_value_scaled");
                             }
@@ -1825,32 +1825,32 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                         double[] validMinMax = {0.0, 0.0};
                         for (Attribute attribute : list) {
                             final String attribName = attribute.getShortName();
-                            if ("units".equals(attribName)) {
+                            if (UNITS.equals(attribName)) {
                                 band.setUnit(attribute.getStringValue());
-                            } else if ("long_name".equals(attribName)) {
+                            } else if (LONG_NAME.equals(attribName)) {
                                 band.setDescription(attribute.getStringValue());
                             } else if (applyScaling && "slope".equals(attribName)) {
                                 band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
                             } else if (applyScaling && "intercept".equals(attribName)) {
                                 band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
-                            } else if (applyScaling && "scale_factor".equals(attribName)) {
+                            } else if (applyScaling && SCALE_FACTOR.equals(attribName)) {
                                 band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
                             } else if (applyScaling && "add_offset".equals(attribName)) {
                                 band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
                             } else if (attribName.startsWith("valid_")) {
-                                if ("valid_min".equals(attribName)) {
+                                if (VALID_MIN.equals(attribName)) {
                                     if (attribute.getDataType().isUnsigned()) {
                                         validMinMax[0] = getUShortAttribute(attribute);
                                     } else {
                                         validMinMax[0] = attribute.getNumericValue(0).doubleValue();
                                     }
-                                } else if ("valid_max".equals(attribName)) {
+                                } else if (VALID_MAX.equals(attribName)) {
                                     if (attribute.getDataType().isUnsigned()) {
                                         validMinMax[1] = getUShortAttribute(attribute);
                                     } else {
                                         validMinMax[1] = attribute.getNumericValue(0).doubleValue();
                                     }
-                                } else if ("valid_range".equals(attribName)) {
+                                } else if (VALID_RANGE.equals(attribName)) {
                                     validMinMax[0] = attribute.getNumericValue(0).doubleValue();
                                     validMinMax[1] = attribute.getNumericValue(1).doubleValue();
                                 }
@@ -1922,7 +1922,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                     product.addBand(band);
 
                     try {
-                        Attribute fillValue = variable.findAttribute("_FillValue");
+                        Attribute fillValue = variable.findAttribute(FILL_VALUE);
                         if (fillValue == null && applyScaling) {
                             fillValue = variable.findAttribute("bad_value_scaled");
                         }
@@ -1937,32 +1937,32 @@ public abstract class SeadasFileReader implements CacheDataProvider {
                     double[] validMinMax = {0.0, 0.0};
                     for (Attribute attribute : list) {
                         final String attribName = attribute.getShortName();
-                        if ("units".equals(attribName)) {
+                        if (UNITS.equals(attribName)) {
                             band.setUnit(attribute.getStringValue());
-                        } else if ("long_name".equals(attribName)) {
+                        } else if (LONG_NAME.equals(attribName)) {
                             band.setDescription(attribute.getStringValue());
                         } else if (applyScaling && "slope".equals(attribName)) {
                             band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
                         } else if (applyScaling && "intercept".equals(attribName)) {
                             band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
-                        } else if (applyScaling && "scale_factor".equals(attribName)) {
+                        } else if (applyScaling && SCALE_FACTOR.equals(attribName)) {
                             band.setScalingFactor(attribute.getNumericValue(0).doubleValue());
                         } else if (applyScaling && "add_offset".equals(attribName)) {
                             band.setScalingOffset(attribute.getNumericValue(0).doubleValue());
                         } else if (attribName.startsWith("valid_")) {
-                            if ("valid_min".equals(attribName)) {
+                            if (VALID_MIN.equals(attribName)) {
                                 if (attribute.getDataType().isUnsigned()) {
                                     validMinMax[0] = getUShortAttribute(attribute);
                                 } else {
                                     validMinMax[0] = attribute.getNumericValue(0).doubleValue();
                                 }
-                            } else if ("valid_max".equals(attribName)) {
+                            } else if (VALID_MAX.equals(attribName)) {
                                 if (attribute.getDataType().isUnsigned()) {
                                     validMinMax[1] = getUShortAttribute(attribute);
                                 } else {
                                     validMinMax[1] = attribute.getNumericValue(0).doubleValue();
                                 }
-                            } else if ("valid_range".equals(attribName)) {
+                            } else if (VALID_RANGE.equals(attribName)) {
                                 validMinMax[0] = attribute.getNumericValue(0).doubleValue();
                                 validMinMax[1] = attribute.getNumericValue(1).doubleValue();
                             }
@@ -2436,9 +2436,9 @@ public abstract class SeadasFileReader implements CacheDataProvider {
             final List<Attribute> list = variable.getAttributes();
             for (Attribute hdfAttribute : list) {
                 final String attribName = hdfAttribute.getShortName();
-                if ("units".equals(attribName)) {
+                if (UNITS.equals(attribName)) {
                     attribute.setUnit(hdfAttribute.getStringValue());
-                } else if ("long_name".equals(attribName)) {
+                } else if (LONG_NAME.equals(attribName)) {
                     attribute.setDescription(hdfAttribute.getStringValue());
                 } else {
                     addAttributeToElement(sdsElement, hdfAttribute);
@@ -3002,7 +3002,7 @@ public abstract class SeadasFileReader implements CacheDataProvider {
     }
 
 
-    private interface SkipBadNav {
+    protected interface SkipBadNav {
         boolean isBadNav(double value);
     }
 

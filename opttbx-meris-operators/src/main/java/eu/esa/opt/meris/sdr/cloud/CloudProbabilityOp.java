@@ -360,8 +360,7 @@ public class CloudProbabilityOp extends MerisBasisOp {
                             flagTile.setSample(x, y, FLAG_CLOUDY);
                         } else if (cloudProbability < 0.2) {
                             flagTile.setSample(x, y, FLAG_CLOUDFREE);
-                        } else if (cloudProbability >= 0.2
-                                && cloudProbability <= 0.8) {
+                        } else if (cloudProbability >= 0.2) {
                             flagTile.setSample(x, y, FLAG_UNCERTAIN);
                         }
                         cloudTile.setSample(x, y, cloudProbability);

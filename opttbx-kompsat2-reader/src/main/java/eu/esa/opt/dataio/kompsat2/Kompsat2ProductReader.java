@@ -103,7 +103,7 @@ public class Kompsat2ProductReader extends AbstractProductReader {
     }
 
     private Product readProduct(Kompsat2Metadata productMetadata, List<BandMetadata> bandMetadataList, Path imagesMetadataParentPath) throws Exception {
-        BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[bandMetadataList.size()]));
+        BandMetadataUtil metadataUtil = new BandMetadataUtil(bandMetadataList.toArray(new BandMetadata[0]));
 
         Dimension defaultProductSize = new Dimension(metadataUtil.getMaxNumColumns(), metadataUtil.getMaxNumLines());
         ProductSubsetDef subsetDef = getSubsetDef();
@@ -155,7 +155,7 @@ public class Kompsat2ProductReader extends AbstractProductReader {
                     Dimension defaultBandSize = geoTiffImageReader.validateSize(bandMetadata.getNumColumns(), bandMetadata.getNumLines());
                     Kompsat2GeoTiffProductReader geoTiffProductReader = new Kompsat2GeoTiffProductReader(getReaderPlugIn(), productMetadata, product.getSceneRasterSize(), defaultProductSize, subsetDef);
                     Rectangle bandBounds;
-                    if (subsetDef == null || subsetDef.getSubsetRegion() == null) {
+                    if (subsetDef.getSubsetRegion() == null) {
                         bandBounds = new Rectangle(defaultBandSize.width, defaultBandSize.height);
                     } else {
                         GeoCoding bandDefaultGeoCoding = buildDefaultGeoCoding(productMetadata, bandMetadata, imagesMetadataParentPath, defaultProductSize, geoTiffImageReader, null);

@@ -41,7 +41,7 @@ public class PixelQualitySummaryMerger extends AbstractElementMerger {
                 int classifiedPixels = Integer.parseInt(summaryNodeAttributes.getNamedItem("value").getNodeValue());
                 final double percentage = Double.parseDouble(summaryNodeAttributes.getNamedItem("percentage").getNodeValue());
                 totalClassifiedPixels += classifiedPixels;
-                totalPixels += classifiedPixels / percentage * 100;
+                totalPixels = (int) (totalPixels + classifiedPixels / percentage * 100);
             }
             final Element summaryElement = toDocument.createElement(summaryNodesList.get(0).getNodeName());
             summaryElement.setAttribute("value", "" + totalClassifiedPixels);

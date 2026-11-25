@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.enmap;
 
-class GeoReferencing {
+public class GeoReferencing {
 
     String projection;
     double easting;

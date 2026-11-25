@@ -38,7 +38,7 @@ public abstract class Matrix {
             float det = 0.0f;
             for (int j = 0; j < squareMatrixSize; j++) {
                 SubMatrix minorMatrix = new SubMatrix(squareMatrix, 0, j);
-                det += Math.pow(-1, j) * squareMatrix.getValueAt(0, j) * determinant(minorMatrix);
+                det = (float) (det + Math.pow(-1, j) * squareMatrix.getValueAt(0, j) * determinant(minorMatrix));
             }
             return det;
         }

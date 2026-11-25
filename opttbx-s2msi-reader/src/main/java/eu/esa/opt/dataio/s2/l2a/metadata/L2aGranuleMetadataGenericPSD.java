@@ -254,7 +254,7 @@ public class L2aGranuleMetadataGenericPSD extends GenericXmlMetadata implements 
                                                                                maskData));
         }
 
-        maskFileNamesArray = aMaskList.toArray(new S2Metadata.MaskFilename[aMaskList.size()]);
+        maskFileNamesArray = aMaskList.toArray(new S2Metadata.MaskFilename[0]);
         return maskFileNamesArray;
     }
 

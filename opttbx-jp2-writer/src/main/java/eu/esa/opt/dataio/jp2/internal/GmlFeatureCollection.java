@@ -104,7 +104,7 @@ public class GmlFeatureCollection {
         return builder.toString();
     }
 
-    private class BandDescriptor {
+    private static class BandDescriptor {
         String name;
         double scale;
         double offset;

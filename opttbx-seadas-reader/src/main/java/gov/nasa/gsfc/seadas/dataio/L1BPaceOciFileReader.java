@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
+import static eu.esa.snap.core.dataio.CfConstants.*;
+
 
 public class L1BPaceOciFileReader extends SeadasFileReader {
 
@@ -233,14 +235,20 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
         final int sceneRasterWidth = product.getSceneRasterWidth();
         final int sceneRasterHeight = product.getSceneRasterHeight();
 
-        Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
+        final Map<String, Variable> bandToVariableMap = new HashMap<String, Variable>();
         for (Variable variable : variables) {
-            if (variable.getParentGroup().equals("sensor_band_parameters") || variable.getParentGroup().equals("scan_line_attributes"))
+            final Group parentGroup = variable.getParentGroup();
+            final String parentGroupName = parentGroup.getShortName();
+            if (parentGroupName.equals("sensor_band_parameters") || parentGroupName.equals("scan_line_attributes")) {
                 continue;
-            if ((variable.getShortName().equals("latitude")) || (variable.getShortName().equals("longitude")))
-                continue;
-            int variableRank = variable.getRank();
+            }
 
+            final String variableName = variable.getShortName();
+            if ((variableName.equals("latitude")) || (variableName.equals("longitude"))){
+                continue;
+            }
+
+            final int variableRank = variable.getRank();
             if (variableRank == 2) {
                 add2DBand(product, variable, sceneRasterHeight, sceneRasterWidth, bandToVariableMap);
             } else if (variableRank == 3) {
@@ -291,11 +299,11 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
 
     // package access for testing only tb 2026-04-28
     static void addAttributes(Variable variable, Band band, boolean applyScaling) {
-        Attribute attribute = variable.findAttribute("units");
+        Attribute attribute = variable.findAttribute(UNITS);
         if (attribute != null) {
             band.setUnit(attribute.getStringValue());
         }
-        attribute = variable.findAttribute("long_name");
+        attribute = variable.findAttribute(LONG_NAME);
         if (attribute != null) {
             band.setDescription(attribute.getStringValue());
         }
@@ -304,7 +312,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             if (attribute != null) {
                 band.setScalingFactor(attribute.getNumericValue().doubleValue());
             }
-            attribute = variable.findAttribute("scale_factor");
+            attribute = variable.findAttribute(SCALE_FACTOR);
             if (attribute != null) {
                 band.setScalingFactor(attribute.getNumericValue().doubleValue());
             }
@@ -312,7 +320,7 @@ public class L1BPaceOciFileReader extends SeadasFileReader {
             if (attribute != null) {
                 band.setScalingOffset(attribute.getNumericValue().doubleValue());
             }
-            attribute = variable.findAttribute("add_offset");
+            attribute = variable.findAttribute(ADD_OFFSET);
             if (attribute != null) {
                 band.setScalingOffset(attribute.getNumericValue().doubleValue());
             }

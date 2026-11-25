@@ -4,6 +4,9 @@ import eu.esa.snap.core.datamodel.band.DataPoint;
 import eu.esa.snap.core.datamodel.band.SparseDataProvider;
 import org.esa.snap.core.datamodel.*;
 
+import static eu.esa.snap.core.dataio.CfConstants.LONG_NAME;
+import static eu.esa.snap.core.dataio.CfConstants.UNITS;
+
 class MetaDataProvider implements SparseDataProvider {
 
     private final Product product;
@@ -60,12 +63,12 @@ class MetaDataProvider implements SparseDataProvider {
         MetadataElement targetElement = getTargetElement();
 
         final MetadataElement dataElement = targetElement.getElement(dataElementName);
-        final MetadataAttribute longName = dataElement.getAttribute("long_name");
+        final MetadataAttribute longName = dataElement.getAttribute(LONG_NAME);
         if (longName != null) {
             band.setDescription(longName.getData().getElemString());
         }
 
-        final MetadataAttribute units = dataElement.getAttribute("units");
+        final MetadataAttribute units = dataElement.getAttribute(UNITS);
         if (units != null) {
             band.setUnit(units.getData().getElemString());
         }

@@ -46,45 +46,6 @@ public class ImageMetadata extends XmlMetadata {
         }
     }
 
-    public class BandInfo {
-        String id;
-        int index;
-        String unit;
-        String description;
-        Double gain;
-        Double bias;
-        Float centralWavelength;
-        Float bandwidth;
-
-        public String getId() {
-            return id;
-        }
-
-        public String getUnit() {
-            return unit;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public Double getGain() {
-            return gain;
-        }
-
-        public Double getBias() {
-            return bias;
-        }
-
-        public Float getCentralWavelength() { return centralWavelength; }
-
-        public Float getBandwidth() { return bandwidth; }
-
-        public int getIndex() { return index; }
-
-        public void setIndex(int index) { this.index = index; }
-    }
-
     public static ImageMetadata create(Path path) throws IOException {
         Assert.notNull(path);
         ImageMetadata result = null;
@@ -250,7 +211,7 @@ public class ImageMetadata extends XmlMetadata {
         if (ids == null) {
             for (int i = 0; i < bandInfos.length; i++) {
                 bandInfos[i] = new BandInfo();
-                bandInfos[i].id = "band_1" + String.valueOf(i);
+                bandInfos[i].id = "band_1" + i;
                 bandInfos[i].index = i;
                 bandIndices.put( bandInfos[i].id, i);
                 bandInfos[i].gain = Double.parseDouble(getAttributeSiblingValue(Constants.PATH_IMG_BAND_ID,  bandInfos[i].id, Constants.PATH_IMG_BAND_GAIN, Constants.STRING_ONE));
@@ -478,14 +439,14 @@ public class ImageMetadata extends XmlMetadata {
         return masks;
     }
 
-    public class InsertionPoint {
+    public static class InsertionPoint {
         public float x;
         public float y;
         public float stepX;
         public float stepY;
     }
 
-    public class MaskInfo {
+    public static class MaskInfo {
         public String name;
         public String description;
         public Path path;

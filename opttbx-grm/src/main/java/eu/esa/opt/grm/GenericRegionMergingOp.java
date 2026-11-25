@@ -190,6 +190,7 @@ public class GenericRegionMergingOp extends Operator {
         }
     }
 
+    @SuppressWarnings("ThrowFromFinallyBlock")
     private void computeGRMTile(Rectangle targetRectangle){
         Dimension tileSize = this.targetProduct.getPreferredTileSize();
         int tileRowIndex = targetRectangle.y / tileSize.height;

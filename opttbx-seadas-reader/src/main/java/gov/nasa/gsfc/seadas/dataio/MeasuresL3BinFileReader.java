@@ -170,7 +170,7 @@ public class MeasuresL3BinFileReader extends SeadasFileReader {
         float pixelX = 0.0f;
         float pixelY = 0.0f;
         float easting = -180f;
-        float northing = +90f;
+        float northing = 90f;
         float pixelSizeX = 360.0f / sceneWidth;
         float pixelSizeY = 180.0f / sceneHeight;
         try {

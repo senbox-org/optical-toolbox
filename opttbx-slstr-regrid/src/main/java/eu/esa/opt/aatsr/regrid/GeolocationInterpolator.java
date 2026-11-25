@@ -105,16 +105,16 @@ class GeolocationInterpolator {
 
             if ((maxLongitude - minLongitude) > (180.0 * 1.0e6)) {
                 if (igGeoLongitude1 < 0) {
-                    igGeoLongitude1 += 360.0 * 1.0e6;
+                    igGeoLongitude1 = (int) (igGeoLongitude1 + 360.0 * 1.0e6);
                 }
                 if (igGeoLongitude2 < 0) {
-                    igGeoLongitude2 += 360.0 * 1.0e6;
+                    igGeoLongitude2 = (int) (igGeoLongitude2 + 360.0 * 1.0e6);
                 }
                 if (igGeoPlus1Longitude1 < 0) {
-                    igGeoPlus1Longitude1 += 360.0 * 1.0e6;
+                    igGeoPlus1Longitude1 = (int) (igGeoPlus1Longitude1 + 360.0 * 1.0e6);
                 }
                 if (igGeoPlus1Longitude2 < 0) {
-                    igGeoPlus1Longitude2 += 360.0 * 1.0e6;
+                    igGeoPlus1Longitude2 = (int) (igGeoPlus1Longitude2 + 360.0 * 1.0e6);
                 }
             }
 
