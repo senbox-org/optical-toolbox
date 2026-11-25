@@ -18,7 +18,7 @@
 package eu.esa.opt.dataio.deimos;
 
 import com.bc.ceres.binding.ConversionException;
-import org.esa.snap.engine_utilities.utils.TestUtil;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoCoding;
@@ -26,15 +26,18 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.subset.GeometrySubsetRegion;
 import org.esa.snap.core.subset.PixelSubsetRegion;
 import org.esa.snap.core.util.converters.JtsGeometryConverter;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.awt.Rectangle;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -42,13 +45,13 @@ import static org.junit.Assume.assumeTrue;
  */
 public class DeimosProductReaderTest {
 
-    private static final String PRODUCTS_FOLDER = "_deimos" + File.separator;
+    private static final String PRODUCTS_FOLDER = "_deimos" + IOHelper.SEPARATOR;
 
     @Test
     public void testReadProduct() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "small_deimos/DE01_SL6_22P_1T_20110228T092316_20110616T092427_DMI_0_2e9d.dim");
+        final Path productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "small_deimos/DE01_SL6_22P_1T_20110228T092316_20110616T092427_DMI_0_2e9d.dim");
 
         DeimosProductReader reader = buildProductReader();
 
@@ -101,7 +104,7 @@ public class DeimosProductReaderTest {
     public void testReadProductPixelSubset() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "DE01_SL6_22P_1T_20120905T170604_20120905T170613_DMI_0_4502/DE01_SL6_22P_1T_20120905T170604_20120905T170613_DMI_0_4502.dim");
+        final Path productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "DE01_SL6_22P_1T_20120905T170604_20120905T170613_DMI_0_4502/DE01_SL6_22P_1T_20120905T170604_20120905T170613_DMI_0_4502.dim");
 
         DeimosProductReader reader = buildProductReader();
 
@@ -157,7 +160,7 @@ public class DeimosProductReaderTest {
     public void testReadProductGeometrySubset() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "DE01_SL6_22P_1T_20120905T170604_20120905T170613_DMI_0_4502"+ File.separator+ "DE01_SL6_22P_1T_20120905T170604_20120905T170613_DMI_0_4502.dim");
+        final Path productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "DE01_SL6_22P_1T_20120905T170604_20120905T170613_DMI_0_4502"+ IOHelper.SEPARATOR+ "DE01_SL6_22P_1T_20120905T170604_20120905T170613_DMI_0_4502.dim");
         try {
             DeimosProductReader reader = buildProductReader();
             JtsGeometryConverter converter = new JtsGeometryConverter();

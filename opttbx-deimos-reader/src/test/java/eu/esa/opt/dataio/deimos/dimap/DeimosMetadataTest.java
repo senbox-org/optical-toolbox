@@ -17,16 +17,16 @@
 
 package eu.esa.opt.dataio.deimos.dimap;
 
-import org.esa.snap.engine_utilities.utils.TestUtil;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.Color;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -43,7 +43,7 @@ import static org.junit.Assume.assumeTrue;
 public class DeimosMetadataTest {
 
     private DeimosMetadata metadata;
-    private String productsFolder = "_deimos" + File.separator;
+    private String productsFolder = "_deimos" + IOHelper.SEPARATOR;
 
     @Before
     public void setup() {

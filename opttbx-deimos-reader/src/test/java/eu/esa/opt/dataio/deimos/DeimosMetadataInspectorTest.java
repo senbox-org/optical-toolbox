@@ -1,14 +1,16 @@
 package eu.esa.opt.dataio.deimos;
 
-import org.esa.snap.engine_utilities.utils.TestUtil;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.metadata.MetadataInspector;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -16,19 +18,19 @@ import static org.junit.Assume.assumeTrue;
  */
 public class DeimosMetadataInspectorTest {
 
-    private static final String PRODUCTS_FOLDER = "_deimos" + File.separator;
+    private static final String PRODUCTS_FOLDER = "_deimos" + IOHelper.SEPARATOR;
 
     public DeimosMetadataInspectorTest() {
     }
 
     @Test
-    public void testMetadataInspector() throws URISyntaxException, IOException {
+    public void testMetadataInspector() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "small_deimos/DE01_SL6_22P_1T_20110228T092316_20110616T092427_DMI_0_2e9d.dim");
+        final Path productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "small_deimos/DE01_SL6_22P_1T_20110228T092316_20110616T092427_DMI_0_2e9d.dim");
 
         DeimosMetadataInspector metadataInspector = new DeimosMetadataInspector();
-        MetadataInspector.Metadata metadata = metadataInspector.getMetadata(productFile.toPath());
+        MetadataInspector.Metadata metadata = metadataInspector.getMetadata(productFile);
         assertNotNull(metadata);
         assertEquals(3000, metadata.getProductWidth());
         assertEquals(3000, metadata.getProductHeight());
