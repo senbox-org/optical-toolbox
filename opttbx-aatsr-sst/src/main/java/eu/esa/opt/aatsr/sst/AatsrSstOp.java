@@ -35,7 +35,6 @@ import org.esa.snap.core.util.SystemUtils;
 
 import javax.media.jai.OpImage;
 import java.awt.image.Raster;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -88,8 +87,8 @@ public class AatsrSstOp extends PixelOperator {
             return label;
         }
 
-        private URL getURL(File dir) throws MalformedURLException {
-            return new File(dir, filename).toURI().toURL();
+        private URL getURL(Path dir) throws MalformedURLException {
+            return dir.resolve(filename).toUri().toURL();
         }
     }
 
@@ -297,7 +296,7 @@ public class AatsrSstOp extends PixelOperator {
     public void doExecute(ProgressMonitor pm) throws OperatorException {
         pm.beginTask("Read in auxiliary data", 3);
         try {
-            final File auxdataDir = installAuxiliaryData();
+            final Path auxdataDir = installAuxiliaryData();
             pm.worked(1);
             if (nadir) {
                 initNadirCoefficients(auxdataDir);
@@ -312,7 +311,7 @@ public class AatsrSstOp extends PixelOperator {
         }
     }
 
-    private void initNadirCoefficients(File auxdataDir) throws OperatorException {
+    private void initNadirCoefficients(Path auxdataDir) throws OperatorException {
         final SstCoefficientLoader loader = new SstCoefficientLoader();
         final SstCoefficientSet coefficientSet;
         try {
@@ -370,7 +369,7 @@ public class AatsrSstOp extends PixelOperator {
         }
     }
 
-    private void initDualCoefficients(File auxdataDir) throws OperatorException {
+    private void initDualCoefficients(Path auxdataDir) throws OperatorException {
         final SstCoefficientLoader loader = new SstCoefficientLoader();
         final SstCoefficientSet coefficientSet;
         try {
@@ -438,7 +437,7 @@ public class AatsrSstOp extends PixelOperator {
         }
     }
 
-    private File installAuxiliaryData() {
+    private Path installAuxiliaryData() {
         Path auxDataDir = SystemUtils.getAuxDataPath().resolve("aatsr/sst").toAbsolutePath();
 
         Path sourcePath = ResourceInstaller.findModuleCodeBasePath(getClass()).resolve("auxdata/aatsr/sst");
@@ -449,7 +448,7 @@ public class AatsrSstOp extends PixelOperator {
             throw new OperatorException(e);
         }
 
-        return auxDataDir.toFile();
+        return auxDataDir;
     }
 
     private static boolean isMasked(final OpImage maskOpImage, final int x, final int y) {

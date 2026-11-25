@@ -15,16 +15,16 @@
  */
 package eu.esa.opt.aatsr.sst;
 
+import com.bc.ceres.core.runtime.internal.UrlHelper;
 import org.esa.snap.core.gpf.OperatorException;
 import org.esa.snap.core.util.Guardian;
 import org.esa.snap.core.util.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -112,17 +112,12 @@ public class SstCoefficientLoader {
         Guardian.assertNotNull("coeffFile", coeffFile);
         String desc = "";
 
-        File file = null;
-        try {
-            file = new File(coeffFile.toURI());
-        } catch (URISyntaxException e) {
-            // ignore
-        }
+        Path file = UrlHelper.urlToFile(coeffFile);
 
-        if (file != null && file.exists() && file.isFile()) {
-            InputStream inStream = new FileInputStream(file);
-            _props.load(inStream);
-            inStream.close();
+        if (file != null && Files.exists(file) && Files.isRegularFile(file)) {
+            try(InputStream inStream = Files.newInputStream(file)) {
+                _props.load(inStream);
+            }
             desc = _props.getProperty(_descriptionKey);
         }
 

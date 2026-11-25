@@ -15,19 +15,22 @@
  */
 package eu.esa.opt.aatsr.sst;
 
+import com.bc.ceres.core.runtime.internal.UrlHelper;
 import org.esa.snap.core.gpf.OperatorException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SstCoefficientLoaderTest {
@@ -357,77 +360,77 @@ public class SstCoefficientLoaderTest {
     /**
      * Creates an url pointing to the nadir coefficient test file
      */
-    private URL createNadirCoeffUrl() throws MalformedURLException, URISyntaxException {
-        File nadirCoeff = getTestFile("sstTestCoefficientsNadir.coef");
+    private URL createNadirCoeffUrl() throws MalformedURLException {
+        final Path nadirCoeff = getTestFile("sstTestCoefficientsNadir.coef");
 
-        assertEquals(true, nadirCoeff.exists());
+        assertTrue(Files.exists(nadirCoeff));
 
-        return nadirCoeff.toURI().toURL();
+        return nadirCoeff.toUri().toURL();
     }
 
     /**
      * Creates an url pointing to the dual coefficient test file
      */
-    private URL createDualCoeffUrl() throws MalformedURLException, URISyntaxException {
-        File dualCoeff = getTestFile("sstTestCoefficientsDual.coef");
+    private URL createDualCoeffUrl() throws MalformedURLException {
+        final Path dualCoeff = getTestFile("sstTestCoefficientsDual.coef");
 
-        assertEquals(true, dualCoeff.exists());
+        assertTrue(Files.exists(dualCoeff));
 
-        return dualCoeff.toURI().toURL();
+        return dualCoeff.toUri().toURL();
     }
 
     /**
      * Creates an url pointing to the coefficient test file with no description string
      */
-    private URL createNoDescriptionCoeffUrl() throws MalformedURLException, URISyntaxException {
-        File noDescCoeff = getTestFile("sstTestCoefficientsNoDescription.coef");
+    private URL createNoDescriptionCoeffUrl() throws MalformedURLException {
+        final Path noDescCoeff = getTestFile("sstTestCoefficientsNoDescription.coef");
 
-        assertEquals(true, noDescCoeff.exists());
+        assertTrue(Files.exists(noDescCoeff));
 
-        return noDescCoeff.toURI().toURL();
+        return noDescCoeff.toUri().toURL();
     }
 
     /**
      * Creates an url pointing to the coefficient test file with one map too much
      */
-    private URL createOneMapTooMuchUrl() throws MalformedURLException, URISyntaxException {
-        File noDescCoeff = getTestFile("sstTestOneMapTooMuch.coef");
+    private URL createOneMapTooMuchUrl() throws MalformedURLException {
+        final Path noDescCoeff = getTestFile("sstTestOneMapTooMuch.coef");
 
-        assertEquals(true, noDescCoeff.exists());
+        assertTrue(Files.exists(noDescCoeff));
 
-        return noDescCoeff.toURI().toURL();
+        return noDescCoeff.toUri().toURL();
     }
 
     /**
      * Creates an url pointing to the coefficient test file with overlapping map ranges
      */
-    private URL createMapOverlapUrl() throws MalformedURLException, URISyntaxException {
-        File noDescCoeff = getTestFile("sstTestMapRangeOverlap.coef");
+    private URL createMapOverlapUrl() throws MalformedURLException {
+        final Path noDescCoeff = getTestFile("sstTestMapRangeOverlap.coef");
 
-        assertEquals(true, noDescCoeff.exists());
+        assertTrue(Files.exists(noDescCoeff));
 
-        return noDescCoeff.toURI().toURL();
+        return noDescCoeff.toUri().toURL();
     }
 
     /**
      * Creates an url pointing to the coefficient test file with a and d coefficients
      */
-    private URL create_A_and_D_Url() throws MalformedURLException, URISyntaxException {
-        File noDescCoeff = getTestFile("sstTest_a_and_d.coef");
+    private URL create_A_and_D_Url() throws MalformedURLException {
+        final Path noDescCoeff = getTestFile("sstTest_a_and_d.coef");
 
-        assertEquals(true, noDescCoeff.exists());
+        assertTrue(Files.exists(noDescCoeff));
 
-        return noDescCoeff.toURI().toURL();
+        return noDescCoeff.toUri().toURL();
     }
 
-    private File getTestFile(final String s) throws URISyntaxException, MalformedURLException {
+    private Path getTestFile(final String s) throws MalformedURLException {
         URL resource = getClass().getResource(s);
         // fixme - The tests will fail in Maven2 because blanks are note encoded in
         // fixme - the URL retrieved by getResource(). So we have to encode it by ourself.
         // fixme - see: http://jira.codehaus.org/browse/MNG-2050?page=comments#action_59460
         String encodedUrl = resource.toString().replace(" ", "%20");
         resource = new URL(encodedUrl);
-        return new File(resource.toURI());
+        return UrlHelper.urlToFile(resource);
     }
 
 }
