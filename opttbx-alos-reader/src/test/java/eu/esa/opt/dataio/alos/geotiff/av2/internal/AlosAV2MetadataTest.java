@@ -1,20 +1,22 @@
 package eu.esa.opt.dataio.alos.geotiff.av2.internal;
 
-import org.esa.snap.engine_utilities.utils.TestUtil;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.Color;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -26,14 +28,14 @@ import static org.junit.Assume.assumeTrue;
 public class AlosAV2MetadataTest {
 
     private AlosAV2Metadata metadata;
-    private String productsFolder = "_alos" + File.separator;
+    private final String productsFolder = "_alos" + IOHelper.SEPARATOR;
 
     @Before
     public void setup() {
         assumeTrue(TestUtil.testdataAvailable());
 
         XmlMetadataParserFactory.registerParser(AlosAV2Metadata.class, new XmlMetadataParser<>(AlosAV2Metadata.class));
-        metadata = GenericXmlMetadata.create(AlosAV2Metadata.class, TestUtil.getTestFile(productsFolder + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+File.separator+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+File.separator+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA"));
+        metadata = GenericXmlMetadata.create(AlosAV2Metadata.class, TestUtil.getTestFile(productsFolder + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+IOHelper.SEPARATOR+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+IOHelper.SEPARATOR+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA"));
     }
 
     @After

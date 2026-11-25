@@ -16,12 +16,13 @@
 
 package eu.esa.opt.dataio.alos.ceos;
 
-import eu.esa.opt.dataio.alos.ceos.CeosHelper;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.junit.Test;
 
-import java.io.File;
+import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 public class CeosHelperTest {
 
@@ -29,14 +30,16 @@ public class CeosHelperTest {
     public void testGetFileFromInput() {
         String inputString = "testFile";
 
-        File result = CeosHelper.getFileFromInput(inputString);
-        assertEquals(inputString, result.getName());
+        Path result = CeosHelper.getFileFromInput(inputString);
+        assertNotNull(result);
+        assertEquals(inputString, result.getFileName().toString());
 
-        File inputFile = new File("anotherTest");
+        final Path inputFile = IOHelper.createATempDir().resolve("anotherTest");
         result = CeosHelper.getFileFromInput(inputFile);
-        assertEquals(inputFile.getName(), result.getName());
+        assertNotNull(result);
+        assertEquals(inputFile.getFileName(), result.getFileName());
 
-        result = CeosHelper.getFileFromInput(new Double(9));
+        result = CeosHelper.getFileFromInput(9.0);
         assertNull(result);
     }
 

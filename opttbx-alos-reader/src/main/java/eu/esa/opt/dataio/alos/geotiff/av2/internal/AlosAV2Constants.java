@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.alos.geotiff.av2.internal;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Holder class for string constants.
@@ -20,7 +20,7 @@ public class AlosAV2Constants {
     public static final double MAX_LEVEL = 255.0;
     public static final String PROCESSING_1B = "1B1";
 
-    public static final Class[] READER_INPUT_TYPES = new Class[]{String.class, File.class};
+    public static final Class[] READER_INPUT_TYPES = new Class[]{String.class, Path.class};
     public static final String[] FORMAT_NAMES = new String[]{"AlosAV2Dimap"};
     public static final String[] DEFAULT_EXTENSIONS = new String[]{".xml", ".zip", ".dima"};
     public static final String DESCRIPTION = "Alos AVNIR-2 Data Products";

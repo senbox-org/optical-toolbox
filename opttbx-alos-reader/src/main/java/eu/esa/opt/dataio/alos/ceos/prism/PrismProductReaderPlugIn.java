@@ -15,6 +15,7 @@
  */
 package eu.esa.opt.dataio.alos.ceos.prism;
 
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.dataio.alos.ceos.CeosHelper;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
@@ -22,9 +23,11 @@ import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
-import java.io.File;
-import java.io.FilenameFilter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Locale;
+import java.util.function.Predicate;
 
 /**
  * The ReaderPlugIn for Prism products.
@@ -45,7 +48,7 @@ public class PrismProductReaderPlugIn implements ProductReaderPlugIn {
      * @return true if this product reader can decode the given input, otherwise false.
      */
     public DecodeQualification getDecodeQualification(final Object input) {
-        final File file = CeosHelper.getFileFromInput(input);
+        final Path file = CeosHelper.getFileFromInput(input);
         if (file == null) {
             return DecodeQualification.UNABLE;
         }
@@ -54,15 +57,11 @@ public class PrismProductReaderPlugIn implements ProductReaderPlugIn {
             return DecodeQualification.UNABLE; // not the volume file
         }
 
-        final File parentDir = file.getParentFile();
-        if (file.isFile() && parentDir != null && parentDir.isDirectory()) {
-            final FilenameFilter filter = new FilenameFilter() {
-                public boolean accept(final File dir, final String name) {
-                    return name.contains(_PRISM_INDICATION_KEY);
-                }
-            };
-            final File[] files = parentDir.listFiles(filter);
-            if (files != null && files.length >= _MINIMUM_FILES) {
+        final Path parentDir = file.getParent();
+        if (Files.isRegularFile(file) && parentDir != null && Files.isDirectory(parentDir)) {
+            final Predicate<Path> filter = dir -> dir.getFileName().toString().contains(_PRISM_INDICATION_KEY);
+            final Collection<Path> files = IOHelper.listFiles(parentDir, filter);
+            if (files != null && files.size() >= _MINIMUM_FILES) {
                 return DecodeQualification.INTENDED;
             }
         }
@@ -148,11 +147,9 @@ public class PrismProductReaderPlugIn implements ProductReaderPlugIn {
          * @return <code>true</code> if given file is accepted by this filter
          */
         @Override
-        public boolean accept(final File file) {
+        public boolean accept(final Path file) {
             if (super.accept(file)) {
-                if (file.isDirectory() || file.getName().startsWith(PrismConstants.VOLUME_FILE_PREFIX)) {
-                    return true;
-                }
+                return Files.isDirectory(file) || file.getFileName().startsWith(PrismConstants.VOLUME_FILE_PREFIX);
             }
             return false;
         }

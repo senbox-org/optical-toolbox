@@ -47,7 +47,7 @@ import org.esa.snap.core.util.ImageUtils;
 import org.esa.snap.core.util.math.FXYSum;
 
 import javax.imageio.stream.ImageInputStream;
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -59,7 +59,7 @@ class PrismProductDirectory {
     private final static String MAP_PROJECTION_CODE_UTM = "YNNNN";
     private final static String MAP_PROJECTION_CODE_PS = "NNNNY";
 
-    private final File baseDir;
+    private final Path baseDir;
     private PrismVolumeDirectoryFile volumeDirectoryFile;
     private PrismImageFile[] imageFiles;
     private PrismLeaderFile leaderFile;
@@ -73,7 +73,7 @@ class PrismProductDirectory {
     private static final String UNIT_METER_PER_SECOND = "m/sec";
     private static final String UNIT_DEGREE_PER_SECOND = "deg/sec";
 
-    PrismProductDirectory(final File dir) throws IOException, IllegalCeosFormatException {
+    PrismProductDirectory(final Path dir) throws IOException, IllegalCeosFormatException {
         Guardian.assertNotNull("dir", dir);
 
         baseDir = dir;
@@ -164,31 +164,31 @@ class PrismProductDirectory {
     }
 
 
-    TreeNode<File> getProductComponents() {
+    TreeNode<Path> getProductComponents() {
         try {
-            File parentDir = baseDir.getParentFile();
+            final Path parentDir = baseDir.getParent();
             if (parentDir == null) {
-                throw new IllegalStateException("Could not retrieve the parent directory of '" + baseDir.getAbsolutePath() + "'.");
+                throw new IllegalStateException("Could not retrieve the parent directory of '" + baseDir.toAbsolutePath() + "'.");
             }
-            final TreeNode<File> root = new TreeNode<File>(parentDir.getCanonicalPath());
+            final TreeNode<Path> root = new TreeNode<>(parentDir.toRealPath().toString());
             root.setContent(parentDir);
 
-            final TreeNode<File> dir = new TreeNode<File>(baseDir.getName());
+            final TreeNode<Path> dir = new TreeNode<>(baseDir.getFileName().toString());
             dir.setContent(baseDir);
             root.addChild(dir);
 
-            File volumeFile = CeosHelper.getVolumeFile(baseDir);
+            final Path volumeFile = CeosHelper.getVolumeFile(baseDir);
             addFileToDir(dir, volumeFile);
 
-            addFileToDir(dir, new File(volumeDirectoryFile.getLeaderFileName()));
-            addFileToDir(dir, new File(volumeDirectoryFile.getTrailerFileName()));
+            addFileToDir(dir, Path.of(volumeDirectoryFile.getLeaderFileName()));
+            addFileToDir(dir, Path.of(volumeDirectoryFile.getTrailerFileName()));
             String supplemental = volumeDirectoryFile.getSupplementalFileName();
             if (StringUtils.isNotNullAndNotEmpty(supplemental)) {
-                addFileToDir(dir, new File(supplemental));
+                addFileToDir(dir, Path.of(supplemental));
             }
             final String[] imageFileNames = volumeDirectoryFile.getImageFileNames();
             for (String imageFileName : imageFileNames) {
-                addFileToDir(dir, new File(imageFileName));
+                addFileToDir(dir, Path.of(imageFileName));
             }
 
             return root;
@@ -197,8 +197,8 @@ class PrismProductDirectory {
         }
     }
 
-    private void addFileToDir(TreeNode<File> dir, File file) {
-        final TreeNode<File> fileNode = new TreeNode<File>(file.getName());
+    private void addFileToDir(TreeNode<Path> dir, Path file) {
+        final TreeNode<Path> fileNode = new TreeNode<>(file.getFileName().toString());
         fileNode.setContent(file);
         dir.addChild(fileNode);
     }
@@ -604,6 +604,6 @@ class PrismProductDirectory {
 
 
     private ImageInputStream createInputStream(final String fileName) throws IOException {
-        return ImageUtils.getImageInputStream(baseDir.toPath().resolve(fileName));
+        return ImageUtils.getImageInputStream(baseDir.resolve(fileName));
     }
 }

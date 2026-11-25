@@ -14,7 +14,6 @@ import org.esa.snap.core.datamodel.*;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
 import org.esa.snap.core.util.ImageUtils;
 import org.esa.snap.core.util.jai.JAIUtils;
-import org.esa.snap.dataio.ImageRegistryUtils;
 import org.esa.snap.dataio.geotiff.GeoTiffImageReader;
 import org.esa.snap.dataio.geotiff.GeoTiffProductReader;
 import org.geotools.referencing.CRS;
@@ -23,7 +22,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 import org.xml.sax.SAXException;
 
-import javax.imageio.spi.ImageInputStreamSpi;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.FileNotFoundException;
@@ -45,13 +43,10 @@ public class AlosPRIProductReader extends AbstractProductReader {
     }
 
     private VirtualDirEx productDirectory;
-    private ImageInputStreamSpi imageInputStreamSpi;
     private List<GeoTiffImageReader> bandImageReaders;
 
     public AlosPRIProductReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
-
-        this.imageInputStreamSpi = ImageRegistryUtils.registerImageInputStreamSpi();
     }
 
     @Override
@@ -86,7 +81,7 @@ public class AlosPRIProductReader extends AbstractProductReader {
             product.setStartTime(alosPriMetadata.getProductStartTime());
             product.setEndTime(alosPriMetadata.getProductEndTime());
             product.setDescription(alosPriMetadata.getProductDescription());
-            product.setFileLocation(productPath.toFile());
+            product.setFileLocation(productPath);
             Dimension preferredTileSize = JAIUtils.computePreferredTileSize(product.getSceneRasterWidth(), product.getSceneRasterHeight(), 1);
             product.setPreferredTileSize(preferredTileSize);
             if (subsetDef == null || !subsetDef.isIgnoreMetadata()) {
@@ -193,16 +188,9 @@ public class AlosPRIProductReader extends AbstractProductReader {
                 this.bandImageReaders = null;
             }
         } finally {
-            try {
-                if (this.imageInputStreamSpi != null) {
-                    ImageRegistryUtils.deregisterImageInputStreamSpi(this.imageInputStreamSpi);
-                    this.imageInputStreamSpi = null;
-                }
-            } finally {
-                if (this.productDirectory != null) {
-                    this.productDirectory.close();
-                    this.productDirectory = null;
-                }
+            if (this.productDirectory != null) {
+                this.productDirectory.close();
+                this.productDirectory = null;
             }
         }
         System.gc();
@@ -265,7 +253,7 @@ public class AlosPRIProductReader extends AbstractProductReader {
     }
 
     public static String buildMetadataFileName(VirtualDirEx productDirectory) {
-        String baseItemName = productDirectory.getBaseFile().getName();
+        String baseItemName = productDirectory.getBaseFile().getFileName().toString();
         int index;
         if (productDirectory.isArchive()) {
             index = baseItemName.lastIndexOf(AlosPRIConstants.PRODUCT_FILE_SUFFIX);
@@ -287,7 +275,7 @@ public class AlosPRIProductReader extends AbstractProductReader {
         } else {
             zipArchiveFileName = fileNameWithoutExtension + AlosPRIConstants.ARCHIVE_FILE_EXTENSION;
         }
-        return productDirectory.getFile(zipArchiveFileName).toPath();
+        return productDirectory.getFile(zipArchiveFileName);
     }
 
     private static List<ImageMetadata> readImagesMetadata(Path imagesMetadataParentPath) throws IOException, SAXException, ParserConfigurationException, InstantiationException {

@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.alos.geotiff.pri;
 
 import com.bc.ceres.binding.ConversionException;
-import org.esa.snap.engine_utilities.utils.TestUtil;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoCoding;
@@ -9,26 +9,29 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.subset.GeometrySubsetRegion;
 import org.esa.snap.core.subset.PixelSubsetRegion;
 import org.esa.snap.core.util.converters.JtsGeometryConverter;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.awt.Rectangle;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 public class AlosPRIProductReaderTest {
 
-    private static final String PRODUCT_FOLDER = "_alos" + File.separator;
+    private static final String PRODUCT_FOLDER = "_alos" + IOHelper.SEPARATOR;
 
     @Test
     public void testReadProduct() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + File.separator + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML");
+        final Path productFile = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP").resolve("AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML");
 
         AlosPRIProductReader reader = buildProductReader();
 
@@ -77,7 +80,7 @@ public class AlosPRIProductReaderTest {
     public void testReadProductGeometrySubset() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + File.separator + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML");
+        final Path productFile = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP").resolve("AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML");
         try {
             AlosPRIProductReader reader = buildProductReader();
             JtsGeometryConverter converter = new JtsGeometryConverter();
@@ -169,7 +172,7 @@ public class AlosPRIProductReaderTest {
     public void testReadProductPixelSubset() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + File.separator + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML");
+        final Path productFile = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP").resolve("AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML");
 
         AlosPRIProductReader reader = buildProductReader();
 

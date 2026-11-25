@@ -23,7 +23,7 @@ class AlosPRIGeoTiffProductReader extends GeoTiffProductReader {
     private final Rectangle subsetRegion;
 
     AlosPRIGeoTiffProductReader(ProductReaderPlugIn readerPlugIn, AlosPRIMetadata metadata, ImageMetadata imageMetadata, Dimension defaultProductSize, Rectangle subsetRegion) {
-        super(readerPlugIn, null);
+        super(readerPlugIn);
 
         this.metadata = metadata;
         this.imageMetadata = imageMetadata;

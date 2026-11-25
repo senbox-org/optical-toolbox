@@ -15,7 +15,7 @@
  */
 package eu.esa.opt.dataio.alos.ceos.prism;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Several constants used for reading Prism products.
@@ -25,7 +25,7 @@ public interface PrismConstants {
     String[] FORMAT_NAMES = new String[]{"PRISM"};
     String PLUGIN_DESCRIPTION = "PRISM Products";   /*I18N*/
 
-    Class[] VALID_INPUT_TYPES = new Class[]{File.class, String.class};
+    Class[] VALID_INPUT_TYPES = new Class[]{Path.class, String.class};
     String[] FORMAT_FILE_EXTENSIONS = new String[]{""};
     String PRODUCT_LEVEL_1B2 = "1B2";
     String VOLUME_FILE_PREFIX = "VOL-ALPSM";

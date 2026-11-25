@@ -6,7 +6,7 @@ import org.esa.snap.core.metadata.XmlMetadataParserFactory;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.DateTimeUtils;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -307,9 +307,9 @@ public class AlosPRIMetadata extends XmlMetadata {
 
     //TODO Jean remove
     @Deprecated
-    public void addComponentMetadata(File metadata) {
-        ImageMetadata imageMetadata = create(ImageMetadata.class, metadata.toPath());
-        imageMetadata.setFileName(metadata.getName());
+    public void addComponentMetadata(Path metadata) {
+        ImageMetadata imageMetadata = create(ImageMetadata.class, metadata);
+        imageMetadata.setFileName(metadata.getFileName().toString());
         this.componentMetadata.add(imageMetadata);
     }
 

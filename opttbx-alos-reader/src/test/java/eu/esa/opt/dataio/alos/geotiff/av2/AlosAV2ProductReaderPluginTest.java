@@ -1,16 +1,17 @@
 package eu.esa.opt.dataio.alos.geotiff.av2;
 
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.dataio.alos.geotiff.av2.internal.AlosAV2Constants;
-import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductIOPlugInManager;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,13 +19,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 public class AlosAV2ProductReaderPluginTest {
 
     private AlosAV2ProductReaderPlugin plugin;
-    private String productFolder = "_alos"+ File.separator;
+    private final String productFolder = "_alos"+ IOHelper.SEPARATOR;
 
     @Before
     public  void setup(){
@@ -40,13 +44,13 @@ public class AlosAV2ProductReaderPluginTest {
     }
 
     @Test
-    public void testDecodeQualificationForXML() throws IOException {
+    public void testDecodeQualificationForXML() {
         Date startDate = Calendar.getInstance().getTime();
         DecodeQualification decodeQualification = plugin.getDecodeQualification(
-                TestUtil.getTestFile(productFolder + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+File.separator+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+File.separator+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.GTIF.aux.xml"));
+                TestUtil.getTestFile(productFolder + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+IOHelper.SEPARATOR+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+ IOHelper.SEPARATOR+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.GTIF.aux.xml"));
         assertEquals(DecodeQualification.UNABLE, decodeQualification);
         decodeQualification = plugin.getDecodeQualification(
-                TestUtil.getTestFile(productFolder + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+File.separator+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+File.separator+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA"));
+                TestUtil.getTestFile(productFolder + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+IOHelper.SEPARATOR+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+IOHelper.SEPARATOR+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA"));
         assertEquals(DecodeQualification.INTENDED, decodeQualification);
         Date endDate = Calendar.getInstance().getTime();
         assertTrue("The decoding time for the file is too big!", (endDate.getTime() - startDate.getTime()) / 1000 < 30);//30 sec
@@ -77,7 +81,7 @@ public class AlosAV2ProductReaderPluginTest {
         assertNotNull(classes);
         assertEquals(2, classes.length);
         final List<Class> list = Arrays.asList(classes);
-        assertEquals(true, list.contains(File.class));
+        assertEquals(true, list.contains(Path.class));
         assertEquals(true, list.contains(String.class));
     }
 

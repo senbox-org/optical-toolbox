@@ -36,15 +36,15 @@ import org.esa.snap.core.dataop.maptransf.StereographicDescriptor;
 import org.esa.snap.core.dataop.maptransf.UTM;
 import org.esa.snap.core.util.Debug;
 import org.esa.snap.core.util.Guardian;
+import org.esa.snap.core.util.ImageUtils;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.TreeNode;
-import org.esa.snap.core.util.ImageUtils;
 import org.esa.snap.core.util.math.FXYSum;
 
 import javax.imageio.stream.ImageInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ class Avnir2ProductDirectory {
 
     private static final int METER_PER_KILOMETER = 1000;
 
-    private final File baseDir;
+    private final Path baseDir;
     private Avnir2VolumeDirectoryFile volumeDirectoryFile;
     private Avnir2ImageFile[] imageFiles;
     private Map<Band, Avnir2ImageFile> imageFileMap;
@@ -76,7 +76,7 @@ class Avnir2ProductDirectory {
     private final int sceneWidth;
     private final int sceneHeight;
 
-    Avnir2ProductDirectory(final File dir) throws IOException, IllegalCeosFormatException {
+    Avnir2ProductDirectory(final Path dir) throws IOException, IllegalCeosFormatException {
         Guardian.assertNotNull("dir", dir);
 
         baseDir = dir;
@@ -84,8 +84,8 @@ class Avnir2ProductDirectory {
         leaderFile = new Avnir2LeaderFile(createInputStream(volumeDirectoryFile.getLeaderFileName()));
         trailerFile = new Avnir2TrailerFile(createInputStream(volumeDirectoryFile.getTrailerFileName()));
         if (!leaderFile.getProductLevel().equalsIgnoreCase(Avnir2Constants.PRODUCT_LEVEL_1B2)) {
-            final File supplementalFile = new File(baseDir, volumeDirectoryFile.getSupplementalFileName());
-            if (supplementalFile.exists()) {
+            final Path supplementalFile = baseDir.resolve(volumeDirectoryFile.getSupplementalFileName());
+            if (Files.exists(supplementalFile)) {
                 this.supplementalFile = new Avnir2SupplementalFile(
                         createInputStream(volumeDirectoryFile.getSupplementalFileName()));
             }
@@ -125,31 +125,31 @@ class Avnir2ProductDirectory {
         return product;
     }
 
-    TreeNode<File> getProductComponents() {
+    TreeNode<Path> getProductComponents() {
         try {
-            File parentDir = baseDir.getParentFile();
+            final Path parentDir = baseDir.getParent();
             if (parentDir == null) {
-                throw new IllegalStateException("Could not retrieve the parent directory of '" + baseDir.getAbsolutePath() + "'.");
+                throw new IllegalStateException("Could not retrieve the parent directory of '" + baseDir.toAbsolutePath() + "'.");
             }
-            final TreeNode<File> root = new TreeNode<File>(parentDir.getCanonicalPath());
+            final TreeNode<Path> root = new TreeNode<>(parentDir.toRealPath().toString());
             root.setContent(parentDir);
 
-            final TreeNode<File> dir = new TreeNode<File>(baseDir.getName());
+            final TreeNode<Path> dir = new TreeNode<>(baseDir.getFileName().toString());
             dir.setContent(baseDir);
             root.addChild(dir);
 
-            File volumeFile = CeosHelper.getVolumeFile(baseDir);
+            final Path volumeFile = CeosHelper.getVolumeFile(baseDir);
             addFileToDir(dir, volumeFile);
 
-            addFileToDir(dir, new File(volumeDirectoryFile.getLeaderFileName()));
-            addFileToDir(dir, new File(volumeDirectoryFile.getTrailerFileName()));
+            addFileToDir(dir, Path.of(volumeDirectoryFile.getLeaderFileName()));
+            addFileToDir(dir, Path.of(volumeDirectoryFile.getTrailerFileName()));
             String supplemental = volumeDirectoryFile.getSupplementalFileName();
             if (StringUtils.isNotNullAndNotEmpty(supplemental)) {
-                addFileToDir(dir, new File(supplemental));
+                addFileToDir(dir, Path.of(supplemental));
             }
             final String[] imageFileNames = volumeDirectoryFile.getImageFileNames();
             for (String imageFileName : imageFileNames) {
-                addFileToDir(dir, new File(imageFileName));
+                addFileToDir(dir, Path.of(imageFileName));
             }
 
             return root;
@@ -161,8 +161,8 @@ class Avnir2ProductDirectory {
         }
     }
 
-    private void addFileToDir(TreeNode<File> dir, File file) {
-        final TreeNode<File> fileNode = new TreeNode<File>(file.getName());
+    private void addFileToDir(TreeNode<Path> dir, Path file) {
+        final TreeNode<Path> fileNode = new TreeNode<>(file.getFileName().toString());
         fileNode.setContent(file);
         dir.addChild(fileNode);
     }
@@ -327,11 +327,11 @@ class Avnir2ProductDirectory {
     private void addSummaryMetadata(final MetadataElement parent) throws IOException {
         final MetadataElement summaryMetadata = new MetadataElement("Summary Information");
         final Properties properties = new Properties();
-        final File file = new File(baseDir, Avnir2Constants.SUMMARY_FILE_NAME);
-        if (!file.exists()) {
+        final Path file = baseDir.resolve(Avnir2Constants.SUMMARY_FILE_NAME);
+        if (!Files.exists(file)) {
             return;
         }
-        properties.load(new FileInputStream(file));
+        properties.load(Files.newInputStream(file));
         final Set unsortedEntries = properties.entrySet();
         final TreeSet sortedEntries = new TreeSet(new Comparator() {
             public int compare(final Object a, final Object b) {
@@ -381,6 +381,6 @@ class Avnir2ProductDirectory {
     }
 
     private ImageInputStream createInputStream(final String fileName) throws IOException {
-        return ImageUtils.getImageInputStream(baseDir.toPath().resolve(fileName));
+        return ImageUtils.getImageInputStream(baseDir.resolve(fileName));
     }
 }

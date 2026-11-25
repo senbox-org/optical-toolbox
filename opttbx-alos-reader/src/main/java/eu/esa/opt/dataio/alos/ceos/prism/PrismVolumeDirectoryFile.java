@@ -24,7 +24,7 @@ import eu.esa.opt.dataio.alos.ceos.records.VolumeDescriptorRecord;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.util.ImageUtils;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -35,9 +35,9 @@ class PrismVolumeDirectoryFile {
     private FilePointerRecord[] _filePointerRecords;
     private TextRecord _textRecord;
 
-    public PrismVolumeDirectoryFile(final File baseDir) throws IOException,
+    public PrismVolumeDirectoryFile(final Path baseDir) throws IOException,
             IllegalCeosFormatException {
-        final File volumeFile = CeosHelper.getVolumeFile(baseDir);
+        final Path volumeFile = CeosHelper.getVolumeFile(baseDir);
         _ceosReader = new CeosFileReader(ImageUtils.getImageInputStream(volumeFile));
         _volumeDescriptorRecord = new VolumeDescriptorRecord(_ceosReader);
         _filePointerRecords = CeosHelper.readFilePointers(_volumeDescriptorRecord);

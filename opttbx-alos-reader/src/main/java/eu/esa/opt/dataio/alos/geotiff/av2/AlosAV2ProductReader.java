@@ -1,11 +1,8 @@
 package eu.esa.opt.dataio.alos.geotiff.av2;
 
 import com.bc.ceres.core.ProgressMonitor;
-import org.esa.snap.engine_utilities.commons.FilePathInputStream;
-import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.alos.geotiff.av2.internal.AlosAV2Constants;
 import eu.esa.opt.dataio.alos.geotiff.av2.internal.AlosAV2Metadata;
-import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import org.apache.commons.lang3.StringUtils;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
@@ -22,12 +19,13 @@ import org.esa.snap.core.metadata.XmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
 import org.esa.snap.core.util.jai.JAIUtils;
-import org.esa.snap.dataio.ImageRegistryUtils;
 import org.esa.snap.dataio.geotiff.GeoTiffImageReader;
 import org.esa.snap.dataio.geotiff.GeoTiffProductReader;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import org.xml.sax.SAXException;
 
-import javax.imageio.spi.ImageInputStreamSpi;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -47,13 +45,10 @@ public class AlosAV2ProductReader extends AbstractProductReader {
     }
 
     private VirtualDirEx productDirectory;
-    private ImageInputStreamSpi imageInputStreamSpi;
     private GeoTiffImageReader geoTiffImageReader;
 
     public AlosAV2ProductReader(ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
-
-        this.imageInputStreamSpi = ImageRegistryUtils.registerImageInputStreamSpi();
     }
 
     public static TiePointGeoCoding buildTiePointGridGeoCoding(AlosAV2Metadata alosAV2Metadata) {
@@ -123,7 +118,7 @@ public class AlosAV2ProductReader extends AbstractProductReader {
 
             Product product = new Product(alosAV2Metadata.getProductName(), AlosAV2Constants.FORMAT_NAMES[0], productBounds.width, productBounds.height, this);
             product.setDescription(alosAV2Metadata.getProductDescription());
-            product.setFileLocation(productPath.toFile());
+            product.setFileLocation(productPath);
             Dimension preferredTileSize = JAIUtils.computePreferredTileSize(product.getSceneRasterWidth(), product.getSceneRasterHeight(), 1);
             product.setPreferredTileSize(preferredTileSize);
             ProductData.UTC centerTime = alosAV2Metadata.getCenterTime();
@@ -135,7 +130,7 @@ public class AlosAV2ProductReader extends AbstractProductReader {
                 product.setEndTime(centerTime);
             }
 
-            GeoTiffProductReader geoTiffProductReader = new GeoTiffProductReader(getReaderPlugIn(), null);
+            GeoTiffProductReader geoTiffProductReader = new GeoTiffProductReader(getReaderPlugIn());
             Product geoTiffProduct = geoTiffProductReader.readProduct(this.geoTiffImageReader, null, productBounds);
 
             if (subsetDef == null || !subsetDef.isIgnoreMetadata()) {
@@ -217,30 +212,23 @@ public class AlosAV2ProductReader extends AbstractProductReader {
                 this.geoTiffImageReader = null;
             }
         } finally {
-            try {
-                if (this.imageInputStreamSpi != null) {
-                    ImageRegistryUtils.deregisterImageInputStreamSpi(this.imageInputStreamSpi);
-                    this.imageInputStreamSpi = null;
-                }
-            } finally {
-                if (this.productDirectory != null) {
-                    this.productDirectory.close();
-                    this.productDirectory = null;
-                }
+            if (this.productDirectory != null) {
+                this.productDirectory.close();
+                this.productDirectory = null;
             }
         }
         System.gc();
     }
 
     public static Path buildImageMetadataParentPath(VirtualDirEx productDirectory) throws IOException {
-        String baseItemName = productDirectory.getBaseFile().getName();
+        String baseItemName = productDirectory.getBaseFile().getFileName().toString();
         if (productDirectory.isArchive()) {
             // the product directory is an archive
             if (StringUtils.endsWithIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX)) {
                 int index = StringUtils.lastIndexOfIgnoreCase(baseItemName, AlosAV2Constants.PRODUCT_ARCHIVE_FILE_SUFFIX);
                 String identifier = baseItemName.substring(0, index);
                 String zipArchiveFileName = identifier + AlosAV2Constants.IMAGE_ARCHIVE_FILE_EXTENSION;
-                return productDirectory.getFile(zipArchiveFileName).toPath();
+                return productDirectory.getFile(zipArchiveFileName);
             }
         } else {
             // the product directory is a folder
@@ -249,21 +237,21 @@ public class AlosAV2ProductReader extends AbstractProductReader {
                 String identifier = baseItemName.substring(0, index);
                 if (productDirectory.exists(identifier)) {
                     // the identifier exists and it is a directory
-                    return productDirectory.getFile(identifier).toPath();
+                    return productDirectory.getFile(identifier);
                 }
                 // the identifier does not exists and add the .zip extension
                 String zipArchiveFileName = identifier + AlosAV2Constants.IMAGE_ARCHIVE_FILE_EXTENSION;
-                return productDirectory.getFile(zipArchiveFileName).toPath();
+                return productDirectory.getFile(zipArchiveFileName);
             }
         }
         // search the image metadata file
         String[] relativePaths = productDirectory.listAllFiles();
         for (String relativeFilePath : relativePaths) {
             if (StringUtils.endsWithIgnoreCase(relativeFilePath, AlosAV2Constants.IMAGE_METADATA_EXTENSION)) {
-                return productDirectory.getBaseFile().toPath();
+                return productDirectory.getBaseFile();
             }
         }
-        throw new IllegalArgumentException("The product directory '" + productDirectory.getBaseFile().toPath()+"' does not contain the image metadata file.");
+        throw new IllegalArgumentException("The product directory '" + productDirectory.getBaseFile()+"' does not contain the image metadata file.");
     }
 
     public static String findImageMetadataRelativeFilePath(VirtualDirEx imageMetadataProductDirectory) throws IOException {

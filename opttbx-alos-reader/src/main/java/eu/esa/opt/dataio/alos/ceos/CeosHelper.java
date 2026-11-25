@@ -15,15 +15,16 @@
  */
 package eu.esa.opt.dataio.alos.ceos;
 
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.dataio.alos.ceos.records.FilePointerRecord;
 import eu.esa.opt.dataio.alos.ceos.records.TextRecord;
 import eu.esa.opt.dataio.alos.ceos.records.VolumeDescriptorRecord;
 import org.esa.snap.core.datamodel.ProductData;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Calendar;
+import java.util.Collection;
 
 public class CeosHelper {
 
@@ -33,22 +34,18 @@ public class CeosHelper {
     private static final String TRAILER_FILE_PREFIX = "TRL-";
     private static final String SUPPLEMENTAL_FILE_PREFIX = "SUP-";
 
-    public static File getVolumeFile(final File baseDir) throws IOException {
-        final File[] files = baseDir.listFiles(new FilenameFilter() {
-            public boolean accept(final File dir, final String name) {
-                return name.startsWith(VOLUME_FILE_PREFIX) &&
-                        (name.indexOf('.') == -1);
-            }
-        });
-        if (files == null || files.length < 1) {
+    public static Path getVolumeFile(final Path baseDir) throws IOException {
+        final Collection<Path> files = IOHelper.listFiles(baseDir, dir -> dir.getFileName().startsWith(VOLUME_FILE_PREFIX) &&
+                        (dir.getFileName().toString().indexOf('.') == -1));
+        if (files == null || files.isEmpty()) {
             throw new IOException("No volume descriptor file found in directory:\n"
-                                  + baseDir.getPath());
+                                  + baseDir.toString());
         }
-        if (files.length > 1) {
+        if (files.size() > 1) {
             throw new IOException("Multiple volume descriptor files found in directory:\n"
-                                  + baseDir.getPath());
+                                  + baseDir.toString());
         }
-        return files[0];
+        return files.iterator().next();
     }
 
     public static FilePointerRecord[] readFilePointers(final VolumeDescriptorRecord vdr) throws
@@ -123,18 +120,18 @@ public class CeosHelper {
     }
 
     /**
-     * Returns a <code>File</code> if the given input is a <code>String</code> or <code>File</code>,
+     * Returns a <code>Path</code> if the given input is a <code>String</code> or <code>Path</code>,
      * otherwise it returns null;
      *
      * @param input an input object of unknown type
      *
-     * @return a <code>File</code> or <code>null</code> it the input can not be resolved to a <code>File</code>.
+     * @return a <code>Path</code> or <code>null</code> it the input can not be resolved to a <code>Path</code>.
      */
-    public static File getFileFromInput(final Object input) {
-        if (input instanceof String) {
-            return new File((String) input);
-        } else if (input instanceof File) {
-            return (File) input;
+    public static Path getFileFromInput(final Object input) {
+        if (input instanceof String inputString) {
+            return Path.of(inputString);
+        } else if (input instanceof Path inputPath) {
+            return inputPath;
         }
         return null;
     }

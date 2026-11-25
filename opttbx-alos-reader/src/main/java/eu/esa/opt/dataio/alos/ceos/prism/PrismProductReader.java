@@ -26,7 +26,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.TreeNode;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 
 /**
@@ -77,15 +77,15 @@ public class PrismProductReader extends AbstractProductReader {
      * - id: contains a string representation of the path. For the root node, this is the
      * absolute path to the parent of the file returned by Product.getFileLocation().
      * For all subsequent nodes, the node name.
-     * - content: each node stores as content a java.io.File object that physically defines the node.
+     * - content: each node stores as content a java.nio.file.Path object that physically defines the node.
      * <p/>
      * The method returns null when a TreeNode can not be assembled (i.e. in-memory product, created from stream ...)
      *
      * @return the root TreeNode or null
      */
     @Override
-    public TreeNode<File> getProductComponents() {
-        final File input = CeosHelper.getFileFromInput(getInput());
+    public TreeNode<Path> getProductComponents() {
+        final Path input = CeosHelper.getFileFromInput(getInput());
         if (input == null) {
             return null;
         }
@@ -103,15 +103,16 @@ public class PrismProductReader extends AbstractProductReader {
      */
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        final File fileFromInput = CeosHelper.getFileFromInput(getInput());
+        final Path fileFromInput = CeosHelper.getFileFromInput(getInput());
         final Product product;
         try {
-            _prismDir = new PrismProductDirectory(fileFromInput.getParentFile());
+            if (fileFromInput == null) {
+                throw new IllegalStateException("Input file is null");
+            }
+            _prismDir = new PrismProductDirectory(fileFromInput.getParent());
             product = _prismDir.createProduct();
         } catch (IllegalCeosFormatException e) {
-            final IOException ioException = new IOException(e.getMessage());
-            ioException.initCause(e);
-            throw ioException;
+            throw new IOException(e.getMessage(), e);
         }
         product.setProductReader(this);
         product.setModified(false);

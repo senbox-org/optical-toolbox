@@ -1,16 +1,17 @@
 package eu.esa.opt.dataio.alos.geotiff.pri;
 
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.dataio.alos.geotiff.pri.internal.AlosPRIConstants;
-import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductIOPlugInManager;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,13 +19,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 public class AlosPRIProductReaderPluginTest {
 
     private AlosPRIProductReaderPlugin plugin;
-    private String productFolder = "_alos"+ File.separator;
+    private final String productFolder = "_alos"+ IOHelper.SEPARATOR;
 
     @Before
     public  void setup(){
@@ -43,10 +47,10 @@ public class AlosPRIProductReaderPluginTest {
     public void testDecodeQualificationForXML() throws IOException {
         Date startDate = Calendar.getInstance().getTime();
         DecodeQualification decodeQualification = plugin.getDecodeQualification(
-                TestUtil.getTestFile(productFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP"+File.separator+"AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410"+File.separator+"ALPSMB038921910"+File.separator+"AL01_PRI_M1B_1C_20061017T212809_20061017T212815_ESR_003892_2B3E.DIMA"));
+                TestUtil.getTestFile(productFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP"+IOHelper.SEPARATOR+"AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410"+ IOHelper.SEPARATOR+"ALPSMB038921910"+IOHelper.SEPARATOR+"AL01_PRI_M1B_1C_20061017T212809_20061017T212815_ESR_003892_2B3E.DIMA"));
         assertEquals(DecodeQualification.UNABLE, decodeQualification);
         decodeQualification = plugin.getDecodeQualification(
-                TestUtil.getTestFile(productFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP"+File.separator+"AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML"));
+                TestUtil.getTestFile(productFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP"+IOHelper.SEPARATOR+"AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML"));
         assertEquals(DecodeQualification.INTENDED, decodeQualification);
         Date endDate = Calendar.getInstance().getTime();
         assertTrue("The decoding time for the file is too big!", (endDate.getTime() - startDate.getTime()) / 1000 < 30);//30 sec
@@ -77,7 +81,7 @@ public class AlosPRIProductReaderPluginTest {
         assertNotNull(classes);
         assertEquals(2, classes.length);
         final List<Class> list = Arrays.asList(classes);
-        assertEquals(true, list.contains(File.class));
+        assertEquals(true, list.contains(Path.class));
         assertEquals(true, list.contains(String.class));
     }
 

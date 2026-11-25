@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.alos.geotiff.av2;
 
 import com.bc.ceres.binding.ConversionException;
-import org.esa.snap.engine_utilities.utils.TestUtil;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoCoding;
@@ -9,6 +9,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.subset.GeometrySubsetRegion;
 import org.esa.snap.core.subset.PixelSubsetRegion;
 import org.esa.snap.core.util.converters.JtsGeometryConverter;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.runtime.LogUtils4Tests;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,8 +17,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.awt.Rectangle;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -25,7 +26,7 @@ import static org.junit.Assume.assumeTrue;
 
 public class AlosAV2ProductReaderTest {
 
-    private static final String PRODUCT_FOLDER = "_alos"+ File.separator;
+    private static final String PRODUCT_FOLDER = "_alos"+ IOHelper.SEPARATOR;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -36,7 +37,7 @@ public class AlosAV2ProductReaderTest {
     public void testReadProduct() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File file = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+File.separator+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+File.separator+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA");
+        final Path file = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+IOHelper.SEPARATOR+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+ IOHelper.SEPARATOR+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA");
 
         AlosAV2ProductReader reader = buildProductReader();
         Product product = reader.readProductNodes(file, null);
@@ -103,7 +104,7 @@ public class AlosAV2ProductReaderTest {
     public void testReadProductPixelSubset() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File file = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+File.separator+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+File.separator+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA");
+        final Path file = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP"+IOHelper.SEPARATOR+"AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410"+ IOHelper.SEPARATOR+"AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA");
 
         ProductSubsetDef subsetDef = new ProductSubsetDef();
         subsetDef.setNodeNames(new String[] { "blue", "near_infrared"} );
@@ -175,7 +176,7 @@ public class AlosAV2ProductReaderTest {
     public void testReadProductGeometrySubset() throws IOException, ConversionException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File file = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP" + File.separator + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410" + File.separator + "AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA");
+        final Path file = TestUtil.getTestFile(PRODUCT_FOLDER + "AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410.SIP").resolve("AL1_NESR_AV2_OBS_1C_20080715T181736_20080715T181748_013182_0539_1810_0410").resolve("AL01_AV2_OBS_1C_20080715T181736_20080715T181748_ESR_013182_3985.DIMA");
 
         JtsGeometryConverter converter = new JtsGeometryConverter();
         Geometry geometry = converter.parse("POLYGON ((-33.38557815551758 82.1087646484375, -33.37318420410156 82.10877990722656," +

@@ -1,20 +1,22 @@
 package eu.esa.opt.dataio.alos.geotiff.pri.internal;
 
-import org.esa.snap.engine_utilities.utils.TestUtil;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -26,17 +28,17 @@ import static org.junit.Assume.assumeTrue;
 public class AlosPRIMetadataTest {
 
     private AlosPRIMetadata metadata;
-    private String productsFolder = "_alos" + File.separator;
+    private final String productsFolder = "_alos" + IOHelper.SEPARATOR;
 
     @Before
     public void setup() {
         assumeTrue(TestUtil.testdataAvailable());
 
         XmlMetadataParserFactory.registerParser(AlosPRIMetadata.class, new XmlMetadataParser<>(AlosPRIMetadata.class));
-        metadata = GenericXmlMetadata.create(AlosPRIMetadata.class, TestUtil.getTestFile(productsFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + File.separator + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML"));
-        metadata.addComponentMetadata(TestUtil.getTestFile(productsFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + File.separator + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410" + File.separator + "ALPSMB038921910" + File.separator + "AL01_PRI_M1B_1C_20061017T212809_20061017T212815_ESR_003892_2B3E.DIMA"));
-        metadata.addComponentMetadata(TestUtil.getTestFile(productsFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + File.separator + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410" + File.separator + "ALPSMF038921800" + File.separator + "AL01_PRI_M1F_1C_20061017T212639_20061017T212645_ESR_003892_2B3E.DIMA"));
-        metadata.addComponentMetadata(TestUtil.getTestFile(productsFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + File.separator + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410" + File.separator + "ALPSMN038921855" + File.separator + "AL01_PRI_M1N_1C_20061017T212724_20061017T212730_ESR_003892_2B3E.DIMA"));
+        metadata = GenericXmlMetadata.create(AlosPRIMetadata.class, TestUtil.getTestFile(productsFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + IOHelper.SEPARATOR + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.MD.XML"));
+        metadata.addComponentMetadata(TestUtil.getTestFile(productsFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + IOHelper.SEPARATOR + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410" + IOHelper.SEPARATOR + "ALPSMB038921910" + IOHelper.SEPARATOR + "AL01_PRI_M1B_1C_20061017T212809_20061017T212815_ESR_003892_2B3E.DIMA"));
+        metadata.addComponentMetadata(TestUtil.getTestFile(productsFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + IOHelper.SEPARATOR + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410" + IOHelper.SEPARATOR + "ALPSMF038921800" + IOHelper.SEPARATOR + "AL01_PRI_M1F_1C_20061017T212639_20061017T212645_ESR_003892_2B3E.DIMA"));
+        metadata.addComponentMetadata(TestUtil.getTestFile(productsFolder + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410.SIP" + IOHelper.SEPARATOR + "AL1_NESR_PSM_OB1_1C_20061017T212724_20061017T212730_003892_0629_1855_0410" + IOHelper.SEPARATOR + "ALPSMN038921855").resolve("AL01_PRI_M1N_1C_20061017T212724_20061017T212730_ESR_003892_2B3E.DIMA"));
     }
 
     @After

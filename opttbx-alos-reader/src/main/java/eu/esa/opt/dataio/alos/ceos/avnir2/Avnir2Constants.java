@@ -16,14 +16,14 @@
 
 package eu.esa.opt.dataio.alos.ceos.avnir2;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Several constants used for reading Avnir-2 products.
  */
 public interface Avnir2Constants {
 
-    Class[] VALID_INPUT_TYPES = new Class[]{File.class, String.class};
+    Class[] VALID_INPUT_TYPES = new Class[]{Path.class, String.class};
     String[] FORMAT_NAMES = new String[]{"AVNIR-2"};
     String[] FORMAT_FILE_EXTENSIONS = new String[]{""};
     String PLUGIN_DESCRIPTION = "AVNIR-2 Products";      /*I18N*/
