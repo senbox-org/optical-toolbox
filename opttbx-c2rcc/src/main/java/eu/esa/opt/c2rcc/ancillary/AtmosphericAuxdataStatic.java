@@ -3,7 +3,7 @@ package eu.esa.opt.c2rcc.ancillary;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
@@ -81,8 +81,8 @@ class AtmosphericAuxdataStatic implements AtmosphericAuxdata {
         if (startTime != null) {
             return startTime.getMJD();
         }
-        final File fileLocation = product.getFileLocation();
-        final String fileName = fileLocation.getName();
+        final Path fileLocation = product.getFileLocation();
+        final String fileName = fileLocation.getFileName().toString();
         final Calendar calendar = createCalendarByFilename(fileName);
         product.setStartTime(ProductData.UTC.create(calendar.getTime(), 0));
         return product.getStartTime().getMJD();

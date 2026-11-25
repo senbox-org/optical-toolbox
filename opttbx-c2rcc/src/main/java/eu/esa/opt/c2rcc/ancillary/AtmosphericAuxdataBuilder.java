@@ -5,7 +5,7 @@ import org.esa.snap.core.datamodel.RasterDataNode;
 import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.SystemUtils;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * @author Marco Peters
@@ -67,7 +67,7 @@ public class AtmosphericAuxdataBuilder {
                 }
             } else {
                 final AncDownloader ancDownloader = new AncDownloader();
-                final AncRepository ancRepository = new AncRepository(new File(atmosphericAuxDataPath), ancDownloader);
+                final AncRepository ancRepository = new AncRepository(Path.of(atmosphericAuxDataPath), ancDownloader);
                 AncDataFormat ozoneFormat = AncillaryCommons.createOzoneFormat(ozone);
                 AncDataFormat pressureFormat = AncillaryCommons.createPressureFormat(surfacePressure);
                 auxdata = new AtmosphericAuxdataDynamic(ancRepository, ozoneFormat, pressureFormat);

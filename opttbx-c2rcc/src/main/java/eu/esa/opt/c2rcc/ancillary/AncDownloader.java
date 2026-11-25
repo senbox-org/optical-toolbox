@@ -1,5 +1,6 @@
 package eu.esa.opt.c2rcc.ancillary;
 
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -11,11 +12,12 @@ import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.SystemUtils;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -27,16 +29,16 @@ class AncDownloader {
     private static final Logger LOGGER = SystemUtils.LOG;
 
 
-    public File download(File[] destFiles) throws IOException {
+    public Path download(Path[] destFiles) throws IOException {
         String searchPattern = extractPrefix(destFiles[0]) + "*";
         final String[] downloadableFiles = getDownloadableFiles(searchPattern);
 
-        for (File destFile : destFiles) {
-            final String fileName = destFile.getName();
+        for (Path destFile : destFiles) {
+            final String fileName = destFile.getFileName().toString();
             if (StringUtils.contains(downloadableFiles, fileName)) {
                 final String downloadUri = DOWNLOAD_URL + fileName;
-                final File downloadedFile = downloadFileTo(destFile, downloadUri);
-                if (downloadedFile.isFile()) {
+                final Path downloadedFile = downloadFileTo(destFile, downloadUri);
+                if (Files.isRegularFile(downloadedFile)) {
                     return downloadedFile;
                 }
             }
@@ -44,12 +46,12 @@ class AncDownloader {
         return null;
     }
 
-    private String extractPrefix(File destFile) {
-        final String filename = destFile.getName();
+    private String extractPrefix(Path destFile) {
+        final String filename = destFile.getFileName().toString();
         return filename.substring(0, filename.indexOf("_") + 1);
     }
 
-    private static File downloadFileTo(File destFile, String downloadUri) throws IOException {
+    private static Path downloadFileTo(Path destFile, String downloadUri) throws IOException {
         final String USER_AGENT = "Chrome/44.0.2403.157";
         final HttpGet get = new HttpGet(downloadUri);
         get.setHeader("User-Agent", USER_AGENT);
@@ -60,19 +62,19 @@ class AncDownloader {
         LOGGER.fine("Response Code : " + response.getStatusLine().getStatusCode());
 
         final InputStream inputStream = response.getEntity().getContent();
-        final String filename = destFile.getName();
-        final File destPath = destFile.getParentFile();
-        if (!destPath.exists()) {
-            destPath.mkdirs();
+        final String filename = destFile.getFileName().toString();
+        final Path destPath = destFile.getParent();
+        if (!Files.exists(destPath)) {
+            IOHelper.createDirectories(destPath);
         }
-        if (!destPath.isDirectory()) {
-            throw new IOException("The denoted path '" + destPath.getAbsolutePath() + "' is not a directory");
+        if (!Files.isDirectory(destPath)) {
+            throw new IOException("The denoted path '" + destPath.toAbsolutePath() + "' is not a directory");
         }
         final String tempFileName = "tmp_" + filename;
-        final File tempFile = new File(destPath, tempFileName);
-        FileOutputStream streamOut = null;
+        final Path tempFile = destPath.resolve(tempFileName);
+        OutputStream streamOut;
         try {
-            streamOut = new FileOutputStream(tempFile);
+            streamOut = Files.newOutputStream(tempFile);
             final byte[] buffer = new byte[100000];
             int len;
             try {
@@ -82,16 +84,17 @@ class AncDownloader {
             } finally {
                 streamOut.close();
             }
-            if (tempFile.renameTo(destFile)) {
-                LOGGER.fine("The ancillary file '" + destFile.getAbsolutePath() + "' has been written.");
+            if (IOHelper.rename(tempFile,destFile)) {
+                LOGGER.fine("The ancillary file '" + destFile.toAbsolutePath() + "' has been written.");
                 return destFile;
             } else {
-                LOGGER.warning("Unable to download the ancillary file '" + destFile.getAbsolutePath() + "'.");
+                LOGGER.warning("Unable to download the ancillary file '" + destFile.toAbsolutePath() + "'.");
                 return null;
             }
         } finally {
-            if (!tempFile.delete()) {
-                tempFile.deleteOnExit();
+            Files.delete(tempFile);
+            if (Files.exists(tempFile)) {
+                IOHelper.deleteOnExit(tempFile);
             }
         }
     }

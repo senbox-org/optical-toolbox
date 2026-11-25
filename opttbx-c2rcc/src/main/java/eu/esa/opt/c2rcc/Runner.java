@@ -8,7 +8,7 @@ import org.esa.snap.core.util.StopWatch;
 import org.esa.snap.core.util.SystemUtils;
 
 import javax.media.jai.JAI;
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -24,9 +24,9 @@ public class Runner {
     }
 
     public static void main(String[] args) throws IOException {
-        File sourceFile = new File(args[0]);
-        File sensor = new File(args[1]);
-        LOGGER.info("Source: " + sourceFile.getName());
+        final Path sourceFile = Path.of(args[0]);
+        final Path sensor = Path.of(args[1]);
+        LOGGER.info("Source: " + sourceFile.getFileName());
 
         Product source = ProductIO.readProduct(sourceFile);
         HashMap<String, Object> parameters = new HashMap<>();
@@ -42,7 +42,7 @@ public class Runner {
         JAI defaultInstance = JAI.getDefaultInstance();
         LOGGER.info("GPF Parallelism: " + defaultInstance.getTileScheduler().getParallelism());
         LOGGER.info("GPF Cache-Size: " + defaultInstance.getTileCache().getMemoryCapacity() / (1000*1000));
-        GPF.writeProduct(target, new File(targetFilePath), ProductIO.DEFAULT_FORMAT_NAME,
+        GPF.writeProduct(target, Path.of(targetFilePath), ProductIO.DEFAULT_FORMAT_NAME,
                          false, ProgressMonitor.NULL);
 
         stopWatch.stop();

@@ -1,12 +1,14 @@
 package eu.esa.opt.c2rcc.ancillary;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import com.bc.ceres.core.runtime.internal.IOHelper;
+import org.junit.Before;
+import org.junit.Test;
 
-import org.junit.*;
-
-import java.io.File;
 import java.io.IOException;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * Created by Sabine on 07.09.2015.
@@ -18,7 +20,7 @@ public class AncRepositoryTest_ValidFileNamePattern {
 
     @Before
     public void setUp() throws Exception {
-        ancRepository = new AncRepository(new File("asd"));
+        ancRepository = new AncRepository(IOHelper.createATempDir().resolve("asd"));
         validFilename = "N200136524_lsmf";
     }
 
