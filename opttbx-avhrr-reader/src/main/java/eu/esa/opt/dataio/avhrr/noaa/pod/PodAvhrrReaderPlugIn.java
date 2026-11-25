@@ -17,15 +17,16 @@
 package eu.esa.opt.dataio.avhrr.noaa.pod;
 
 import com.bc.ceres.binio.IOHandler;
-import com.bc.ceres.binio.util.RandomAccessFileIOHandler;
+import com.bc.ceres.binio.util.FileChannelIOHandler;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
-import java.io.File;
+import java.nio.channels.FileChannel;
+import java.nio.file.Path;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.file.StandardOpenOption;
 import java.util.Locale;
 
 /**
@@ -42,17 +43,19 @@ public final class PodAvhrrReaderPlugIn implements ProductReaderPlugIn {
     private static final String[] FORMAT_NAMES = new String[]{FORMAT_NAME};
     private static final Class[] INPUT_TYPES = new Class[]{
             //ImageInputStream.class,
-            String.class, File.class};
+            String.class, Path.class};
 
     public PodAvhrrReaderPlugIn() {
     }
 
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File file = getInputFile(input);
+        final Path file = getInputFile(input);
         if (file != null) {
-            try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
-                IOHandler ioHandler = new RandomAccessFileIOHandler(raf);
+            try (FileChannel channel = FileChannel.open(
+                    file,
+                    StandardOpenOption.READ)) {
+                IOHandler ioHandler = new FileChannelIOHandler(channel);
                 if (PodAvhrrFile.canDecode(ioHandler)) {
                     return DecodeQualification.INTENDED;
                 }
@@ -70,12 +73,12 @@ public final class PodAvhrrReaderPlugIn implements ProductReaderPlugIn {
         return DecodeQualification.UNABLE;
     }
 
-    public static File getInputFile(Object input) {
-        File file = null;
-        if (input instanceof String) {
-            file = new File((String) input);
-        } else if (input instanceof File) {
-            file = (File) input;
+    public static Path getInputFile(Object input) {
+        Path file = null;
+        if (input instanceof String inputString) {
+            file = Path.of(inputString);
+        } else if (input instanceof Path inputPath) {
+            file = inputPath;
         }
         return file;
     }

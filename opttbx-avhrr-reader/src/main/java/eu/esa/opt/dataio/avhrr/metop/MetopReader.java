@@ -30,11 +30,11 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.TiePointGeoCoding;
 import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.dataop.maptransf.Datum;
+import org.esa.snap.core.util.ImageUtils;
 
-import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 
 /**
@@ -59,10 +59,10 @@ public class MetopReader extends AvhrrReader implements AvhrrConstants {
      */
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        final File dataFile = MetopReaderPlugIn.getInputFile(getInput());
+        final Path dataFile = MetopReaderPlugIn.getInputFile(getInput());
 
         try {
-            ImageInputStream imageInputStream = new FileImageInputStream(dataFile);
+            final ImageInputStream imageInputStream = ImageUtils.getImageInputStream(dataFile);
             avhrrFile = new MetopFile(imageInputStream);
             avhrrFile.readHeader();
             createProduct();
@@ -172,7 +172,7 @@ public class MetopReader extends AvhrrReader implements AvhrrConstants {
         return ada;
     }
 
-    public static boolean canOpenFile(File file) {
+    public static boolean canOpenFile(Path file) {
         try {
             return MetopFile.canOpenFile(file);
         } catch (IOException e) {

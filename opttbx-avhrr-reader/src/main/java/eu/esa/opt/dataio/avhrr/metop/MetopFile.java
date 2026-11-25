@@ -23,15 +23,15 @@ import eu.esa.opt.dataio.avhrr.AvhrrFile;
 import eu.esa.opt.dataio.avhrr.BandReader;
 import eu.esa.opt.dataio.avhrr.FlagReader;
 import eu.esa.opt.dataio.avhrr.HeaderUtil;
-import eu.esa.opt.dataio.avhrr.calibration.RadianceCalibrator;
 import eu.esa.opt.dataio.avhrr.calibration.Radiance2TemperatureCalibrator;
+import eu.esa.opt.dataio.avhrr.calibration.RadianceCalibrator;
 import org.esa.snap.core.datamodel.MetadataElement;
 import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.util.ImageUtils;
 
-import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -368,8 +368,8 @@ class MetopFile extends AvhrrFile {
         return flag;
     }
 
-    public static boolean canOpenFile(File file) throws IOException {
-        ImageInputStream inputStream = new FileImageInputStream(file);
+    public static boolean canOpenFile(Path file) throws IOException {
+        final ImageInputStream inputStream = ImageUtils.getImageInputStream(file);
         try {
             GenericRecordHeader mphrHeader = new GenericRecordHeader();
             boolean correct = mphrHeader.readGenericRecordHeader(inputStream);

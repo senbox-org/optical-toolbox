@@ -16,8 +16,13 @@
 
 package eu.esa.opt.dataio.avhrr.noaa;
 
-import com.bc.ceres.binio.*;
+import com.bc.ceres.binio.CompoundData;
+import com.bc.ceres.binio.CompoundType;
+import com.bc.ceres.binio.DataContext;
+import com.bc.ceres.binio.DataFormat;
+import com.bc.ceres.binio.SequenceData;
 import com.bc.ceres.core.Assert;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.dataio.avhrr.AvhrrConstants;
 import eu.esa.opt.dataio.avhrr.AvhrrFile;
 import eu.esa.opt.dataio.avhrr.BandReader;
@@ -30,27 +35,28 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.util.Debug;
 import org.esa.snap.core.util.io.FileUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.ByteOrder;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 /**
  * Represent a single NOAA AVHRR file.
  */
 public class KlmAvhrrFile extends AvhrrFile implements AvhrrConstants {
 
-    private final File file;
+    private final Path file;
     private CompoundData noaaData;
     private DataContext context;
     private boolean hasCloudBand = false;
     private ProductFormat productFormat;
     private boolean hasArsHeader;
 
-    public KlmAvhrrFile(File file) {
+    public KlmAvhrrFile(Path file) {
         this.file = FileUtils.getCachedFile(file);
     }
 
-    public static boolean canDecode(File file) {
+    public static boolean canDecode(Path file) {
         KlmFormatDetector formatDetector = null;
         try {
             formatDetector = new KlmFormatDetector(file);
@@ -80,7 +86,7 @@ public class KlmAvhrrFile extends AvhrrFile implements AvhrrConstants {
         CompoundType type = KlmTypes.getFileType(hasArsHeader, productFormat, dataRecordCount);
 
         DataFormat dataFormat = new DataFormat(type, ByteOrder.BIG_ENDIAN);
-        context = dataFormat.createContext(file, "r");
+        context = dataFormat.createContext(file, StandardOpenOption.READ);
         noaaData = context.getData();
         int tpSubsampling = productFormat.getProductDimension().getTpSubsampling();
         int toSkip = (dataRecordCount % tpSubsampling) - 1;
@@ -135,7 +141,7 @@ public class KlmAvhrrFile extends AvhrrFile implements AvhrrConstants {
     }
 
     private int getDataRecordCount(long blockSize) {
-        long realFileSize = file.length() - blockSize;
+        long realFileSize = IOHelper.size(file) - blockSize;
         if (hasArsHeader) {
             realFileSize -= AvhrrConstants.ARS_LENGTH;
         }

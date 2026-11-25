@@ -17,7 +17,7 @@
 package eu.esa.opt.dataio.avhrr.noaa.pod;
 
 import com.bc.ceres.binio.IOHandler;
-import com.bc.ceres.binio.util.RandomAccessFileIOHandler;
+import com.bc.ceres.binio.util.FileChannelIOHandler;
 import com.bc.ceres.core.ProgressMonitor;
 import eu.esa.opt.dataio.avhrr.BandReader;
 import org.esa.snap.core.dataio.AbstractProductReader;
@@ -25,9 +25,11 @@ import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.datamodel.ProductData;
 
-import java.io.File;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.file.StandardOpenOption;
 
 /**
  * A reader for NOAA Polar Orbiter Data (POD) products (currently AVHRR HRPT only).
@@ -38,7 +40,7 @@ import java.io.RandomAccessFile;
 final class PodAvhrrReader extends AbstractProductReader {
 
     private PodAvhrrFile avhrrFile;
-    private RandomAccessFile raf;
+    private FileChannel fileChannel;
 
     PodAvhrrReader(PodAvhrrReaderPlugIn plugIn) {
         super(plugIn);
@@ -47,13 +49,15 @@ final class PodAvhrrReader extends AbstractProductReader {
     @Override
     protected Product readProductNodesImpl() throws IOException {
         Object input = getInput();
-        final File file = PodAvhrrReaderPlugIn.getInputFile(input);
+        final Path file = PodAvhrrReaderPlugIn.getInputFile(input);
         IOHandler ioHandler = null;
         String productName = "unkown";
-        if (file != null && file.exists()) {
-            productName = file.getName();
-            raf = new RandomAccessFile(file, "r");
-            ioHandler = new RandomAccessFileIOHandler(raf);
+        if (file != null && Files.exists(file)) {
+            productName = file.getFileName().toString();
+            fileChannel = FileChannel.open(
+                    file,
+                    StandardOpenOption.READ);
+            ioHandler = new FileChannelIOHandler(fileChannel);
 //        } else if (input instanceof ImageInputStream) {
 //            ImageInputStream iis = (ImageInputStream) input;
 //            ioHandler = new ImageIOHandler(iis);
@@ -113,8 +117,8 @@ final class PodAvhrrReader extends AbstractProductReader {
         if (avhrrFile != null) {
             avhrrFile.dispose();
         }
-        if (raf != null) {
-            raf.close();
+        if (fileChannel != null) {
+            fileChannel.close();
         }
     }
 

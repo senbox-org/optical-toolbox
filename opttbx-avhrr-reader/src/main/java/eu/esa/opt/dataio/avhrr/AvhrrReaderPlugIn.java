@@ -23,7 +23,7 @@ import org.esa.snap.core.datamodel.RGBImageProfile;
 import org.esa.snap.core.datamodel.RGBImageProfileManager;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Locale;
 
 /**
@@ -39,7 +39,7 @@ public class AvhrrReaderPlugIn implements ProductReaderPlugIn {
     private static final String DESCRIPTION = "NOAA-AVHRR/3 Level-1b Data Product";
     private static final Class[] INPUT_TYPES = new Class[]{
             String.class,
-            File.class,
+            Path.class,
     };
 
     static {
@@ -48,19 +48,19 @@ public class AvhrrReaderPlugIn implements ProductReaderPlugIn {
 
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final File file = getInputFile(input);
+        final Path file = getInputFile(input);
         if (file != null && KlmAvhrrFile.canDecode(file)) {
             return DecodeQualification.INTENDED;
         }
         return DecodeQualification.UNABLE;
     }
 
-    public static File getInputFile(Object input) {
-        File file = null;
-        if (input instanceof String) {
-            file = new File((String) input);
-        } else if (input instanceof File) {
-            file = (File) input;
+    public static Path getInputFile(Object input) {
+        Path file = null;
+        if (input instanceof String inputString) {
+            file = Path.of(inputString);
+        } else if (input instanceof Path inputPath) {
+            file = inputPath;
         }
         return file;
     }

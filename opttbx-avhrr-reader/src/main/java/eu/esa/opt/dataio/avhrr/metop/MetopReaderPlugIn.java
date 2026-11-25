@@ -24,7 +24,7 @@ import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Locale;
 
 /**
@@ -39,24 +39,24 @@ public class MetopReaderPlugIn implements ProductReaderPlugIn {
     private static final String DESCRIPTION = "METOP-AVHRR/3 Level-1b Data Product";
     private static final Class[] INPUT_TYPES = new Class[]{
             String.class,
-            File.class,
+            Path.class,
     };
 
     public MetopReaderPlugIn() {
     }
 
-    public static File getInputFile(Object input) {
-        File file = null;
-        if (input instanceof String) {
-            file = new File((String) input);
-        } else if (input instanceof File) {
-            file = (File) input;
+    public static Path getInputFile(Object input) {
+        Path file = null;
+        if (input instanceof String inputString) {
+            file = Path.of(inputString);
+        } else if (input instanceof Path inputPath) {
+            file = inputPath;
         }
         return file;
     }
 
     public DecodeQualification getDecodeQualification(Object input) {
-        File file = getInputFile(input);
+        final Path file = getInputFile(input);
         if (file != null && MetopReader.canOpenFile(file)) {
             return DecodeQualification.INTENDED;
         }

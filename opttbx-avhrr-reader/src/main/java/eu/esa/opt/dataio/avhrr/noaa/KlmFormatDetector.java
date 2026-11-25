@@ -23,16 +23,16 @@ import com.bc.ceres.binio.DataFormat;
 import com.bc.ceres.binio.IOHandler;
 import com.bc.ceres.binio.SequenceData;
 import com.bc.ceres.binio.SimpleType;
-import com.bc.ceres.binio.util.RandomAccessFileIOHandler;
+import com.bc.ceres.binio.util.FileChannelIOHandler;
 import eu.esa.opt.dataio.avhrr.AvhrrConstants;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.util.io.FileUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.nio.channels.FileChannel;
+import java.nio.file.Path;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteOrder;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,13 +55,15 @@ class KlmFormatDetector {
     private DecodeQualification decodeQualification = DecodeQualification.UNABLE;
     private boolean hasArsHeader;
 
-    private RandomAccessFile raf;
+    private FileChannel fileChannel;
     private IOHandler ioHandler;
 
-    KlmFormatDetector(File file) throws FileNotFoundException {
-        final File cachedFile = FileUtils.getCachedFile(file);
-        raf = new RandomAccessFile(cachedFile, "r");
-        ioHandler = new RandomAccessFileIOHandler(raf);
+    KlmFormatDetector(Path file) throws IOException {
+        final Path cachedFile = FileUtils.getCachedFile(file);
+        fileChannel = FileChannel.open(
+                cachedFile,
+                StandardOpenOption.READ);
+        ioHandler = new FileChannelIOHandler(fileChannel);
         detectArsHeader();
     }
 
@@ -104,12 +106,12 @@ class KlmFormatDetector {
     }
 
     public void dispose() {
-        if (raf != null) {
+        if (fileChannel != null) {
             try {
-                raf.close();
+                fileChannel.close();
             } catch (IOException ignore) {
             }
-            raf = null;
+            fileChannel = null;
             ioHandler = null;
         }
     }

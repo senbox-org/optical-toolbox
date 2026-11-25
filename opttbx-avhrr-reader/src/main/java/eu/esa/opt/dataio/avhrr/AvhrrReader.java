@@ -30,7 +30,7 @@ import org.esa.snap.core.datamodel.VirtualBand;
 import org.esa.snap.core.dataop.maptransf.Datum;
 
 import java.awt.Color;
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -66,7 +66,7 @@ public class AvhrrReader extends AbstractProductReader implements AvhrrConstants
      */
     @Override
     protected Product readProductNodesImpl() throws IOException {
-        final File dataFile = AvhrrReaderPlugIn.getInputFile(getInput());
+        final Path dataFile = AvhrrReaderPlugIn.getInputFile(getInput());
 
         try {
             avhrrFile = new KlmAvhrrFile(dataFile);
