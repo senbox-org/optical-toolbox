@@ -1,6 +1,7 @@
 package eu.esa.opt.swath2grid;
 
 import com.bc.ceres.core.ProgressMonitor;
+import com.bc.ceres.core.runtime.internal.UrlHelper;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.dataio.geocoding.ComponentFactory;
 import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
@@ -34,7 +35,7 @@ import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.net.URL;
 import java.nio.file.Files;
@@ -507,12 +508,15 @@ public class EcostressSwath2GridOp extends Operator {
         if (ecostressBrightnessTemperatureProductFileURI == null) {
             throw new IllegalArgumentException("Ecostress Brightness Temperature Product not found, download the table at https://git.earthdata.nasa.gov/projects/LPDUR/repos/ecostress_swath2grid/browse");
         }
-        final Path ecostressBrightnessTemperatureProductResourcePath = Path.of(ecostressBrightnessTemperatureProductFileURI.toURI());
+        final Path ecostressBrightnessTemperatureProductResourcePath = UrlHelper.urlToFile(ecostressBrightnessTemperatureProductFileURI);
+        if (ecostressBrightnessTemperatureProductResourcePath == null) {
+            throw new IllegalArgumentException("Ecostress Brightness Temperature Product not found, download the table at https://git.earthdata.nasa.gov/projects/LPDUR/repos/ecostress_swath2grid/browse");
+        }
         final Path ecostressBrightnessTemperatureProductPath = ecostressSwath2gridOpAuxdataDir.resolve(ecostressBrightnessTemperatureProductResourcePath.getFileName().toString());
         if (!Files.exists(ecostressBrightnessTemperatureProductPath)) {
             Files.copy(ecostressBrightnessTemperatureProductResourcePath, ecostressBrightnessTemperatureProductPath);
         }
-        return ProductIO.readProduct(ecostressBrightnessTemperatureProductPath.toFile());
+        return ProductIO.readProduct(ecostressBrightnessTemperatureProductPath);
     }
 
     private static class AreaDefinition {

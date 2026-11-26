@@ -12,7 +12,6 @@ import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,10 +57,10 @@ public class EcostressSwath2GridOpTest {
     public void testEcostressSwath2GridOp() throws Exception {
         final ProductReaderPlugIn productReaderPlugIn = buildEcostressProductReaderPlugIn();
 
-        final File ecostressGeoProductFile = this.ecostressSwath2GridTestsFolderPath.resolve(ECOSTRESS_TEST_PRODUCT_FILE_NAME_GEO).toFile();
+        final Path ecostressGeoProductFile = this.ecostressSwath2GridTestsFolderPath.resolve(ECOSTRESS_TEST_PRODUCT_FILE_NAME_GEO);
         Product ecostressGeoProduct = productReaderPlugIn.createReaderInstance().readProductNodes(ecostressGeoProductFile, null);
 
-        final File ecostressEcoProductFile = this.ecostressSwath2GridTestsFolderPath.resolve(ECOSTRESS_TEST_PRODUCT_FILE_NAME_ECO).toFile();
+        final Path ecostressEcoProductFile = this.ecostressSwath2GridTestsFolderPath.resolve(ECOSTRESS_TEST_PRODUCT_FILE_NAME_ECO);
         Product ecostressEcoProduct = productReaderPlugIn.createReaderInstance().readProductNodes(ecostressEcoProductFile, null);
 
         final Map<String, Object> parameters = new HashMap<>();
