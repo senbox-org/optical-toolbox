@@ -13,7 +13,7 @@ import com.bc.ceres.test.LongTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,10 +34,10 @@ public class ForestCoverChangeOpTest extends AbstractOpTest {
     public void testForestCoverChangeOp() throws Exception {
         ProductReaderPlugIn productReaderPlugIn = buildDimapProductReaderPlugIn();
 
-        File currentProductFile = this.forestCoverChangeTestsFolderPath.resolve("S2A_R093_T35UMP_20170628T092026.dim").toFile();
+        final Path currentProductFile = this.forestCoverChangeTestsFolderPath.resolve("S2A_R093_T35UMP_20170628T092026.dim");
         Product currentSourceProduct = productReaderPlugIn.createReaderInstance().readProductNodes(currentProductFile, null);
 
-        File previousProductFile = this.forestCoverChangeTestsFolderPath.resolve("S2A_20160713T125925_A005524_T35UMP.dim").toFile();
+        final Path previousProductFile = this.forestCoverChangeTestsFolderPath.resolve("S2A_20160713T125925_A005524_T35UMP.dim");
         Product previousSourceProduct = productReaderPlugIn.createReaderInstance().readProductNodes(previousProductFile, null);
 
         Map<String, Object> parameters = new HashMap<>();

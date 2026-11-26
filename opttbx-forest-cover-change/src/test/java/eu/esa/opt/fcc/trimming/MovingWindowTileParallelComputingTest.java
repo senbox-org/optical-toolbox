@@ -1,8 +1,9 @@
 package eu.esa.opt.fcc.trimming;
 
+import com.bc.ceres.core.runtime.internal.IOHelper;
+import eu.esa.opt.grm.segmentation.product.WriteProductBandsTilesComputing;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
-import eu.esa.opt.grm.segmentation.product.WriteProductBandsTilesComputing;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.util.io.FileUtils;
@@ -13,8 +14,6 @@ import org.junit.Test;
 
 import javax.media.jai.JAI;
 import java.awt.Dimension;
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
@@ -35,8 +34,8 @@ public class MovingWindowTileParallelComputingTest extends AbstractOpTest {
     }
 
     @BeforeClass
-    public static void oneTimeSetUp() throws IOException {
-        testsFolderPath = Files.createTempDirectory("_temp");
+    public static void oneTimeSetUp() {
+        testsFolderPath = IOHelper.createATempDir("_temp");
         if (!Files.exists(testsFolderPath)) {
             fail("The test directory path '"+testsFolderPath+"' is not valid.");
         }
@@ -44,7 +43,7 @@ public class MovingWindowTileParallelComputingTest extends AbstractOpTest {
 
     @AfterClass
     public static void oneTimeTearDown() {
-        if (!FileUtils.deleteTree(testsFolderPath.toFile())) {
+        if (!FileUtils.deleteTree(testsFolderPath)) {
             fail("Unable to delete test directory.");
         }
     }
@@ -57,13 +56,13 @@ public class MovingWindowTileParallelComputingTest extends AbstractOpTest {
 
         ProductReaderPlugIn productReaderPlugIn = buildDimapProductReaderPlugIn();
 
-        File currentProductFile = this.forestCoverChangeTestsFolderPath.resolve("S2A_R093_T35UMP_20170628T092026.dim").toFile();
+        final Path currentProductFile = this.forestCoverChangeTestsFolderPath.resolve("S2A_R093_T35UMP_20170628T092026.dim");
         Product currentSourceProduct = productReaderPlugIn.createReaderInstance().readProductNodes(currentProductFile, null);
 
         assertNotNull(currentSourceProduct);
 
         Path folder = this.forestCoverChangeTestsFolderPath.resolve("object-selection");
-        File currentProductFile1 = folder.resolve("S2A_20160713T125925_A005524_T35UMP_grm.dim").toFile();
+        final Path currentProductFile1 = folder.resolve("S2A_20160713T125925_A005524_T35UMP_grm.dim");
         Product segmentationProduct = productReaderPlugIn.createReaderInstance().readProductNodes(currentProductFile1, null);
 
         assertNotNull(segmentationProduct);

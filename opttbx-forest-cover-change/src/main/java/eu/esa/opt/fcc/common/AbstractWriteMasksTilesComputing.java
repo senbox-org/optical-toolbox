@@ -5,7 +5,6 @@ import org.esa.snap.utils.BufferedInputStreamWrapper;
 import org.esa.snap.utils.BufferedOutputStreamWrapper;
 import org.esa.snap.utils.matrix.ByteMatrix;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,7 +39,7 @@ public abstract class AbstractWriteMasksTilesComputing extends AbstractImageTile
             logger.log(Level.FINE, "Write mask values for tile region: row index: "+ localRowIndex+", column index: "+localColumnIndex+", bounds [x=" + tileLeftX+", y="+tileTopY+", width="+tileWidth+", height="+tileHeight+"]");
         }
 
-        File nodesFile = AbstractWriteMasksTilesComputing.computeMaskTilePath(this.temporaryFolder, tileLeftX, tileTopY, tileWidth, tileHeight).toFile();
+        final Path nodesFile = AbstractWriteMasksTilesComputing.computeMaskTilePath(this.temporaryFolder, tileLeftX, tileTopY, tileWidth, tileHeight);
 
         BufferedOutputStreamWrapper outputFileStream = null;
         try {
@@ -73,7 +72,7 @@ public abstract class AbstractWriteMasksTilesComputing extends AbstractImageTile
     public static ByteMatrix readMaskTile(Path parentFolderPath, int tileLeftX, int tileTopY, int tileWidth, int tileHeight)
             throws IOException {
 
-        File nodesFile = AbstractWriteMasksTilesComputing.computeMaskTilePath(parentFolderPath, tileLeftX, tileTopY, tileWidth, tileHeight).toFile();
+        final Path nodesFile = AbstractWriteMasksTilesComputing.computeMaskTilePath(parentFolderPath, tileLeftX, tileTopY, tileWidth, tileHeight);
 
         BufferedInputStreamWrapper inputFileStream = null;
         try {

@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import javax.media.jai.JAI;
 import java.awt.Dimension;
-import java.io.File;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,7 +37,7 @@ public class UnionMasksTilesComputingTest extends AbstractOpTest {
 
         Path unionFolder = this.forestCoverChangeTestsFolderPath.resolve("union-mask");
 
-        File currentSegmentationSourceProductFile = unionFolder.resolve("S2A_R093_T35UMP_20170628T092026_grm_fill.dim").toFile();
+        final Path currentSegmentationSourceProductFile = unionFolder.resolve("S2A_R093_T35UMP_20170628T092026_grm_fill.dim");
         Product currentSegmentationSourceProduct = productReaderPlugIn.createReaderInstance().readProductNodes(currentSegmentationSourceProductFile, null);
 
         IntSet currentSegmentationTrimmingRegionKeys = buildCurrentSegmentationTrimmingRegionKeys();

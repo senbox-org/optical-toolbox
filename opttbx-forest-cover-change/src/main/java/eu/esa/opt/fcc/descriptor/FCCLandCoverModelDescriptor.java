@@ -25,7 +25,6 @@ import org.esa.snap.landcover.dataio.AbstractLandCoverModelDescriptor;
 import org.esa.snap.landcover.dataio.FileLandCoverModel;
 import org.esa.snap.landcover.dataio.LandCoverModel;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -35,10 +34,9 @@ import java.nio.file.Path;
 public class FCCLandCoverModelDescriptor extends AbstractLandCoverModelDescriptor {
     public static final String NAME = "CCILandCover-2015";
 
-    private static final File INSTALL_DIR = new File(Settings.instance().getAuxDataFolder().getAbsolutePath(),
-                                                     "LandCover" + File.separator + NAME);
-    private static final File[] fileList = new File[] {
-            new File(INSTALL_DIR, "ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.zip")
+    private static final Path INSTALL_DIR = Settings.instance().getAuxDataFolder().resolve("LandCover").resolve(NAME);
+    private static final Path[] fileList = new Path[] {
+            INSTALL_DIR.resolve("ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.zip")
     };
 
     public FCCLandCoverModelDescriptor() {

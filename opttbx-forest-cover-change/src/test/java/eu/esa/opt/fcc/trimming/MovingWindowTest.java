@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import javax.media.jai.JAI;
 import java.awt.Dimension;
-import java.io.File;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +35,7 @@ public class MovingWindowTest extends AbstractOpTest {
 
         Path folder = this.forestCoverChangeTestsFolderPath.resolve("object-selection");
 
-        File currentProductFile = folder.resolve("S2A_20160713T125925_A005524_T35UMP_grm.dim").toFile();
+        final Path currentProductFile = folder.resolve("S2A_20160713T125925_A005524_T35UMP_grm.dim");
         Product segmentationProduct = productReaderPlugIn.createReaderInstance().readProductNodes(currentProductFile, null);
 
         assertNotNull(segmentationProduct);

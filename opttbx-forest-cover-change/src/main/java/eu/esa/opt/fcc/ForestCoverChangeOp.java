@@ -1,6 +1,7 @@
 package eu.esa.opt.fcc;
 
 import com.bc.ceres.core.ProgressMonitor;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.fcc.annotation.ParameterGroup;
 import eu.esa.opt.fcc.common.ForestCoverChangeConstants;
 import eu.esa.opt.fcc.common.WriteCombinedMasksTilesComputing;
@@ -11,15 +12,29 @@ import eu.esa.opt.fcc.trimming.MovingWindowTileParallelComputing;
 import eu.esa.opt.fcc.trimming.ObjectsSelectionTilesComputing;
 import eu.esa.opt.fcc.trimming.PixelStatistic;
 import eu.esa.opt.fcc.trimming.UnionMasksTilesComputing;
+import eu.esa.opt.grm.GenericRegionMergingOp;
+import eu.esa.opt.grm.RegionMergingInputParameters;
+import eu.esa.opt.grm.RegionMergingProcessingParameters;
+import eu.esa.opt.grm.segmentation.product.WriteProductBandsTilesComputing;
+import eu.esa.opt.grm.segmentation.tiles.SegmentationSourceProductPair;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
-import eu.esa.opt.grm.segmentation.product.WriteProductBandsTilesComputing;
-import eu.esa.opt.grm.GenericRegionMergingOp;
-import eu.esa.opt.grm.RegionMergingInputParameters;
-import eu.esa.opt.grm.RegionMergingProcessingParameters;
-import eu.esa.opt.grm.segmentation.tiles.SegmentationSourceProductPair;
+import java.awt.Dimension;
+import java.lang.ref.WeakReference;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.media.jai.JAI;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoCoding;
@@ -40,27 +55,11 @@ import org.esa.snap.core.gpf.annotations.Parameter;
 import org.esa.snap.core.gpf.annotations.SourceProduct;
 import org.esa.snap.core.gpf.annotations.TargetProduct;
 import org.esa.snap.core.util.ProductUtils;
+import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.landcover.dataio.LandCoverFactory;
 import org.esa.snap.landcover.gpf.AddLandCoverOp;
-import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.utils.matrix.IntMatrix;
-
-import javax.media.jai.JAI;
-import java.awt.Dimension;
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Razvan Dumitrascu
@@ -140,11 +139,11 @@ public class ForestCoverChangeOp extends Operator {
 
     @ParameterGroup(alias = "Product Masks")
     @Parameter(label = "Recent Date Product Mask", description = "A binary raster file to be added as mask to the output product")
-    private File currentProductSourceMaskFile;
+    private Path currentProductSourceMaskFile;
 
     @ParameterGroup(alias = "Product Masks")
     @Parameter(label = "Previous Date Product Mask", description = "A binary raster file to be added as mask to the output product")
-    private File previousProductSourceMaskFile;
+    private Path previousProductSourceMaskFile;
 
     private String[] currentProductBandsNames;
     private String[] previousProductBandsNames;
@@ -188,7 +187,7 @@ public class ForestCoverChangeOp extends Operator {
 
         String folderPath = System.getProperty("fcc.temp.folder.path");
         if (folderPath == null) {
-            folderPath = System.getProperty("java.io.tmpdir");
+            folderPath = IOHelper.createATempDir().toString();
         }
         String temporaryFolderName = "forest-cover-change" + Long.toString(System.currentTimeMillis());
         Path temporaryFolder = Paths.get(folderPath, temporaryFolderName);
@@ -196,7 +195,7 @@ public class ForestCoverChangeOp extends Operator {
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, ""); // add an empty line
             logger.log(Level.FINE, "Start Forest Cover Change: image width: "+this.targetProduct.getSceneRasterWidth()+", image height: "+this.targetProduct.getSceneRasterHeight() + ", start time: " + new Date(startTime));
-            logger.log(Level.FINE, "Temporary folder path to store the binary files: '" + temporaryFolder.toFile().getAbsolutePath() + "'");
+            logger.log(Level.FINE, "Temporary folder path to store the binary files: '" + temporaryFolder.toAbsolutePath() + "'");
         }
 
         try {
@@ -246,7 +245,7 @@ public class ForestCoverChangeOp extends Operator {
             throw new OperatorException(ex);
         } finally {
             this.threadPool.shutdown();
-            FileUtils.deleteTree(temporaryFolder.toFile());
+            FileUtils.deleteTree(temporaryFolder);
         }
     }
 

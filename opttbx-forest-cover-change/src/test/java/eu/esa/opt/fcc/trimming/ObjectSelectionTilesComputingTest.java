@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import javax.media.jai.JAI;
 import java.awt.Dimension;
-import java.io.File;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,10 +38,10 @@ public class ObjectSelectionTilesComputingTest extends AbstractOpTest {
 
         Path folder = this.forestCoverChangeTestsFolderPath.resolve("object-selection");
 
-        File segmentationProductFile = folder.resolve("S2A_20160713T125925_A005524_T35UMP_grm.dim").toFile();
+        final Path segmentationProductFile = folder.resolve("S2A_20160713T125925_A005524_T35UMP_grm.dim");
         Product segmentationProduct = productReaderPlugIn.createReaderInstance().readProductNodes(segmentationProductFile, null);
 
-        File landCoverProductFile = folder.resolve("S2A_20160713T125925_A005524_T35UMP_grm_landCover.dim").toFile();
+        final Path landCoverProductFile = folder.resolve("S2A_20160713T125925_A005524_T35UMP_grm_landCover.dim");
         Product landCoverProduct = productReaderPlugIn.createReaderInstance().readProductNodes(landCoverProductFile, null);
 
         checkLandCoverProduct(landCoverProduct);
