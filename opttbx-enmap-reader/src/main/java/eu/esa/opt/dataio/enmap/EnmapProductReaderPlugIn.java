@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.enmap;
 
 import com.bc.ceres.core.VirtualDir;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.dataio.TarUtils;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
@@ -11,18 +12,22 @@ import org.esa.snap.core.util.io.SnapFileFilter;
 import org.esa.snap.engine_utilities.dataio.VirtualDirTgz;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static eu.esa.opt.dataio.enmap.EnmapFileUtils.*;
+import static eu.esa.opt.dataio.enmap.EnmapFileUtils.L1B_BASEFILENAME;
+import static eu.esa.opt.dataio.enmap.EnmapFileUtils.L1B_FILENAME_PATTERNS;
+import static eu.esa.opt.dataio.enmap.EnmapFileUtils.L1C_BASEFILENAME;
+import static eu.esa.opt.dataio.enmap.EnmapFileUtils.L1C_FILENAME_PATTERNS;
+import static eu.esa.opt.dataio.enmap.EnmapFileUtils.L2A_BASEFILENAME;
+import static eu.esa.opt.dataio.enmap.EnmapFileUtils.L2A_FILENAME_PATTERNS;
+import static eu.esa.opt.dataio.enmap.EnmapFileUtils.isZip;
 
 public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
 
@@ -57,7 +62,7 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
                 return DecodeQualification.UNABLE;
             }
 
-            List<Path> filePaths = new ArrayList<>();
+            final Collection<Path> filePaths = new ArrayList<>();
             if (TarUtils.isTar(path)) {
                 // we do not want to extract the whole tar, so just check for naming convention of entries
                 if (isValidTar(path)) {
@@ -78,12 +83,8 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
     }
 
     // package access for testing only tb 2024-03-08
-    static List<Path> extractPathsFromDir(Path path) throws IOException {
-        List<Path> filePaths;
-        try (Stream<Path> list = Files.list(path.getParent())) {
-            filePaths = list.collect(Collectors.toList());
-        }
-        return filePaths;
+    static Collection<Path> extractPathsFromDir(Path path) {
+        return IOHelper.listFiles(path.getParent());
     }
 
     // @todo 1 tb/tb add tests 2024-03-11
@@ -109,7 +110,7 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
 
     // package access for testing only tb 2024-03-07
     static List<Path> extractPathsFromZip(Path path) throws IOException {
-        final VirtualDir virtualDir = ProductUtils.getProductVirtualDir(path.toFile());
+        final VirtualDir virtualDir = ProductUtils.getProductVirtualDir(path);
 
         final List<Path> filePaths = new ArrayList<>();
         try {
@@ -153,17 +154,17 @@ public class EnmapProductReaderPlugIn implements ProductReaderPlugIn {
         return new SnapFileFilter(FORMAT_NAMES[0], FILE_EXTENSIONS, DESCRIPTION);
     }
 
-    private static boolean areEnmapL1bFiles(List<Path> filePaths) {
+    private static boolean areEnmapL1bFiles(Collection<Path> filePaths) {
         return Arrays.stream(L1B_FILENAME_PATTERNS).allMatch(p ->
                 filePaths.stream().anyMatch(path -> p.matcher(path.getFileName().toString()).matches()));
     }
 
-    private static boolean areEnmapL1cFiles(List<Path> filePaths) {
+    private static boolean areEnmapL1cFiles(Collection<Path> filePaths) {
         return Arrays.stream(L1C_FILENAME_PATTERNS).allMatch(p ->
                 filePaths.stream().anyMatch(path -> p.matcher(path.getFileName().toString()).matches()));
     }
 
-    private static boolean areEnmapL2aFiles(List<Path> filePaths) {
+    private static boolean areEnmapL2aFiles(Collection<Path> filePaths) {
         return Arrays.stream(L2A_FILENAME_PATTERNS).allMatch(p ->
                 filePaths.stream().anyMatch(path -> p.matcher(path.getFileName().toString()).matches()));
     }

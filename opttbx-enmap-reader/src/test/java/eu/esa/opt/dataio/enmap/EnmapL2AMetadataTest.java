@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.enmap;
 
+import com.bc.ceres.core.runtime.internal.UrlHelper;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -7,9 +8,8 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -25,8 +25,8 @@ public class EnmapL2AMetadataTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        URI resource = Objects.requireNonNull(EnmapL2AMetadataTest.class.getResource("enmap_L2A_gtif_qualification.zip")).toURI();
-        try (ZipFile zip = new ZipFile(new File(resource))) {
+        final URL resource = Objects.requireNonNull(EnmapL2AMetadataTest.class.getResource("enmap_L2A_gtif_qualification.zip"));
+        try (ZipFile zip = new ZipFile(Objects.requireNonNull(UrlHelper.urlToFile(resource)).toString())) {
             ZipEntry entry = zip.getEntry("enmap_L2A_gtif_qualification/ENMAP01-____L2A-DT0000326721_20170626T102020Z_001_V000204_20200406T201930Z-METADATA.XML");
             meta = EnmapMetadata.create(zip.getInputStream(entry));
         }

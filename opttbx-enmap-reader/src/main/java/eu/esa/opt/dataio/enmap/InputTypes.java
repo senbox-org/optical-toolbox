@@ -2,7 +2,6 @@ package eu.esa.opt.dataio.enmap;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.IntStream;
@@ -15,7 +14,7 @@ class InputTypes {
     static {
         types = new Class[]{
                 Path.class,
-                File.class,
+                Path.class,
                 String.class
         };
 
@@ -31,16 +30,13 @@ class InputTypes {
     }
 
     static Path toPath(Object inputObject) {
-        if (inputObject instanceof Path) {
-            return (Path) inputObject;
+        if (inputObject instanceof Path inputPath) {
+            return inputPath;
         }
-        if (inputObject instanceof File) {
-            return ((File) inputObject).toPath();
-        }
-        if (inputObject instanceof String) {
-            return Paths.get((String) inputObject);
+        if (inputObject instanceof String inputString) {
+            return Paths.get(inputString);
         }
 
-        throw new IllegalArgumentException(String.format("Unsupported input type '%s'. Must be one of %s", String.valueOf(inputObject), StringUtils.join(typeNames, ",")));
+        throw new IllegalArgumentException(String.format("Unsupported input type '%s'. Must be one of %s", inputObject, StringUtils.join(typeNames, ",")));
     }
 }

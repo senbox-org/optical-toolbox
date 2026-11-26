@@ -2,7 +2,6 @@ package eu.esa.opt.dataio.enmap;
 
 import com.bc.ceres.core.VirtualDir;
 import org.esa.snap.core.util.io.FileUtils;
-import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,14 +94,14 @@ public class EnmapFileUtils {
             return relPath;
         }
         if (dataDir.isArchive()) {
-            String innerDirectory = dataDir.getBaseFile().toPath().getFileName().toString();
+            String innerDirectory = dataDir.getBaseFile().getFileName().toString();
             relPath = FileUtils.getFilenameWithoutExtension(innerDirectory) + "/" + fileName;
         }
         return relPath;
     }
 
     public static boolean checkIfProductIsNonCompliant(VirtualDir dataDir) throws IOException {
-        String productName = FileUtils.getFilenameWithoutExtension(dataDir.getBaseFile().getName());
+        String productName = FileUtils.getFilenameWithoutExtension(dataDir.getBaseFile().getFileName());
 
         for (String fileName : dataDir.listAllFiles()) {
             if (fileName.startsWith(productName)) {

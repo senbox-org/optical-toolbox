@@ -32,7 +32,6 @@ import org.opengis.referencing.operation.MathTransform;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -136,13 +135,12 @@ class EnmapProductReader extends AbstractProductReader {
                 }
             }
 
-            final File tgzDataDirFile = state.tgzDataDir.getFile(zipFileName);
-            path = tgzDataDirFile.toPath();
+            path = state.tgzDataDir.getFile(zipFileName);
         } else if (!isZip(path)) {
             path = path.getParent();
         }
 
-        state.dataDir = ProductUtils.getProductVirtualDir(path.toFile());
+        state.dataDir = ProductUtils.getProductVirtualDir(path);
         if (state.dataDir == null) {
             throw new IOException(String.format("%s%nVirtual directory could not be created", CANNOT_READ_PRODUCT_MSG));
         }
