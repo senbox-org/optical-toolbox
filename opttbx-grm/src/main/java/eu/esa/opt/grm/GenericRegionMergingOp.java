@@ -1,6 +1,7 @@
 package eu.esa.opt.grm;
 
 import com.bc.ceres.core.ProgressMonitor;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.grm.segmentation.BoundingBox;
 import eu.esa.opt.grm.segmentation.OutputMarkerMatrixHelper;
 import eu.esa.opt.grm.segmentation.OutputMaskMatrixHelper;
@@ -379,7 +380,7 @@ public class GenericRegionMergingOp extends Operator {
 
         String folderPath = System.getProperty("grm.temp.folder.path");
         if (folderPath == null) {
-            folderPath = System.getProperty("java.io.tmpdir");
+            folderPath = IOHelper.createATempDir().toString();
         }
         Path temporaryParentFolder = Paths.get(folderPath);
 

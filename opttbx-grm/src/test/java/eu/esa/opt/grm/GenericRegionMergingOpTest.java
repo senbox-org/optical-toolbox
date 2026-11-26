@@ -1,6 +1,7 @@
 package eu.esa.opt.grm;
 
 import com.bc.ceres.core.ProgressMonitor;
+import com.bc.ceres.core.runtime.internal.UrlHelper;
 import com.bc.ceres.test.LongTestRunner;
 import eu.esa.opt.grm.segmentation.AbstractSegmenter;
 import eu.esa.opt.grm.segmentation.BoundingBox;
@@ -16,7 +17,8 @@ import org.esa.snap.core.gpf.internal.OperatorExecutor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -297,12 +299,13 @@ public class GenericRegionMergingOpTest {
         }
     }
 
-    private Product readSourceProduct(String imageFileName) throws IOException, URISyntaxException {
+    private Product readSourceProduct(String imageFileName) throws IOException {
         URL resource = getClass().getResource(imageFileName);
         assertNotNull(resource);
-        File productFile = new File(resource.toURI());
-        if (!productFile.exists()) {
-            fail("The test file '"+productFile.getAbsolutePath()+"' representing the input product does not exist.");
+        final Path productFile = UrlHelper.urlToFile(resource);
+        assertNotNull(productFile);
+        if (!Files.exists(productFile)) {
+            fail("The test file '"+productFile.toAbsolutePath()+"' representing the input product does not exist.");
         }
         ImageProductReaderPlugIn readerPlugIn = new ImageProductReaderPlugIn();
         ProductReader reader = readerPlugIn.createReaderInstance();

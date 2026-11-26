@@ -1,22 +1,28 @@
 package eu.esa.opt.grm.segmentation.tiles;
 
-import it.unimi.dsi.fastutil.ints.*;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import eu.esa.opt.grm.RegionMergingProcessingParameters;
+import eu.esa.opt.grm.segmentation.AbstractSegmenter;
 import eu.esa.opt.grm.segmentation.BoundingBox;
 import eu.esa.opt.grm.segmentation.Contour;
 import eu.esa.opt.grm.segmentation.Edge;
 import eu.esa.opt.grm.segmentation.Graph;
 import eu.esa.opt.grm.segmentation.Node;
 import eu.esa.opt.grm.segmentation.TileDataSource;
-import eu.esa.opt.grm.segmentation.*;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.utils.BufferedInputStreamWrapper;
 import org.esa.snap.utils.BufferedOutputStreamWrapper;
 import org.esa.snap.utils.ObjectMemory;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -106,22 +112,22 @@ public abstract class AbstractTileSegmenter {
 
         StringBuilder exceptionMessage = new StringBuilder();
 
-        File nodesFile = new File(this.temporaryFolder.toFile(), tileToCheck.getNodeFileName());
-        if (!nodesFile.exists()) {
-            exceptionMessage.append(" The nodes file '"+nodesFile.getName()+"' is missing.");
+        final Path nodesFile = this.temporaryFolder.resolve(tileToCheck.getNodeFileName());
+        if (!Files.exists(nodesFile)) {
+            exceptionMessage.append(" The nodes file '"+nodesFile.getFileName()+"' is missing.");
         }
-        File edgesFile = new File(this.temporaryFolder.toFile(), tileToCheck.getEdgeFileName());
-        if (!edgesFile.exists()) {
-            exceptionMessage.append(" The edges file '"+edgesFile.getName()+"' is missing.");
+        final Path edgesFile = this.temporaryFolder.resolve(tileToCheck.getEdgeFileName());
+        if (!Files.exists(edgesFile)) {
+            exceptionMessage.append(" The edges file '"+edgesFile.getFileName()+"' is missing.");
         }
 
-        File nodeMarginsFile = new File(this.temporaryFolder.toFile(), tileToCheck.getNodeMarginFileName());
-        if (!nodeMarginsFile.exists()) {
-            exceptionMessage.append(" The node margins file '"+nodeMarginsFile.getName()+"' is missing.");
+        final Path nodeMarginsFile = this.temporaryFolder.resolve(tileToCheck.getNodeMarginFileName());
+        if (!Files.exists(nodeMarginsFile)) {
+            exceptionMessage.append(" The node margins file '"+nodeMarginsFile.getFileName()+"' is missing.");
         }
-        File edgeMarginsFile = new File(this.temporaryFolder.toFile(), tileToCheck.getEdgeMarginFileName());
-        if (!edgeMarginsFile.exists()) {
-            exceptionMessage.append(" The edge margins file '"+edgeMarginsFile.getName()+"' is missing.");
+        final Path edgeMarginsFile = this.temporaryFolder.resolve(tileToCheck.getEdgeMarginFileName());
+        if (!Files.exists(edgeMarginsFile)) {
+            exceptionMessage.append(" The edge margins file '"+edgeMarginsFile.getFileName()+"' is missing.");
         }
         if (exceptionMessage.length() > 0) {
             exceptionMessage.insert(0, "Missing tile temporary files: row index: " + rowIndex+", column index: "+columnIndex+", iteration: "+iteration+".");
@@ -130,7 +136,7 @@ public abstract class AbstractTileSegmenter {
     }
 
     private void deleteTemporaryFolder() {
-        boolean deleted = FileUtils.deleteTree(this.temporaryFolder.toFile());
+        boolean deleted = FileUtils.deleteTree(this.temporaryFolder);
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, ""); // add an empty line
             if (deleted) {
@@ -693,10 +699,10 @@ public abstract class AbstractTileSegmenter {
         BufferedOutputStreamWrapper nodesFileStream = null;
         BufferedOutputStreamWrapper edgesFileStream = null;
         try {
-            File nodesFile = this.temporaryFolder.resolve(nodesPath).toFile();
+            final Path nodesFile = this.temporaryFolder.resolve(nodesPath);
             nodesFileStream = new BufferedOutputStreamWrapper(nodesFile);
 
-            File edgesFile = this.temporaryFolder.resolve(edgesPath).toFile();
+            final Path edgesFile = this.temporaryFolder.resolve(edgesPath);
             edgesFileStream = new BufferedOutputStreamWrapper(edgesFile);
 
             int nodeCount = graph.getNodeCount();
@@ -743,7 +749,7 @@ public abstract class AbstractTileSegmenter {
         BufferedInputStreamWrapper nodesFileStream = null;
         BufferedInputStreamWrapper edgesFileStream = null;
         try {
-            File nodesFile = this.temporaryFolder.resolve(nodesPath).toFile();
+            final Path nodesFile = this.temporaryFolder.resolve(nodesPath);
             nodesFileStream = new BufferedInputStreamWrapper(nodesFile);
 
             int nodeCount = nodesFileStream.readInt();
@@ -755,7 +761,7 @@ public abstract class AbstractTileSegmenter {
                 graph.addNode(node);
             }
 
-            File edgesFile = this.temporaryFolder.resolve(edgesPath).toFile();
+            final Path edgesFile = this.temporaryFolder.resolve(edgesPath);
             edgesFileStream = new BufferedInputStreamWrapper(edgesFile);
 
             for (int i=0; i<nodeCount; i++) {
@@ -797,10 +803,10 @@ public abstract class AbstractTileSegmenter {
         BufferedOutputStreamWrapper nodesFileStream = null;
         BufferedOutputStreamWrapper edgesFileStream = null;
         try {
-            File nodesFile = this.temporaryFolder.resolve(nodesPath).toFile();
+            final Path nodesFile = this.temporaryFolder.resolve(nodesPath);
             nodesFileStream = new BufferedOutputStreamWrapper(nodesFile);
 
-            File edgesFile = this.temporaryFolder.resolve(edgesPath).toFile();
+            final Path edgesFile = this.temporaryFolder.resolve(edgesPath);
             edgesFileStream = new BufferedOutputStreamWrapper(edgesFile);
 
             // write the number of nodes
@@ -855,7 +861,7 @@ public abstract class AbstractTileSegmenter {
     }
 
     private String getTemporaryFolderPath() {
-        return this.temporaryFolder.toFile().getAbsolutePath();
+        return this.temporaryFolder.toAbsolutePath().toString();
     }
 
     public static int computeTileMargin(int tileWidth, int tileHeight) {

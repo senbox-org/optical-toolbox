@@ -10,7 +10,6 @@ import org.esa.snap.core.util.io.FileUtils;
 import org.esa.snap.utils.AbstractImageTilesParallelComputing;
 import org.esa.snap.utils.BufferedOutputStreamWrapper;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,7 +57,7 @@ public class WriteProductBandsTilesComputing extends AbstractImageTilesParallelC
         ProcessingTile segmentationProcessingTile = AbstractTileSegmenter.buildTile(tileLeftX, tileTopY, tileWidth, tileHeight, this.segmentationTileMargin, imageWidth, imageHeight);
         BoundingBox segmentationTileBounds = segmentationProcessingTile.getRegion();
         String tileFileName = SegmentationSourceProductPair.buildSegmentationTileFileName(segmentationTileBounds);
-        File nodesFile = this.temporaryFolder.resolve(tileFileName).toFile();
+        final Path nodesFile = this.temporaryFolder.resolve(tileFileName);
 
         BufferedOutputStreamWrapper outputFileStream = null;
         try {
@@ -93,7 +92,7 @@ public class WriteProductBandsTilesComputing extends AbstractImageTilesParallelC
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, ""); // add an empty line
             logger.log(Level.FINE, "Start writing the product bands into local disk files: source product: '"+this.sourceProduct.getName()+"', image width: "+getImageWidth()+", image height: "+getImageHeight() + ", start time: " + new Date(startTime));
-            logger.log(Level.FINE, "Temporary folder path to store the binary files: '" + this.temporaryFolder.toFile().getAbsolutePath()+"'");
+            logger.log(Level.FINE, "Temporary folder path to store the binary files: '" + this.temporaryFolder.toAbsolutePath()+"'");
         }
 
         boolean success = false;
@@ -103,7 +102,7 @@ public class WriteProductBandsTilesComputing extends AbstractImageTilesParallelC
         } finally {
             if (!success) {
                 // failed to copy the data and delete the folder
-                FileUtils.deleteTree(this.temporaryFolder.toFile());
+                FileUtils.deleteTree(this.temporaryFolder);
             }
         }
 

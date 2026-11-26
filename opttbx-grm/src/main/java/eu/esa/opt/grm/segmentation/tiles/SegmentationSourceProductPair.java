@@ -5,7 +5,6 @@ import eu.esa.opt.grm.segmentation.BoundingBox;
 import org.esa.snap.utils.BufferedInputStreamWrapper;
 import org.esa.snap.utils.matrix.FloatMatrix;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.logging.Level;
@@ -53,7 +52,7 @@ public class SegmentationSourceProductPair {
 
     public static TileDataSource[] buildSourceTiles(BoundingBox segmentationTileBounds, Path temporaryFolder) throws IOException {
         String tileFileName = buildSegmentationTileFileName(segmentationTileBounds);
-        File nodesFile = temporaryFolder.resolve(tileFileName).toFile();
+        final Path nodesFile = temporaryFolder.resolve(tileFileName);
 
         BufferedInputStreamWrapper inputFileStream = null;
         try {
