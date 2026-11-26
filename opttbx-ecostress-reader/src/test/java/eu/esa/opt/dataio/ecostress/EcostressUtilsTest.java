@@ -1,5 +1,6 @@
 package eu.esa.opt.dataio.ecostress;
 
+import com.bc.ceres.core.runtime.internal.UrlHelper;
 import eu.esa.snap.hdf.HDFLoader;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.MetadataAttribute;
@@ -9,11 +10,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -33,7 +33,7 @@ public class EcostressUtilsTest {
     public void ecostressNodesExistsTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
-            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath)) {
                 Assert.assertTrue(EcostressUtils.ecostressNodesExists(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA));
                 Assert.assertFalse(EcostressUtils.ecostressNodesExists(ecostressFile, "/other"));
             }
@@ -46,7 +46,7 @@ public class EcostressUtilsTest {
     public void extractMetadataElementsTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
-            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath)) {
                 final List<MetadataElement> metadataElements = EcostressUtils.extractMetadataElements(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA);
                 Assert.assertFalse(metadataElements.isEmpty());
                 final MetadataElement metadataElement = metadataElements.get(0);
@@ -64,7 +64,7 @@ public class EcostressUtilsTest {
     public void extractStartTimeTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
-            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath)) {
                 Assert.assertEquals("14-MAR-2024 20:56:43.163661", EcostressUtils.extractStartTime(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA).getElemString());
             }
         } catch (Exception e) {
@@ -76,7 +76,7 @@ public class EcostressUtilsTest {
     public void extractEndTimeTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
-            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath)) {
                 Assert.assertEquals("14-MAR-2024 21:01:43.163661", EcostressUtils.extractEndTime(ecostressFile, EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA).getElemString());
             }
         } catch (Exception e) {
@@ -88,7 +88,7 @@ public class EcostressUtilsTest {
     public void extractEcostressProductDimensionTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
-            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath)) {
                 final String pathOfGeneralMetadata = EcostressConstants.ECOSTRESS_PRODUCT_DATA_DEFINITIONS_GROUP_STANDARD_METADATA;
                 final Dimension dimension = EcostressUtils.extractEcostressProductDimension(ecostressFile, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_PIXELS, pathOfGeneralMetadata + EcostressConstants.ECOSTRESS_STANDARD_METADATA_IMAGE_LINES);
                 Assert.assertEquals(5400, dimension.width);
@@ -103,7 +103,7 @@ public class EcostressUtilsTest {
     public void extractBandsObjectsTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
-            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath)) {
                 final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, "/SDS");
                 Assert.assertEquals(1, bands.size());
                 final Band band = bands.get(0);
@@ -123,7 +123,7 @@ public class EcostressUtilsTest {
     public void readEcostressBandDataTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestProductFilePath();
-            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath)) {
                 final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, "/SDS");
                 Assert.assertEquals(1, bands.size());
                 final Band band = bands.get(0);
@@ -143,7 +143,7 @@ public class EcostressUtilsTest {
     public void readReversedEcostressBandDataTest() {
         try {
             final Path ecostressTestProductFilePath = getEcostressTestNightProductFilePath();
-            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath.toFile())) {
+            try (final EcostressFile ecostressFile = new EcostressFile(ecostressTestProductFilePath)) {
                 final List<Band> bands = EcostressUtils.extractBandsObjects(ecostressFile, "/SDS");
                 Assert.assertEquals(2, bands.size());
                 final Band band = bands.get(0);
@@ -167,10 +167,10 @@ public class EcostressUtilsTest {
         return getEcostressTestProductFilePath(ECOSTRESS_TEST_NIGHT_PRODUCT_FILE_NAME);
     }
 
-    private static Path getEcostressTestProductFilePath(String ecostressProductFileName) throws URISyntaxException {
+    private static Path getEcostressTestProductFilePath(String ecostressProductFileName) {
         final URL url = EcostressUtilsTest.class.getResource(ecostressProductFileName);
         if (url != null) {
-            return Paths.get(url.toURI());
+            return UrlHelper.urlToFile(url);
         }
         throw new IllegalStateException("ECOSTRESS test product file cannot be loaded.");
     }

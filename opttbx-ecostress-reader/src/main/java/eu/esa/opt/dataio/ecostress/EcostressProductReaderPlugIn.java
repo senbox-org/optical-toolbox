@@ -4,10 +4,9 @@ import eu.esa.snap.hdf.HDFLoader;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
-import org.esa.snap.core.util.StringUtils;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Locale;
 
 /**
@@ -18,7 +17,7 @@ import java.util.Locale;
 public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
 
     static final String FORMAT_NAME_ECOSTRESS = "ECOSTRESS-L1B/L2/L3/L4";
-    private static final Class<?>[] SUPPORTED_INPUT_TYPES = new Class[]{String.class, File.class};
+    private static final Class<?>[] SUPPORTED_INPUT_TYPES = new Class[]{String.class, Path.class};
     private static final String DESCRIPTION = "ECOSTRESS Format";
     private static final String FILE_EXTENSION = ".H5";
     private static final String[] DEFAULT_FILE_EXTENSIONS = new String[]{FILE_EXTENSION};
@@ -29,18 +28,12 @@ public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
     /**
      * Gets the ECOSTRESS file object from reader input object
      *
-     * @param input the reader input object
+     * @param productFile the product path
      * @return the ECOSTRESS file object
      */
-    public static EcostressFile getEcostressFile(Object input) {
+    public static EcostressFile getEcostressFile(Path productFile) {
         HDFLoader.ensureHDF5Initialised();
-        if (input instanceof String) {
-            return new EcostressFile((String) input);
-        } else if (input instanceof File) {
-            return new EcostressFile((File) input);
-        }
-        final String typeArray = StringUtils.arrayToString(SUPPORTED_INPUT_TYPES, ",");
-        throw new IllegalStateException(String.format("Unsupported input data type should be one of [%s] but is %s", typeArray, input.getClass()));
+        return new EcostressFile(productFile);
     }
 
     /**
@@ -81,7 +74,7 @@ public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
      * @return the decode qualification
      */
     public DecodeQualification getDecodeQualification(Object input) {
-        if (isInputValid(input)) {
+        if (isInputValid(getProductPath(input))) {
             return DecodeQualification.INTENDED;
         }
         return DecodeQualification.UNABLE;
@@ -99,12 +92,12 @@ public class EcostressProductReaderPlugIn implements ProductReaderPlugIn {
     /**
      * Checks whether the reader input object is a valid ECOSTRESS product
      *
-     * @param input the reader input object
+     * @param productFile the input product file
      * @return {@code true} when the reader input object is a valid ECOSTRESS product
      */
-    protected boolean isInputValid(Object input) {
-        final EcostressFile ecostressFile = getEcostressFile(input);
-        return isInputEcostressFileNameValid(ecostressFile.getName()) && isInputContentValid(ecostressFile);
+    protected boolean isInputValid(Path productFile) {
+        final EcostressFile ecostressFile = getEcostressFile(productFile);
+        return isInputEcostressFileNameValid(ecostressFile.getFileName()) && isInputContentValid(ecostressFile);
     }
 
     /**

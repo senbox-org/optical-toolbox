@@ -84,7 +84,7 @@ public abstract class EcostressMetadata {
      * @return {@code true} when the ECOSTRESS product file is valid
      */
     protected boolean isProductFileValid(EcostressFile ecostressFile) {
-        return ecostressFile.getName().replaceAll(getProductFileNameRegex(), "").isEmpty();
+        return ecostressFile.getFileName().replaceAll(getProductFileNameRegex(), "").isEmpty();
     }
 
     /**

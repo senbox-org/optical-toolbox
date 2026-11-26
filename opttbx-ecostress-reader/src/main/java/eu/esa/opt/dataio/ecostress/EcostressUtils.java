@@ -68,7 +68,7 @@ public class EcostressUtils {
                             final ProductData metadataItemValue = getEcostressH5ScalarDSValue(metadataItem);
                             metadataElement.addAttribute(new MetadataAttribute(metadataItemObject.getName(), metadataItemValue, true));
                         } catch (HDF5Exception e) {
-                            logger.severe("Fail to extract metadata element from ECOSTRESS product '" + ecostressFile.getName() + "'. Reason: " + e.getMessage());
+                            logger.severe("Fail to extract metadata element from ECOSTRESS product '" + ecostressFile.getFileName() + "'. Reason: " + e.getMessage());
                             throw new RuntimeException(e);
                         }
                     }
@@ -76,7 +76,7 @@ public class EcostressUtils {
                 }
             }
         } catch (Exception e) {
-            logger.severe("Failed to extract the metadata element from ECOSTRESS product '" + ecostressFile.getName() + "'. Reason: " + e.getMessage());
+            logger.severe("Failed to extract the metadata element from ECOSTRESS product '" + ecostressFile.getFileName() + "'. Reason: " + e.getMessage());
             throw new IllegalStateException(e);
         }
         return metadataElementsList;
@@ -141,7 +141,7 @@ public class EcostressUtils {
                 }
             }
         } catch (Exception e) {
-            logger.severe("Failed to extract the band object from ECOSTRESS product '" + ecostressFile.getName() + "'. Reason: " + e.getMessage());
+            logger.severe("Failed to extract the band object from ECOSTRESS product '" + ecostressFile.getFileName() + "'. Reason: " + e.getMessage());
             throw new IllegalStateException(e);
         }
         return bandsList;
@@ -205,7 +205,7 @@ public class EcostressUtils {
             }
             return ProductData.UTC.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern(EcostressConstants.ECOSTRESS_DATE_FORMAT_PATTERN)), EcostressConstants.ECOSTRESS_DATE_FORMAT_PATTERN);
         } catch (Exception e) {
-            logger.severe("Failed to extract product date-time from ECOSTRESS product '" + ecostressFile.getName() + "'. Reason: " + e.getMessage());
+            logger.severe("Failed to extract product date-time from ECOSTRESS product '" + ecostressFile.getFileName() + "'. Reason: " + e.getMessage());
             throw new IllegalStateException(e);
         }
     }
@@ -228,7 +228,7 @@ public class EcostressUtils {
             }
             return new Dimension(-1, -1);
         } catch (Exception e) {
-            logger.severe("Failed to extract the dimension from ECOSTRESS product '" + ecostressFile.getName() + "' Reason: " + e.getMessage());
+            logger.severe("Failed to extract the dimension from ECOSTRESS product '" + ecostressFile.getFileName() + "' Reason: " + e.getMessage());
             throw new IllegalStateException(e);
         }
     }
@@ -335,7 +335,7 @@ public class EcostressUtils {
             }
             return bandElement.read();
         } catch (Exception e) {
-            logger.severe("Failed to read the band (" + bandElementPath + ") data subset from ECOSTRESS product '" + ecostressFile.getName() + "' with coordinates w=" + width + " h=" + height + " X=" + offsetX + " Y=" + offsetY + ". Reason: " + e.getMessage());
+            logger.severe("Failed to read the band (" + bandElementPath + ") data subset from ECOSTRESS product '" + ecostressFile.getFileName() + "' with coordinates w=" + width + " h=" + height + " X=" + offsetX + " Y=" + offsetY + ". Reason: " + e.getMessage());
             throw new IllegalStateException(e);
         }
     }
@@ -383,7 +383,7 @@ public class EcostressUtils {
         try {
             return ecostressFile.getH5File().get(nodePath);
         } catch (Exception e) {
-            logger.severe("Error reading ECOSTRESS node '" + nodePath + "' from product '" + ecostressFile.getName() + "': " + e.getMessage());
+            logger.severe("Error reading ECOSTRESS node '" + nodePath + "' from product '" + ecostressFile.getFileName() + "': " + e.getMessage());
         }
         return null;
     }

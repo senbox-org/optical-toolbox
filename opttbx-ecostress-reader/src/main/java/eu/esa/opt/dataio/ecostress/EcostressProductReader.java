@@ -38,6 +38,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import java.awt.*;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -109,7 +110,7 @@ public class EcostressProductReader extends AbstractProductReader {
         if (productSize.height < 1 || productSize.width < 1) {
             productSize = computeProductDimensionUsingBandsDimensions(bandsList);
         }
-        final EcostressProduct ecostressProduct = new EcostressProduct(ecostressFile.getName(), ecostressMetadata.getFormatName(), productSize.width, productSize.height, this);
+        final EcostressProduct ecostressProduct = new EcostressProduct(ecostressFile.getFileName(), ecostressMetadata.getFormatName(), productSize.width, productSize.height, this);
         final MetadataElement productMetadataRoot = ecostressProduct.getMetadataRoot();
         for (MetadataElement metadataElement : getMetadataElementsList(ecostressFile, ecostressMetadata)) {
             productMetadataRoot.addElement(metadataElement);
@@ -126,7 +127,7 @@ public class EcostressProductReader extends AbstractProductReader {
         ecostressProduct.setDescription("ECOSTRESS Product");
         ecostressProduct.setStartTime(EcostressUtils.extractStartTime(ecostressFile, pathOfGeneralMetadata));
         ecostressProduct.setEndTime(EcostressUtils.extractEndTime(ecostressFile, pathOfGeneralMetadata));
-        ecostressProduct.setFileLocation(ecostressFile);
+        ecostressProduct.setFileLocation(ecostressFile.getFileLocation());
         final GeoCoding geoCoding = buildGeoCoding(ecostressFile, ecostressProduct, ecostressMetadata);
         if (geoCoding != null) {
             ecostressProduct.setSceneGeoCoding(geoCoding);
@@ -175,8 +176,8 @@ public class EcostressProductReader extends AbstractProductReader {
      */
     protected EcostressFile getEcostressFile() {
         if (this.ecostressFile == null) {
-            final Object inputObject = getInput();
-            this.ecostressFile = EcostressProductReaderPlugIn.getEcostressFile(inputObject);
+            final Path productFile = getProductPath();
+            this.ecostressFile = EcostressProductReaderPlugIn.getEcostressFile(productFile);
         }
         return this.ecostressFile;
     }

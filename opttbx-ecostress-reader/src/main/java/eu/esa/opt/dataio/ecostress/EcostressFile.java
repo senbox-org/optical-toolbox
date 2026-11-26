@@ -3,14 +3,14 @@ package eu.esa.opt.dataio.ecostress;
 import hdf.object.FileFormat;
 import org.esa.snap.core.util.io.FileUtils;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Ecostress Product File class
  *
  * @author adraghici
  */
-public class EcostressFile extends File implements AutoCloseable {
+public class EcostressFile implements AutoCloseable {
 
     /**
      * the HDF5 object
@@ -19,24 +19,16 @@ public class EcostressFile extends File implements AutoCloseable {
 
     /**
      * Creates a new instance of this class
-     * @param inputFilePath the ECOSTRESS file path string
-     */
-    public EcostressFile(String inputFilePath) {
-        super(inputFilePath);
-        try {
-            final FileFormat h5FileFormat = FileFormat.getFileFormat(FileFormat.FILE_TYPE_HDF5);
-            this.h5File = h5FileFormat.createInstance(this.getAbsolutePath(), FileFormat.READ);
-        } catch (Exception e) {
-            throw new IllegalStateException("Error initialising ECOSTRESS product '" + this.getName() + "': " + e.getMessage());
-        }
-    }
-
-    /**
-     * Creates a new instance of this class
      * @param inputFile the ECOSTRESS file path object
      */
-    public EcostressFile(File inputFile) {
-        this(FileUtils.getCachedFilePath(inputFile));
+    public EcostressFile(Path inputFile) {
+        final Path cachedFile = FileUtils.getCachedFile(inputFile);
+        try {
+            final FileFormat h5FileFormat = FileFormat.getFileFormat(FileFormat.FILE_TYPE_HDF5);
+            this.h5File = h5FileFormat.createInstance(cachedFile.toString(), FileFormat.READ);
+        } catch (Exception e) {
+            throw new IllegalStateException("Error initialising ECOSTRESS product '" + this.getFileName() + "': " + e.getMessage());
+        }
     }
 
     /**
@@ -49,6 +41,22 @@ public class EcostressFile extends File implements AutoCloseable {
     }
 
     /**
+     * Gets the file name of ECOSTRESS file
+     * @return the file name of ECOSTRESS file
+     */
+    public String getFileName() {
+        return this.h5File.getAbsoluteFile().toPath().getFileName().toString();
+    }
+
+    /**
+     * Gets the file path of ECOSTRESS file
+     * @return the file path of ECOSTRESS file
+     */
+    public Path getFileLocation() {
+        return this.h5File.getAbsoluteFile().toPath();
+    }
+
+    /**
      * Opens the HDF5 object of ECOSTRESS file
      */
     private void open() {
@@ -57,7 +65,7 @@ public class EcostressFile extends File implements AutoCloseable {
                 this.h5File.open();
             }
         } catch (Exception e) {
-            throw new IllegalStateException("Error opening ECOSTRESS product '" + this.getName() + "': " + e.getMessage());
+            throw new IllegalStateException("Error opening ECOSTRESS product '" + this.getFileName() + "': " + e.getMessage());
         }
     }
 
