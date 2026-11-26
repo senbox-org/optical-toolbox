@@ -1,13 +1,14 @@
 package eu.esa.opt.dataio.flex;
 
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
 
-import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -27,39 +28,37 @@ abstract class FlexReaderPlugIn implements ProductReaderPlugIn {
 
     @Override
     public DecodeQualification getDecodeQualification(Object input) {
-        final Path path = convertToPath(input);
-        if (path == null) {
+        final Path file = getProductPath(input);
+        if (file == null) {
             return DecodeQualification.UNABLE;
         }
 
-        final File file = path.toFile();
-
-        if (file.isDirectory()) {
-            return sourceNamePattern.matcher(file.getName()).matches()
-                    && containsHeaderXml(file.toPath())
+        if (Files.isDirectory(file)) {
+            return sourceNamePattern.matcher(file.getFileName().toString()).matches()
+                    && containsHeaderXml(file)
                     ? DecodeQualification.INTENDED
                     : DecodeQualification.UNABLE;
         }
 
-        final String fileName = path.getFileName().toString().toLowerCase(Locale.ROOT);
+        final String fileName = file.getFileName().toString().toLowerCase(Locale.ROOT);
         if (!fileName.endsWith(".xml")) {
             return DecodeQualification.UNABLE;
         }
 
-        final String parentName = getParentDirectoryName(path);
+        final String parentName = getParentDirectoryName(file);
         return parentName != null && sourceNamePattern.matcher(parentName).matches()
                 ? DecodeQualification.INTENDED
                 : DecodeQualification.UNABLE;
     }
 
     private boolean containsHeaderXml(Path dir) {
-        final File[] files = dir.toFile().listFiles((d, name) -> name.toLowerCase(Locale.ROOT).endsWith(".xml"));
-        return files != null && files.length > 0;
+        final Collection<Path> files = IOHelper.listFiles(dir, file -> file.getFileName().toString().toLowerCase(Locale.ROOT).endsWith(".xml"));
+        return files != null && !files.isEmpty();
     }
 
     @Override
     public Class<?>[] getInputTypes() {
-        return new Class[]{String.class, File.class, Path.class};
+        return new Class[]{String.class, Path.class, Path.class};
     }
 
     @Override
@@ -85,17 +84,6 @@ abstract class FlexReaderPlugIn implements ProductReaderPlugIn {
     @Override
     public SnapFileFilter getProductFileFilter() {
         return new SnapFileFilter(formatName, FILE_EXTENSIONS, description);
-    }
-
-    private Path convertToPath(Object input) {
-        if (input instanceof Path) {
-            return (Path) input;
-        } else if (input instanceof File) {
-            return ((File) input).toPath();
-        } else if (input instanceof String) {
-            return Paths.get((String) input);
-        }
-        return null;
     }
 
     private String getParentDirectoryName(Path path) {

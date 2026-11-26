@@ -3,40 +3,60 @@ package eu.esa.opt.dataio.flex;
 import com.bc.ceres.core.ProgressMonitor;
 import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.flex.compatibility.FlexProductCompatibility;
-import eu.esa.opt.dataio.flex.dddb.*;
-import eu.esa.opt.dataio.flex.metadata.FlexMetadataElementLazy;
-import eu.esa.opt.dataio.flex.metadata.FlexMetadataProvider;
+import eu.esa.opt.dataio.flex.dddb.FlexDDDB;
+import eu.esa.opt.dataio.flex.dddb.FlexFlagMask;
+import eu.esa.opt.dataio.flex.dddb.FlexProductDescriptor;
+import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
+import eu.esa.opt.dataio.flex.dddb.FlexVariableType;
 import eu.esa.opt.dataio.flex.header.FlexHeaderParser;
 import eu.esa.opt.dataio.flex.header.FlexProductHeader;
+import eu.esa.opt.dataio.flex.metadata.FlexMetadataElementLazy;
+import eu.esa.opt.dataio.flex.metadata.FlexMetadataProvider;
 import eu.esa.opt.dataio.flex.util.FlexReaderUtils;
 import eu.esa.snap.core.dataio.cache.CacheManager;
 import eu.esa.snap.core.dataio.cache.CachedSubsamplingReader;
 import eu.esa.snap.core.dataio.cache.DataBuffer;
 import eu.esa.snap.core.dataio.cache.ProductCache;
 import eu.esa.snap.core.datamodel.band.BandUsingReaderDirectly;
-import org.esa.snap.core.dataop.barithm.GeoCodingLazyProxy;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
-import org.esa.snap.core.dataio.geocoding.*;
+import org.esa.snap.core.dataio.geocoding.ComponentFactory;
+import org.esa.snap.core.dataio.geocoding.ComponentGeoCoding;
+import org.esa.snap.core.dataio.geocoding.ForwardCoding;
+import org.esa.snap.core.dataio.geocoding.GeoChecks;
+import org.esa.snap.core.dataio.geocoding.GeoRaster;
+import org.esa.snap.core.dataio.geocoding.InverseCoding;
 import org.esa.snap.core.dataio.geocoding.forward.PixelForward;
 import org.esa.snap.core.dataio.geocoding.inverse.PixelQuadTreeInverse;
-import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.FlagCoding;
+import org.esa.snap.core.datamodel.GeoCoding;
+import org.esa.snap.core.datamodel.IndexCoding;
+import org.esa.snap.core.datamodel.Mask;
+import org.esa.snap.core.datamodel.MetadataAttribute;
+import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.datamodel.ProductData;
+import org.esa.snap.core.dataop.barithm.GeoCodingLazyProxy;
 import org.esa.snap.core.image.ImageManager;
 import org.esa.snap.core.util.ProductUtils;
-import org.esa.snap.runtime.Config;
 import org.esa.snap.dataio.netcdf.cache.NetcdfCacheDataProvider;
 import org.esa.snap.dataio.netcdf.util.ArrayConverter;
 import org.esa.snap.dataio.netcdf.util.NetcdfFileOpener;
+import org.esa.snap.runtime.Config;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
-import java.awt.*;
-import java.io.File;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
-import java.util.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
@@ -121,7 +141,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final Product product = new Product(header.getProductName(), dddbProductType, width, height, this);
 
         product.setPreferredTileSize(createPreferredTileSize(dddbProductType, width, height));
-        product.setFileLocation(inputPath.toFile());
+        product.setFileLocation(inputPath);
         product.setAutoGrouping(productDescriptor.getBandGroupingPattern());
         setProductTimes(product, header);
 
@@ -441,8 +461,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             }
 
             try {
-                final File file = virtualDir.getFile(resolvedName);
-                if (file != null && file.exists()) {
+                final Path file = virtualDir.getFile(resolvedName);
+                if (file != null && Files.exists(file)) {
                     final NetcdfFile ncFile = openFlexNetcdfFile(file, resolvedName);
                     ncFilesMap.put(ncKey, ncFile);
                 } else {
@@ -467,8 +487,8 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         for (final String fileName : files) {
             if (fileName.toLowerCase().endsWith(".nc")) {
                 try {
-                    final File file = virtualDir.getFile(fileName);
-                    if (file != null && file.exists()) {
+                    final Path file = virtualDir.getFile(fileName);
+                    if (file != null && Files.exists(file)) {
                         ncFilesMap.put(fileName.toLowerCase(), openFlexNetcdfFile(file, fileName));
                     }
                 } catch (IOException e) {
@@ -478,7 +498,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         }
     }
 
-    private NetcdfFile openFlexNetcdfFile(File file, String resolvedName) throws IOException {
+    private NetcdfFile openFlexNetcdfFile(Path file, String resolvedName) throws IOException {
         if (shouldUseNativeNetcdfOpen()) {
             try {
                 final NetcdfFile netcdfFile = openNativeNetcdfFile(file);
@@ -495,11 +515,11 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         return nativeNetcdfEnabled && (FlexSpectralHelper.isL1cProduct(dddbProductType) || FlexSpectralHelper.isL2Product(dddbProductType));
     }
 
-    NetcdfFile openNativeNetcdfFile(File file) throws IOException {
+    NetcdfFile openNativeNetcdfFile(Path file) throws IOException {
         return NetcdfFileOpener.openNativeNc4(file);
     }
 
-    NetcdfFile openDefaultNetcdfFile(File file) throws IOException {
+    NetcdfFile openDefaultNetcdfFile(Path file) throws IOException {
         return NetcdfFileOpener.open(file);
     }
 

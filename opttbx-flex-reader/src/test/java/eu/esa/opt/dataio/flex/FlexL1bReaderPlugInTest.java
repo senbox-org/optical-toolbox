@@ -1,23 +1,24 @@
 package eu.esa.opt.dataio.flex;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.dataio.DecodeQualification;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Locale;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 
 public class FlexL1bReaderPlugInTest {
 
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    public Path tempFolder = IOHelper.createATempDir();
 
     private final FlexL1bReaderPlugIn plugIn = new FlexL1bReaderPlugIn();
 
@@ -27,19 +28,19 @@ public class FlexL1bReaderPlugInTest {
     @Test
     @STTM("SNAP-4126")
     public void testValidInputsReturnIntended() throws Exception {
-        final File dir = createProductDir(VALID);
+        final Path dir = createProductDir(VALID);
 
         assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(dir));
-        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(dir.toPath()));
-        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(dir.getPath()));
-        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(new File(dir, VALID + ".xml")));
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(dir));
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(dir));
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(dir.resolve(VALID + ".xml")));
     }
 
     @Test
     @STTM("SNAP-4126")
     public void testInvalidInputsReturnUnable() throws Exception {
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(null));
-        assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(new Object()));
+        assertThrows(IllegalArgumentException.class, () -> plugIn.getDecodeQualification(new Object()));
 
         assertUnableForDirectory("FLX_L1C_FLXSYN_20230712T075954_20230712T080232_20260310T131535_0158_100_064_0021_01");
         assertUnableForDirectory("FLX_L2_FLXSYN_20230712T075954_20230712T080232_20260310T131535_31SDD_100_064_01");
@@ -50,14 +51,15 @@ public class FlexL1bReaderPlugInTest {
     @Test
     @STTM("SNAP-4126")
     public void testDirectoryWithoutXmlReturnsUnable() throws Exception {
-        final File dir = tempFolder.newFolder(VALID);
+        final Path dir = tempFolder.resolve(VALID);
+        IOHelper.createDirectory(dir);
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(dir));
     }
 
     @Test
     @STTM("SNAP-4126")
     public void testNcAndOtherFilesReturnUnable() throws Exception {
-        final File dir = createProductDir(VALID);
+        final Path dir = createProductDir(VALID);
 
         assertUnableForFile(dir, VALID + ".nc");
         assertUnableForFile(dir, "OTHER_FILE.NC");
@@ -67,12 +69,14 @@ public class FlexL1bReaderPlugInTest {
     @Test
     @STTM("SNAP-4126")
     public void testXmlWithoutParentOrInvalidParentReturnsUnable() throws Exception {
-        final File xmlInRoot = tempFolder.newFile(VALID + ".xml");
-        assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(xmlInRoot.toPath().getFileName()));
+        final Path xmlInRoot = tempFolder.resolve(VALID + ".xml");
+        IOHelper.createFile(xmlInRoot);
+        assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(xmlInRoot.getFileName()));
 
-        final File invalidDir = tempFolder.newFolder("INVALID_PRODUCT");
-        final File xml = new File(invalidDir, VALID + ".xml");
-        assertTrue(xml.createNewFile());
+        final Path invalidDir = tempFolder.resolve("INVALID_PRODUCT");
+        IOHelper.createDirectory(invalidDir);
+        final Path xml = invalidDir.resolve(VALID + ".xml");
+        assertTrue(IOHelper.createFile(xml));
 
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(xml));
     }
@@ -83,27 +87,31 @@ public class FlexL1bReaderPlugInTest {
         assertArrayEquals(new String[]{"FLEX_L1B"}, plugIn.getFormatNames());
         assertArrayEquals(new String[]{".xml"}, plugIn.getDefaultFileExtensions());
         assertEquals("FLEX L1B Products (FLORIS TOA radiance)", plugIn.getDescription(Locale.ENGLISH));
-        assertArrayEquals(new Class[]{String.class, File.class, Path.class}, plugIn.getInputTypes());
+        assertArrayEquals(new Class[]{String.class, Path.class, Path.class}, plugIn.getInputTypes());
         assertNotNull(plugIn.getProductFileFilter());
         assertNotNull(plugIn.createReaderInstance());
     }
 
 
-    private File createProductDir(String name) throws Exception {
-        final File dir = tempFolder.newFolder(name);
-        assertTrue(new File(dir, name + ".xml").createNewFile());
+    private Path createProductDir(String name) throws Exception {
+        final Path dir = tempFolder.resolve(name);
+        IOHelper.createDirectory(dir);
+        final Path xml = dir.resolve(name + ".xml");
+        assertTrue(IOHelper.createFile(xml));
         return dir;
     }
 
     private void assertUnableForDirectory(String name) throws Exception {
-        final File dir = tempFolder.newFolder(name);
-        assertTrue(new File(dir, name + ".xml").createNewFile());
+        final Path dir = tempFolder.resolve(name);
+        IOHelper.createDirectory(dir);
+        final Path xml = dir.resolve(name + ".xml");
+        assertTrue(IOHelper.createFile(xml));
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(dir));
     }
 
-    private void assertUnableForFile(File dir, String name) throws Exception {
-        final File file = new File(dir, name);
-        assertTrue(file.createNewFile());
+    private void assertUnableForFile(Path dir, String name) throws Exception {
+        final Path file = dir.resolve(name);
+        assertTrue(IOHelper.createFile(file));
         assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(file));
     }
 }

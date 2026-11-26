@@ -24,10 +24,10 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -953,9 +953,9 @@ public class FlexProductReaderTest {
     }
 
     private NetcdfFile invokeOpenFlexNetcdfFile(FlexProductReader reader) throws Exception {
-        final Method method = FlexProductReader.class.getDeclaredMethod("openFlexNetcdfFile", File.class, String.class);
+        final Method method = FlexProductReader.class.getDeclaredMethod("openFlexNetcdfFile", Path.class, String.class);
         method.setAccessible(true);
-        return (NetcdfFile) method.invoke(reader, new File("dummy.nc"), "dummy.nc");
+        return (NetcdfFile) method.invoke(reader, Path.of("dummy.nc"), "dummy.nc");
     }
 
     private double[] invokeReadGeoData(FlexProductReader reader, String bandName, int width, int height,
@@ -1060,7 +1060,7 @@ public class FlexProductReaderTest {
         }
 
         @Override
-        NetcdfFile openNativeNetcdfFile(File file) throws IOException {
+        NetcdfFile openNativeNetcdfFile(Path file) throws IOException {
             nativeOpenCalls++;
             if (nativeOpenException != null) {
                 throw nativeOpenException;
@@ -1069,7 +1069,7 @@ public class FlexProductReaderTest {
         }
 
         @Override
-        NetcdfFile openDefaultNetcdfFile(File file) {
+        NetcdfFile openDefaultNetcdfFile(Path file) {
             defaultOpenCalls++;
             return defaultFile;
         }

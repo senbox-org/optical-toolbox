@@ -1,6 +1,7 @@
 package eu.esa.opt.dataio.flex;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.datamodel.ProductData;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -12,8 +13,8 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFileWriter;
 import ucar.nc2.Variable;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -24,14 +25,14 @@ public class FlexDirectNetcdfBandReaderTest {
     private static final int HEIGHT = 3;
     private static final int CHANNELS = 4;
 
-    private static File tempFile;
+    private static Path tempFile;
     private static NetcdfFile netcdfFile;
 
     @BeforeClass
     public static void createTestFile() throws IOException {
-        tempFile = File.createTempFile("FlexDirectNetcdfBandReaderTest", ".nc");
+        tempFile = IOHelper.createTempFile("FlexDirectNetcdfBandReaderTest", ".nc");
         final NetcdfFileWriter writer = NetcdfFileWriter.createNew(
-                NetcdfFileWriter.Version.netcdf3, tempFile.getAbsolutePath());
+                NetcdfFileWriter.Version.netcdf3, tempFile.toAbsolutePath().toString());
 
         writer.addDimension("number_of_along_track_samples", HEIGHT);
         writer.addDimension("number_of_across_track_samples", WIDTH);
@@ -64,7 +65,7 @@ public class FlexDirectNetcdfBandReaderTest {
             writer.close();
         }
 
-        netcdfFile = NetcdfFile.open(tempFile.getAbsolutePath());
+        netcdfFile = NetcdfFile.open(tempFile.toAbsolutePath().toString());
     }
 
     @AfterClass
@@ -73,7 +74,7 @@ public class FlexDirectNetcdfBandReaderTest {
             netcdfFile.close();
         }
         if (tempFile != null) {
-            tempFile.delete();
+            IOHelper.delete(tempFile);
         }
     }
 

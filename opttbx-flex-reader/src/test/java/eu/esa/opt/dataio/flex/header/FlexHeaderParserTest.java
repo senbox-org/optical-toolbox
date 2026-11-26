@@ -1,16 +1,15 @@
 package eu.esa.opt.dataio.flex.header;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +20,7 @@ import static org.junit.Assert.*;
 public class FlexHeaderParserTest {
 
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    public Path tempFolder = IOHelper.createATempDir();
 
     private FlexHeaderParser parser;
 
@@ -181,10 +179,10 @@ public class FlexHeaderParserTest {
     @Test
     @STTM("SNAP-4126")
     public void testParseFromPath() throws IOException {
-        final File file = tempFolder.newFile("header.xml");
-        java.nio.file.Files.write(file.toPath(), completeXml().getBytes(StandardCharsets.UTF_8));
+        final Path file = tempFolder.resolve("header.xml");
+        java.nio.file.Files.writeString(file, completeXml());
 
-        final FlexProductHeader header = parser.parse(file.toPath());
+        final FlexProductHeader header = parser.parse(file);
 
         assertEquals("PRODUCT_NAME", header.getProductName());
         assertEquals("L1B_OBS___", header.getProductType());

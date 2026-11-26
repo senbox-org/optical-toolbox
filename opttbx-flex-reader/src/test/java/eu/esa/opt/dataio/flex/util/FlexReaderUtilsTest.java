@@ -1,34 +1,43 @@
 package eu.esa.opt.dataio.flex.util;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.dataio.flex.FlexProductReader;
 import eu.esa.opt.dataio.flex.compatibility.EarlyProcessorCompatibility;
 import eu.esa.opt.dataio.flex.compatibility.StandardFlexCompatibility;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import eu.esa.opt.dataio.flex.header.FlexProductHeader;
-import org.esa.snap.core.datamodel.*;
-import org.junit.Rule;
+import org.esa.snap.core.datamodel.Band;
+import org.esa.snap.core.datamodel.MetadataAttribute;
+import org.esa.snap.core.datamodel.MetadataElement;
+import org.esa.snap.core.datamodel.Product;
+import org.esa.snap.core.datamodel.ProductData;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class FlexReaderUtilsTest {
 
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    public Path tempFolder = IOHelper.createATempDir();
 
 
     @Test
@@ -48,48 +57,54 @@ public class FlexReaderUtilsTest {
     @Test
     @STTM("SNAP-4126")
     public void testFindHeaderFile_inputIsXmlFile() throws Exception {
-        final File xml = tempFolder.newFile("header.xml");
+        final Path xml = tempFolder.resolve("header.xml");
+        IOHelper.createFile(xml);
 
-        assertEquals(xml.toPath(), FlexReaderUtils.findHeaderFile(xml.toPath()));
+        assertEquals(xml, FlexReaderUtils.findHeaderFile(xml));
     }
 
     @Test
     @STTM("SNAP-4126")
     public void testFindHeaderFile_inputIsUppercaseXmlFile() throws Exception {
-        final File xml = tempFolder.newFile("HEADER.XML");
+        final Path xml = tempFolder.resolve("HEADER.XML");
+        IOHelper.createFile(xml);
 
-        assertEquals(xml.toPath(), FlexReaderUtils.findHeaderFile(xml.toPath()));
+        assertEquals(xml, FlexReaderUtils.findHeaderFile(xml));
     }
 
     @Test
     @STTM("SNAP-4126")
     public void testFindHeaderFile_inputIsNonXmlFileUsesParent() throws Exception {
-        final File dir = tempFolder.newFolder("product");
-        final File nc = new File(dir, "data.nc");
-        final File xml = new File(dir, "header.xml");
-        assertTrue(nc.createNewFile());
-        assertTrue(xml.createNewFile());
+        final Path dir = tempFolder.resolve("product");
+        IOHelper.createDirectory(dir);
+        final Path nc = dir.resolve("data.nc");
+        final Path xml = dir.resolve("header.xml");
+        assertTrue(IOHelper.createFile(nc));
+        assertTrue(IOHelper.createFile(xml));
 
-        assertEquals(xml.toPath(), FlexReaderUtils.findHeaderFile(nc.toPath()));
+        assertEquals(xml, FlexReaderUtils.findHeaderFile(nc));
     }
 
     @Test
     @STTM("SNAP-4126")
     public void testFindHeaderFile_inputIsDirectory() throws Exception {
-        final File dir = tempFolder.newFolder("product");
-        final File xml = new File(dir, "header.xml");
-        assertTrue(xml.createNewFile());
+        final Path dir = tempFolder.resolve("product");
+        IOHelper.createDirectory(dir);
+        final Path xml = dir.resolve("header.xml");
+        assertTrue(IOHelper.createFile(xml));
 
-        assertEquals(xml.toPath(), FlexReaderUtils.findHeaderFile(dir.toPath()));
+        assertEquals(xml, FlexReaderUtils.findHeaderFile(dir));
     }
 
     @Test(expected = IOException.class)
     @STTM("SNAP-4126")
     public void testFindHeaderFile_noXmlThrows() throws Exception {
-        final File dir = tempFolder.newFolder("product");
-        assertTrue(new File(dir, "data.nc").createNewFile());
+        final Path dir = tempFolder.resolve("product");
+        IOHelper.createDirectory(dir);
+        final Path nc = dir.resolve("data.nc");
+        assertTrue(IOHelper.createFile(nc));
 
-        FlexReaderUtils.findHeaderFile(dir.toPath());
+        FlexReaderUtils.findHeaderFile(dir);
     }
 
     @Test

@@ -13,7 +13,6 @@ import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,16 +33,15 @@ public class FlexReaderUtils {
     }
 
 
-    public static Path findHeaderFile(Path inputPath) throws IOException {
-        final File inputFile = inputPath.toFile();
+    public static Path findHeaderFile(Path inputFile) throws IOException {
         final Path productDir;
-        if (inputFile.isFile()) {
-            if (inputFile.getName().toLowerCase().endsWith(".xml")) {
-                return inputPath;
+        if (Files.isRegularFile(inputFile)) {
+            if (inputFile.getFileName().toString().toLowerCase().endsWith(".xml")) {
+                return inputFile;
             }
-            productDir = inputPath.getParent();
+            productDir = inputFile.getParent();
         } else {
-            productDir = inputPath;
+            productDir = inputFile;
         }
 
         try (Stream<Path> files = Files.list(productDir)) {
