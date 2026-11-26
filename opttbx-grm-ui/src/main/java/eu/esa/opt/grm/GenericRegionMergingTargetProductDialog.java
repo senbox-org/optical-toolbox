@@ -21,10 +21,11 @@ import org.esa.snap.rcp.SnapApp;
 import org.esa.snap.rcp.actions.file.SaveProductAsAction;
 import org.esa.snap.ui.AppContext;
 
-import java.awt.*;
+import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -87,7 +88,7 @@ public class GenericRegionMergingTargetProductDialog extends DefaultSingleTarget
         }
 
         TargetProductSelectorModel model = targetProductSelector.getModel();
-        String productDirPath = model.getProductDir().getAbsolutePath();
+        String productDirPath = model.getProductDir().toAbsolutePath().toString();
         appContext.getPreferences().setPropertyString(SaveProductAsAction.PREFERENCES_KEY_LAST_PRODUCT_DIR, productDirPath);
 
         Product targetProduct = null;
@@ -153,7 +154,7 @@ public class GenericRegionMergingTargetProductDialog extends DefaultSingleTarget
     }
 
     private void showSaveInfo(long saveTime) {
-        File productFile = getTargetProductSelector().getModel().getProductFile();
+        final Path productFile = getTargetProductSelector().getModel().getProductFile();
         final String message = MessageFormat.format(
                 "<html>The target product has been successfully written to<br>{0}<br>" +
                         "Total time spend for processing: {1}",
@@ -163,7 +164,7 @@ public class GenericRegionMergingTargetProductDialog extends DefaultSingleTarget
         showSuppressibleInformationDialog(message, "saveInfo");
     }
 
-    private String formatFile(File file) {
+    private String formatFile(Path file) {
         return FileUtils.getDisplayText(file, 54);
     }
 
@@ -178,7 +179,7 @@ public class GenericRegionMergingTargetProductDialog extends DefaultSingleTarget
     }
 
     private void showSaveAndOpenInAppInfo(long saveTime) {
-        File productFile = getTargetProductSelector().getModel().getProductFile();
+        final Path productFile = getTargetProductSelector().getModel().getProductFile();
         final String message = MessageFormat.format(
                 "<html>The target product has been successfully written to<br>" +
                         "<p>{0}</p><br>" +
@@ -216,7 +217,7 @@ public class GenericRegionMergingTargetProductDialog extends DefaultSingleTarget
                 executor.execute(SubProgressMonitor.create(pm, 95));
 
                 if (model.isSaveToFileSelected()) {
-                    File file = model.getProductFile();
+                    final Path file = model.getProductFile();
                     String formatName = model.getFormatName();
                     boolean clearCacheAfterRowWrite = false;
                     boolean incremental = false;
@@ -227,11 +228,11 @@ public class GenericRegionMergingTargetProductDialog extends DefaultSingleTarget
 
                 saveTime = System.currentTimeMillis() - t0;
                 if (model.isOpenInAppSelected()) {
-                    File targetFile = model.getProductFile();
-                    if (!targetFile.exists()) {
+                    Path targetFile = model.getProductFile();
+                    if (!Files.exists(targetFile)) {
                         targetFile = this.targetProduct.getFileLocation();
                     }
-                    if (targetFile.exists()) {
+                    if (Files.exists(targetFile)) {
                         product = ProductIO.readProduct(targetFile);
                         if (product == null) {
                             product = this.targetProduct; // todo - check - this cannot be ok!!! (nf)
