@@ -1,24 +1,24 @@
 package eu.esa.opt.dos;
 
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.gpf.GPF;
 import org.esa.snap.core.util.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.Assert.fail;
 
 public class DarkObjectSubtractionIntegrationTest {
 
-    private File targetDirectory;
+    private Path targetDirectory;
 
     @Before
-    public void setUp() throws IOException {
-        targetDirectory = Files.createTempDirectory("dos_test_out_").toFile();
-        if (!targetDirectory.mkdirs()) {
+    public void setUp() {
+        targetDirectory = IOHelper.createATempDir("dos_test_out_");
+        if (!IOHelper.createDirectories(targetDirectory)) {
             fail("Unable to create test target directory");
         }
         GPF.getDefaultInstance().getOperatorSpiRegistry().addOperatorSpi(new DarkObjectSubtractionOp.Spi());
@@ -27,7 +27,7 @@ public class DarkObjectSubtractionIntegrationTest {
     @After
     public void tearDown() {
         GPF.getDefaultInstance().getOperatorSpiRegistry().removeOperatorSpi(new DarkObjectSubtractionOp.Spi());
-        if (targetDirectory.isDirectory()) {
+        if (Files.isDirectory(targetDirectory)) {
             if (!FileUtils.deleteTree(targetDirectory)) {
                 fail("Unable to delete test directory");
             }
