@@ -29,10 +29,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeodeticCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComboBox;
+import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +114,7 @@ public class EcostressSwath2GridOpDialog extends DefaultSingleTargetProductDialo
             return;
         }
 
-        final String productDir = targetProductSelector.getModel().getProductDir().getAbsolutePath();
+        final String productDir = targetProductSelector.getModel().getProductDir().toAbsolutePath().toString();
         appContext.getPreferences().setPropertyString(SaveProductAsAction.PREFERENCES_KEY_LAST_PRODUCT_DIR, productDir);
 
         Product targetProduct = null;
@@ -171,10 +172,10 @@ public class EcostressSwath2GridOpDialog extends DefaultSingleTargetProductDialo
 
                 saveTime = System.currentTimeMillis() - t0;
                 if (model.isOpenInAppSelected()) {
-                    File targetFile = model.getProductFile();
-                    if (!targetFile.exists())
+                    Path targetFile = model.getProductFile();
+                    if (!Files.exists(targetFile))
                         targetFile = targetProduct.getFileLocation();
-                    if (targetFile.exists()) {
+                    if (Files.exists(targetFile)) {
                         targetProduct.dispose();
                         targetProduct = null;
                         product = ProductIO.readProduct(targetFile);
@@ -237,7 +238,7 @@ public class EcostressSwath2GridOpDialog extends DefaultSingleTargetProductDialo
 
 
         private void showSaveInfo(long saveTime) {
-            File productFile = getTargetProductSelector().getModel().getProductFile();
+            final Path productFile = getTargetProductSelector().getModel().getProductFile();
             final String message = MessageFormat.format(
                     "<html>The target product has been successfully written to<br>{0}<br>" +
                             "Total time spend for processing: {1}",
@@ -248,7 +249,7 @@ public class EcostressSwath2GridOpDialog extends DefaultSingleTargetProductDialo
         }
 
         private void showSaveAndOpenInAppInfo(long saveTime) {
-            File productFile = getTargetProductSelector().getModel().getProductFile();
+            final Path productFile = getTargetProductSelector().getModel().getProductFile();
             final String message = MessageFormat.format(
                     "<html>The target product has been successfully written to<br>" +
                             "<p>{0}</p><br>" +
@@ -261,7 +262,7 @@ public class EcostressSwath2GridOpDialog extends DefaultSingleTargetProductDialo
             showSuppressibleInformationDialog(message, "saveAndOpenInAppInfo");
         }
 
-        private String formatFile(File file) {
+        private String formatFile(Path file) {
             return FileUtils.getDisplayText(file, 54);
         }
 
