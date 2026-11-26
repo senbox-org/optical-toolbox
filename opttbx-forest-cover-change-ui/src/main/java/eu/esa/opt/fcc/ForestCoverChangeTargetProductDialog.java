@@ -58,7 +58,7 @@ import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
+import java.nio.file.Path;
 import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -156,7 +156,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
         }
 
         TargetProductSelectorModel model = targetProductSelector.getModel();
-        String productDirPath = model.getProductDir().getAbsolutePath();
+        String productDirPath = model.getProductDir().toAbsolutePath().toString();
         appContext.getPreferences().setPropertyString(SaveProductAsAction.PREFERENCES_KEY_LAST_PRODUCT_DIR, productDirPath);
         try {
             HashMap<String, Product> sourceProducts = ioParametersPanel.createSourceProductsMap();
@@ -361,7 +361,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
     }
 
     private void showSaveInfo(long saveTime) {
-        File productFile = getTargetProductSelector().getModel().getProductFile();
+        final Path productFile = getTargetProductSelector().getModel().getProductFile();
         String message = MessageFormat.format(
                 "<html>The target product has been successfully written to<br>{0}<br>" +
                         "Total time spend for processing: {1}",
@@ -371,7 +371,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
         showSuppressibleInformationDialog(message, "saveInfo");
     }
 
-    private String formatFile(File file) {
+    private String formatFile(Path file) {
         return FileUtils.getDisplayText(file, 54);
     }
 
@@ -386,7 +386,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
     }
 
     private void showSaveAndOpenInAppInfo(long saveTime) {
-        File productFile = getTargetProductSelector().getModel().getProductFile();
+        final Path productFile = getTargetProductSelector().getModel().getProductFile();
         String message = MessageFormat.format(
                 "<html>The target product has been successfully written to<br>" +
                         "<p>{0}</p><br>" +
@@ -528,7 +528,7 @@ public class ForestCoverChangeTargetProductDialog extends SingleTargetProductDia
                 productToReturn = operatorTargetProduct;
 
                 if (this.model.isSaveToFileSelected()) {
-                    File targetFile = this.model.getProductFile();
+                    final Path targetFile = this.model.getProductFile();
                     String formatName = this.model.getFormatName();
                     GPF.writeProduct(operatorTargetProduct, targetFile, formatName, false, false, ProgressMonitor.NULL);
 
