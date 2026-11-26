@@ -1,16 +1,16 @@
 package eu.esa.opt.dataio.ikonos.metadata;
 
-import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import eu.esa.opt.dataio.ikonos.internal.IkonosConstants;
-import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.core.metadata.GenericXmlMetadata;
 import org.esa.snap.core.metadata.XmlMetadataParser;
 import org.esa.snap.core.metadata.XmlMetadataParserFactory;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,14 +30,14 @@ import static org.junit.Assume.assumeTrue;
 public class IkonosMetadataTest {
 
     private IkonosMetadata metadata;
-    private String productsFolder = "_ikonos" + File.separator;
+    private String productsFolder = "_ikonos" + IOHelper.SEPARATOR;
 
     @Before
     public void setup() {
         assumeTrue(TestUtil.testdataAvailable());
 
         XmlMetadataParserFactory.registerParser(IkonosMetadata.class, new XmlMetadataParser<>(IkonosMetadata.class));
-        metadata = GenericXmlMetadata.create(IkonosMetadata.class, TestUtil.getTestFile(productsFolder + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP"+ File.separator+ "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML"));
+        metadata = GenericXmlMetadata.create(IkonosMetadata.class, TestUtil.getTestFile(productsFolder + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP"+ IOHelper.SEPARATOR+ "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML"));
     }
 
     @After
@@ -104,7 +104,7 @@ public class IkonosMetadataTest {
 
     @Test
     public void testIkonosMetadataComponent() throws Exception {
-        Path path = TestUtil.getTestFile(productsFolder + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP\\IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML").toPath();
+        Path path = TestUtil.getTestFile(productsFolder + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP\\IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML");
         try (InputStream inputStream = Files.newInputStream(path)) {
             FilePathInputStream filePathInputStream = new FilePathInputStream(path, inputStream, null);
             metadata = IkonosMetadata.create(filePathInputStream);

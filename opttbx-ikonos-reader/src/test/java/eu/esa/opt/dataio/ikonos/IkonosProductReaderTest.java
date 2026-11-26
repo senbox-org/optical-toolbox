@@ -1,7 +1,7 @@
 package eu.esa.opt.dataio.ikonos;
 
 import com.bc.ceres.binding.ConversionException;
-import org.esa.snap.engine_utilities.utils.TestUtil;
+import com.bc.ceres.core.runtime.internal.IOHelper;
 import org.esa.snap.core.dataio.ProductSubsetDef;
 import org.esa.snap.core.datamodel.Band;
 import org.esa.snap.core.datamodel.GeoCoding;
@@ -9,6 +9,7 @@ import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.subset.GeometrySubsetRegion;
 import org.esa.snap.core.subset.PixelSubsetRegion;
 import org.esa.snap.core.util.converters.JtsGeometryConverter;
+import org.esa.snap.engine_utilities.utils.TestUtil;
 import org.esa.snap.runtime.LogUtils4Tests;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,8 +17,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.awt.Rectangle;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -25,7 +26,7 @@ import static org.junit.Assume.assumeTrue;
 
 public class IkonosProductReaderTest {
 
-    private static final String PRODUCTS_FOLDER = "_ikonos" + File.separator;
+    private static final String PRODUCTS_FOLDER = "_ikonos" + IOHelper.SEPARATOR;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -36,7 +37,7 @@ public class IkonosProductReaderTest {
     public void testReadProduct() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP" + File.separator + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML");
+        final Path productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP" + IOHelper.SEPARATOR + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML");
 
         IkonosProductReader reader = buildProductReader();
         Product product = reader.readProductNodes(productFile, null);
@@ -94,7 +95,7 @@ public class IkonosProductReaderTest {
     public void testReadProductPixelSubset() throws IOException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP" + File.separator + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML");
+        final Path productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP" + IOHelper.SEPARATOR + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML");
 
         IkonosProductReader reader = buildProductReader();
 
@@ -169,7 +170,7 @@ public class IkonosProductReaderTest {
     public void testReadProductGeometrySubset() throws IOException, ConversionException {
         assumeTrue(TestUtil.testdataAvailable());
 
-        File productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP" + File.separator + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML");
+        final Path productFile = TestUtil.getTestFile(PRODUCTS_FOLDER + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.SIP" + IOHelper.SEPARATOR + "IK2_OPER_OSA_GEO_1P_20080820T092600_N38-054_E023-986_0001.MD.XML");
 
         JtsGeometryConverter converter = new JtsGeometryConverter();
         Geometry geometry = converter.parse("POLYGON ((23.91600227355957 38.10725402832031, 23.91603660583496 38.10725021362305," +

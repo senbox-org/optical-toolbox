@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.ikonos.internal;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Holder class for constants.
@@ -11,7 +11,7 @@ import java.io.File;
 
 
 public class IkonosConstants {
-    public static final Class[] READER_INPUT_TYPES = new Class[]{String.class, File.class};
+    public static final Class[] READER_INPUT_TYPES = new Class[]{String.class, Path.class};
     public static final String[] FORMAT_NAMES = new String[]{"IkonosGeoTIFF"};
     public static final String[] DEFAULT_EXTENSIONS = new String[]{".xml", ".zip"};
     public static final String DESCRIPTION = "Ikonos Data Products";

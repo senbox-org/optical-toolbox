@@ -1,13 +1,10 @@
 package eu.esa.opt.dataio.ikonos;
 
 import com.bc.ceres.core.ProgressMonitor;
-import org.esa.snap.engine_utilities.commons.FilePathInputStream;
-import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
 import eu.esa.opt.dataio.ikonos.internal.IkonosConstants;
 import eu.esa.opt.dataio.ikonos.metadata.BandMetadata;
 import eu.esa.opt.dataio.ikonos.metadata.BandMetadataUtil;
 import eu.esa.opt.dataio.ikonos.metadata.IkonosMetadata;
-import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 import org.esa.snap.core.dataio.AbstractProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.dataio.ProductSubsetDef;
@@ -18,13 +15,15 @@ import org.esa.snap.core.datamodel.ProductData;
 import org.esa.snap.core.datamodel.TiePointGeoCoding;
 import org.esa.snap.core.datamodel.TiePointGrid;
 import org.esa.snap.core.metadata.XmlMetadata;
-import org.esa.snap.dataio.ImageRegistryUtils;
 import org.esa.snap.dataio.geotiff.GeoTiffImageReader;
 import org.esa.snap.dataio.geotiff.GeoTiffProductReader;
+import org.esa.snap.engine_utilities.commons.FilePathInputStream;
+import org.esa.snap.engine_utilities.dataio.VirtualDirEx;
+import org.esa.snap.engine_utilities.dataio.readers.BaseProductReaderPlugIn;
 
-import javax.imageio.spi.ImageInputStreamSpi;
 import javax.media.jai.JAI;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -41,13 +40,10 @@ import java.util.Map;
 public class IkonosProductReader extends AbstractProductReader {
 
     private VirtualDirEx productDirectory;
-    private ImageInputStreamSpi imageInputStreamSpi;
     private List<GeoTiffImageReader> bandImageReaders;
 
     protected IkonosProductReader(final ProductReaderPlugIn readerPlugIn) {
         super(readerPlugIn);
-
-        this.imageInputStreamSpi = ImageRegistryUtils.registerImageInputStreamSpi();
     }
 
     @Override
@@ -67,7 +63,7 @@ public class IkonosProductReader extends AbstractProductReader {
             Path imagesMetadataParentPath = buildImagesMetadataParentPath(this.productDirectory, metadataFileName);
 
             Product product = readProduct(metadata, imagesMetadataParentPath);
-            product.setFileLocation(productPath.toFile());
+            product.setFileLocation(productPath);
 
             success = true;
 
@@ -239,16 +235,9 @@ public class IkonosProductReader extends AbstractProductReader {
                 this.bandImageReaders = null;
             }
         } finally {
-            try {
-                if (this.imageInputStreamSpi != null) {
-                    ImageRegistryUtils.deregisterImageInputStreamSpi(this.imageInputStreamSpi);
-                    this.imageInputStreamSpi = null;
-                }
-            } finally {
-                if (this.productDirectory != null) {
-                    this.productDirectory.close();
-                    this.productDirectory = null;
-                }
+            if (this.productDirectory != null) {
+                this.productDirectory.close();
+                this.productDirectory = null;
             }
         }
         System.gc();
@@ -301,11 +290,11 @@ public class IkonosProductReader extends AbstractProductReader {
         } else {
             zipArchiveFileName = fileNameWithoutExtension + IkonosConstants.ARCHIVE_FILE_EXTENSION;
         }
-        return productDirectory.getFile(zipArchiveFileName).toPath();
+        return productDirectory.getFile(zipArchiveFileName);
     }
 
     public static String buildMetadataFileName(VirtualDirEx productDirectory) {
-        String baseItemName = productDirectory.getBaseFile().getName();
+        String baseItemName = productDirectory.getBaseFile().getFileName().toString();
         // product file name differs from archive file name
         int index;
         if (productDirectory.isArchive()) {

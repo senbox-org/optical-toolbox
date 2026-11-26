@@ -14,7 +14,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
@@ -214,7 +213,7 @@ public class IkonosMetadata extends XmlMetadata {
         Path directoryFilePath = Paths.get(imageDirectoryPath);
         try (GZIPInputStream in = new GZIPInputStream(new BufferedInputStream(Files.newInputStream(path)))) {
             Path filePath = directoryFilePath.resolve(path.toString().substring(0, path.toString().lastIndexOf(".")));
-            try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filePath.toFile()))) {
+            try (BufferedOutputStream outputStream = new BufferedOutputStream(Files.newOutputStream(filePath))) {
                 byte[] buffer = new byte[BUFFER_SIZE];
                 int len;
                 while ((len = in.read(buffer)) != -1) {

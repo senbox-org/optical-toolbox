@@ -19,7 +19,7 @@ class IkonosGeoTiffProductReader extends GeoTiffProductReader {
     private final ProductSubsetDef subsetDef;
 
     IkonosGeoTiffProductReader(ProductReaderPlugIn readerPlugIn, IkonosMetadata metadata, Dimension productSize, Dimension defaultBandSize, ProductSubsetDef subsetDef) {
-        super(readerPlugIn, null);
+        super(readerPlugIn);
 
         this.metadata = metadata;
         this.productSize = productSize;
