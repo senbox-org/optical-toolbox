@@ -23,7 +23,7 @@ package eu.esa.opt.dataio.s2;
 public enum S2BandConstants {
 
 	// Updated min and max values in accordance with the table from
-	// https://sentinels.copernicus.eu/web/sentinel/technical-guides/sentinel-2-msi/mission-performance
+	// https://sentinel.esa.int/en/web/sentinel/technical-guides/sentinel-2-msi/mission-performance
     B1("B1", "B01", 0, 433, 453, 443),
     B2("B2", "B02", 1, 457.5, 522.5, 490),
     B3("B3", "B03", 2, 542.5, 577.5, 560),
