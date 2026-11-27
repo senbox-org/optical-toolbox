@@ -1,11 +1,16 @@
 package eu.esa.opt.dataio.flex;
 
+import com.bc.ceres.core.VirtualDir;
+import eu.esa.opt.dataio.flex.util.FlexReaderUtils;
 import org.esa.snap.core.dataio.DecodeQualification;
 import org.esa.snap.core.dataio.ProductReader;
 import org.esa.snap.core.dataio.ProductReaderPlugIn;
 import org.esa.snap.core.util.io.SnapFileFilter;
+import org.esa.snap.core.util.ProductUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
@@ -13,7 +18,7 @@ import java.util.regex.Pattern;
 
 abstract class FlexReaderPlugIn implements ProductReaderPlugIn {
 
-    private static final String[] FILE_EXTENSIONS = {".xml"};
+    private static final String[] FILE_EXTENSIONS = {".xml", ".zip"};
 
     private final Pattern sourceNamePattern;
     private final String formatName;
@@ -41,7 +46,16 @@ abstract class FlexReaderPlugIn implements ProductReaderPlugIn {
                     : DecodeQualification.UNABLE;
         }
 
+        if (!Files.isRegularFile(path)) {
+            return DecodeQualification.UNABLE;
+        }
+
         final String fileName = path.getFileName().toString().toLowerCase(Locale.ROOT);
+        if (fileName.endsWith(".zip")) {
+            return containsProductHeaderInArchive(path)
+                    ? DecodeQualification.INTENDED
+                    : DecodeQualification.UNABLE;
+        }
         if (!fileName.endsWith(".xml")) {
             return DecodeQualification.UNABLE;
         }
@@ -55,6 +69,38 @@ abstract class FlexReaderPlugIn implements ProductReaderPlugIn {
     private boolean containsHeaderXml(Path dir) {
         final File[] files = dir.toFile().listFiles((d, name) -> name.toLowerCase(Locale.ROOT).endsWith(".xml"));
         return files != null && files.length > 0;
+    }
+
+    private boolean containsProductHeaderInArchive(Path archivePath) {
+        VirtualDir virtualDir = null;
+        try {
+            virtualDir = ProductUtils.getProductVirtualDir(archivePath);
+            if (virtualDir == null) {
+                return false;
+            }
+
+            final String headerPath = FlexReaderUtils.findHeaderFile(virtualDir);
+            final String productName = getArchiveProductName(headerPath);
+            return sourceNamePattern.matcher(productName).matches();
+        } catch (IOException | RuntimeException e) {
+            return false;
+        } finally {
+            if (virtualDir != null) {
+                virtualDir.close();
+            }
+        }
+    }
+
+    private static String getArchiveProductName(String headerPath) {
+        final String productRoot = FlexReaderUtils.getParentPath(headerPath);
+        if (!productRoot.isEmpty()) {
+            final int separatorIndex = productRoot.lastIndexOf('/');
+            return separatorIndex >= 0 ? productRoot.substring(separatorIndex + 1) : productRoot;
+        }
+
+        final String headerFileName = headerPath.replace('\\', '/');
+        final int extensionIndex = headerFileName.lastIndexOf('.');
+        return extensionIndex >= 0 ? headerFileName.substring(0, extensionIndex) : headerFileName;
     }
 
     @Override

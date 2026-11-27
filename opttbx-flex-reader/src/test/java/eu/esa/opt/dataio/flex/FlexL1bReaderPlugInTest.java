@@ -7,8 +7,11 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static org.junit.Assert.*;
 
@@ -55,6 +58,24 @@ public class FlexL1bReaderPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-4324")
+    public void testZipProductWithArbitraryArchiveNameReturnsIntended() throws Exception {
+        final File zipFile = createZipProduct("download_from_flex.zip", VALID);
+
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(zipFile));
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(zipFile.toPath()));
+        assertEquals(DecodeQualification.INTENDED, plugIn.getDecodeQualification(zipFile.getPath()));
+    }
+
+    @Test
+    @STTM("SNAP-4324")
+    public void testZipWithoutFlexProductRootReturnsUnable() throws Exception {
+        final File zipFile = createZipProduct("not_a_flex_product.zip", "INVALID_PRODUCT");
+
+        assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(zipFile));
+    }
+
+    @Test
     @STTM("SNAP-4126")
     public void testNcAndOtherFilesReturnUnable() throws Exception {
         final File dir = createProductDir(VALID);
@@ -78,10 +99,19 @@ public class FlexL1bReaderPlugInTest {
     }
 
     @Test
+    @STTM("SNAP-4324")
+    public void testMissingXmlInOtherwiseValidProductDirectoryReturnsUnable() {
+        final File missingXml = new File(new File(tempFolder.getRoot(), VALID), VALID + ".xml");
+
+        assertFalse(missingXml.exists());
+        assertEquals(DecodeQualification.UNABLE, plugIn.getDecodeQualification(missingXml));
+    }
+
+    @Test
     @STTM("SNAP-4126")
     public void testMetadataMethods() {
         assertArrayEquals(new String[]{"FLEX_L1B"}, plugIn.getFormatNames());
-        assertArrayEquals(new String[]{".xml"}, plugIn.getDefaultFileExtensions());
+        assertArrayEquals(new String[]{".xml", ".zip"}, plugIn.getDefaultFileExtensions());
         assertEquals("FLEX L1B Products (FLORIS TOA radiance)", plugIn.getDescription(Locale.ENGLISH));
         assertArrayEquals(new Class[]{String.class, File.class, Path.class}, plugIn.getInputTypes());
         assertNotNull(plugIn.getProductFileFilter());
@@ -93,6 +123,17 @@ public class FlexL1bReaderPlugInTest {
         final File dir = tempFolder.newFolder(name);
         assertTrue(new File(dir, name + ".xml").createNewFile());
         return dir;
+    }
+
+    private File createZipProduct(String archiveName, String productName) throws IOException {
+        final File zipFile = new File(tempFolder.getRoot(), archiveName);
+        try (ZipOutputStream outputStream = new ZipOutputStream(java.nio.file.Files.newOutputStream(zipFile.toPath()))) {
+            outputStream.putNextEntry(new ZipEntry(productName + "/" + productName.toLowerCase(Locale.ROOT) + ".xml"));
+            outputStream.closeEntry();
+            outputStream.putNextEntry(new ZipEntry(productName + "/measurement.nc"));
+            outputStream.closeEntry();
+        }
+        return zipFile;
     }
 
     private void assertUnableForDirectory(String name) throws Exception {

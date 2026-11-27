@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.flex.util;
 
-
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
@@ -12,7 +12,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.stream.Stream;
+
 
 public class FlexReaderUtils {
 
@@ -47,6 +50,56 @@ public class FlexReaderUtils {
                     .findFirst()
                     .orElseThrow(() -> new IOException("No XML header file found in " + productDir));
         }
+    }
+
+
+    public static String findHeaderFile(VirtualDir virtualDir) throws IOException {
+        return Arrays.stream(virtualDir.listAllFiles())
+                .filter(FlexReaderUtils::isXmlFileName)
+                .sorted(Comparator.comparingInt(FlexReaderUtils::getPathDepth).thenComparing(String.CASE_INSENSITIVE_ORDER))
+                .findFirst()
+                .orElseThrow(() -> new IOException("No XML header file found in " + virtualDir.getBasePath()));
+    }
+
+
+    public static String resolveProductFilePath(VirtualDir virtualDir, String productRoot, String fileName) {
+        if (virtualDir.exists(fileName)) {
+            return fileName;
+        }
+
+        if (productRoot == null || productRoot.isEmpty()) {
+            return fileName;
+        }
+
+        final String productRelativePath = productRoot + "/" + fileName;
+        if (virtualDir.exists(productRelativePath)) {
+            return productRelativePath;
+        }
+
+        return productRelativePath;
+    }
+
+
+    public static String getParentPath(String filePath) {
+        final String normalizedPath = filePath.replace('\\', '/');
+        final int separatorIndex = normalizedPath.lastIndexOf('/');
+        return separatorIndex >= 0 ? normalizedPath.substring(0, separatorIndex) : "";
+    }
+
+
+    private static boolean isXmlFileName(String fileName) {
+        return fileName.toLowerCase().endsWith(".xml");
+    }
+
+
+    private static int getPathDepth(String fileName) {
+        int depth = 0;
+        for (int i = 0; i < fileName.length(); i++) {
+            if (fileName.charAt(i) == '/' || fileName.charAt(i) == '\\') {
+                depth++;
+            }
+        }
+        return depth;
     }
 
 

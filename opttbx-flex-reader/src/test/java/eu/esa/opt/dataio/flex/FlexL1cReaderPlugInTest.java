@@ -81,7 +81,7 @@ public class FlexL1cReaderPlugInTest {
     @STTM("SNAP-4126")
     public void testMetadataMethods() {
         assertArrayEquals(new String[]{"FLEX_L1C"}, plugIn.getFormatNames());
-        assertArrayEquals(new String[]{".xml"}, plugIn.getDefaultFileExtensions());
+        assertArrayEquals(new String[]{".xml", ".zip"}, plugIn.getDefaultFileExtensions());
         assertEquals("FLEX L1C Products (geo-registered TOA radiance)", plugIn.getDescription(Locale.ENGLISH));
         assertArrayEquals(new Class[]{String.class, File.class, Path.class}, plugIn.getInputTypes());
         assertNotNull(plugIn.getProductFileFilter());

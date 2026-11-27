@@ -35,6 +35,7 @@ import ucar.nc2.Variable;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
@@ -72,6 +73,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     private final FlexDirectNetcdfBandReader directBandReader;
 
     private String dddbProductType;
+    private String productRoot = "";
     private VirtualDir virtualDir;
     private FlexProductCompatibility compatibility = new StandardFlexCompatibility();
     private NetcdfCacheDataProvider cacheDataProvider;
@@ -101,12 +103,19 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     protected Product readProductNodesImpl() throws IOException {
         final Path inputPath = getProductPath();
         virtualDir = ProductUtils.getProductVirtualDir(inputPath);
+        if (virtualDir == null) {
+            throw new IOException("FLEX product input is not a readable directory or ZIP archive: " + inputPath);
+        }
 
         initializeOperationMode();
 
-        final Path headerFile = FlexReaderUtils.findHeaderFile(inputPath);
         final FlexHeaderParser parser = new FlexHeaderParser();
-        final FlexProductHeader header = parser.parse(headerFile);
+        final String headerPath = FlexReaderUtils.findHeaderFile(virtualDir);
+        productRoot = FlexReaderUtils.getParentPath(headerPath);
+        final FlexProductHeader header;
+        try (InputStream headerStream = virtualDir.getInputStream(headerPath)) {
+            header = parser.parse(headerStream);
+        }
 
         dddbProductType = FlexReaderUtils.mapProductType(header.getProductType());
         final String dddbVersion = header.getProcessorVersion();
@@ -356,6 +365,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         }
 
         dddbProductType = null;
+        productRoot = "";
         compatibility = null;
         cacheEnabled = CACHE_ENABLED_DEFAULT;
         nativeNetcdfEnabled = NATIVE_NETCDF_ENABLED_DEFAULT;
@@ -432,9 +442,10 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
             }
 
             try {
-                final File file = virtualDir.getFile(resolvedName);
+                final String productFilePath = FlexReaderUtils.resolveProductFilePath(virtualDir, productRoot, resolvedName);
+                final File file = virtualDir.getFile(productFilePath);
                 if (file != null && file.exists()) {
-                    final NetcdfFile ncFile = openFlexNetcdfFile(file, resolvedName);
+                    final NetcdfFile ncFile = openFlexNetcdfFile(file, productFilePath);
                     ncFilesMap.put(ncKey, ncFile);
                 } else {
                     logger.fine("Data file not found: " + resolvedName);
@@ -450,7 +461,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
     }
 
     private void openAllNcFilesInDirectory() throws IOException {
-        final String[] files = virtualDir.list("");
+        final String[] files = virtualDir.list(productRoot);
         if (files == null) {
             return;
         }
@@ -458,9 +469,10 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         for (final String fileName : files) {
             if (fileName.toLowerCase().endsWith(".nc")) {
                 try {
-                    final File file = virtualDir.getFile(fileName);
+                    final String productFilePath = FlexReaderUtils.resolveProductFilePath(virtualDir, productRoot, fileName);
+                    final File file = virtualDir.getFile(productFilePath);
                     if (file != null && file.exists()) {
-                        ncFilesMap.put(fileName.toLowerCase(), openFlexNetcdfFile(file, fileName));
+                        ncFilesMap.put(fileName.toLowerCase(), openFlexNetcdfFile(file, productFilePath));
                     }
                 } catch (IOException e) {
                     logger.warning("Cannot open: " + fileName + " - " + e.getMessage());
