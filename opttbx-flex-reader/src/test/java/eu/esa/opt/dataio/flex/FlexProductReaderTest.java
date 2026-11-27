@@ -842,7 +842,7 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testAddBand_usesDescriptorDataTypeScaleOffsetAndFillValueWhenNetcdfDiffers() throws Exception {
+    public void testAddBand_usesProductScaleOffsetAndFillValueWhenPresent() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 4, 3);
 
@@ -857,9 +857,10 @@ public class FlexProductReaderTest {
 
         final Variable variable = mock(Variable.class);
         when(variable.getDataType()).thenReturn(DataType.USHORT);
-        when(variable.findAttribute(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 0.009155552843));
-        when(variable.findAttribute(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, -0.25));
-        when(variable.findAttribute(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 65535));
+        when(variable.findAttributeIgnoreCase(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 0.009155552843));
+        when(variable.findAttributeIgnoreCase(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, -0.25));
+        when(variable.findAttributeIgnoreCase(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 65535));
+
         final NetcdfFile ncFile = mock(NetcdfFile.class);
         when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
         ncFilesMap(reader).put("sample_l1c.nc", ncFile);
@@ -869,10 +870,10 @@ public class FlexProductReaderTest {
         final Band band = product.getBand("olci_toa_radiance");
         assertNotNull(band);
         assertEquals(ProductData.TYPE_FLOAT32, band.getDataType());
-        assertEquals(2.0, band.getScalingFactor(), 1.0e-12);
-        assertEquals(3.0, band.getScalingOffset(), 1.0e-12);
+        assertEquals(0.009155552843, band.getScalingFactor(), 1.0e-12);
+        assertEquals(-0.25, band.getScalingOffset(), 1.0e-12);
         assertTrue(band.isNoDataValueUsed());
-        assertEquals(-1.0, band.getNoDataValue(), 1.0e-12);
+        assertEquals(65535.0, band.getNoDataValue(), 1.0e-12);
         assertSame(variable, bandToVariableMap(reader).get("olci_toa_radiance"));
     }
 
@@ -901,6 +902,14 @@ public class FlexProductReaderTest {
         final Product product = new Product("p", "t", 4, 3);
         final FlexVariableDescriptor descriptor = flagDescriptor("classification", "uint8");
         final Variable variable = registerVariable(reader, "classification.nc", descriptor);
+
+        descriptor.setScaleFactor(2.0);
+        descriptor.setAddOffset(3.0);
+        descriptor.setFillValue(99.0);
+        when(variable.findAttributeIgnoreCase(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 1.0));
+        when(variable.findAttributeIgnoreCase(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, 0.0));
+        when(variable.findAttributeIgnoreCase(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 0));
+
         final FlexProductDescriptor productDescriptor = new FlexProductDescriptor();
         productDescriptor.setFlagMasks(new FlexFlagMask[]{
                 new FlexFlagMask("classification", "land", 2, "Land pixel", false),
@@ -916,6 +925,10 @@ public class FlexProductReaderTest {
         assertEquals(1, indexCoding.getNumAttributes());
         assertEquals(2, indexCoding.getIndexValue("land"));
         assertEquals("Land pixel", indexCoding.getIndex("land").getDescription());
+        assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
+        assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(0.0, band.getNoDataValue(), 1.0e-12);
         assertSame(variable, bandToVariableMap(reader).get("classification"));
     }
 
@@ -926,6 +939,14 @@ public class FlexProductReaderTest {
         final Product product = new Product("p", "t", 4, 3);
         final FlexVariableDescriptor descriptor = flagDescriptor("quality", "uint8");
         final Variable variable = registerVariable(reader, "quality.nc", descriptor);
+
+        descriptor.setScaleFactor(2.0);
+        descriptor.setAddOffset(3.0);
+        descriptor.setFillValue(99.0);
+        when(variable.findAttributeIgnoreCase(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 0.5));
+        when(variable.findAttributeIgnoreCase(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, -7.0));
+        when(variable.findAttributeIgnoreCase(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 255));
+
         final FlexProductDescriptor productDescriptor = new FlexProductDescriptor();
         productDescriptor.setFlagMasks(new FlexFlagMask[]{
                 new FlexFlagMask("quality", "cloud", 4, "Cloud pixel", true),
@@ -941,6 +962,10 @@ public class FlexProductReaderTest {
         assertEquals(1, flagCoding.getNumAttributes());
         assertEquals(4, flagCoding.getFlagMask("cloud"));
         assertEquals("Cloud pixel", flagCoding.getFlag("cloud").getDescription());
+        assertEquals(0.5, band.getScalingFactor(), 1.0e-12);
+        assertEquals(-7.0, band.getScalingOffset(), 1.0e-12);
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(255.0, band.getNoDataValue(), 1.0e-12);
         assertSame(variable, bandToVariableMap(reader).get("quality"));
     }
 
@@ -1173,7 +1198,7 @@ public class FlexProductReaderTest {
 
     @Test
     @STTM("SNAP-4126")
-    public void testAddSpecialBands_usesDescriptorDataTypeScaleOffsetAndFillValueWhenNetcdfDiffers() throws Exception {
+    public void testAddSpecialBands_usesProductScaleOffsetAndFillValueWhenPresent() throws Exception {
         final FlexProductReader reader = new FlexProductReader(mock(ProductReaderPlugIn.class));
         final Product product = new Product("p", "t", 4, 3);
 
@@ -1194,9 +1219,9 @@ public class FlexProductReaderTest {
 
         final Variable variable = mock(Variable.class);
         when(variable.getDataType()).thenReturn(DataType.USHORT);
-        when(variable.findAttribute(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 1.525925474E-5));
-        when(variable.findAttribute(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, 0.5));
-        when(variable.findAttribute(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 65535));
+        when(variable.findAttributeIgnoreCase(SCALE_FACTOR)).thenReturn(new Attribute(SCALE_FACTOR, 1.525925474E-5));
+        when(variable.findAttributeIgnoreCase(ADD_OFFSET)).thenReturn(new Attribute(ADD_OFFSET, 0.5));
+        when(variable.findAttributeIgnoreCase(FILL_VALUE)).thenReturn(new Attribute(FILL_VALUE, 65535));
         final NetcdfFile ncFile = mock(NetcdfFile.class);
         when(ncFile.findVariable(descriptor.getFullNcPath())).thenReturn(variable);
         ncFilesMap(reader).put("sample_l2.nc", ncFile);
@@ -1208,15 +1233,15 @@ public class FlexProductReaderTest {
         assertNotNull(firstLayerBand);
         assertNotNull(secondLayerBand);
         assertEquals(ProductData.TYPE_FLOAT32, firstLayerBand.getDataType());
-        assertEquals(2.0, firstLayerBand.getScalingFactor(), 1.0e-12);
-        assertEquals(3.0, firstLayerBand.getScalingOffset(), 1.0e-12);
+        assertEquals(1.525925474E-5, firstLayerBand.getScalingFactor(), 1.0e-12);
+        assertEquals(0.5, firstLayerBand.getScalingOffset(), 1.0e-12);
         assertTrue(firstLayerBand.isNoDataValueUsed());
-        assertEquals(-1.0, firstLayerBand.getNoDataValue(), 1.0e-12);
+        assertEquals(65535.0, firstLayerBand.getNoDataValue(), 1.0e-12);
         assertEquals(ProductData.TYPE_FLOAT32, secondLayerBand.getDataType());
-        assertEquals(2.0, secondLayerBand.getScalingFactor(), 1.0e-12);
-        assertEquals(3.0, secondLayerBand.getScalingOffset(), 1.0e-12);
+        assertEquals(1.525925474E-5, secondLayerBand.getScalingFactor(), 1.0e-12);
+        assertEquals(0.5, secondLayerBand.getScalingOffset(), 1.0e-12);
         assertTrue(secondLayerBand.isNoDataValueUsed());
-        assertEquals(-1.0, secondLayerBand.getNoDataValue(), 1.0e-12);
+        assertEquals(65535.0, secondLayerBand.getNoDataValue(), 1.0e-12);
     }
 
     @Test

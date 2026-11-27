@@ -64,9 +64,30 @@ public class FlexDDDBProductDescriptorsTest {
 
     @Test
     @STTM("SNAP-4324")
+    public void testLoadL1bProductDescriptor_03_02KeepsLegacyPackingAndAnnotationLayout() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexVariableDescriptor[] measurement = dddb.getVariableDescriptors("measurement_data_hre1", "FLX_L1B_OBS", "03.02");
+        final FlexVariableDescriptor radiance = findDescriptor(measurement, "FLORIS_HR1B_1_radiance");
+        assertEquals(0.0133847212418914, radiance.getScaleFactor(), 1.0e-15);
+        assertEquals(-0.0206482466310263, radiance.getAddOffset(), 1.0e-15);
+
+        final FlexVariableDescriptor radianceUncertainty = findDescriptor(measurement, "FLORIS_HR1B_1_radiance_unc");
+        assertEquals(0.342648863792419, radianceUncertainty.getScaleFactor(), 1.0e-15);
+        assertEquals(0.0, radianceUncertainty.getAddOffset(), 1.0e-15);
+        assertEquals(0.0, radianceUncertainty.getFillValue(), 1.0e-15);
+
+        final FlexVariableDescriptor[] annotation = dddb.getVariableDescriptors("annotation_data_hre1", "FLX_L1B_OBS", "03.02");
+        assertEquals(55, annotation.length);
+        assertDescriptorMissing(annotation, "HRE1_vau_time_stamp");
+    }
+
+    @Test
+    @STTM("SNAP-4324")
     public void testLoadL1bProductDescriptor_05_01UsesCurrentDefault() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
+        assertDddbResourceMissing("FLX_L1B_OBS/FLX_L1B_OBS_05.01.json");
         final FlexProductDescriptor descriptor = dddb.getProductDescriptor("FLX_L1B_OBS", "05.01");
         assertFlagMask(descriptor, "HRE1_channel_quality_flags", "invalid_nl_correction", 16);
         assertFlagMask(descriptor, "HRE1_channel_quality_flags", "out_of_range_nl_correction", 32);
@@ -431,6 +452,12 @@ public class FlexDDDBProductDescriptorsTest {
 
     private static void assertDddbResourceExists(String resourceName) {
         assertNotNull("Missing DDDB resource: " + resourceName,
+                FlexDDDBProductDescriptorsTest.class.getClassLoader()
+                        .getResource("eu/esa/opt/dataio/flex/dddb/" + resourceName));
+    }
+
+    private static void assertDddbResourceMissing(String resourceName) {
+        assertNull("Unexpected DDDB resource: " + resourceName,
                 FlexDDDBProductDescriptorsTest.class.getClassLoader()
                         .getResource("eu/esa/opt/dataio/flex/dddb/" + resourceName));
     }
