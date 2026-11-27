@@ -1,8 +1,10 @@
 package eu.esa.opt.dataio.flex.util;
 
 import com.bc.ceres.annotation.STTM;
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import org.esa.snap.core.datamodel.*;
+import org.esa.snap.core.util.ProductUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -15,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -89,6 +93,35 @@ public class FlexReaderUtilsTest {
     }
 
     @Test
+    @STTM("SNAP-4324")
+    public void testFindHeaderFile_virtualDirFindsHeaderBelowArchiveProductRoot() throws Exception {
+        final File zipFile = createZipFile("delivery.zip", "FLEX_PRODUCT/header.xml", "FLEX_PRODUCT/measurement.nc");
+        final VirtualDir virtualDir = ProductUtils.getProductVirtualDir(zipFile.toPath());
+
+        try {
+            final String headerPath = FlexReaderUtils.findHeaderFile(virtualDir);
+            assertEquals("FLEX_PRODUCT/header.xml", headerPath);
+            assertEquals("FLEX_PRODUCT", FlexReaderUtils.getParentPath(headerPath));
+            assertEquals("FLEX_PRODUCT/measurement.nc", FlexReaderUtils.resolveProductFilePath(virtualDir, "FLEX_PRODUCT", "measurement.nc"));
+        } finally {
+            virtualDir.close();
+        }
+    }
+
+    @Test
+    @STTM("SNAP-4324")
+    public void testResolveProductFilePathPreservesRootLevelDataFile() throws Exception {
+        final File zipFile = createZipFile("root.zip", "header.xml", "measurement.nc");
+        final VirtualDir virtualDir = ProductUtils.getProductVirtualDir(zipFile.toPath());
+
+        try {
+            assertEquals("measurement.nc", FlexReaderUtils.resolveProductFilePath(virtualDir, "FLEX_PRODUCT", "measurement.nc"));
+        } finally {
+            virtualDir.close();
+        }
+    }
+
+    @Test
     @STTM("SNAP-4126")
     public void testSetScaleOffsetAndFillValue_fromDescriptor() {
         final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
@@ -105,6 +138,17 @@ public class FlexReaderUtilsTest {
         assertEquals(0.0, band.getNoDataValue(), 1.0e-12);
     }
 
+    private File createZipFile(String name, String... entries) throws IOException {
+        final File zipFile = new File(tempFolder.getRoot(), name);
+        try (ZipOutputStream outputStream = new ZipOutputStream(java.nio.file.Files.newOutputStream(zipFile.toPath()))) {
+            for (final String entry : entries) {
+                outputStream.putNextEntry(new ZipEntry(entry));
+                outputStream.closeEntry();
+            }
+        }
+        return zipFile;
+    }
+
     @Test
     @STTM("SNAP-4126")
     public void testSetScaleOffsetAndFillValue_descriptorDefaultsKeepBandDefaults() {
@@ -116,6 +160,48 @@ public class FlexReaderUtilsTest {
         assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
         assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
         assertFalse(band.isNoDataValueUsed());
+    }
+
+    @Test
+    @STTM("SNAP-4324")
+    public void testSetScaleOffsetAndFillValue_variableAttributesOverrideDescriptor() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setScaleFactor(0.01);
+        descriptor.setAddOffset(-2.5);
+        descriptor.setFillValue(99.0);
+
+        final Variable variable = variableWithAttributes(
+                attribute("scale_factor", new float[]{1.0f}),
+                attribute("add_offset", new float[]{0.0f}),
+                attribute("_FillValue", new short[]{0})
+        );
+
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor, variable);
+
+        assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
+        assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(0.0, band.getNoDataValue(), 1.0e-12);
+    }
+
+    @Test
+    @STTM("SNAP-4324")
+    public void testSetScaleOffsetAndFillValue_missingVariableAttributesKeepDescriptorValues() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setScaleFactor(0.01);
+        descriptor.setAddOffset(-2.5);
+        descriptor.setFillValue(99.0);
+
+        final Variable variable = variableWithAttributes();
+
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor, variable);
+
+        assertEquals(0.01, band.getScalingFactor(), 1.0e-12);
+        assertEquals(-2.5, band.getScalingOffset(), 1.0e-12);
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(99.0, band.getNoDataValue(), 1.0e-12);
     }
 
     @Test
@@ -247,6 +333,14 @@ public class FlexReaderUtilsTest {
         when(variable.getUnitsString()).thenReturn("unit");
         when(variable.getDescription()).thenReturn("description");
         when(variable.read()).thenReturn(Array.factory(dataType, shape, javaArray));
+        return variable;
+    }
+
+    private Variable variableWithAttributes(Attribute... attributes) {
+        final Variable variable = mock(Variable.class);
+        for (final Attribute attribute : attributes) {
+            when(variable.findAttributeIgnoreCase(attribute.getShortName())).thenReturn(attribute);
+        }
         return variable;
     }
 

@@ -1,6 +1,6 @@
 package eu.esa.opt.dataio.flex.util;
 
-
+import com.bc.ceres.core.VirtualDir;
 import eu.esa.opt.dataio.flex.dddb.FlexVariableDescriptor;
 import org.esa.snap.core.datamodel.*;
 import org.esa.snap.dataio.netcdf.util.DataTypeUtils;
@@ -12,7 +12,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.stream.Stream;
+
 
 public class FlexReaderUtils {
 
@@ -50,6 +53,68 @@ public class FlexReaderUtils {
     }
 
 
+    public static String findHeaderFile(VirtualDir virtualDir) throws IOException {
+        return Arrays.stream(virtualDir.listAllFiles())
+                .filter(FlexReaderUtils::isXmlFileName)
+                .sorted(Comparator.comparingInt(FlexReaderUtils::getPathDepth).thenComparing(String.CASE_INSENSITIVE_ORDER))
+                .findFirst()
+                .orElseThrow(() -> new IOException("No XML header file found in " + virtualDir.getBasePath()));
+    }
+
+
+    public static String resolveProductFilePath(VirtualDir virtualDir, String productRoot, String fileName) {
+        if (virtualDir.exists(fileName)) {
+            return fileName;
+        }
+
+        if (productRoot == null || productRoot.isEmpty()) {
+            return fileName;
+        }
+
+        final String productRelativePath = productRoot + "/" + fileName;
+        if (virtualDir.exists(productRelativePath)) {
+            return productRelativePath;
+        }
+
+        return productRelativePath;
+    }
+
+
+    public static String getParentPath(String filePath) {
+        final String normalizedPath = filePath.replace('\\', '/');
+        final int separatorIndex = normalizedPath.lastIndexOf('/');
+        return separatorIndex >= 0 ? normalizedPath.substring(0, separatorIndex) : "";
+    }
+
+
+    private static boolean isXmlFileName(String fileName) {
+        return fileName.toLowerCase().endsWith(".xml");
+    }
+
+
+    private static int getPathDepth(String fileName) {
+        int depth = 0;
+        for (int i = 0; i < fileName.length(); i++) {
+            if (fileName.charAt(i) == '/' || fileName.charAt(i) == '\\') {
+                depth++;
+            }
+        }
+        return depth;
+    }
+
+
+    /**
+     * Configures the band from the DDDB and then applies the physical packing
+     * declared by the concrete NetCDF variable. The DDDB remains the fallback
+     * for products that do not declare one or more standard packing attributes.
+     */
+    public static void setScaleOffsetAndFillValue(Band band, FlexVariableDescriptor descriptor, Variable variable) {
+        setScaleOffsetAndFillValue(band, descriptor);
+
+        setScalingFactorFromAttribute(band, variable);
+        setScalingOffsetFromAttribute(band, variable);
+        setFillValueFromAttribute(band, variable);
+    }
 
     public static void setScaleOffsetAndFillValue(Band band, FlexVariableDescriptor descriptor) {
         if (Double.compare(descriptor.getScaleFactor(), 1.0) != 0) {
@@ -63,6 +128,39 @@ public class FlexReaderUtils {
             band.setNoDataValue(fillValue);
             band.setNoDataValueUsed(true);
         }
+    }
+
+
+    private static void setScalingFactorFromAttribute(Band band, Variable variable) {
+        final Double scaleFactor = getNumericAttributeValue(variable, "scale_factor");
+        if (scaleFactor != null) {
+            band.setScalingFactor(scaleFactor);
+        }
+    }
+
+    private static void setScalingOffsetFromAttribute(Band band, Variable variable) {
+        final Double addOffset = getNumericAttributeValue(variable, "add_offset");
+        if (addOffset != null) {
+            band.setScalingOffset(addOffset);
+        }
+    }
+
+    private static void setFillValueFromAttribute(Band band, Variable variable) {
+        final Double fillValue = getNumericAttributeValue(variable, "_FillValue");
+        if (fillValue != null) {
+            band.setNoDataValue(fillValue);
+            band.setNoDataValueUsed(true);
+        }
+    }
+
+    private static Double getNumericAttributeValue(Variable variable, String attributeName) {
+        final Attribute attribute = variable.findAttributeIgnoreCase(attributeName);
+        if (attribute == null) {
+            return null;
+        }
+
+        final Number value = attribute.getNumericValue();
+        return value != null ? value.doubleValue() : null;
     }
 
     public static MetadataElement extractMetadata(Variable variable) throws IOException {

@@ -82,7 +82,7 @@ public class FlexL2ReaderPlugInTest {
     @STTM("SNAP-4126")
     public void testMetadataMethods() {
         assertArrayEquals(new String[]{"FLEX_L2"}, plugIn.getFormatNames());
-        assertArrayEquals(new String[]{".xml"}, plugIn.getDefaultFileExtensions());
+        assertArrayEquals(new String[]{".xml", ".zip"}, plugIn.getDefaultFileExtensions());
         assertEquals("FLEX L2 Products (geophysical parameters)", plugIn.getDescription(Locale.ENGLISH));
         assertArrayEquals(new Class[]{String.class, File.class, Path.class}, plugIn.getInputTypes());
         assertNotNull(plugIn.getProductFileFilter());
