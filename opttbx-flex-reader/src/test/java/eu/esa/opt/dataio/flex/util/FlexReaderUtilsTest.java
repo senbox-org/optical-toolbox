@@ -119,7 +119,7 @@ public class FlexReaderUtilsTest {
     }
 
     @Test
-    @STTM("SNAP-4126")
+    @STTM("SNAP-4324")
     public void testSetScaleOffsetAndFillValue_variableAttributesOverrideDescriptor() {
         final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
         final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
@@ -142,7 +142,7 @@ public class FlexReaderUtilsTest {
     }
 
     @Test
-    @STTM("SNAP-4126")
+    @STTM("SNAP-4324")
     public void testSetScaleOffsetAndFillValue_missingVariableAttributesKeepDescriptorValues() {
         final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
         final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();

@@ -31,6 +31,13 @@ public class FlexDDDBProductDescriptorsTest {
         assertTrue("L1B flag masks should be bitmask", descriptor.getFlagMasks()[0].isBitmask());
         assertOverlayMask(descriptor, "HRE1_common_quality_flags", "invalid", true);
         assertOverlayMask(descriptor, "HRE1_channel_quality_flags", "bad", false);
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "invalid_nl_correction", 16);
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "out_of_range_nl_correction", 32);
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "spare0", 64);
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "spare1", 128);
+
+        final FlexVariableDescriptor[] hre1Annotation = FlexDDDB.getInstance().getVariableDescriptors("annotation_data_hre1", "FLX_L1B_OBS");
+        assertL1b051Metadata(hre1Annotation, "HRE1");
     }
 
     @Test
@@ -44,14 +51,49 @@ public class FlexDDDBProductDescriptorsTest {
         assertEquals("number_of_across_track_samples", descriptor.getWidthDimensionName());
         assertOverlayMask(descriptor, "HRE1_common_quality_flags", "invalid", true);
         assertOverlayMask(descriptor, "HRE1_channel_quality_flags", "bad", false);
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "spare0", 16);
+
         for (String dataFile : descriptor.getDataFiles()) {
             assertDddbResourceExists("FLX_L1B_OBS/variables_03.02/" + dataFile + "_03.02.json");
         }
 
-        final FlexVariableDescriptor[] descriptors =
-                dddb.getVariableDescriptors("measurement_data_hre1", "FLX_L1B_OBS", "03.02");
+        final FlexVariableDescriptor[] descriptors = dddb.getVariableDescriptors("measurement_data_hre1", "FLX_L1B_OBS", "03.02");
         assertEquals(280, descriptors.length);
         assertEquals("FLORIS_HR1B_1_radiance", descriptors[0].getName());
+    }
+
+    @Test
+    @STTM("SNAP-4324")
+    public void testLoadL1bProductDescriptor_05_01UsesCurrentDefault() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexProductDescriptor descriptor = dddb.getProductDescriptor("FLX_L1B_OBS", "05.01");
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "invalid_nl_correction", 16);
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "out_of_range_nl_correction", 32);
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "spare0", 64);
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "spare1", 128);
+        assertOverlayMask(descriptor, "HRE1_channel_quality_flags", "invalid_nl_correction", false);
+        assertFlagMask(descriptor, "HRE2_channel_quality_flags", "invalid_nl_correction", 16);
+        assertFlagMask(descriptor, "LRES_channel_quality_flags", "out_of_range_nl_correction", 32);
+
+        assertL1b051Metadata(dddb.getVariableDescriptors("annotation_data_hre1", "FLX_L1B_OBS", "05.01"), "HRE1");
+        assertL1b051Metadata(dddb.getVariableDescriptors("annotation_data_hre2", "FLX_L1B_OBS", "05.01"), "HRE2");
+        assertL1b051Metadata(dddb.getVariableDescriptors("annotation_data_lres", "FLX_L1B_OBS", "05.01"), "LRES");
+
+        final FlexVariableDescriptor[] measurement = dddb.getVariableDescriptors("measurement_data_hre1", "FLX_L1B_OBS", "05.01");
+        assertEquals(280, measurement.length);
+        assertEquals("FLORIS_HR1B_1_radiance", measurement[0].getName());
+    }
+
+    @Test
+    @STTM("SNAP-4324")
+    public void testLoadL1bProductDescriptor_unknownVersionUsesCurrentDefault() throws IOException {
+        final FlexDDDB dddb = FlexDDDB.getInstance();
+
+        final FlexProductDescriptor descriptor = dddb.getProductDescriptor("FLX_L1B_OBS", "99.99");
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "invalid_nl_correction", 16);
+        assertFlagMask(descriptor, "HRE1_channel_quality_flags", "spare0", 64);
+        assertL1b051Metadata(dddb.getVariableDescriptors("annotation_data_hre1", "FLX_L1B_OBS", "99.99"), "HRE1");
     }
 
     @Test
@@ -140,20 +182,18 @@ public class FlexDDDBProductDescriptorsTest {
     public void testLoadL1bVariableDescriptors_scaleOffsetFillValueSamples() throws IOException {
         final FlexDDDB dddb = FlexDDDB.getInstance();
 
-        final FlexVariableDescriptor[] hre1Measurement =
-                dddb.getVariableDescriptors("measurement_data_hre1", "FLX_L1B_OBS");
+        final FlexVariableDescriptor[] hre1Measurement = dddb.getVariableDescriptors("measurement_data_hre1", "FLX_L1B_OBS");
         final FlexVariableDescriptor radiance = findDescriptor(hre1Measurement, "FLORIS_HR1B_1_radiance");
-        assertEquals(0.013384721241891384, radiance.getScaleFactor(), 1.0e-12);
-        assertEquals(-0.020648246631026268, radiance.getAddOffset(), 1.0e-12);
+        assertEquals(1.0, radiance.getScaleFactor(), 1.0e-12);
+        assertEquals(0.0, radiance.getAddOffset(), 1.0e-12);
         assertNull(radiance.getFillValue());
 
         final FlexVariableDescriptor radianceUncertainty = findDescriptor(hre1Measurement, "FLORIS_HR1B_1_radiance_unc");
-        assertEquals(0.34264886379241943, radianceUncertainty.getScaleFactor(), 1.0e-12);
+        assertEquals(1.0, radianceUncertainty.getScaleFactor(), 1.0e-12);
         assertEquals(0.0, radianceUncertainty.getAddOffset(), 1.0e-12);
         assertEquals(0.0, radianceUncertainty.getFillValue(), 1.0e-12);
 
-        final FlexVariableDescriptor[] hre1Annotation =
-                dddb.getVariableDescriptors("annotation_data_hre1", "FLX_L1B_OBS");
+        final FlexVariableDescriptor[] hre1Annotation = dddb.getVariableDescriptors("annotation_data_hre1", "FLX_L1B_OBS");
         final FlexVariableDescriptor longitude = findDescriptor(hre1Annotation, "HRE1_longitude");
         assertEquals(9.999999974752427e-7, longitude.getScaleFactor(), 1.0e-12);
         assertEquals(0.0, longitude.getAddOffset(), 1.0e-12);
@@ -197,10 +237,10 @@ public class FlexDDDBProductDescriptorsTest {
             }
         }
 
-        assertEquals(1306, scaleFactorCount);
-        assertEquals(644, addOffsetCount);
-        assertEquals(779, fillValueCount);
-        assertEquals(1423, anyValueCount);
+        assertEquals(18, scaleFactorCount);
+        assertEquals(0, addOffsetCount);
+        assertEquals(782, fillValueCount);
+        assertEquals(782, anyValueCount);
     }
 
     @Test
@@ -252,8 +292,7 @@ public class FlexDDDBProductDescriptorsTest {
     @Test
     @STTM("SNAP-4126")
     public void testLoadL1cMeasurementData_oldVersion() throws IOException {
-        final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors(
-                "measurement_data", "FLX_L1C_FLXSYN", "03.02");
+        final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors("measurement_data", "FLX_L1C_FLXSYN", "03.02");
 
         assertEquals(11, vars.length);
         assertDescriptorMissing(vars, "floris_toa_radiance_coregis_uncertainty");
@@ -305,8 +344,7 @@ public class FlexDDDBProductDescriptorsTest {
     @Test
     @STTM("SNAP-4126")
     public void testLoadL2Quality_oldVersion() throws IOException {
-        final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors(
-                "quality", "FLX_L2_FLXSYN", "03.02");
+        final FlexVariableDescriptor[] vars = FlexDDDB.getInstance().getVariableDescriptors("quality", "FLX_L2_FLXSYN", "03.02");
 
         assertEquals(1, vars.length);
 
@@ -338,6 +376,21 @@ public class FlexDDDBProductDescriptorsTest {
                 fail("Descriptor should not be present: " + name);
             }
         }
+    }
+
+    private static void assertL1b051Metadata(FlexVariableDescriptor[] descriptors, String prefix) {
+        assertEquals(60, descriptors.length);
+
+        final FlexVariableDescriptor vauTimeStamp = findDescriptor(descriptors, prefix + "_vau_time_stamp");
+        assertEquals("vau_time_stamp", vauTimeStamp.getNcVarName());
+        assertEquals("Annotation_data/Time_coordinates", vauTimeStamp.getNcGroupPath());
+        assertEquals("int64", vauTimeStamp.getDataType());
+        assertEquals(-1.0, vauTimeStamp.getFillValue(), 1.0e-12);
+
+        assertEquals("uint8", findDescriptor(descriptors, prefix + "_woi_num_act").getDataType());
+        assertEquals("uint8", findDescriptor(descriptors, prefix + "_woi_num_als").getDataType());
+        assertEquals("uint32", findDescriptor(descriptors, prefix + "_first_l1b_along_track_vau_tm_index").getDataType());
+        assertEquals("uint32", findDescriptor(descriptors, prefix + "_last_l1b_along_track_vau_tm_index").getDataType());
     }
 
     private static void assertCurrentL2FlagMasks(FlexProductDescriptor descriptor) {

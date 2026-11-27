@@ -102,6 +102,35 @@
         "description": "Elapsed time since 01 Jan 2000 0h from HRE2",
         "fillValue": -1
     },
+  {
+    "name": "HRE2_vau_time_stamp",
+    "ncVarName": "vau_time_stamp",
+    "ncGroupPath": "Annotation_data/Time_coordinates",
+    "ncDataFile": "hre2",
+    "type": "m",
+    "dataType": "int64",
+    "units": "microseconds since 2000-01-01 00:00:00",
+    "description": "Elapsed time since 01 Jan 2000 0h for HRE2 VAU measurements",
+    "fillValue": -1
+  },
+  {
+    "name": "HRE2_woi_num_act",
+    "ncVarName": "woi_num_act",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "ncDataFile": "hre2",
+    "type": "m",
+    "dataType": "uint8",
+    "description": "Number of WOIs in across-track direction from HRE2"
+  },
+  {
+    "name": "HRE2_woi_num_als",
+    "ncVarName": "woi_num_als",
+    "ncGroupPath": "Annotation_data/Instrumental_information",
+    "ncDataFile": "hre2",
+    "type": "m",
+    "dataType": "uint8",
+    "description": "Number of WOIs in spectral direction from HRE2"
+  },
     {
         "name": "HRE2_channel_quality_flags",
         "ncVarName": "channel_quality_flags",
@@ -467,6 +496,24 @@
         "description": "Flag indicating if offset correction has been applied from HRE2",
         "fillValue": 255
     },
+  {
+    "name": "HRE2_first_l1b_along_track_vau_tm_index",
+    "ncVarName": "first_l1b_along_track_vau_tm_index",
+    "ncGroupPath": "Annotation_data/Processing_executed",
+    "ncDataFile": "hre2",
+    "type": "m",
+    "dataType": "uint32",
+    "description": "First VAU measurement index associated with the first HRE2 L1B frame"
+  },
+  {
+    "name": "HRE2_last_l1b_along_track_vau_tm_index",
+    "ncVarName": "last_l1b_along_track_vau_tm_index",
+    "ncDataFile": "hre2",
+    "ncGroupPath": "Annotation_data/Processing_executed",
+    "type": "m",
+    "dataType": "uint32",
+    "description": "Last VAU measurement index associated with the last HRE2 L1B frame"
+  },
     {
         "name": "HRE2_non_linearity_correction",
         "ncVarName": "non_linearity_correction",
