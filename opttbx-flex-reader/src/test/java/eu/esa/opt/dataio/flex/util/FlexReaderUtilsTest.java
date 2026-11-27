@@ -120,6 +120,48 @@ public class FlexReaderUtilsTest {
 
     @Test
     @STTM("SNAP-4126")
+    public void testSetScaleOffsetAndFillValue_variableAttributesOverrideDescriptor() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setScaleFactor(0.01);
+        descriptor.setAddOffset(-2.5);
+        descriptor.setFillValue(99.0);
+
+        final Variable variable = variableWithAttributes(
+                attribute("scale_factor", new float[]{1.0f}),
+                attribute("add_offset", new float[]{0.0f}),
+                attribute("_FillValue", new short[]{0})
+        );
+
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor, variable);
+
+        assertEquals(1.0, band.getScalingFactor(), 1.0e-12);
+        assertEquals(0.0, band.getScalingOffset(), 1.0e-12);
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(0.0, band.getNoDataValue(), 1.0e-12);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
+    public void testSetScaleOffsetAndFillValue_missingVariableAttributesKeepDescriptorValues() {
+        final Band band = new Band("b", ProductData.TYPE_FLOAT32, 10, 10);
+        final FlexVariableDescriptor descriptor = new FlexVariableDescriptor();
+        descriptor.setScaleFactor(0.01);
+        descriptor.setAddOffset(-2.5);
+        descriptor.setFillValue(99.0);
+
+        final Variable variable = variableWithAttributes();
+
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor, variable);
+
+        assertEquals(0.01, band.getScalingFactor(), 1.0e-12);
+        assertEquals(-2.5, band.getScalingOffset(), 1.0e-12);
+        assertTrue(band.isNoDataValueUsed());
+        assertEquals(99.0, band.getNoDataValue(), 1.0e-12);
+    }
+
+    @Test
+    @STTM("SNAP-4126")
     public void testExtractMetadata_floatData() throws Exception {
         final MetadataElement element = FlexReaderUtils.extractMetadata(
                 variableWithData("float_var", DataType.FLOAT, new int[]{2}, new float[]{1.0f, 2.0f})
@@ -247,6 +289,14 @@ public class FlexReaderUtilsTest {
         when(variable.getUnitsString()).thenReturn("unit");
         when(variable.getDescription()).thenReturn("description");
         when(variable.read()).thenReturn(Array.factory(dataType, shape, javaArray));
+        return variable;
+    }
+
+    private Variable variableWithAttributes(Attribute... attributes) {
+        final Variable variable = mock(Variable.class);
+        for (final Attribute attribute : attributes) {
+            when(variable.findAttributeIgnoreCase(attribute.getShortName())).thenReturn(attribute);
+        }
         return variable;
     }
 

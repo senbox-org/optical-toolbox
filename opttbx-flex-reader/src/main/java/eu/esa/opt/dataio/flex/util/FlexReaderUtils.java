@@ -50,6 +50,18 @@ public class FlexReaderUtils {
     }
 
 
+    /**
+     * Configures the band from the DDDB and then applies the physical packing
+     * declared by the concrete NetCDF variable. The DDDB remains the fallback
+     * for products that do not declare one or more standard packing attributes.
+     */
+    public static void setScaleOffsetAndFillValue(Band band, FlexVariableDescriptor descriptor, Variable variable) {
+        setScaleOffsetAndFillValue(band, descriptor);
+
+        setScalingFactorFromAttribute(band, variable);
+        setScalingOffsetFromAttribute(band, variable);
+        setFillValueFromAttribute(band, variable);
+    }
 
     public static void setScaleOffsetAndFillValue(Band band, FlexVariableDescriptor descriptor) {
         if (Double.compare(descriptor.getScaleFactor(), 1.0) != 0) {
@@ -63,6 +75,39 @@ public class FlexReaderUtils {
             band.setNoDataValue(fillValue);
             band.setNoDataValueUsed(true);
         }
+    }
+
+
+    private static void setScalingFactorFromAttribute(Band band, Variable variable) {
+        final Double scaleFactor = getNumericAttributeValue(variable, "scale_factor");
+        if (scaleFactor != null) {
+            band.setScalingFactor(scaleFactor);
+        }
+    }
+
+    private static void setScalingOffsetFromAttribute(Band band, Variable variable) {
+        final Double addOffset = getNumericAttributeValue(variable, "add_offset");
+        if (addOffset != null) {
+            band.setScalingOffset(addOffset);
+        }
+    }
+
+    private static void setFillValueFromAttribute(Band band, Variable variable) {
+        final Double fillValue = getNumericAttributeValue(variable, "_FillValue");
+        if (fillValue != null) {
+            band.setNoDataValue(fillValue);
+            band.setNoDataValueUsed(true);
+        }
+    }
+
+    private static Double getNumericAttributeValue(Variable variable, String attributeName) {
+        final Attribute attribute = variable.findAttributeIgnoreCase(attributeName);
+        if (attribute == null) {
+            return null;
+        }
+
+        final Number value = attribute.getNumericValue();
+        return value != null ? value.doubleValue() : null;
     }
 
     public static MetadataElement extractMetadata(Variable variable) throws IOException {

@@ -562,7 +562,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
         band.setDescription(descriptor.getDescription());
         band.setUnit(descriptor.getUnits());
-        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor);
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor, ncVariable);
         product.addBand(band);
         bandToVariableMap.put(bandName, ncVariable);
 
@@ -584,6 +584,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final int dataType = ProductData.getType(descriptor.getDataType());
         final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(descriptor.getDescription());
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor, ncVariable);
 
         final IndexCoding indexCoding = new IndexCoding(bandName);
         for (final FlexFlagMask mask : productDescriptor.getFlagMasks()) {
@@ -617,6 +618,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
         final int dataType = ProductData.getType(descriptor.getDataType());
         final Band band = new BandUsingReaderDirectly(bandName, dataType, product.getSceneRasterWidth(), product.getSceneRasterHeight());
         band.setDescription(descriptor.getDescription());
+        FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor, ncVariable);
 
         final FlagCoding flagCoding = new FlagCoding(bandName);
         for (final FlexFlagMask mask : productDescriptor.getFlagMasks()) {
@@ -667,7 +669,7 @@ public class FlexProductReader extends AbstractProductReader implements FlexMeta
 
                 band.setDescription(descriptor.getDescription());
                 band.setUnit(descriptor.getUnits());
-                FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor);
+                FlexReaderUtils.setScaleOffsetAndFillValue(band, descriptor, ncVariable);
                 FlexSpectralMetadata.setSpectralWavelength(band, spectralWavelengths, layer);
                 FlexSpectralMetadata.setSpectralBandwidth(band, spectralBandwidths, layer);
                 product.addBand(band);
