@@ -55,7 +55,7 @@ public class L1CPaceFileReader extends SeadasFileReader {
         int sceneWidth = ncFile.findDimension("bins_across_track").getLength();
         boolean correctHarpDim = false;
 
-        String productName = productReader.getInputFile().getName();
+        String productName = productReader.getInputName();
 
 //        mustFlipY = mustFlipX = false;
 

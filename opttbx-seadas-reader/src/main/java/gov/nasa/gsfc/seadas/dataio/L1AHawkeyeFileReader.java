@@ -31,7 +31,7 @@ public class L1AHawkeyeFileReader extends SeadasFileReader {
     @Override
     public Product createProduct() throws ProductIOException {
 
-        String productName = productReader.getInputFile().getName();
+        String productName = productReader.getInputName();
         numPixels = getDimension("number_of_pixels");
         numScans = getDimension("number_of_scans");
         title = getStringAttribute("title");

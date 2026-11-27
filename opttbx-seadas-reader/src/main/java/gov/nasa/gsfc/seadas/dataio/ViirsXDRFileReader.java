@@ -83,7 +83,7 @@ public class ViirsXDRFileReader extends SeadasFileReader {
             int sceneHeight = dims.get(0).getLength();
             int sceneWidth = dims.get(1).getLength();
 
-            String productName = productReader.getInputFile().getName();
+            String productName = productReader.getInputName();
 
             mustFlipX = mustFlipY = mustFlipVIIRS();
             SeadasProductReader.ProductType productType = productReader.getProductType();

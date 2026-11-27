@@ -49,4 +49,31 @@ public class SeadasHelperTest {
         fileRetrieved = SeadasHelper.getInputFile(265.0987);
         assertNull(fileRetrieved);
     }
+
+    private static final String REMOTE =
+            "https://obdaac-tea.earthdatacloud.nasa.gov/ob-cumulus-prod-public/PACE_OCI.20260901T235307.L2.OC_AOP.V3_2.nc";
+
+    @Test
+    public void testRemoteLocationIsPassedThroughAsString() {
+        assertTrue(SeadasHelper.isRemote(REMOTE));
+        assertEquals(REMOTE, SeadasHelper.getNetcdfInput("  " + REMOTE + " "));
+        assertNull("a URL is not a local file", SeadasHelper.getInputFile(REMOTE));
+    }
+
+    @Test
+    public void testGetNetcdfInput_localInputStillResolvesToFile() {
+        assertFalse(SeadasHelper.isRemote("/data/PACE_OCI.L2.nc"));
+        assertEquals(new File("/data/PACE_OCI.L2.nc"), SeadasHelper.getNetcdfInput("/data/PACE_OCI.L2.nc"));
+        assertEquals(new File("a.nc"), SeadasHelper.getNetcdfInput(new File("a.nc")));
+        assertNull(SeadasHelper.getNetcdfInput(42));
+    }
+
+    @Test
+    public void testCheckNetcdfInput() {
+        assertEquals(DecodeQualification.SUITABLE, SeadasHelper.checkNetcdfInput(REMOTE));
+        assertEquals(DecodeQualification.SUITABLE, SeadasHelper.checkNetcdfInput("https://host/x.h5?sig=abc"));
+        assertEquals(DecodeQualification.UNABLE, SeadasHelper.checkNetcdfInput("https://host/browse.png"));
+        assertEquals(DecodeQualification.UNABLE, SeadasHelper.checkNetcdfInput(new File("/does/not/exist.nc")));
+        assertEquals(DecodeQualification.UNABLE, SeadasHelper.checkNetcdfInput(null));
+    }
 }
